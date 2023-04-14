@@ -1,4 +1,4 @@
-package br.com.storyteller.drawer
+package br.com.storyteller.drawer.content
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import br.com.storyteller.drawer.StepDrawer
 import br.com.storyteller.model.StoryStep
 
 class MessageStepDrawer : StepDrawer {

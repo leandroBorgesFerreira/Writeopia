@@ -1,9 +1,9 @@
-package br.com.storyteller.drawer
+package br.com.storyteller.drawer.content
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import br.com.storyteller.drawer.StepDrawer
 import br.com.storyteller.model.StoryStep
 
 class AddButtonDrawer : StepDrawer {
@@ -25,7 +26,8 @@ class AddButtonDrawer : StepDrawer {
                 onClick = { },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(contentColor = Color.Blue),
-                modifier = Modifier.size(45.dp)
+                modifier = Modifier.size(45.dp),
+                contentPadding = PaddingValues(1.dp)
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "", tint = Color.White)
             }
