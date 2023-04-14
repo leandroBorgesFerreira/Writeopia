@@ -13,4 +13,5 @@ enum class StepType(val type: String) {
     IMAGE("image"),
     AUDIO("audio"),
     VIDEO("video"),
+    ADD_BUTTON("add_button"),
 }

@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
             Box(modifier = Modifier.padding(10.dp)) {
                 StoryTellerTimeline(modifier = Modifier.width(400.dp), steps = history())
             }
-
         }
     }
 }
@@ -39,6 +38,13 @@ private fun history(): List<StoryStep> =
             StoryStep(
                 id = "2",
                 type = "message",
+                text = "And it was super awesome!!"
+            )
+        )
+        add(
+            StoryStep(
+                id = "3",
+                type = "add_button",
                 text = "And it was super awesome!!"
             )
         )

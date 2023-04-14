@@ -1,4 +1,4 @@
-package br.com.storyteller.factory
+package br.com.storyteller.drawer
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -11,10 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import br.com.storyteller.model.StoryStep
 
-class MessageStepScreenDrawer : StepScreenDrawer {
+class MessageStepDrawer : StepDrawer {
 
     @Composable
-    override fun Screen(step: StoryStep) {
+    override fun Step(step: StoryStep) {
         Surface(
             shape = RoundedCornerShape(20),
             modifier = Modifier.padding(vertical = 5.dp)
