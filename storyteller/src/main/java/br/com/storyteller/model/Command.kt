@@ -1,4 +1,4 @@
-package br.com.storyteller.command
+package br.com.storyteller.model
 
 import br.com.storyteller.model.StoryStep
 

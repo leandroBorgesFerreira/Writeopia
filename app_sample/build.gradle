@@ -38,6 +38,8 @@ android {
     }
 }
 
+def coilVersion = "2.3.0"
+
 dependencies {
 
     implementation project(":storyteller")
@@ -51,6 +53,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
     implementation "androidx.compose.material:material"
     implementation 'androidx.activity:activity-compose'
+
+    implementation "io.coil-kt:coil-compose:$coilVersion"
+    implementation "io.coil-kt:coil-video:$coilVersion"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

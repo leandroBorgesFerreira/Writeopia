@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import br.com.storyteller.command.Command
+import br.com.storyteller.model.Command
 import br.com.storyteller.drawer.StepDrawer
 import br.com.storyteller.model.StoryStep
 
