@@ -11,17 +11,18 @@ import br.com.storyteller.model.StepType
 object DefaultDrawers {
 
     fun create(onCommand: (Command) -> Unit): Map<String, StepDrawer> = buildMap {
-        put(StepType.MESSAGE.type, MessageStepDrawer())
-        put(StepType.ADD_BUTTON.type, AddButtonDrawer())
-        put(
-            StepType.IMAGE.type,
+        val commandsComposite : (StepDrawer) -> StepDrawer = { stepDrawer ->
             CommandsCompositeDrawer(
-                ImageStepDrawer(),
+                stepDrawer,
                 onMoveUp = onCommand,
                 onMoveDown = onCommand,
                 onDelete = onCommand,
             )
-        )
-        put(StepType.VIDEO.type, VideoStepDrawer())
+        }
+
+        put(StepType.MESSAGE.type, MessageStepDrawer())
+        put(StepType.ADD_BUTTON.type, AddButtonDrawer())
+        put(StepType.IMAGE.type, commandsComposite(ImageStepDrawer()))
+        put(StepType.VIDEO.type, commandsComposite(VideoStepDrawer()))
     }
 }

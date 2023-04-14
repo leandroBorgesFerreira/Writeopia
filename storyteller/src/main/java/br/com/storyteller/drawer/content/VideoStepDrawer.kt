@@ -1,12 +1,13 @@
 package br.com.storyteller.drawer.content
 
-import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -23,30 +24,32 @@ class VideoStepDrawer : StepDrawer {
 
     @Composable
     override fun Step(step: StoryStep) {
-        Box(
-            modifier = Modifier
-                .width(200.dp)
-                .height(200.dp)
-                .clip(shape = RoundedCornerShape(size = 12.dp))
-                .border(
-                    width = 1.dp,
-                    color = Color.Gray,
-                    shape = RoundedCornerShape(size = 12.dp)
+        Box(modifier = Modifier.padding(vertical = 3.dp)) {
+            Box(
+                modifier = Modifier
+                    .width(200.dp)
+                    .height(200.dp)
+                    .clip(shape = RoundedCornerShape(size = 12.dp))
+                    .border(
+                        width = 1.dp,
+                        color = Color.Gray,
+                        shape = RoundedCornerShape(size = 12.dp)
+                    )
+                    .align(Alignment.Center)
+            ) {
+                val request = ImageRequest.Builder(LocalContext.current)
+                    .data(step.url?.toUri())
+                    .videoFrameMillis(1000)
+                    .build()
+
+                AsyncImage(
+                    model = request,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .width(200.dp)
+                        .height(200.dp)
                 )
-        ) {
-            Log.d("VideoStepDrawer", "Playing video...")
-            val request = ImageRequest.Builder(LocalContext.current)
-                .data(step.url?.toUri())
-                .videoFrameMillis(1000)
-                .build()
-
-            AsyncImage(
-                model = request,
-                contentDescription = "",
-                modifier = Modifier.width(200.dp).height(200.dp)
-            )
-
-
+            }
         }
     }
 }

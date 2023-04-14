@@ -18,7 +18,7 @@ class MessageStepDrawer : StepDrawer {
     override fun Step(step: StoryStep) {
         Surface(
             shape = RoundedCornerShape(20),
-            modifier = Modifier.padding(vertical = 5.dp)
+            modifier = Modifier.padding(vertical = 3.dp)
         ) {
             Box(modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)) {
                 Text(

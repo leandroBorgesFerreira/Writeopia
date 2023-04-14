@@ -2,8 +2,10 @@ package br.com.storyteller.drawer.content
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -19,21 +21,24 @@ class ImageStepDrawer : StepDrawer {
 
     @Composable
     override fun Step(step: StoryStep) {
-        Box(
-            modifier = Modifier
-                .clip(shape = RoundedCornerShape(size = 12.dp))
-                .border(
-                    width = 1.dp,
-                    color = Color.Gray,
-                    shape = RoundedCornerShape(size = 12.dp)
+        Box(modifier = Modifier.padding(vertical = 3.dp)) {
+            Box(
+                modifier = Modifier
+                    .clip(shape = RoundedCornerShape(size = 12.dp))
+                    .border(
+                        width = 1.dp,
+                        color = Color.Gray,
+                        shape = RoundedCornerShape(size = 12.dp)
+                    )
+                    .align(Alignment.Center)
+            ) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(step.path?.toUri() ?: step.url)
+                        .build(),
+                    contentDescription = ""
                 )
-        ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(step.path?.toUri() ?: step.url)
-                    .build(),
-                contentDescription = ""
-            )
+            }
         }
     }
 }
