@@ -6,7 +6,11 @@ data class StoryStep(
     val url: String? = null,
     val path: String? = null,
     val text: String? = null,
-)
+    val localPosition: Int
+) : Comparable<StoryStep> {
+    override fun compareTo(other: StoryStep): Int = localPosition.compareTo(other.localPosition)
+
+}
 
 enum class StepType(val type: String) {
     MESSAGE("message"),

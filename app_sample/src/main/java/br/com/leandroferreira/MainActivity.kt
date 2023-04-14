@@ -1,7 +1,6 @@
 package br.com.leandroferreira
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Box
@@ -27,14 +26,17 @@ class MainActivity : AppCompatActivity() {
             Box(modifier = Modifier.padding(10.dp)) {
                 StoryTellerTimeline(
                     modifier = Modifier.width(400.dp),
-                    steps = history,
+                    steps = history.values.sorted(),
                     drawers = defaultDrawers(onCommand = { command ->
                         when (command.type) {
-                            "move_up" -> {}
-                            "move_down" -> {}
+                            "move_up" -> {
+                                history = moveUp(command.step.localPosition, history)
+                            }
+                            "move_down" -> {
+                                history = moveDown(command.step.localPosition, history)
+                            }
                             "delete" -> {
-                                Log.d("OnDelete", "deleting...")
-                                history = (history.toSet() - command.step).toList()
+                                history = history - command.step.localPosition
                             }
                         }
                     })
@@ -44,41 +46,72 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-private fun history(): List<StoryStep> =
-    buildList {
-        add(
+private fun moveUp(position: Int, history: Map<Int, StoryStep>): Map<Int, StoryStep> {
+    val thisStep = history[position]
+    val upStep = history[position - 1]
+
+    val mutableHistory = history.toMutableMap()
+    upStep?.let { step ->
+        mutableHistory[position] = step.copy(localPosition = position)
+    }
+
+    thisStep?.let { step ->
+        mutableHistory[position - 1] =
+            step.copy(localPosition = position - 1)
+    }
+
+    return mutableHistory.toMap()
+}
+
+private fun moveDown(position: Int, history: Map<Int, StoryStep>): Map<Int, StoryStep> {
+    return moveUp(position + 1, history)
+}
+
+private fun history(): Map<Int, StoryStep> =
+    buildMap {
+        put(
+            1,
             StoryStep(
                 id = "1",
                 type = "image",
-                url = "https://fastly.picsum.photos/id/984/400/400.jpg?hmac=CaqZ-rcUAbmidwURZcBynO7aIAC-FaktVN7X8lIvlmE"
+                url = "https://fastly.picsum.photos/id/984/400/400.jpg?hmac=CaqZ-rcUAbmidwURZcBynO7aIAC-FaktVN7X8lIvlmE",
+                localPosition = 1
             )
         )
-        add(
+        put(
+            2,
             StoryStep(
                 id = "2",
                 type = "message",
-                text = "We arrived in Santiago!!"
+                text = "We arrived in Santiago!!",
+                localPosition = 2
             )
         )
-        add(
+        put(
+            3,
             StoryStep(
                 id = "3",
                 type = "image",
-                url = "https://fastly.picsum.photos/id/586/400/400.jpg?hmac=cwCJngku1FJAlm3jB_5APROv6ftBlPlCZnrdXU-iAac"
+                url = "https://fastly.picsum.photos/id/586/400/400.jpg?hmac=cwCJngku1FJAlm3jB_5APROv6ftBlPlCZnrdXU-iAac",
+                localPosition = 3
             )
         )
-        add(
+        put(
+            4,
             StoryStep(
                 id = "4",
                 type = "message",
-                text = "And it was super awesome!!"
+                text = "And it was super awesome!!",
+                localPosition = 4
             )
         )
-        add(
+        put(
+            5,
             StoryStep(
                 id = "5",
                 type = "add_button",
-                text = "And it was super awesome!!"
+                text = "And it was super awesome!!",
+                localPosition = 5
             )
         )
     }
