@@ -14,6 +14,6 @@ class StepsMerger(
             step1.type == typeOfStep && step2.type == typeOfGroup
 
     fun merge(step1: StoryUnit, step2: StoryUnit): StoryUnit =
-        stepToGroupMerger.merge(step1, step2, "group_image")
+        stepToGroupMerger.merge(step1, step2, typeOfGroup)
 
 }
