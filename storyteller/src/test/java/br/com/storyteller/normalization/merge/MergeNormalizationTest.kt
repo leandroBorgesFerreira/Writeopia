@@ -2,6 +2,7 @@ package br.com.storyteller.normalization.merge
 
 import br.com.storyteller.model.GroupStep
 import br.com.storyteller.model.StoryStep
+import br.com.storyteller.utils.StoryData
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import org.junit.Test
@@ -14,31 +15,7 @@ class MergeNormalizationTest {
             .addMerger(StepsMerger(typeOfStep = "image", typeOfGroup = "group_image"))
             .build()
 
-        val mergedStep = mergeNormalization.mergeSteps(
-            buildList {
-                add(
-                    StoryStep(
-                        id = "1",
-                        type = "image",
-                        localPosition = 1
-                    )
-                )
-                add(
-                    StoryStep(
-                        id = "2",
-                        type = "image",
-                        localPosition = 2
-                    )
-                )
-                add(
-                    StoryStep(
-                        id = "3",
-                        type = "image",
-                        localPosition = 3
-                    )
-                )
-            }
-        )
+        val mergedStep = mergeNormalization.mergeSteps(StoryData.imageStepsList())
 
         assertEquals(mergedStep.size, 1)
         assertTrue(mergedStep.first() is GroupStep)
@@ -52,51 +29,13 @@ class MergeNormalizationTest {
             .addMerger(StepsMerger(typeOfStep = "message", typeOfGroup = "group_message"))
             .build()
 
-        val mergedStep = mergeNormalization.mergeSteps(
-            buildList {
-                add(
-                    StoryStep(
-                        id = "1",
-                        type = "image",
-                        localPosition = 1
-                    )
-                )
-                add(
-                    StoryStep(
-                        id = "2",
-                        type = "image",
-                        localPosition = 2
-                    )
-                )
-                add(
-                    StoryStep(
-                        id = "3",
-                        type = "image",
-                        localPosition = 3
-                    )
-                )
-                add(
-                    StoryStep(
-                        id = "4",
-                        type = "message",
-                        localPosition = 4
-                    )
-                )
-                add(
-                    StoryStep(
-                        id = "5",
-                        type = "message",
-                        localPosition = 5
-                    )
-                )
-            }
-        )
+        val mergedStep = mergeNormalization.mergeSteps(StoryData.stepsList())
 
         assertEquals(2, mergedStep.size)
         assertTrue(mergedStep.first() is GroupStep)
         assertTrue(mergedStep[1] is GroupStep)
         assertEquals("group_image", mergedStep.first().type)
-        assertEquals("group_message", mergedStep[1].type, )
+        assertEquals("group_message", mergedStep[1].type)
     }
 
     @Test
@@ -112,47 +51,7 @@ class MergeNormalizationTest {
             localPosition = 6
         )
 
-        val mergedStep = mergeNormalization.mergeSteps(
-            buildList {
-                add(
-                    StoryStep(
-                        id = "1",
-                        type = "image",
-                        localPosition = 1
-                    )
-                )
-                add(
-                    StoryStep(
-                        id = "2",
-                        type = "image",
-                        localPosition = 2
-                    )
-                )
-                add(
-                    StoryStep(
-                        id = "3",
-                        type = "image",
-                        localPosition = 3
-                    )
-                )
-                add(
-                    StoryStep(
-                        id = "4",
-                        type = "message",
-                        localPosition = 4
-                    )
-                )
-                add(
-                    StoryStep(
-                        id = "5",
-                        type = "message",
-                        localPosition = 5
-                    )
-                )
-                add(last)
-            }
-        )
-
+        val mergedStep = mergeNormalization.mergeSteps(StoryData.stepsList() + last)
         assertEquals(last, mergedStep.last())
     }
 }
