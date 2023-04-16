@@ -27,14 +27,10 @@ class MessageStepDrawer : StoryUnitDrawer {
             shape = RoundedCornerShape(7.dp),
             elevation = 4.dp
         ) {
-            Box(
-                modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
-            ) {
-                Text(
-                    text = messageStep.text ?: "",
-                    modifier = Modifier.align(Alignment.Center),
-                )
-            }
+            Text(
+                text = messageStep.text ?: "",
+                modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+            )
         }
     }
 }
