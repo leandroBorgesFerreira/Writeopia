@@ -1,21 +1,23 @@
 package br.com.storyteller.normalization
 
-import br.com.storyteller.model.StoryStep
+import br.com.storyteller.model.StoryUnit
 
 class StepsNormalizationBuilder {
 
-    private val normalizations: MutableList<(List<StoryStep>) -> List<StoryStep>> = mutableListOf()
+    private val normalizations: MutableList<(List<StoryUnit>) -> List<StoryUnit>> = mutableListOf()
 
-    fun addNormalization(normalization: (List<StoryStep>) -> List<StoryStep>) {
+    fun addNormalization(
+        normalization: (List<StoryUnit>) -> List<StoryUnit>
+    ): StepsNormalizationBuilder = apply {
         normalizations.add(normalization)
     }
 
-    fun build(): (List<StoryStep>) -> List<StoryStep> = reduceNormalizations(normalizations)
+    fun build(): (List<StoryUnit>) -> List<StoryUnit> = reduceNormalizations(normalizations)
 
     private fun reduceNormalizations(
-        normalizations: List<(List<StoryStep>) -> List<StoryStep>>
-    ): (List<StoryStep>) -> List<StoryStep> =
+        normalizations: List<(List<StoryUnit>) -> List<StoryUnit>>
+    ): (List<StoryUnit>) -> List<StoryUnit> =
         normalizations.reduce { fn, gn ->
-            return { fn(gn(it)) }
+            return { gn(fn(it)) }
         }
 }

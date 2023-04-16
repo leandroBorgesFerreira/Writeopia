@@ -7,4 +7,7 @@ data class StoryStep(
     val url: String? = null,
     val path: String? = null,
     val text: String? = null
-): StoryUnit
+): StoryUnit {
+
+    override fun copyWithNewPosition(position: Int): StoryUnit = copy(localPosition = position)
+}

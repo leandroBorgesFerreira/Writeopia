@@ -5,4 +5,6 @@ data class GroupStep(
     override val type: String,
     override val localPosition: Int,
     val steps: List<StoryUnit>
-): StoryUnit
+): StoryUnit {
+    override fun copyWithNewPosition(position: Int): StoryUnit = copy(localPosition = position)
+}
