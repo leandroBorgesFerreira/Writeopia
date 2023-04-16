@@ -3,19 +3,9 @@ package br.com.leandroferreira
 import android.content.Context
 import br.com.storyteller.model.StoryStep
 
-fun history(context: Context): Map<Int, StoryStep> =
-    buildMap {
-        put(
-            1,
-            StoryStep(
-                id = "1",
-                type = "image",
-                url = "https://fastly.picsum.photos/id/984/400/400.jpg?hmac=CaqZ-rcUAbmidwURZcBynO7aIAC-FaktVN7X8lIvlmE",
-                localPosition = 1
-            )
-        )
-        put(
-            0,
+fun history(context: Context): List<StoryStep> =
+    buildList {
+        add(
             StoryStep(
                 id = "0",
                 type = "image",
@@ -23,17 +13,24 @@ fun history(context: Context): Map<Int, StoryStep> =
                 localPosition = 0
             )
         )
-        put(
-            -1,
+        add(
             StoryStep(
-                id = "-1",
+                id = "1",
                 type = "image",
                 url = "https://fastly.picsum.photos/id/984/400/400.jpg?hmac=CaqZ-rcUAbmidwURZcBynO7aIAC-FaktVN7X8lIvlmE",
-                localPosition = -1
+                localPosition = 1
             )
         )
-        put(
-            2,
+        add(
+
+            StoryStep(
+                id = "2",
+                type = "image",
+                url = "https://fastly.picsum.photos/id/984/400/400.jpg?hmac=CaqZ-rcUAbmidwURZcBynO7aIAC-FaktVN7X8lIvlmE",
+                localPosition = 2
+            )
+        )
+        add(
             StoryStep(
                 id = "2",
                 type = "message",
@@ -41,8 +38,7 @@ fun history(context: Context): Map<Int, StoryStep> =
                 localPosition = 2
             )
         )
-        put(
-            3,
+        add(
             StoryStep(
                 id = "3",
                 type = "image",
@@ -50,8 +46,7 @@ fun history(context: Context): Map<Int, StoryStep> =
                 localPosition = 3
             )
         )
-        put(
-            4,
+        add(
             StoryStep(
                 id = "4",
                 type = "message",
@@ -59,8 +54,7 @@ fun history(context: Context): Map<Int, StoryStep> =
                 localPosition = 4
             )
         )
-        put(
-            5,
+        add(
             StoryStep(
                 id = "5",
                 type = "video",
@@ -69,8 +63,7 @@ fun history(context: Context): Map<Int, StoryStep> =
                 localPosition = 5
             )
         )
-        put(
-            6,
+        add(
             StoryStep(
                 id = "6",
                 type = "message",
@@ -80,8 +73,7 @@ fun history(context: Context): Map<Int, StoryStep> =
                 localPosition = 6
             )
         )
-        put(
-            7,
+        add(
             StoryStep(
                 id = "7",
                 type = "add_button",

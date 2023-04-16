@@ -13,7 +13,7 @@ import br.com.storyteller.drawer.StoryUnitDrawer
 import br.com.storyteller.model.StoryStep
 import br.com.storyteller.model.StoryUnit
 
-class MessageStoryUnitDrawer : StoryUnitDrawer {
+class MessageStepDrawer : StoryUnitDrawer {
 
     @Composable
     override fun Step(step: StoryUnit) {
@@ -25,7 +25,7 @@ class MessageStoryUnitDrawer : StoryUnitDrawer {
         ) {
             Box(modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)) {
                 Text(
-                    text = messageStep.text!!,
+                    text = messageStep.text ?: "",
                     modifier = Modifier.align(Alignment.Center)
                 )
             }

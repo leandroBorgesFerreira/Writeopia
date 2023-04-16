@@ -1,6 +1,7 @@
 package br.com.storyteller.normalization.merge
 
 import br.com.storyteller.model.GroupStep
+import br.com.storyteller.model.StepType
 import br.com.storyteller.model.StoryStep
 import br.com.storyteller.utils.StoryData
 import junit.framework.TestCase.assertEquals
@@ -53,5 +54,39 @@ class MergeNormalizationTest {
 
         val mergedStep = mergeNormalization.mergeSteps(StoryData.stepsList() + last)
         assertEquals(last, mergedStep.last())
+    }
+
+    @Test
+    fun `the image always goes to the beginning of a group message`() {
+        val mergeNormalization = MergeNormalization.build {
+            addMerger(StepsMerger(typeOfStep = "image", typeOfGroup = "group_image"))
+            addMerger(StepsMerger(typeOfStep = "message", typeOfGroup = "group_message"))
+        }
+
+        val last = StoryStep(
+            id = "6",
+            type = "image",
+            localPosition = 6
+        )
+
+        val story = listOf(
+            GroupStep(
+                id = "1",
+                type = "group_image",
+                localPosition = 0,
+                steps = listOf(
+                    StoryStep(
+                        id = "2",
+                        type = "image",
+                        localPosition = 1,
+                    )
+                )
+            ),
+            last
+        )
+
+        val mergedStep = mergeNormalization.mergeSteps(story)
+
+        assertEquals(last, (mergedStep.first() as GroupStep).steps.first())
     }
 }

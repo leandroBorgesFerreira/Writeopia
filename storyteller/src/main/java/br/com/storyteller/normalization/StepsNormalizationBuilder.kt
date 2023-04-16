@@ -1,6 +1,10 @@
 package br.com.storyteller.normalization
 
 import br.com.storyteller.model.StoryUnit
+import br.com.storyteller.normalization.buttons.ButtonsNormalization
+import br.com.storyteller.normalization.merge.MergeNormalization
+import br.com.storyteller.normalization.merge.StepsMerger
+import br.com.storyteller.normalization.position.PositionNormalization
 
 class StepsNormalizationBuilder {
 
@@ -17,6 +21,17 @@ class StepsNormalizationBuilder {
         normalization: (List<StoryUnit>) -> List<StoryUnit>
     ): StepsNormalizationBuilder = apply {
         normalizations.add(normalization)
+    }
+
+    fun defaultNormalizers() {
+        val mergeNormalization = MergeNormalization.build {
+            addMerger(StepsMerger(typeOfStep = "image", typeOfGroup = "group_image"))
+            addMerger(StepsMerger(typeOfStep = "message", typeOfGroup = "group_message"))
+        }
+
+        normalizations.add(mergeNormalization::mergeSteps)
+        normalizations.add(ButtonsNormalization::insertButtonsBetweenSteps)
+        normalizations.add(PositionNormalization::normalizePosition)
     }
 
     private fun build(): (List<StoryUnit>) -> List<StoryUnit> = reduceNormalizations(normalizations)

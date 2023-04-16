@@ -17,7 +17,8 @@ import androidx.compose.ui.unit.dp
 import br.com.storyteller.StoryTellerTimeline
 import br.com.storyteller.VideoFrameConfig
 import br.com.storyteller.drawer.DefaultDrawers
-import br.com.storyteller.model.StoryStep
+import br.com.storyteller.model.StoryUnit
+import br.com.storyteller.normalization.StepsNormalizationBuilder
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,20 +35,27 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun MainScreen() {
     val context = LocalContext.current
-    var history by remember { mutableStateOf(history(context)) }
+
+    val viewModel = HistoriesViewModel(
+        StepsNormalizationBuilder.reduceNormalizations {
+            defaultNormalizers()
+        }
+    )
+
+    var history by remember { mutableStateOf(viewModel.normalizedHistories(context)) }
 
     Box(modifier = Modifier.padding(10.dp)) {
         StoryTellerTimeline(
             modifier = Modifier.width(400.dp),
-            steps = history.values.sorted(),
+            story = history.values.sorted(),
             drawers = DefaultDrawers.create(onCommand = { command ->
                 when (command.type) {
                     "move_up" -> {
-                        history = moveUp(command.step.localPosition, history)
+                        history = moveUp(command.step.localPosition, history, viewModel)
                     }
 
                     "move_down" -> {
-                        history = moveDown(command.step.localPosition, history)
+                        history = moveDown(command.step.localPosition, history, viewModel)
                     }
 
                     "delete" -> {
@@ -60,24 +68,35 @@ fun MainScreen() {
 }
 
 
-private fun moveUp(position: Int, history: Map<Int, StoryStep>): Map<Int, StoryStep> {
+private fun moveUp(
+    position: Int,
+    history: Map<Int, StoryUnit>,
+    viewModel: HistoriesViewModel
+): Map<Int, StoryUnit> {
     val thisStep = history[position]
     val upStep = history[position - 1]
 
     val mutableHistory = history.toMutableMap()
     upStep?.let { step ->
-        mutableHistory[position] = step.copy(localPosition = position)
+        mutableHistory[position] = step.copyWithNewPosition(position)
     }
 
     thisStep?.let { step ->
         mutableHistory[position - 1] =
-            step.copy(localPosition = position - 1)
+            step.copyWithNewPosition(position - 1)
     }
 
-    return mutableHistory.toMap()
+    return mutableHistory.values
+        .toList()
+        .let(viewModel::normalizeHistories)
+        .associateBy { it.localPosition }
 }
 
-private fun moveDown(position: Int, history: Map<Int, StoryStep>): Map<Int, StoryStep> {
-    return moveUp(position + 1, history)
+private fun moveDown(
+    position: Int,
+    history: Map<Int, StoryUnit>,
+    viewModel: HistoriesViewModel
+): Map<Int, StoryUnit> {
+    return moveUp(position + 1, history, viewModel)
 }
 
