@@ -9,20 +9,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import br.com.storyteller.drawer.StepDrawer
+import br.com.storyteller.drawer.StoryUnitDrawer
 import br.com.storyteller.model.StoryStep
+import br.com.storyteller.model.StoryUnit
 
-class MessageStepDrawer : StepDrawer {
+class MessageStoryUnitDrawer : StoryUnitDrawer {
 
     @Composable
-    override fun Step(step: StoryStep) {
+    override fun Step(step: StoryUnit) {
+        val messageStep = step as StoryStep
+
         Surface(
             shape = RoundedCornerShape(20),
             modifier = Modifier.padding(vertical = 3.dp)
         ) {
             Box(modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)) {
                 Text(
-                    text = step.text!!,
+                    text = messageStep.text!!,
                     modifier = Modifier.align(Alignment.Center)
                 )
             }

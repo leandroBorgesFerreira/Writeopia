@@ -16,19 +16,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import br.com.storyteller.drawer.StoryUnitDrawer
 import br.com.storyteller.model.Command
-import br.com.storyteller.drawer.StepDrawer
-import br.com.storyteller.model.StoryStep
+import br.com.storyteller.model.StoryUnit
 
 class CommandsCompositeDrawer(
-    private val innerStep: StepDrawer,
+    private val innerStep: StoryUnitDrawer,
     private val onMoveUp: (Command) -> Unit = {},
     private val onMoveDown: (Command) -> Unit = {},
     private val onDelete: (Command) -> Unit = {}
-) : StepDrawer {
+) : StoryUnitDrawer {
 
     @Composable
-    override fun Step(step: StoryStep) {
+    override fun Step(step: StoryUnit) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {

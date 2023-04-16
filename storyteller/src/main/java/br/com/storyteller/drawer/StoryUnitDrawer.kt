@@ -2,8 +2,9 @@ package br.com.storyteller.drawer
 
 import androidx.compose.runtime.Composable
 import br.com.storyteller.model.StoryStep
+import br.com.storyteller.model.StoryUnit
 
-fun interface StepDrawer {
+fun interface StoryUnitDrawer {
     @Composable
-    fun Step(step: StoryStep)
+    fun Step(step: StoryUnit)
 }
