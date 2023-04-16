@@ -12,15 +12,15 @@ class StepsNormalizationTest {
 
     @Test
     fun `it should be possible to merge a group of messages AND images`() {
-        val mergeNormalization = MergeNormalization.Builder()
-            .addMerger(StepsMerger(typeOfStep = "image", typeOfGroup = "group_image"))
-            .addMerger(StepsMerger(typeOfStep = "message", typeOfGroup = "group_message"))
-            .build()
+        val mergeNormalization = MergeNormalization.build {
+            addMerger(StepsMerger(typeOfStep = "image", typeOfGroup = "group_image"))
+            addMerger(StepsMerger(typeOfStep = "message", typeOfGroup = "group_message"))
+        }
 
-        val storiesNormalization = StepsNormalizationBuilder()
-            .addNormalization(mergeNormalization::mergeSteps)
-            .addNormalization(PositionNormalization::normalizePosition)
-            .build()
+        val storiesNormalization = StepsNormalizationBuilder.reduceNormalizations {
+            addNormalization(mergeNormalization::mergeSteps)
+            addNormalization(PositionNormalization::normalizePosition)
+        }
 
         val mergedStep = storiesNormalization(StoryData.stepsList())
 

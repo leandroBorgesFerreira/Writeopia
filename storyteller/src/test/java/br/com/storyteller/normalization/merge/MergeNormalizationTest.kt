@@ -11,9 +11,9 @@ class MergeNormalizationTest {
 
     @Test
     fun `it should be possible to merge a group of images`() {
-        val mergeNormalization = MergeNormalization.Builder()
-            .addMerger(StepsMerger(typeOfStep = "image", typeOfGroup = "group_image"))
-            .build()
+        val mergeNormalization = MergeNormalization.build {
+            addMerger(StepsMerger(typeOfStep = "image", typeOfGroup = "group_image"))
+        }
 
         val mergedStep = mergeNormalization.mergeSteps(StoryData.imageStepsList())
 
@@ -24,10 +24,10 @@ class MergeNormalizationTest {
 
     @Test
     fun `it should be possible to merge a group of messages AND images`() {
-        val mergeNormalization = MergeNormalization.Builder()
-            .addMerger(StepsMerger(typeOfStep = "image", typeOfGroup = "group_image"))
-            .addMerger(StepsMerger(typeOfStep = "message", typeOfGroup = "group_message"))
-            .build()
+        val mergeNormalization = MergeNormalization.build {
+            addMerger(StepsMerger(typeOfStep = "image", typeOfGroup = "group_image"))
+            addMerger(StepsMerger(typeOfStep = "message", typeOfGroup = "group_message"))
+        }
 
         val mergedStep = mergeNormalization.mergeSteps(StoryData.stepsList())
 
@@ -40,10 +40,10 @@ class MergeNormalizationTest {
 
     @Test
     fun `it should skip messages without mergers`() {
-        val mergeNormalization = MergeNormalization.Builder()
-            .addMerger(StepsMerger(typeOfStep = "image", typeOfGroup = "group_image"))
-            .addMerger(StepsMerger(typeOfStep = "message", typeOfGroup = "group_message"))
-            .build()
+        val mergeNormalization = MergeNormalization.build {
+            addMerger(StepsMerger(typeOfStep = "image", typeOfGroup = "group_image"))
+            addMerger(StepsMerger(typeOfStep = "message", typeOfGroup = "group_message"))
+        }
 
         val last = StoryStep(
             id = "6",

@@ -24,7 +24,11 @@ class MergeNormalization(private val stepMergers: Set<StepsMerger>) {
             }
         }
 
-    class Builder {
+    companion object {
+        fun build(buildFunc: Builder.() -> Unit) = Builder().apply(buildFunc).build()
+    }
+
+    class Builder internal constructor() {
         private val stepMergers: MutableSet<StepsMerger> = mutableSetOf()
 
         fun addMerger(stepMerger: StepsMerger): Builder = apply {

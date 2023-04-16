@@ -29,9 +29,7 @@ class CommandsCompositeDrawer(
 
     @Composable
     override fun Step(step: StoryUnit) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             innerStep.Step(step = step)
 
             Spacer(modifier = Modifier.width(10.dp))
