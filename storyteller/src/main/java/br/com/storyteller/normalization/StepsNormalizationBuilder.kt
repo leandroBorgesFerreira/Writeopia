@@ -26,7 +26,6 @@ class StepsNormalizationBuilder {
     fun defaultNormalizers() {
         val mergeNormalization = MergeNormalization.build {
             addMerger(StepsMerger(typeOfStep = "image", typeOfGroup = "group_image"))
-            addMerger(StepsMerger(typeOfStep = "message", typeOfGroup = "group_message"))
         }
 
         normalizations.add(mergeNormalization::mergeSteps)

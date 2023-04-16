@@ -6,6 +6,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,6 +57,13 @@ class VideoStepDrawer : StoryUnitDrawer {
                         .height(200.dp)
                 )
             }
+
+            Icon(
+                imageVector = Icons.Default.Refresh,
+                contentDescription = "",
+                modifier = Modifier.align(alignment = Alignment.TopEnd)
+                    .padding(5.dp)
+            )
         }
     }
 }

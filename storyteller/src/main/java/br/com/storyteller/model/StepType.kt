@@ -2,7 +2,6 @@ package br.com.storyteller.model
 
 enum class StepType(val type: String) {
     MESSAGE("message"),
-    GROUP_MESSAGE("group_message"),
     IMAGE("image"),
     GROUP_IMAGE("group_image"),
     AUDIO("audio"),
