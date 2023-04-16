@@ -9,7 +9,7 @@ fun history(context: Context): List<StoryStep> =
             StoryStep(
                 id = "0",
                 type = "image",
-                url = "https://fastly.picsum.photos/id/984/400/400.jpg?hmac=CaqZ-rcUAbmidwURZcBynO7aIAC-FaktVN7X8lIvlmE",
+                url = "https://fastly.picsum.photos/id/15/400/400.jpg?hmac=xv-6mggpYPLIQ9eNAHrl1qKPHjyUCYlBoNBvdsqF4cY",
                 localPosition = 0
             )
         )
@@ -17,7 +17,7 @@ fun history(context: Context): List<StoryStep> =
             StoryStep(
                 id = "1",
                 type = "image",
-                url = "https://fastly.picsum.photos/id/984/400/400.jpg?hmac=CaqZ-rcUAbmidwURZcBynO7aIAC-FaktVN7X8lIvlmE",
+                url = "https://fastly.picsum.photos/id/1018/400/400.jpg?hmac=MwHJoMaVXsBbqg-LFoDVL6P8TCDkSEikExptCkkHESQ",
                 localPosition = 1
             )
         )
