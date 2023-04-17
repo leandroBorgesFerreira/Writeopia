@@ -1,11 +1,13 @@
 package br.com.storyteller.normalization.merge
 
 import br.com.storyteller.model.StoryUnit
+import br.com.storyteller.normalization.merge.steps.StepToGroupMerger
 
-class StepsMerger(
-    private val stepToGroupMerger: StepToGroupMerger = StepToGroupMerger(),
+//Todo: Rename this class
+class StepsMergerCoordinator(
+    private val stepMerger: StepMerger = StepToGroupMerger(),
     private val typeOfStep: String,
-    private val typeOfGroup: String
+    private val typeOfGroup: String? = null
 ) {
 
     fun canMerge(step1: StoryUnit, step2: StoryUnit): Boolean =
@@ -15,6 +17,6 @@ class StepsMerger(
             step1.type == typeOfStep && step2.type == typeOfGroup)
 
     fun merge(step1: StoryUnit, step2: StoryUnit): StoryUnit =
-        stepToGroupMerger.merge(step1, step2, typeOfGroup)
+        stepMerger.merge(step1, step2, typeOfGroup ?: typeOfStep)
 
 }

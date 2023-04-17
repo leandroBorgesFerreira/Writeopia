@@ -28,6 +28,30 @@ object StoryData {
         )
     }
 
+    fun messageStepsList(): List<StoryStep> = buildList {
+        add(
+            StoryStep(
+                id = "1",
+                type = "message",
+                localPosition = 0
+            )
+        )
+        add(
+            StoryStep(
+                id = "2",
+                type = "message",
+                localPosition = 0
+            )
+        )
+        add(
+            StoryStep(
+                id = "3",
+                type = "message",
+                localPosition = 0
+            )
+        )
+    }
+
     fun stepsList(): List<StoryStep> = buildList {
         add(
             StoryStep(

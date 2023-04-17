@@ -2,7 +2,7 @@ package br.com.storyteller.normalization.merge
 
 import br.com.storyteller.model.StoryUnit
 
-class MergeNormalization(private val stepMergers: Set<StepsMerger>) {
+class MergeNormalization(private val stepMergers: Set<StepsMergerCoordinator>) {
 
     fun mergeSteps(storySteps: List<StoryUnit>): List<StoryUnit> =
         storySteps.fold(mutableListOf()) { acc, storyStep ->
@@ -29,9 +29,9 @@ class MergeNormalization(private val stepMergers: Set<StepsMerger>) {
     }
 
     class Builder internal constructor() {
-        private val stepMergers: MutableSet<StepsMerger> = mutableSetOf()
+        private val stepMergers: MutableSet<StepsMergerCoordinator> = mutableSetOf()
 
-        fun addMerger(stepMerger: StepsMerger): Builder = apply {
+        fun addMerger(stepMerger: StepsMergerCoordinator): Builder = apply {
             stepMergers.add(stepMerger)
         }
 

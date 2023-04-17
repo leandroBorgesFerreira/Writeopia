@@ -1,15 +1,16 @@
-package br.com.storyteller.normalization.merge
+package br.com.storyteller.normalization.merge.steps
 
 import br.com.storyteller.model.GroupStep
 import br.com.storyteller.model.StoryStep
 import br.com.storyteller.model.StoryUnit
+import br.com.storyteller.normalization.merge.StepMerger
 
 /**
  * Todo: Write documentation
  */
-open class StepToGroupMerger {
+open class StepToGroupMerger : StepMerger {
 
-    fun merge(step1: StoryUnit, step2: StoryUnit, type: String): StoryUnit =
+    override fun merge(step1: StoryUnit, step2: StoryUnit, type: String): StoryUnit =
         when {
             step1 is StoryStep && step2 is StoryStep ->
                 GroupStep(
@@ -35,7 +36,6 @@ open class StepToGroupMerger {
             )
         }
 
-    //Todo: This can be done by composition
-    protected open fun groupsMerger(step1: GroupStep, step2: GroupStep): StoryUnit =
+    override fun groupsMerger(step1: GroupStep, step2: GroupStep): StoryUnit =
         step1.copy(steps = step1.steps + step2.steps)
 }
