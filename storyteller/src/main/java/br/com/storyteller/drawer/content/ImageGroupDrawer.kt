@@ -14,7 +14,7 @@ import br.com.storyteller.model.StoryStep
 import br.com.storyteller.model.StoryUnit
 
 class ImageGroupDrawer(
-    private val imageStepDrawer: ImageStepDrawer,
+    private val imageStepDrawer: StoryUnitDrawer,
     private val modifier: Modifier = Modifier
 ) : StoryUnitDrawer {
 

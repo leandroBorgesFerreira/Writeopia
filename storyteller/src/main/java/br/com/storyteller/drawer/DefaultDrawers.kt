@@ -4,6 +4,7 @@ import android.os.Message
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,6 +44,7 @@ object DefaultDrawers {
             containerModifier = Modifier
                 .clip(shape = RoundedCornerShape(size = 12.dp))
                 .background(Color(0xFFE1E0E0))
+                .size(150.dp)
         )
 
         val messageDrawer = MessageStepDrawer(
@@ -52,7 +54,7 @@ object DefaultDrawers {
                 .background(Color(0xFFFAF8F2))
         )
 
-        put(StepType.MESSAGE.type, messageDrawer)
+        put(StepType.MESSAGE.type, commandsComposite(messageDrawer))
         put(StepType.ADD_BUTTON.type, AddButtonDrawer())
         put(StepType.IMAGE.type, commandsComposite(imageDrawer))
         put(StepType.GROUP_IMAGE.type, ImageGroupDrawer(imageDrawerInGroup))

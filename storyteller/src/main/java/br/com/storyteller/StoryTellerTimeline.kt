@@ -15,9 +15,10 @@ fun StoryTellerTimeline(
     modifier: Modifier = Modifier,
     drawers: Map<String, StoryUnitDrawer>,
     story: List<StoryUnit>,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     onStepsUpdate: (List<StoryStep>) -> Unit = {}
 ) {
-    LazyColumn(modifier = modifier, contentPadding = PaddingValues(top = 4.dp), content = {
+    LazyColumn(modifier = modifier, contentPadding = contentPadding, content = {
         items(story) { storyStep ->
             drawers[storyStep.type]?.Step(storyStep)
         }

@@ -32,7 +32,7 @@ class CommandsCompositeDrawer(
 
     @Composable
     override fun Step(step: StoryUnit) {
-        Box(modifier = Modifier.padding(horizontal = 3.dp)) {
+        Box(modifier = Modifier.padding(3.dp)) {
             Box(modifier = Modifier.padding(top = 3.dp)) {
                 innerStep.Step(step = step)
             }
@@ -45,16 +45,7 @@ class CommandsCompositeDrawer(
 
     @Composable
     private fun BoxScope.DeleteButton(step: StoryUnit) {
-        Box(
-            modifier = Modifier
-                .clip(shape = CircleShape)
-                .border(
-                    width = 1.dp,
-                    color = Color.Gray,
-                    shape = CircleShape
-                )
-                .background(Color.LightGray)
-        ) {
+        Box(modifier = Modifier.buttonModifier().align(Alignment.TopStart)) {
             IconButton(onClick = { onDelete(Command(type = "delete", step)) }) {
                 Icon(
                     imageVector = Icons.Outlined.Close,
@@ -67,18 +58,8 @@ class CommandsCompositeDrawer(
 
     @Composable
     private fun BoxScope.MoveUpButton(step: StoryUnit) {
-        Box(
-            modifier = Modifier
-                .clip(shape = CircleShape)
-                .border(
-                    width = 1.dp,
-                    color = Color.Gray,
-                    shape = CircleShape
-                )
-                .background(Color.LightGray)
-                .align(Alignment.TopCenter)
-        ) {
-            IconButton(onClick = { onDelete(Command(type = "move_up", step)) }) {
+        Box(modifier = Modifier.buttonModifier().align(Alignment.TopCenter)) {
+            IconButton(onClick = { onMoveUp(Command(type = "move_up", step)) }) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowUp,
                     contentDescription = "",
@@ -89,17 +70,7 @@ class CommandsCompositeDrawer(
     }
     @Composable
     private fun BoxScope.MoveDownButton(step: StoryUnit) {
-        Box(
-            modifier = Modifier
-                .clip(shape = CircleShape)
-                .border(
-                    width = 1.dp,
-                    color = Color.Gray,
-                    shape = CircleShape
-                )
-                .background(Color.LightGray)
-                .align(Alignment.BottomCenter)
-        ) {
+        Box(modifier = Modifier.buttonModifier().align(Alignment.BottomCenter)) {
             IconButton(onClick = { onMoveDown(Command(type = "move_down", step)) }) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowDown,
@@ -110,4 +81,13 @@ class CommandsCompositeDrawer(
         }
     }
 
+    private fun Modifier.buttonModifier() = this
+        .clip(shape = CircleShape)
+        .border(
+            width = 1.dp,
+            color = Color.Gray,
+            shape = CircleShape
+        )
+        .background(Color.LightGray)
+        .size(30.dp)
 }

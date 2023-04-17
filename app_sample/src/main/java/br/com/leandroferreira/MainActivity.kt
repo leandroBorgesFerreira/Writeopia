@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,11 +21,6 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Label
-import androidx.compose.material.icons.filled.Place
-import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.Label
 import androidx.compose.material.icons.outlined.Today
 import androidx.compose.runtime.Composable
@@ -113,6 +109,7 @@ private fun Body() {
         StoryTellerTimeline(
             modifier = Modifier.fillMaxSize(),
             story = history.values.sorted(),
+            contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp) ,
             drawers = DefaultDrawers.create(onCommand = { command ->
                 when (command.type) {
                     "move_up" -> {

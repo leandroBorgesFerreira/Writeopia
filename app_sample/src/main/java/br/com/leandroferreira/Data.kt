@@ -18,7 +18,7 @@ fun history(context: Context): List<StoryStep> =
                 id = "1",
                 type = "image",
                 url = "https://fastly.picsum.photos/id/1018/400/400.jpg?hmac=MwHJoMaVXsBbqg-LFoDVL6P8TCDkSEikExptCkkHESQ",
-                localPosition = 1
+                localPosition = 0
             )
         )
         add(
@@ -26,7 +26,7 @@ fun history(context: Context): List<StoryStep> =
                 id = "2",
                 type = "image",
                 url = "https://fastly.picsum.photos/id/984/400/400.jpg?hmac=CaqZ-rcUAbmidwURZcBynO7aIAC-FaktVN7X8lIvlmE",
-                localPosition = 2,
+                localPosition = 0,
             )
         )
         add(
