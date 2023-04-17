@@ -1,10 +1,12 @@
 package br.com.storyteller.drawer.content
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
@@ -14,6 +16,7 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.VideoFile
 import androidx.compose.material.icons.filled.VideoLibrary
+import androidx.compose.material.icons.outlined.Movie
 import androidx.compose.material.icons.outlined.VideoLibrary
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,7 +33,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.request.videoFrameMillis
 
-class VideoStepDrawer : StoryUnitDrawer {
+class VideoStepDrawer(private val containerModifier: Modifier? = null) : StoryUnitDrawer {
 
     @Composable
     override fun Step(step: StoryUnit) {
@@ -38,9 +41,7 @@ class VideoStepDrawer : StoryUnitDrawer {
 
         Box(modifier = Modifier.padding(vertical = 3.dp, horizontal = 8.dp)) {
             Box(
-                modifier = Modifier
-                    .width(200.dp)
-                    .height(200.dp)
+                modifier = containerModifier ?: Modifier
                     .clip(shape = RoundedCornerShape(size = 12.dp))
                     .border(
                         width = 1.dp,
@@ -58,17 +59,27 @@ class VideoStepDrawer : StoryUnitDrawer {
                     model = request,
                     contentDescription = "",
                     modifier = Modifier
-                        .width(200.dp)
-                        .height(200.dp)
                 )
             }
 
-            Icon(
-                imageVector = Icons.Outlined.VideoLibrary,
-                contentDescription = "",
-                modifier = Modifier.align(alignment = Alignment.TopEnd)
-                    .padding(5.dp)
-            )
+            Box(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .align(alignment = Alignment.TopEnd)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clip(shape = CircleShape)
+                        .background(Color(0xFFF2994A))
+                        .padding(8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Movie,
+                        contentDescription = "",
+                        tint = Color.White
+                    )
+                }
+            }
         }
     }
 }
