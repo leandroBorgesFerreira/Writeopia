@@ -1,9 +1,14 @@
 package br.com.storyteller.drawer.commands
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -12,9 +17,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.outlined.Cancel
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import br.com.storyteller.drawer.StoryUnitDrawer
 import br.com.storyteller.model.Command
@@ -29,25 +38,27 @@ class CommandsCompositeDrawer(
 
     @Composable
     override fun Step(step: StoryUnit) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            innerStep.Step(step = step)
+        Box(modifier = Modifier.padding(horizontal = 3.dp)) {
+            Box(modifier = Modifier.padding(top = 3.dp)) {
+                innerStep.Step(step = step)
+            }
 
-            Spacer(modifier = Modifier.width(10.dp))
-
-            Surface(
-                shape = RoundedCornerShape(20),
-                modifier = Modifier.padding(vertical = 5.dp)
+            Box(
+                modifier = Modifier
+                    .clip(shape = CircleShape)
+                    .border(
+                        width = 1.dp,
+                        color = Color.Gray,
+                        shape = CircleShape
+                    )
+                    .background(Color.LightGray)
             ) {
-                Row(modifier = Modifier.padding(vertical = 2.dp)) {
-                    IconButton(onClick = { onMoveUp(Command(type = "move_up", step)) }) {
-                        Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "")
-                    }
-                    IconButton(onClick = { onMoveDown(Command(type = "move_down", step)) }) {
-                        Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "")
-                    }
-                    IconButton(onClick = { onDelete(Command(type = "delete", step)) }) {
-                        Icon(imageVector = Icons.Default.Delete, contentDescription = "")
-                    }
+                IconButton(onClick = { onDelete(Command(type = "delete", step)) }) {
+                    Icon(
+                        imageVector = Icons.Outlined.Close,
+                        contentDescription = "",
+                        modifier = Modifier.size(16.dp)
+                    )
                 }
             }
         }

@@ -134,11 +134,7 @@ private fun Body() {
 
 @Composable
 private fun InfoHeader() {
-    Column(
-        modifier = Modifier
-            .padding(bottom = 6.dp)
-            .background(BACKGROUND_VARIATION)
-    ) {
+    Column(modifier = Modifier.background(BACKGROUND_VARIATION)) {
         var storyName by remember { mutableStateOf("") }
         var date by remember { mutableStateOf("") }
 
