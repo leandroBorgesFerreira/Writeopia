@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import br.com.storyteller.drawer.StoryUnitDrawer
@@ -22,10 +23,11 @@ class MessageStepDrawer : StoryUnitDrawer {
     override fun Step(step: StoryUnit) {
         val messageStep = step as StoryStep
 
-        Card(
-            modifier = Modifier.padding(vertical = 3.dp),
-            shape = RoundedCornerShape(7.dp),
-            elevation = 4.dp
+        Box(
+            modifier = Modifier
+                .padding(2.dp)
+                .clip(shape = RoundedCornerShape(size = 12.dp))
+                .background(Color.LightGray)
         ) {
             Text(
                 text = messageStep.text ?: "",

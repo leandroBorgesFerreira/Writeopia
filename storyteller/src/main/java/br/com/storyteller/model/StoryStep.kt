@@ -6,7 +6,8 @@ data class StoryStep(
     override val localPosition: Int,
     val url: String? = null,
     val path: String? = null,
-    val text: String? = null
+    val text: String? = null,
+    val title: String? = null
 ): StoryUnit {
 
     override fun copyWithNewPosition(position: Int): StoryUnit = copy(localPosition = position)
