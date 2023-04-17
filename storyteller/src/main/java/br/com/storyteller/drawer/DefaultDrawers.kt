@@ -2,6 +2,7 @@ package br.com.storyteller.drawer
 
 import android.os.Message
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Modifier
@@ -34,11 +35,19 @@ object DefaultDrawers {
             containerModifier = Modifier
                 .clip(shape = RoundedCornerShape(size = 12.dp))
                 .background(Color(0xFFE1E0E0))
+                .fillMaxWidth()
+                .padding(4.dp)
+        )
+
+        val imageDrawerInGroup = ImageStepDrawer(
+            containerModifier = Modifier
+                .clip(shape = RoundedCornerShape(size = 12.dp))
+                .background(Color(0xFFE1E0E0))
         )
 
         val messageDrawer = MessageStepDrawer(
             containerModifier = Modifier
-                .padding(2.dp)
+                .padding(vertical = 4.dp, horizontal = 8.dp)
                 .clip(shape = RoundedCornerShape(size = 12.dp))
                 .background(Color(0xFFFAF8F2))
         )
@@ -46,7 +55,7 @@ object DefaultDrawers {
         put(StepType.MESSAGE.type, messageDrawer)
         put(StepType.ADD_BUTTON.type, AddButtonDrawer())
         put(StepType.IMAGE.type, commandsComposite(imageDrawer))
-        put(StepType.GROUP_IMAGE.type, ImageGroupDrawer(imageDrawer))
+        put(StepType.GROUP_IMAGE.type, ImageGroupDrawer(imageDrawerInGroup))
         put(StepType.VIDEO.type, commandsComposite(VideoStepDrawer()))
     }
 }

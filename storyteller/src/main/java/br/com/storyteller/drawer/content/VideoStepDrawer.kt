@@ -36,7 +36,7 @@ class VideoStepDrawer : StoryUnitDrawer {
     override fun Step(step: StoryUnit) {
         val videoStep = step as StoryStep
 
-        Box(modifier = Modifier.padding(vertical = 3.dp)) {
+        Box(modifier = Modifier.padding(vertical = 3.dp, horizontal = 8.dp)) {
             Box(
                 modifier = Modifier
                     .width(200.dp)

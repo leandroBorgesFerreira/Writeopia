@@ -25,7 +25,7 @@ class MessageStepDrawer(private val containerModifier: Modifier? = null) : Story
 
         Box(
             modifier = containerModifier ?: Modifier
-                .padding(2.dp)
+                .padding(vertical = 3.dp, horizontal = 8.dp)
                 .clip(shape = RoundedCornerShape(size = 12.dp))
                 .background(Color.LightGray)
         ) {

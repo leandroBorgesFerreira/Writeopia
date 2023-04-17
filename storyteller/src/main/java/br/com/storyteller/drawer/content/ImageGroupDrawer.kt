@@ -1,5 +1,6 @@
 package br.com.storyteller.drawer.content
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
@@ -25,7 +26,6 @@ class ImageGroupDrawer(
         LazyRow(modifier = modifier) {
             items(steps) { storyStep ->
                 imageStepDrawer.Step(storyStep)
-                Spacer(modifier = modifier.width(6.dp))
             }
         }
     }

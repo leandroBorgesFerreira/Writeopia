@@ -13,8 +13,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import br.com.storyteller.drawer.StoryUnitDrawer
@@ -29,7 +32,7 @@ class ImageStepDrawer(private val containerModifier: Modifier? = null) : StoryUn
     override fun Step(step: StoryUnit) {
         val imageStep = step as StoryStep
 
-        Box(modifier = Modifier.padding(vertical = 3.dp)) {
+        Box(modifier = Modifier.padding(vertical = 3.dp, horizontal = 8.dp)) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = containerModifier ?: Modifier
@@ -45,6 +48,7 @@ class ImageStepDrawer(private val containerModifier: Modifier? = null) : StoryUn
                         model = ImageRequest.Builder(LocalContext.current)
                             .data(imageStep.path?.toUri() ?: imageStep.url)
                             .build(),
+                        contentScale = ContentScale.Crop,
                         contentDescription = ""
                     )
                 }
@@ -54,7 +58,11 @@ class ImageStepDrawer(private val containerModifier: Modifier? = null) : StoryUn
                         modifier = Modifier
                             .padding(6.dp)
                             .fillMaxWidth(),
-                        style = TextStyle(color = Color.Black),
+                        style = TextStyle(
+                            color = Color.Black,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Bold
+                        ),
                     )
                 }
             }
