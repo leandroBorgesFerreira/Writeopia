@@ -1,6 +1,5 @@
 package br.com.storyteller.drawer
 
-import android.os.Message
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,43 +20,50 @@ import br.com.storyteller.model.StepType
 
 object DefaultDrawers {
 
-    fun create(onCommand: (Command) -> Unit): Map<String, StoryUnitDrawer> = buildMap {
-        val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->
-            CommandsCompositeDrawer(
-                stepDrawer,
-                onMoveUp = onCommand,
-                onMoveDown = onCommand,
-                onDelete = onCommand,
+    fun create(editable: Boolean = false, onCommand: (Command) -> Unit): Map<String, StoryUnitDrawer> =
+        buildMap {
+            val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->
+                CommandsCompositeDrawer(
+                    stepDrawer,
+                    onMoveUp = onCommand,
+                    onMoveDown = onCommand,
+                    onDelete = onCommand,
+                )
+            }
+
+
+            val imageDrawer = ImageStepDrawer(
+                containerModifier = Modifier
+                    .clip(shape = RoundedCornerShape(size = 12.dp))
+                    .background(Color(0xFFE1E0E0))
+                    .fillMaxWidth()
+                    .padding(4.dp)
+            )
+
+            val imageDrawerInGroup = ImageStepDrawer(
+                containerModifier = Modifier
+                    .clip(shape = RoundedCornerShape(size = 12.dp))
+                    .background(Color(0xFFE1E0E0))
+                    .size(150.dp)
+            )
+
+            val messageDrawer = MessageStepDrawer(
+                containerModifier = Modifier
+                    .padding(vertical = 4.dp, horizontal = 8.dp)
+                    .clip(shape = RoundedCornerShape(size = 12.dp))
+                    .background(Color(0xFFFAF8F2))
+            )
+
+            put(
+                StepType.MESSAGE.type,
+                if (editable) commandsComposite(messageDrawer) else messageDrawer
+            )
+            put(StepType.ADD_BUTTON.type, AddButtonDrawer())
+            put(StepType.IMAGE.type, if (editable) commandsComposite(imageDrawer) else imageDrawer)
+            put(StepType.GROUP_IMAGE.type, ImageGroupDrawer(imageDrawerInGroup))
+            put(
+                StepType.VIDEO.type,
+                if (editable) commandsComposite(VideoStepDrawer()) else VideoStepDrawer()
             )
         }
-
-
-        val imageDrawer = ImageStepDrawer(
-            containerModifier = Modifier
-                .clip(shape = RoundedCornerShape(size = 12.dp))
-                .background(Color(0xFFE1E0E0))
-                .fillMaxWidth()
-                .padding(4.dp)
-        )
-
-        val imageDrawerInGroup = ImageStepDrawer(
-            containerModifier = Modifier
-                .clip(shape = RoundedCornerShape(size = 12.dp))
-                .background(Color(0xFFE1E0E0))
-                .size(150.dp)
-        )
-
-        val messageDrawer = MessageStepDrawer(
-            containerModifier = Modifier
-                .padding(vertical = 4.dp, horizontal = 8.dp)
-                .clip(shape = RoundedCornerShape(size = 12.dp))
-                .background(Color(0xFFFAF8F2))
-        )
-
-        put(StepType.MESSAGE.type, commandsComposite(messageDrawer))
-        put(StepType.ADD_BUTTON.type, AddButtonDrawer())
-        put(StepType.IMAGE.type, commandsComposite(imageDrawer))
-        put(StepType.GROUP_IMAGE.type, ImageGroupDrawer(imageDrawerInGroup))
-        put(StepType.VIDEO.type, commandsComposite(VideoStepDrawer()))
-    }
 }

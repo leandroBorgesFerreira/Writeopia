@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -21,6 +22,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Label
 import androidx.compose.material.icons.outlined.Today
 import androidx.compose.runtime.Composable
@@ -35,6 +37,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.leandroferreira.theme.ApplicationComposeTheme
 import br.com.leandroferreira.theme.BACKGROUND_VARIATION
 import br.com.storyteller.StoryTellerTimeline
@@ -57,12 +60,23 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun MainScreen() {
+    val viewModel = HistoriesViewModel(
+        StepsNormalizationBuilder.reduceNormalizations {
+            defaultNormalizers()
+        }
+    )
+
     ApplicationComposeTheme {
         Scaffold(
-            topBar = { TopBar() }
+            topBar = { TopBar() },
+            floatingActionButton = {
+                FloatingActionButton(onClick = viewModel::toggleEdit) {
+                    Icon(imageVector = Icons.Outlined.Edit, contentDescription = "")
+                }
+            }
         ) { paddingValues ->
             Box(modifier = Modifier.padding(top = paddingValues.calculateTopPadding())) {
-                Body()
+                Body(viewModel)
             }
         }
     }
@@ -92,16 +106,11 @@ private fun TopBar() {
 }
 
 @Composable
-private fun Body() {
+private fun Body(viewModel: HistoriesViewModel) {
     val context = LocalContext.current
 
-    val viewModel = HistoriesViewModel(
-        StepsNormalizationBuilder.reduceNormalizations {
-            defaultNormalizers()
-        }
-    )
-
     var history by remember { mutableStateOf(viewModel.normalizedHistories(context)) }
+    val editable by viewModel.editModeState.collectAsStateWithLifecycle()
 
     Column {
         InfoHeader()
@@ -110,7 +119,7 @@ private fun Body() {
             modifier = Modifier.fillMaxSize(),
             story = history.values.sorted(),
             contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp) ,
-            drawers = DefaultDrawers.create(onCommand = { command ->
+            drawers = DefaultDrawers.create(editable = editable, onCommand = { command ->
                 when (command.type) {
                     "move_up" -> {
                         history = moveUp(command.step.localPosition, history, viewModel)
