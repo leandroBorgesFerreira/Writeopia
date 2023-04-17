@@ -23,7 +23,7 @@ import br.com.storyteller.model.StoryUnit
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
-class ImageStepDrawer : StoryUnitDrawer {
+class ImageStepDrawer(private val containerModifier: Modifier? = null) : StoryUnitDrawer {
 
     @Composable
     override fun Step(step: StoryUnit) {
@@ -32,7 +32,7 @@ class ImageStepDrawer : StoryUnitDrawer {
         Box(modifier = Modifier.padding(vertical = 3.dp)) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
+                modifier = containerModifier ?: Modifier
                     .clip(shape = RoundedCornerShape(size = 12.dp))
                     .background(Color.LightGray)
             ) {

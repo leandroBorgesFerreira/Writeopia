@@ -9,7 +9,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.Movie
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.VideoFile
+import androidx.compose.material.icons.filled.VideoLibrary
+import androidx.compose.material.icons.outlined.VideoLibrary
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,7 +64,7 @@ class VideoStepDrawer : StoryUnitDrawer {
             }
 
             Icon(
-                imageVector = Icons.Default.Refresh,
+                imageVector = Icons.Outlined.VideoLibrary,
                 contentDescription = "",
                 modifier = Modifier.align(alignment = Alignment.TopEnd)
                     .padding(5.dp)

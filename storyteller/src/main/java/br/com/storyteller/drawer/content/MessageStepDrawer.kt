@@ -17,14 +17,14 @@ import br.com.storyteller.drawer.StoryUnitDrawer
 import br.com.storyteller.model.StoryStep
 import br.com.storyteller.model.StoryUnit
 
-class MessageStepDrawer : StoryUnitDrawer {
+class MessageStepDrawer(private val containerModifier: Modifier? = null) : StoryUnitDrawer {
 
     @Composable
     override fun Step(step: StoryUnit) {
         val messageStep = step as StoryStep
 
         Box(
-            modifier = Modifier
+            modifier = containerModifier ?: Modifier
                 .padding(2.dp)
                 .clip(shape = RoundedCornerShape(size = 12.dp))
                 .background(Color.LightGray)
