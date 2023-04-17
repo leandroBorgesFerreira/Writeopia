@@ -36,7 +36,7 @@ import coil.request.videoFrameMillis
 class VideoStepDrawer(private val containerModifier: Modifier? = null) : StoryUnitDrawer {
 
     @Composable
-    override fun Step(step: StoryUnit) {
+    override fun Step(step: StoryUnit, editable: Boolean) {
         val videoStep = step as StoryStep
 
         Box(modifier = Modifier.padding(vertical = 3.dp, horizontal = 8.dp)) {

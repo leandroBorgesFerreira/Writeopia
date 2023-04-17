@@ -118,7 +118,8 @@ private fun Body(viewModel: HistoriesViewModel) {
         StoryTellerTimeline(
             modifier = Modifier.fillMaxSize(),
             story = history.values.sorted(),
-            contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp) ,
+            contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp),
+            editable = editable,
             drawers = DefaultDrawers.create(editable = editable, onCommand = { command ->
                 when (command.type) {
                     "move_up" -> {

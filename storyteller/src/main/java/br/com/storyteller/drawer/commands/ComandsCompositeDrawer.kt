@@ -31,10 +31,10 @@ class CommandsCompositeDrawer(
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun Step(step: StoryUnit) {
-        Box(modifier = Modifier.padding(3.dp)) {
+    override fun Step(step: StoryUnit, editable: Boolean) {
+        Box(modifier = Modifier.padding(vertical = 3.dp)) {
             Box(modifier = Modifier.padding(top = 3.dp)) {
-                innerStep.Step(step = step)
+                innerStep.Step(step = step, editable)
             }
 
             DeleteButton(step)

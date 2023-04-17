@@ -29,7 +29,7 @@ import coil.request.ImageRequest
 class ImageStepDrawer(private val containerModifier: Modifier? = null) : StoryUnitDrawer {
 
     @Composable
-    override fun Step(step: StoryUnit) {
+    override fun Step(step: StoryUnit, editable: Boolean) {
         val imageStep = step as StoryStep
 
         Box(modifier = Modifier.padding(vertical = 3.dp, horizontal = 8.dp)) {
