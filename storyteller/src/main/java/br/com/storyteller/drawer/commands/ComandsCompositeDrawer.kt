@@ -3,22 +3,16 @@ package br.com.storyteller.drawer.commands
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,24 +37,77 @@ class CommandsCompositeDrawer(
                 innerStep.Step(step = step)
             }
 
-            Box(
-                modifier = Modifier
-                    .clip(shape = CircleShape)
-                    .border(
-                        width = 1.dp,
-                        color = Color.Gray,
-                        shape = CircleShape
-                    )
-                    .background(Color.LightGray)
-            ) {
-                IconButton(onClick = { onDelete(Command(type = "delete", step)) }) {
-                    Icon(
-                        imageVector = Icons.Outlined.Close,
-                        contentDescription = "",
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
+            DeleteButton(step)
+            MoveUpButton(step)
+            MoveDownButton(step)
+        }
+    }
+
+    @Composable
+    private fun BoxScope.DeleteButton(step: StoryUnit) {
+        Box(
+            modifier = Modifier
+                .clip(shape = CircleShape)
+                .border(
+                    width = 1.dp,
+                    color = Color.Gray,
+                    shape = CircleShape
+                )
+                .background(Color.LightGray)
+        ) {
+            IconButton(onClick = { onDelete(Command(type = "delete", step)) }) {
+                Icon(
+                    imageVector = Icons.Outlined.Close,
+                    contentDescription = "",
+                    modifier = Modifier.size(16.dp)
+                )
             }
         }
     }
+
+    @Composable
+    private fun BoxScope.MoveUpButton(step: StoryUnit) {
+        Box(
+            modifier = Modifier
+                .clip(shape = CircleShape)
+                .border(
+                    width = 1.dp,
+                    color = Color.Gray,
+                    shape = CircleShape
+                )
+                .background(Color.LightGray)
+                .align(Alignment.TopCenter)
+        ) {
+            IconButton(onClick = { onDelete(Command(type = "move_up", step)) }) {
+                Icon(
+                    imageVector = Icons.Outlined.KeyboardArrowUp,
+                    contentDescription = "",
+                    modifier = Modifier.size(16.dp)
+                )
+            }
+        }
+    }
+    @Composable
+    private fun BoxScope.MoveDownButton(step: StoryUnit) {
+        Box(
+            modifier = Modifier
+                .clip(shape = CircleShape)
+                .border(
+                    width = 1.dp,
+                    color = Color.Gray,
+                    shape = CircleShape
+                )
+                .background(Color.LightGray)
+                .align(Alignment.BottomCenter)
+        ) {
+            IconButton(onClick = { onMoveDown(Command(type = "move_down", step)) }) {
+                Icon(
+                    imageVector = Icons.Outlined.KeyboardArrowDown,
+                    contentDescription = "",
+                    modifier = Modifier.size(16.dp)
+                )
+            }
+        }
+    }
+
 }
