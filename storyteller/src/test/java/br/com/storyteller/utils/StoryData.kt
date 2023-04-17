@@ -9,21 +9,21 @@ object StoryData {
             StoryStep(
                 id = "1",
                 type = "image",
-                localPosition = 1
+                localPosition = 0
             )
         )
         add(
             StoryStep(
                 id = "2",
                 type = "image",
-                localPosition = 2
+                localPosition = 0
             )
         )
         add(
             StoryStep(
                 id = "3",
                 type = "image",
-                localPosition = 3
+                localPosition = 0
             )
         )
     }
@@ -33,21 +33,21 @@ object StoryData {
             StoryStep(
                 id = "1",
                 type = "image",
-                localPosition = 1
+                localPosition = 0
             )
         )
         add(
             StoryStep(
                 id = "2",
                 type = "image",
-                localPosition = 2
+                localPosition = 0
             )
         )
         add(
             StoryStep(
                 id = "3",
                 type = "image",
-                localPosition = 3
+                localPosition = 0
             )
         )
         add(

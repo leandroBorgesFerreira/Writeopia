@@ -19,7 +19,7 @@ class MergeNormalizationTest {
 
         assertEquals(mergedStep.size, 1)
         assertTrue(mergedStep.first() is GroupStep)
-        assertEquals(mergedStep.first().localPosition, 1)
+        assertEquals(mergedStep.first().localPosition, 0)
     }
 
     @Test
@@ -62,7 +62,7 @@ class MergeNormalizationTest {
         val last = StoryStep(
             id = "6",
             type = "image",
-            localPosition = 6
+            localPosition = 0
         )
 
         val story = listOf(
@@ -74,7 +74,7 @@ class MergeNormalizationTest {
                     StoryStep(
                         id = "2",
                         type = "image",
-                        localPosition = 1,
+                        localPosition = 0,
                     )
                 )
             ),
