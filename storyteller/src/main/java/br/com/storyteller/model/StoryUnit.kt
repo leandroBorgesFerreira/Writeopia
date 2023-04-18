@@ -5,6 +5,8 @@ interface StoryUnit : Comparable<StoryUnit>{
     val type: String
     val localPosition: Int
 
+    val key: Int
+
     fun copyWithNewPosition(position: Int): StoryUnit
 
     override fun compareTo(other: StoryUnit): Int = localPosition.compareTo(other.localPosition)

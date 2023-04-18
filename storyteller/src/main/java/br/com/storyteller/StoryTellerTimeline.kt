@@ -18,8 +18,11 @@ fun StoryTellerTimeline(
     drawers: Map<String, StoryUnitDrawer>
 ) {
     LazyColumn(modifier = modifier, contentPadding = contentPadding, content = {
-        items(story) { storyStep ->
-            drawers[storyStep.type]?.Step(storyStep, editable, mapOf("listSize" to story.size))
+        items(
+            story,
+            key = { storyUnit -> storyUnit.key }
+        ) { storyUnit ->
+            drawers[storyUnit.type]?.Step(storyUnit, editable, mapOf("listSize" to story.size))
         }
     })
 }

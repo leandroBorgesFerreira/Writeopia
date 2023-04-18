@@ -10,5 +10,7 @@ data class StoryStep(
     val title: String? = null
 ): StoryUnit {
 
+    override val key: Int = hashCode()
+
     override fun copyWithNewPosition(position: Int): StoryUnit = copy(localPosition = position)
 }

@@ -38,13 +38,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.com.leandroferreira.data.StoriesRepo
 import br.com.leandroferreira.theme.ApplicationComposeTheme
 import br.com.leandroferreira.theme.BACKGROUND_VARIATION
+import br.com.leandroferreira.viewmodel.HistoriesViewModel
 import br.com.storyteller.StoryTellerTimeline
 import br.com.storyteller.VideoFrameConfig
 import br.com.storyteller.drawer.DefaultDrawers
-import br.com.storyteller.model.StoryUnit
-import br.com.storyteller.normalization.StepsNormalizationBuilder
+import br.com.storyteller.viewmodel.StoryTellerViewModel
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,11 +61,8 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun MainScreen() {
-    val viewModel = HistoriesViewModel(
-        StepsNormalizationBuilder.reduceNormalizations {
-            defaultNormalizers()
-        }
-    )
+    val viewModel = HistoriesViewModel()
+    val storyTellerViewModel = StoryTellerViewModel(StoriesRepo(LocalContext.current))
 
     ApplicationComposeTheme {
         Scaffold(
@@ -76,7 +74,7 @@ fun MainScreen() {
             }
         ) { paddingValues ->
             Box(modifier = Modifier.padding(top = paddingValues.calculateTopPadding())) {
-                Body(viewModel)
+                Body(viewModel, storyTellerViewModel)
             }
         }
     }
@@ -106,10 +104,8 @@ private fun TopBar() {
 }
 
 @Composable
-private fun Body(viewModel: HistoriesViewModel) {
-    val context = LocalContext.current
-
-    var history by remember { mutableStateOf(viewModel.normalizedHistories(context)) }
+private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTellerViewModel) {
+    val history by storyTellerViewModel.normalizedStepsState.collectAsStateWithLifecycle()
     val editable by viewModel.editModeState.collectAsStateWithLifecycle()
 
     Column {
@@ -120,21 +116,10 @@ private fun Body(viewModel: HistoriesViewModel) {
             story = history.values.sorted(),
             contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp),
             editable = editable,
-            drawers = DefaultDrawers.create(editable = editable, onCommand = { command ->
-                when (command.type) {
-                    "move_up" -> {
-                        history = moveUp(command.step.localPosition, history, viewModel)
-                    }
-
-                    "move_down" -> {
-                        history = moveDown(command.step.localPosition, history, viewModel)
-                    }
-
-                    "delete" -> {
-                        history = history - command.step.localPosition
-                    }
-                }
-            })
+            drawers = DefaultDrawers.create(
+                editable = editable,
+                onCommand = storyTellerViewModel::handleCommand
+            )
         )
     }
 }
@@ -187,35 +172,4 @@ private fun InfoHeader() {
     }
 }
 
-private fun moveUp(
-    position: Int,
-    history: Map<Int, StoryUnit>,
-    viewModel: HistoriesViewModel
-): Map<Int, StoryUnit> {
-    val thisStep = history[position]
-    val upStep = history[position - 1]
-
-    val mutableHistory = history.toMutableMap()
-    upStep?.let { step ->
-        mutableHistory[position] = step.copyWithNewPosition(position)
-    }
-
-    thisStep?.let { step ->
-        mutableHistory[position - 1] =
-            step.copyWithNewPosition(position - 1)
-    }
-
-    return mutableHistory.values
-        .toList()
-        .let(viewModel::normalizeHistories)
-        .associateBy { it.localPosition }
-}
-
-private fun moveDown(
-    position: Int,
-    history: Map<Int, StoryUnit>,
-    viewModel: HistoriesViewModel
-): Map<Int, StoryUnit> {
-    return moveUp(position + 1, history, viewModel)
-}
 

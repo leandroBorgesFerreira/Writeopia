@@ -3,7 +3,7 @@ package br.com.leandroferreira
 import android.content.Context
 import br.com.storyteller.model.StoryStep
 
-fun history(context: Context): List<StoryStep> =
+fun syncHistory(context: Context): List<StoryStep> =
     buildList {
         add(
             StoryStep(
