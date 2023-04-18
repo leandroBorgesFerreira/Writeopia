@@ -42,10 +42,10 @@ import br.com.leandroferreira.app_sample.data.StoriesRepo
 import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
 import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION
 import br.com.leandroferreira.app_sample.viewmodel.HistoriesViewModel
-import br.com.storyteller.StoryTellerTimeline
-import br.com.storyteller.VideoFrameConfig
-import br.com.storyteller.drawer.DefaultDrawers
-import br.com.storyteller.viewmodel.StoryTellerViewModel
+import br.com.leandroferreira.storyteller.StoryTellerTimeline
+import br.com.leandroferreira.storyteller.VideoFrameConfig
+import br.com.leandroferreira.storyteller.drawer.DefaultDrawers
+import br.com.leandroferreira.storyteller.viewmodel.StoryTellerViewModel
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

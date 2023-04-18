@@ -2,9 +2,10 @@ package br.com.leandroferreira.app_sample.data
 
 import android.content.Context
 import br.com.leandroferreira.app_sample.R
-import br.com.storyteller.model.StoryStep
+import br.com.leandroferreira.storyteller.model.StoryStep
+import br.com.leandroferreira.storyteller.model.StoryUnit
 
-fun syncHistory(context: Context): List<StoryStep> =
+fun syncHistory(context: Context): List<StoryUnit> =
     buildList {
         add(
             StoryStep(
