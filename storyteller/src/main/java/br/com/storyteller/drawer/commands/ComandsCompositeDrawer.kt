@@ -1,5 +1,6 @@
 package br.com.storyteller.drawer.commands
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -31,21 +32,36 @@ class CommandsCompositeDrawer(
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun Step(step: StoryUnit, editable: Boolean) {
+    override fun Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
         Box(modifier = Modifier.padding(vertical = 3.dp)) {
             Box(modifier = Modifier.padding(top = 3.dp)) {
-                innerStep.Step(step = step, editable)
+                innerStep.Step(step = step, editable, extraData)
             }
 
             DeleteButton(step)
-            MoveUpButton(step)
-            MoveDownButton(step)
+
+            if (step.localPosition != 0) {
+                MoveUpButton(step)
+            }
+
+            (extraData["listSize"] as? Int)?.let { size ->
+                Log.d("Commands", "list size: $size. " +
+                    "step local position: ${step.localPosition}")
+            }
+
+            if ((extraData["listSize"] as? Int) != step.localPosition + 1) {
+                MoveDownButton(step)
+            } else {
+                Log.d("Commands","MoveDownButton not drawn")
+            }
         }
     }
 
     @Composable
     private fun BoxScope.DeleteButton(step: StoryUnit) {
-        Box(modifier = Modifier.buttonModifier().align(Alignment.TopStart)) {
+        Box(modifier = Modifier
+            .buttonModifier()
+            .align(Alignment.TopStart)) {
             IconButton(onClick = { onDelete(Command(type = "delete", step)) }) {
                 Icon(
                     imageVector = Icons.Outlined.Close,
@@ -58,7 +74,9 @@ class CommandsCompositeDrawer(
 
     @Composable
     private fun BoxScope.MoveUpButton(step: StoryUnit) {
-        Box(modifier = Modifier.buttonModifier().align(Alignment.TopCenter)) {
+        Box(modifier = Modifier
+            .buttonModifier()
+            .align(Alignment.TopCenter)) {
             IconButton(onClick = { onMoveUp(Command(type = "move_up", step)) }) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowUp,
@@ -68,9 +86,12 @@ class CommandsCompositeDrawer(
             }
         }
     }
+
     @Composable
     private fun BoxScope.MoveDownButton(step: StoryUnit) {
-        Box(modifier = Modifier.buttonModifier().align(Alignment.BottomCenter)) {
+        Box(modifier = Modifier
+            .buttonModifier()
+            .align(Alignment.BottomCenter)) {
             IconButton(onClick = { onMoveDown(Command(type = "move_down", step)) }) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowDown,

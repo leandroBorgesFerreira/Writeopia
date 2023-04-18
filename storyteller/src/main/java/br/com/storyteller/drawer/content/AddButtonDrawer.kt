@@ -20,7 +20,7 @@ import br.com.storyteller.model.StoryUnit
 class AddButtonDrawer : StoryUnitDrawer {
 
     @Composable
-    override fun Step(step: StoryUnit, editable: Boolean) {
+    override fun Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
         Box(modifier = Modifier.padding(5.dp)) {
             Button(
                 onClick = { },

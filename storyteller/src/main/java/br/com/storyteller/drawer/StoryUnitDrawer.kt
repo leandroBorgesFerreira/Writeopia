@@ -6,5 +6,5 @@ import br.com.storyteller.model.StoryUnit
 
 fun interface StoryUnitDrawer {
     @Composable
-    fun Step(step: StoryUnit, editable: Boolean)
+    fun Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>)
 }

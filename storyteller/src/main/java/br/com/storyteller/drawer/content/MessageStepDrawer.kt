@@ -23,7 +23,7 @@ import br.com.storyteller.model.StoryUnit
 class MessageStepDrawer(private val containerModifier: Modifier? = null) : StoryUnitDrawer {
 
     @Composable
-    override fun Step(step: StoryUnit, editable: Boolean) {
+    override fun Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
         val messageStep = step as StoryStep
 
         Box(

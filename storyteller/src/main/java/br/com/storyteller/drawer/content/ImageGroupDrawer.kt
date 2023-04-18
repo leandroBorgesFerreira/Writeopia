@@ -19,13 +19,13 @@ class ImageGroupDrawer(
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun Step(step: StoryUnit, editable: Boolean) {
+    override fun Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
         val imageGroup = step as GroupStep
         val steps = imageGroup.steps.map { storyUnit -> storyUnit as StoryStep }
 
         LazyRow(modifier = modifier) {
             items(steps) { storyStep ->
-                imageStepDrawer.Step(storyStep, editable = editable)
+                imageStepDrawer.Step(storyStep, editable = editable, extraData)
             }
         }
     }
