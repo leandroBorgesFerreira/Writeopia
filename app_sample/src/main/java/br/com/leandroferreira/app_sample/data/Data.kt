@@ -1,10 +1,27 @@
-package br.com.leandroferreira
+package br.com.leandroferreira.app_sample.data
 
 import android.content.Context
+import br.com.leandroferreira.R
 import br.com.storyteller.model.StoryStep
 
 fun syncHistory(context: Context): List<StoryStep> =
     buildList {
+        add(
+            StoryStep(
+                id = "-2",
+                type = "image",
+                url = "https://fastly.picsum.photos/id/15/400/400.jpg?hmac=xv-6mggpYPLIQ9eNAHrl1qKPHjyUCYlBoNBvdsqF4cY",
+                localPosition = -2,
+            )
+        )
+        add(
+            StoryStep(
+                id = "-1",
+                type = "image",
+                url = "https://fastly.picsum.photos/id/15/400/400.jpg?hmac=xv-6mggpYPLIQ9eNAHrl1qKPHjyUCYlBoNBvdsqF4cY",
+                localPosition = -1,
+            )
+        )
         add(
             StoryStep(
                 id = "0",

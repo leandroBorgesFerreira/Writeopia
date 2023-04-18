@@ -1,7 +1,6 @@
-package br.com.leandroferreira.data
+package br.com.leandroferreira.app_sample.data
 
 import android.content.Context
-import br.com.leandroferreira.syncHistory
 import br.com.storyteller.model.StoryUnit
 import br.com.storyteller.repository.StoriesRepository
 

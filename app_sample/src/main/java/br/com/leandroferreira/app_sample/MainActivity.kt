@@ -1,4 +1,4 @@
-package br.com.leandroferreira
+package br.com.leandroferreira.app_sample
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -38,10 +38,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.com.leandroferreira.data.StoriesRepo
-import br.com.leandroferreira.theme.ApplicationComposeTheme
-import br.com.leandroferreira.theme.BACKGROUND_VARIATION
-import br.com.leandroferreira.viewmodel.HistoriesViewModel
+import br.com.leandroferreira.app_sample.data.StoriesRepo
+import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
+import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION
+import br.com.leandroferreira.app_sample.viewmodel.HistoriesViewModel
 import br.com.storyteller.StoryTellerTimeline
 import br.com.storyteller.VideoFrameConfig
 import br.com.storyteller.drawer.DefaultDrawers
@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
 fun MainScreen() {
     val viewModel = HistoriesViewModel()
     val storyTellerViewModel = StoryTellerViewModel(StoriesRepo(LocalContext.current))
+    storyTellerViewModel.requestHistoriesFromApi()
 
     ApplicationComposeTheme {
         Scaffold(

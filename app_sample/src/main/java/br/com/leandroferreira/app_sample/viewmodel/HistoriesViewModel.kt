@@ -1,4 +1,4 @@
-package br.com.leandroferreira.viewmodel
+package br.com.leandroferreira.app_sample.viewmodel
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,4 +1,4 @@
-package br.com.leandroferreira.theme
+package br.com.leandroferreira.app_sample.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
