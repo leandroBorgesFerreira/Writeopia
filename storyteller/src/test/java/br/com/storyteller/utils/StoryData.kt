@@ -1,6 +1,6 @@
 package br.com.storyteller.utils
 
-import br.com.storyteller.model.StoryStep
+import br.com.leandroferreira.storyteller.model.StoryStep
 
 object StoryData {
 

@@ -1,6 +1,5 @@
 package br.com.leandroferreira.storyteller.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.leandroferreira.storyteller.model.Command

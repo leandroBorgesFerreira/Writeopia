@@ -1,5 +1,6 @@
 package br.com.storyteller.normalization
 
+import br.com.leandroferreira.storyteller.normalization.StepsNormalizationBuilder
 import br.com.storyteller.utils.StoryData
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
