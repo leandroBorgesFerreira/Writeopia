@@ -1,7 +1,7 @@
 package br.com.leandroferreira.app_sample.data
 
 import android.content.Context
-import br.com.leandroferreira.R
+import br.com.leandroferreira.app_sample.R
 import br.com.storyteller.model.StoryStep
 
 fun syncHistory(context: Context): List<StoryStep> =
