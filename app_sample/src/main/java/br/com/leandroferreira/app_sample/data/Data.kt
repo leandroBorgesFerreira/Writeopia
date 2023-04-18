@@ -9,22 +9,6 @@ fun syncHistory(context: Context): List<StoryUnit> =
     buildList {
         add(
             StoryStep(
-                id = "-2",
-                type = "image",
-                url = "https://fastly.picsum.photos/id/15/400/400.jpg?hmac=xv-6mggpYPLIQ9eNAHrl1qKPHjyUCYlBoNBvdsqF4cY",
-                localPosition = -2,
-            )
-        )
-        add(
-            StoryStep(
-                id = "-1",
-                type = "image",
-                url = "https://fastly.picsum.photos/id/15/400/400.jpg?hmac=xv-6mggpYPLIQ9eNAHrl1qKPHjyUCYlBoNBvdsqF4cY",
-                localPosition = -1,
-            )
-        )
-        add(
-            StoryStep(
                 id = "0",
                 type = "image",
                 url = "https://fastly.picsum.photos/id/15/400/400.jpg?hmac=xv-6mggpYPLIQ9eNAHrl1qKPHjyUCYlBoNBvdsqF4cY",
