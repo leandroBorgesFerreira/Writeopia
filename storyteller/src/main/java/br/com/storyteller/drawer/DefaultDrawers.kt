@@ -20,7 +20,10 @@ import br.com.storyteller.model.StepType
 
 object DefaultDrawers {
 
-    fun create(editable: Boolean = false, onCommand: (Command) -> Unit): Map<String, StoryUnitDrawer> =
+    fun create(
+        editable: Boolean = false,
+        onCommand: (Command) -> Unit
+    ): Map<String, StoryUnitDrawer> =
         buildMap {
             val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->
                 CommandsCompositeDrawer(
@@ -30,7 +33,6 @@ object DefaultDrawers {
                     onDelete = onCommand,
                 )
             }
-
 
             val imageDrawer = ImageStepDrawer(
                 containerModifier = Modifier
@@ -60,7 +62,14 @@ object DefaultDrawers {
             )
             put(StepType.ADD_BUTTON.type, AddButtonDrawer())
             put(StepType.IMAGE.type, if (editable) commandsComposite(imageDrawer) else imageDrawer)
-            put(StepType.GROUP_IMAGE.type, ImageGroupDrawer(imageDrawerInGroup))
+            put(
+                StepType.GROUP_IMAGE.type,
+                if (editable){
+                    commandsComposite(ImageGroupDrawer(imageDrawerInGroup))
+                } else {
+                    ImageGroupDrawer(imageDrawerInGroup)
+                }
+            )
             put(
                 StepType.VIDEO.type,
                 if (editable) commandsComposite(VideoStepDrawer()) else VideoStepDrawer()
