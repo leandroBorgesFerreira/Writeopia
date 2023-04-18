@@ -49,12 +49,17 @@ class StoryTellerViewModel(
     }
 
     fun onTextEdit(text: String, position: Int) {
-        val steps = _normalizedSteps.value
-        val editStep = steps.toMutableMap()[position]
-
-        (editStep as? StoryStep)?.copy(text = text)?.let { step ->
-            _normalizedSteps.value = steps.toMutableMap().apply { this[position] = step }
-        }
+        /*
+         Todo. I need to notify the change and buffer it for later, otherwise the list will be
+          updated all the time... this can cause performance problems and the recompose takes the
+          focus away from the current TextInput so the keyboard loses the focus of it.
+         */
+//        val steps = _normalizedSteps.value
+//        val editStep = steps.toMutableMap()[position]
+//
+//        (editStep as? StoryStep)?.copy(text = text)?.let { step ->
+//            _normalizedSteps.value = steps.toMutableMap().apply { this[position] = step }
+//        }
     }
 
 

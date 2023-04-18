@@ -8,6 +8,10 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -32,9 +36,16 @@ class MessageStepDrawer(
                 .background(Color.LightGray)
         ) {
             if (editable) {
+                var inputText by remember {
+                    mutableStateOf(messageStep.text ?: "")
+                }
+
                 TextField(
-                    value = messageStep.text ?: "",
-                    onValueChange = { text -> onTextEdit(text, step.localPosition) } ,
+                    value = inputText,
+                    onValueChange = { text ->
+                        inputText = text
+                        onTextEdit(text, step.localPosition)
+                    },
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = Color.Transparent,

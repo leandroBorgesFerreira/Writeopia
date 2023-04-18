@@ -28,8 +28,8 @@ class StepsNormalizationBuilder {
             addMerger(StepsMergerCoordinator(typeOfStep = "message", typeOfGroup = null))
         }
 
-        addNormalization(mergeNormalization::mergeSteps)
-        addNormalization(PositionNormalization::normalizePosition)
+        normalizations.add(mergeNormalization::mergeSteps)
+        normalizations.add(PositionNormalization::normalizePosition)
     }
 
     private fun build(): (List<StoryUnit>) -> List<StoryUnit> = reduceNormalizations(normalizations)
