@@ -8,10 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -20,7 +16,10 @@ import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
 
-class MessageStepDrawer(private val containerModifier: Modifier? = null) : StoryUnitDrawer {
+class MessageStepDrawer(
+    private val containerModifier: Modifier? = null,
+    private val onTextEdit: (String, Int) -> Unit
+) : StoryUnitDrawer {
 
     @Composable
     override fun Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
@@ -33,11 +32,9 @@ class MessageStepDrawer(private val containerModifier: Modifier? = null) : Story
                 .background(Color.LightGray)
         ) {
             if (editable) {
-                var messageText by remember { mutableStateOf(messageStep.text) }
-
                 TextField(
-                    value = messageText ?: "",
-                    onValueChange = { text -> messageText = text},
+                    value = messageStep.text ?: "",
+                    onValueChange = { text -> onTextEdit(text, step.localPosition) } ,
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = Color.Transparent,

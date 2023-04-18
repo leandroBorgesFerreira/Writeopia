@@ -22,15 +22,16 @@ object DefaultDrawers {
 
     fun create(
         editable: Boolean = false,
-        onCommand: (Command) -> Unit
+        onListCommand: (Command) -> Unit,
+        onTextEdit: (String, Int) -> Unit
     ): Map<String, StoryUnitDrawer> =
         buildMap {
             val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->
                 CommandsCompositeDrawer(
                     stepDrawer,
-                    onMoveUp = onCommand,
-                    onMoveDown = onCommand,
-                    onDelete = onCommand,
+                    onMoveUp = onListCommand,
+                    onMoveDown = onListCommand,
+                    onDelete = onListCommand,
                 )
             }
 
@@ -53,7 +54,8 @@ object DefaultDrawers {
                 containerModifier = Modifier
                     .padding(vertical = 4.dp, horizontal = 8.dp)
                     .clip(shape = RoundedCornerShape(size = 12.dp))
-                    .background(Color(0xFFFAF8F2))
+                    .background(Color(0xFFFAF8F2)),
+                onTextEdit = onTextEdit
             )
 
             put(

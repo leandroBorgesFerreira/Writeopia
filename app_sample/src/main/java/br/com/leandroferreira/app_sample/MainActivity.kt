@@ -119,7 +119,8 @@ private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTelle
             editable = editable,
             drawers = DefaultDrawers.create(
                 editable = editable,
-                onCommand = storyTellerViewModel::handleCommand
+                onListCommand = storyTellerViewModel::onListCommand,
+                onTextEdit = storyTellerViewModel::onTextEdit
             )
         )
     }

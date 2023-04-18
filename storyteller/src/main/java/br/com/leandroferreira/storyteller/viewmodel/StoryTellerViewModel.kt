@@ -1,8 +1,10 @@
 package br.com.leandroferreira.storyteller.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.leandroferreira.storyteller.model.Command
+import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.StepsNormalizationBuilder
 import br.com.leandroferreira.storyteller.repository.StoriesRepository
@@ -30,7 +32,7 @@ class StoryTellerViewModel(
         }
     }
 
-    fun handleCommand(command: Command) {
+    fun onListCommand(command: Command) {
         when (command.type) {
             "move_up" -> {
                 _normalizedSteps.value = moveUp(command.step.localPosition, _normalizedSteps.value)
@@ -44,6 +46,15 @@ class StoryTellerViewModel(
             "delete" -> {
                 _normalizedSteps.value = _normalizedSteps.value - command.step.localPosition
             }
+        }
+    }
+
+    fun onTextEdit(text: String, position: Int) {
+        val steps = _normalizedSteps.value
+        val editStep = steps.toMutableMap()[position]
+
+        (editStep as? StoryStep)?.copy(text = text)?.let { step ->
+            _normalizedSteps.value = steps.toMutableMap().apply { this[position] = step }
         }
     }
 
