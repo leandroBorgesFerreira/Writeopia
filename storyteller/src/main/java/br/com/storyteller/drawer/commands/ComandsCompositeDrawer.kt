@@ -1,6 +1,5 @@
 package br.com.storyteller.drawer.commands
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -44,15 +43,8 @@ class CommandsCompositeDrawer(
                 MoveUpButton(step)
             }
 
-            (extraData["listSize"] as? Int)?.let { size ->
-                Log.d("Commands", "list size: $size. " +
-                    "step local position: ${step.localPosition}")
-            }
-
             if ((extraData["listSize"] as? Int) != step.localPosition + 1) {
                 MoveDownButton(step)
-            } else {
-                Log.d("Commands","MoveDownButton not drawn")
             }
         }
     }
