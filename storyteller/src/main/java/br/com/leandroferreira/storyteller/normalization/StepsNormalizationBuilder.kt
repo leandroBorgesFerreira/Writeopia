@@ -1,8 +1,10 @@
 package br.com.leandroferreira.storyteller.normalization
 
 import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.normalization.merge.MergeLogic
 import br.com.leandroferreira.storyteller.normalization.merge.MergeNormalization
 import br.com.leandroferreira.storyteller.normalization.merge.StepsMergerCoordinator
+import br.com.leandroferreira.storyteller.normalization.merge.steps.StepToStepMerger
 import br.com.leandroferreira.storyteller.normalization.position.PositionNormalization
 
 class StepsNormalizationBuilder {
@@ -25,7 +27,14 @@ class StepsNormalizationBuilder {
     fun defaultNormalizers() {
         val mergeNormalization = MergeNormalization.build {
             addMerger(StepsMergerCoordinator(typeOfStep = "image", typeOfGroup = "group_image"))
-            addMerger(StepsMergerCoordinator(typeOfStep = "message", typeOfGroup = null))
+            addMerger(
+                StepsMergerCoordinator(
+                    stepMerger = StepToStepMerger(),
+                    typeOfStep = "message",
+                    typeOfGroup = null,
+                    mergeLogic = MergeLogic::eager
+                )
+            )
         }
 
         normalizations.add(mergeNormalization::mergeSteps)
