@@ -38,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.leandroferreira.app_sample.data.StoriesRepo
 import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
 import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION
@@ -61,15 +62,24 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun MainScreen() {
-    val viewModel = HistoriesViewModel()
-    val storyTellerViewModel = StoryTellerViewModel(StoriesRepo(LocalContext.current))
+    val context = LocalContext.current
+    val viewModel: HistoriesViewModel = viewModel(initializer = {
+        HistoriesViewModel()
+    })
+    val storyTellerViewModel: StoryTellerViewModel = viewModel(initializer = {
+        StoryTellerViewModel(StoriesRepo(context))
+    })
     storyTellerViewModel.requestHistoriesFromApi()
+    storyTellerViewModel.updateState()
 
     ApplicationComposeTheme {
         Scaffold(
             topBar = { TopBar() },
             floatingActionButton = {
-                FloatingActionButton(onClick = viewModel::toggleEdit) {
+                FloatingActionButton(onClick = {
+                    storyTellerViewModel.updateState()
+                    viewModel.toggleEdit()
+                } ) {
                     Icon(imageVector = Icons.Outlined.Edit, contentDescription = "")
                 }
             }

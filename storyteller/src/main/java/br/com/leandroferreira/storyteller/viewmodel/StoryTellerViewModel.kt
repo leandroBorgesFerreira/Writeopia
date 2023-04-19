@@ -19,49 +19,63 @@ class StoryTellerViewModel(
         }
 ) : ViewModel() {
 
+    private val textChanges: MutableMap<Int, String> = mutableMapOf()
+
     private val _normalizedSteps: MutableStateFlow<Map<Int, StoryUnit>> = MutableStateFlow(
         emptyMap()
     )
     val normalizedStepsState: StateFlow<Map<Int, StoryUnit>> = _normalizedSteps
 
-    fun requestHistoriesFromApi() {
-        viewModelScope.launch {
-            _normalizedSteps.value = stepsNormalizer(storiesRepository.history())
-                .associateBy { story -> story.localPosition }
+    fun requestHistoriesFromApi(force: Boolean = false) {
+        if (_normalizedSteps.value.isEmpty() || force) {
+            viewModelScope.launch {
+                _normalizedSteps.value = stepsNormalizer(storiesRepository.history())
+                    .associateBy { story -> story.localPosition }
+            }
         }
     }
 
     fun onListCommand(command: Command) {
         when (command.type) {
             "move_up" -> {
+                updateTexts()
                 _normalizedSteps.value = moveUp(command.step.localPosition, _normalizedSteps.value)
             }
 
             "move_down" -> {
+                updateTexts()
                 _normalizedSteps.value =
                     moveDown(command.step.localPosition, _normalizedSteps.value)
             }
 
             "delete" -> {
+                updateTexts()
                 _normalizedSteps.value = _normalizedSteps.value - command.step.localPosition
             }
         }
     }
 
     fun onTextEdit(text: String, position: Int) {
-        /*
-         Todo. I need to notify the change and buffer it for later, otherwise the list will be
-          updated all the time... this can cause performance problems and the recompose takes the
-          focus away from the current TextInput so the keyboard loses the focus of it.
-         */
-//        val steps = _normalizedSteps.value
-//        val editStep = steps.toMutableMap()[position]
-//
-//        (editStep as? StoryStep)?.copy(text = text)?.let { step ->
-//            _normalizedSteps.value = steps.toMutableMap().apply { this[position] = step }
-//        }
+        textChanges[position] = text
     }
 
+    fun updateState() {
+        updateTexts()
+    }
+
+    private fun updateTexts() {
+        val steps = _normalizedSteps.value.toMutableMap()
+
+        textChanges.forEach { (position, text) ->
+            val editStep = steps[position]
+
+            (editStep as? StoryStep)?.copy(text = text)?.let { step ->
+                steps[position] = step
+            }
+        }
+
+        _normalizedSteps.value = steps
+    }
 
     private fun moveUp(
         position: Int,
