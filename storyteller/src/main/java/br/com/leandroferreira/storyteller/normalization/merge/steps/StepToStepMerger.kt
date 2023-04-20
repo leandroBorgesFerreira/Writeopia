@@ -15,7 +15,10 @@ open class StepToStepMerger : StepMerger {
             val story1 = step1 as StoryStep
             val story2 = step2 as StoryStep
 
-            story1.copy(text = "${story1.text}\n\n${story2.text}")
+            story1.copy(
+                text = "${story1.text}\n\n${story2.text}",
+                localPosition = step2.localPosition
+            )
         } else {
             throw IllegalStateException(
                 "At the moment StepToStepMerger can only be used to merge messages"

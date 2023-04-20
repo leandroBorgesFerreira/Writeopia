@@ -2,12 +2,14 @@ package br.com.storyteller.normalization.merge
 
 import br.com.leandroferreira.storyteller.model.GroupStep
 import br.com.leandroferreira.storyteller.model.StoryStep
+import br.com.leandroferreira.storyteller.normalization.merge.MergeLogic
 import br.com.leandroferreira.storyteller.normalization.merge.MergeNormalization
 import br.com.leandroferreira.storyteller.normalization.merge.StepsMergerCoordinator
 import br.com.leandroferreira.storyteller.normalization.merge.steps.StepToStepMerger
 import br.com.storyteller.utils.StoryData
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
+import org.junit.Ignore
 import org.junit.Test
 
 class MergeNormalizationTest {
@@ -105,5 +107,26 @@ class MergeNormalizationTest {
         val mergedStep = mergeNormalization.mergeSteps(story)
 
         assertEquals(last, (mergedStep.first() as GroupStep).steps.first())
+    }
+
+    @Test
+//    @Ignore
+    fun `a list of consecutive messages should be merged when the merger is eager`() {
+        val mergeNormalization = MergeNormalization.build {
+            addMerger(
+                StepsMergerCoordinator(
+                    stepMerger = StepToStepMerger(),
+                    typeOfStep = "message",
+                    mergeLogic = MergeLogic::eager
+                )
+            )
+        }
+
+        val mergedMessages = mergeNormalization.mergeSteps(StoryData.messagesInLine())
+
+        /*
+         * This unit test is failing because only the first messages are getting merged in pairs...
+         */
+        assertEquals(1, mergedMessages.size)
     }
 }

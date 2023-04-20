@@ -16,7 +16,7 @@ open class StepToGroupMerger : StepMerger {
                 GroupStep(
                     id = "id",
                     type = type,
-                    localPosition = step1.localPosition,
+                    localPosition = step2.localPosition,
                     steps = listOf(step1, step2)
                 )
 
@@ -25,7 +25,7 @@ open class StepToGroupMerger : StepMerger {
             )
 
             step1 is StoryStep && step2 is GroupStep -> step2.copy(
-                    localPosition = step1.localPosition,
+                    localPosition = step2.localPosition,
                     steps = listOf(step1) + step2.steps
                 )
 
@@ -37,5 +37,8 @@ open class StepToGroupMerger : StepMerger {
         }
 
     override fun groupsMerger(step1: GroupStep, step2: GroupStep): StoryUnit =
-        step1.copy(steps = step1.steps + step2.steps)
+        step1.copy(
+            steps = step1.steps + step2.steps,
+            localPosition = step2.localPosition
+        )
 }

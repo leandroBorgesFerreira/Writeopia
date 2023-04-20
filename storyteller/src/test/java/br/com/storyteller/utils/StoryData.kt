@@ -1,6 +1,7 @@
 package br.com.storyteller.utils
 
 import br.com.leandroferreira.storyteller.model.StoryStep
+import br.com.leandroferreira.storyteller.model.StoryUnit
 
 object StoryData {
 
@@ -24,6 +25,55 @@ object StoryData {
                 id = "3",
                 type = "image",
                 localPosition = 0
+            )
+        )
+    }
+
+    fun messagesInLine(): List<StoryUnit> = buildList {
+        add(
+            StoryStep(
+                id = "2",
+                type = "message",
+                text = "We arrived in Santiago!! \n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                localPosition = 0
+            )
+        )
+        add(
+            StoryStep(
+                id = "4",
+                type = "message",
+                text = "And it was super awesome!! \n\nUt enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
+                localPosition = 1
+            )
+        )
+        add(
+            StoryStep(
+                id = "6",
+                type = "message",
+                text = "I couldn't believe how sunny it was. Santiago is a really beautiful city. There's a lot to " +
+                    "do and enjoyed the day. We went to many cozy Cafes and we enjoyed the city by foot. " +
+                    "We had to buy some Syn Cards to be able to communicate in the new country. ",
+                localPosition = 2
+            )
+        )
+        add(
+            StoryStep(
+                id = "7",
+                type = "message",
+                text = "I couldn't believe how sunny it was. Santiago is a really beautiful city. There's a lot to " +
+                    "do and enjoyed the day. We went to many cozy Cafes and we enjoyed the city by foot. " +
+                    "We had to buy some Syn Cards to be able to communicate in the new country. ",
+                localPosition = 3
+            )
+        )
+        add(
+            StoryStep(
+                id = "8",
+                type = "message",
+                text = "I couldn't believe how sunny it was. Santiago is a really beautiful city. There's a lot to " +
+                    "do and enjoyed the day. We went to many cozy Cafes and we enjoyed the city by foot. " +
+                    "We had to buy some Syn Cards to be able to communicate in the new country. ",
+                localPosition = 4
             )
         )
     }
