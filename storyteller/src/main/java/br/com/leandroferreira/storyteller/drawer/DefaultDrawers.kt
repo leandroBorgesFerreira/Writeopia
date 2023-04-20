@@ -1,5 +1,6 @@
 package br.com.leandroferreira.storyteller.drawer
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,6 +18,7 @@ import br.com.leandroferreira.storyteller.drawer.content.MessageStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.VideoStepDrawer
 import br.com.leandroferreira.storyteller.model.Command
 import br.com.leandroferreira.storyteller.model.StepType
+import br.com.leandroferreira.storyteller.model.StoryUnit
 
 object DefaultDrawers {
 
@@ -55,7 +57,11 @@ object DefaultDrawers {
                     .padding(vertical = 4.dp, horizontal = 8.dp)
                     .clip(shape = RoundedCornerShape(size = 12.dp))
                     .background(Color(0xFFFAF8F2)),
-                onTextEdit = onTextEdit
+                onTextEdit = onTextEdit,
+                mergeRequest = { receiving: StoryUnit, sending: StoryUnit ->
+                    Log.d("MergeRequest", "receiving position: " +
+                        "${receiving.localPosition}, sending position: ${sending.localPosition}")
+                }
             )
 
             put(

@@ -74,7 +74,7 @@ fun MainScreen() {
 
     ApplicationComposeTheme {
         Scaffold(
-            topBar = { TopBar() },
+//            topBar = { TopBar() },
             floatingActionButton = {
                 FloatingActionButton(onClick = {
                     storyTellerViewModel.updateState()
@@ -120,7 +120,7 @@ private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTelle
     val editable by viewModel.editModeState.collectAsStateWithLifecycle()
 
     Column {
-        InfoHeader()
+//        InfoHeader()
 
         StoryTellerTimeline(
             modifier = Modifier.fillMaxSize(),
