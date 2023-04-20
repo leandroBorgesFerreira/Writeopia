@@ -1,6 +1,5 @@
 package br.com.leandroferreira.storyteller.drawer
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,7 +24,8 @@ object DefaultDrawers {
     fun create(
         editable: Boolean = false,
         onListCommand: (Command) -> Unit,
-        onTextEdit: (String, Int) -> Unit
+        onTextEdit: (String, Int) -> Unit,
+        mergeRequest: (receiving: StoryUnit, sending: StoryUnit) -> Unit = { _, _ -> }
     ): Map<String, StoryUnitDrawer> =
         buildMap {
             val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->
@@ -58,10 +58,7 @@ object DefaultDrawers {
                     .clip(shape = RoundedCornerShape(size = 12.dp))
                     .background(Color(0xFFFAF8F2)),
                 onTextEdit = onTextEdit,
-                mergeRequest = { receiving: StoryUnit, sending: StoryUnit ->
-                    Log.d("MergeRequest", "receiving position: " +
-                        "${receiving.localPosition}, sending position: ${sending.localPosition}")
-                }
+                mergeRequest = mergeRequest
             )
 
             put(

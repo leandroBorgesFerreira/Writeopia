@@ -130,7 +130,8 @@ private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTelle
             drawers = DefaultDrawers.create(
                 editable = editable,
                 onListCommand = storyTellerViewModel::onListCommand,
-                onTextEdit = storyTellerViewModel::onTextEdit
+                onTextEdit = storyTellerViewModel::onTextEdit,
+                mergeRequest = storyTellerViewModel::mergeRequest
             )
         )
     }
