@@ -40,9 +40,10 @@ object DefaultDrawers {
             val imageDrawer = ImageStepDrawer(
                 containerModifier = Modifier
                     .clip(shape = RoundedCornerShape(size = 12.dp))
-                    .background(Color(0xFFE1E0E0))
-                    .fillMaxWidth()
-                    .padding(4.dp)
+//                    .background(Color(0xFFE1E0E0))
+//                    .fillMaxWidth()
+                ,
+                mergeRequest = mergeRequest
             )
 
             val imageDrawerInGroup = ImageStepDrawer(
@@ -58,7 +59,6 @@ object DefaultDrawers {
                     .clip(shape = RoundedCornerShape(size = 12.dp))
                     .background(Color(0xFFFAF8F2)),
                 onTextEdit = onTextEdit,
-                mergeRequest = mergeRequest
             )
 
             put(

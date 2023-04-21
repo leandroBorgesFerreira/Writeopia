@@ -113,3 +113,29 @@ fun messages(): List<StoryUnit> = buildList {
         )
     )
 }
+fun images(): List<StoryUnit> = buildList {
+    add(
+        StoryStep(
+            id = "2",
+            type = "image",
+            url = "https://fastly.picsum.photos/id/15/400/400.jpg?hmac=xv-6mggpYPLIQ9eNAHrl1qKPHjyUCYlBoNBvdsqF4cY",
+            localPosition = 1
+        )
+    )
+    add(
+        StoryStep(
+            id = "4",
+            type = "image",
+            url = "https://fastly.picsum.photos/id/1018/400/400.jpg?hmac=MwHJoMaVXsBbqg-LFoDVL6P8TCDkSEikExptCkkHESQ",
+            localPosition = 2
+        )
+    )
+    add(
+        StoryStep(
+            id = "6",
+            type = "image",
+            url = "https://fastly.picsum.photos/id/984/400/400.jpg?hmac=CaqZ-rcUAbmidwURZcBynO7aIAC-FaktVN7X8lIvlmE",
+            localPosition = 3
+        )
+    )
+}
