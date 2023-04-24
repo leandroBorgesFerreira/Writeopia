@@ -3,6 +3,7 @@ package br.com.leandroferreira.storyteller.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.leandroferreira.storyteller.model.Command
+import br.com.leandroferreira.storyteller.model.GroupStep
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.StepsNormalizationBuilder
@@ -44,7 +45,12 @@ class StoryTellerViewModel(
 
         val receiver = _normalizedSteps.value
             .values
-            .find { storyUnit -> storyUnit.id == receiverId }
+            .find { storyUnit ->
+                storyUnit.id == receiverId ||
+                    (storyUnit as? GroupStep)?.steps?.any { innerSteps ->
+                        innerSteps.id == receiverId
+                    } == true
+            }
 
         if (sender != null && receiver != null) {
             val mutableHistory = _normalizedSteps.value.toMutableMap()

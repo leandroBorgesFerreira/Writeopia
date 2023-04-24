@@ -127,7 +127,8 @@ fun images(): List<StoryUnit> = buildList {
             id = "4",
             type = "image",
             url = "https://fastly.picsum.photos/id/1018/400/400.jpg?hmac=MwHJoMaVXsBbqg-LFoDVL6P8TCDkSEikExptCkkHESQ",
-            localPosition = 2
+            localPosition = 2,
+            text = "1"
         )
     )
     add(
@@ -135,7 +136,8 @@ fun images(): List<StoryUnit> = buildList {
             id = "6",
             type = "image",
             url = "https://fastly.picsum.photos/id/984/400/400.jpg?hmac=CaqZ-rcUAbmidwURZcBynO7aIAC-FaktVN7X8lIvlmE",
-            localPosition = 3
+            localPosition = 3,
+            text = "2"
         )
     )
     add(
@@ -143,7 +145,8 @@ fun images(): List<StoryUnit> = buildList {
             id = "8",
             type = "image",
             url = "https://fastly.picsum.photos/id/949/400/400.jpg?hmac=lGa4vz7HqqRP0noWMCCKo6Klo_MaYg6WpUulORAoVQU",
-            localPosition = 4
+            localPosition = 4,
+            text = "3"
         )
     )
 }

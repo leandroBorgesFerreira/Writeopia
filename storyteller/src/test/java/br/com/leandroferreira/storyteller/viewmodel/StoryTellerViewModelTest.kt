@@ -9,6 +9,7 @@ import br.com.leandroferreira.storyteller.utils.StoryData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
@@ -169,5 +170,11 @@ class StoryTellerViewModelTest {
         assertTrue(newHistory2[0] is GroupStep)
         assertEquals(3, (newHistory2[0] as GroupStep).steps.size)
         assertTrue(newHistory2[1] is StoryStep)
+    }
+
+    @Test
+    @Ignore("To implement")
+    fun `it should be possible to merge an image inside a message group`() {
+        // To implement!!
     }
 }

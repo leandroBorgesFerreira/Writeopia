@@ -40,7 +40,8 @@ object DefaultDrawers {
             )
 
             val imageDrawerInGroup = ImageStepDrawer(
-                containerModifier = ImageStepDrawer.Companion::defaultModifier
+                containerModifier = ImageStepDrawer.Companion::defaultModifier,
+                mergeRequest = mergeRequest
             )
 
             val messageDrawer = MessageStepDrawer(

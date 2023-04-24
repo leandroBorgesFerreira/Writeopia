@@ -29,6 +29,12 @@ fun DropTarget(
     }) {
         val data =
             if (isCurrentDropTarget && !dragInfo.isDragging) dragInfo.dataToDrop else null
-        content(isCurrentDropTarget, data)
+
+        if (data != null) {
+            content(isCurrentDropTarget, data)
+            dragInfo.dataToDrop = null
+        } else {
+            content(isCurrentDropTarget,null)
+        }
     }
 }

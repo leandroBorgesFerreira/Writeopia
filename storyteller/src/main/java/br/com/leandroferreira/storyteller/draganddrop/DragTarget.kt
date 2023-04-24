@@ -1,6 +1,5 @@
 package br.com.leandroferreira.storyteller.draganddrop
 
-import android.util.Log
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
@@ -32,15 +31,11 @@ fun DragTarget(
         }
         .pointerInput(Unit) {
             detectDragGesturesAfterLongPress(onDragStart = { offset ->
-//                Log.d("DragTarget", "start. offset y: ${offset.y}")
-//                Log.d("DragTarget", "start. offset x: ${offset.x}")
-//                Log.d("DragTarget", "start. currentPosition: $currentPosition")
                 currentState.dataToDrop = dataToDrop
                 currentState.isDragging = true
                 currentState.dragPosition = currentPosition + offset
                 currentState.draggableComposable = content
             }, onDrag = { change, dragAmount ->
-//                Log.d("DragTarget", "Drag started!! drag y: ${dragAmount.y}")
                 change.consume()
                 currentState.dragOffset += Offset(dragAmount.x, dragAmount.y)
             }, onDragEnd = {
