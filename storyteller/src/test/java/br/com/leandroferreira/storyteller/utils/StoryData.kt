@@ -1,4 +1,4 @@
-package br.com.storyteller.utils
+package br.com.leandroferreira.storyteller.utils
 
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
@@ -25,6 +25,30 @@ object StoryData {
                 id = "3",
                 type = "image",
                 localPosition = 0
+            )
+        )
+    }
+
+    fun imagesInLine(): List<StoryStep> = buildList {
+        add(
+            StoryStep(
+                id = "1",
+                type = "image",
+                localPosition = 0
+            )
+        )
+        add(
+            StoryStep(
+                id = "2",
+                type = "image",
+                localPosition = 1
+            )
+        )
+        add(
+            StoryStep(
+                id = "3",
+                type = "image",
+                localPosition = 2
             )
         )
     }

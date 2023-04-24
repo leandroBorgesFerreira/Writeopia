@@ -39,8 +39,10 @@ class StoryTellerViewModel(
         val mutableHistory = _normalizedSteps.value.toMutableMap()
         mutableHistory[sender.localPosition] = sender.copyWithNewPosition(receiving.localPosition)
 
-        _normalizedSteps.value = stepsNormalizer(mutableHistory.values.toList())
+        val normalized = stepsNormalizer(mutableHistory.values.toList())
             .associateBy { story -> story.localPosition }
+
+        _normalizedSteps.value = normalized
     }
 
     fun onListCommand(command: Command) {

@@ -1,4 +1,4 @@
-package br.com.storyteller.normalization.merge
+package br.com.leandroferreira.storyteller.normalization.merge
 
 import br.com.leandroferreira.storyteller.model.GroupStep
 import br.com.leandroferreira.storyteller.model.StoryStep
@@ -6,7 +6,7 @@ import br.com.leandroferreira.storyteller.normalization.merge.MergeLogic
 import br.com.leandroferreira.storyteller.normalization.merge.MergeNormalization
 import br.com.leandroferreira.storyteller.normalization.merge.StepsMergerCoordinator
 import br.com.leandroferreira.storyteller.normalization.merge.steps.StepToStepMerger
-import br.com.storyteller.utils.StoryData
+import br.com.leandroferreira.storyteller.utils.StoryData
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import org.junit.Ignore

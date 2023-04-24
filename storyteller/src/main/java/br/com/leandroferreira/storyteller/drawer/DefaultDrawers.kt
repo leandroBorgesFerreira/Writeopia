@@ -1,6 +1,7 @@
 package br.com.leandroferreira.storyteller.drawer
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -38,19 +39,12 @@ object DefaultDrawers {
             }
 
             val imageDrawer = ImageStepDrawer(
-                containerModifier = Modifier
-                    .clip(shape = RoundedCornerShape(size = 12.dp))
-//                    .background(Color(0xFFE1E0E0))
-//                    .fillMaxWidth()
-                ,
+                containerModifier = ImageStepDrawer.Companion::defaultModifier,
                 mergeRequest = mergeRequest
             )
 
             val imageDrawerInGroup = ImageStepDrawer(
-                containerModifier = Modifier
-                    .clip(shape = RoundedCornerShape(size = 12.dp))
-                    .background(Color(0xFFE1E0E0))
-                    .size(150.dp)
+                containerModifier = ImageStepDrawer.Companion::defaultModifier
             )
 
             val messageDrawer = MessageStepDrawer(
@@ -69,7 +63,7 @@ object DefaultDrawers {
             put(StepType.IMAGE.type, if (editable) commandsComposite(imageDrawer) else imageDrawer)
             put(
                 StepType.GROUP_IMAGE.type,
-                if (editable){
+                if (editable) {
                     commandsComposite(ImageGroupDrawer(imageDrawerInGroup))
                 } else {
                     ImageGroupDrawer(imageDrawerInGroup)
