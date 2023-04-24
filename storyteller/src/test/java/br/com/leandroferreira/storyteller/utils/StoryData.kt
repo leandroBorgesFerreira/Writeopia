@@ -51,6 +51,20 @@ object StoryData {
                 localPosition = 2
             )
         )
+        add(
+            StoryStep(
+                id = "4",
+                type = "image",
+                localPosition = 3
+            )
+        )
+        add(
+            StoryStep(
+                id = "5",
+                type = "image",
+                localPosition = 4
+            )
+        )
     }
 
     fun messagesInLine(): List<StoryUnit> = buildList {
