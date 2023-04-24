@@ -199,4 +199,31 @@ class StoryTellerViewModelTest {
             assertEquals(index, storyUnit.localPosition)
         }
     }
+
+    @Test
+    fun `it should be possible to merge an image outside a message group`() = runTest {
+        val storyViewModel = StoryTellerViewModel(imageGroupRepo)
+        storyViewModel.requestHistoriesFromApi()
+
+        val initialSize = (imageGroupRepo.history()[0] as GroupStep).steps.size
+
+        val currentStory = storyViewModel.normalizedStepsState.value.values
+
+        storyViewModel.mergeRequest(
+            receiverId = currentStory.last().id,
+            senderId = (currentStory.first() as GroupStep).steps.first().id
+        )
+
+        val newStory = storyViewModel.normalizedStepsState.value
+
+        assertEquals(2, newStory.size)
+        assertTrue(newStory[0] is GroupStep)
+        assertTrue(newStory[1] is GroupStep)
+        assertEquals(initialSize - 1, (newStory[0] as GroupStep).steps.size)
+        assertEquals(2, (newStory[1] as GroupStep).steps.size)
+
+        newStory.values.forEachIndexed { index, storyUnit ->
+            assertEquals(index, storyUnit.localPosition)
+        }
+    }
 }
