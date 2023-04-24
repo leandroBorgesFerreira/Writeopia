@@ -9,7 +9,6 @@ import br.com.leandroferreira.storyteller.utils.StoryData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
@@ -21,6 +20,10 @@ class StoryTellerViewModelTest {
 
     private val mockRepo: StoriesRepository = object : StoriesRepository {
         override suspend fun history(): List<StoryUnit> = StoryData.imagesInLine()
+    }
+
+    private val imageGroupRepo: StoriesRepository = object : StoriesRepository {
+        override suspend fun history(): List<StoryUnit> = StoryData.imageGroup()
     }
 
     @Test
@@ -173,8 +176,27 @@ class StoryTellerViewModelTest {
     }
 
     @Test
-    @Ignore("To implement")
-    fun `it should be possible to merge an image inside a message group`() {
-        // To implement!!
+    fun `it should be possible to merge an image inside a message group`() = runTest {
+        val storyViewModel = StoryTellerViewModel(imageGroupRepo)
+        storyViewModel.requestHistoriesFromApi()
+
+        val initialSize = (imageGroupRepo.history()[0] as GroupStep).steps.size
+
+        val currentStory = storyViewModel.normalizedStepsState.value.values
+
+        storyViewModel.mergeRequest(
+            receiverId = currentStory.first().id,
+            senderId = currentStory.last().id
+        )
+
+        val newStory = storyViewModel.normalizedStepsState.value
+
+        assertEquals(1, newStory.size)
+        assertTrue(newStory[0] is GroupStep)
+        assertEquals(initialSize + 1, (newStory[0] as GroupStep).steps.size)
+
+        newStory.values.forEachIndexed { index, storyUnit ->
+            assertEquals(index, storyUnit.localPosition)
+        }
     }
 }
