@@ -48,21 +48,21 @@ object StoryData {
             StoryStep(
                 id = "3",
                 type = "image",
-                localPosition = 2
+                localPosition = 3
             )
         )
         add(
             StoryStep(
                 id = "4",
                 type = "image",
-                localPosition = 3
+                localPosition = 5
             )
         )
         add(
             StoryStep(
                 id = "5",
                 type = "image",
-                localPosition = 4
+                localPosition = 7
             )
         )
     }

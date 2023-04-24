@@ -35,14 +35,27 @@ class StoryTellerViewModel(
         }
     }
 
-    fun mergeRequest(receiving: StoryUnit, sender: StoryUnit) {
-        val mutableHistory = _normalizedSteps.value.toMutableMap()
-        mutableHistory[sender.localPosition] = sender.copyWithNewPosition(receiving.localPosition)
 
-        val normalized = stepsNormalizer(mutableHistory.values.toList())
-            .associateBy { story -> story.localPosition }
+    //Todo: Review the performance of this method later
+    fun mergeRequest(receiverId: String, senderId: String) {
+        val sender = _normalizedSteps.value
+            .values
+            .find { storyUnit -> storyUnit.id == senderId }
 
-        _normalizedSteps.value = normalized
+        val receiver = _normalizedSteps.value
+            .values
+            .find { storyUnit -> storyUnit.id == receiverId }
+
+        if (sender != null && receiver != null) {
+            val mutableHistory = _normalizedSteps.value.toMutableMap()
+            mutableHistory[sender.localPosition] =
+                sender.copyWithNewPosition(receiver.localPosition)
+
+            val normalized = stepsNormalizer(mutableHistory.values.toList())
+                .associateBy { story -> story.localPosition }
+
+            _normalizedSteps.value = normalized
+        }
     }
 
     fun onListCommand(command: Command) {

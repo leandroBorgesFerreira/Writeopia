@@ -2,7 +2,6 @@ package br.com.leandroferreira.storyteller.drawer.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -30,7 +29,7 @@ import coil.request.ImageRequest
 
 class ImageStepDrawer(
     private val containerModifier: (Boolean) -> Modifier? = { null },
-    private val mergeRequest: (receiving: StoryUnit, sending: StoryUnit) -> Unit = { _, _ -> }
+    private val mergeRequest: (receiverId: String, senderId: String) -> Unit = { _, _ -> }
 ) : StoryUnitDrawer {
 
     @Composable
@@ -39,7 +38,7 @@ class ImageStepDrawer(
 
         DropTarget(modifier = Modifier.padding(6.dp)) { inBound, data ->
             if (inBound && data != null) {
-                mergeRequest(imageStep, data as StoryUnit)
+                mergeRequest(imageStep.id, (data as StoryUnit).id)
             }
 
             val imageModifier = containerModifier(inBound) ?: defaultModifier(inBound)

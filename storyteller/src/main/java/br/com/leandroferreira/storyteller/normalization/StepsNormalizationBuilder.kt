@@ -48,7 +48,5 @@ class StepsNormalizationBuilder {
     private fun reduceNormalizations(
         normalizations: List<(List<StoryUnit>) -> List<StoryUnit>>
     ): (List<StoryUnit>) -> List<StoryUnit> =
-        normalizations.reduce { fn, gn ->
-            return { gn(fn(it)) }
-        }
+        normalizations.reduce { fn, gn -> { stories -> gn(fn(stories)) } }
 }

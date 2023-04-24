@@ -142,7 +142,7 @@ fun images(): List<StoryUnit> = buildList {
         StoryStep(
             id = "8",
             type = "image",
-            url = "https://fastly.picsum.photos/id/984/400/400.jpg?hmac=CaqZ-rcUAbmidwURZcBynO7aIAC-FaktVN7X8lIvlmE",
+            url = "https://fastly.picsum.photos/id/949/400/400.jpg?hmac=lGa4vz7HqqRP0noWMCCKo6Klo_MaYg6WpUulORAoVQU",
             localPosition = 4
         )
     )

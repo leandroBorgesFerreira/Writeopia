@@ -1,6 +1,5 @@
 package br.com.leandroferreira.storyteller.normalization
 
-import br.com.leandroferreira.storyteller.normalization.StepsNormalizationBuilder
 import br.com.leandroferreira.storyteller.utils.StoryData
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
@@ -17,5 +16,9 @@ class StepsNormalizationBuilderTest {
         assertEquals(7, normalized.size)
         assertEquals("group_image", normalized[2].type)
         assertEquals("message", normalized.last().type)
+
+        normalized.forEachIndexed { index, storyUnit ->
+            assertEquals(index, storyUnit.localPosition)
+        }
     }
 }

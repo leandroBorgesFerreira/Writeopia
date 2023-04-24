@@ -1,10 +1,7 @@
 package br.com.leandroferreira.storyteller.drawer
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,7 +15,6 @@ import br.com.leandroferreira.storyteller.drawer.content.MessageStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.VideoStepDrawer
 import br.com.leandroferreira.storyteller.model.Command
 import br.com.leandroferreira.storyteller.model.StepType
-import br.com.leandroferreira.storyteller.model.StoryUnit
 
 object DefaultDrawers {
 
@@ -26,7 +22,7 @@ object DefaultDrawers {
         editable: Boolean = false,
         onListCommand: (Command) -> Unit,
         onTextEdit: (String, Int) -> Unit,
-        mergeRequest: (receiving: StoryUnit, sending: StoryUnit) -> Unit = { _, _ -> }
+        mergeRequest: (receiverId: String, senderId: String) -> Unit = { _, _ -> }
     ): Map<String, StoryUnitDrawer> =
         buildMap {
             val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->
