@@ -8,8 +8,11 @@ import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.StepsNormalizationBuilder
 import br.com.leandroferreira.storyteller.repository.StoriesRepository
+import br.com.leandroferreira.storyteller.viewmodel.move.MoveHandler
+import br.com.leandroferreira.storyteller.viewmodel.move.SpaceMoveHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class StoryTellerViewModel(
@@ -17,7 +20,8 @@ class StoryTellerViewModel(
     private val stepsNormalizer: (List<StoryUnit>) -> List<StoryUnit> =
         StepsNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
-        }
+        },
+    private val moveHandler: MoveHandler = SpaceMoveHandler()
 ) : ViewModel() {
 
     private val textChanges: MutableMap<Int, String> = mutableMapOf()
@@ -25,7 +29,7 @@ class StoryTellerViewModel(
     private val _normalizedSteps: MutableStateFlow<Map<Int, StoryUnit>> = MutableStateFlow(
         emptyMap()
     )
-    val normalizedStepsState: StateFlow<Map<Int, StoryUnit>> = _normalizedSteps
+    val normalizedStepsState: StateFlow<Map<Int, StoryUnit>> = _normalizedSteps.asStateFlow()
 
     fun requestHistoriesFromApi(force: Boolean = false) {
         if (_normalizedSteps.value.isEmpty() || force) {
@@ -39,21 +43,8 @@ class StoryTellerViewModel(
 
     //Todo: Review the performance of this method later
     fun mergeRequest(receiverId: String, senderId: String) {
-        val sender = _normalizedSteps.value
-            .values
-            .find { storyUnit -> storyUnit.id == senderId ||
-                (storyUnit as? GroupStep)?.steps?.any { innerSteps ->
-                    innerSteps.id == senderId
-                } == true}
-
-        val receiver = _normalizedSteps.value
-            .values
-            .find { storyUnit ->
-                storyUnit.id == receiverId ||
-                    (storyUnit as? GroupStep)?.steps?.any { innerSteps ->
-                        innerSteps.id == receiverId
-                    } == true
-            }
+        val sender = FindStory.findById(_normalizedSteps.value, senderId)
+        val receiver = FindStory.findById(_normalizedSteps.value, receiverId)
 
         if (sender != null && receiver != null) {
             val mutableHistory = _normalizedSteps.value.toMutableMap()
@@ -68,17 +59,10 @@ class StoryTellerViewModel(
     }
 
     fun moveRequest(unitId: String, newPosition: Int) {
-        val unitToMove = _normalizedSteps.value
-            .values
-            .find { storyUnit -> storyUnit.id == unitId ||
-                (storyUnit as? GroupStep)?.steps?.any { innerSteps ->
-                    innerSteps.id == unitId
-                } == true}
+        val result =
+            moveHandler.handleMove(_normalizedSteps.value.toMutableMap(), unitId, newPosition)
 
-        val mutableSteps = _normalizedSteps.value.toMutableMap()
-
-
-
+        _normalizedSteps.value = result
     }
 
     fun onListCommand(command: Command) {

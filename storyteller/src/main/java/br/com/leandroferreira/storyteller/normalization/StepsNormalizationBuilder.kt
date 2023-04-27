@@ -41,7 +41,6 @@ class StepsNormalizationBuilder {
 
         normalizations.add(SortNormalization::sort)
         normalizations.add(mergeNormalization::mergeSteps)
-        normalizations.add(GroupSplitterNormalization::split)
         normalizations.add(PositionNormalization::normalizePosition)
     }
 

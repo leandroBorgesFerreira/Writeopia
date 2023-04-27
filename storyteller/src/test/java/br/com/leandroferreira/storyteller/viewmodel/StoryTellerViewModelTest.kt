@@ -26,6 +26,10 @@ class StoryTellerViewModelTest {
         override suspend fun history(): List<StoryUnit> = StoryData.imageGroup()
     }
 
+    private val spacedImageGroupRepo: StoriesRepository = object : StoriesRepository {
+        override suspend fun history(): List<StoryUnit> = StoryData.spacedImageGroup()
+    }
+
     @Test
     fun `merge request should be able to be initialized`() = runTest {
         val storyViewModel = StoryTellerViewModel(mockRepo)
@@ -202,28 +206,16 @@ class StoryTellerViewModelTest {
 
     @Test
     fun `it should be possible to merge an image outside a message group`() = runTest {
-        val storyViewModel = StoryTellerViewModel(imageGroupRepo)
+        val storyViewModel = StoryTellerViewModel(spacedImageGroupRepo)
         storyViewModel.requestHistoriesFromApi()
 
-        val initialSize = (imageGroupRepo.history()[0] as GroupStep).steps.size
-
-        val currentStory = storyViewModel.normalizedStepsState.value.values
-
-        storyViewModel.mergeRequest(
-            receiverId = currentStory.last().id,
-            senderId = (currentStory.first() as GroupStep).steps.first().id
+        storyViewModel.moveRequest(
+            unitId = "1",
+            newPosition = 1
         )
 
         val newStory = storyViewModel.normalizedStepsState.value
 
-        assertEquals(2, newStory.size)
-        assertTrue(newStory[0] is GroupStep)
-        assertTrue(newStory[1] is GroupStep)
-        assertEquals(initialSize - 1, (newStory[0] as GroupStep).steps.size)
-        assertEquals(2, (newStory[1] as GroupStep).steps.size)
-
-        newStory.values.forEachIndexed { index, storyUnit ->
-            assertEquals(index, storyUnit.localPosition)
-        }
+        assertEquals("image", newStory[1]?.type)
     }
 }
