@@ -13,6 +13,6 @@ class FindStoryTest {
         val input = StoryData.imageGroup().associateBy { storyUnit -> storyUnit.localPosition }
         val result = FindStory.findById(input, idToSearch)
 
-        assertEquals(idToSearch, result?.id)
+        assertEquals(idToSearch, result?.first?.id)
     }
 }

@@ -212,13 +212,13 @@ class StoryTellerViewModelTest {
         }
     }
 
-    @Test //Todo: I need to remove the StoryStep from the GroupStep too!
+    @Test //Todo: I need to remove the StoryStep from the GroupStep too and add the spaces back!
     fun `it should be possible to merge an image outside a message group`() = runTest {
         val storyViewModel = StoryTellerViewModel(imageGroupRepo)
         storyViewModel.requestHistoriesFromApi()
 
         val currentStory = storyViewModel.normalizedStepsState.value
-        val initialSize = (currentStory[1] as GroupStep).steps.size
+        val initialGroupSize = (currentStory[1] as GroupStep).steps.size
 
         storyViewModel.moveRequest(
             unitId = "1",
@@ -228,7 +228,7 @@ class StoryTellerViewModelTest {
         val newStory = storyViewModel.normalizedStepsState.value
 
         assertEquals("image", newStory[2]?.type)
-        assertEquals(initialSize - 1, (newStory[1] as GroupStep).steps.size)
+        assertEquals(initialGroupSize - 1, (newStory[1] as GroupStep).steps.size)
     }
 
     @Test

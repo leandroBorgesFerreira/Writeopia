@@ -17,12 +17,19 @@ class SpaceMoveHandler : MoveHandler {
                 "doesn't belong to a space"
         )
 
-        FindStory.findById(storyUnits, storyId)?.let { storyToMove ->
-            val oldPosition = storyToMove.localPosition
+        FindStory.findById(storyUnits, storyId)
+            ?.takeIf { (storyToMove, _) -> storyToMove != null }
+            ?.let { (storyToMove, containerGroup) ->
+                if (containerGroup != null) {
+                    val newSteps = containerGroup.steps
+                        .filter { storyUnit -> storyUnit.id != storyId }
+                    storyUnits[containerGroup.localPosition] = containerGroup.copy(steps = newSteps)
+                } else {
+                    storyUnits.remove(storyToMove!!.localPosition)
+                }
 
-            storyUnits.remove(oldPosition)
-            storyUnits[newPosition] = storyToMove.copyWithNewPosition(newPosition)
-        }
+                storyUnits[newPosition] = storyToMove!!.copyWithNewPosition(newPosition)
+            }
 
         return storyUnits
     }

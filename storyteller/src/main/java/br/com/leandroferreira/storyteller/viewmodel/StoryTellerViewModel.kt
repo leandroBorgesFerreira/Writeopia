@@ -46,8 +46,8 @@ class StoryTellerViewModel(
 
     //Todo: Review the performance of this method later
     fun mergeRequest(receiverId: String, senderId: String) {
-        val sender = FindStory.findById(_normalizedSteps.value, senderId)
-        val receiver = FindStory.findById(_normalizedSteps.value, receiverId)
+        val sender = FindStory.findById(_normalizedSteps.value, senderId)?.first
+        val receiver = FindStory.findById(_normalizedSteps.value, receiverId)?.first
 
         if (sender != null && receiver != null) {
             val mutableHistory = _normalizedSteps.value.toMutableMap()
