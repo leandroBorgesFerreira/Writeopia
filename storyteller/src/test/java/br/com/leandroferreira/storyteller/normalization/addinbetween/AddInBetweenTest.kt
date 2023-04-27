@@ -3,6 +3,7 @@ package br.com.leandroferreira.storyteller.normalization.addinbetween
 import br.com.leandroferreira.storyteller.utils.StoryData
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
+import org.junit.Assert.fail
 import org.junit.Test
 
 class AddInBetweenTest {
@@ -30,12 +31,18 @@ class AddInBetweenTest {
 
     @Test
     fun `it should add only when necessary`() {
-//        val input = StoryData.spacedImageGroup()
-//        val initialSize = input.size
-//        val addInBetween =
+        val input = StoryData.spacedImageStepsList()
+        val addInBetween = AddInBetween.spaces()
 
-//        addInBetween.insert(input)
+        val result = addInBetween.insert(input)
 
-//        assertEquals(initialSize * 2 + 1, result.size)
+        result.reduce { acc, storyUnit ->
+            if (acc.type == "space" && storyUnit.type == "space") {
+                fail("The AddInBetween should not add repeated StoryUnits, " +
+                    "it should only add the missing ones.")
+            }
+
+            storyUnit
+        }
     }
 }

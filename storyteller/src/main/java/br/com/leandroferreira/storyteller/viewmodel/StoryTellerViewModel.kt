@@ -126,8 +126,7 @@ class StoryTellerViewModel(
         }
 
         thisStep?.let { step ->
-            mutableHistory[position - 1] =
-                step.copyWithNewPosition(position - 1)
+            mutableHistory[position - 1] = step.copyWithNewPosition(position - 1)
         }
 
         return mutableHistory.values

@@ -9,16 +9,21 @@ class AddInBetween(private val unitToAdd: StoryUnit) {
     fun insert(units: List<StoryUnit>): List<StoryUnit> =
         buildList {
             var acc = 0
-            add(unitToAdd.copyWithNewPosition(acc++))
 
-            addAll(
-                units.flatMap { unit ->
-                    listOf(
-                        unit.copyWithNewPosition(acc++),
-                        unitToAdd.copyWithNewPosition(acc++)
+            if (units.first().type != unitToAdd.type) {
+                add(unitToAdd.copyWithNewPosition(acc++))
+            }
+
+            units.forEach { storyUnit ->
+                if (storyUnit.type != unitToAdd.type) {
+                    addAll(
+                        listOf(
+                            storyUnit.copyWithNewPosition(acc++),
+                            unitToAdd.copyWithNewPosition(acc++),
+                        )
                     )
                 }
-            )
+            }
         }
 
     companion object {

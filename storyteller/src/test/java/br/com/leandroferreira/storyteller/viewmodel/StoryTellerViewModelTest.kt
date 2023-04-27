@@ -4,7 +4,6 @@ import br.com.leandroferreira.storyteller.model.GroupStep
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.UnchangedNormalizer
-import br.com.leandroferreira.storyteller.normalization.addinbetween.AddInBetween
 import br.com.leandroferreira.storyteller.repository.StoriesRepository
 import br.com.leandroferreira.storyteller.utils.MainDispatcherRule
 import br.com.leandroferreira.storyteller.utils.StoryData
@@ -212,7 +211,7 @@ class StoryTellerViewModelTest {
         }
     }
 
-    @Test //Todo: I need to remove the StoryStep from the GroupStep too and add the spaces back!
+    @Test
     fun `it should be possible to merge an image outside a message group`() = runTest {
         val storyViewModel = StoryTellerViewModel(imageGroupRepo)
         storyViewModel.requestHistoriesFromApi()
@@ -236,8 +235,6 @@ class StoryTellerViewModelTest {
         val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
         storyViewModel.requestHistoriesFromApi()
 
-        val currentStory = storyViewModel.normalizedStepsState.value
-
         storyViewModel.moveRequest(
             unitId = "1",
             newPosition = 4
@@ -245,6 +242,6 @@ class StoryTellerViewModelTest {
 
         val newStory = storyViewModel.normalizedStepsState.value
 
-        assertEquals(newStory[4]!!.id, "1")
+        assertEquals("The history 4 should have been moved", newStory[4]!!.id, "1")
     }
 }

@@ -102,6 +102,44 @@ object StoryData {
         )
     }
 
+    fun spacedImageStepsList(): List<StoryStep> = buildList {
+        add(
+            StoryStep(
+                id = "1",
+                type = "image",
+                localPosition = 0
+            )
+        )
+        add(
+            StoryStep(
+                id = "pamsdplams",
+                type = "space",
+                localPosition = 1
+            )
+        )
+        add(
+            StoryStep(
+                id = "3",
+                type = "image",
+                localPosition = 2
+            )
+        )
+        add(
+            StoryStep(
+                id = "askndpalsd",
+                type = "space",
+                localPosition = 3
+            )
+        )
+        add(
+            StoryStep(
+                id = "5",
+                type = "image",
+                localPosition = 4
+            )
+        )
+    }
+
     fun imagesInLine(): List<StoryStep> = buildList {
         add(
             StoryStep(
