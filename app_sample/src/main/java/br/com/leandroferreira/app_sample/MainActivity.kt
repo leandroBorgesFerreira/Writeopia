@@ -131,7 +131,8 @@ private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTelle
                 editable = editable,
                 onListCommand = storyTellerViewModel::onListCommand,
                 onTextEdit = storyTellerViewModel::onTextEdit,
-                mergeRequest = storyTellerViewModel::mergeRequest
+                mergeRequest = storyTellerViewModel::mergeRequest,
+                moveRequest = storyTellerViewModel::moveRequest
             )
         )
     }

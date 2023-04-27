@@ -3,10 +3,10 @@ package br.com.leandroferreira.storyteller.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.leandroferreira.storyteller.model.Command
-import br.com.leandroferreira.storyteller.model.GroupStep
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.StepsNormalizationBuilder
+import br.com.leandroferreira.storyteller.normalization.addinbetween.AddInBetween
 import br.com.leandroferreira.storyteller.repository.StoriesRepository
 import br.com.leandroferreira.storyteller.viewmodel.move.MoveHandler
 import br.com.leandroferreira.storyteller.viewmodel.move.SpaceMoveHandler
@@ -21,7 +21,9 @@ class StoryTellerViewModel(
         StepsNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
         },
-    private val moveHandler: MoveHandler = SpaceMoveHandler()
+    private val moveHandler: MoveHandler = SpaceMoveHandler(),
+    private val spacesNormalizer: (List<StoryUnit>) -> List<StoryUnit> =
+        AddInBetween.spaces()::insert
 ) : ViewModel() {
 
     private val textChanges: MutableMap<Int, String> = mutableMapOf()
@@ -34,8 +36,9 @@ class StoryTellerViewModel(
     fun requestHistoriesFromApi(force: Boolean = false) {
         if (_normalizedSteps.value.isEmpty() || force) {
             viewModelScope.launch {
-                _normalizedSteps.value = stepsNormalizer(storiesRepository.history())
-                    .associateBy { story -> story.localPosition }
+                _normalizedSteps.value =
+                    spacesNormalizer(stepsNormalizer(storiesRepository.history()))
+                        .associateBy { story -> story.localPosition }
             }
         }
     }
@@ -59,8 +62,11 @@ class StoryTellerViewModel(
     }
 
     fun moveRequest(unitId: String, newPosition: Int) {
-        val result =
-            moveHandler.handleMove(_normalizedSteps.value.toMutableMap(), unitId, newPosition)
+        val result = moveHandler.handleMove(
+            _normalizedSteps.value.toMutableMap(),
+            unitId,
+            newPosition
+        )
 
         _normalizedSteps.value = result
     }

@@ -11,12 +11,13 @@ class AddInBetween(private val unitToAdd: StoryUnit) {
             var acc = 0
             add(unitToAdd.copyWithNewPosition(acc++))
 
-            addAll(units.flatMap { unit ->
-                listOf(
-                    unit.copyWithNewPosition(acc++),
-                    unitToAdd.copyWithNewPosition(acc++)
-                )
-            }
+            addAll(
+                units.flatMap { unit ->
+                    listOf(
+                        unit.copyWithNewPosition(acc++),
+                        unitToAdd.copyWithNewPosition(acc++)
+                    )
+                }
             )
         }
 

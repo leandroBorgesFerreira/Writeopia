@@ -18,6 +18,7 @@ object StoryData {
                         type = "image",
                         localPosition = 0
                     ),
+
                     StoryStep(
                         id = "2",
                         type = "image",
@@ -37,48 +38,6 @@ object StoryData {
                 id = "4",
                 type = "image",
                 localPosition = 1
-            )
-        )
-    }
-
-    fun spacedImageGroup(): List<StoryUnit> = buildList {
-        add(
-            GroupStep(
-                id = "0",
-                type = "group_image",
-                localPosition = 0,
-                steps = listOf(
-                    StoryStep(
-                        id = "1",
-                        type = "image",
-                        localPosition = 0
-                    ),
-                    StoryStep(
-                        id = "2",
-                        type = "image",
-                        localPosition = 0
-                    ),
-
-                    StoryStep(
-                        id = "3",
-                        type = "image",
-                        localPosition = 0
-                    )
-                )
-            )
-        )
-        add(
-            StoryStep(
-                id = "space",
-                type = "space",
-                localPosition = 1
-            )
-        )
-        add(
-            StoryStep(
-                id = "4",
-                type = "image",
-                localPosition = 2
             )
         )
     }

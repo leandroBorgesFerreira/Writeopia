@@ -10,10 +10,12 @@ class AddInBetweenTest {
     @Test
     fun `it should be possible to add spacers between a list of stories`() {
         val input = StoryData.imageGroup()
+        val initialSize = input.size
         val addInBetween = AddInBetween.spaces()
 
         val result = addInBetween.insert(input)
 
+        assertEquals(initialSize * 2 + 1, result.size)
         result.forEachIndexed { index, storyUnit -> assertEquals(index, storyUnit.localPosition) }
         result.forEachIndexed { index, storyUnit ->
             val even = index % 2 == 0
@@ -24,5 +26,16 @@ class AddInBetweenTest {
                 assertNotEquals("space", storyUnit.type)
             }
         }
+    }
+
+    @Test
+    fun `it should add only when necessary`() {
+//        val input = StoryData.spacedImageGroup()
+//        val initialSize = input.size
+//        val addInBetween =
+
+//        addInBetween.insert(input)
+
+//        assertEquals(initialSize * 2 + 1, result.size)
     }
 }

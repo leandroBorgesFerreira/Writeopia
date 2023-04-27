@@ -12,13 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
+import br.com.leandroferreira.storyteller.model.StoryUnit
 
 internal val LocalDragTargetInfo = compositionLocalOf { DragTargetInfo() }
 
 @Composable
 fun DragTarget(
     modifier: Modifier = Modifier,
-    dataToDrop: Any,
+    dataToDrop: StoryUnit,
     content: @Composable () -> Unit
 ) {
     var currentPosition by remember { mutableStateOf(Offset.Zero) }

@@ -1,6 +1,5 @@
 package br.com.leandroferreira.storyteller.viewmodel.move
 
-import br.com.leandroferreira.storyteller.model.GroupStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
 import br.com.leandroferreira.storyteller.viewmodel.FindStory
 
@@ -18,10 +17,11 @@ class SpaceMoveHandler : MoveHandler {
                 "doesn't belong to a space"
         )
 
-        val storyToMove = FindStory.findById(storyUnits, storyId)
+        FindStory.findById(storyUnits, storyId)?.let { storyToMove ->
+            val oldPosition = storyToMove.localPosition
 
-        storyToMove?.copyWithNewPosition(newPosition)?.let { storyUnit ->
-            storyUnits[newPosition] = storyUnit
+            storyUnits.remove(oldPosition)
+            storyUnits[newPosition] = storyToMove.copyWithNewPosition(newPosition)
         }
 
         return storyUnits

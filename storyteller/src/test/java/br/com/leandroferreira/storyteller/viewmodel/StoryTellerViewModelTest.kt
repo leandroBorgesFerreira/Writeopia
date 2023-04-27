@@ -3,6 +3,8 @@ package br.com.leandroferreira.storyteller.viewmodel
 import br.com.leandroferreira.storyteller.model.GroupStep
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.normalization.UnchangedNormalizer
+import br.com.leandroferreira.storyteller.normalization.addinbetween.AddInBetween
 import br.com.leandroferreira.storyteller.repository.StoriesRepository
 import br.com.leandroferreira.storyteller.utils.MainDispatcherRule
 import br.com.leandroferreira.storyteller.utils.StoryData
@@ -18,7 +20,7 @@ class StoryTellerViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val mockRepo: StoriesRepository = object : StoriesRepository {
+    private val imagesInLineRepo: StoriesRepository = object : StoriesRepository {
         override suspend fun history(): List<StoryUnit> = StoryData.imagesInLine()
     }
 
@@ -26,24 +28,23 @@ class StoryTellerViewModelTest {
         override suspend fun history(): List<StoryUnit> = StoryData.imageGroup()
     }
 
-    private val spacedImageGroupRepo: StoriesRepository = object : StoriesRepository {
-        override suspend fun history(): List<StoryUnit> = StoryData.spacedImageGroup()
-    }
-
     @Test
     fun `merge request should be able to be initialized`() = runTest {
-        val storyViewModel = StoryTellerViewModel(mockRepo)
+        val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
         storyViewModel.requestHistoriesFromApi()
 
         assertTrue(storyViewModel.normalizedStepsState.value.isNotEmpty())
     }
 
     @Test
-    fun `merge request should work`() = runTest {
-        val history = mockRepo.history()
+    fun `merge request should work - without spaces`() = runTest {
+        val history = imagesInLineRepo.history()
         val initialSize = history.size
 
-        val storyViewModel = StoryTellerViewModel(mockRepo)
+        val storyViewModel = StoryTellerViewModel(
+            imagesInLineRepo,
+            spacesNormalizer = UnchangedNormalizer::skipChange
+        )
         storyViewModel.requestHistoriesFromApi()
 
         val currentStory = storyViewModel.normalizedStepsState.value.values
@@ -67,11 +68,14 @@ class StoryTellerViewModelTest {
     }
 
     @Test
-    fun `merge request should work2`() = runTest {
-        val history = mockRepo.history()
+    fun `merge request should work2 - without spaces`() = runTest {
+        val history = imagesInLineRepo.history()
         val initialSize = history.size
 
-        val storyViewModel = StoryTellerViewModel(mockRepo)
+        val storyViewModel = StoryTellerViewModel(
+            imagesInLineRepo,
+            spacesNormalizer = UnchangedNormalizer::skipChange
+        )
         storyViewModel.requestHistoriesFromApi()
 
         val currentStory = storyViewModel.normalizedStepsState.value.values
@@ -96,10 +100,13 @@ class StoryTellerViewModelTest {
 
     @Test
     fun `the merge must be idempotent`() = runTest {
-        val history = mockRepo.history()
+        val history = imagesInLineRepo.history()
         val initialSize = history.size
 
-        val storyViewModel = StoryTellerViewModel(mockRepo)
+        val storyViewModel = StoryTellerViewModel(
+            imagesInLineRepo,
+            spacesNormalizer = UnchangedNormalizer::skipChange
+        )
         storyViewModel.requestHistoriesFromApi()
 
         val currentStory = storyViewModel.normalizedStepsState.value.values
@@ -140,10 +147,13 @@ class StoryTellerViewModelTest {
 
     @Test
     fun `multiple merge requests should work`() = runTest {
-        val history = mockRepo.history()
+        val history = imagesInLineRepo.history()
         val initialSize = history.size
 
-        val storyViewModel = StoryTellerViewModel(mockRepo)
+        val storyViewModel = StoryTellerViewModel(
+            imagesInLineRepo,
+            spacesNormalizer = UnchangedNormalizer::skipChange
+        )
         storyViewModel.requestHistoriesFromApi()
 
         val currentStory = storyViewModel.normalizedStepsState.value.values
@@ -176,7 +186,10 @@ class StoryTellerViewModelTest {
 
     @Test
     fun `it should be possible to merge an image inside a message group`() = runTest {
-        val storyViewModel = StoryTellerViewModel(imageGroupRepo)
+        val storyViewModel = StoryTellerViewModel(
+            imageGroupRepo,
+            spacesNormalizer = UnchangedNormalizer::skipChange
+        )
         storyViewModel.requestHistoriesFromApi()
 
         val initialSize = (imageGroupRepo.history()[0] as GroupStep).steps.size
@@ -199,18 +212,39 @@ class StoryTellerViewModelTest {
         }
     }
 
-    @Test
+    @Test //Todo: I need to remove the StoryStep from the GroupStep too!
     fun `it should be possible to merge an image outside a message group`() = runTest {
-        val storyViewModel = StoryTellerViewModel(spacedImageGroupRepo)
+        val storyViewModel = StoryTellerViewModel(imageGroupRepo)
         storyViewModel.requestHistoriesFromApi()
+
+        val currentStory = storyViewModel.normalizedStepsState.value
+        val initialSize = (currentStory[1] as GroupStep).steps.size
 
         storyViewModel.moveRequest(
             unitId = "1",
-            newPosition = 1
+            newPosition = 2
         )
 
         val newStory = storyViewModel.normalizedStepsState.value
 
-        assertEquals("image", newStory[1]?.type)
+        assertEquals("image", newStory[2]?.type)
+        assertEquals(initialSize - 1, (newStory[1] as GroupStep).steps.size)
+    }
+
+    @Test
+    fun `it should be possible to switch images places`() {
+        val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
+        storyViewModel.requestHistoriesFromApi()
+
+        val currentStory = storyViewModel.normalizedStepsState.value
+
+        storyViewModel.moveRequest(
+            unitId = "1",
+            newPosition = 4
+        )
+
+        val newStory = storyViewModel.normalizedStepsState.value
+
+        assertEquals(newStory[4]!!.id, "1")
     }
 }

@@ -1,6 +1,7 @@
 package br.com.leandroferreira.storyteller.normalization
 
 import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.normalization.addinbetween.AddInBetween
 import br.com.leandroferreira.storyteller.normalization.merge.MergeLogic
 import br.com.leandroferreira.storyteller.normalization.merge.MergeNormalization
 import br.com.leandroferreira.storyteller.normalization.merge.StepsMergerCoordinator

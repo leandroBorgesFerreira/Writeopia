@@ -13,6 +13,7 @@ import br.com.leandroferreira.storyteller.drawer.content.ImageGroupDrawer
 import br.com.leandroferreira.storyteller.drawer.content.ImageStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.MessageStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.VideoStepDrawer
+import br.com.leandroferreira.storyteller.drawer.utilities.SpaceDrawer
 import br.com.leandroferreira.storyteller.model.Command
 import br.com.leandroferreira.storyteller.model.StepType
 
@@ -22,7 +23,8 @@ object DefaultDrawers {
         editable: Boolean = false,
         onListCommand: (Command) -> Unit,
         onTextEdit: (String, Int) -> Unit,
-        mergeRequest: (receiverId: String, senderId: String) -> Unit = { _, _ -> }
+        mergeRequest: (receiverId: String, senderId: String) -> Unit = { _, _ -> },
+        moveRequest: (String, Int) -> Unit = { _, _ -> }
     ): Map<String, StoryUnitDrawer> =
         buildMap {
             val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->
@@ -70,5 +72,7 @@ object DefaultDrawers {
                 StepType.VIDEO.type,
                 if (editable) commandsComposite(VideoStepDrawer()) else VideoStepDrawer()
             )
+
+            put("space", SpaceDrawer(moveRequest))
         }
 }
