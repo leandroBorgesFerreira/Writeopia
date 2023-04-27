@@ -22,7 +22,7 @@ class StoryTellerViewModel(
             defaultNormalizers()
         },
     private val moveHandler: MoveHandler = SpaceMoveHandler(),
-    private val spacesNormalizer: (List<StoryUnit>) -> List<StoryUnit> =
+    private val spacesNormalizer: (List<StoryUnit>, Boolean) -> List<StoryUnit> =
         AddInBetween.spaces()::insert
 ) : ViewModel() {
 
@@ -37,7 +37,7 @@ class StoryTellerViewModel(
         if (_normalizedSteps.value.isEmpty() || force) {
             viewModelScope.launch {
                 _normalizedSteps.value =
-                    spacesNormalizer(stepsNormalizer(storiesRepository.history()))
+                    spacesNormalizer(stepsNormalizer(storiesRepository.history()), true)
                         .associateBy { story -> story.localPosition }
             }
         }
@@ -68,9 +68,8 @@ class StoryTellerViewModel(
             newPosition
         )
 
-        //Todo: Review performance
-        _normalizedSteps.value =
-            spacesNormalizer(result.values.toList()).associateBy { it.localPosition }
+        val spacedResult = spacesNormalizer(result.values.toList(), true)
+        _normalizedSteps.value = spacedResult.associateBy { it.localPosition }
     }
 
     fun onListCommand(command: Command) {

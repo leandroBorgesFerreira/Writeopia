@@ -6,15 +6,26 @@ import java.util.UUID
 
 class AddInBetween(private val unitToAdd: StoryUnit) {
 
-    fun insert(units: List<StoryUnit>): List<StoryUnit> =
-        buildList {
+    fun insert(units: List<StoryUnit>, filterRepeated: Boolean = true): List<StoryUnit> {
+        val filteredUnits = units.fold(listOf<StoryUnit>()) { acc, storyUnit ->
+            if (acc.isNotEmpty() &&
+                acc.last().type == unitToAdd.type &&
+                storyUnit.type == unitToAdd.type
+            ) {
+                acc
+            } else {
+                acc + storyUnit
+            }
+        }
+
+        return buildList {
             var acc = 0
 
-            if (units.first().type != unitToAdd.type) {
+            if (filteredUnits.first().type != unitToAdd.type) {
                 add(unitToAdd.copyWithNewPosition(acc++))
             }
 
-            units.forEach { storyUnit ->
+            filteredUnits.forEach { storyUnit ->
                 if (storyUnit.type != unitToAdd.type) {
                     addAll(
                         listOf(
@@ -22,9 +33,13 @@ class AddInBetween(private val unitToAdd: StoryUnit) {
                             unitToAdd.copyWithNewPosition(acc++),
                         )
                     )
+                } else {
+                    add(storyUnit.copyWithNewPosition(acc++))
                 }
             }
         }
+    }
+
 
     companion object {
         fun spaces(): AddInBetween =

@@ -4,5 +4,5 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 
 object UnchangedNormalizer {
 
-    fun skipChange(stories: List<StoryUnit>): List<StoryUnit> = stories
+    fun skipChange(stories: List<StoryUnit>, filterRepeated: Boolean): List<StoryUnit> = stories
 }

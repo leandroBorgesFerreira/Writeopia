@@ -45,4 +45,13 @@ class AddInBetweenTest {
             storyUnit
         }
     }
+
+    @Test
+    fun `it should filter repeated spaces`() {
+        val input = StoryData.spaces()
+        val result = AddInBetween.spaces().insert(input)
+
+        assertEquals("only one item should be in the result",1, result.size)
+        assertEquals("only one space should be in the result", "space", result.first().type)
+    }
 }
