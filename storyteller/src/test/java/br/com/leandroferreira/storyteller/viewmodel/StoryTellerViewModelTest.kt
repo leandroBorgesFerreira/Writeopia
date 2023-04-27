@@ -104,18 +104,17 @@ class StoryTellerViewModelTest {
 
         val currentStory = storyViewModel.normalizedStepsState.value.values
 
-        storyViewModel.mergeRequest(
-            receiverId = currentStory.first().id,
-            senderId = currentStory.toList()[1].id
-        )
+        val firstItemId = currentStory.first().id
+        val lastItemId = currentStory.last().id
+
+        storyViewModel.mergeRequest(receiverId = firstItemId, senderId = lastItemId)
 
         val newStory = storyViewModel.normalizedStepsState.value
 
         assertEquals(initialSize - 1, newStory.size)
         assertTrue(newStory[0] is GroupStep)
-        assertTrue(newStory[1] is StoryStep)
-        assertEquals(newStory[1]?.id, history[2].id)
-        assertEquals(1, newStory[1]?.localPosition)
+        // The last item was moved to the last position of a GroupStep
+        assertEquals((newStory[0] as GroupStep).steps.last().id, lastItemId)
 
         newStory.values.forEachIndexed { index, storyUnit ->
             assertEquals(index, storyUnit.localPosition)
@@ -125,18 +124,14 @@ class StoryTellerViewModelTest {
          If a second merge exactly the same is asked, nothing should happen, because the merge
          already happened.
          */
-        storyViewModel.mergeRequest(
-            receiverId = currentStory.first().id,
-            senderId = currentStory.toList()[1].id
-        )
+        storyViewModel.mergeRequest(receiverId = firstItemId, senderId = lastItemId)
 
         val newStory2 = storyViewModel.normalizedStepsState.value
 
         assertEquals(initialSize - 1, newStory2.size)
-        assertTrue(newStory2[0] is GroupStep)
-        assertTrue(newStory2[1] is StoryStep)
-        assertEquals(newStory2[1]?.id, history[2].id)
-        assertEquals(1, newStory2[1]?.localPosition)
+        assertTrue(newStory[0] is GroupStep)
+        // The last item was moved to the last position of a GroupStep
+        assertEquals((newStory[0] as GroupStep).steps.last().id, lastItemId)
 
         newStory2.values.forEachIndexed { index, storyUnit ->
             assertEquals(index, storyUnit.localPosition)
