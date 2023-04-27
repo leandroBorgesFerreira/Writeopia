@@ -41,7 +41,10 @@ class StoryTellerViewModel(
     fun mergeRequest(receiverId: String, senderId: String) {
         val sender = _normalizedSteps.value
             .values
-            .find { storyUnit -> storyUnit.id == senderId }
+            .find { storyUnit -> storyUnit.id == senderId ||
+                (storyUnit as? GroupStep)?.steps?.any { innerSteps ->
+                    innerSteps.id == senderId
+                } == true}
 
         val receiver = _normalizedSteps.value
             .values
@@ -62,6 +65,20 @@ class StoryTellerViewModel(
 
             _normalizedSteps.value = normalized
         }
+    }
+
+    fun moveRequest(unitId: String, newPosition: Int) {
+        val unitToMove = _normalizedSteps.value
+            .values
+            .find { storyUnit -> storyUnit.id == unitId ||
+                (storyUnit as? GroupStep)?.steps?.any { innerSteps ->
+                    innerSteps.id == unitId
+                } == true}
+
+        val mutableSteps = _normalizedSteps.value.toMutableMap()
+
+
+
     }
 
     fun onListCommand(command: Command) {

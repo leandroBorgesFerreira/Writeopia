@@ -41,6 +41,41 @@ object StoryData {
         )
     }
 
+    fun imageGroupToDetach(): List<StoryUnit> = buildList {
+        add(
+            GroupStep(
+                id = "0",
+                type = "group_image",
+                localPosition = 0,
+                steps = listOf(
+                    StoryStep(
+                        id = "1",
+                        type = "image",
+                        localPosition = 0
+                    ),
+                    StoryStep(
+                        id = "2",
+                        type = "image",
+                        localPosition = 0
+                    ),
+
+                    StoryStep(
+                        id = "3",
+                        type = "image",
+                        localPosition = 1
+                    )
+                )
+            )
+        )
+        add(
+            StoryStep(
+                id = "4",
+                type = "image",
+                localPosition = 1
+            )
+        )
+    }
+
 
     fun imageStepsList(): List<StoryStep> = buildList {
         add(
