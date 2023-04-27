@@ -6,6 +6,7 @@ import br.com.leandroferreira.storyteller.model.Command
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.StepsNormalizationBuilder
+import br.com.leandroferreira.storyteller.normalization.UnchangedNormalizer
 import br.com.leandroferreira.storyteller.normalization.addinbetween.AddInBetween
 import br.com.leandroferreira.storyteller.repository.StoriesRepository
 import br.com.leandroferreira.storyteller.viewmodel.move.MoveHandler
@@ -22,8 +23,6 @@ class StoryTellerViewModel(
             defaultNormalizers()
         },
     private val moveHandler: MoveHandler = SpaceMoveHandler(),
-    private val spacesNormalizer: (List<StoryUnit>, Boolean) -> List<StoryUnit> =
-        AddInBetween.spaces()::insert
 ) : ViewModel() {
 
     private val textChanges: MutableMap<Int, String> = mutableMapOf()
@@ -37,7 +36,7 @@ class StoryTellerViewModel(
         if (_normalizedSteps.value.isEmpty() || force) {
             viewModelScope.launch {
                 _normalizedSteps.value =
-                    spacesNormalizer(stepsNormalizer(storiesRepository.history()), true)
+                    stepsNormalizer(storiesRepository.history())
                         .associateBy { story -> story.localPosition }
             }
         }
@@ -68,7 +67,7 @@ class StoryTellerViewModel(
             newPosition
         )
 
-        val spacedResult = spacesNormalizer(result.values.toList(), true)
+        val spacedResult = stepsNormalizer(result.values.toList())
         _normalizedSteps.value = spacedResult.associateBy { it.localPosition }
     }
 

@@ -40,10 +40,7 @@ class StoryTellerViewModelTest {
         val history = imagesInLineRepo.history()
         val initialSize = history.size
 
-        val storyViewModel = StoryTellerViewModel(
-            imagesInLineRepo,
-            spacesNormalizer = UnchangedNormalizer::skipChange
-        )
+        val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
         storyViewModel.requestHistoriesFromApi()
 
         val currentStory = storyViewModel.normalizedStepsState.value.values
@@ -71,10 +68,7 @@ class StoryTellerViewModelTest {
         val history = imagesInLineRepo.history()
         val initialSize = history.size
 
-        val storyViewModel = StoryTellerViewModel(
-            imagesInLineRepo,
-            spacesNormalizer = UnchangedNormalizer::skipChange
-        )
+        val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
         storyViewModel.requestHistoriesFromApi()
 
         val currentStory = storyViewModel.normalizedStepsState.value.values
@@ -102,10 +96,7 @@ class StoryTellerViewModelTest {
         val history = imagesInLineRepo.history()
         val initialSize = history.size
 
-        val storyViewModel = StoryTellerViewModel(
-            imagesInLineRepo,
-            spacesNormalizer = UnchangedNormalizer::skipChange
-        )
+        val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
         storyViewModel.requestHistoriesFromApi()
 
         val currentStory = storyViewModel.normalizedStepsState.value.values
@@ -149,10 +140,7 @@ class StoryTellerViewModelTest {
         val history = imagesInLineRepo.history()
         val initialSize = history.size
 
-        val storyViewModel = StoryTellerViewModel(
-            imagesInLineRepo,
-            spacesNormalizer = UnchangedNormalizer::skipChange
-        )
+        val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
         storyViewModel.requestHistoriesFromApi()
 
         val currentStory = storyViewModel.normalizedStepsState.value.values
@@ -185,10 +173,7 @@ class StoryTellerViewModelTest {
 
     @Test
     fun `it should be possible to merge an image inside a message group`() = runTest {
-        val storyViewModel = StoryTellerViewModel(
-            imageGroupRepo,
-            spacesNormalizer = UnchangedNormalizer::skipChange
-        )
+        val storyViewModel = StoryTellerViewModel(imageGroupRepo)
         storyViewModel.requestHistoriesFromApi()
 
         val initialSize = (imageGroupRepo.history()[0] as GroupStep).steps.size
@@ -242,6 +227,7 @@ class StoryTellerViewModelTest {
 
         val newStory = storyViewModel.normalizedStepsState.value
 
+        //Todo: Fix this!!
 //        assertEquals("The history 4 should have been moved", newStory[4]!!.id, "1")
 
         newStory.values.reduce { acc, storyUnit ->

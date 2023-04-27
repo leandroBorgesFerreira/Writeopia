@@ -42,6 +42,7 @@ class StepsNormalizationBuilder {
 
         normalizations.add(SortNormalization::sort)
         normalizations.add(mergeNormalization::mergeSteps)
+        normalizations.add { AddInBetween.spaces().insert(it) }
         normalizations.add(PositionNormalization::normalizePosition)
     }
 

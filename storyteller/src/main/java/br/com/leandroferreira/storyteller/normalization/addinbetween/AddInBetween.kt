@@ -7,22 +7,24 @@ import java.util.UUID
 class AddInBetween(private val unitToAdd: StoryUnit) {
 
     fun insert(units: List<StoryUnit>, filterRepeated: Boolean = true): List<StoryUnit> {
-        val filteredUnits = units.fold(listOf<StoryUnit>()) { acc, storyUnit ->
-            if (acc.isNotEmpty() &&
-                acc.last().type == unitToAdd.type &&
-                storyUnit.type == unitToAdd.type
-            ) {
-                acc
-            } else {
-                acc + storyUnit
+        val newStoryUnits = if (filterRepeated) {
+            units.fold(listOf<StoryUnit>()) { acc, storyUnit ->
+                if (acc.isNotEmpty() &&
+                    acc.last().type == unitToAdd.type &&
+                    storyUnit.type == unitToAdd.type
+                ) {
+                    acc
+                } else {
+                    acc + storyUnit
+                }
             }
-        }
+        } else units
 
         return buildList {
             var acc = 0
             var spaceAdded = false
 
-            filteredUnits.forEach { storyUnit ->
+            newStoryUnits.forEach { storyUnit ->
                 if (storyUnit.type == unitToAdd.type) {
                     if (!spaceAdded) {
                         spaceAdded = true
@@ -44,7 +46,7 @@ class AddInBetween(private val unitToAdd: StoryUnit) {
                 }
             }
 
-            if (filteredUnits.last().type != unitToAdd.type) {
+            if (newStoryUnits.last().type != unitToAdd.type) {
                 add(unitToAdd.copyWithNewPosition(acc++))
             }
         }
