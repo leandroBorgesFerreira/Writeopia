@@ -20,22 +20,32 @@ class AddInBetween(private val unitToAdd: StoryUnit) {
 
         return buildList {
             var acc = 0
-
-            if (filteredUnits.first().type != unitToAdd.type) {
-                add(unitToAdd.copyWithNewPosition(acc++))
-            }
+            var spaceAdded = false
 
             filteredUnits.forEach { storyUnit ->
-                if (storyUnit.type != unitToAdd.type) {
-                    addAll(
-                        listOf(
-                            storyUnit.copyWithNewPosition(acc++),
-                            unitToAdd.copyWithNewPosition(acc++),
-                        )
-                    )
+                if (storyUnit.type == unitToAdd.type) {
+                    if (!spaceAdded) {
+                        spaceAdded = true
+                        add(storyUnit.copyWithNewPosition(acc++))
+                    }
                 } else {
-                    add(storyUnit.copyWithNewPosition(acc++))
+                    if (!spaceAdded) {
+                        addAll(
+                            listOf(
+                                unitToAdd.copyWithNewPosition(acc++),
+                                storyUnit.copyWithNewPosition(acc++),
+                            )
+                        )
+                    } else {
+                        add(storyUnit.copyWithNewPosition(acc++))
+                    }
+
+                    spaceAdded = false
                 }
+            }
+
+            if (filteredUnits.last().type != unitToAdd.type) {
+                add(unitToAdd.copyWithNewPosition(acc++))
             }
         }
     }
