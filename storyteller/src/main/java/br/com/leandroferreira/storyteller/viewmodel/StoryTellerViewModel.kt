@@ -68,7 +68,9 @@ class StoryTellerViewModel(
             newPosition
         )
 
-        _normalizedSteps.value = result
+        //Todo: Review performance
+        _normalizedSteps.value =
+            spacesNormalizer(result.values.toList()).associateBy { it.localPosition }
     }
 
     fun onListCommand(command: Command) {
