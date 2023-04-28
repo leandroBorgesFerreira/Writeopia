@@ -22,7 +22,7 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 
 class MessageStepDrawer(
     private val containerModifier: Modifier? = null,
-    private val onTextEdit: (String, Int) -> Unit
+    private val onTextEdit: (String, Int) -> Unit,
 ) : StoryUnitDrawer {
 
     @Composable

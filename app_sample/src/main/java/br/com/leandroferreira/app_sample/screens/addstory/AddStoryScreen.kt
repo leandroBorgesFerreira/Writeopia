@@ -1,8 +1,5 @@
-package br.com.leandroferreira.app_sample
+package br.com.leandroferreira.app_sample.screens.addstory
 
-import android.os.Bundle
-import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,29 +36,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import br.com.leandroferreira.app_sample.data.StoriesRepo
 import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
 import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION
 import br.com.leandroferreira.app_sample.viewmodel.HistoriesViewModel
 import br.com.leandroferreira.storyteller.StoryTellerTimeline
-import br.com.leandroferreira.storyteller.VideoFrameConfig
 import br.com.leandroferreira.storyteller.drawer.DefaultDrawers
 import br.com.leandroferreira.storyteller.viewmodel.StoryTellerViewModel
 
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        VideoFrameConfig.configCoilForVideoFrame(this)
-
-        setContent {
-            MainScreen()
-        }
-    }
-}
-
 @Composable
-fun MainScreen() {
+fun AddStoryScreen() {
     val context = LocalContext.current
     val viewModel: HistoriesViewModel = viewModel(initializer = {
         HistoriesViewModel()
@@ -130,7 +113,9 @@ private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTelle
             drawers = DefaultDrawers.create(
                 editable = editable,
                 onListCommand = storyTellerViewModel::onListCommand,
-                onTextEdit = storyTellerViewModel::onTextEdit
+                onTextEdit = storyTellerViewModel::onTextEdit,
+                mergeRequest = storyTellerViewModel::mergeRequest,
+                moveRequest = storyTellerViewModel::moveRequest
             )
         )
     }

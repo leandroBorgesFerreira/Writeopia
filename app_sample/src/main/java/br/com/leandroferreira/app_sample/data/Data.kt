@@ -35,8 +35,7 @@ fun syncHistory(context: Context): List<StoryUnit> =
             StoryStep(
                 id = "2",
                 type = "message",
-//                text = "We arrived in Santiago!! \n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                text = "We arrived.",
+                text = "We arrived in Santiago!! \n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                 localPosition = 2
             )
         )
@@ -85,3 +84,69 @@ fun syncHistory(context: Context): List<StoryUnit> =
             )
         )
     }
+
+fun messages(): List<StoryUnit> = buildList {
+    add(
+        StoryStep(
+            id = "2",
+            type = "message",
+            text = "We arrived in Santiago!! \n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+            localPosition = 2
+        )
+    )
+    add(
+        StoryStep(
+            id = "4",
+            type = "message",
+            text = "And it was super awesome!! \n\nUt enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
+            localPosition = 4
+        )
+    )
+    add(
+        StoryStep(
+            id = "6",
+            type = "message",
+            text = "I couldn't believe how sunny it was. Santiago is a really beautiful city. There's a lot to " +
+                "do and enjoyed the day. We went to many cozy Cafes and we enjoyed the city by foot. " +
+                "We had to buy some Syn Cards to be able to communicate in the new country. ",
+            localPosition = 6
+        )
+    )
+}
+fun images(): List<StoryUnit> = buildList {
+    add(
+        StoryStep(
+            id = "2",
+            type = "image",
+            url = "https://fastly.picsum.photos/id/15/400/400.jpg?hmac=xv-6mggpYPLIQ9eNAHrl1qKPHjyUCYlBoNBvdsqF4cY",
+            localPosition = 1
+        )
+    )
+    add(
+        StoryStep(
+            id = "4",
+            type = "image",
+            url = "https://fastly.picsum.photos/id/1018/400/400.jpg?hmac=MwHJoMaVXsBbqg-LFoDVL6P8TCDkSEikExptCkkHESQ",
+            localPosition = 2,
+            text = "1"
+        )
+    )
+    add(
+        StoryStep(
+            id = "6",
+            type = "image",
+            url = "https://fastly.picsum.photos/id/984/400/400.jpg?hmac=CaqZ-rcUAbmidwURZcBynO7aIAC-FaktVN7X8lIvlmE",
+            localPosition = 3,
+            text = "2"
+        )
+    )
+    add(
+        StoryStep(
+            id = "8",
+            type = "image",
+            url = "https://fastly.picsum.photos/id/949/400/400.jpg?hmac=lGa4vz7HqqRP0noWMCCKo6Klo_MaYg6WpUulORAoVQU",
+            localPosition = 4,
+            text = "3"
+        )
+    )
+}

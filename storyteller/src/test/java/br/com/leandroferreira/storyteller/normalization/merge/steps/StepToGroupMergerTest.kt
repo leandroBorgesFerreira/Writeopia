@@ -1,4 +1,4 @@
-package br.com.storyteller.normalization.merge.steps
+package br.com.leandroferreira.storyteller.normalization.merge.steps
 
 import org.junit.Test
 

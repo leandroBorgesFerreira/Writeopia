@@ -1,9 +1,7 @@
 package br.com.leandroferreira.storyteller.drawer
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -15,6 +13,7 @@ import br.com.leandroferreira.storyteller.drawer.content.ImageGroupDrawer
 import br.com.leandroferreira.storyteller.drawer.content.ImageStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.MessageStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.VideoStepDrawer
+import br.com.leandroferreira.storyteller.drawer.utilities.SpaceDrawer
 import br.com.leandroferreira.storyteller.model.Command
 import br.com.leandroferreira.storyteller.model.StepType
 
@@ -23,7 +22,9 @@ object DefaultDrawers {
     fun create(
         editable: Boolean = false,
         onListCommand: (Command) -> Unit,
-        onTextEdit: (String, Int) -> Unit
+        onTextEdit: (String, Int) -> Unit,
+        mergeRequest: (receiverId: String, senderId: String) -> Unit = { _, _ -> },
+        moveRequest: (String, Int) -> Unit = { _, _ -> }
     ): Map<String, StoryUnitDrawer> =
         buildMap {
             val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->
@@ -36,18 +37,13 @@ object DefaultDrawers {
             }
 
             val imageDrawer = ImageStepDrawer(
-                containerModifier = Modifier
-                    .clip(shape = RoundedCornerShape(size = 12.dp))
-                    .background(Color(0xFFE1E0E0))
-                    .fillMaxWidth()
-                    .padding(4.dp)
+                containerModifier = ImageStepDrawer.Companion::defaultModifier,
+                mergeRequest = mergeRequest
             )
 
             val imageDrawerInGroup = ImageStepDrawer(
-                containerModifier = Modifier
-                    .clip(shape = RoundedCornerShape(size = 12.dp))
-                    .background(Color(0xFFE1E0E0))
-                    .size(150.dp)
+                containerModifier = ImageStepDrawer.Companion::defaultModifier,
+                mergeRequest = mergeRequest
             )
 
             val messageDrawer = MessageStepDrawer(
@@ -55,7 +51,7 @@ object DefaultDrawers {
                     .padding(vertical = 4.dp, horizontal = 8.dp)
                     .clip(shape = RoundedCornerShape(size = 12.dp))
                     .background(Color(0xFFFAF8F2)),
-                onTextEdit = onTextEdit
+                onTextEdit = onTextEdit,
             )
 
             put(
@@ -66,7 +62,7 @@ object DefaultDrawers {
             put(StepType.IMAGE.type, if (editable) commandsComposite(imageDrawer) else imageDrawer)
             put(
                 StepType.GROUP_IMAGE.type,
-                if (editable){
+                if (editable) {
                     commandsComposite(ImageGroupDrawer(imageDrawerInGroup))
                 } else {
                     ImageGroupDrawer(imageDrawerInGroup)
@@ -76,5 +72,7 @@ object DefaultDrawers {
                 StepType.VIDEO.type,
                 if (editable) commandsComposite(VideoStepDrawer()) else VideoStepDrawer()
             )
+
+            put("space", SpaceDrawer(moveRequest))
         }
 }

@@ -1,9 +1,82 @@
-package br.com.storyteller.utils
+package br.com.leandroferreira.storyteller.utils
 
+import br.com.leandroferreira.storyteller.model.GroupStep
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
 
 object StoryData {
+
+    fun imageGroup(): List<StoryUnit> = buildList {
+        add(
+            GroupStep(
+                id = "0",
+                type = "group_image",
+                localPosition = 0,
+                steps = listOf(
+                    StoryStep(
+                        id = "1",
+                        type = "image",
+                        localPosition = 0
+                    ),
+
+                    StoryStep(
+                        id = "2",
+                        type = "image",
+                        localPosition = 0
+                    ),
+
+                    StoryStep(
+                        id = "3",
+                        type = "image",
+                        localPosition = 0
+                    )
+                )
+            )
+        )
+        add(
+            StoryStep(
+                id = "4",
+                type = "image",
+                localPosition = 1
+            )
+        )
+    }
+
+    fun imageGroupToDetach(): List<StoryUnit> = buildList {
+        add(
+            GroupStep(
+                id = "0",
+                type = "group_image",
+                localPosition = 0,
+                steps = listOf(
+                    StoryStep(
+                        id = "1",
+                        type = "image",
+                        localPosition = 0
+                    ),
+                    StoryStep(
+                        id = "2",
+                        type = "image",
+                        localPosition = 0
+                    ),
+
+                    StoryStep(
+                        id = "3",
+                        type = "image",
+                        localPosition = 1
+                    )
+                )
+            )
+        )
+        add(
+            StoryStep(
+                id = "4",
+                type = "image",
+                localPosition = 1
+            )
+        )
+    }
+
 
     fun imageStepsList(): List<StoryStep> = buildList {
         add(
@@ -25,6 +98,106 @@ object StoryData {
                 id = "3",
                 type = "image",
                 localPosition = 0
+            )
+        )
+    }
+
+    fun spaces(): List<StoryStep> = buildList {
+        add(
+            StoryStep(
+                id = "1",
+                type = "space",
+                localPosition = 0
+            )
+        )
+        add(
+            StoryStep(
+                id = "2",
+                type = "space",
+                localPosition = 1
+            )
+        )
+        add(
+            StoryStep(
+                id = "2",
+                type = "space",
+                localPosition = 2
+            )
+        )
+    }
+
+    fun spacedImageStepsList(): List<StoryStep> = buildList {
+        add(
+            StoryStep(
+                id = "1",
+                type = "image",
+                localPosition = 0
+            )
+        )
+        add(
+            StoryStep(
+                id = "pamsdplams",
+                type = "space",
+                localPosition = 1
+            )
+        )
+        add(
+            StoryStep(
+                id = "3",
+                type = "image",
+                localPosition = 2
+            )
+        )
+        add(
+            StoryStep(
+                id = "askndpalsd",
+                type = "space",
+                localPosition = 3
+            )
+        )
+        add(
+            StoryStep(
+                id = "5",
+                type = "image",
+                localPosition = 4
+            )
+        )
+    }
+
+    fun imagesInLine(): List<StoryStep> = buildList {
+        add(
+            StoryStep(
+                id = "1",
+                type = "image",
+                localPosition = 0
+            )
+        )
+        add(
+            StoryStep(
+                id = "2",
+                type = "image",
+                localPosition = 1
+            )
+        )
+        add(
+            StoryStep(
+                id = "3",
+                type = "image",
+                localPosition = 3
+            )
+        )
+        add(
+            StoryStep(
+                id = "4",
+                type = "image",
+                localPosition = 5
+            )
+        )
+        add(
+            StoryStep(
+                id = "5",
+                type = "image",
+                localPosition = 7
             )
         )
     }

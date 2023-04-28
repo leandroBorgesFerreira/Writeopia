@@ -1,11 +1,13 @@
 package br.com.leandroferreira.storyteller.normalization
 
 import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.normalization.addinbetween.AddInBetween
 import br.com.leandroferreira.storyteller.normalization.merge.MergeLogic
 import br.com.leandroferreira.storyteller.normalization.merge.MergeNormalization
 import br.com.leandroferreira.storyteller.normalization.merge.StepsMergerCoordinator
 import br.com.leandroferreira.storyteller.normalization.merge.steps.StepToStepMerger
 import br.com.leandroferreira.storyteller.normalization.position.PositionNormalization
+import br.com.leandroferreira.storyteller.normalization.sort.SortNormalization
 
 class StepsNormalizationBuilder {
 
@@ -37,7 +39,9 @@ class StepsNormalizationBuilder {
             )
         }
 
+        normalizations.add(SortNormalization::sort)
         normalizations.add(mergeNormalization::mergeSteps)
+        normalizations.add(AddInBetween.spaces()::insert)
         normalizations.add(PositionNormalization::normalizePosition)
     }
 
@@ -46,7 +50,5 @@ class StepsNormalizationBuilder {
     private fun reduceNormalizations(
         normalizations: List<(List<StoryUnit>) -> List<StoryUnit>>
     ): (List<StoryUnit>) -> List<StoryUnit> =
-        normalizations.reduce { fn, gn ->
-            return { gn(fn(it)) }
-        }
+        normalizations.reduce { fn, gn -> { stories -> gn(fn(stories)) } }
 }

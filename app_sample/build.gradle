@@ -53,7 +53,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
     implementation "androidx.compose.material:material"
     implementation 'androidx.activity:activity-compose'
-    implementation "androidx.compose.material:material-icons-extended:1.4.1"
+    implementation "androidx.compose.material:material-icons-extended:1.4.2"
+    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
 
     implementation "io.coil-kt:coil-compose:$coilVersion"
     implementation "io.coil-kt:coil-video:$coilVersion"

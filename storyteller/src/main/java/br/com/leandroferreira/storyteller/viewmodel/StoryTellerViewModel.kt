@@ -6,9 +6,14 @@ import br.com.leandroferreira.storyteller.model.Command
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.StepsNormalizationBuilder
+import br.com.leandroferreira.storyteller.normalization.UnchangedNormalizer
+import br.com.leandroferreira.storyteller.normalization.addinbetween.AddInBetween
 import br.com.leandroferreira.storyteller.repository.StoriesRepository
+import br.com.leandroferreira.storyteller.viewmodel.move.MoveHandler
+import br.com.leandroferreira.storyteller.viewmodel.move.SpaceMoveHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class StoryTellerViewModel(
@@ -16,7 +21,8 @@ class StoryTellerViewModel(
     private val stepsNormalizer: (List<StoryUnit>) -> List<StoryUnit> =
         StepsNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
-        }
+        },
+    private val moveHandler: MoveHandler = SpaceMoveHandler(),
 ) : ViewModel() {
 
     private val textChanges: MutableMap<Int, String> = mutableMapOf()
@@ -24,15 +30,45 @@ class StoryTellerViewModel(
     private val _normalizedSteps: MutableStateFlow<Map<Int, StoryUnit>> = MutableStateFlow(
         emptyMap()
     )
-    val normalizedStepsState: StateFlow<Map<Int, StoryUnit>> = _normalizedSteps
+    val normalizedStepsState: StateFlow<Map<Int, StoryUnit>> = _normalizedSteps.asStateFlow()
 
     fun requestHistoriesFromApi(force: Boolean = false) {
         if (_normalizedSteps.value.isEmpty() || force) {
             viewModelScope.launch {
-                _normalizedSteps.value = stepsNormalizer(storiesRepository.history())
-                    .associateBy { story -> story.localPosition }
+                _normalizedSteps.value =
+                    stepsNormalizer(storiesRepository.history())
+                        .associateBy { story -> story.localPosition }
             }
         }
+    }
+
+
+    //Todo: Review the performance of this method later
+    fun mergeRequest(receiverId: String, senderId: String) {
+        val sender = FindStory.findById(_normalizedSteps.value, senderId)?.first
+        val receiver = FindStory.findById(_normalizedSteps.value, receiverId)?.first
+
+        if (sender != null && receiver != null) {
+            val mutableHistory = _normalizedSteps.value.toMutableMap()
+            mutableHistory[sender.localPosition] =
+                sender.copyWithNewPosition(receiver.localPosition)
+
+            val normalized = stepsNormalizer(mutableHistory.values.toList())
+                .associateBy { story -> story.localPosition }
+
+            _normalizedSteps.value = normalized
+        }
+    }
+
+    fun moveRequest(unitId: String, newPosition: Int) {
+        val result = moveHandler.handleMove(
+            _normalizedSteps.value.toMutableMap(),
+            unitId,
+            newPosition
+        )
+
+        val spacedResult = stepsNormalizer(result.values.toList())
+        _normalizedSteps.value = spacedResult.associateBy { it.localPosition }
     }
 
     fun onListCommand(command: Command) {
@@ -90,8 +126,7 @@ class StoryTellerViewModel(
         }
 
         thisStep?.let { step ->
-            mutableHistory[position - 1] =
-                step.copyWithNewPosition(position - 1)
+            mutableHistory[position - 1] = step.copyWithNewPosition(position - 1)
         }
 
         return mutableHistory.values
