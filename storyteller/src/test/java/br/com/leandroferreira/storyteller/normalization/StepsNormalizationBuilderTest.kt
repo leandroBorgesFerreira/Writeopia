@@ -16,7 +16,6 @@ class StepsNormalizationBuilderTest {
         val input = StoryData.complexList()
         val normalized = normalization(input)
 
-
         assertEquals(
             "There should be an space between all the story units",
             15,
@@ -37,6 +36,15 @@ class StepsNormalizationBuilderTest {
             "message",
             normalized[normalized.lastIndex - 1].type
         )
+
+        val group = (normalized[5] as GroupStep)
+        group.steps.forEach { storyUnit ->
+            assertEquals(
+                "The steps inside the group should reference it as the parent",
+                group.id,
+                storyUnit.parentId
+            )
+        }
 
         normalized.forEachIndexed { index, storyUnit ->
             assertEquals(index, storyUnit.localPosition)

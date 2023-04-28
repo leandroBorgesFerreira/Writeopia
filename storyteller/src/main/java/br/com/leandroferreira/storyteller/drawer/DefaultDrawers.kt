@@ -63,7 +63,7 @@ object DefaultDrawers {
             put(
                 StepType.GROUP_IMAGE.type,
                 if (editable) {
-                    commandsComposite(ImageGroupDrawer(imageDrawerInGroup))
+                    commandsComposite(ImageGroupDrawer(commandsComposite(imageDrawerInGroup)))
                 } else {
                     ImageGroupDrawer(imageDrawerInGroup)
                 }

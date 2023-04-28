@@ -3,11 +3,10 @@ package br.com.leandroferreira.storyteller.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.leandroferreira.storyteller.model.Command
+import br.com.leandroferreira.storyteller.model.GroupStep
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.StepsNormalizationBuilder
-import br.com.leandroferreira.storyteller.normalization.UnchangedNormalizer
-import br.com.leandroferreira.storyteller.normalization.addinbetween.AddInBetween
 import br.com.leandroferreira.storyteller.repository.StoriesRepository
 import br.com.leandroferreira.storyteller.viewmodel.move.MoveHandler
 import br.com.leandroferreira.storyteller.viewmodel.move.SpaceMoveHandler
@@ -35,9 +34,10 @@ class StoryTellerViewModel(
     fun requestHistoriesFromApi(force: Boolean = false) {
         if (_normalizedSteps.value.isEmpty() || force) {
             viewModelScope.launch {
-                _normalizedSteps.value =
-                    stepsNormalizer(storiesRepository.history())
-                        .associateBy { story -> story.localPosition }
+                val normalizedSteps = stepsNormalizer(storiesRepository.history())
+                    .associateBy { story -> story.localPosition }
+
+                _normalizedSteps.value = normalizedSteps
             }
         }
     }
@@ -86,7 +86,8 @@ class StoryTellerViewModel(
 
             "delete" -> {
                 updateTexts()
-                _normalizedSteps.value = _normalizedSteps.value - command.step.localPosition
+
+                delete(command.step.localPosition, _normalizedSteps.value)
             }
         }
     }
@@ -140,4 +141,28 @@ class StoryTellerViewModel(
         history: Map<Int, StoryUnit>,
     ): Map<Int, StoryUnit> = moveUp(position + 1, history)
 
+    private fun delete(
+        position: Int,
+        history: Map<Int, StoryUnit>,
+    ) {
+        val toDeleteUnit = _normalizedSteps.value[position]
+        val parentId = toDeleteUnit?.parentId
+        if (parentId == null) {
+            _normalizedSteps.value = history - position
+        } else {
+            FindStory.findById(history, parentId)
+                ?.first
+                ?.let { group ->
+                    val newSteps = (group as GroupStep).steps.filter { storyUnit ->
+                        storyUnit.id != toDeleteUnit.id
+                    }
+
+                    val newGroup = group.copy(steps = newSteps)
+                    val mutableSteps = _normalizedSteps.value.toMutableMap()
+                    mutableSteps[newGroup.localPosition] = newGroup
+
+                    _normalizedSteps.value = mutableSteps
+                }
+        }
+    }
 }

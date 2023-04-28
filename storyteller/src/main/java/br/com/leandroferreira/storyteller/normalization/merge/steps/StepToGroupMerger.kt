@@ -22,16 +22,15 @@ open class StepToGroupMerger : StepMerger {
                     localPosition = step2.localPosition,
                     steps = listOf(step1.copy(parentId = groupId), step2.copy(parentId = groupId))
                 )
-
             }
 
             step1 is GroupStep && step2 is StoryStep -> step1.copy(
-                steps = listOf(step2) + step1.steps
+                steps = listOf(step2.copy(parentId = step1.id)) + step1.steps
             )
 
             step1 is StoryStep && step2 is GroupStep -> step2.copy(
                 localPosition = step2.localPosition,
-                steps = listOf(step1) + step2.steps
+                steps = listOf(step1.copy(parentId = step2.id)) + step2.steps
             )
 
             step1 is GroupStep && step2 is GroupStep -> groupsMerger(step1, step2)
@@ -41,6 +40,7 @@ open class StepToGroupMerger : StepMerger {
             )
         }
 
+    // Todo: step2.steps should change the parentId.
     override fun groupsMerger(step1: GroupStep, step2: GroupStep): StoryUnit =
         step1.copy(
             steps = step1.steps + step2.steps,
