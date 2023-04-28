@@ -16,19 +16,22 @@ object StoryData {
                     StoryStep(
                         id = "1",
                         type = "image",
-                        localPosition = 0
+                        localPosition = 0,
+                        parentId = "0"
                     ),
 
                     StoryStep(
                         id = "2",
                         type = "image",
-                        localPosition = 0
+                        localPosition = 0,
+                        parentId = "0"
                     ),
 
                     StoryStep(
                         id = "3",
                         type = "image",
-                        localPosition = 0
+                        localPosition = 0,
+                        parentId = "0"
                     )
                 )
             )

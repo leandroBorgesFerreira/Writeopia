@@ -1,5 +1,6 @@
 package br.com.leandroferreira.storyteller.viewmodel
 
+import br.com.leandroferreira.storyteller.model.Command
 import br.com.leandroferreira.storyteller.model.GroupStep
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
@@ -238,7 +239,6 @@ class StoryTellerViewModelTest {
 
         val newStory = storyViewModel.normalizedStepsState.value
 
-        //Todo: Fix this!!
         assertEquals("The history 4 should have been moved", newStory[3]!!.id, "1")
 
         newStory.values.reduce { acc, storyUnit ->
@@ -248,5 +248,36 @@ class StoryTellerViewModelTest {
 
             storyUnit
         }
+    }
+
+    @Test
+    fun `deleting and leave a single element in a group destroys the group`() {
+        val storyViewModel = StoryTellerViewModel(imageGroupRepo)
+        storyViewModel.requestHistoriesFromApi()
+
+        val currentStory = storyViewModel.normalizedStepsState.value.values.toList()
+        assertEquals("initial the story unit should be a group", "group_image", currentStory[1].type)
+
+        storyViewModel.onListCommand(
+            Command(
+                "delete",
+                (storyViewModel.normalizedStepsState.value.values.toList()[1] as GroupStep).steps[1]
+            )
+        )
+
+        storyViewModel.onListCommand(
+            Command(
+                "delete",
+                (storyViewModel.normalizedStepsState.value.values.toList()[1] as GroupStep).steps[1]
+            )
+        )
+
+        val newStory = storyViewModel.normalizedStepsState.value.values.toList()
+
+        assertEquals(
+            "the group become just an image because there's only a single image",
+            "image",
+            newStory[1].type
+        )
     }
 }
