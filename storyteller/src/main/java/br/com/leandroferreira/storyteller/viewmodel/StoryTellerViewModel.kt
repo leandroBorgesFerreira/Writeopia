@@ -87,7 +87,7 @@ class StoryTellerViewModel(
             "delete" -> {
                 updateTexts()
 
-                delete(command.step.localPosition, _normalizedSteps.value)
+                delete(command.step, _normalizedSteps.value)
             }
         }
     }
@@ -142,19 +142,18 @@ class StoryTellerViewModel(
     ): Map<Int, StoryUnit> = moveUp(position + 1, history)
 
     private fun delete(
-        position: Int,
+        step: StoryUnit,
         history: Map<Int, StoryUnit>,
     ) {
-        val toDeleteUnit = _normalizedSteps.value[position]
-        val parentId = toDeleteUnit?.parentId
+        val parentId = step.parentId
         if (parentId == null) {
-            _normalizedSteps.value = history - position
+            _normalizedSteps.value = history - step.localPosition
         } else {
             FindStory.findById(history, parentId)
                 ?.first
                 ?.let { group ->
                     val newSteps = (group as GroupStep).steps.filter { storyUnit ->
-                        storyUnit.id != toDeleteUnit.id
+                        storyUnit.id != step.id
                     }
 
                     val newGroup = group.copy(steps = newSteps)
