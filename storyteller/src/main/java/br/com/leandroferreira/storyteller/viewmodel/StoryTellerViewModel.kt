@@ -156,10 +156,14 @@ class StoryTellerViewModel(
                         storyUnit.id != step.id
                     }
 
-                    val newGroup = group.copy(steps = newSteps)
                     val mutableSteps = _normalizedSteps.value.toMutableMap()
-                    mutableSteps[newGroup.localPosition] = newGroup
+                    val newStoryUnit = if (newSteps.size == 1) {
+                        newSteps.first().copyWithNewPosition(group.localPosition)
+                    } else {
+                        group.copy(steps = newSteps)
+                    }
 
+                    mutableSteps[group.localPosition] = newStoryUnit.copyWithNewParent(null)
                     _normalizedSteps.value = mutableSteps
                 }
         }

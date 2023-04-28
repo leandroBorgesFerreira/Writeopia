@@ -10,5 +10,7 @@ interface StoryUnit : Comparable<StoryUnit>{
 
     fun copyWithNewPosition(position: Int): StoryUnit
 
+    fun copyWithNewParent(parentId: String?): StoryUnit
+
     override fun compareTo(other: StoryUnit): Int = localPosition.compareTo(other.localPosition)
 }
