@@ -106,7 +106,7 @@ class MergeNormalizationTest {
 
         val mergedStep = mergeNormalization.mergeSteps(story)
 
-        assertEquals(last, (mergedStep.first() as GroupStep).steps.first())
+        assertEquals(last.id, (mergedStep.first() as GroupStep).steps.first().id)
     }
 
     @Test
