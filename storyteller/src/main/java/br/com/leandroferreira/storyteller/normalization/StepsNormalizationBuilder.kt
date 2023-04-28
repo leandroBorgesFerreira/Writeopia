@@ -8,7 +8,6 @@ import br.com.leandroferreira.storyteller.normalization.merge.StepsMergerCoordin
 import br.com.leandroferreira.storyteller.normalization.merge.steps.StepToStepMerger
 import br.com.leandroferreira.storyteller.normalization.position.PositionNormalization
 import br.com.leandroferreira.storyteller.normalization.sort.SortNormalization
-import br.com.leandroferreira.storyteller.normalization.split.GroupSplitterNormalization
 
 class StepsNormalizationBuilder {
 
@@ -42,7 +41,7 @@ class StepsNormalizationBuilder {
 
         normalizations.add(SortNormalization::sort)
         normalizations.add(mergeNormalization::mergeSteps)
-        normalizations.add { AddInBetween.spaces().insert(it) }
+        normalizations.add(AddInBetween.spaces()::insert)
         normalizations.add(PositionNormalization::normalizePosition)
     }
 

@@ -2,54 +2,50 @@ package br.com.leandroferreira.storyteller.normalization.addinbetween
 
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
+import java.util.Stack
 import java.util.UUID
 
 class AddInBetween(private val unitToAdd: StoryUnit) {
 
-    fun insert(units: List<StoryUnit>, filterRepeated: Boolean = true): List<StoryUnit> {
-        val newStoryUnits = if (filterRepeated) {
-            units.fold(listOf<StoryUnit>()) { acc, storyUnit ->
-                if (acc.isNotEmpty() &&
-                    acc.last().type == unitToAdd.type &&
-                    storyUnit.type == unitToAdd.type
-                ) {
-                    acc
-                } else {
-                    acc + storyUnit
+    fun insert(units: List<StoryUnit>): List<StoryUnit> {
+        val stack: Stack<StoryUnit> = Stack()
+        var acc = 0
+
+        val typeToAdd = unitToAdd.type
+
+        units.forEach { storyUnit ->
+            when {
+                stack.isEmpty() && storyUnit.type != typeToAdd -> {
+                    stack.add(unitToAdd.copyWithNewPosition(acc++))
+                    stack.add(storyUnit.copyWithNewPosition(acc++))
                 }
-            }
-        } else units
 
-        return buildList {
-            var acc = 0
-            var spaceAdded = false
-
-            newStoryUnits.forEach { storyUnit ->
-                if (storyUnit.type == unitToAdd.type) {
-                    if (!spaceAdded) {
-                        spaceAdded = true
-                        add(storyUnit.copyWithNewPosition(acc++))
-                    }
-                } else {
-                    if (!spaceAdded) {
-                        addAll(
-                            listOf(
-                                unitToAdd.copyWithNewPosition(acc++),
-                                storyUnit.copyWithNewPosition(acc++),
-                            )
-                        )
-                    } else {
-                        add(storyUnit.copyWithNewPosition(acc++))
-                    }
-
-                    spaceAdded = false
+                stack.isEmpty() && storyUnit.type == typeToAdd -> {
+                    stack.add(storyUnit.copyWithNewPosition(acc++))
                 }
-            }
 
-            if (newStoryUnits.last().type != unitToAdd.type) {
-                add(unitToAdd.copyWithNewPosition(acc++))
+                storyUnit.type != typeToAdd && stack.peek().type == typeToAdd -> {
+                    stack.add(storyUnit.copyWithNewPosition(acc++))
+                }
+
+                storyUnit.type == typeToAdd && stack.peek()?.type != typeToAdd -> {
+                    stack.add(storyUnit.copyWithNewPosition(acc++))
+                }
+
+                storyUnit.type != typeToAdd && stack.peek()?.type != typeToAdd -> {
+                    stack.add(unitToAdd.copyWithNewPosition(acc++))
+                    stack.add(storyUnit.copyWithNewPosition(acc++))
+                }
+
+                storyUnit.type == typeToAdd && stack.peek()?.type == typeToAdd -> {}
             }
         }
+
+        if (stack.peek().type != typeToAdd) {
+            stack.add(unitToAdd.copyWithNewPosition(acc++))
+        }
+
+        return stack.toList()
     }
 
 
