@@ -4,6 +4,7 @@ data class GroupStep(
     override val id: String,
     override val type: String,
     override val localPosition: Int,
+    override val parentId: String? = null,
     val steps: List<StoryUnit>
 ): StoryUnit {
 

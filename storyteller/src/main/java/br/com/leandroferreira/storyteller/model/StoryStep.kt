@@ -4,6 +4,7 @@ data class StoryStep(
     override val id: String,
     override val type: String,
     override val localPosition: Int,
+    override val parentId: String? = null,
     val url: String? = null,
     val path: String? = null,
     val text: String? = null,

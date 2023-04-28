@@ -25,8 +25,6 @@ class NavigationActivity : AppCompatActivity() {
     }
 }
 
-
-
 @Composable
 fun NavigationGraph() {
     val navController = rememberNavController()
