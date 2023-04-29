@@ -14,14 +14,14 @@ class StepsNormalizationBuilder {
     companion object {
         fun reduceNormalizations(
             buildFunc: StepsNormalizationBuilder.() -> Unit
-        ): (List<StoryUnit>) -> List<StoryUnit> =
+        ): (Iterable<StoryUnit>) -> List<StoryUnit> =
             StepsNormalizationBuilder().apply(buildFunc).build()
     }
 
-    private val normalizations: MutableList<(List<StoryUnit>) -> List<StoryUnit>> = mutableListOf()
+    private val normalizations: MutableList<(Iterable<StoryUnit>) -> List<StoryUnit>> = mutableListOf()
 
     fun addNormalization(
-        normalization: (List<StoryUnit>) -> List<StoryUnit>
+        normalization: (Iterable<StoryUnit>) -> List<StoryUnit>
     ): StepsNormalizationBuilder = apply {
         normalizations.add(normalization)
     }
@@ -34,7 +34,7 @@ class StepsNormalizationBuilder {
                     stepMerger = StepToStepMerger(),
                     typeOfStep = "message",
                     typeOfGroup = null,
-                    mergeLogic = MergeLogic::eager
+                    mergeLogic = MergeLogic::lazy
                 )
             )
         }
@@ -45,10 +45,10 @@ class StepsNormalizationBuilder {
         normalizations.add(PositionNormalization::normalizePosition)
     }
 
-    private fun build(): (List<StoryUnit>) -> List<StoryUnit> = reduceNormalizations(normalizations)
+    private fun build(): (Iterable<StoryUnit>) -> List<StoryUnit> = reduceNormalizations(normalizations)
 
     private fun reduceNormalizations(
-        normalizations: List<(List<StoryUnit>) -> List<StoryUnit>>
-    ): (List<StoryUnit>) -> List<StoryUnit> =
+        normalizations: List<(Iterable<StoryUnit>) -> List<StoryUnit>>
+    ): (Iterable<StoryUnit>) -> List<StoryUnit> =
         normalizations.reduce { fn, gn -> { stories -> gn(fn(stories)) } }
 }

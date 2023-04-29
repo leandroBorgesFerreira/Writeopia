@@ -15,9 +15,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+//Todo: This class it associating to many times. The performance must be improved.
 class StoryTellerViewModel(
     private val storiesRepository: StoriesRepository,
-    private val stepsNormalizer: (List<StoryUnit>) -> List<StoryUnit> =
+    private val stepsNormalizer: (Iterable<StoryUnit>) -> List<StoryUnit> =
         StepsNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
         },
@@ -147,7 +148,8 @@ class StoryTellerViewModel(
     ) {
         val parentId = step.parentId
         if (parentId == null) {
-            _normalizedSteps.value = history - step.localPosition
+            _normalizedSteps.value =
+                stepsNormalizer((history - step.localPosition).values).associateBy { it.localPosition }
         } else {
             FindStory.findById(history, parentId)
                 ?.first
@@ -164,7 +166,10 @@ class StoryTellerViewModel(
                     }
 
                     mutableSteps[group.localPosition] = newStoryUnit.copyWithNewParent(null)
-                    _normalizedSteps.value = mutableSteps
+                    _normalizedSteps.value = stepsNormalizer(mutableSteps.values.toList())
+                        .associateBy { storyUnit ->
+                            storyUnit.localPosition
+                        }
                 }
         }
     }

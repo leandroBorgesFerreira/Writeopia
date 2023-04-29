@@ -13,6 +13,7 @@ import org.junit.Assert.*
 import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
+import java.util.Stack
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class StoryTellerViewModelTest {
@@ -26,6 +27,19 @@ class StoryTellerViewModelTest {
 
     private val imageGroupRepo: StoriesRepository = object : StoriesRepository {
         override suspend fun history(): List<StoryUnit> = StoryData.imageGroup()
+    }
+
+    private val messagesRepo: StoriesRepository = object : StoriesRepository {
+        override suspend fun history(): List<StoryUnit> = StoryData.messagesInLine()
+    }
+
+
+    @Test
+    fun `normalization should work correctly`() {
+        val storyViewModel = StoryTellerViewModel(messagesRepo)
+        storyViewModel.requestHistoriesFromApi()
+
+        assertEquals(11, storyViewModel.normalizedStepsState.value.values.size)
     }
 
     @Test
@@ -279,5 +293,28 @@ class StoryTellerViewModelTest {
             "image",
             newStory[1].type
         )
+    }
+
+    @Test
+    fun `when deleting a message it should not leave consecutive spaces`() {
+        val storyViewModel = StoryTellerViewModel(messagesRepo)
+        storyViewModel.requestHistoriesFromApi()
+
+        storyViewModel.onListCommand(
+            Command(
+                "delete",
+                storyViewModel.normalizedStepsState.value.values.toList()[3]
+            )
+        )
+
+        val stack: Stack<StoryUnit> = Stack()
+
+        storyViewModel.normalizedStepsState.value.values.forEach { storyUnit ->
+            if (stack.isNotEmpty() && stack.peek().type == "space" && storyUnit.type == "space") {
+                fail("Consecutive spaces happened.")
+            }
+
+            stack.add(storyUnit)
+        }
     }
 }

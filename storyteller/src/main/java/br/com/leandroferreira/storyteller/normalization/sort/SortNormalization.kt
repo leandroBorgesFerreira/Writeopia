@@ -4,5 +4,5 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 
 object SortNormalization {
 
-    fun sort(stories: List<StoryUnit>): List<StoryUnit> = stories.sorted()
+    fun sort(stories: Iterable<StoryUnit>): List<StoryUnit> = stories.sorted()
 }

@@ -7,7 +7,7 @@ import java.util.UUID
 
 class AddInBetween(private val unitToAdd: StoryUnit) {
 
-    fun insert(units: List<StoryUnit>): List<StoryUnit> {
+    fun insert(units: Iterable<StoryUnit>): List<StoryUnit> {
         val stack: Stack<StoryUnit> = Stack()
         var acc = 0
 

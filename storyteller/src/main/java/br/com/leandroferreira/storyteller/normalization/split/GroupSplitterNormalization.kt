@@ -5,7 +5,7 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 
 object GroupSplitterNormalization {
 
-    fun split(storySteps: List<StoryUnit>): List<StoryUnit> =
+    fun split(storySteps: Iterable<StoryUnit>): List<StoryUnit> =
         storySteps.fold<StoryUnit, List<StoryUnit>>(listOf()) { acc, storyUnit ->
             if (storyUnit is GroupStep) {
                 groupToList(storyUnit)

@@ -5,7 +5,7 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 
 class MergeNormalization(private val stepMergers: Set<StepsMergerCoordinator>) {
 
-    fun mergeSteps(storySteps: List<StoryUnit>): List<StoryUnit> =
+    fun mergeSteps(storySteps: Iterable<StoryUnit>): List<StoryUnit> =
         storySteps.fold(mutableListOf()) { acc, storyStep ->
             val lastStep = acc.lastOrNull()
 
@@ -16,7 +16,7 @@ class MergeNormalization(private val stepMergers: Set<StepsMergerCoordinator>) {
                     acc.removeLast()
                     acc.add(
                         stepMergers
-                            .first { it.canMerge(lastStep, storyStep) }
+                            .first { merger -> merger.canMerge(lastStep, storyStep) }
                             .merge(lastStep, storyStep)
                     )
                 }
