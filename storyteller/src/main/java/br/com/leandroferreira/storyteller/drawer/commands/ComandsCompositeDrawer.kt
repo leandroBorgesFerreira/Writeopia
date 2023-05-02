@@ -23,7 +23,12 @@ import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
 import br.com.leandroferreira.storyteller.model.Command
 import br.com.leandroferreira.storyteller.model.StoryUnit
 
-class CommandsCompositeDrawer(
+/**
+ * Drawer for commands. This drawer adds commands for move up, move down and delete on top of any
+ * Composable. If this [CommandsDecoratorDrawer] at the moment it is only possible to have all 3
+ * buttons, later it will be added the possibility to chose which button appears to the user.
+ */
+class CommandsDecoratorDrawer(
     private val innerStep: StoryUnitDrawer,
     private val onMoveUp: (Command) -> Unit = {},
     private val onMoveDown: (Command) -> Unit = {},

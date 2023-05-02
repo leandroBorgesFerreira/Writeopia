@@ -6,7 +6,12 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.merge.StepMerger
 
 /**
- * Todo: I need to recheck the type system of this library to avoid unnecessary casts
+ * This [StepMerger] merges a 2 [StoryUnit] into a new [StoryUnit] containing the information of
+ * both units.
+ *
+ * This can be used to create a bigger message from 2 smaller ones. Note: This class doesn't support
+ * groupsMerger and will throw an exception if requested to create a groups. Use [StepToGroupMerger]
+ * for this purpose.
  */
 open class StepToStepMerger : StepMerger {
 

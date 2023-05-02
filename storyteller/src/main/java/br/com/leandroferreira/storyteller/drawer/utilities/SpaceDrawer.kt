@@ -13,6 +13,11 @@ import br.com.leandroferreira.storyteller.draganddrop.DropTarget
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
 import br.com.leandroferreira.storyteller.model.StoryUnit
 
+/**
+ * Draws a white space. This Drawer is very important for accepting drop os other Composables for
+ * reorder purposes. A space create a move request when dropping Composables in it while the other
+ * story units create a mergeRequest.
+ */
 class SpaceDrawer(private val moveRequest: (String, Int) -> Unit = { _, _ -> }) : StoryUnitDrawer {
 
     @Composable

@@ -7,7 +7,10 @@ import br.com.leandroferreira.storyteller.normalization.merge.StepMerger
 import java.util.UUID
 
 /**
- * Todo: Write documentation
+ * This [StepMerger] merges a 2 StoryStep in to a GroupStep or adds a StoryStep to an existing
+ * GroupStep or merges two GroupStep.
+ *
+ * This merger can be used to create a image gallery from two individual images.
  */
 open class StepToGroupMerger : StepMerger {
 

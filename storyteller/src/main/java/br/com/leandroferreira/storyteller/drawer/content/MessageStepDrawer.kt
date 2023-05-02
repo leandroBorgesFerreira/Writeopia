@@ -20,6 +20,11 @@ import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
 
+/**
+ * Draw a text that can be edited. The edition of the text is both reflect in this Composable and
+ * also notified by onTextEdit. It is necessary to reflect here to avoid losing the focus on the
+ * TextField.
+ */
 class MessageStepDrawer(
     private val containerModifier: Modifier? = null,
     private val onTextEdit: (String, Int) -> Unit,

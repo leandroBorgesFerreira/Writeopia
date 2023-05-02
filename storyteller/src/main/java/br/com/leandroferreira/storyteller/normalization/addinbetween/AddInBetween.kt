@@ -5,6 +5,11 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 import java.util.Stack
 import java.util.UUID
 
+/**
+ * This normalizer will guarantee that a new StoryUnit is added between all items of
+ * a List<StoryUnit> this normalizer can be very useful to insert spaces between a list
+ * of StoryUnits.
+ */
 class AddInBetween(private val unitToAdd: StoryUnit) {
 
     fun insert(units: Iterable<StoryUnit>): List<StoryUnit> {

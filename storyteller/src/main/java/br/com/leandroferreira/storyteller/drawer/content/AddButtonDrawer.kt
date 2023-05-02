@@ -17,6 +17,9 @@ import androidx.compose.ui.unit.dp
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
 import br.com.leandroferreira.storyteller.model.StoryUnit
 
+/**
+ * A simple Add button.
+ */
 class AddButtonDrawer : StoryUnitDrawer {
 
     @Composable

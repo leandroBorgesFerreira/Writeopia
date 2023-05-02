@@ -24,6 +24,9 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.request.videoFrameMillis
 
+/**
+ * Draws a simple video thumnail using Coil.
+ */
 class VideoStepDrawer(private val containerModifier: Modifier? = null) : StoryUnitDrawer {
 
     @Composable

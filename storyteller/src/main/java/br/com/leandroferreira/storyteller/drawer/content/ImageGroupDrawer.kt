@@ -9,6 +9,9 @@ import br.com.leandroferreira.storyteller.model.GroupStep
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
 
+/**
+ * Draws a scrollable list of images accordingly with the imageStepDrawer provided.
+ */
 class ImageGroupDrawer(
     private val imageStepDrawer: StoryUnitDrawer,
     private val modifier: Modifier = Modifier

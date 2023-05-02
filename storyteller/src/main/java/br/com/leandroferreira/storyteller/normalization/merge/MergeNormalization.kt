@@ -3,6 +3,9 @@ package br.com.leandroferreira.storyteller.normalization.merge
 import br.com.leandroferreira.storyteller.model.StoryUnit
 
 
+/**
+ * 
+ */
 class MergeNormalization(private val stepMergers: Set<StepsMergerCoordinator>) {
 
     //Todo: This a bad logic because it only works is the elements are ordered, which shouldn't be

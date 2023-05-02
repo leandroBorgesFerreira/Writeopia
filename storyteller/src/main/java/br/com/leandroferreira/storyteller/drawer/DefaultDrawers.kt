@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import br.com.leandroferreira.storyteller.drawer.commands.CommandsCompositeDrawer
+import br.com.leandroferreira.storyteller.drawer.commands.CommandsDecoratorDrawer
 import br.com.leandroferreira.storyteller.drawer.content.AddButtonDrawer
 import br.com.leandroferreira.storyteller.drawer.content.ImageGroupDrawer
 import br.com.leandroferreira.storyteller.drawer.content.ImageStepDrawer
@@ -28,7 +28,7 @@ object DefaultDrawers {
     ): Map<String, StoryUnitDrawer> =
         buildMap {
             val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->
-                CommandsCompositeDrawer(
+                CommandsDecoratorDrawer(
                     stepDrawer,
                     onMoveUp = onListCommand,
                     onMoveDown = onListCommand,

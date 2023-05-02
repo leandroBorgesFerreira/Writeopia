@@ -27,6 +27,9 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
+/**
+ * Draws a image. Uses Coil to parse the image.
+ */
 class ImageStepDrawer(
     private val containerModifier: (Boolean) -> Modifier? = { null },
     private val mergeRequest: (receiverId: String, senderId: String) -> Unit = { _, _ -> }
