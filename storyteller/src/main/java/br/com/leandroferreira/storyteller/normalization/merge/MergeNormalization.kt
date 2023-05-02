@@ -4,18 +4,22 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 
 
 /**
- * 
+ *
  */
 class MergeNormalization(private val stepMergers: Set<StepsMergerCoordinator>) {
 
-    //Todo: This a bad logic because it only works is the elements are ordered, which shouldn't be
-    // a constraint.
-    fun mergeSteps(storySteps: Iterable<StoryUnit>): List<StoryUnit> {
-        val stepsByGroup = storySteps.groupBy { it.localPosition }
-        val reducedSteps = stepsByGroup.mapValues { (_, steps) -> reducePossibleSteps(steps) }
-        return reducedSteps.values.reduce { list1, list2 -> list1 + list2 }
-    }
+    fun mergeSteps(storySteps: Iterable<StoryUnit>): List<StoryUnit> =
+        // First, group all the elements by its position
+        storySteps.groupBy { storyStep -> storyStep.localPosition }
+            // Then reduce all the possible steps in the same position
+            .mapValues { (_, steps) -> reducePossibleSteps(steps) }
+            // At last, create the final list by merge all the intermediate lists.
+            .values.reduce { list1, list2 -> list1 + list2 }
 
+    /**
+     * Note that it may happen that some elements in the same position may not be able to be
+     * merged, that's why this method returns a List<StoryUnit> instead of StoryUnit.
+     */
     private fun reducePossibleSteps(steps: List<StoryUnit>): List<StoryUnit> {
         return steps.fold(mutableListOf()) { acc, storyStep ->
             val lastStep = acc.lastOrNull()

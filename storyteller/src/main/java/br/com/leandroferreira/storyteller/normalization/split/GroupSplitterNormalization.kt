@@ -2,7 +2,12 @@ package br.com.leandroferreira.storyteller.normalization.split
 
 import br.com.leandroferreira.storyteller.model.GroupStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
+import java.util.UUID
 
+/**
+ * Splits a GroupStep into StorySteps, if the positions of the inner steps change. DON'T USE THIS
+ * NORMALIZER WITH MergeNormalization, it may lead to unpredicted behaviour.
+ */
 object GroupSplitterNormalization {
 
     fun split(storySteps: Iterable<StoryUnit>): List<StoryUnit> =
@@ -26,12 +31,12 @@ object GroupSplitterNormalization {
     private fun groupToList(groupStep: GroupStep): List<StoryUnit> {
         return groupStep.steps.groupBy { storyUnit -> storyUnit.localPosition }
             .toSortedMap { position1, position2 -> position1.compareTo(position2) }
-            .map { (position, storyList) ->
+            .map { (_, storyList) ->
                 if (storyList.size == 1) {
                     storyList.first().copyWithNewPosition(groupStep.localPosition)
                 } else {
                     GroupStep(
-                        id = "apksd",  //Todo: Generate an id latter.
+                        id = UUID.randomUUID().toString(),
                         type = groupStep.type,
                         localPosition = groupStep.localPosition,
                         steps = storyList
