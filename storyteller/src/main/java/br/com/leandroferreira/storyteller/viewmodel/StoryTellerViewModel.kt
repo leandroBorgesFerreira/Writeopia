@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-//Todo: This class it associating to many times. The performance must be improved.
 class StoryTellerViewModel(
     private val storiesRepository: StoriesRepository,
     private val stepsNormalizer: (Iterable<StoryUnit>) -> List<StoryUnit> =
@@ -39,30 +38,29 @@ class StoryTellerViewModel(
         }
     }
 
-
-    //Todo: Review the performance of this method later
     fun mergeRequest(receiverId: String, senderId: String) {
         val sender = FindStory.findById(_normalizedSteps.value, senderId)?.first
         FindStory.findById(_normalizedSteps.value, receiverId)
             ?.let { (receiver, parentReceiver) ->
                 when {
                     sender != null && parentReceiver != null -> {
-                        val mutableHistory = _normalizedSteps.value.toMutableList()
-                        mutableHistory[sender.localPosition] =
-                            sender.copyWithNewPosition(parentReceiver.localPosition)
-
-                        _normalizedSteps.value = stepsNormalizer(mutableHistory)
+                        _normalizedSteps.value =
+                            changePositionOfStep(sender, parentReceiver.localPosition)
                     }
 
                     sender != null && receiver != null -> {
-                        val mutableHistory = _normalizedSteps.value.toMutableList()
-                        mutableHistory[sender.localPosition] =
-                            sender.copyWithNewPosition(receiver.localPosition)
-
-                        _normalizedSteps.value = stepsNormalizer(mutableHistory)
+                        _normalizedSteps.value =
+                            changePositionOfStep(sender, receiver.localPosition)
                     }
                 }
             }
+    }
+
+    private fun changePositionOfStep(sender: StoryUnit, position: Int): List<StoryUnit> {
+        val mutableHistory = _normalizedSteps.value.toMutableList()
+        mutableHistory[sender.localPosition] = sender.copyWithNewPosition(position)
+
+        return stepsNormalizer(mutableHistory)
     }
 
     fun moveRequest(unitId: String, newPosition: Int) {
