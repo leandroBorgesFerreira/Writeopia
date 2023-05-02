@@ -56,12 +56,12 @@ private fun TopBar() {
 
 @Composable
 private fun Body(storyTellerViewModel: StoryTellerViewModel) {
-    val history by storyTellerViewModel.normalizedStepsState.collectAsStateWithLifecycle()
+    val storyState by storyTellerViewModel.normalizedStepsState.collectAsStateWithLifecycle()
 
     Column {
         StoryTellerTimeline(
             modifier = Modifier.fillMaxSize(),
-            story = history.sorted(),
+            story = storyState.stories.sorted(),
             contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp),
             editable = false,
             drawers = DefaultDrawers.create(
