@@ -6,6 +6,7 @@ import br.com.leandroferreira.storyteller.normalization.merge.steps.StepToStepMe
 import br.com.leandroferreira.storyteller.utils.StoryData
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
+import org.junit.Ignore
 import org.junit.Test
 
 class MergeNormalizationTest {
@@ -106,7 +107,22 @@ class MergeNormalizationTest {
     }
 
     @Test
-//    @Ignore
+    fun `elements should be merged together even they are not positioned consecutively`() {
+        val mergeNormalization = MergeNormalization.build {
+            addMerger(StepsMergerCoordinator(typeOfStep = "image", typeOfGroup = "group_image"))
+        }
+
+        val input = imageStepsListNonConsecutive()
+        val initialSize = input.size
+        val mergedSteps = mergeNormalization.mergeSteps(input)
+
+        assertEquals("one image should be merged", initialSize - 1, mergedSteps.size)
+        assertTrue("The first step should be now a group", mergedSteps.first() is GroupStep)
+        assertEquals(2, (mergedSteps.first() as GroupStep).steps.size)
+    }
+
+    @Test
+    @Ignore
     fun `a list of consecutive messages should be merged when the merger is eager`() {
         val mergeNormalization = MergeNormalization.build {
             addMerger(
@@ -125,4 +141,29 @@ class MergeNormalizationTest {
          */
         assertEquals(1, mergedMessages.size)
     }
+
+    private fun imageStepsListNonConsecutive(): List<StoryStep> = buildList {
+        add(
+            StoryStep(
+                id = "1",
+                type = "image",
+                localPosition = 0
+            )
+        )
+        add(
+            StoryStep(
+                id = "2",
+                type = "image",
+                localPosition = 1
+            )
+        )
+        add(
+            StoryStep(
+                id = "3",
+                type = "image",
+                localPosition = 0
+            )
+        )
+    }
+
 }

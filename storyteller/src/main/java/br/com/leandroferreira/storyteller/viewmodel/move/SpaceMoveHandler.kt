@@ -23,6 +23,7 @@ class SpaceMoveHandler : MoveHandler {
             ?.takeIf { (storyToMove, _) -> storyToMove != null }
             ?.let { (storyToMove, containerGroup) ->
                 if (containerGroup != null) {
+                    // Remove StoryUnit from container
                     val newSteps = containerGroup.steps
                         .filter { storyUnit -> storyUnit.id != storyId }
 
@@ -32,9 +33,11 @@ class SpaceMoveHandler : MoveHandler {
                     mutable.removeAt(storyToMove!!.localPosition)
                 }
 
+                // Add to the end of list. A reeorder WILL be necessary
                 mutable.add(storyToMove!!.copyWithNewPosition(newPosition))
             }
 
         return mutable.toList()
     }
+
 }

@@ -10,13 +10,11 @@ class SpaceMoveHandlerTest {
     @Test
     fun `it should be possible to switch two images position`() {
         // Images are in odd numbers
-        val input = AddInBetween.spaces()
-                .insert(StoryData.imagesInLine())
+        val input = AddInBetween.spaces().insert(StoryData.imagesInLine())
         val firstImage = input[1]
 
-        val result =
-            SpaceMoveHandler().handleMove(input, firstImage.id, 4)
+        val result = SpaceMoveHandler().handleMove(input, firstImage.id, 4)
 
-        assertEquals(result[4].id, firstImage.id)
+        assertEquals(result.last().id, firstImage.id)
     }
 }

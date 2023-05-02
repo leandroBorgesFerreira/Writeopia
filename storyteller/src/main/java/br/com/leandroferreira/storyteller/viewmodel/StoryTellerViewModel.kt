@@ -43,15 +43,26 @@ class StoryTellerViewModel(
     //Todo: Review the performance of this method later
     fun mergeRequest(receiverId: String, senderId: String) {
         val sender = FindStory.findById(_normalizedSteps.value, senderId)?.first
-        val receiver = FindStory.findById(_normalizedSteps.value, receiverId)?.first
+        FindStory.findById(_normalizedSteps.value, receiverId)
+            ?.let { (receiver, parentReceiver) ->
+                when {
+                    sender != null && parentReceiver != null -> {
+                        val mutableHistory = _normalizedSteps.value.toMutableList()
+                        mutableHistory[sender.localPosition] =
+                            sender.copyWithNewPosition(parentReceiver.localPosition)
 
-        if (sender != null && receiver != null) {
-            val mutableHistory = _normalizedSteps.value.toMutableList()
-            mutableHistory[sender.localPosition] =
-                sender.copyWithNewPosition(receiver.localPosition)
+                        _normalizedSteps.value = stepsNormalizer(mutableHistory)
+                    }
 
-            _normalizedSteps.value = stepsNormalizer(mutableHistory)
-        }
+                    sender != null && receiver != null -> {
+                        val mutableHistory = _normalizedSteps.value.toMutableList()
+                        mutableHistory[sender.localPosition] =
+                            sender.copyWithNewPosition(receiver.localPosition)
+
+                        _normalizedSteps.value = stepsNormalizer(mutableHistory)
+                    }
+                }
+            }
     }
 
     fun moveRequest(unitId: String, newPosition: Int) {
