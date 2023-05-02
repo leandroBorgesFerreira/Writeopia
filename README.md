@@ -35,15 +35,13 @@ Each Drawer can be substituted to change the default behaviour of the library to
 
 ### Normalization
 
-Custom normalizers allow users to merge, change the position of, and add new StoryUnits. These classes are designed to modify the story data in response to user input, backend input, or app logic.
+Custom normalizers allow users to merge, change the position of, and add new `StoryUnits`. These classes are designed to modify the story data in response to user input, backend input, or app logic.
 
 Currently the library supports:
 
-- Merge items of the same time toghether. When a list of `StorySteps` of type "image" has the same position, they are merged into "group_image". Instead of using `ImageStepDrawer` the new StoryUnit now is drawn with `ImageGroupDrawer` and a image gallery is presented to the user. Example: 
+- Merge items of the same type toghether. When a list of `StorySteps` of type "image" has the same position, they are merged into "group_image". Instead of using `ImageStepDrawer` the new `StoryUnit` now is drawn with `ImageGroupDrawer` and a image gallery is presented to the user. Example: 
 
 ![Screenshot 2023-04-17 at 23 10 16](https://user-images.githubusercontent.com/10619102/232611555-32ed2125-2622-4f69-8fde-e140751dbb2c.png)
-
-- Normalize the position of items with `PositionNormalization`. This is needed to avoid `StoryUnits` with wrong `localPosition`.
 
 **Please note that normalizers do not have a commutative property, so it is important to always place the PositionNormalization last. Additionally, changing the order of normalizers may affect the end result.**
 
