@@ -8,6 +8,17 @@ Rather than having to post all media separately and add an EditText feature, the
 
 https://user-images.githubusercontent.com/10619102/232607035-3be9444d-e66d-4e4f-a0f6-d557b63e8fcc.mov
 
+## Examples of usage
+
+### Medium-Style blog text editor: 
+[To do]
+
+### Posts editor (Social media style complex posts) 
+[To do]
+
+### Team chat complex messages editor (Slack/Discord/etc...)
+[To do]
+
 ## Quick start
 [To do]
 
