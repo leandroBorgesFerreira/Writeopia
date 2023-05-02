@@ -12,8 +12,8 @@ object FindStory {
     /**
      * Finds the StoryUnit and its container [GroupStep], if available.
      */
-    fun findById(storyMap: List<StoryUnit>, storyId: String): Pair<StoryUnit?, GroupStep?>? {
-        storyMap.forEach { storyUnit ->
+    fun findById(storyList: List<StoryUnit>, storyId: String): Pair<StoryUnit?, GroupStep?>? {
+        storyList.forEach { storyUnit ->
             if (storyUnit.id == storyId) return storyUnit to null
 
             if (storyUnit is GroupStep) {

@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -23,6 +25,7 @@ import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Label
 import androidx.compose.material.icons.outlined.Today
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,6 +45,8 @@ import br.com.leandroferreira.app_sample.viewmodel.HistoriesViewModel
 import br.com.leandroferreira.storyteller.StoryTellerTimeline
 import br.com.leandroferreira.storyteller.drawer.DefaultDrawers
 import br.com.leandroferreira.storyteller.viewmodel.StoryTellerViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.filterNotNull
 
 @Composable
 fun AddStoryScreen() {
@@ -62,7 +67,7 @@ fun AddStoryScreen() {
                 FloatingActionButton(onClick = {
                     storyTellerViewModel.updateState()
                     viewModel.toggleEdit()
-                } ) {
+                }) {
                     Icon(imageVector = Icons.Outlined.Edit, contentDescription = "")
                 }
             }
@@ -102,6 +107,16 @@ private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTelle
     val history by storyTellerViewModel.normalizedStepsState.collectAsStateWithLifecycle()
     val editable by viewModel.editModeState.collectAsStateWithLifecycle()
 
+    val listState: LazyListState = rememberLazyListState()
+
+    //Todo: Review this. Is a LaunchedEffect the correct way to do this??
+    LaunchedEffect(true, block = {
+        storyTellerViewModel.scrollToPosition.filterNotNull().collect { position ->
+            delay(200)
+            listState.animateScrollToItem(position, scrollOffset = -200)
+        }
+    })
+
     Column {
         InfoHeader()
 
@@ -110,6 +125,7 @@ private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTelle
             story = history.sorted(),
             contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp),
             editable = editable,
+            listState = listState,
             drawers = DefaultDrawers.create(
                 editable = editable,
                 onListCommand = storyTellerViewModel::onListCommand,

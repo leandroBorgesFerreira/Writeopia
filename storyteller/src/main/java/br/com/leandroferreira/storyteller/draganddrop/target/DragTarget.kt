@@ -1,4 +1,4 @@
-package br.com.leandroferreira.storyteller.draganddrop
+package br.com.leandroferreira.storyteller.draganddrop.target
 
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.layout.Box

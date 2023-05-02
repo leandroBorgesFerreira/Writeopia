@@ -29,6 +29,9 @@ class StoryTellerViewModel(
     private val _normalizedSteps: MutableStateFlow<List<StoryUnit>> = MutableStateFlow(emptyList())
     val normalizedStepsState: StateFlow<List<StoryUnit>> = _normalizedSteps.asStateFlow()
 
+    private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
+    val scrollToPosition: StateFlow<Int?> = _scrollToPosition.asStateFlow()
+
     fun requestHistoriesFromApi(force: Boolean = false) {
         if (_normalizedSteps.value.isEmpty() || force) {
             viewModelScope.launch {
@@ -69,6 +72,14 @@ class StoryTellerViewModel(
             unitId,
             newPosition
         ).let(stepsNormalizer)
+
+        _scrollToPosition.value =
+            FindStory.findById(_normalizedSteps.value, unitId)
+                ?.let { (unit, group) ->
+                    group?.localPosition ?: unit?.localPosition
+                }
+
+
     }
 
     fun onListCommand(command: Command) {

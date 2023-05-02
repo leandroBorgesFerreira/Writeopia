@@ -1,4 +1,4 @@
-package br.com.leandroferreira.storyteller.draganddrop
+package br.com.leandroferreira.storyteller.draganddrop.target
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue

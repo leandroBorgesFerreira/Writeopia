@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import br.com.leandroferreira.storyteller.draganddrop.DropTarget
+import br.com.leandroferreira.storyteller.draganddrop.target.DropTarget
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
 import br.com.leandroferreira.storyteller.model.StoryUnit
 

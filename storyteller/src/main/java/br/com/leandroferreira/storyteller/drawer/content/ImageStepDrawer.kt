@@ -19,8 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import br.com.leandroferreira.storyteller.draganddrop.DragTarget
-import br.com.leandroferreira.storyteller.draganddrop.DropTarget
+import br.com.leandroferreira.storyteller.draganddrop.target.DragTarget
+import br.com.leandroferreira.storyteller.draganddrop.target.DropTarget
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
