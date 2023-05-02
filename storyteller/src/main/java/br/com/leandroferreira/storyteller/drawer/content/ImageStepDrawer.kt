@@ -1,6 +1,5 @@
 package br.com.leandroferreira.storyteller.drawer.content
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -32,14 +31,17 @@ import coil.request.ImageRequest
 /**
  * Draws a image. Uses Coil to parse the image.
  */
-@OptIn(ExperimentalFoundationApi::class)
 class ImageStepDrawer(
     private val containerModifier: (Boolean) -> Modifier? = { null },
     private val mergeRequest: (receiverId: String, senderId: String) -> Unit = { _, _ -> }
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
+    override fun LazyItemScope.Step(
+        step: StoryUnit,
+        editable: Boolean,
+        extraData: Map<String, Any>
+    ) {
         val imageStep = step as StoryStep
 
         DropTarget(modifier = Modifier.padding(6.dp)) { inBound, data ->
@@ -47,7 +49,7 @@ class ImageStepDrawer(
                 mergeRequest(imageStep.id, data.id)
             }
 
-            val imageModifier = containerModifier(inBound) ?: defaultModifier(inBound)
+            val imageModifier = containerModifier(inBound) ?: Modifier.defaultModifier(inBound)
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -81,9 +83,8 @@ class ImageStepDrawer(
     }
 
     companion object {
-        fun defaultModifier(inBound: Boolean) =
-            Modifier
-                .clip(shape = RoundedCornerShape(size = 12.dp))
+        fun Modifier.defaultModifier(inBound: Boolean) =
+                clip(shape = RoundedCornerShape(size = 12.dp))
                 .background(if (inBound) Color.LightGray else Color.DarkGray)
                 .border(width = 1.dp, if (inBound) Color.LightGray else Color.DarkGray)
     }
