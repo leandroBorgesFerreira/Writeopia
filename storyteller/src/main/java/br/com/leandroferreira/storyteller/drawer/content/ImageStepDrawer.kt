@@ -38,7 +38,7 @@ class ImageStepDrawer(
 
         DropTarget(modifier = Modifier.padding(6.dp)) { inBound, data ->
             if (inBound && data != null) {
-                mergeRequest(imageStep.id, (data as StoryUnit).id)
+                mergeRequest(imageStep.id, data.id)
             }
 
             val imageModifier = containerModifier(inBound) ?: defaultModifier(inBound)

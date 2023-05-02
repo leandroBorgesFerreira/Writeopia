@@ -3,6 +3,10 @@ package br.com.leandroferreira.storyteller.viewmodel.move
 import br.com.leandroferreira.storyteller.model.StoryUnit
 import br.com.leandroferreira.storyteller.viewmodel.FindStory
 
+/**
+ * Todo: I need to evaluate sorting the story at the end of the move because this class only works
+ * if used with [PositionNormalization]
+ */
 class SpaceMoveHandler : MoveHandler {
 
     override fun handleMove(
@@ -33,7 +37,7 @@ class SpaceMoveHandler : MoveHandler {
                     mutable.removeAt(storyToMove!!.localPosition)
                 }
 
-                // Add to the end of list. A reeorder WILL be necessary
+                // Add to the end of list. A reorder WILL be necessary
                 mutable.add(storyToMove!!.copyWithNewPosition(newPosition))
             }
 

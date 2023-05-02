@@ -66,13 +66,11 @@ class StoryTellerViewModel(
     }
 
     fun moveRequest(unitId: String, newPosition: Int) {
-        val result = moveHandler.handleMove(
+        _normalizedSteps.value = moveHandler.handleMove(
             _normalizedSteps.value,
             unitId,
             newPosition
-        )
-
-        _normalizedSteps.value = stepsNormalizer(result)
+        ).let(stepsNormalizer)
     }
 
     fun onListCommand(command: Command) {
