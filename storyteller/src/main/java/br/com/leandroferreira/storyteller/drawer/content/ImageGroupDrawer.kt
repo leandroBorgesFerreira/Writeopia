@@ -1,5 +1,6 @@
 package br.com.leandroferreira.storyteller.drawer.content
 
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -18,13 +19,15 @@ class ImageGroupDrawer(
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
+    override fun LazyItemScope.Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
         val imageGroup = step as GroupStep
         val steps = imageGroup.steps.map { storyUnit -> storyUnit as StoryStep }
 
         LazyRow(modifier = modifier) {
             items(steps) { storyStep ->
-                imageStepDrawer.Step(storyStep, editable = editable, extraData)
+                imageStepDrawer.run {
+                    Step(storyStep, editable = editable, extraData)
+                }
             }
         }
     }

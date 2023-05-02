@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -36,10 +37,14 @@ class CommandsDecoratorDrawer(
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
+    override fun LazyItemScope.Step(
+        step: StoryUnit,
+        editable: Boolean,
+        extraData: Map<String, Any>
+    ) {
         Box(modifier = Modifier.padding(vertical = 3.dp)) {
             Box(modifier = Modifier.padding(top = 3.dp)) {
-                innerStep.Step(step = step, editable, extraData)
+                innerStep.run { Step(step = step, editable, extraData) }
             }
 
             DeleteButton(step)
@@ -56,9 +61,11 @@ class CommandsDecoratorDrawer(
 
     @Composable
     private fun BoxScope.DeleteButton(step: StoryUnit) {
-        Box(modifier = Modifier
-            .buttonModifier()
-            .align(Alignment.TopStart)) {
+        Box(
+            modifier = Modifier
+                .buttonModifier()
+                .align(Alignment.TopStart)
+        ) {
             IconButton(onClick = { onDelete(Command(type = "delete", step)) }) {
                 Icon(
                     imageVector = Icons.Outlined.Close,
@@ -71,9 +78,11 @@ class CommandsDecoratorDrawer(
 
     @Composable
     private fun BoxScope.MoveUpButton(step: StoryUnit) {
-        Box(modifier = Modifier
-            .buttonModifier()
-            .align(Alignment.TopCenter)) {
+        Box(
+            modifier = Modifier
+                .buttonModifier()
+                .align(Alignment.TopCenter)
+        ) {
             IconButton(onClick = { onMoveUp(Command(type = "move_up", step)) }) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowUp,
@@ -86,9 +95,11 @@ class CommandsDecoratorDrawer(
 
     @Composable
     private fun BoxScope.MoveDownButton(step: StoryUnit) {
-        Box(modifier = Modifier
-            .buttonModifier()
-            .align(Alignment.BottomCenter)) {
+        Box(
+            modifier = Modifier
+                .buttonModifier()
+                .align(Alignment.BottomCenter)
+        ) {
             IconButton(onClick = { onMoveDown(Command(type = "move_down", step)) }) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowDown,

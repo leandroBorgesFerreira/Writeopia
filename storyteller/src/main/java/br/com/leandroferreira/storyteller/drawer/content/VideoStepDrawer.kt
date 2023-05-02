@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -30,7 +31,7 @@ import coil.request.videoFrameMillis
 class VideoStepDrawer(private val containerModifier: Modifier? = null) : StoryUnitDrawer {
 
     @Composable
-    override fun Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
+    override fun LazyItemScope.Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
         val videoStep = step as StoryStep
 
         Box(modifier = Modifier.padding(vertical = 3.dp, horizontal = 8.dp)) {

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -23,7 +24,7 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 class AddButtonDrawer : StoryUnitDrawer {
 
     @Composable
-    override fun Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
+    override fun LazyItemScope.Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
         Box(modifier = Modifier.padding(5.dp)) {
             Button(
                 onClick = { },

@@ -3,6 +3,7 @@ package br.com.leandroferreira.storyteller.drawer.content
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -31,7 +32,7 @@ class MessageStepDrawer(
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
+    override fun LazyItemScope.Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
         val messageStep = step as StoryStep
 
         Box(

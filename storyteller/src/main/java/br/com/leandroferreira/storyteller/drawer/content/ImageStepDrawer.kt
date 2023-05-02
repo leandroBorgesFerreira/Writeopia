@@ -1,10 +1,12 @@
 package br.com.leandroferreira.storyteller.drawer.content
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -30,13 +32,14 @@ import coil.request.ImageRequest
 /**
  * Draws a image. Uses Coil to parse the image.
  */
+@OptIn(ExperimentalFoundationApi::class)
 class ImageStepDrawer(
     private val containerModifier: (Boolean) -> Modifier? = { null },
     private val mergeRequest: (receiverId: String, senderId: String) -> Unit = { _, _ -> }
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
+    override fun LazyItemScope.Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
         val imageStep = step as StoryStep
 
         DropTarget(modifier = Modifier.padding(6.dp)) { inBound, data ->

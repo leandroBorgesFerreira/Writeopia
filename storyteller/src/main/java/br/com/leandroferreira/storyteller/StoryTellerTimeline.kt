@@ -7,13 +7,11 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import br.com.leandroferreira.storyteller.draganddrop.target.DraggableScreen
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
 import br.com.leandroferreira.storyteller.model.StoryUnit
-import kotlinx.coroutines.delay
 
 @Composable
 fun StoryTellerTimeline(
@@ -34,11 +32,13 @@ fun StoryTellerTimeline(
                     story,
                     key = { storyUnit -> storyUnit.key }
                 ) { storyUnit ->
-                    drawers[storyUnit.type]?.Step(
-                        storyUnit,
-                        editable,
-                        mapOf("listSize" to story.size)
-                    )
+                    drawers[storyUnit.type]?.run {
+                        Step(
+                            storyUnit,
+                            editable,
+                            mapOf("listSize" to story.size)
+                        )
+                    }
                 }
             })
     }
