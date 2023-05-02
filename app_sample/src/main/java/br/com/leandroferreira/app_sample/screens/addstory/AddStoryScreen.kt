@@ -1,6 +1,5 @@
 package br.com.leandroferreira.app_sample.screens.addstory
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,6 +47,8 @@ import br.com.leandroferreira.storyteller.drawer.DefaultDrawers
 import br.com.leandroferreira.storyteller.viewmodel.StoryTellerViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filterNotNull
+
+private const val DEFAULT_DELAY_BEFORE_SCROLL: Long = 200L
 
 @Composable
 fun AddStoryScreen() {
@@ -113,16 +114,14 @@ private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTelle
     //Todo: Review this. Is a LaunchedEffect the correct way to do this??
     LaunchedEffect(true, block = {
         storyTellerViewModel.scrollToPosition.filterNotNull().collect { position ->
-            delay(200)
+            delay(DEFAULT_DELAY_BEFORE_SCROLL)
             listState.animateScrollToItem(position, scrollOffset = -200)
         }
     })
 
     storyState.scrollTo?.let { position ->
-        Log.d("Body", "scrolling to position: $position")
-
         LaunchedEffect(position, block = {
-            delay(300)
+            delay(DEFAULT_DELAY_BEFORE_SCROLL)
             listState.animateScrollToItem(position, scrollOffset = -200)
         })
     }
