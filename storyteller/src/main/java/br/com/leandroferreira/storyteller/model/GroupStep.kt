@@ -1,5 +1,8 @@
 package br.com.leandroferreira.storyteller.model
 
+/**
+ * A group of [StoryUnit]. This can be a image gallery, a video gallery, a list of messages, etc.
+ */
 data class GroupStep(
     override val id: String,
     override val type: String,

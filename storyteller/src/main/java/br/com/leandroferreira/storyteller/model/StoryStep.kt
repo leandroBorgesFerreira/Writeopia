@@ -1,5 +1,10 @@
 package br.com.leandroferreira.storyteller.model
 
+/**
+ * The model defining the information that can be draw in the screen. This is the most basic
+ * building block of the library and can have many types like image, message, audio, video,
+ * button, empty space, etc.
+ */
 data class StoryStep(
     override val id: String,
     override val type: String,

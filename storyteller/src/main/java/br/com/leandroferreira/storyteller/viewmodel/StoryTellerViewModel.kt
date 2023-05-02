@@ -78,8 +78,6 @@ class StoryTellerViewModel(
                 ?.let { (unit, group) ->
                     group?.localPosition ?: unit?.localPosition
                 }
-
-
     }
 
     fun onListCommand(command: Command) {
