@@ -55,10 +55,11 @@ class StepsNormalizationBuilder {
         normalizations.add(PositionNormalization::normalizePosition)
     }
 
-    private fun build(): (Iterable<StoryUnit>) -> List<StoryUnit> = reduceNormalizations(normalizations)
+    private fun build(): (Iterable<StoryUnit>) -> List<StoryUnit> =
+        reduceNormalizations(normalizations)
 
     private fun reduceNormalizations(
-        normalizations: List<(Iterable<StoryUnit>) -> List<StoryUnit>>
+        normalizations: Iterable<(Iterable<StoryUnit>) -> List<StoryUnit>>
     ): (Iterable<StoryUnit>) -> List<StoryUnit> =
         normalizations.reduce { fn, gn -> { stories -> gn(fn(stories)) } }
 }
