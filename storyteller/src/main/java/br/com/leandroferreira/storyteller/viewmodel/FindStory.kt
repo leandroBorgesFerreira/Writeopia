@@ -5,8 +5,8 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 
 object FindStory {
 
-    fun findById(storyMap: Map<Int, StoryUnit>, storyId: String): Pair<StoryUnit?, GroupStep?>? {
-        storyMap.values.forEach { storyUnit ->
+    fun findById(storyMap: List<StoryUnit>, storyId: String): Pair<StoryUnit?, GroupStep?>? {
+        storyMap.forEach { storyUnit ->
             if (storyUnit.id == storyId) return storyUnit to null
 
             if (storyUnit is GroupStep) {

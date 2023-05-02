@@ -10,7 +10,7 @@ class FindStoryTest {
     fun `it should be possible to find a storyUnit inside a GroupStep`() {
         val idToSearch = "1"
 
-        val input = StoryData.imageGroup().associateBy { storyUnit -> storyUnit.localPosition }
+        val input = StoryData.imageGroup()
         val result = FindStory.findById(input, idToSearch)
 
         assertEquals(idToSearch, result?.first?.id)

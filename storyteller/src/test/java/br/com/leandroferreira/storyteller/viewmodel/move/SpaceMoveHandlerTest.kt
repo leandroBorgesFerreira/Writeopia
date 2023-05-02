@@ -12,12 +12,11 @@ class SpaceMoveHandlerTest {
         // Images are in odd numbers
         val input = AddInBetween.spaces()
                 .insert(StoryData.imagesInLine())
-                .associateBy { it.localPosition }
         val firstImage = input[1]
 
         val result =
-            SpaceMoveHandler().handleMove(input.toMutableMap(), firstImage!!.id, 4)
+            SpaceMoveHandler().handleMove(input, firstImage.id, 4)
 
-        assertEquals(result[4]!!.id, firstImage.id)
+        assertEquals(result[4].id, firstImage.id)
     }
 }

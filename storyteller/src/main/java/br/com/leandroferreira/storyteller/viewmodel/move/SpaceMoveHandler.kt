@@ -6,16 +6,18 @@ import br.com.leandroferreira.storyteller.viewmodel.FindStory
 class SpaceMoveHandler : MoveHandler {
 
     override fun handleMove(
-        storyUnits: MutableMap<Int, StoryUnit>,
+        storyUnits: List<StoryUnit>,
         storyId: String,
         newPosition: Int
-    ): MutableMap<Int, StoryUnit> {
+    ): List<StoryUnit> {
         val space = storyUnits[newPosition]
 
-        if (space?.type != "space") throw IllegalStateException(
+        if (space.type != "space") throw IllegalStateException(
             "StoryUnits can only be moved to space positions the position $newPosition " +
                 "doesn't belong to a space"
         )
+
+        val mutable = storyUnits.toMutableList()
 
         FindStory.findById(storyUnits, storyId)
             ?.takeIf { (storyToMove, _) -> storyToMove != null }
@@ -23,14 +25,16 @@ class SpaceMoveHandler : MoveHandler {
                 if (containerGroup != null) {
                     val newSteps = containerGroup.steps
                         .filter { storyUnit -> storyUnit.id != storyId }
-                    storyUnits[containerGroup.localPosition] = containerGroup.copy(steps = newSteps)
+
+                    mutable[containerGroup.localPosition] =
+                        containerGroup.copy(steps = newSteps)
                 } else {
-                    storyUnits.remove(storyToMove!!.localPosition)
+                    mutable.removeAt(storyToMove!!.localPosition)
                 }
 
-                storyUnits[newPosition] = storyToMove!!.copyWithNewPosition(newPosition)
+                mutable.add(storyToMove!!.copyWithNewPosition(newPosition))
             }
 
-        return storyUnits
+        return mutable.toList()
     }
 }

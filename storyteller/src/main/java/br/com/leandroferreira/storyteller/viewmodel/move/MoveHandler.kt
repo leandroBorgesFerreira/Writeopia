@@ -5,8 +5,8 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 interface MoveHandler {
 
     fun handleMove(
-        storyUnits: MutableMap<Int, StoryUnit>,
+        storyUnits: List<StoryUnit>,
         storyId: String,
         newPosition: Int
-    ): MutableMap<Int, StoryUnit>
+    ): List<StoryUnit>
 }

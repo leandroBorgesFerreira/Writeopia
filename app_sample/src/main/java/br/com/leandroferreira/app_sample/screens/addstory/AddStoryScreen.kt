@@ -107,7 +107,7 @@ private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTelle
 
         StoryTellerTimeline(
             modifier = Modifier.fillMaxSize(),
-            story = history.values.sorted(),
+            story = history.sorted(),
             contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp),
             editable = editable,
             drawers = DefaultDrawers.create(

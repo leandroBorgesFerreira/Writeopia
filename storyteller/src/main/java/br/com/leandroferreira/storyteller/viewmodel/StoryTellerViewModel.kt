@@ -27,17 +27,13 @@ class StoryTellerViewModel(
 
     private val textChanges: MutableMap<Int, String> = mutableMapOf()
 
-    private val _normalizedSteps: MutableStateFlow<Map<Int, StoryUnit>> = MutableStateFlow(
-        emptyMap()
-    )
-    val normalizedStepsState: StateFlow<Map<Int, StoryUnit>> = _normalizedSteps.asStateFlow()
+    private val _normalizedSteps: MutableStateFlow<List<StoryUnit>> = MutableStateFlow(emptyList())
+    val normalizedStepsState: StateFlow<List<StoryUnit>> = _normalizedSteps.asStateFlow()
 
     fun requestHistoriesFromApi(force: Boolean = false) {
         if (_normalizedSteps.value.isEmpty() || force) {
             viewModelScope.launch {
                 val normalizedSteps = stepsNormalizer(storiesRepository.history())
-                    .associateBy { story -> story.localPosition }
-
                 _normalizedSteps.value = normalizedSteps
             }
         }
@@ -50,26 +46,22 @@ class StoryTellerViewModel(
         val receiver = FindStory.findById(_normalizedSteps.value, receiverId)?.first
 
         if (sender != null && receiver != null) {
-            val mutableHistory = _normalizedSteps.value.toMutableMap()
+            val mutableHistory = _normalizedSteps.value.toMutableList()
             mutableHistory[sender.localPosition] =
                 sender.copyWithNewPosition(receiver.localPosition)
 
-            val normalized = stepsNormalizer(mutableHistory.values.toList())
-                .associateBy { story -> story.localPosition }
-
-            _normalizedSteps.value = normalized
+            _normalizedSteps.value = stepsNormalizer(mutableHistory)
         }
     }
 
     fun moveRequest(unitId: String, newPosition: Int) {
         val result = moveHandler.handleMove(
-            _normalizedSteps.value.toMutableMap(),
+            _normalizedSteps.value,
             unitId,
             newPosition
         )
 
-        val spacedResult = stepsNormalizer(result.values.toList())
-        _normalizedSteps.value = spacedResult.associateBy { it.localPosition }
+        _normalizedSteps.value = stepsNormalizer(result)
     }
 
     fun onListCommand(command: Command) {
@@ -102,7 +94,7 @@ class StoryTellerViewModel(
     }
 
     private fun updateTexts() {
-        val steps = _normalizedSteps.value.toMutableMap()
+        val steps = _normalizedSteps.value.toMutableList()
 
         textChanges.forEach { (position, text) ->
             val editStep = steps[position]
@@ -117,39 +109,34 @@ class StoryTellerViewModel(
 
     private fun moveUp(
         position: Int,
-        history: Map<Int, StoryUnit>,
-    ): Map<Int, StoryUnit> {
+        history: List<StoryUnit>,
+    ): List<StoryUnit> {
         val thisStep = history[position]
         val upStep = history[position - 1]
 
-        val mutableHistory = history.toMutableMap()
-        upStep?.let { step ->
-            mutableHistory[position] = step.copyWithNewPosition(position)
-        }
+        val mutableHistory = history.toMutableList()
+        mutableHistory[position] = upStep.copyWithNewPosition(position)
 
-        thisStep?.let { step ->
-            mutableHistory[position - 1] = step.copyWithNewPosition(position - 1)
-        }
+        mutableHistory[position - 1] = thisStep.copyWithNewPosition(position - 1)
 
-        return mutableHistory.values
-            .toList()
-            .let(stepsNormalizer)
-            .associateBy { it.localPosition }
+        return stepsNormalizer(mutableHistory)
     }
 
     private fun moveDown(
         position: Int,
-        history: Map<Int, StoryUnit>,
-    ): Map<Int, StoryUnit> = moveUp(position + 1, history)
+        history: List<StoryUnit>,
+    ): List<StoryUnit> = moveUp(position + 1, history)
 
     private fun delete(
         step: StoryUnit,
-        history: Map<Int, StoryUnit>,
+        history: List<StoryUnit>,
     ) {
         val parentId = step.parentId
+        val mutableSteps = _normalizedSteps.value.toMutableList()
+
         if (parentId == null) {
-            _normalizedSteps.value =
-                stepsNormalizer((history - step.localPosition).values).associateBy { it.localPosition }
+            mutableSteps.removeAt(step.localPosition)
+            _normalizedSteps.value = stepsNormalizer(mutableSteps)
         } else {
             FindStory.findById(history, parentId)
                 ?.first
@@ -158,7 +145,6 @@ class StoryTellerViewModel(
                         storyUnit.id != step.id
                     }
 
-                    val mutableSteps = _normalizedSteps.value.toMutableMap()
                     val newStoryUnit = if (newSteps.size == 1) {
                         newSteps.first().copyWithNewPosition(group.localPosition)
                     } else {
@@ -166,10 +152,7 @@ class StoryTellerViewModel(
                     }
 
                     mutableSteps[group.localPosition] = newStoryUnit.copyWithNewParent(null)
-                    _normalizedSteps.value = stepsNormalizer(mutableSteps.values.toList())
-                        .associateBy { storyUnit ->
-                            storyUnit.localPosition
-                        }
+                    _normalizedSteps.value = stepsNormalizer(mutableSteps)
                 }
         }
     }

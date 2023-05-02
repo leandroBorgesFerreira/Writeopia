@@ -61,7 +61,7 @@ private fun Body(storyTellerViewModel: StoryTellerViewModel) {
     Column {
         StoryTellerTimeline(
             modifier = Modifier.fillMaxSize(),
-            story = history.values.sorted(),
+            story = history.sorted(),
             contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp),
             editable = false,
             drawers = DefaultDrawers.create(
