@@ -11,6 +11,7 @@ import br.com.leandroferreira.storyteller.drawer.commands.CommandsDecoratorDrawe
 import br.com.leandroferreira.storyteller.drawer.content.AddButtonDrawer
 import br.com.leandroferreira.storyteller.drawer.content.ImageGroupDrawer
 import br.com.leandroferreira.storyteller.drawer.content.ImageStepDrawer
+import br.com.leandroferreira.storyteller.drawer.content.ImageStepDrawer.Companion.defaultModifier
 import br.com.leandroferreira.storyteller.drawer.content.MessageStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.VideoStepDrawer
 import br.com.leandroferreira.storyteller.drawer.utilities.SpaceDrawer
@@ -37,12 +38,12 @@ object DefaultDrawers {
             }
 
             val imageDrawer = ImageStepDrawer(
-                containerModifier = ImageStepDrawer.Companion::defaultModifier,
+                containerModifier = { inBound -> Modifier.defaultModifier(inBound) },
                 mergeRequest = mergeRequest
             )
 
             val imageDrawerInGroup = ImageStepDrawer(
-                containerModifier = ImageStepDrawer.Companion::defaultModifier,
+                containerModifier = { inBound -> Modifier.defaultModifier(inBound) },
                 mergeRequest = mergeRequest
             )
 
