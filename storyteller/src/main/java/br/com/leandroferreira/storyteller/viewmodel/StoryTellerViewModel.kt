@@ -1,21 +1,23 @@
 package br.com.leandroferreira.storyteller.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.leandroferreira.storyteller.model.Command
 import br.com.leandroferreira.storyteller.model.GroupStep
+import br.com.leandroferreira.storyteller.model.StepType
 import br.com.leandroferreira.storyteller.model.StoryState
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.StepsNormalizationBuilder
 import br.com.leandroferreira.storyteller.repository.StoriesRepository
+import br.com.leandroferreira.storyteller.utils.StoryStepFactory
 import br.com.leandroferreira.storyteller.viewmodel.move.MoveHandler
 import br.com.leandroferreira.storyteller.viewmodel.move.SpaceMoveHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class StoryTellerViewModel(
     private val storiesRepository: StoriesRepository,
@@ -138,19 +140,43 @@ class StoryTellerViewModel(
         textChanges[position] = text
     }
 
-    fun onSimpleTextEdit(text: String, position: Int) {
-        textChanges[position] = text
+    //Todo: Add unit test for this method!
+    fun onLineBreak(storyStep: StoryStep) {
+        val updatedStories = updateTexts()
+        _normalizedSteps.value = separateMessages(updatedStories.stories, storyStep)
+    }
 
-        if (text.contains("\n")) {
-            updateState()
+    private fun separateMessages(stories: List<StoryUnit>, storyStep: StoryStep): StoryState {
+        storyStep.text?.split("\\R".toRegex(), limit = 2)?.let { list ->
+            val firstText = list[0]
+            val secondText = list.elementAtOrNull(1) ?: ""
+
+            val mutable = _normalizedSteps.value.stories.toMutableList()
+            mutable[storyStep.localPosition] = storyStep.copy(text = firstText)
+            mutable.add(
+                storyStep.localPosition + 1,
+                StoryStepFactory.space(localPosition = storyStep.localPosition + 1)
+            )
+
+            val secondMessage = StoryStep(
+                id = UUID.randomUUID().toString(),
+                type = storyStep.type,
+                text = secondText,
+                localPosition = storyStep.localPosition + 2,
+            )
+            mutable.add(storyStep.localPosition + 2, secondMessage)
+
+            return StoryState(stepsNormalizer(mutable), focusId = secondMessage.id)
         }
+
+        return StoryState(stories)
     }
 
     fun updateState() {
-        updateTexts()
+        _normalizedSteps.value = updateTexts()
     }
 
-    private fun updateTexts() {
+    private fun updateTexts(): StoryState {
         val steps = _normalizedSteps.value.stories.toMutableList()
 
         textChanges.forEach { (position, text) ->
@@ -163,7 +189,7 @@ class StoryTellerViewModel(
 
         textChanges.clear()
 
-        _normalizedSteps.value = StoryState(steps)
+        return StoryState(steps)
     }
 
     private fun moveUp(

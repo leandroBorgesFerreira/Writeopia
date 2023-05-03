@@ -67,8 +67,8 @@ private fun Body(storyTellerViewModel: StoryTellerViewModel) {
             drawers = DefaultDrawers.create(
                 editable = false,
                 onListCommand = storyTellerViewModel::onListCommand,
-                onTextBoxEdit = storyTellerViewModel::onTextEdit,
-                onSimpleTextEdit =storyTellerViewModel::onSimpleTextEdit,
+                onTextEdit = storyTellerViewModel::onTextEdit,
+                onLineBreak =storyTellerViewModel::onLineBreak,
                 mergeRequest = storyTellerViewModel::mergeRequest,
                 moveRequest = storyTellerViewModel::moveRequest,
                 onDeleteRequest = storyTellerViewModel::onDelete

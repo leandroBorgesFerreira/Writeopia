@@ -28,7 +28,7 @@ class SpaceDrawer(private val moveRequest: (String, Int) -> Unit = { _, _ -> }) 
         focusId: String?,
         extraData: Map<String, Any>
     ) {
-        DropTarget(modifier = Modifier.padding(6.dp)) { inBound, data ->
+        DropTarget { inBound, data ->
             if (inBound && data != null) {
                 moveRequest(data.id, step.localPosition)
             }

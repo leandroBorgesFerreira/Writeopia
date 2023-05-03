@@ -25,8 +25,8 @@ object DefaultDrawers {
     fun create(
         editable: Boolean = false,
         onListCommand: (Command) -> Unit,
-        onTextBoxEdit: (String, Int) -> Unit,
-        onSimpleTextEdit: (String, Int) -> Unit,
+        onTextEdit: (String, Int) -> Unit,
+        onLineBreak: (StoryStep) -> Unit,
         mergeRequest: (receiverId: String, senderId: String) -> Unit = { _, _ -> },
         moveRequest: (String, Int) -> Unit = { _, _ -> },
         checkRequest: (String, Boolean) -> Unit = { _, _ -> },
@@ -55,18 +55,25 @@ object DefaultDrawers {
                     .padding(vertical = 4.dp, horizontal = 8.dp)
                     .clip(shape = RoundedCornerShape(size = 12.dp))
                     .background(Color(0xFFFAF8F2)),
-                onTextEdit = onTextBoxEdit,
+                innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
+                onTextEdit = onTextEdit,
+                onLineBreak = {},
+                onDeleteRequest = onDeleteRequest
             )
 
             val messageDrawer = MessageStepDrawer(
                 containerModifier = Modifier,
-                onTextEdit = onSimpleTextEdit,
+                innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
+                onTextEdit = onTextEdit,
+                onLineBreak = onLineBreak,
+                onDeleteRequest = onDeleteRequest
             )
 
             val checkItemDrawer = CheckItemDrawer(
                 onCheckedChange = checkRequest,
-                onTextEdit = onTextBoxEdit,
-                onDeleteCommand = onDeleteRequest
+                onTextEdit = onTextEdit,
+                onLineBreak = onLineBreak,
+                onDeleteRequest = onDeleteRequest
             )
 
             put(StepType.MESSAGE_BOX.type, messageBoxDrawer)

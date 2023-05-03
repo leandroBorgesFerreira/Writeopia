@@ -1,5 +1,6 @@
 package br.com.leandroferreira.storyteller.drawer.content
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,7 +34,8 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 class CheckItemDrawer(
     private val onCheckedChange: (String, Boolean) -> Unit,
     private val onTextEdit: (String, Int) -> Unit,
-    private val onDeleteCommand: (StoryStep) -> Unit
+    private val onLineBreak: (StoryStep) -> Unit,
+    private val onDeleteRequest: (StoryStep) -> Unit
 ) : StoryUnitDrawer {
 
     @Composable
@@ -71,23 +74,25 @@ class CheckItemDrawer(
 
                 val focusRequester = remember { FocusRequester() }
 
+                LaunchedEffect(focusId) {
+                    if (focusId == step.id) {
+                        focusRequester.requestFocus()
+                    }
+                }
+
                 TextField(
-                    modifier = Modifier
-                        .focusRequester(focusRequester)
-                        .onGloballyPositioned {
-                            if (focusId == step.id) {
-                                focusRequester.requestFocus()
-                            }
-                        },
+                    modifier = Modifier.focusRequester(focusRequester),
                     value = inputText,
                     placeholder = { Text(text = "To-do") },
                     onValueChange = { text ->
                         inputText = text
 
-                        if (text.isEmpty()) {
-                            onDeleteCommand(step)
-                        } else {
-                            onTextEdit(text, step.localPosition)
+                        when {
+                            text.isEmpty() -> { onDeleteRequest(step) }
+
+                            text.contains("\n") -> { onLineBreak(step.copy(text = text)) }
+
+                            else -> { onTextEdit(text, step.localPosition) }
                         }
                     },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
