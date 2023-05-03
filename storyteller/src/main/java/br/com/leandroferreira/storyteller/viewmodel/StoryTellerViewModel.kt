@@ -225,8 +225,8 @@ class StoryTellerViewModel(
 
         if (parentId == null) {
             mutableSteps.removeAt(step.localPosition)
+            val previousFocus = FindStory.previousFocus(mutableSteps, step.localPosition)
             val normalized = stepsNormalizer(mutableSteps)
-            val previousFocus = FindStory.previousFocus(normalized, step.localPosition)
 
             _normalizedSteps.value = StoryState(normalized, focusId = previousFocus?.id)
         } else {

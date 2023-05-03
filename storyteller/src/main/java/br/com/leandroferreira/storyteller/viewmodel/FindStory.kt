@@ -27,9 +27,12 @@ object FindStory {
         return null
     }
 
+    /**
+     * Todo: Add unit test
+     */
     fun previousFocus(storyList: List<StoryUnit>, localPosition: Int): StoryUnit? {
         for (i in localPosition downTo 0) {
-            if (!(storyList[i] as? StoryStep)?.text.isNullOrEmpty()) {
+            if ((storyList[i] as? StoryStep)?.text?.isNotEmpty() == true) {
                 return storyList[i]
             }
         }
