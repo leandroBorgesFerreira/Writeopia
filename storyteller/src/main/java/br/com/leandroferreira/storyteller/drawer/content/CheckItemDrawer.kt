@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.material.Checkbox
+import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -28,6 +29,7 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 class CheckItemDrawer(
     private val onCheckedChange: (String, Boolean) -> Unit,
     private val onTextEdit: (String, Int) -> Unit,
+    private val onDeleteCommand: (StoryStep) -> Unit
 ) : StoryUnitDrawer {
 
     @Composable
@@ -47,9 +49,7 @@ class CheckItemDrawer(
                     modifier = Modifier
                         .size(20.dp)
                         .background(Color.Cyan)
-                ) {
-
-                }
+                )
 
                 Checkbox(
                     checked = checkItem.checked,
@@ -68,9 +68,15 @@ class CheckItemDrawer(
                 TextField(
                     modifier = Modifier,
                     value = inputText,
+                    placeholder = { Text(text = "To-do") },
                     onValueChange = { text ->
                         inputText = text
-                        onTextEdit(text, step.localPosition)
+
+                        if (text.isEmpty()) {
+                            onDeleteCommand(step)
+                        } else {
+                            onTextEdit(text, step.localPosition)
+                        }
                     },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = Color.Transparent,
@@ -78,7 +84,7 @@ class CheckItemDrawer(
                         disabledBorderColor = Color.Transparent
                     ),
                     textStyle = textStyle,
-                    enabled = editable
+                    enabled = editable,
                 )
             }
         }

@@ -131,9 +131,7 @@ class StoryTellerViewModel(
             }
 
             "delete" -> {
-                updateState()
-
-                delete(command.step, _normalizedSteps.value.stories)
+                onDelete(command.step)
             }
         }
     }
@@ -181,6 +179,12 @@ class StoryTellerViewModel(
         position: Int,
         history: List<StoryUnit>,
     ): StoryState = moveUp(position + 1, history)
+
+    fun onDelete(step: StoryUnit) {
+        updateState()
+        delete(step, _normalizedSteps.value.stories)
+    }
+
 
     private fun delete(
         step: StoryUnit,

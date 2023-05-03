@@ -26,7 +26,7 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
  * also notified by onTextEdit. It is necessary to reflect here to avoid losing the focus on the
  * TextField.
  */
-class MessageStepDrawer(
+class MessageBoxStepDrawer(
     private val containerModifier: Modifier? = null,
     private val onTextEdit: (String, Int) -> Unit,
 ) : StoryUnitDrawer {
@@ -42,14 +42,14 @@ class MessageStepDrawer(
                 .background(Color.LightGray)
         ) {
             if (editable) {
-                var inputText by remember {
-                    mutableStateOf(messageStep.text ?: "")
-                }
+//                var inputText by remember {
+//                    mutableStateOf(messageStep.text ?: "")
+//                }
 
                 TextField(
-                    value = inputText,
+                    value = step.text ?: "",
                     onValueChange = { text ->
-                        inputText = text
+//                        inputText = text
                         onTextEdit(text, step.localPosition)
                     },
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),

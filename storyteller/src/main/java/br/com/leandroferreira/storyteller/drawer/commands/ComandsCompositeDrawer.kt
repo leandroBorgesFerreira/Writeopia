@@ -31,8 +31,6 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
  */
 class CommandsDecoratorDrawer(
     private val innerStep: StoryUnitDrawer,
-    private val onMoveUp: (Command) -> Unit = {},
-    private val onMoveDown: (Command) -> Unit = {},
     private val onDelete: (Command) -> Unit = {}
 ) : StoryUnitDrawer {
 
@@ -48,14 +46,6 @@ class CommandsDecoratorDrawer(
             }
 
             DeleteButton(step)
-
-            if (step.localPosition != 0) {
-                MoveUpButton(step)
-            }
-
-            if ((extraData["listSize"] as? Int) != step.localPosition + 1) {
-                MoveDownButton(step)
-            }
         }
     }
 
@@ -69,40 +59,6 @@ class CommandsDecoratorDrawer(
             IconButton(onClick = { onDelete(Command(type = "delete", step)) }) {
                 Icon(
                     imageVector = Icons.Outlined.Close,
-                    contentDescription = "",
-                    modifier = Modifier.size(16.dp)
-                )
-            }
-        }
-    }
-
-    @Composable
-    private fun BoxScope.MoveUpButton(step: StoryUnit) {
-        Box(
-            modifier = Modifier
-                .buttonModifier()
-                .align(Alignment.TopCenter)
-        ) {
-            IconButton(onClick = { onMoveUp(Command(type = "move_up", step)) }) {
-                Icon(
-                    imageVector = Icons.Outlined.KeyboardArrowUp,
-                    contentDescription = "",
-                    modifier = Modifier.size(16.dp)
-                )
-            }
-        }
-    }
-
-    @Composable
-    private fun BoxScope.MoveDownButton(step: StoryUnit) {
-        Box(
-            modifier = Modifier
-                .buttonModifier()
-                .align(Alignment.BottomCenter)
-        ) {
-            IconButton(onClick = { onMoveDown(Command(type = "move_down", step)) }) {
-                Icon(
-                    imageVector = Icons.Outlined.KeyboardArrowDown,
                     contentDescription = "",
                     modifier = Modifier.size(16.dp)
                 )

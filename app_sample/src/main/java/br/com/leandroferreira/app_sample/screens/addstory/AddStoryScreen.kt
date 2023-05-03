@@ -141,7 +141,8 @@ private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTelle
                 onTextEdit = storyTellerViewModel::onTextEdit,
                 mergeRequest = storyTellerViewModel::mergeRequest,
                 moveRequest = storyTellerViewModel::moveRequest,
-                checkRequest = storyTellerViewModel::checkRequest
+                checkRequest = storyTellerViewModel::checkRequest,
+                onDeleteRequest = storyTellerViewModel::onDelete
             )
         )
     }

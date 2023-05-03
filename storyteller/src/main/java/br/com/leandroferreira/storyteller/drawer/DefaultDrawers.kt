@@ -13,11 +13,12 @@ import br.com.leandroferreira.storyteller.drawer.content.CheckItemDrawer
 import br.com.leandroferreira.storyteller.drawer.content.ImageGroupDrawer
 import br.com.leandroferreira.storyteller.drawer.content.ImageStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.ImageStepDrawer.Companion.defaultModifier
-import br.com.leandroferreira.storyteller.drawer.content.MessageStepDrawer
+import br.com.leandroferreira.storyteller.drawer.content.MessageBoxStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.VideoStepDrawer
 import br.com.leandroferreira.storyteller.drawer.utilities.SpaceDrawer
 import br.com.leandroferreira.storyteller.model.Command
 import br.com.leandroferreira.storyteller.model.StepType
+import br.com.leandroferreira.storyteller.model.StoryStep
 
 object DefaultDrawers {
 
@@ -28,13 +29,12 @@ object DefaultDrawers {
         mergeRequest: (receiverId: String, senderId: String) -> Unit = { _, _ -> },
         moveRequest: (String, Int) -> Unit = { _, _ -> },
         checkRequest: (String, Boolean) -> Unit = { _, _ -> },
+        onDeleteRequest: (StoryStep) -> Unit
     ): Map<String, StoryUnitDrawer> =
         buildMap {
             val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->
                 CommandsDecoratorDrawer(
                     stepDrawer,
-                    onMoveUp = onListCommand,
-                    onMoveDown = onListCommand,
                     onDelete = onListCommand,
                 )
             }
@@ -49,7 +49,7 @@ object DefaultDrawers {
                 mergeRequest = mergeRequest
             )
 
-            val messageDrawer = MessageStepDrawer(
+            val messageDrawer = MessageBoxStepDrawer(
                 containerModifier = Modifier
                     .padding(vertical = 4.dp, horizontal = 8.dp)
                     .clip(shape = RoundedCornerShape(size = 12.dp))
@@ -59,7 +59,8 @@ object DefaultDrawers {
 
             val checkItemDrawer = CheckItemDrawer(
                 onCheckedChange = checkRequest,
-                onTextEdit = onTextEdit
+                onTextEdit = onTextEdit,
+                onDeleteCommand = onDeleteRequest
             )
 
             put(

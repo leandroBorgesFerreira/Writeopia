@@ -69,7 +69,8 @@ private fun Body(storyTellerViewModel: StoryTellerViewModel) {
                 onListCommand = storyTellerViewModel::onListCommand,
                 onTextEdit = storyTellerViewModel::onTextEdit,
                 mergeRequest = storyTellerViewModel::mergeRequest,
-                moveRequest = storyTellerViewModel::moveRequest
+                moveRequest = storyTellerViewModel::moveRequest,
+                onDeleteRequest = storyTellerViewModel::onDelete
             )
         )
     }
