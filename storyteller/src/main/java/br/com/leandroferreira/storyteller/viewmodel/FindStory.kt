@@ -1,6 +1,7 @@
 package br.com.leandroferreira.storyteller.viewmodel
 
 import br.com.leandroferreira.storyteller.model.GroupStep
+import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
 
 /**
@@ -25,4 +26,15 @@ object FindStory {
 
         return null
     }
+
+    fun previousFocus(storyList: List<StoryUnit>, localPosition: Int): StoryUnit? {
+        for (i in localPosition downTo 0) {
+            if (!(storyList[i] as? StoryStep)?.text.isNullOrEmpty()) {
+                return storyList[i]
+            }
+        }
+
+        return null
+    }
+
 }

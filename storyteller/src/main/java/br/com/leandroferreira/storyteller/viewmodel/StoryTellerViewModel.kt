@@ -1,5 +1,6 @@
 package br.com.leandroferreira.storyteller.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.leandroferreira.storyteller.model.Command
@@ -28,7 +29,7 @@ class StoryTellerViewModel(
     private val textChanges: MutableMap<Int, String> = mutableMapOf()
 
     private val _normalizedSteps: MutableStateFlow<StoryState> = MutableStateFlow(
-        StoryState(stories = emptyList(),)
+        StoryState(stories = emptyList())
     )
     val normalizedStepsState: StateFlow<StoryState> = _normalizedSteps.asStateFlow()
 
@@ -191,7 +192,10 @@ class StoryTellerViewModel(
 
         if (parentId == null) {
             mutableSteps.removeAt(step.localPosition)
-            _normalizedSteps.value = StoryState(stepsNormalizer(mutableSteps))
+            val normalized = stepsNormalizer(mutableSteps)
+            val previousFocus = FindStory.previousFocus(normalized, step.localPosition)
+
+            _normalizedSteps.value = StoryState(normalized, focusId = previousFocus?.id)
         } else {
             FindStory.findById(history, parentId)
                 ?.first
