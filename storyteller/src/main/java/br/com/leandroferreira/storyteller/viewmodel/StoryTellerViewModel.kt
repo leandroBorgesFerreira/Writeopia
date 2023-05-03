@@ -96,10 +96,26 @@ class StoryTellerViewModel(
                 }
     }
 
+    fun checkRequest(unitId: String, checked: Boolean) {
+        updateState()
+
+        FindStory.findById(_normalizedSteps.value.stories, unitId)
+            ?.first
+            ?.let { storyUnit -> storyUnit as? StoryStep }
+            ?.let { step ->
+                val newStep = step.copy(checked = checked)
+                val newList = _normalizedSteps.value.stories.toMutableList()
+
+                newList[newStep.localPosition] = newStep
+
+                _normalizedSteps.value = StoryState(newList, null)
+            }
+    }
+
     fun onListCommand(command: Command) {
         when (command.type) {
             "move_up" -> {
-                updateTexts()
+                updateState()
                 _normalizedSteps.value = moveUp(
                     command.step.localPosition,
                     _normalizedSteps.value.stories
@@ -107,7 +123,7 @@ class StoryTellerViewModel(
             }
 
             "move_down" -> {
-                updateTexts()
+                updateState()
                 _normalizedSteps.value = moveDown(
                     command.step.localPosition,
                     _normalizedSteps.value.stories
@@ -115,7 +131,7 @@ class StoryTellerViewModel(
             }
 
             "delete" -> {
-                updateTexts()
+                updateState()
 
                 delete(command.step, _normalizedSteps.value.stories)
             }
@@ -140,6 +156,8 @@ class StoryTellerViewModel(
                 steps[position] = step
             }
         }
+
+        textChanges.clear()
 
         _normalizedSteps.value = StoryState(steps)
     }

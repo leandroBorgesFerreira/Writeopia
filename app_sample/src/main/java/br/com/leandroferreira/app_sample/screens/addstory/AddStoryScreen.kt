@@ -140,7 +140,8 @@ private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTelle
                 onListCommand = storyTellerViewModel::onListCommand,
                 onTextEdit = storyTellerViewModel::onTextEdit,
                 mergeRequest = storyTellerViewModel::mergeRequest,
-                moveRequest = storyTellerViewModel::moveRequest
+                moveRequest = storyTellerViewModel::moveRequest,
+                checkRequest = storyTellerViewModel::checkRequest
             )
         )
     }

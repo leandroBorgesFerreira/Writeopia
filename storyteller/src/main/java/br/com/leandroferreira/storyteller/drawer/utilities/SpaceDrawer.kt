@@ -30,7 +30,7 @@ class SpaceDrawer(private val moveRequest: (String, Int) -> Unit = { _, _ -> }) 
 
             Box(
                 modifier = Modifier
-                    .height(30.dp)
+                    .height(10.dp)
                     .fillMaxWidth()
                     .background(if (inBound) Color.LightGray else Color.Transparent)
             )

@@ -43,9 +43,33 @@ fun syncHistory(context: Context): List<StoryUnit> =
         add(
             StoryStep(
                 id = UUID.randomUUID().toString(),
+                type = "check_item",
+                text = "We need to go to the Cafe!",
+                localPosition = 3
+            )
+        )
+        add(
+            StoryStep(
+                id = UUID.randomUUID().toString(),
+                type = "check_item",
+                text = "We need to have lots of fun!",
+                localPosition = 4
+            )
+        )
+        add(
+            StoryStep(
+                id = UUID.randomUUID().toString(),
+                type = "check_item",
+                text = "And learn some Spanish!",
+                localPosition = 5
+            )
+        )
+        add(
+            StoryStep(
+                id = UUID.randomUUID().toString(),
                 type = "image",
                 url = "https://fastly.picsum.photos/id/514/1200/600.jpg?hmac=gh5_PZFkQI74GShPTCJ_XP_EgN-X1O0OUP8tDlT7WkY",
-                localPosition = 3,
+                localPosition = 6,
                 title = "The hotel entrance"
             )
         )
@@ -54,7 +78,7 @@ fun syncHistory(context: Context): List<StoryUnit> =
                 id = UUID.randomUUID().toString(),
                 type = "message",
                 text = "And it was super awesome!! \n\nUt enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
-                localPosition = 4
+                localPosition = 7
             )
         )
         add(
@@ -63,7 +87,7 @@ fun syncHistory(context: Context): List<StoryUnit> =
                 type = "video",
                 path = "android.resource://${context.packageName}/${R.raw.video}",
                 url = "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
-                localPosition = 5
+                localPosition = 8
             )
         )
         add(
@@ -73,7 +97,7 @@ fun syncHistory(context: Context): List<StoryUnit> =
                 text = "I couldn't believe how sunny it was. Santiago is a really beautiful city. There's a lot to " +
                     "do and enjoyed the day. We went to many cozy Cafes and we enjoyed the city by foot. " +
                     "We had to buy some Syn Cards to be able to communicate in the new country. ",
-                localPosition = 6
+                localPosition = 9
             )
         )
         add(
@@ -81,7 +105,7 @@ fun syncHistory(context: Context): List<StoryUnit> =
                 id = UUID.randomUUID().toString(),
                 type = "add_button",
                 text = "And it was super awesome!!",
-                localPosition = 7
+                localPosition = 10
             )
         )
     }

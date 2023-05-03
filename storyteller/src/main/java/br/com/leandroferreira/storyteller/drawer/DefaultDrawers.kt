@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import br.com.leandroferreira.storyteller.drawer.commands.CommandsDecoratorDrawer
 import br.com.leandroferreira.storyteller.drawer.content.AddButtonDrawer
+import br.com.leandroferreira.storyteller.drawer.content.CheckItemDrawer
 import br.com.leandroferreira.storyteller.drawer.content.ImageGroupDrawer
 import br.com.leandroferreira.storyteller.drawer.content.ImageStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.ImageStepDrawer.Companion.defaultModifier
@@ -25,7 +26,8 @@ object DefaultDrawers {
         onListCommand: (Command) -> Unit,
         onTextEdit: (String, Int) -> Unit,
         mergeRequest: (receiverId: String, senderId: String) -> Unit = { _, _ -> },
-        moveRequest: (String, Int) -> Unit = { _, _ -> }
+        moveRequest: (String, Int) -> Unit = { _, _ -> },
+        checkRequest: (String, Boolean) -> Unit = { _, _ -> },
     ): Map<String, StoryUnitDrawer> =
         buildMap {
             val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->
@@ -55,8 +57,13 @@ object DefaultDrawers {
                 onTextEdit = onTextEdit,
             )
 
+            val checkItemDrawer = CheckItemDrawer(
+                onCheckedChange = checkRequest,
+                onTextEdit = onTextEdit
+            )
+
             put(
-                StepType.MESSAGE.type,
+                StepType.MESSAGE_BOX.type,
                 if (editable) commandsComposite(messageDrawer) else messageDrawer
             )
             put(StepType.ADD_BUTTON.type, AddButtonDrawer())
@@ -74,6 +81,7 @@ object DefaultDrawers {
                 if (editable) commandsComposite(VideoStepDrawer()) else VideoStepDrawer()
             )
 
-            put("space", SpaceDrawer(moveRequest))
+            put(StepType.SPACE.type, SpaceDrawer(moveRequest))
+            put(StepType.CHECK_ITEM.type, checkItemDrawer)
         }
 }
