@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 class HistoriesViewModel : ViewModel(){
 
-    private val _editModeState = MutableStateFlow(false)
+    private val _editModeState = MutableStateFlow(true)
     val editModeState: StateFlow<Boolean> = _editModeState
 
     fun toggleEdit() {

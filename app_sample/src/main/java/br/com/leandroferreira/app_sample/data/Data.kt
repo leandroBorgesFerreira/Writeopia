@@ -60,7 +60,7 @@ fun syncHistory(context: Context): List<StoryUnit> =
             StoryStep(
                 id = UUID.randomUUID().toString(),
                 type = "check_item",
-                text = "",
+                text = "focus",
                 localPosition = 5
             )
         )

@@ -17,7 +17,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -65,8 +68,16 @@ class CheckItemDrawer(
                     TextStyle()
                 }
 
+                val focusRequester = remember { FocusRequester() }
+
                 TextField(
-                    modifier = Modifier,
+                    modifier = Modifier
+                        .focusRequester(focusRequester)
+                        .onGloballyPositioned {
+                            if (checkItem.text == "focus") {
+                                focusRequester.requestFocus()
+                            }
+                        },
                     value = inputText,
                     placeholder = { Text(text = "To-do") },
                     onValueChange = { text ->
