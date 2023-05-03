@@ -5,7 +5,8 @@ package br.com.leandroferreira.storyteller.model
  * is final), by creating new strings of types.
  */
 enum class StepType(val type: String) {
-    MESSAGE_BOX("message"),
+    MESSAGE("message"),
+    MESSAGE_BOX("message_box"),
     IMAGE("image"),
     GROUP_IMAGE("group_image"),
     AUDIO("audio"),

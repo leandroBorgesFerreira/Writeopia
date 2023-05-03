@@ -13,9 +13,9 @@ import br.com.leandroferreira.storyteller.drawer.content.CheckItemDrawer
 import br.com.leandroferreira.storyteller.drawer.content.ImageGroupDrawer
 import br.com.leandroferreira.storyteller.drawer.content.ImageStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.ImageStepDrawer.Companion.defaultModifier
-import br.com.leandroferreira.storyteller.drawer.content.MessageBoxStepDrawer
+import br.com.leandroferreira.storyteller.drawer.content.MessageStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.VideoStepDrawer
-import br.com.leandroferreira.storyteller.drawer.utilities.SpaceDrawer
+import br.com.leandroferreira.storyteller.drawer.content.SpaceDrawer
 import br.com.leandroferreira.storyteller.model.Command
 import br.com.leandroferreira.storyteller.model.StepType
 import br.com.leandroferreira.storyteller.model.StoryStep
@@ -25,7 +25,8 @@ object DefaultDrawers {
     fun create(
         editable: Boolean = false,
         onListCommand: (Command) -> Unit,
-        onTextEdit: (String, Int) -> Unit,
+        onTextBoxEdit: (String, Int) -> Unit,
+        onSimpleTextEdit: (String, Int) -> Unit,
         mergeRequest: (receiverId: String, senderId: String) -> Unit = { _, _ -> },
         moveRequest: (String, Int) -> Unit = { _, _ -> },
         checkRequest: (String, Boolean) -> Unit = { _, _ -> },
@@ -49,24 +50,27 @@ object DefaultDrawers {
                 mergeRequest = mergeRequest
             )
 
-            val messageDrawer = MessageBoxStepDrawer(
+            val messageBoxDrawer = MessageStepDrawer(
                 containerModifier = Modifier
                     .padding(vertical = 4.dp, horizontal = 8.dp)
                     .clip(shape = RoundedCornerShape(size = 12.dp))
                     .background(Color(0xFFFAF8F2)),
-                onTextEdit = onTextEdit,
+                onTextEdit = onTextBoxEdit,
+            )
+
+            val messageDrawer = MessageStepDrawer(
+                containerModifier = Modifier,
+                onTextEdit = onSimpleTextEdit,
             )
 
             val checkItemDrawer = CheckItemDrawer(
                 onCheckedChange = checkRequest,
-                onTextEdit = onTextEdit,
+                onTextEdit = onTextBoxEdit,
                 onDeleteCommand = onDeleteRequest
             )
 
-            put(
-                StepType.MESSAGE_BOX.type,
-                if (editable) commandsComposite(messageDrawer) else messageDrawer
-            )
+            put(StepType.MESSAGE_BOX.type, messageBoxDrawer)
+            put(StepType.MESSAGE.type, messageDrawer)
             put(StepType.ADD_BUTTON.type, AddButtonDrawer())
             put(StepType.IMAGE.type, if (editable) commandsComposite(imageDrawer) else imageDrawer)
             put(

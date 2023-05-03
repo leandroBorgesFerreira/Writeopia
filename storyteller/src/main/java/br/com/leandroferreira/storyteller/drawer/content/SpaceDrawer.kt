@@ -1,4 +1,4 @@
-package br.com.leandroferreira.storyteller.drawer.utilities
+package br.com.leandroferreira.storyteller.drawer.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

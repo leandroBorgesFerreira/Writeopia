@@ -131,7 +131,8 @@ private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTelle
             drawers = DefaultDrawers.create(
                 editable = editable,
                 onListCommand = storyTellerViewModel::onListCommand,
-                onTextEdit = storyTellerViewModel::onTextEdit,
+                onTextBoxEdit = storyTellerViewModel::onTextEdit,
+                onSimpleTextEdit =storyTellerViewModel::onSimpleTextEdit,
                 mergeRequest = storyTellerViewModel::mergeRequest,
                 moveRequest = storyTellerViewModel::moveRequest,
                 checkRequest = storyTellerViewModel::checkRequest,

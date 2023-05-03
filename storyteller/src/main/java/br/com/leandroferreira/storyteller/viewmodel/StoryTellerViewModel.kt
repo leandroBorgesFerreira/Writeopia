@@ -138,6 +138,14 @@ class StoryTellerViewModel(
         textChanges[position] = text
     }
 
+    fun onSimpleTextEdit(text: String, position: Int) {
+        textChanges[position] = text
+
+        if (text.contains("\n")) {
+            updateState()
+        }
+    }
+
     fun updateState() {
         updateTexts()
     }
