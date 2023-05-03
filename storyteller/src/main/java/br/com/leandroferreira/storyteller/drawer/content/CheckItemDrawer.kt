@@ -86,11 +86,17 @@ class CheckItemDrawer(
                         inputText = text
 
                         when {
-                            text.isEmpty() -> { onDeleteRequest(step) }
+                            text.isEmpty() -> {
+                                onDeleteRequest(step)
+                            }
 
-                            text.contains("\n") -> { onLineBreak(step.copy(text = text)) }
+                            text.contains("\n") -> {
+                                onLineBreak(step.copy(text = text))
+                            }
 
-                            else -> { onTextEdit(text, step.localPosition) }
+                            else -> {
+                                onTextEdit(text, step.localPosition)
+                            }
                         }
                     },
                     colors = TextFieldDefaults.outlinedTextFieldColors(

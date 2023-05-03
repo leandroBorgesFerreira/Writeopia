@@ -146,7 +146,7 @@ class StoryTellerViewModel(
     }
 
     private fun separateMessages(stories: List<StoryUnit>, storyStep: StoryStep): StoryState {
-        storyStep.text?.split("\\R".toRegex(), limit = 2)?.let { list ->
+        storyStep.text?.split("\n", limit = 2)?.let { list ->
             val firstText = list[0]
             val secondText = list.elementAtOrNull(1) ?: ""
 
