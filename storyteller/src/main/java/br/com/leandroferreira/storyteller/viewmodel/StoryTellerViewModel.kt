@@ -28,10 +28,7 @@ class StoryTellerViewModel(
     private val textChanges: MutableMap<Int, String> = mutableMapOf()
 
     private val _normalizedSteps: MutableStateFlow<StoryState> = MutableStateFlow(
-        StoryState(
-            stories = emptyList(),
-            scrollTo = null
-        )
+        StoryState(stories = emptyList(),)
     )
     val normalizedStepsState: StateFlow<StoryState> = _normalizedSteps.asStateFlow()
 
@@ -57,7 +54,7 @@ class StoryTellerViewModel(
                         _normalizedSteps.value =
                             StoryState(
                                 stories = changePositionOfStep(sender, position),
-                                scrollTo = position
+                                focusId = parentReceiver.id
                             )
                     }
 
@@ -65,8 +62,8 @@ class StoryTellerViewModel(
                         val position = receiver.localPosition
                         _normalizedSteps.value =
                             StoryState(
-                                stories = changePositionOfStep(sender, receiver.localPosition),
-                                scrollTo = position
+                                stories = changePositionOfStep(sender, position),
+                                focusId = receiver.id
                             )
                     }
                 }
@@ -184,7 +181,6 @@ class StoryTellerViewModel(
         updateState()
         delete(step, _normalizedSteps.value.stories)
     }
-
 
     private fun delete(
         step: StoryUnit,

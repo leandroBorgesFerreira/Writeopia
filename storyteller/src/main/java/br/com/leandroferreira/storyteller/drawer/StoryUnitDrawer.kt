@@ -11,5 +11,10 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
  */
 fun interface StoryUnitDrawer {
     @Composable
-    fun LazyItemScope.Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>)
+    fun LazyItemScope.Step(
+        step: StoryUnit,
+        editable: Boolean,
+        focusId: String?,
+        extraData: Map<String, Any>
+    )
 }

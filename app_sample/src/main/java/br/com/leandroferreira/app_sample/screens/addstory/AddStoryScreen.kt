@@ -119,19 +119,12 @@ private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTelle
         }
     })
 
-    storyState.scrollTo?.let { position ->
-        LaunchedEffect(position, block = {
-            delay(DEFAULT_DELAY_BEFORE_SCROLL)
-            listState.animateScrollToItem(position, scrollOffset = -200)
-        })
-    }
-
     Column {
         InfoHeader()
 
         StoryTellerTimeline(
             modifier = Modifier.fillMaxSize(),
-            story = storyState.stories.sorted(),
+            storyState = storyState,
             contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp),
             editable = editable,
             listState = listState,

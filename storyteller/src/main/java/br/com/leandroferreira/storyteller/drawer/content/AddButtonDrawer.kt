@@ -24,7 +24,12 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 class AddButtonDrawer : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
+    override fun LazyItemScope.Step(
+        step: StoryUnit,
+        editable: Boolean,
+        focusId: String?,
+        extraData: Map<String, Any>
+    ) {
         Box(modifier = Modifier.padding(5.dp)) {
             Button(
                 onClick = { },

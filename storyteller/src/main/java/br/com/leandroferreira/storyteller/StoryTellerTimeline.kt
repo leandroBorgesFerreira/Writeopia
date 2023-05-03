@@ -11,14 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import br.com.leandroferreira.storyteller.draganddrop.target.DraggableScreen
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.StoryState
 
 @Composable
 fun StoryTellerTimeline(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     editable: Boolean,
-    story: List<StoryUnit>,
+    storyState: StoryState,
     drawers: Map<String, StoryUnitDrawer>,
     listState: LazyListState = rememberLazyListState()
 ) {
@@ -29,14 +29,15 @@ fun StoryTellerTimeline(
             state = listState,
             content = {
                 items(
-                    story,
+                    storyState.stories.sorted(),
                     key = { storyUnit -> storyUnit.key }
                 ) { storyUnit ->
                     drawers[storyUnit.type]?.run {
                         Step(
-                            storyUnit,
-                            editable,
-                            mapOf("listSize" to story.size)
+                            step = storyUnit,
+                            editable = editable,
+                            focusId = storyState.focusId,
+                            extraData = mapOf("listSize" to storyState.stories.size)
                         )
                     }
                 }

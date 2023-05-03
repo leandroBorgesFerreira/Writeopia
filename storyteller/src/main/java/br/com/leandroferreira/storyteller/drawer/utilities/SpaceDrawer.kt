@@ -22,7 +22,12 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 class SpaceDrawer(private val moveRequest: (String, Int) -> Unit = { _, _ -> }) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
+    override fun LazyItemScope.Step(
+        step: StoryUnit,
+        editable: Boolean,
+        focusId: String?,
+        extraData: Map<String, Any>
+    ) {
         DropTarget(modifier = Modifier.padding(6.dp)) { inBound, data ->
             if (inBound && data != null) {
                 moveRequest(data.id, step.localPosition)

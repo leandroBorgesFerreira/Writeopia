@@ -15,7 +15,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
 import br.com.leandroferreira.storyteller.model.StoryStep
@@ -32,7 +35,12 @@ class MessageBoxStepDrawer(
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryUnit, editable: Boolean, extraData: Map<String, Any>) {
+    override fun LazyItemScope.Step(
+        step: StoryUnit,
+        editable: Boolean,
+        focusId: String?,
+        extraData: Map<String, Any>
+    ) {
         val messageStep = step as StoryStep
 
         Box(
@@ -42,17 +50,29 @@ class MessageBoxStepDrawer(
                 .background(Color.LightGray)
         ) {
             if (editable) {
-//                var inputText by remember {
-//                    mutableStateOf(messageStep.text ?: "")
-//                }
+                var inputText by remember {
+                    mutableStateOf(messageStep.text ?: "")
+                }
+
+                val focusRequester = remember { FocusRequester() }
 
                 TextField(
+                    modifier = Modifier
+                        .padding(
+                            horizontal = 10.dp,
+                            vertical = 5.dp
+                        )
+                        .focusRequester(focusRequester)
+                        .onGloballyPositioned {
+                            if (focusId == step.id) {
+                                focusRequester.requestFocus()
+                            }
+                        },
                     value = step.text ?: "",
                     onValueChange = { text ->
-//                        inputText = text
+                        inputText = text
                         onTextEdit(text, step.localPosition)
                     },
-                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent,

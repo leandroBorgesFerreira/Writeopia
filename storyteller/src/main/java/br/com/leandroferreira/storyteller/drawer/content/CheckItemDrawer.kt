@@ -39,6 +39,7 @@ class CheckItemDrawer(
     override fun LazyItemScope.Step(
         step: StoryUnit,
         editable: Boolean,
+        focusId: String?,
         extraData: Map<String, Any>
     ) {
         val checkItem = step as StoryStep
@@ -74,7 +75,7 @@ class CheckItemDrawer(
                     modifier = Modifier
                         .focusRequester(focusRequester)
                         .onGloballyPositioned {
-                            if (checkItem.text == "focus") {
+                            if (focusId == step.id) {
                                 focusRequester.requestFocus()
                             }
                         },

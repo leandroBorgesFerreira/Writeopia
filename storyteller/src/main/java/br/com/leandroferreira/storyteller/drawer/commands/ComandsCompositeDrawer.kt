@@ -38,11 +38,12 @@ class CommandsDecoratorDrawer(
     override fun LazyItemScope.Step(
         step: StoryUnit,
         editable: Boolean,
+        focusId: String?,
         extraData: Map<String, Any>
     ) {
         Box(modifier = Modifier.padding(vertical = 3.dp)) {
             Box(modifier = Modifier.padding(top = 3.dp)) {
-                innerStep.run { Step(step = step, editable, extraData) }
+                innerStep.run { Step(step = step, editable, focusId, extraData) }
             }
 
             DeleteButton(step)
