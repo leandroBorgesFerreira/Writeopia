@@ -59,7 +59,6 @@ class MessageStepDrawer(
                     onValueChange = { text ->
                         inputText = text
 
-
                         when {
                             text.isEmpty() -> { onDeleteRequest(step) }
 
