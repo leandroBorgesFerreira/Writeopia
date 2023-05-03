@@ -73,7 +73,7 @@ class CheckItemDrawer(
                         onTextEdit(text, step.localPosition)
                     },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Color.Red,
+                        focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent,
                         disabledBorderColor = Color.Transparent
                     ),
