@@ -112,12 +112,12 @@ private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTelle
     val listState: LazyListState = rememberLazyListState()
 
     //Todo: Review this. Is a LaunchedEffect the correct way to do this??
-    LaunchedEffect(true, block = {
-        storyTellerViewModel.scrollToPosition.filterNotNull().collect { position ->
-            delay(DEFAULT_DELAY_BEFORE_SCROLL)
-            listState.animateScrollToItem(position, scrollOffset = -200)
-        }
-    })
+//    LaunchedEffect(true, block = {
+//        storyTellerViewModel.scrollToPosition.filterNotNull().collect { position ->
+//            delay(DEFAULT_DELAY_BEFORE_SCROLL)
+//            listState.animateScrollToItem(position, scrollOffset = -200)
+//        }
+//    })
 
     Column {
         InfoHeader()
@@ -130,7 +130,6 @@ private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTelle
             listState = listState,
             drawers = DefaultDrawers.create(
                 editable = editable,
-                onListCommand = storyTellerViewModel::onListCommand,
                 onTextEdit = storyTellerViewModel::onTextEdit,
                 onLineBreak = storyTellerViewModel::onLineBreak,
                 mergeRequest = storyTellerViewModel::mergeRequest,

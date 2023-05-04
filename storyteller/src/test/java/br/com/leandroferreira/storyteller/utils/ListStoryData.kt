@@ -4,7 +4,7 @@ import br.com.leandroferreira.storyteller.model.GroupStep
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
 
-object StoryData {
+object ListStoryData {
 
     fun imageGroup(): List<StoryUnit> = buildList {
         add(

@@ -12,8 +12,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +19,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
-import br.com.leandroferreira.storyteller.model.Command
 import br.com.leandroferreira.storyteller.model.StoryUnit
 
 /**
@@ -31,7 +28,7 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
  */
 class CommandsDecoratorDrawer(
     private val innerStep: StoryUnitDrawer,
-    private val onDelete: (Command) -> Unit = {}
+    private val onDelete: (StoryUnit) -> Unit = {}
 ) : StoryUnitDrawer {
 
     @Composable
@@ -57,7 +54,7 @@ class CommandsDecoratorDrawer(
                 .buttonModifier()
                 .align(Alignment.TopStart)
         ) {
-            IconButton(onClick = { onDelete(Command(type = "delete", step)) }) {
+            IconButton(onClick = { onDelete(step) }) {
                 Icon(
                     imageVector = Icons.Outlined.Close,
                     contentDescription = "",

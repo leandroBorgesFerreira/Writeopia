@@ -1,7 +1,7 @@
-package br.com.leandroferreira.storyteller.normalization
+package br.com.leandroferreira.storyteller.normalization.builder
 
 import br.com.leandroferreira.storyteller.model.GroupStep
-import br.com.leandroferreira.storyteller.utils.StoryData
+import br.com.leandroferreira.storyteller.utils.ListStoryData
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
@@ -13,7 +13,7 @@ class StepsNormalizationBuilderTest {
             defaultNormalizers()
         }
 
-        val input = StoryData.complexList()
+        val input = ListStoryData.complexList()
         val normalized = normalization(input)
 
         assertEquals(

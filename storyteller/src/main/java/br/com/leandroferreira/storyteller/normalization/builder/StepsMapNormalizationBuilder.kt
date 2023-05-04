@@ -1,36 +1,37 @@
-package br.com.leandroferreira.storyteller.normalization
+package br.com.leandroferreira.storyteller.normalization.builder
 
+import br.com.leandroferreira.storyteller.model.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.addinbetween.AddInBetween
 import br.com.leandroferreira.storyteller.normalization.merge.MergeLogic
 import br.com.leandroferreira.storyteller.normalization.merge.MergeNormalization
 import br.com.leandroferreira.storyteller.normalization.merge.StepsMergerCoordinator
 import br.com.leandroferreira.storyteller.normalization.merge.steps.StepToStepMerger
-import br.com.leandroferreira.storyteller.normalization.position.PositionNormalization
-import br.com.leandroferreira.storyteller.normalization.sort.SortNormalization
-import br.com.leandroferreira.storyteller.utils.UnitsNormalization
+import br.com.leandroferreira.storyteller.utils.UnitsMapTransformation
+import br.com.leandroferreira.storyteller.utils.UnitsNormalizationMap
 
-/**
- * This builder reduces the normalizers into a single function for simplification of use of
- * Normalizers
- */
-class StepsNormalizationBuilder {
+class StepsMapNormalizationBuilder {
 
     companion object {
         fun reduceNormalizations(
-            buildFunc: StepsNormalizationBuilder.() -> Unit
-        ): UnitsNormalization =
-            StepsNormalizationBuilder().apply(buildFunc).build()
+            buildFunc: StepsMapNormalizationBuilder.() -> Unit
+        ): UnitsNormalizationMap =
+            StepsMapNormalizationBuilder().apply(buildFunc).build()
     }
 
-    private val normalizations: MutableList<UnitsNormalization> = mutableListOf()
+    private var mergeNormalization: ((Map<Int, List<StoryUnit>>) -> Map<Int, StoryUnit>)? = null
+    private val normalizations: MutableList<UnitsMapTransformation> = mutableListOf()
 
     /**
      * Adds a normalization.
      */
     fun addNormalization(
-        normalization: UnitsNormalization
-    ): StepsNormalizationBuilder = apply {
+        normalization: UnitsMapTransformation
+    ): StepsMapNormalizationBuilder = apply {
         normalizations.add(normalization)
+    }
+
+    fun addMergeNormalization(merge: (Map<Int, List<StoryUnit>>) -> Map<Int, StoryUnit>) {
+        mergeNormalization = merge
     }
 
     /**
@@ -49,16 +50,20 @@ class StepsNormalizationBuilder {
             )
         }
 
-        normalizations.add(SortNormalization::sort)
-        normalizations.add(mergeNormalization::mergeSteps)
+        this.mergeNormalization  = mergeNormalization::mergeStepsMap
         normalizations.add(AddInBetween.spaces()::insert)
-        normalizations.add(PositionNormalization::normalizePosition)
     }
 
-    private fun build(): UnitsNormalization = reduceNormalizations(normalizations)
+    private fun build(): UnitsNormalizationMap = { units ->
+        val merged = mergeNormalization!!.invoke(units)
+        val reduced = reduceNormalizations(normalizations)
+
+        reduced(merged)
+    }
 
     private fun reduceNormalizations(
-        normalizations: Iterable<UnitsNormalization>
-    ): UnitsNormalization =
+        normalizations: Iterable<UnitsMapTransformation>
+    ): UnitsMapTransformation =
         normalizations.reduce { fn, gn -> { stories -> gn(fn(stories)) } }
 }
+

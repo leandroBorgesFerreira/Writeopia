@@ -1,4 +1,4 @@
-package br.com.leandroferreira.storyteller.normalization
+package br.com.leandroferreira.storyteller.normalization.unchange
 
 import br.com.leandroferreira.storyteller.model.StoryUnit
 

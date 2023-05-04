@@ -2,6 +2,7 @@ package br.com.leandroferreira.storyteller.normalization.addinbetween
 
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.utils.extensions.associateWithPosition
 import java.util.Stack
 import java.util.UUID
 
@@ -11,6 +12,9 @@ import java.util.UUID
  * of StoryUnits.
  */
 class AddInBetween(private val unitToAdd: StoryUnit) {
+
+    fun insert(unit: Map<Int, StoryUnit>): Map<Int, StoryUnit> =
+        insert(unit.values).associateWithPosition()
 
     fun insert(units: Iterable<StoryUnit>): List<StoryUnit> {
         val stack: Stack<StoryUnit> = Stack()

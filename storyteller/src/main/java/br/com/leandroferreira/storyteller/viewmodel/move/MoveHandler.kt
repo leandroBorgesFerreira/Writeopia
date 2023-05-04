@@ -1,5 +1,6 @@
 package br.com.leandroferreira.storyteller.viewmodel.move
 
+import br.com.leandroferreira.storyteller.model.change.MoveInfo
 import br.com.leandroferreira.storyteller.model.StoryUnit
 
 /**
@@ -9,8 +10,7 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 interface MoveHandler {
 
     fun handleMove(
-        storyUnits: List<StoryUnit>,
-        storyId: String,
-        newPosition: Int
-    ): List<StoryUnit>
+        storyUnits: Map<Int, StoryUnit>,
+        moveInfo: MoveInfo
+    ): Map<Int, StoryUnit>
 }

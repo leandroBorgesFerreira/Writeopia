@@ -6,7 +6,7 @@ import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
 import br.com.leandroferreira.storyteller.repository.StoriesRepository
 import br.com.leandroferreira.storyteller.utils.MainDispatcherRule
-import br.com.leandroferreira.storyteller.utils.StoryData
+import br.com.leandroferreira.storyteller.utils.ListStoryData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -22,19 +22,19 @@ class StoryTellerViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val imagesInLineRepo: StoriesRepository = object : StoriesRepository {
-        override suspend fun history(): List<StoryUnit> = StoryData.imagesInLine()
+        override suspend fun history(): List<StoryUnit> = ListStoryData.imagesInLine()
     }
 
     private val imageGroupRepo: StoriesRepository = object : StoriesRepository {
-        override suspend fun history(): List<StoryUnit> = StoryData.imageGroup()
+        override suspend fun history(): List<StoryUnit> = ListStoryData.imageGroup()
     }
 
     private val messagesRepo: StoriesRepository = object : StoriesRepository {
-        override suspend fun history(): List<StoryUnit> = StoryData.messagesInLine()
+        override suspend fun history(): List<StoryUnit> = ListStoryData.messagesInLine()
     }
 
     private val singleMessageRepo: StoriesRepository = object : StoriesRepository {
-        override suspend fun history(): List<StoryUnit> = StoryData.singleMessage()
+        override suspend fun history(): List<StoryUnit> = ListStoryData.singleMessage()
     }
 
 

@@ -3,7 +3,7 @@ package br.com.leandroferreira.storyteller.normalization.merge
 import br.com.leandroferreira.storyteller.model.GroupStep
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.normalization.merge.steps.StepToStepMerger
-import br.com.leandroferreira.storyteller.utils.StoryData
+import br.com.leandroferreira.storyteller.utils.ListStoryData
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import org.junit.Ignore
@@ -17,7 +17,7 @@ class MergeNormalizationTest {
             addMerger(StepsMergerCoordinator(typeOfStep = "image", typeOfGroup = "group_image"))
         }
 
-        val mergedStep = mergeNormalization.mergeSteps(StoryData.imageStepsList())
+        val mergedStep = mergeNormalization.mergeSteps(ListStoryData.imageStepsList())
 
         assertEquals(mergedStep.size, 1)
         assertTrue(mergedStep.first() is GroupStep)
@@ -30,7 +30,7 @@ class MergeNormalizationTest {
             addMerger(StepsMergerCoordinator(typeOfStep = "image", typeOfGroup = "group_image"))
         }
 
-        val mergedStep = mergeNormalization.mergeSteps(StoryData.stepsList())
+        val mergedStep = mergeNormalization.mergeSteps(ListStoryData.stepsList())
 
         assertEquals(3, mergedStep.size)
         assertTrue(mergedStep.first() is GroupStep)
@@ -50,7 +50,7 @@ class MergeNormalizationTest {
             )
         }
 
-        val mergedStep = mergeNormalization.mergeSteps(StoryData.messageStepsList())
+        val mergedStep = mergeNormalization.mergeSteps(ListStoryData.messageStepsList())
 
         assertEquals(1, mergedStep.size)
         assertTrue(mergedStep.first() is StoryStep)
@@ -69,7 +69,7 @@ class MergeNormalizationTest {
             localPosition = 6
         )
 
-        val mergedStep = mergeNormalization.mergeSteps(StoryData.stepsList() + last)
+        val mergedStep = mergeNormalization.mergeSteps(ListStoryData.stepsList() + last)
         assertEquals(last, mergedStep.last())
     }
 
@@ -134,7 +134,7 @@ class MergeNormalizationTest {
             )
         }
 
-        val mergedMessages = mergeNormalization.mergeSteps(StoryData.messagesInLine())
+        val mergedMessages = mergeNormalization.mergeSteps(ListStoryData.messagesInLine())
 
         /*
          * This unit test is failing because only the first messages are getting merged in pairs...
