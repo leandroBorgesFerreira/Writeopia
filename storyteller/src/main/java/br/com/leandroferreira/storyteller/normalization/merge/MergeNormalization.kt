@@ -14,7 +14,8 @@ class MergeNormalization(private val stepMergers: Set<StepsMergerCoordinator>) {
             // Then reduce all the possible steps in the same position
             .mapValues { (_, steps) -> reducePossibleSteps(steps) }
             // At last, create the final list by merge all the intermediate lists.
-            .values.reduce { list1, list2 -> list1 + list2 }
+            .values
+            .reduce(Collection<StoryUnit>::plus)
 
     /**
      * Note that it may happen that some elements in the same position may not be able to be

@@ -8,6 +8,7 @@ import br.com.leandroferreira.storyteller.normalization.merge.StepsMergerCoordin
 import br.com.leandroferreira.storyteller.normalization.merge.steps.StepToStepMerger
 import br.com.leandroferreira.storyteller.normalization.position.PositionNormalization
 import br.com.leandroferreira.storyteller.normalization.sort.SortNormalization
+import br.com.leandroferreira.storyteller.utils.UnitsNormalization
 
 /**
  * This builder reduces the normalizers into a single function for simplification of use of
@@ -18,7 +19,7 @@ class StepsNormalizationBuilder {
     companion object {
         fun reduceNormalizations(
             buildFunc: StepsNormalizationBuilder.() -> Unit
-        ): (Iterable<StoryUnit>) -> List<StoryUnit> =
+        ): UnitsNormalization =
             StepsNormalizationBuilder().apply(buildFunc).build()
     }
 

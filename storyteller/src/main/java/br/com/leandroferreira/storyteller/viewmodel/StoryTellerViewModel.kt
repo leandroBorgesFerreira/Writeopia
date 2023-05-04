@@ -10,6 +10,7 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.StepsNormalizationBuilder
 import br.com.leandroferreira.storyteller.repository.StoriesRepository
 import br.com.leandroferreira.storyteller.utils.StoryStepFactory
+import br.com.leandroferreira.storyteller.utils.UnitsNormalization
 import br.com.leandroferreira.storyteller.viewmodel.move.MoveHandler
 import br.com.leandroferreira.storyteller.viewmodel.move.SpaceMoveHandler
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +21,7 @@ import java.util.UUID
 
 class StoryTellerViewModel(
     private val storiesRepository: StoriesRepository,
-    private val stepsNormalizer: (Iterable<StoryUnit>) -> List<StoryUnit> =
+    private val stepsNormalizer: UnitsNormalization =
         StepsNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
         },
