@@ -106,10 +106,10 @@ private fun TopBar() {
 
 @Composable
 private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTellerViewModel) {
-    val storyState by storyTellerViewModel.normalizedStepsState.collectAsStateWithLifecycle()
+    val storyState by storyTellerViewModel.normalizedStepsStateMap.collectAsStateWithLifecycle()
     val editable by viewModel.editModeState.collectAsStateWithLifecycle()
 
-    val listState: LazyListState = rememberLazyListState()
+//    val listState: LazyListState = rememberLazyListState()
 
     //Todo: Review this. Is a LaunchedEffect the correct way to do this??
 //    LaunchedEffect(true, block = {
@@ -127,7 +127,7 @@ private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTelle
             storyState = storyState,
             contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp),
             editable = editable,
-            listState = listState,
+//            listState = listState,
             drawers = DefaultDrawers.create(
                 editable = editable,
                 onTextEdit = storyTellerViewModel::onTextEdit,

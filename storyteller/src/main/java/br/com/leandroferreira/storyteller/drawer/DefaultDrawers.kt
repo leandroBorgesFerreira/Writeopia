@@ -19,6 +19,10 @@ import br.com.leandroferreira.storyteller.drawer.content.SpaceDrawer
 import br.com.leandroferreira.storyteller.model.StepType
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.change.CheckInfo
+import br.com.leandroferreira.storyteller.model.change.DeleteInfo
+import br.com.leandroferreira.storyteller.model.change.MergeInfo
+import br.com.leandroferreira.storyteller.model.change.MoveInfo
 
 object DefaultDrawers {
 
@@ -26,10 +30,10 @@ object DefaultDrawers {
         editable: Boolean = false,
         onTextEdit: (String, Int) -> Unit,
         onLineBreak: (StoryStep) -> Unit,
-        mergeRequest: (receiverId: String, senderId: String) -> Unit = { _, _ -> },
-        moveRequest: (String, Int) -> Unit = { _, _ -> },
-        checkRequest: (String, Boolean) -> Unit = { _, _ -> },
-        onDeleteRequest: (StoryUnit) -> Unit
+        mergeRequest: (receiver: MergeInfo, sender: MergeInfo) -> Unit = { _, _ -> },
+        moveRequest: (moveInfo: MoveInfo) -> Unit = { },
+        checkRequest: (checkInfo: CheckInfo, checked: Boolean) -> Unit = { _, _ -> },
+        onDeleteRequest: (DeleteInfo) -> Unit
     ): Map<String, StoryUnitDrawer> =
         buildMap {
             val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->

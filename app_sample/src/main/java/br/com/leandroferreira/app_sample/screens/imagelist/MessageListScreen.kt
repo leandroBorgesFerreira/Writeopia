@@ -56,7 +56,7 @@ private fun TopBar() {
 
 @Composable
 private fun Body(storyTellerViewModel: StoryTellerViewModel) {
-    val storyState by storyTellerViewModel.normalizedStepsState.collectAsStateWithLifecycle()
+    val storyState by storyTellerViewModel.normalizedStepsStateMap.collectAsStateWithLifecycle()
 
     Column {
         StoryTellerTimeline(
