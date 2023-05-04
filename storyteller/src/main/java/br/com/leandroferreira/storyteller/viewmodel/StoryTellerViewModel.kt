@@ -61,19 +61,20 @@ class StoryTellerViewModel(
      * Todo: Refactor this. Now that I'm using a Map each drawer can receive the position and return
      * to the merge request
      */
-    fun mergeRequest(receiver: MergeInfo, sender: MergeInfo) {
-        val senderStory = sender.storyUnit
+    fun mergeRequest(info: MergeInfo) {
+        val sender = info.sender
+        val receiver = info.receiver
 
         /* Search by position doesn't work because a receiver may be inside a GroupStep
         * Note: The search can speed up by using the position */
-        FindStory.findById(_normalizedStepsMap.value.stories.values, receiver.storyUnit.id)
+        FindStory.findById(_normalizedStepsMap.value.stories.values, receiver.id)
             ?.let { (receiver, parentReceiver) ->
                 when {
                     parentReceiver != null -> {
                         val position = parentReceiver.localPosition
                         _normalizedStepsMap.value =
                             StoryStateMap(
-                                stories = mergeStep(senderStory, position),
+                                stories = mergeStep(sender, position),
                                 focusId = parentReceiver.id
                             )
                     }
@@ -82,7 +83,7 @@ class StoryTellerViewModel(
                         val position = receiver.localPosition
                         _normalizedStepsMap.value =
                             StoryStateMap(
-                                stories = mergeStep(senderStory, position),
+                                stories = mergeStep(sender, position),
                                 focusId = receiver.id
                             )
                     }
@@ -116,7 +117,7 @@ class StoryTellerViewModel(
 //                }
     }
 
-    fun checkRequest(checkInfo: CheckInfo, checked: Boolean) {
+    fun checkRequest(checkInfo: CheckInfo) {
         updateState()
         val parentId = checkInfo.storyUnit.parentId
 
@@ -126,7 +127,7 @@ class StoryTellerViewModel(
             checkInfo.storyUnit
         }
 
-        val newStep = (storyUnit as? StoryStep)?.copy(checked = checked) ?: return
+        val newStep = (storyUnit as? StoryStep)?.copy(checked = checkInfo.checked) ?: return
         val newMap = _normalizedStepsMap.value.stories.toMutableMap()
 
         newMap[newStep.localPosition] = newStep

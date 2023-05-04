@@ -13,8 +13,6 @@ fun interface StoryUnitDrawer {
     @Composable
     fun LazyItemScope.Step(
         step: StoryUnit,
-        editable: Boolean,
-        focusId: String?,
-        extraData: Map<String, Any>
+        drawInfo: DrawInfo
     )
 }

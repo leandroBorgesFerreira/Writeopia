@@ -30,9 +30,9 @@ object DefaultDrawers {
         editable: Boolean = false,
         onTextEdit: (String, Int) -> Unit,
         onLineBreak: (StoryStep) -> Unit,
-        mergeRequest: (receiver: MergeInfo, sender: MergeInfo) -> Unit = { _, _ -> },
+        mergeRequest: (receiver: MergeInfo) -> Unit = { },
         moveRequest: (moveInfo: MoveInfo) -> Unit = { },
-        checkRequest: (checkInfo: CheckInfo, checked: Boolean) -> Unit = { _, _ -> },
+        checkRequest: (checkInfo: CheckInfo) -> Unit = { },
         onDeleteRequest: (DeleteInfo) -> Unit
     ): Map<String, StoryUnitDrawer> =
         buildMap {

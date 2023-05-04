@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import br.com.leandroferreira.storyteller.drawer.DrawInfo
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
 import br.com.leandroferreira.storyteller.model.StoryUnit
 
@@ -24,12 +25,7 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
 class AddButtonDrawer : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(
-        step: StoryUnit,
-        editable: Boolean,
-        focusId: String?,
-        extraData: Map<String, Any>
-    ) {
+    override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
         Box(modifier = Modifier.padding(5.dp)) {
             Button(
                 onClick = { },

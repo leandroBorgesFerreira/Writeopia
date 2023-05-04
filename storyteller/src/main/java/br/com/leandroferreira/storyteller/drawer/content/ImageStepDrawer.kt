@@ -26,9 +26,11 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import br.com.leandroferreira.storyteller.draganddrop.target.DragTarget
 import br.com.leandroferreira.storyteller.draganddrop.target.DropTarget
+import br.com.leandroferreira.storyteller.drawer.DrawInfo
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
 import br.com.leandroferreira.storyteller.model.StoryStep
 import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.change.MergeInfo
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
@@ -37,21 +39,16 @@ import coil.request.ImageRequest
  */
 class ImageStepDrawer(
     private val containerModifier: (Boolean) -> Modifier? = { null },
-    private val mergeRequest: (receiverId: String, senderId: String) -> Unit = { _, _ -> }
+    private val mergeRequest: (MergeInfo) -> Unit = { }
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(
-        step: StoryUnit,
-        editable: Boolean,
-        focusId: String?,
-        extraData: Map<String, Any>
-    ) {
+    override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
         val imageStep = step as StoryStep
 
         DropTarget(modifier = Modifier.padding(6.dp)) { inBound, data ->
             if (inBound && data != null) {
-                mergeRequest(imageStep.id, data.id)
+                mergeRequest(MergeInfo(imageStep, data))
             }
 
             val imageModifier = containerModifier(inBound) ?: Modifier.defaultModifier(inBound)
@@ -61,7 +58,7 @@ class ImageStepDrawer(
                 modifier = imageModifier
                     .focusRequester(focusRequester)
                     .onGloballyPositioned {
-                        if (focusId == step.id) {
+                        if (drawInfo.focusId == step.id) {
                             focusRequester.requestFocus()
                         }
                     },
@@ -96,7 +93,7 @@ class ImageStepDrawer(
 
     companion object {
         fun Modifier.defaultModifier(inBound: Boolean) =
-                clip(shape = RoundedCornerShape(size = 12.dp))
+            clip(shape = RoundedCornerShape(size = 12.dp))
                 .background(if (inBound) Color.LightGray else Color.DarkGray)
                 .border(width = 1.dp, if (inBound) Color.LightGray else Color.DarkGray)
     }
