@@ -205,12 +205,29 @@ object StoryData {
         )
     }
 
+    fun singleMessage(): List<StoryUnit> = listOf(
+        StoryStep(
+            id = "0",
+            type = "message",
+            text = "hi!",
+            localPosition = -1
+        )
+    )
+
     fun messagesInLine(): List<StoryUnit> = buildList {
+        add(
+            StoryStep(
+                id = "0",
+                type = "message",
+                text = "hi!",
+                localPosition = -1
+            )
+        )
         add(
             StoryStep(
                 id = "2",
                 type = "message",
-                text = "We arrived in Santiago!! \n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                text = "Hey!",
                 localPosition = 0
             )
         )
@@ -218,7 +235,7 @@ object StoryData {
             StoryStep(
                 id = "4",
                 type = "message",
-                text = "And it was super awesome!! \n\nUt enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
+                text = "And it was super awesome!! Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
                 localPosition = 1
             )
         )

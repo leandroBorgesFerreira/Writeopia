@@ -33,6 +33,10 @@ class StoryTellerViewModelTest {
         override suspend fun history(): List<StoryUnit> = StoryData.messagesInLine()
     }
 
+    private val singleMessageRepo: StoriesRepository = object : StoriesRepository {
+        override suspend fun history(): List<StoryUnit> = StoryData.singleMessage()
+    }
+
 
     @Test
     fun `normalization should work correctly`() {
@@ -321,4 +325,39 @@ class StoryTellerViewModelTest {
             stack.add(storyUnit)
         }
     }
+
+    @Test
+    fun `when a line break happens, a new story unit with the same type should be created - simple`() {
+        val storyViewModel = StoryTellerViewModel(singleMessageRepo)
+        storyViewModel.requestHistoriesFromApi()
+
+        val stories = storyViewModel.normalizedStepsState.value.stories
+        val initialSize = stories.size
+
+        storyViewModel.onLineBreak(stories[1] as StoryStep)
+
+        assertEquals(
+            "2 new stories should have been added",
+            initialSize + 2,
+            storyViewModel.normalizedStepsState.value.stories.size
+        )
+    }
+
+    @Test
+    fun `when a line break happens, a new story unit with the same type should be created - complex`() {
+        val storyViewModel = StoryTellerViewModel(messagesRepo)
+        storyViewModel.requestHistoriesFromApi()
+
+        val stories = storyViewModel.normalizedStepsState.value.stories
+        val initialSize = stories.size
+
+        storyViewModel.onLineBreak(stories[1] as StoryStep)
+
+        assertEquals(
+            "2 new stories should have been added",
+            initialSize + 2,
+            storyViewModel.normalizedStepsState.value.stories.size
+        )
+    }
+
 }
