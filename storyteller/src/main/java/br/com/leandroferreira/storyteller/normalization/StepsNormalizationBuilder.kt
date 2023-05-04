@@ -1,6 +1,5 @@
 package br.com.leandroferreira.storyteller.normalization
 
-import br.com.leandroferreira.storyteller.model.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.addinbetween.AddInBetween
 import br.com.leandroferreira.storyteller.normalization.merge.MergeLogic
 import br.com.leandroferreira.storyteller.normalization.merge.MergeNormalization
@@ -23,13 +22,13 @@ class StepsNormalizationBuilder {
             StepsNormalizationBuilder().apply(buildFunc).build()
     }
 
-    private val normalizations: MutableList<(Iterable<StoryUnit>) -> List<StoryUnit>> = mutableListOf()
+    private val normalizations: MutableList<UnitsNormalization> = mutableListOf()
 
     /**
      * Adds a normalization.
      */
     fun addNormalization(
-        normalization: (Iterable<StoryUnit>) -> List<StoryUnit>
+        normalization: UnitsNormalization
     ): StepsNormalizationBuilder = apply {
         normalizations.add(normalization)
     }
@@ -56,11 +55,10 @@ class StepsNormalizationBuilder {
         normalizations.add(PositionNormalization::normalizePosition)
     }
 
-    private fun build(): (Iterable<StoryUnit>) -> List<StoryUnit> =
-        reduceNormalizations(normalizations)
+    private fun build(): UnitsNormalization = reduceNormalizations(normalizations)
 
     private fun reduceNormalizations(
-        normalizations: Iterable<(Iterable<StoryUnit>) -> List<StoryUnit>>
-    ): (Iterable<StoryUnit>) -> List<StoryUnit> =
+        normalizations: Iterable<UnitsNormalization>
+    ): UnitsNormalization =
         normalizations.reduce { fn, gn -> { stories -> gn(fn(stories)) } }
 }
