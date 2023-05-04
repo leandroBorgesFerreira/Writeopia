@@ -1,5 +1,6 @@
 package br.com.leandroferreira.storyteller.drawer.content
 
+import android.view.KeyEvent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
 import br.com.leandroferreira.storyteller.model.StoryStep
@@ -44,7 +48,10 @@ class MessageStepDrawer(
 
         Box(modifier = containerModifier) {
             if (editable) {
-                var inputText by remember { mutableStateOf(messageStep.text ?: "") }
+                var inputText by remember {
+                    val text = messageStep.text ?: ""
+                    mutableStateOf(TextFieldValue(text, TextRange(text.length)))
+                }
                 val focusRequester = remember { FocusRequester() }
 
                 LaunchedEffect(focusId) {
@@ -54,17 +61,26 @@ class MessageStepDrawer(
                 }
 
                 BasicTextField(
-                    modifier = innerContainerModifier.focusRequester(focusRequester).fillMaxWidth(),
+                    modifier = innerContainerModifier
+                        .focusRequester(focusRequester)
+                        .fillMaxWidth()
+                        .onKeyEvent { keyEvent ->
+                            if (keyEvent.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DEL &&
+                                inputText.selection.start == 0
+                            ) {
+                                onDeleteRequest(step)
+                                true
+                            } else {
+                                false
+                            }
+                        },
                     value = inputText,
-                    onValueChange = { text ->
-                        inputText = text
-
-                        when {
-                            text.isEmpty() -> { onDeleteRequest(step) }
-
-                            text.contains("\n") -> { onLineBreak(step.copy(text = text)) }
-
-                            else -> { onTextEdit(text, step.localPosition) }
+                    onValueChange = { value ->
+                        if (value.text.contains("\n")) {
+                            onLineBreak(step.copy(text = value.text))
+                        } else {
+                            inputText = value
+                            onTextEdit(value.text, step.localPosition)
                         }
                     },
                 )

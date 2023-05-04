@@ -1,5 +1,6 @@
 package br.com.leandroferreira.storyteller.drawer.content
 
+import android.view.KeyEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -21,7 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import br.com.leandroferreira.storyteller.draganddrop.target.DragTarget
@@ -62,7 +66,10 @@ class CheckItemDrawer(
                     enabled = editable
                 )
 
-                var inputText by remember { mutableStateOf(checkItem.text ?: "") }
+                var inputText by remember {
+                    val text = checkItem.text ?: ""
+                    mutableStateOf(TextFieldValue(text, TextRange(text.length)))
+                }
 
                 val textStyle = if (checkItem.checked) {
                     TextStyle(textDecoration = TextDecoration.LineThrough)
@@ -79,31 +86,35 @@ class CheckItemDrawer(
                 }
 
                 TextField(
-                    modifier = Modifier.focusRequester(focusRequester),
+                    modifier = Modifier
+                        .focusRequester(focusRequester)
+                        .onKeyEvent { keyEvent ->
+                            if (keyEvent.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DEL &&
+                                inputText.selection.start == 0
+                            ) {
+                                onDeleteRequest(step)
+                                true
+                            } else {
+                                false
+                            }
+                        },
                     value = inputText,
                     placeholder = { Text(text = "To-do") },
-                    onValueChange = { text ->
-                        inputText = text
-
-                        when {
-                            text.isEmpty() -> {
-                                onDeleteRequest(step)
-                            }
-
-                            text.contains("\n") -> {
-                                onLineBreak(step.copy(text = text))
-                            }
-
-                            else -> {
-                                onTextEdit(text, step.localPosition)
-                            }
+                    onValueChange = { value ->
+                        if (value.text.contains("\n")) {
+                            onLineBreak(step.copy(text = value.text))
+                        } else {
+                            inputText = value
+                            onTextEdit(value.text, step.localPosition)
                         }
+
                     },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent,
                         disabledBorderColor = Color.Transparent
                     ),
+                    maxLines = 1,
                     textStyle = textStyle,
                     enabled = editable,
                 )

@@ -147,11 +147,9 @@ class StoryTellerViewModel(
 
     private fun separateMessages(stories: List<StoryUnit>, storyStep: StoryStep): StoryState {
         storyStep.text?.split("\n", limit = 2)?.let { list ->
-            val firstText = list[0]
             val secondText = list.elementAtOrNull(1) ?: ""
 
             val mutable = _normalizedSteps.value.stories.toMutableList()
-            mutable[storyStep.localPosition] = storyStep.copy(text = firstText)
             mutable.add(
                 storyStep.localPosition + 1,
                 StoryStepFactory.space(localPosition = storyStep.localPosition + 1)
