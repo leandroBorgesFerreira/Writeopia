@@ -4,6 +4,7 @@ import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -33,15 +34,13 @@ class ImageGroupDrawer(
         val steps = imageGroup.steps.map { storyUnit -> storyUnit as StoryStep }
         val focusRequester = remember { FocusRequester() }
 
-        LazyRow(
-            modifier = modifier
-                .focusRequester(focusRequester)
-                .onGloballyPositioned {
-                    if (focusId == step.id) {
-                        focusRequester.requestFocus()
-                    }
-                }
-        ) {
+        LaunchedEffect(focusId) {
+            if (focusId == step.id) {
+                focusRequester.requestFocus()
+            }
+        }
+
+        LazyRow(modifier = modifier.focusRequester(focusRequester)) {
             items(steps) { storyStep ->
                 imageStepDrawer.run {
                     Step(storyStep, editable = editable, focusId = null, extraData)
