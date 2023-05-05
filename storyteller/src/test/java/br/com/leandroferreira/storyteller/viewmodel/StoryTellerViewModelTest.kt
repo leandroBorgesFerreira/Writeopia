@@ -61,13 +61,17 @@ class StoryTellerViewModelTest {
         val currentStory = storyViewModel.normalizedStepsStateMap.value.stories
         val initialSize = currentStory.size
 
-        val sender = currentStory[currentStory.size - 2]!!
-        val receiver = currentStory[1]!!
+        val positionFrom = currentStory.size - 2
+        val positionTo = 1
+        val sender = currentStory[positionFrom]!!
+        val receiver = currentStory[positionTo]!!
 
         storyViewModel.mergeRequest(
             MergeInfo(
                 sender = sender,
-                receiver = receiver
+                receiver = receiver,
+                positionFrom = positionFrom,
+                positionTo = positionTo,
             )
         )
 
