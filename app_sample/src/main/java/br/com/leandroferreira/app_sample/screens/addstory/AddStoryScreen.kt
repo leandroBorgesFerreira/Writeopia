@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -25,7 +23,6 @@ import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Label
 import androidx.compose.material.icons.outlined.Today
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,8 +42,6 @@ import br.com.leandroferreira.app_sample.viewmodel.HistoriesViewModel
 import br.com.leandroferreira.storyteller.StoryTellerTimeline
 import br.com.leandroferreira.storyteller.drawer.DefaultDrawers
 import br.com.leandroferreira.storyteller.viewmodel.StoryTellerViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.filterNotNull
 
 private const val DEFAULT_DELAY_BEFORE_SCROLL: Long = 200L
 
