@@ -40,9 +40,6 @@ class StoryTellerViewModel(
     )
     val normalizedStepsStateMap: StateFlow<StoryStateMap> = _normalizedStepsMap.asStateFlow()
 
-//    private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
-//    val scrollToPosition: StateFlow<Int?> = _scrollToPosition.asStateFlow()
-
     fun requestHistoriesFromApi(
         force: Boolean = false,
         normalizer: UnitsNormalizationMap = StepsMapNormalizationBuilder.reduceNormalizations {
@@ -99,7 +96,12 @@ class StoryTellerViewModel(
         if (sender.parentId == null) {
             mutableHistory.remove(positionFrom)
         } else {
+            val fromGroup = (mutableHistory[positionFrom]?.first() as? GroupStep)
+            val newList = fromGroup?.steps?.filter { storyUnit -> storyUnit.id != sender.id }
 
+            if (newList != null) {
+                mutableHistory[positionFrom] = listOf(fromGroup.copy(steps = newList))
+            }
         }
 
         return stepsMapNormalizer(mutableHistory)
@@ -113,12 +115,6 @@ class StoryTellerViewModel(
                 ).toEditState()
             )
         )
-
-//        _scrollToPosition.value =
-//            FindStory.findById(_normalizedStepsMap.value.stories.values, unitId)
-//                ?.let { (unit, group) ->
-//                    group?.localPosition ?: unit?.localPosition
-//                }
     }
 
     fun checkRequest(checkInfo: CheckInfo) {
