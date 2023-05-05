@@ -44,7 +44,7 @@ class StepsNormalizationBuilder {
                     stepMerger = StepToStepMerger(),
                     typeOfStep = "message",
                     typeOfGroup = null,
-                    mergeLogic = MergeLogic::lazy
+                    mergeLogic = MergeLogic::create
                 )
             )
         }

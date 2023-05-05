@@ -1,8 +1,8 @@
 package br.com.leandroferreira.storyteller.viewmodel.move
 
-import br.com.leandroferreira.storyteller.model.GroupStep
+import br.com.leandroferreira.storyteller.model.story.GroupStep
 import br.com.leandroferreira.storyteller.model.change.MoveInfo
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.viewmodel.FindStory
 
 /**

@@ -1,4 +1,4 @@
-package br.com.leandroferreira.storyteller.model
+package br.com.leandroferreira.storyteller.model.story
 
 /**
  * Interface defining the minimum behaviour for the StoryUnits that the StoryTeller library

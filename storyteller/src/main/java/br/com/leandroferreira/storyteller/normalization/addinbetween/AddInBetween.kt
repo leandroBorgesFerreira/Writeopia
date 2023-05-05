@@ -1,7 +1,7 @@
 package br.com.leandroferreira.storyteller.normalization.addinbetween
 
-import br.com.leandroferreira.storyteller.model.StoryStep
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.utils.extensions.associateWithPosition
 import java.util.Stack
 import java.util.UUID

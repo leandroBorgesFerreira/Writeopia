@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import br.com.leandroferreira.storyteller.draganddrop.target.DropTarget
 import br.com.leandroferreira.storyteller.drawer.DrawInfo
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.model.change.MoveInfo
 
 /**
@@ -28,7 +28,7 @@ class SpaceDrawer(private val moveRequest: (MoveInfo) -> Unit = {}) : StoryUnitD
             if (inBound && data != null) {
                 moveRequest(
                     MoveInfo(
-                        data,
+                        data.storyUnit,
                         fromPosition = drawInfo.position,
                         toPosition = step.localPosition //Todo: This fix!!
                     )

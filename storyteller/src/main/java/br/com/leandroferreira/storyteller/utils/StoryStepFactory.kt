@@ -1,7 +1,7 @@
 package br.com.leandroferreira.storyteller.utils
 
-import br.com.leandroferreira.storyteller.model.StepType
-import br.com.leandroferreira.storyteller.model.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StepType
+import br.com.leandroferreira.storyteller.model.story.StoryStep
 import java.util.UUID
 
 object StoryStepFactory {

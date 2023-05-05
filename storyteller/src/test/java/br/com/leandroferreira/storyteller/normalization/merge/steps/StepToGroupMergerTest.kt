@@ -1,7 +1,7 @@
 package br.com.leandroferreira.storyteller.normalization.merge.steps
 
-import br.com.leandroferreira.storyteller.model.GroupStep
-import br.com.leandroferreira.storyteller.model.StoryStep
+import br.com.leandroferreira.storyteller.model.story.GroupStep
+import br.com.leandroferreira.storyteller.model.story.StoryStep
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

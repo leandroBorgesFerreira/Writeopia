@@ -1,8 +1,9 @@
 package br.com.leandroferreira.storyteller.normalization.builder
 
-import br.com.leandroferreira.storyteller.model.GroupStep
+import br.com.leandroferreira.storyteller.model.story.GroupStep
 import br.com.leandroferreira.storyteller.utils.MapStoryData
 import junit.framework.TestCase
+import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 class StepsMapNormalizationBuilderTest {
@@ -15,22 +16,28 @@ class StepsMapNormalizationBuilderTest {
         val input = MapStoryData.complexList()
         val normalized = normalization(input)
 
-        TestCase.assertEquals(
+        assertEquals(
+            "The first non space StoryUnit should be a GroupStep",
+            "group_image",
+            normalized[1]!!.type
+        )
+
+        assertEquals(
             "There should be an space between all the story units",
             15,
             normalized.size
         )
-        TestCase.assertEquals(
+        assertEquals(
             "The images in the same position should be merged into GroupImage",
             "group_image",
             normalized[5]?.type
         )
-        TestCase.assertEquals(
+        assertEquals(
             "The images in the same position should be merged into GroupImage",
             3,
             (normalized[5] as GroupStep).steps.size
         )
-        TestCase.assertEquals(
+        assertEquals(
             "The last message should stay as it was",
             "message",
             normalized[normalized.size - 2]?.type

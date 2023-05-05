@@ -28,9 +28,10 @@ import br.com.leandroferreira.storyteller.draganddrop.target.DragTarget
 import br.com.leandroferreira.storyteller.draganddrop.target.DropTarget
 import br.com.leandroferreira.storyteller.drawer.DrawInfo
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
-import br.com.leandroferreira.storyteller.model.StoryStep
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.model.change.MergeInfo
+import br.com.leandroferreira.storyteller.model.draganddrop.DropInfo
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
@@ -48,7 +49,15 @@ class ImageStepDrawer(
 
         DropTarget(modifier = Modifier.padding(6.dp)) { inBound, data ->
             if (inBound && data != null) {
-                mergeRequest(MergeInfo(imageStep, data))
+
+                mergeRequest(
+                    MergeInfo(
+                        receiver = imageStep,
+                        sender = data.storyUnit,
+                        positionFrom = data.positionFrom,
+                        positionTo = drawInfo.position
+                    )
+                )
             }
 
             val imageModifier = containerModifier(inBound) ?: Modifier.defaultModifier(inBound)
@@ -64,7 +73,10 @@ class ImageStepDrawer(
                     },
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                DragTarget(modifier = imageModifier, dataToDrop = imageStep) {
+                DragTarget(
+                    modifier = imageModifier,
+                    dataToDrop = DropInfo(imageStep, drawInfo.position)
+                ) {
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
                             .data(imageStep.path?.toUri() ?: imageStep.url)

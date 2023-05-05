@@ -1,8 +1,8 @@
 package br.com.leandroferreira.storyteller.viewmodel
 
-import br.com.leandroferreira.storyteller.model.GroupStep
-import br.com.leandroferreira.storyteller.model.StoryStep
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.GroupStep
+import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
 
 /**
  * Helper object to find StoryUnits inside a the List<Story>. This object search in the list and

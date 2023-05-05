@@ -1,6 +1,6 @@
 package br.com.leandroferreira.storyteller.normalization.builder
 
-import br.com.leandroferreira.storyteller.model.GroupStep
+import br.com.leandroferreira.storyteller.model.story.GroupStep
 import br.com.leandroferreira.storyteller.utils.ListStoryData
 import junit.framework.TestCase.assertEquals
 import org.junit.Test

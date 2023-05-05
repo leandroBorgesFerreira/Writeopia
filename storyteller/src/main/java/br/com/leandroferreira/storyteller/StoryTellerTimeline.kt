@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
@@ -13,8 +12,7 @@ import androidx.compose.ui.unit.dp
 import br.com.leandroferreira.storyteller.draganddrop.target.DraggableScreen
 import br.com.leandroferreira.storyteller.drawer.DrawInfo
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
-import br.com.leandroferreira.storyteller.model.StoryState
-import br.com.leandroferreira.storyteller.model.StoryStateMap
+import br.com.leandroferreira.storyteller.model.story.StoryStateMap
 
 @Composable
 fun StoryTellerTimeline(

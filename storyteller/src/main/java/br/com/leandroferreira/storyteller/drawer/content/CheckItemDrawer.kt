@@ -31,10 +31,11 @@ import androidx.compose.ui.unit.dp
 import br.com.leandroferreira.storyteller.draganddrop.target.DragTarget
 import br.com.leandroferreira.storyteller.drawer.DrawInfo
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
-import br.com.leandroferreira.storyteller.model.StoryStep
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.model.change.CheckInfo
 import br.com.leandroferreira.storyteller.model.change.DeleteInfo
+import br.com.leandroferreira.storyteller.model.draganddrop.DropInfo
 
 class CheckItemDrawer(
     private val onCheckedChange: (CheckInfo) -> Unit,
@@ -47,7 +48,7 @@ class CheckItemDrawer(
     override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
         val checkItem = step as StoryStep
 
-        DragTarget(dataToDrop = checkItem) {
+        DragTarget(dataToDrop = DropInfo(checkItem, drawInfo.position)) {
             Row(
                 modifier = Modifier.padding(horizontal = 10.dp),
                 verticalAlignment = Alignment.CenterVertically

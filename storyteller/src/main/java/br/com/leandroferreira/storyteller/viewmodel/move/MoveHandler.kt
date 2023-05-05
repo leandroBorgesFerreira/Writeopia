@@ -1,7 +1,7 @@
 package br.com.leandroferreira.storyteller.viewmodel.move
 
 import br.com.leandroferreira.storyteller.model.change.MoveInfo
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
 
 /**
  * Handler for move requests. Implement this interface to add a custom behaviour for move requests.

@@ -1,6 +1,6 @@
 package br.com.leandroferreira.storyteller.normalization.unchange
 
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
 
 /**
  * Doesn't change the current list. This Normalizer is intended for mocking purposes.

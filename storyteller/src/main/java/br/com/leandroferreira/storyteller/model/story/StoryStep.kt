@@ -1,4 +1,4 @@
-package br.com.leandroferreira.storyteller.model
+package br.com.leandroferreira.storyteller.model.story
 
 /**
  * The model defining the information that can be draw in the screen. This is the most basic

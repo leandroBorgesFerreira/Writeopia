@@ -2,10 +2,10 @@ package br.com.leandroferreira.storyteller.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.leandroferreira.storyteller.model.GroupStep
-import br.com.leandroferreira.storyteller.model.StoryStateMap
-import br.com.leandroferreira.storyteller.model.StoryStep
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.GroupStep
+import br.com.leandroferreira.storyteller.model.story.StoryStateMap
+import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.model.change.CheckInfo
 import br.com.leandroferreira.storyteller.model.change.DeleteInfo
 import br.com.leandroferreira.storyteller.model.change.MergeInfo
@@ -71,19 +71,17 @@ class StoryTellerViewModel(
             ?.let { (receiver, parentReceiver) ->
                 when {
                     parentReceiver != null -> {
-                        val position = parentReceiver.localPosition
                         _normalizedStepsMap.value =
                             StoryStateMap(
-                                stories = mergeStep(sender, position),
+                                stories = mergeStep(sender, info.positionTo, info.positionFrom),
                                 focusId = parentReceiver.id
                             )
                     }
 
                     receiver != null -> {
-                        val position = receiver.localPosition
                         _normalizedStepsMap.value =
                             StoryStateMap(
-                                stories = mergeStep(sender, position),
+                                stories = mergeStep(sender, info.positionTo, info.positionFrom),
                                 focusId = receiver.id
                             )
                     }
@@ -91,11 +89,17 @@ class StoryTellerViewModel(
             }
     }
 
-    private fun mergeStep(sender: StoryUnit, position: Int): Map<Int, StoryUnit> {
+    private fun mergeStep(sender: StoryUnit, positionTo: Int, positionFrom: Int): Map<Int, StoryUnit> {
         val mutableHistory = _normalizedStepsMap.value.stories.toEditState()
-        val receiverStepList = mutableHistory[position]
+        val receiverStepList = mutableHistory[positionTo]
         receiverStepList?.plus(sender)?.let { newList ->
-            mutableHistory[sender.localPosition] = newList
+            mutableHistory[positionTo] = newList
+        }
+
+        if (sender.parentId == null) {
+            mutableHistory.remove(positionFrom)
+        } else {
+
         }
 
         return stepsMapNormalizer(mutableHistory)

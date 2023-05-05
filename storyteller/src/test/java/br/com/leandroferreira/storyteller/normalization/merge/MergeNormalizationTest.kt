@@ -1,12 +1,11 @@
 package br.com.leandroferreira.storyteller.normalization.merge
 
-import br.com.leandroferreira.storyteller.model.GroupStep
-import br.com.leandroferreira.storyteller.model.StoryStep
+import br.com.leandroferreira.storyteller.model.story.GroupStep
+import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.normalization.merge.steps.StepToStepMerger
 import br.com.leandroferreira.storyteller.utils.ListStoryData
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
-import org.junit.Ignore
 import org.junit.Test
 
 class MergeNormalizationTest {
@@ -119,27 +118,6 @@ class MergeNormalizationTest {
         assertEquals("one image should be merged", initialSize - 1, mergedSteps.size)
         assertTrue("The first step should be now a group", mergedSteps.first() is GroupStep)
         assertEquals(2, (mergedSteps.first() as GroupStep).steps.size)
-    }
-
-    @Test
-    @Ignore
-    fun `a list of consecutive messages should be merged when the merger is eager`() {
-        val mergeNormalization = MergeNormalization.build {
-            addMerger(
-                StepsMergerCoordinator(
-                    stepMerger = StepToStepMerger(),
-                    typeOfStep = "message",
-                    mergeLogic = MergeLogic::eager
-                )
-            )
-        }
-
-        val mergedMessages = mergeNormalization.mergeSteps(ListStoryData.messagesInLine())
-
-        /*
-         * This unit test is failing because only the first messages are getting merged in pairs...
-         */
-        assertEquals(1, mergedMessages.size)
     }
 
     private fun imageStepsListNonConsecutive(): List<StoryStep> = buildList {

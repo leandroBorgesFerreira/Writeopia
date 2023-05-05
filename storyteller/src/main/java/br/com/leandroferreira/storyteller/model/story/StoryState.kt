@@ -1,4 +1,4 @@
-package br.com.leandroferreira.storyteller.model
+package br.com.leandroferreira.storyteller.model.story
 
 data class StoryState(
     val stories: List<StoryUnit>,

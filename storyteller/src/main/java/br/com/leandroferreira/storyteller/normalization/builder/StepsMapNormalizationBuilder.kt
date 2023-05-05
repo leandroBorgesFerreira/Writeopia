@@ -1,6 +1,6 @@
 package br.com.leandroferreira.storyteller.normalization.builder
 
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.addinbetween.AddInBetween
 import br.com.leandroferreira.storyteller.normalization.merge.MergeLogic
 import br.com.leandroferreira.storyteller.normalization.merge.MergeNormalization
@@ -45,7 +45,7 @@ class StepsMapNormalizationBuilder {
                     stepMerger = StepToStepMerger(),
                     typeOfStep = "message",
                     typeOfGroup = null,
-                    mergeLogic = MergeLogic::lazy
+                    mergeLogic = MergeLogic::create
                 )
             )
         }
