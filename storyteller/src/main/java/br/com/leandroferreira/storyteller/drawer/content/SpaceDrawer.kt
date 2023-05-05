@@ -26,11 +26,12 @@ class SpaceDrawer(private val moveRequest: (MoveInfo) -> Unit = {}) : StoryUnitD
     override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
         DropTarget { inBound, data ->
             if (inBound && data != null) {
+
                 moveRequest(
                     MoveInfo(
                         data.storyUnit,
-                        fromPosition = drawInfo.position,
-                        toPosition = step.localPosition //Todo: This fix!!
+                        positionFrom = data.positionFrom,
+                        positionTo = drawInfo.position
                     )
                 )
             }

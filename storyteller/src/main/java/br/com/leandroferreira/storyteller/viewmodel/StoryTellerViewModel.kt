@@ -53,7 +53,7 @@ class StoryTellerViewModel(
             }
         }
     }
-    
+
     fun mergeRequest(info: MergeInfo) {
         val sender = info.sender
         val receiver = info.receiver
@@ -67,7 +67,6 @@ class StoryTellerViewModel(
                         _normalizedStepsMap.value =
                             StoryStateMap(
                                 stories = mergeStep(sender, info.positionTo, info.positionFrom),
-                                focusId = parentReceiver.id
                             )
                     }
 
@@ -75,7 +74,6 @@ class StoryTellerViewModel(
                         _normalizedStepsMap.value =
                             StoryStateMap(
                                 stories = mergeStep(sender, info.positionTo, info.positionFrom),
-                                focusId = receiver.id
                             )
                     }
                 }
@@ -104,13 +102,25 @@ class StoryTellerViewModel(
     }
 
     fun moveRequest(moveInfo: MoveInfo) {
-        _normalizedStepsMap.value = StoryStateMap(
-            stepsMapNormalizer(
-                moveHandler.handleMove(
-                    _normalizedStepsMap.value.stories, moveInfo
-                ).toEditState()
-            )
-        )
+        val mutable = _normalizedStepsMap.value.stories.toMutableMap()
+        if (mutable[moveInfo.positionTo]?.type != "space") throw IllegalStateException()
+
+        mutable[moveInfo.positionTo] = moveInfo.storyUnit
+
+        if (moveInfo.storyUnit.parentId == null) {
+            mutable.remove(moveInfo.positionFrom)
+        } else {
+            val fromGroup = (mutable[moveInfo.positionFrom] as? GroupStep)
+            val newList = fromGroup?.steps?.filter { storyUnit ->
+                storyUnit.id != moveInfo.storyUnit.id
+            }
+
+            if (newList != null) {
+                mutable[moveInfo.positionFrom] = fromGroup.copy(steps = newList)
+            }
+        }
+
+        _normalizedStepsMap.value = StoryStateMap(stepsMapNormalizer(mutable.toEditState()))
     }
 
     fun checkRequest(checkInfo: CheckInfo) {

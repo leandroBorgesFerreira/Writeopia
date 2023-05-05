@@ -16,18 +16,18 @@ class SpaceMoveHandler : MoveHandler {
         moveInfo: MoveInfo
     ): Map<Int, StoryUnit> {
         val mutable = storyUnits.toMutableMap()
-        val space = storyUnits[moveInfo.toPosition]
+        val space = storyUnits[moveInfo.positionTo]
 
         if (space?.type != "space") throw IllegalStateException(
-            "StoryUnits can only be moved to space positions the position ${moveInfo.toPosition} " +
+            "StoryUnits can only be moved to space positions the position ${moveInfo.positionTo} " +
                 "doesn't belong to a space"
         )
 
         val parentId = moveInfo.storyUnit.parentId
 
         if (parentId == null) {
-            mutable.remove(moveInfo.fromPosition)
-            mutable[moveInfo.toPosition] = moveInfo.storyUnit
+            mutable.remove(moveInfo.positionFrom)
+            mutable[moveInfo.positionTo] = moveInfo.storyUnit
         } else {
             FindStory.findById(storyUnits.values, parentId)
                 ?.takeIf { (storyToMove, _) -> storyToMove != null }
@@ -41,7 +41,7 @@ class SpaceMoveHandler : MoveHandler {
                             containerGroup.copy(steps = newSteps)
                     }
 
-                    mutable[moveInfo.toPosition] = moveInfo.storyUnit
+                    mutable[moveInfo.positionTo] = moveInfo.storyUnit
                 }
         }
 
