@@ -53,11 +53,7 @@ class StoryTellerViewModel(
             }
         }
     }
-
-    /*
-     * Todo: Refactor this. Now that I'm using a Map each drawer can receive the position and return
-     * to the merge request
-     */
+    
     fun mergeRequest(info: MergeInfo) {
         val sender = info.sender
         val receiver = info.receiver
