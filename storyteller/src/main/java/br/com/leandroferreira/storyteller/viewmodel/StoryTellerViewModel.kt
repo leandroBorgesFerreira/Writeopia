@@ -58,6 +58,8 @@ class StoryTellerViewModel(
         val sender = info.sender
         val receiver = info.receiver
 
+        if (info.positionFrom == info.positionTo) return
+
         /* Search by position doesn't work because a receiver may be inside a GroupStep
         * Note: The search can speed up by using the position */
         FindStory.findById(_normalizedStepsMap.value.stories.values, receiver.id)

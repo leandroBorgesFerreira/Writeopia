@@ -128,12 +128,12 @@ object MapStoryData {
         1 to StoryStep(
             id = "2",
             type = "image",
-            localPosition = 0
+            localPosition = 1
         ),
-        3 to StoryStep(
+        2 to StoryStep(
             id = "3",
             type = "image",
-            localPosition = 0
+            localPosition = 1
         ),
     )
 
