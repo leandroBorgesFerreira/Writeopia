@@ -4,7 +4,5 @@ import br.com.leandroferreira.storyteller.model.story.StoryUnit
 
 interface StoriesRepository {
 
-    suspend fun history(): List<StoryUnit>
-
-    suspend fun historyMap(): Map<Int, StoryUnit>
+    suspend fun history(): Map<Int, StoryUnit>
 }

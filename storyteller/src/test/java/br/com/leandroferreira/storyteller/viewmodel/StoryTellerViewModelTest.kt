@@ -8,7 +8,6 @@ import br.com.leandroferreira.storyteller.model.story.GroupStep
 import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.repository.StoriesRepository
-import br.com.leandroferreira.storyteller.utils.ListStoryData
 import br.com.leandroferreira.storyteller.utils.MainDispatcherRule
 import br.com.leandroferreira.storyteller.utils.MapStoryData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,23 +24,19 @@ class StoryTellerViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val imagesInLineRepo: StoriesRepository = object : StoriesRepository {
-        override suspend fun history(): List<StoryUnit> = ListStoryData.imagesInLine()
-        override suspend fun historyMap(): Map<Int, StoryUnit> = MapStoryData.imageStepsList()
+        override suspend fun history(): Map<Int, StoryUnit> = MapStoryData.imageStepsList()
     }
 
     private val imageGroupRepo: StoriesRepository = object : StoriesRepository {
-        override suspend fun history(): List<StoryUnit> = ListStoryData.imageGroup()
-        override suspend fun historyMap(): Map<Int, StoryUnit> = MapStoryData.imageGroup()
+        override suspend fun history(): Map<Int, StoryUnit> = MapStoryData.imageGroup()
     }
 
     private val messagesRepo: StoriesRepository = object : StoriesRepository {
-        override suspend fun history(): List<StoryUnit> = ListStoryData.messagesInLine()
-        override suspend fun historyMap(): Map<Int, StoryUnit> = MapStoryData.messagesInLine()
+        override suspend fun history(): Map<Int, StoryUnit> = MapStoryData.messagesInLine()
     }
 
     private val singleMessageRepo: StoriesRepository = object : StoriesRepository {
-        override suspend fun history(): List<StoryUnit> = ListStoryData.singleMessage()
-        override suspend fun historyMap(): Map<Int, StoryUnit> = MapStoryData.singleMessage()
+        override suspend fun history(): Map<Int, StoryUnit> = MapStoryData.singleMessage()
     }
 
 
@@ -49,7 +44,7 @@ class StoryTellerViewModelTest {
     fun `one space has to be added between steps`() = runTest {
         val storyViewModel = StoryTellerViewModel(messagesRepo)
 
-        val oldSize = messagesRepo.historyMap().size
+        val oldSize = messagesRepo.history().size
 
         storyViewModel.requestHistoriesFromApi()
 
@@ -247,6 +242,18 @@ class StoryTellerViewModelTest {
             initialGroupSize - 1,
             (newStory[1] as GroupStep).steps.size
         )
+    }
+
+    @Test
+    fun `when moving outside of a group, the parent Id should be null now`() {
+        val storyViewModel = StoryTellerViewModel(imageGroupRepo)
+        storyViewModel.requestHistoriesFromApi()
+
+        val currentStory = storyViewModel.normalizedStepsState.value.stories
+        val initialGroupSize = (currentStory[1] as GroupStep).steps.size
+
+        val positionTo = currentStory.size - 2
+        val positionFrom = 1
     }
 
     @Test

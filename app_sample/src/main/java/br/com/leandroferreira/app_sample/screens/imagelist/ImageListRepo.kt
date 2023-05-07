@@ -7,7 +7,5 @@ import br.com.leandroferreira.storyteller.repository.StoriesRepository
 
 class ImageListRepo: StoriesRepository {
 
-    override suspend fun history(): List<StoryUnit> = images()
-
-    override suspend fun historyMap(): Map<Int, StoryUnit> = imagesMap()
+    override suspend fun history(): Map<Int, StoryUnit> = imagesMap()
 }

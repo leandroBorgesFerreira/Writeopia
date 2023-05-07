@@ -6,98 +6,6 @@ import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import java.util.UUID
 
-fun syncHistory(context: Context): List<StoryUnit> =
-    buildList {
-        add(
-            StoryStep(
-                id = UUID.randomUUID().toString(),
-                type = "image",
-                url = "https://fastly.picsum.photos/id/15/400/400.jpg?hmac=xv-6mggpYPLIQ9eNAHrl1qKPHjyUCYlBoNBvdsqF4cY",
-            )
-        )
-        add(
-            StoryStep(
-                id = UUID.randomUUID().toString(),
-                type = "image",
-                url = "https://fastly.picsum.photos/id/1018/400/400.jpg?hmac=MwHJoMaVXsBbqg-LFoDVL6P8TCDkSEikExptCkkHESQ",
-            )
-        )
-        add(
-            StoryStep(
-                id = UUID.randomUUID().toString(),
-                type = "image",
-                url = "https://fastly.picsum.photos/id/984/400/400.jpg?hmac=CaqZ-rcUAbmidwURZcBynO7aIAC-FaktVN7X8lIvlmE",
-            )
-        )
-        add(
-            StoryStep(
-                id = UUID.randomUUID().toString(),
-                type = "message",
-                text = "We arrived in Santiago!!",
-            )
-        )
-        add(
-            StoryStep(
-                id = UUID.randomUUID().toString(),
-                type = "check_item",
-                text = "We need to go to the Cafe!",
-            )
-        )
-        add(
-            StoryStep(
-                id = UUID.randomUUID().toString(),
-                type = "check_item",
-                text = "We need to have lots of fun!",
-            )
-        )
-        add(
-            StoryStep(
-                id = UUID.randomUUID().toString(),
-                type = "check_item",
-                text = "We need to lear some Spanish!",
-            )
-        )
-        add(
-            StoryStep(
-                id = UUID.randomUUID().toString(),
-                type = "image",
-                url = "https://fastly.picsum.photos/id/514/1200/600.jpg?hmac=gh5_PZFkQI74GShPTCJ_XP_EgN-X1O0OUP8tDlT7WkY",
-                title = "The hotel entrance"
-            )
-        )
-        add(
-            StoryStep(
-                id = UUID.randomUUID().toString(),
-                type = "message_box",
-                text = "And it was super awesome!! \n\nUt enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
-            )
-        )
-        add(
-            StoryStep(
-                id = UUID.randomUUID().toString(),
-                type = "video",
-                path = "android.resource://${context.packageName}/${R.raw.video}",
-                url = "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
-            )
-        )
-        add(
-            StoryStep(
-                id = UUID.randomUUID().toString(),
-                type = "message_box",
-                text = "I couldn't believe how sunny it was. Santiago is a really beautiful city. There's a lot to " +
-                    "do and enjoyed the day. We went to many cozy Cafes and we enjoyed the city by foot. " +
-                    "We had to buy some Syn Cards to be able to communicate in the new country. ",
-            )
-        )
-        add(
-            StoryStep(
-                id = UUID.randomUUID().toString(),
-                type = "add_button",
-                text = "And it was super awesome!!",
-            )
-        )
-    }
-
 fun messages(): List<StoryUnit> = buildList {
     add(
         StoryStep(
@@ -210,7 +118,7 @@ fun imagesMap(): Map<Int, StoryUnit> =
     )
 
 
-fun syncHistoryMap(context: Context): Map<Int, StoryUnit> =
+fun syncHistory(context: Context): Map<Int, StoryUnit> =
     mapOf(
         0 to
             StoryStep(

@@ -46,7 +46,7 @@ class StoryTellerViewModel(
     ) {
         if (_normalizedSteps.value.stories.isEmpty() || force) {
             viewModelScope.launch {
-                val normalizedSteps = normalizer(storiesRepository.historyMap().toEditState())
+                val normalizedSteps = normalizer(storiesRepository.history().toEditState())
                 _normalizedSteps.value = StoryStateMap(normalizedSteps)
             }
         }
@@ -105,7 +105,7 @@ class StoryTellerViewModel(
         val mutable = _normalizedSteps.value.stories.toMutableMap()
         if (mutable[moveInfo.positionTo]?.type != "space") throw IllegalStateException()
 
-        mutable[moveInfo.positionTo] = moveInfo.storyUnit
+        mutable[moveInfo.positionTo] = moveInfo.storyUnit.copyWithNewParent(null)
 
         if (moveInfo.storyUnit.parentId == null) {
             mutable.remove(moveInfo.positionFrom)
