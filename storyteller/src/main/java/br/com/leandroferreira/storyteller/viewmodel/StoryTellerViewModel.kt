@@ -66,24 +66,29 @@ class StoryTellerViewModel(
                     parentReceiver != null -> {
                         _normalizedSteps.value =
                             StoryStateMap(
-                                stories = mergeStep(sender, info.positionTo, info.positionFrom),
+                                stories = mergeStep(receiver, sender, info.positionTo, info.positionFrom),
                             )
                     }
 
                     receiver != null -> {
                         _normalizedSteps.value =
                             StoryStateMap(
-                                stories = mergeStep(sender, info.positionTo, info.positionFrom),
+                                stories = mergeStep(receiver, sender, info.positionTo, info.positionFrom),
                             )
                     }
                 }
             }
     }
 
-    private fun mergeStep(sender: StoryUnit, positionTo: Int, positionFrom: Int): Map<Int, StoryUnit> {
+    private fun mergeStep(
+        receiver: StoryUnit?,
+        sender: StoryUnit,
+        positionTo: Int,
+        positionFrom: Int
+    ): Map<Int, StoryUnit> {
         val mutableHistory = _normalizedSteps.value.stories.toEditState()
         val receiverStepList = mutableHistory[positionTo]
-        receiverStepList?.plus(sender)?.let { newList ->
+        receiverStepList?.plus(sender.copyWithNewParent(receiver?.parentId))?.let { newList ->
             mutableHistory[positionTo] = newList
         }
 
@@ -217,7 +222,8 @@ class StoryTellerViewModel(
 
         if (parentId == null) {
             mutableSteps.remove(deleteInfo.position)
-            val previousFocus = FindStory.previousFocus(history.values.toList(), deleteInfo.position)
+            val previousFocus =
+                FindStory.previousFocus(history.values.toList(), deleteInfo.position)
             val normalized = stepsMapNormalizer(mutableSteps.toEditState())
 
             _normalizedSteps.value = StoryStateMap(normalized, focusId = previousFocus?.id)

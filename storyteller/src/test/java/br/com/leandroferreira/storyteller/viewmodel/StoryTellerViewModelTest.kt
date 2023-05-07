@@ -250,10 +250,41 @@ class StoryTellerViewModelTest {
         storyViewModel.requestHistoriesFromApi()
 
         val currentStory = storyViewModel.normalizedStepsState.value.stories
-        val initialGroupSize = (currentStory[1] as GroupStep).steps.size
 
-        val positionTo = currentStory.size - 2
+        val positionTo = currentStory.size - 1
         val positionFrom = 1
+
+        val storyToMove = (currentStory[positionFrom] as GroupStep).steps[0]
+
+        storyViewModel.moveRequest(
+            MoveInfo(
+                storyUnit = storyToMove,
+                positionTo = positionTo,
+                positionFrom = positionFrom
+            )
+        )
+
+        val newStory = storyViewModel.normalizedStepsState.value.stories
+
+        assertEquals(
+            "The last StoryUnit should be an image.",
+            "image",
+            newStory[newStory.size - 2]!!.type
+        )
+        assertEquals(
+            "The image should be in the correct place now.",
+            storyToMove.id,
+            newStory[newStory.size - 2]!!.id
+        )
+        assertNull(
+            "The parent of the separated image, should not be there.",
+            newStory[newStory.size - 2]!!.parentId
+        )
+        assertFalse(
+            "The moved image should not be in the group anymore",
+            (newStory[positionFrom] as GroupStep).steps.any { storyUnit ->
+                storyUnit.id == storyToMove.id
+            })
     }
 
     @Test
