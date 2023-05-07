@@ -20,6 +20,7 @@ import br.com.leandroferreira.storyteller.model.story.StepType
 import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.model.change.CheckInfo
 import br.com.leandroferreira.storyteller.model.change.DeleteInfo
+import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
 import br.com.leandroferreira.storyteller.model.change.MergeInfo
 import br.com.leandroferreira.storyteller.model.change.MoveInfo
 
@@ -28,7 +29,7 @@ object DefaultDrawers {
     fun create(
         editable: Boolean = false,
         onTextEdit: (String, Int) -> Unit,
-        onLineBreak: (StoryStep) -> Unit,
+        onLineBreak: (LineBreakInfo) -> Unit,
         mergeRequest: (receiver: MergeInfo) -> Unit = { },
         moveRequest: (moveInfo: MoveInfo) -> Unit = { },
         checkRequest: (checkInfo: CheckInfo) -> Unit = { },

@@ -35,12 +35,13 @@ import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.model.change.CheckInfo
 import br.com.leandroferreira.storyteller.model.change.DeleteInfo
+import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
 import br.com.leandroferreira.storyteller.model.draganddrop.DropInfo
 
 class CheckItemDrawer(
     private val onCheckedChange: (CheckInfo) -> Unit,
     private val onTextEdit: (String, Int) -> Unit,
-    private val onLineBreak: (StoryStep) -> Unit,
+    private val onLineBreak: (LineBreakInfo) -> Unit,
     private val onDeleteRequest: (DeleteInfo) -> Unit
 ) : StoryUnitDrawer {
 
@@ -109,10 +110,15 @@ class CheckItemDrawer(
                     placeholder = { Text(text = "To-do") },
                     onValueChange = { value ->
                         if (value.text.contains("\n")) {
-                            onLineBreak(step.copy(text = value.text))
+                            onLineBreak(
+                                LineBreakInfo(
+                                    step.copy(text = value.text),
+                                    position = drawInfo.position
+                                )
+                            )
                         } else {
                             inputText = value
-                            onTextEdit(value.text, step.localPosition)
+                            onTextEdit(value.text, drawInfo.position)
                         }
 
                     },

@@ -18,7 +18,6 @@ class AddInBetweenTest {
         val result = addInBetween.insert(input)
 
         assertEquals(initialSize * 2 + 1, result.size)
-        result.forEachIndexed { index, storyUnit -> assertEquals(index, storyUnit.localPosition) }
         result.forEachIndexed { index, storyUnit ->
             val even = index % 2 == 0
 

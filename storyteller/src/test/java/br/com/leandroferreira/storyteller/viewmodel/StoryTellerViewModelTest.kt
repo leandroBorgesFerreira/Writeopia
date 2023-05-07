@@ -1,6 +1,7 @@
 package br.com.leandroferreira.storyteller.viewmodel
 
 import br.com.leandroferreira.storyteller.model.change.DeleteInfo
+import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
 import br.com.leandroferreira.storyteller.model.change.MergeInfo
 import br.com.leandroferreira.storyteller.model.change.MoveInfo
 import br.com.leandroferreira.storyteller.model.story.GroupStep
@@ -52,7 +53,7 @@ class StoryTellerViewModelTest {
 
         storyViewModel.requestHistoriesFromApi()
 
-        val newStory = storyViewModel.normalizedStepsStateMap.value.stories
+        val newStory = storyViewModel.normalizedStepsState.value.stories
 
         assertEquals("a space should be added between each step", oldSize * 2 + 1, newStory.size)
     }
@@ -62,7 +63,7 @@ class StoryTellerViewModelTest {
         val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
         storyViewModel.requestHistoriesFromApi()
 
-        val currentStory = storyViewModel.normalizedStepsStateMap.value.stories
+        val currentStory = storyViewModel.normalizedStepsState.value.stories
         val initialSize = currentStory.size
 
         val positionFrom = currentStory.size - 2
@@ -81,7 +82,7 @@ class StoryTellerViewModelTest {
             )
         )
 
-        val newStory = storyViewModel.normalizedStepsStateMap.value.stories
+        val newStory = storyViewModel.normalizedStepsState.value.stories
 
         assertEquals(
             "One image should be removed and one space",
@@ -96,7 +97,7 @@ class StoryTellerViewModelTest {
         val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
         storyViewModel.requestHistoriesFromApi()
 
-        val currentStory = storyViewModel.normalizedStepsStateMap.value.stories
+        val currentStory = storyViewModel.normalizedStepsState.value.stories
         val initialSize = currentStory.size
 
         val positionFrom = currentStory.size - 2
@@ -111,7 +112,7 @@ class StoryTellerViewModelTest {
             )
         )
 
-        val newStory = storyViewModel.normalizedStepsStateMap.value.stories
+        val newStory = storyViewModel.normalizedStepsState.value.stories
 
         assertEquals(initialSize - 2, newStory.size)
         assertTrue("The first image should be a GroupImage now", newStory[1] is GroupStep)
@@ -123,7 +124,7 @@ class StoryTellerViewModelTest {
         val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
         storyViewModel.requestHistoriesFromApi()
 
-        val currentStory = storyViewModel.normalizedStepsStateMap.value.stories
+        val currentStory = storyViewModel.normalizedStepsState.value.stories
         val initialSize = currentStory.size
 
         val positionFrom = currentStory.size - 2
@@ -138,7 +139,7 @@ class StoryTellerViewModelTest {
             )
         )
 
-        val newHistory = storyViewModel.normalizedStepsStateMap.value.stories
+        val newHistory = storyViewModel.normalizedStepsState.value.stories
 
         assertEquals("One space and one image were removed", initialSize - 2, newHistory.size)
         assertTrue(
@@ -152,7 +153,7 @@ class StoryTellerViewModelTest {
         )
 
         repeat(2) {
-            val newHistory2 = storyViewModel.normalizedStepsStateMap.value.stories
+            val newHistory2 = storyViewModel.normalizedStepsState.value.stories
 
             val newPositionFrom = newHistory2.size - 2
             val newPositionTo = 1
@@ -167,7 +168,7 @@ class StoryTellerViewModelTest {
             )
         }
 
-        val newHistory3 = storyViewModel.normalizedStepsStateMap.value.stories
+        val newHistory3 = storyViewModel.normalizedStepsState.value.stories
 
         assertEquals(
             "The minimum side should be 3 (space, group, space)",
@@ -187,7 +188,7 @@ class StoryTellerViewModelTest {
         val storyViewModel = StoryTellerViewModel(imageGroupRepo)
         storyViewModel.requestHistoriesFromApi()
 
-        val currentStory = storyViewModel.normalizedStepsStateMap.value.stories
+        val currentStory = storyViewModel.normalizedStepsState.value.stories
         val initialSize = currentStory.size
         val initialImageGroupSize = (currentStory[1] as GroupStep).steps.size
 
@@ -203,7 +204,7 @@ class StoryTellerViewModelTest {
             )
         )
 
-        val newStory = storyViewModel.normalizedStepsStateMap.value.stories
+        val newStory = storyViewModel.normalizedStepsState.value.stories
 
         assertEquals("One image and one space were removed", initialSize - 2, newStory.size)
         assertTrue(newStory[1] is GroupStep)
@@ -219,7 +220,7 @@ class StoryTellerViewModelTest {
         val storyViewModel = StoryTellerViewModel(imageGroupRepo)
         storyViewModel.requestHistoriesFromApi()
 
-        val currentStory = storyViewModel.normalizedStepsStateMap.value.stories
+        val currentStory = storyViewModel.normalizedStepsState.value.stories
         val initialGroupSize = (currentStory[1] as GroupStep).steps.size
 
         val positionTo = currentStory.size - 2
@@ -234,7 +235,7 @@ class StoryTellerViewModelTest {
             )
         )
 
-        val newStory = storyViewModel.normalizedStepsStateMap.value.stories
+        val newStory = storyViewModel.normalizedStepsState.value.stories
 
         assertEquals(
             "The image should be now in the position 3, because of spaces.",
@@ -253,14 +254,14 @@ class StoryTellerViewModelTest {
         val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
         storyViewModel.requestHistoriesFromApi()
 
-        val currentStory = storyViewModel.normalizedStepsStateMap.value.stories
+        val currentStory = storyViewModel.normalizedStepsState.value.stories
         val storyUnitToMove = currentStory[1]!!
 
         storyViewModel.moveRequest(
             MoveInfo(currentStory[1]!!, 1, 4)
         )
 
-        val newStory = storyViewModel.normalizedStepsStateMap.value.stories
+        val newStory = storyViewModel.normalizedStepsState.value.stories
 
         assertEquals(
             "The first story should have been moved",
@@ -274,7 +275,7 @@ class StoryTellerViewModelTest {
         val storyViewModel = StoryTellerViewModel(imageGroupRepo)
         storyViewModel.requestHistoriesFromApi()
 
-        val currentStory = storyViewModel.normalizedStepsStateMap.value.stories
+        val currentStory = storyViewModel.normalizedStepsState.value.stories
         assertEquals(
             "initial the story unit should be a group",
             "group_image",
@@ -282,7 +283,7 @@ class StoryTellerViewModelTest {
         )
 
         val lastImageInsideGroup = {
-            (storyViewModel.normalizedStepsStateMap.value.stories[1] as GroupStep)
+            (storyViewModel.normalizedStepsState.value.stories[1] as GroupStep)
                 .steps
                 .last()
         }
@@ -301,7 +302,7 @@ class StoryTellerViewModelTest {
             )
         )
 
-        val newStory = storyViewModel.normalizedStepsStateMap.value.stories
+        val newStory = storyViewModel.normalizedStepsState.value.stories
 
         assertEquals(
             "the group become just an image because there's only a single image",
@@ -317,13 +318,13 @@ class StoryTellerViewModelTest {
 
         storyViewModel.onDelete(
             DeleteInfo(
-                storyViewModel.normalizedStepsStateMap.value.stories[3]!!, 3
+                storyViewModel.normalizedStepsState.value.stories[3]!!, 3
             )
         )
 
         val stack: Stack<StoryUnit> = Stack()
 
-        storyViewModel.normalizedStepsStateMap.value.stories.forEach { (_, storyUnit) ->
+        storyViewModel.normalizedStepsState.value.stories.forEach { (_, storyUnit) ->
             if (stack.isNotEmpty() && stack.peek().type == "space" && storyUnit.type == "space") {
                 fail("Consecutive spaces happened.")
             }
@@ -337,15 +338,15 @@ class StoryTellerViewModelTest {
         val storyViewModel = StoryTellerViewModel(singleMessageRepo)
         storyViewModel.requestHistoriesFromApi()
 
-        val stories = storyViewModel.normalizedStepsStateMap.value.stories
+        val stories = storyViewModel.normalizedStepsState.value.stories
         val initialSize = stories.size
 
-        storyViewModel.onLineBreak(stories[1] as StoryStep)
+        storyViewModel.onLineBreak(LineBreakInfo(stories[1] as StoryStep, position = 1))
 
         assertEquals(
             "2 new stories should have been added",
             initialSize + 2,
-            storyViewModel.normalizedStepsStateMap.value.stories.size
+            storyViewModel.normalizedStepsState.value.stories.size
         )
     }
 
@@ -354,15 +355,15 @@ class StoryTellerViewModelTest {
         val storyViewModel = StoryTellerViewModel(messagesRepo)
         storyViewModel.requestHistoriesFromApi()
 
-        val stories = storyViewModel.normalizedStepsStateMap.value.stories
+        val stories = storyViewModel.normalizedStepsState.value.stories
         val initialSize = stories.size
 
-        storyViewModel.onLineBreak(stories[1] as StoryStep)
+        storyViewModel.onLineBreak(LineBreakInfo(stories[1] as StoryStep, 1))
 
         assertEquals(
             "2 new stories should have been added",
             initialSize + 2,
-            storyViewModel.normalizedStepsStateMap.value.stories.size
+            storyViewModel.normalizedStepsState.value.stories.size
         )
     }
 

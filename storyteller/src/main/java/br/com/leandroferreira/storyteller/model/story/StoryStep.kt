@@ -8,7 +8,6 @@ package br.com.leandroferreira.storyteller.model.story
 data class StoryStep(
     override val id: String,
     override val type: String,
-    override val localPosition: Int,
     override val parentId: String? = null,
     val url: String? = null,
     val path: String? = null,
@@ -18,8 +17,6 @@ data class StoryStep(
 ): StoryUnit {
 
     override val key: Int = hashCode()
-
-    override fun copyWithNewPosition(position: Int): StoryUnit = copy(localPosition = position)
 
     override fun copyWithNewParent(parentId: String?): StoryUnit = copy(parentId = parentId)
 }

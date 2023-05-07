@@ -101,7 +101,7 @@ private fun TopBar() {
 
 @Composable
 private fun Body(viewModel: HistoriesViewModel, storyTellerViewModel: StoryTellerViewModel) {
-    val storyState by storyTellerViewModel.normalizedStepsStateMap.collectAsStateWithLifecycle()
+    val storyState by storyTellerViewModel.normalizedStepsState.collectAsStateWithLifecycle()
     val editable by viewModel.editModeState.collectAsStateWithLifecycle()
 
 //    val listState: LazyListState = rememberLazyListState()

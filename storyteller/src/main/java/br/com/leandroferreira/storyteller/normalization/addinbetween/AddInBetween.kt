@@ -18,32 +18,30 @@ class AddInBetween(private val unitToAdd: StoryUnit) {
 
     fun insert(units: Iterable<StoryUnit>): List<StoryUnit> {
         val stack: Stack<StoryUnit> = Stack()
-        var acc = 0
-
         val typeToAdd = unitToAdd.type
 
         units.forEach { storyUnit ->
             when {
                 stack.isEmpty() && storyUnit.type != typeToAdd -> {
-                    stack.add(unitToAdd.copyWithNewPosition(acc++))
-                    stack.add(storyUnit.copyWithNewPosition(acc++))
+                    stack.add(unitToAdd)
+                    stack.add(storyUnit)
                 }
 
                 stack.isEmpty() && storyUnit.type == typeToAdd -> {
-                    stack.add(storyUnit.copyWithNewPosition(acc++))
+                    stack.add(storyUnit)
                 }
 
                 storyUnit.type != typeToAdd && stack.peek().type == typeToAdd -> {
-                    stack.add(storyUnit.copyWithNewPosition(acc++))
+                    stack.add(storyUnit)
                 }
 
                 storyUnit.type == typeToAdd && stack.peek()?.type != typeToAdd -> {
-                    stack.add(storyUnit.copyWithNewPosition(acc++))
+                    stack.add(storyUnit)
                 }
 
                 storyUnit.type != typeToAdd && stack.peek()?.type != typeToAdd -> {
-                    stack.add(unitToAdd.copyWithNewPosition(acc++))
-                    stack.add(storyUnit.copyWithNewPosition(acc++))
+                    stack.add(unitToAdd)
+                    stack.add(storyUnit)
                 }
 
                 storyUnit.type == typeToAdd && stack.peek()?.type == typeToAdd -> {}
@@ -51,7 +49,7 @@ class AddInBetween(private val unitToAdd: StoryUnit) {
         }
 
         if (stack.peek().type != typeToAdd) {
-            stack.add(unitToAdd.copyWithNewPosition(acc++))
+            stack.add(unitToAdd)
         }
 
         return stack.toList()
@@ -64,7 +62,6 @@ class AddInBetween(private val unitToAdd: StoryUnit) {
                 unitToAdd = StoryStep(
                     id = UUID.randomUUID().toString(),
                     type = "space",
-                    localPosition = 0
                 )
             )
     }

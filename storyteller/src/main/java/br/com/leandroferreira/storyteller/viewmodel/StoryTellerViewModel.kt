@@ -2,22 +2,21 @@ package br.com.leandroferreira.storyteller.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.leandroferreira.storyteller.model.change.CheckInfo
+import br.com.leandroferreira.storyteller.model.change.DeleteInfo
+import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
+import br.com.leandroferreira.storyteller.model.change.MergeInfo
+import br.com.leandroferreira.storyteller.model.change.MoveInfo
 import br.com.leandroferreira.storyteller.model.story.GroupStep
 import br.com.leandroferreira.storyteller.model.story.StoryStateMap
 import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.model.story.StoryUnit
-import br.com.leandroferreira.storyteller.model.change.CheckInfo
-import br.com.leandroferreira.storyteller.model.change.DeleteInfo
-import br.com.leandroferreira.storyteller.model.change.MergeInfo
-import br.com.leandroferreira.storyteller.model.change.MoveInfo
 import br.com.leandroferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
 import br.com.leandroferreira.storyteller.repository.StoriesRepository
 import br.com.leandroferreira.storyteller.utils.StoryStepFactory
 import br.com.leandroferreira.storyteller.utils.UnitsNormalizationMap
 import br.com.leandroferreira.storyteller.utils.extensions.associateWithPosition
 import br.com.leandroferreira.storyteller.utils.extensions.toEditState
-import br.com.leandroferreira.storyteller.viewmodel.move.MoveHandler
-import br.com.leandroferreira.storyteller.viewmodel.move.SpaceMoveHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,15 +29,14 @@ class StoryTellerViewModel(
         StepsMapNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
         },
-    private val moveHandler: MoveHandler = SpaceMoveHandler(),
 ) : ViewModel() {
 
     private val textChanges: MutableMap<Int, String> = mutableMapOf()
 
-    private val _normalizedStepsMap: MutableStateFlow<StoryStateMap> = MutableStateFlow(
+    private val _normalizedSteps: MutableStateFlow<StoryStateMap> = MutableStateFlow(
         StoryStateMap(stories = emptyMap())
     )
-    val normalizedStepsStateMap: StateFlow<StoryStateMap> = _normalizedStepsMap.asStateFlow()
+    val normalizedStepsState: StateFlow<StoryStateMap> = _normalizedSteps.asStateFlow()
 
     fun requestHistoriesFromApi(
         force: Boolean = false,
@@ -46,10 +44,10 @@ class StoryTellerViewModel(
             defaultNormalizers()
         }
     ) {
-        if (_normalizedStepsMap.value.stories.isEmpty() || force) {
+        if (_normalizedSteps.value.stories.isEmpty() || force) {
             viewModelScope.launch {
                 val normalizedSteps = normalizer(storiesRepository.historyMap().toEditState())
-                _normalizedStepsMap.value = StoryStateMap(normalizedSteps)
+                _normalizedSteps.value = StoryStateMap(normalizedSteps)
             }
         }
     }
@@ -62,18 +60,18 @@ class StoryTellerViewModel(
 
         /* Search by position doesn't work because a receiver may be inside a GroupStep
         * Note: The search can speed up by using the position */
-        FindStory.findById(_normalizedStepsMap.value.stories.values, receiver.id)
+        FindStory.findById(_normalizedSteps.value.stories.values, receiver.id)
             ?.let { (receiver, parentReceiver) ->
                 when {
                     parentReceiver != null -> {
-                        _normalizedStepsMap.value =
+                        _normalizedSteps.value =
                             StoryStateMap(
                                 stories = mergeStep(sender, info.positionTo, info.positionFrom),
                             )
                     }
 
                     receiver != null -> {
-                        _normalizedStepsMap.value =
+                        _normalizedSteps.value =
                             StoryStateMap(
                                 stories = mergeStep(sender, info.positionTo, info.positionFrom),
                             )
@@ -83,7 +81,7 @@ class StoryTellerViewModel(
     }
 
     private fun mergeStep(sender: StoryUnit, positionTo: Int, positionFrom: Int): Map<Int, StoryUnit> {
-        val mutableHistory = _normalizedStepsMap.value.stories.toEditState()
+        val mutableHistory = _normalizedSteps.value.stories.toEditState()
         val receiverStepList = mutableHistory[positionTo]
         receiverStepList?.plus(sender)?.let { newList ->
             mutableHistory[positionTo] = newList
@@ -104,7 +102,7 @@ class StoryTellerViewModel(
     }
 
     fun moveRequest(moveInfo: MoveInfo) {
-        val mutable = _normalizedStepsMap.value.stories.toMutableMap()
+        val mutable = _normalizedSteps.value.stories.toMutableMap()
         if (mutable[moveInfo.positionTo]?.type != "space") throw IllegalStateException()
 
         mutable[moveInfo.positionTo] = moveInfo.storyUnit
@@ -122,7 +120,7 @@ class StoryTellerViewModel(
             }
         }
 
-        _normalizedStepsMap.value = StoryStateMap(stepsMapNormalizer(mutable.toEditState()))
+        _normalizedSteps.value = StoryStateMap(stepsMapNormalizer(mutable.toEditState()))
     }
 
     fun checkRequest(checkInfo: CheckInfo) {
@@ -130,17 +128,17 @@ class StoryTellerViewModel(
         val parentId = checkInfo.storyUnit.parentId
 
         val storyUnit = if (parentId != null) {
-            FindStory.findById(_normalizedStepsMap.value.stories.values, parentId)?.first ?: return
+            FindStory.findById(_normalizedSteps.value.stories.values, parentId)?.first ?: return
         } else {
             checkInfo.storyUnit
         }
 
         val newStep = (storyUnit as? StoryStep)?.copy(checked = checkInfo.checked) ?: return
-        val newMap = _normalizedStepsMap.value.stories.toMutableMap()
+        val newMap = _normalizedSteps.value.stories.toMutableMap()
 
-        newMap[newStep.localPosition] = newStep
+        newMap[checkInfo.position] = newStep
 
-        _normalizedStepsMap.value = StoryStateMap(newMap)
+        _normalizedSteps.value = StoryStateMap(newMap)
 
     }
 
@@ -149,31 +147,31 @@ class StoryTellerViewModel(
     }
 
     //Todo: Add unit test for this method!
-    fun onLineBreak(storyStep: StoryStep) {
-        val updatedStories = updateTexts(_normalizedStepsMap.value.stories)
-        _normalizedStepsMap.value = separateMessages(updatedStories.stories, storyStep)
+    fun onLineBreak(lineBreakInfo: LineBreakInfo) {
+        val updatedStories = updateTexts(_normalizedSteps.value.stories)
+        _normalizedSteps.value = separateMessages(updatedStories.stories, lineBreakInfo)
     }
 
     private fun separateMessages(
         stories: Map<Int, StoryUnit>,
-        storyStep: StoryStep
+        lineBreakInfo: LineBreakInfo
     ): StoryStateMap {
+        val storyStep = lineBreakInfo.storyStep
         storyStep.text?.split("\n", limit = 2)?.let { list ->
             val secondText = list.elementAtOrNull(1) ?: ""
 
             val mutable = stories.values.toMutableList()
             mutable.add(
-                storyStep.localPosition + 1,
-                StoryStepFactory.space(localPosition = storyStep.localPosition + 1)
+                lineBreakInfo.position + 1,
+                StoryStepFactory.space()
             )
 
             val secondMessage = StoryStep(
                 id = UUID.randomUUID().toString(),
                 type = storyStep.type,
                 text = secondText,
-                localPosition = storyStep.localPosition + 2,
             )
-            mutable.add(storyStep.localPosition + 2, secondMessage)
+            mutable.add(lineBreakInfo.position + 1, secondMessage)
 
             return StoryStateMap(
                 stories = stepsMapNormalizer(mutable.associateWithPosition().toEditState()),
@@ -185,7 +183,7 @@ class StoryTellerViewModel(
     }
 
     fun updateState() {
-        _normalizedStepsMap.value = updateTexts(_normalizedStepsMap.value.stories)
+        _normalizedSteps.value = updateTexts(_normalizedSteps.value.stories)
     }
 
     private fun updateTexts(stepMap: Map<Int, StoryUnit>): StoryStateMap {
@@ -206,7 +204,7 @@ class StoryTellerViewModel(
 
     fun onDelete(deleteInfo: DeleteInfo) {
         updateState()
-        delete(deleteInfo, _normalizedStepsMap.value.stories)
+        delete(deleteInfo, _normalizedSteps.value.stories)
     }
 
     private fun delete(
@@ -219,10 +217,10 @@ class StoryTellerViewModel(
 
         if (parentId == null) {
             mutableSteps.remove(deleteInfo.position)
-            val previousFocus = FindStory.previousFocus(history.values.toList(), step.localPosition)
+            val previousFocus = FindStory.previousFocus(history.values.toList(), deleteInfo.position)
             val normalized = stepsMapNormalizer(mutableSteps.toEditState())
 
-            _normalizedStepsMap.value = StoryStateMap(normalized, focusId = previousFocus?.id)
+            _normalizedSteps.value = StoryStateMap(normalized, focusId = previousFocus?.id)
         } else {
             FindStory.findById(history.values, parentId)
                 ?.first
@@ -232,13 +230,13 @@ class StoryTellerViewModel(
                     }
 
                     val newStoryUnit = if (newSteps.size == 1) {
-                        newSteps.first().copyWithNewPosition(group.localPosition)
+                        newSteps.first()
                     } else {
                         group.copy(steps = newSteps)
                     }
 
-                    mutableSteps[group.localPosition] = newStoryUnit.copyWithNewParent(null)
-                    _normalizedStepsMap.value =
+                    mutableSteps[deleteInfo.position] = newStoryUnit.copyWithNewParent(null)
+                    _normalizedSteps.value =
                         StoryStateMap(stepsMapNormalizer(mutableSteps.toEditState()))
                 }
         }

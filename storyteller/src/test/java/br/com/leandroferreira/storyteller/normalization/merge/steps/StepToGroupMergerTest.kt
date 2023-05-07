@@ -14,13 +14,11 @@ class StepToGroupMergerTest {
         val image1 = StoryStep(
             id = "1",
             type = "image",
-            localPosition = 0
         )
 
         val image2 = StoryStep(
             id = "2",
             type = "image",
-            localPosition = 0
         )
 
         val result = merger.merge(image1, image2, "group_image")

@@ -50,7 +50,7 @@ class StepsMapNormalizationBuilder {
             )
         }
 
-        this.mergeNormalization  = mergeNormalization::mergeStepsMap
+        this.mergeNormalization  = mergeNormalization::mergeSteps
         normalizations.add(AddInBetween.spaces()::insert)
     }
 

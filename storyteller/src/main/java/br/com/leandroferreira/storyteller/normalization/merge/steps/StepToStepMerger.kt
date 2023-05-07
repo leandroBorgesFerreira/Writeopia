@@ -22,7 +22,6 @@ open class StepToStepMerger : StepMerger {
 
             story1.copy(
                 text = "${story1.text}\n\n${story2.text}",
-                localPosition = step2.localPosition
             )
         } else {
             throw IllegalStateException(

@@ -5,17 +5,12 @@ package br.com.leandroferreira.storyteller.model.story
  * needs to correctly deal with a piece of story and correctly draw and interact with it (by
  * moving, deleting, sorting...)
  */
-interface StoryUnit : Comparable<StoryUnit>{
+interface StoryUnit {
     val id: String
     val type: String
-    val localPosition: Int
 
     val parentId: String?
     val key: Int
 
-    fun copyWithNewPosition(position: Int): StoryUnit
-
     fun copyWithNewParent(parentId: String?): StoryUnit
-
-    override fun compareTo(other: StoryUnit): Int = localPosition.compareTo(other.localPosition)
 }

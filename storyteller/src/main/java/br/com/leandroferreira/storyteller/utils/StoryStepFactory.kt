@@ -6,11 +6,10 @@ import java.util.UUID
 
 object StoryStepFactory {
 
-    fun space(localPosition: Int) =
+    fun space() =
         StoryStep(
             id = UUID.randomUUID().toString(),
             type = StepType.SPACE.type,
-            localPosition = localPosition,
         )
     
 }

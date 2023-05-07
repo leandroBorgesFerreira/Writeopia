@@ -8,4 +8,6 @@ import br.com.leandroferreira.storyteller.model.story.StoryUnit
 object UnchangedNormalizer {
 
     fun skipChange(stories: Iterable<StoryUnit>): List<StoryUnit> = stories.toList()
+
+    fun skipChange(stories: Map<Int, StoryUnit>): Map<Int, StoryUnit> = stories
 }

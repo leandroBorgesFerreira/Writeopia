@@ -25,6 +25,7 @@ import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
 import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.model.change.DeleteInfo
+import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
 
 /**
  * Draw a text that can be edited. The edition of the text is both reflect in this Composable and
@@ -35,7 +36,7 @@ class MessageStepDrawer(
     private val containerModifier: Modifier = Modifier,
     private val innerContainerModifier: Modifier = Modifier,
     private val onTextEdit: (String, Int) -> Unit,
-    private val onLineBreak: (StoryStep) -> Unit,
+    private val onLineBreak: (LineBreakInfo) -> Unit,
     private val onDeleteRequest: (DeleteInfo) -> Unit
 ) : StoryUnitDrawer {
 
@@ -74,10 +75,15 @@ class MessageStepDrawer(
                     value = inputText,
                     onValueChange = { value ->
                         if (value.text.contains("\n")) {
-                            onLineBreak(step.copy(text = value.text))
+                            onLineBreak(
+                                LineBreakInfo(
+                                    step.copy(text = value.text),
+                                    position = drawInfo.position
+                                )
+                            )
                         } else {
                             inputText = value
-                            onTextEdit(value.text, step.localPosition)
+                            onTextEdit(value.text, drawInfo.position)
                         }
                     },
                 )

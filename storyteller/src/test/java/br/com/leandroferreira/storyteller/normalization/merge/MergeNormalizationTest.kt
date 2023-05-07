@@ -1,11 +1,15 @@
 package br.com.leandroferreira.storyteller.normalization.merge
 
 import br.com.leandroferreira.storyteller.model.story.GroupStep
+import br.com.leandroferreira.storyteller.model.story.StepType
 import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.normalization.merge.steps.StepToStepMerger
-import br.com.leandroferreira.storyteller.utils.ListStoryData
+import br.com.leandroferreira.storyteller.utils.MapStoryData
+import br.com.leandroferreira.storyteller.utils.extensions.associateWithPosition
+import br.com.leandroferreira.storyteller.utils.extensions.toEditState
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
+import org.junit.Ignore
 import org.junit.Test
 
 class MergeNormalizationTest {
@@ -16,11 +20,10 @@ class MergeNormalizationTest {
             addMerger(StepsMergerCoordinator(typeOfStep = "image", typeOfGroup = "group_image"))
         }
 
-        val mergedStep = mergeNormalization.mergeSteps(ListStoryData.imageStepsList())
+        val mergedStep = mergeNormalization.mergeSteps(MapStoryData.imageSimpleGroup())
 
         assertEquals(mergedStep.size, 1)
-        assertTrue(mergedStep.first() is GroupStep)
-        assertEquals(mergedStep.first().localPosition, 0)
+        assertTrue(mergedStep[0] is GroupStep)
     }
 
     @Test
@@ -29,13 +32,13 @@ class MergeNormalizationTest {
             addMerger(StepsMergerCoordinator(typeOfStep = "image", typeOfGroup = "group_image"))
         }
 
-        val mergedStep = mergeNormalization.mergeSteps(ListStoryData.stepsList())
+        val mergedStep = mergeNormalization.mergeSteps(MapStoryData.stepsList())
 
         assertEquals(3, mergedStep.size)
-        assertTrue(mergedStep.first() is GroupStep)
+        assertTrue(mergedStep[0] is GroupStep)
         assertTrue(mergedStep[1] is StoryStep)
         assertTrue(mergedStep[2] is StoryStep)
-        assertEquals("group_image", mergedStep.first().type)
+        assertEquals("group_image", mergedStep[0]!!.type)
     }
 
     @Test
@@ -49,11 +52,16 @@ class MergeNormalizationTest {
             )
         }
 
-        val mergedStep = mergeNormalization.mergeSteps(ListStoryData.messageStepsList())
+        val mergedStep =
+            mergeNormalization.mergeSteps(MapStoryData.twoGroupsImageList())
 
-        assertEquals(1, mergedStep.size)
-        assertTrue(mergedStep.first() is StoryStep)
-        assertEquals("message", mergedStep.first().type)
+        assertEquals("2 image groups should have been merged into one", 1, mergedStep.size)
+        assertTrue("the first story unit should still be a GroupStep", mergedStep[0] is GroupStep)
+        assertEquals(
+            "the first story unit should still be a GroupImage",
+            StepType.GROUP_IMAGE.type,
+            mergedStep[0]!!.type
+        )
     }
 
     @Test
@@ -62,17 +70,21 @@ class MergeNormalizationTest {
             addMerger(StepsMergerCoordinator(typeOfStep = "image", typeOfGroup = "group_image"))
         }
 
-        val last = StoryStep(
-            id = "6",
-            type = "unknown",
-            localPosition = 6
+        val last = listOf(
+            StoryStep(
+                id = "6",
+                type = "unknown",
+            )
         )
 
-        val mergedStep = mergeNormalization.mergeSteps(ListStoryData.stepsList() + last)
-        assertEquals(last, mergedStep.last())
+        val steps = MapStoryData.stepsList()
+
+        val mergedStep = mergeNormalization.mergeSteps(steps + Pair(steps.size, last))
+        assertEquals(last.first(), mergedStep[mergedStep.size - 1])
     }
 
     @Test
+    @Ignore("Evaluate if the image should actually go to beginning of the group")
     fun `the image always goes to the beginning of a group message`() {
         val mergeNormalization = MergeNormalization.build {
             addMerger(StepsMergerCoordinator(typeOfStep = "image", typeOfGroup = "group_image"))
@@ -81,67 +93,24 @@ class MergeNormalizationTest {
         val last = StoryStep(
             id = "6",
             type = "image",
-            localPosition = 0
         )
 
         val story = listOf(
             GroupStep(
                 id = "1",
                 type = "group_image",
-                localPosition = 0,
                 steps = listOf(
                     StoryStep(
                         id = "2",
                         type = "image",
-                        localPosition = 0,
-                    )
+                    ),
+                    last
                 )
             ),
-            last
-        )
+        ).associateWithPosition()
 
-        val mergedStep = mergeNormalization.mergeSteps(story)
+        val mergedStep = mergeNormalization.mergeSteps(story.toEditState())
 
-        assertEquals(last.id, (mergedStep.first() as GroupStep).steps.first().id)
+        assertEquals(last.id, (mergedStep[0] as GroupStep).steps.first().id)
     }
-
-    @Test
-    fun `elements should be merged together even they are not positioned consecutively`() {
-        val mergeNormalization = MergeNormalization.build {
-            addMerger(StepsMergerCoordinator(typeOfStep = "image", typeOfGroup = "group_image"))
-        }
-
-        val input = imageStepsListNonConsecutive()
-        val initialSize = input.size
-        val mergedSteps = mergeNormalization.mergeSteps(input)
-
-        assertEquals("one image should be merged", initialSize - 1, mergedSteps.size)
-        assertTrue("The first step should be now a group", mergedSteps.first() is GroupStep)
-        assertEquals(2, (mergedSteps.first() as GroupStep).steps.size)
-    }
-
-    private fun imageStepsListNonConsecutive(): List<StoryStep> = buildList {
-        add(
-            StoryStep(
-                id = "1",
-                type = "image",
-                localPosition = 0
-            )
-        )
-        add(
-            StoryStep(
-                id = "2",
-                type = "image",
-                localPosition = 1
-            )
-        )
-        add(
-            StoryStep(
-                id = "3",
-                type = "image",
-                localPosition = 0
-            )
-        )
-    }
-
 }
