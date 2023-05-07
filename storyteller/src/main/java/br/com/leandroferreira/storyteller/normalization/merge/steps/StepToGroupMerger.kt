@@ -41,7 +41,10 @@ open class StepToGroupMerger : StepMerger {
             )
         }
 
-    // Todo: step2.steps should change the parentId.
     override fun groupsMerger(step1: GroupStep, step2: GroupStep): StoryUnit =
-        step1.copy(steps = step1.steps + step2.steps,)
+        step1.copy(
+            steps = step1.steps + step2.steps.map { step ->
+                step.copyWithNewParent(step1.id)
+            },
+        )
 }

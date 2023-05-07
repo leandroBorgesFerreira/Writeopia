@@ -149,46 +149,57 @@ object MapStoryData {
         )
     )
 
-    fun twoGroupsImageList() = mapOf(
-        0 to listOf(
-            GroupStep(
-                id = UUID.randomUUID().toString(),
-                type = StepType.GROUP_IMAGE.type,
-                steps = listOf(
-                    StoryStep(
-                        id = "1",
-                        type = "image",
-                    ),
-                    StoryStep(
-                        id = "2",
-                        type = "image",
-                    ),
-                    StoryStep(
-                        id = "3",
-                        type = "image",
+    fun twoGroupsImageList(): Map<Int, List<StoryUnit>> {
+        val parent1Id = UUID.randomUUID().toString()
+        val parent2Id = UUID.randomUUID().toString()
+
+        return mapOf(
+            0 to listOf(
+                GroupStep(
+                    id = parent1Id,
+                    type = StepType.GROUP_IMAGE.type,
+                    steps = listOf(
+                        StoryStep(
+                            id = "1",
+                            type = "image",
+                            parentId = parent1Id
+                        ),
+                        StoryStep(
+                            id = "2",
+                            type = "image",
+                            parentId = parent1Id
+                        ),
+                        StoryStep(
+                            id = "3",
+                            type = "image",
+                            parentId = parent1Id
+                        )
+                    )
+                ),
+                GroupStep(
+                    id = parent2Id,
+                    type = StepType.GROUP_IMAGE.type,
+                    steps = listOf(
+                        StoryStep(
+                            id = "12",
+                            type = "image",
+                             parentId = parent2Id
+                        ),
+                        StoryStep(
+                            id = "12",
+                            type = "image",
+                             parentId = parent2Id
+                        ),
+                        StoryStep(
+                            id = "13",
+                            type = "image",
+                             parentId = parent2Id
+                        ),
                     )
                 )
             ),
-            GroupStep(
-                id = UUID.randomUUID().toString(),
-                type = StepType.GROUP_IMAGE.type,
-                steps = listOf(
-                    StoryStep(
-                        id = "12",
-                        type = "image",
-                    ),
-                    StoryStep(
-                        id = "12",
-                        type = "image",
-                    ),
-                    StoryStep(
-                        id = "13",
-                        type = "image",
-                    ),
-                )
-            )
-        ),
-    )
+        )
+    }
 
     fun stepsList(): Map<Int, List<StoryStep>> = mapOf(
         0 to listOf(
