@@ -23,7 +23,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import br.com.leandroferreira.storyteller.draganddrop.target.DragTarget
 import br.com.leandroferreira.storyteller.draganddrop.target.DropTarget
 import br.com.leandroferreira.storyteller.drawer.DrawInfo
@@ -78,7 +77,7 @@ class ImageStepDrawer(
                 ) {
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(imageStep.path?.toUri() ?: imageStep.url)
+                            .data(imageStep.path ?: imageStep.url)
                             .build(),
                         contentScale = ContentScale.Crop,
                         contentDescription = "",

@@ -17,7 +17,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import br.com.leandroferreira.storyteller.drawer.DrawInfo
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
 import br.com.leandroferreira.storyteller.model.story.StoryStep
@@ -47,7 +46,7 @@ class VideoStepDrawer(private val containerModifier: Modifier? = null) : StoryUn
                     .align(Alignment.Center)
             ) {
                 val request = ImageRequest.Builder(LocalContext.current)
-                    .data(videoStep.url?.toUri())
+                    .data(videoStep.url)
                     .videoFrameMillis(1000)
                     .build()
 

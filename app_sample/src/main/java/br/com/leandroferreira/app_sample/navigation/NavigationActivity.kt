@@ -4,14 +4,16 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.com.leandroferreira.app_sample.screens.addstory.AddStoryScreen
-import br.com.leandroferreira.app_sample.screens.imagelist.ImageListScreen
-import br.com.leandroferreira.app_sample.screens.menu.Menu
-import br.com.leandroferreira.app_sample.screens.messagelist.MessageListScreen
+import br.com.leandroferreira.app_sample.screens.addstory.StoriesRepo
+import br.com.leandroferreira.app_sample.viewmodel.StoriesViewModel
 import br.com.leandroferreira.storyteller.VideoFrameConfig
+import br.com.leandroferreira.storyteller.manager.StoryTellerManager
 
 class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,29 +31,20 @@ class NavigationActivity : AppCompatActivity() {
 fun NavigationGraph() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Destinations.MENU.id) {
-        composable(Destinations.MENU.id) {
-            Menu(navController::navigate)
-        }
-
+    NavHost(navController = navController, startDestination = Destinations.ADD_HISTORY.id) {
         composable(Destinations.ADD_HISTORY.id) {
-            AddStoryScreen()
-        }
+            val repo = StoriesRepo(LocalContext.current)
+            val storyTellerManager = StoryTellerManager()
+            val storiesViewModel: StoriesViewModel = viewModel(initializer = {
+                StoriesViewModel(storyTellerManager, repo)
+            })
 
-        composable(Destinations.IMAGE_LIST.id) {
-            ImageListScreen()
-        }
-
-        composable(Destinations.MESSAGE_LIST.id) {
-            MessageListScreen()
+            AddStoryScreen(storiesViewModel)
         }
     }
 }
 
 enum class Destinations(val id: String) {
-    MENU("menu"),
     ADD_HISTORY("add_story"),
-    IMAGE_LIST("image_list"),
-    MESSAGE_LIST("message_list")
 }
 

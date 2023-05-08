@@ -1,18 +1,15 @@
-package br.com.leandroferreira.storyteller.viewmodel
+package br.com.leandroferreira.storyteller.manager
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import br.com.leandroferreira.storyteller.model.change.CheckInfo
 import br.com.leandroferreira.storyteller.model.change.DeleteInfo
 import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
 import br.com.leandroferreira.storyteller.model.change.MergeInfo
 import br.com.leandroferreira.storyteller.model.change.MoveInfo
 import br.com.leandroferreira.storyteller.model.story.GroupStep
-import br.com.leandroferreira.storyteller.model.story.StoryStateMap
+import br.com.leandroferreira.storyteller.model.story.StoryState
 import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
-import br.com.leandroferreira.storyteller.repository.StoriesRepository
 import br.com.leandroferreira.storyteller.utils.StoryStepFactory
 import br.com.leandroferreira.storyteller.utils.UnitsNormalizationMap
 import br.com.leandroferreira.storyteller.utils.extensions.associateWithPosition
@@ -20,36 +17,24 @@ import br.com.leandroferreira.storyteller.utils.extensions.toEditState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import java.util.UUID
 
-class StoryTellerViewModel(
-    private val storiesRepository: StoriesRepository,
+class StoryTellerManager(
     private val stepsNormalizer: UnitsNormalizationMap =
         StepsMapNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
         },
-) : ViewModel() {
+) {
 
     private val textChanges: MutableMap<Int, String> = mutableMapOf()
 
-    private val _normalizedSteps: MutableStateFlow<StoryStateMap> = MutableStateFlow(
-        StoryStateMap(stories = emptyMap())
+    private val _normalizedSteps: MutableStateFlow<StoryState> = MutableStateFlow(
+        StoryState(stories = emptyMap())
     )
-    val normalizedStepsState: StateFlow<StoryStateMap> = _normalizedSteps.asStateFlow()
+    val normalizedStepsState: StateFlow<StoryState> = _normalizedSteps.asStateFlow()
 
-    fun requestHistoriesFromApi(
-        force: Boolean = false,
-        normalizer: UnitsNormalizationMap = StepsMapNormalizationBuilder.reduceNormalizations {
-            defaultNormalizers()
-        }
-    ) {
-        if (_normalizedSteps.value.stories.isEmpty() || force) {
-            viewModelScope.launch {
-                val normalizedSteps = normalizer(storiesRepository.history().toEditState())
-                _normalizedSteps.value = StoryStateMap(normalizedSteps)
-            }
-        }
+    fun addStories(stories: Map<Int, StoryUnit>) {
+        _normalizedSteps.value = StoryState(stepsNormalizer(stories.toEditState()), null)
     }
 
     fun mergeRequest(info: MergeInfo) {
@@ -77,7 +62,7 @@ class StoryTellerViewModel(
             }
         }
 
-        _normalizedSteps.value = StoryStateMap(stories = stepsNormalizer(mutableHistory))
+        _normalizedSteps.value = StoryState(stories = stepsNormalizer(mutableHistory))
     }
 
     fun moveRequest(moveInfo: MoveInfo) {
@@ -99,7 +84,7 @@ class StoryTellerViewModel(
             }
         }
 
-        _normalizedSteps.value = StoryStateMap(stepsNormalizer(mutable.toEditState()))
+        _normalizedSteps.value = StoryState(stepsNormalizer(mutable.toEditState()))
     }
 
     fun checkRequest(checkInfo: CheckInfo) {
@@ -117,7 +102,7 @@ class StoryTellerViewModel(
 
         newMap[checkInfo.position] = newStep
 
-        _normalizedSteps.value = StoryStateMap(newMap)
+        _normalizedSteps.value = StoryState(newMap)
 
     }
 
@@ -134,7 +119,7 @@ class StoryTellerViewModel(
     private fun separateMessages(
         stories: Map<Int, StoryUnit>,
         lineBreakInfo: LineBreakInfo
-    ): StoryStateMap {
+    ): StoryState {
         val storyStep = lineBreakInfo.storyStep
         storyStep.text?.split("\n", limit = 2)?.let { list ->
             val secondText = list.elementAtOrNull(1) ?: ""
@@ -152,20 +137,20 @@ class StoryTellerViewModel(
             )
             mutable.add(lineBreakInfo.position + 1, secondMessage)
 
-            return StoryStateMap(
+            return StoryState(
                 stories = stepsNormalizer(mutable.associateWithPosition().toEditState()),
                 focusId = secondMessage.id
             )
         }
 
-        return StoryStateMap(stories)
+        return StoryState(stories)
     }
 
     fun updateState() {
         _normalizedSteps.value = updateTexts(_normalizedSteps.value.stories)
     }
 
-    private fun updateTexts(stepMap: Map<Int, StoryUnit>): StoryStateMap {
+    private fun updateTexts(stepMap: Map<Int, StoryUnit>): StoryState {
         val mutableSteps = stepMap.toMutableMap()
 
         textChanges.forEach { (position, text) ->
@@ -178,7 +163,7 @@ class StoryTellerViewModel(
 
         textChanges.clear()
 
-        return StoryStateMap(mutableSteps)
+        return StoryState(mutableSteps)
     }
 
     fun onDelete(deleteInfo: DeleteInfo) {
@@ -200,7 +185,7 @@ class StoryTellerViewModel(
                 FindStory.previousFocus(history.values.toList(), deleteInfo.position)
             val normalized = stepsNormalizer(mutableSteps.toEditState())
 
-            _normalizedSteps.value = StoryStateMap(normalized, focusId = previousFocus?.id)
+            _normalizedSteps.value = StoryState(normalized, focusId = previousFocus?.id)
         } else {
             FindStory.findById(history.values, parentId)
                 ?.first
@@ -217,7 +202,7 @@ class StoryTellerViewModel(
 
                     mutableSteps[deleteInfo.position] = newStoryUnit.copyWithNewParent(null)
                     _normalizedSteps.value =
-                        StoryStateMap(stepsNormalizer(mutableSteps.toEditState()))
+                        StoryState(stepsNormalizer(mutableSteps.toEditState()))
                 }
         }
     }

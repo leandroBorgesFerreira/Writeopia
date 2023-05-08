@@ -16,6 +16,7 @@ import br.com.leandroferreira.storyteller.drawer.content.ImageStepDrawer.Compani
 import br.com.leandroferreira.storyteller.drawer.content.MessageStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.VideoStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.SpaceDrawer
+import br.com.leandroferreira.storyteller.manager.StoryTellerManager
 import br.com.leandroferreira.storyteller.model.story.StepType
 import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.model.change.CheckInfo
@@ -28,11 +29,25 @@ object DefaultDrawers {
 
     fun create(
         editable: Boolean = false,
+        manager: StoryTellerManager
+    ): Map<String, StoryUnitDrawer> =
+        create(
+            editable = editable,
+            onTextEdit = manager::onTextEdit,
+            onLineBreak = manager::onLineBreak,
+            mergeRequest = manager::mergeRequest,
+            moveRequest = manager::moveRequest,
+            checkRequest = manager::checkRequest,
+            onDeleteRequest = manager::onDelete,
+        )
+
+    fun create(
+        editable: Boolean = false,
         onTextEdit: (String, Int) -> Unit,
         onLineBreak: (LineBreakInfo) -> Unit,
-        mergeRequest: (receiver: MergeInfo) -> Unit = { },
-        moveRequest: (moveInfo: MoveInfo) -> Unit = { },
-        checkRequest: (checkInfo: CheckInfo) -> Unit = { },
+        mergeRequest: (MergeInfo) -> Unit = { },
+        moveRequest: (MoveInfo) -> Unit = { },
+        checkRequest: (CheckInfo) -> Unit = { },
         onDeleteRequest: (DeleteInfo) -> Unit
     ): Map<String, StoryUnitDrawer> =
         buildMap {

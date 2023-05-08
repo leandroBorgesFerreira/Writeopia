@@ -1,4 +1,4 @@
-package br.com.leandroferreira.storyteller.viewmodel
+package br.com.leandroferreira.storyteller.manager
 
 import br.com.leandroferreira.storyteller.model.story.GroupStep
 import br.com.leandroferreira.storyteller.model.story.StoryStep
