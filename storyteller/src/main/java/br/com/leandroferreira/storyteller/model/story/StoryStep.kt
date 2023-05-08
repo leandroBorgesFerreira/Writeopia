@@ -14,6 +14,7 @@ data class StoryStep(
     val text: String? = null,
     val title: String? = null,
     val checked: Boolean = false,
+    val steps: List<StoryUnit> = emptyList()
 ): StoryUnit {
 
     override val key: Int = hashCode()
