@@ -25,7 +25,7 @@ import java.util.UUID
 
 class StoryTellerViewModel(
     private val storiesRepository: StoriesRepository,
-    private val stepsMapNormalizer: UnitsNormalizationMap =
+    private val stepsNormalizer: UnitsNormalizationMap =
         StepsMapNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
         },
@@ -55,40 +55,14 @@ class StoryTellerViewModel(
     fun mergeRequest(info: MergeInfo) {
         val sender = info.sender
         val receiver = info.receiver
+        val positionTo = info.positionTo
+        val positionFrom = info.positionFrom
 
         if (info.positionFrom == info.positionTo) return
 
-        /* Search by position doesn't work because a receiver may be inside a GroupStep
-        * Note: The search can speed up by using the position */
-        FindStory.findById(_normalizedSteps.value.stories.values, receiver.id)
-            ?.let { (receiver, parentReceiver) ->
-                when {
-                    parentReceiver != null -> {
-                        _normalizedSteps.value =
-                            StoryStateMap(
-                                stories = mergeStep(receiver, sender, info.positionTo, info.positionFrom),
-                            )
-                    }
-
-                    receiver != null -> {
-                        _normalizedSteps.value =
-                            StoryStateMap(
-                                stories = mergeStep(receiver, sender, info.positionTo, info.positionFrom),
-                            )
-                    }
-                }
-            }
-    }
-
-    private fun mergeStep(
-        receiver: StoryUnit?,
-        sender: StoryUnit,
-        positionTo: Int,
-        positionFrom: Int
-    ): Map<Int, StoryUnit> {
         val mutableHistory = _normalizedSteps.value.stories.toEditState()
         val receiverStepList = mutableHistory[positionTo]
-        receiverStepList?.plus(sender.copyWithNewParent(receiver?.parentId))?.let { newList ->
+        receiverStepList?.plus(sender.copyWithNewParent(receiver.parentId))?.let { newList ->
             mutableHistory[positionTo] = newList
         }
 
@@ -103,7 +77,7 @@ class StoryTellerViewModel(
             }
         }
 
-        return stepsMapNormalizer(mutableHistory)
+        _normalizedSteps.value = StoryStateMap(stories = stepsNormalizer(mutableHistory))
     }
 
     fun moveRequest(moveInfo: MoveInfo) {
@@ -125,7 +99,7 @@ class StoryTellerViewModel(
             }
         }
 
-        _normalizedSteps.value = StoryStateMap(stepsMapNormalizer(mutable.toEditState()))
+        _normalizedSteps.value = StoryStateMap(stepsNormalizer(mutable.toEditState()))
     }
 
     fun checkRequest(checkInfo: CheckInfo) {
@@ -179,7 +153,7 @@ class StoryTellerViewModel(
             mutable.add(lineBreakInfo.position + 1, secondMessage)
 
             return StoryStateMap(
-                stories = stepsMapNormalizer(mutable.associateWithPosition().toEditState()),
+                stories = stepsNormalizer(mutable.associateWithPosition().toEditState()),
                 focusId = secondMessage.id
             )
         }
@@ -224,7 +198,7 @@ class StoryTellerViewModel(
             mutableSteps.remove(deleteInfo.position)
             val previousFocus =
                 FindStory.previousFocus(history.values.toList(), deleteInfo.position)
-            val normalized = stepsMapNormalizer(mutableSteps.toEditState())
+            val normalized = stepsNormalizer(mutableSteps.toEditState())
 
             _normalizedSteps.value = StoryStateMap(normalized, focusId = previousFocus?.id)
         } else {
@@ -243,7 +217,7 @@ class StoryTellerViewModel(
 
                     mutableSteps[deleteInfo.position] = newStoryUnit.copyWithNewParent(null)
                     _normalizedSteps.value =
-                        StoryStateMap(stepsMapNormalizer(mutableSteps.toEditState()))
+                        StoryStateMap(stepsNormalizer(mutableSteps.toEditState()))
                 }
         }
     }

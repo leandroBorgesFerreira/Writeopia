@@ -49,7 +49,6 @@ class ImageStepDrawer(
 
         DropTarget(modifier = Modifier.padding(6.dp)) { inBound, data ->
             if (inBound && data != null) {
-
                 mergeRequest(
                     MergeInfo(
                         receiver = imageStep,

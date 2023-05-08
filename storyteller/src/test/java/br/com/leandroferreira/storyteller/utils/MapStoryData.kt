@@ -1,5 +1,6 @@
 package br.com.leandroferreira.storyteller.utils
 
+import android.content.Context
 import br.com.leandroferreira.storyteller.model.story.GroupStep
 import br.com.leandroferreira.storyteller.model.story.StepType
 import br.com.leandroferreira.storyteller.model.story.StoryStep
@@ -380,4 +381,83 @@ object MapStoryData {
             )
         )
     )
+
+    fun syncHistory(): Map<Int, StoryUnit> =
+        mapOf(
+            0 to
+                StoryStep(
+                    id = UUID.randomUUID().toString(),
+                    type = "image",
+                    url = "https://fastly.picsum.photos/id/15/400/400.jpg?hmac=xv-6mggpYPLIQ9eNAHrl1qKPHjyUCYlBoNBvdsqF4cY",
+                ),
+            1 to
+                StoryStep(
+                    id = UUID.randomUUID().toString(),
+                    type = "image",
+                    url = "https://fastly.picsum.photos/id/1018/400/400.jpg?hmac=MwHJoMaVXsBbqg-LFoDVL6P8TCDkSEikExptCkkHESQ",
+                ),
+            2 to
+                StoryStep(
+                    id = UUID.randomUUID().toString(),
+                    type = "image",
+                    url = "https://fastly.picsum.photos/id/984/400/400.jpg?hmac=CaqZ-rcUAbmidwURZcBynO7aIAC-FaktVN7X8lIvlmE",
+                ),
+            3 to
+                StoryStep(
+                    id = UUID.randomUUID().toString(),
+                    type = "message",
+                    text = "We arrived in Santiago!!",
+                ),
+            4 to
+                StoryStep(
+                    id = UUID.randomUUID().toString(),
+                    type = "check_item",
+                    text = "We need to go to the Cafe!",
+                ),
+            5 to
+                StoryStep(
+                    id = UUID.randomUUID().toString(),
+                    type = "check_item",
+                    text = "We need to have lots of fun!",
+                ),
+            6 to
+                StoryStep(
+                    id = UUID.randomUUID().toString(),
+                    type = "check_item",
+                    text = "We need to lear some Spanish!",
+                ),
+            7 to
+                StoryStep(
+                    id = UUID.randomUUID().toString(),
+                    type = "image",
+                    url = "https://fastly.picsum.photos/id/514/1200/600.jpg?hmac=gh5_PZFkQI74GShPTCJ_XP_EgN-X1O0OUP8tDlT7WkY",
+                    title = "The hotel entrance"
+                ),
+            8 to
+                StoryStep(
+                    id = UUID.randomUUID().toString(),
+                    type = "message_box",
+                    text = "And it was super awesome!! \n\nUt enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
+                ),
+            9 to
+                StoryStep(
+                    id = UUID.randomUUID().toString(),
+                    type = "message_box",
+                    text = "I hope to to it again some day..."
+                ),
+            10 to
+                StoryStep(
+                    id = UUID.randomUUID().toString(),
+                    type = "message_box",
+                    text = "I couldn't believe how sunny it was. Santiago is a really beautiful city. There's a lot to " +
+                        "do and enjoyed the day. We went to many cozy Cafes and we enjoyed the city by foot. " +
+                        "We had to buy some Syn Cards to be able to communicate in the new country. ",
+                ),
+            11 to
+                StoryStep(
+                    id = UUID.randomUUID().toString(),
+                    type = "add_button",
+                    text = "And it was super awesome!!",
+                )
+        )
 }
