@@ -1,8 +1,8 @@
 package br.com.leandroferreira.storyteller.normalization.merge.steps
 
-import br.com.leandroferreira.storyteller.model.GroupStep
-import br.com.leandroferreira.storyteller.model.StoryStep
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.GroupStep
+import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.merge.StepMerger
 
 /**
@@ -22,7 +22,6 @@ open class StepToStepMerger : StepMerger {
 
             story1.copy(
                 text = "${story1.text}\n\n${story2.text}",
-                localPosition = step2.localPosition
             )
         } else {
             throw IllegalStateException(

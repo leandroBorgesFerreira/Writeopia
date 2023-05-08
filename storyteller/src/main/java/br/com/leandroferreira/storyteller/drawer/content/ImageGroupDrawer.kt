@@ -9,11 +9,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.layout.onGloballyPositioned
+import br.com.leandroferreira.storyteller.drawer.DrawInfo
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
-import br.com.leandroferreira.storyteller.model.GroupStep
-import br.com.leandroferreira.storyteller.model.StoryStep
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.GroupStep
+import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
 
 /**
  * Draws a scrollable list of images accordingly with the imageStepDrawer provided.
@@ -24,18 +24,13 @@ class ImageGroupDrawer(
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(
-        step: StoryUnit,
-        editable: Boolean,
-        focusId: String?,
-        extraData: Map<String, Any>
-    ) {
+    override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
         val imageGroup = step as GroupStep
         val steps = imageGroup.steps.map { storyUnit -> storyUnit as StoryStep }
         val focusRequester = remember { FocusRequester() }
 
-        LaunchedEffect(focusId) {
-            if (focusId == step.id) {
+        LaunchedEffect(drawInfo.focusId) {
+            if (drawInfo.focusId == step.id) {
                 focusRequester.requestFocus()
             }
         }
@@ -43,7 +38,7 @@ class ImageGroupDrawer(
         LazyRow(modifier = modifier.focusRequester(focusRequester)) {
             items(steps) { storyStep ->
                 imageStepDrawer.run {
-                    Step(storyStep, editable = editable, focusId = null, extraData)
+                    Step(storyStep, drawInfo = drawInfo.copy(focusId = null))
                 }
             }
         }

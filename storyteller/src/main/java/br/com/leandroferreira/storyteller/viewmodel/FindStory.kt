@@ -1,8 +1,8 @@
 package br.com.leandroferreira.storyteller.viewmodel
 
-import br.com.leandroferreira.storyteller.model.GroupStep
-import br.com.leandroferreira.storyteller.model.StoryStep
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.GroupStep
+import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
 
 /**
  * Helper object to find StoryUnits inside a the List<Story>. This object search in the list and
@@ -13,7 +13,10 @@ object FindStory {
     /**
      * Finds the StoryUnit and its container [GroupStep], if available.
      */
-    fun findById(storyList: List<StoryUnit>, storyId: String): Pair<StoryUnit?, GroupStep?>? {
+    fun findById(
+        storyList: Iterable<StoryUnit>,
+        storyId: String
+    ): Pair<StoryUnit?, GroupStep?>? {
         storyList.forEach { storyUnit ->
             if (storyUnit.id == storyId) return storyUnit to null
 

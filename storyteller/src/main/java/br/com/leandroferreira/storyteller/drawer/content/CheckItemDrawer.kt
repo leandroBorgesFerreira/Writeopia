@@ -29,27 +29,27 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import br.com.leandroferreira.storyteller.draganddrop.target.DragTarget
+import br.com.leandroferreira.storyteller.drawer.DrawInfo
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
-import br.com.leandroferreira.storyteller.model.StoryStep
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
+import br.com.leandroferreira.storyteller.model.change.CheckInfo
+import br.com.leandroferreira.storyteller.model.change.DeleteInfo
+import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
+import br.com.leandroferreira.storyteller.model.draganddrop.DropInfo
 
 class CheckItemDrawer(
-    private val onCheckedChange: (String, Boolean) -> Unit,
+    private val onCheckedChange: (CheckInfo) -> Unit,
     private val onTextEdit: (String, Int) -> Unit,
-    private val onLineBreak: (StoryStep) -> Unit,
-    private val onDeleteRequest: (StoryStep) -> Unit
+    private val onLineBreak: (LineBreakInfo) -> Unit,
+    private val onDeleteRequest: (DeleteInfo) -> Unit
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(
-        step: StoryUnit,
-        editable: Boolean,
-        focusId: String?,
-        extraData: Map<String, Any>
-    ) {
+    override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
         val checkItem = step as StoryStep
 
-        DragTarget(dataToDrop = checkItem) {
+        DragTarget(dataToDrop = DropInfo(checkItem, drawInfo.position)) {
             Row(
                 modifier = Modifier.padding(horizontal = 10.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -62,8 +62,16 @@ class CheckItemDrawer(
 
                 Checkbox(
                     checked = checkItem.checked,
-                    onCheckedChange = { checked -> onCheckedChange(checkItem.id, checked) },
-                    enabled = editable
+                    onCheckedChange = { checked ->
+                        onCheckedChange(
+                            CheckInfo(
+                                checkItem,
+                                drawInfo.position,
+                                checked
+                            )
+                        )
+                    },
+                    enabled = drawInfo.editable
                 )
 
                 var inputText by remember {
@@ -79,8 +87,8 @@ class CheckItemDrawer(
 
                 val focusRequester = remember { FocusRequester() }
 
-                LaunchedEffect(focusId) {
-                    if (focusId == step.id) {
+                LaunchedEffect(drawInfo.focusId) {
+                    if (drawInfo.focusId == step.id) {
                         focusRequester.requestFocus()
                     }
                 }
@@ -92,7 +100,7 @@ class CheckItemDrawer(
                             if (keyEvent.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DEL &&
                                 inputText.selection.start == 0
                             ) {
-                                onDeleteRequest(step)
+                                onDeleteRequest(DeleteInfo(step, position = drawInfo.position))
                                 true
                             } else {
                                 false
@@ -102,10 +110,15 @@ class CheckItemDrawer(
                     placeholder = { Text(text = "To-do") },
                     onValueChange = { value ->
                         if (value.text.contains("\n")) {
-                            onLineBreak(step.copy(text = value.text))
+                            onLineBreak(
+                                LineBreakInfo(
+                                    step.copy(text = value.text),
+                                    position = drawInfo.position
+                                )
+                            )
                         } else {
                             inputText = value
-                            onTextEdit(value.text, step.localPosition)
+                            onTextEdit(value.text, drawInfo.position)
                         }
 
                     },
@@ -116,7 +129,7 @@ class CheckItemDrawer(
                     ),
                     maxLines = 1,
                     textStyle = textStyle,
-                    enabled = editable,
+                    enabled = drawInfo.editable,
                 )
             }
         }

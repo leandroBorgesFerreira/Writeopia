@@ -2,16 +2,21 @@ package br.com.leandroferreira.storyteller.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.leandroferreira.storyteller.model.Command
-import br.com.leandroferreira.storyteller.model.GroupStep
-import br.com.leandroferreira.storyteller.model.StoryState
-import br.com.leandroferreira.storyteller.model.StoryStep
-import br.com.leandroferreira.storyteller.model.StoryUnit
-import br.com.leandroferreira.storyteller.normalization.StepsNormalizationBuilder
+import br.com.leandroferreira.storyteller.model.change.CheckInfo
+import br.com.leandroferreira.storyteller.model.change.DeleteInfo
+import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
+import br.com.leandroferreira.storyteller.model.change.MergeInfo
+import br.com.leandroferreira.storyteller.model.change.MoveInfo
+import br.com.leandroferreira.storyteller.model.story.GroupStep
+import br.com.leandroferreira.storyteller.model.story.StoryStateMap
+import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
+import br.com.leandroferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
 import br.com.leandroferreira.storyteller.repository.StoriesRepository
 import br.com.leandroferreira.storyteller.utils.StoryStepFactory
-import br.com.leandroferreira.storyteller.viewmodel.move.MoveHandler
-import br.com.leandroferreira.storyteller.viewmodel.move.SpaceMoveHandler
+import br.com.leandroferreira.storyteller.utils.UnitsNormalizationMap
+import br.com.leandroferreira.storyteller.utils.extensions.associateWithPosition
+import br.com.leandroferreira.storyteller.utils.extensions.toEditState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,119 +25,100 @@ import java.util.UUID
 
 class StoryTellerViewModel(
     private val storiesRepository: StoriesRepository,
-    private val stepsNormalizer: (Iterable<StoryUnit>) -> List<StoryUnit> =
-        StepsNormalizationBuilder.reduceNormalizations {
+    private val stepsNormalizer: UnitsNormalizationMap =
+        StepsMapNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
         },
-    private val moveHandler: MoveHandler = SpaceMoveHandler(),
 ) : ViewModel() {
 
     private val textChanges: MutableMap<Int, String> = mutableMapOf()
 
-    private val _normalizedSteps: MutableStateFlow<StoryState> = MutableStateFlow(
-        StoryState(stories = emptyList())
+    private val _normalizedSteps: MutableStateFlow<StoryStateMap> = MutableStateFlow(
+        StoryStateMap(stories = emptyMap())
     )
-    val normalizedStepsState: StateFlow<StoryState> = _normalizedSteps.asStateFlow()
+    val normalizedStepsState: StateFlow<StoryStateMap> = _normalizedSteps.asStateFlow()
 
-    private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
-    val scrollToPosition: StateFlow<Int?> = _scrollToPosition.asStateFlow()
-
-    fun requestHistoriesFromApi(force: Boolean = false) {
+    fun requestHistoriesFromApi(
+        force: Boolean = false,
+        normalizer: UnitsNormalizationMap = StepsMapNormalizationBuilder.reduceNormalizations {
+            defaultNormalizers()
+        }
+    ) {
         if (_normalizedSteps.value.stories.isEmpty() || force) {
             viewModelScope.launch {
-                val normalizedSteps = stepsNormalizer(storiesRepository.history())
-                _normalizedSteps.value = StoryState(normalizedSteps)
+                val normalizedSteps = normalizer(storiesRepository.history().toEditState())
+                _normalizedSteps.value = StoryStateMap(normalizedSteps)
             }
         }
     }
 
-    fun mergeRequest(receiverId: String, senderId: String) {
-        val sender = FindStory.findById(_normalizedSteps.value.stories, senderId)?.first
-        FindStory.findById(_normalizedSteps.value.stories, receiverId)
-            ?.let { (receiver, parentReceiver) ->
-                when {
-                    sender != null && parentReceiver != null -> {
-                        val position = parentReceiver.localPosition
-                        _normalizedSteps.value =
-                            StoryState(
-                                stories = changePositionOfStep(sender, position),
-                                focusId = parentReceiver.id
-                            )
-                    }
+    fun mergeRequest(info: MergeInfo) {
+        val sender = info.sender
+        val receiver = info.receiver
+        val positionTo = info.positionTo
+        val positionFrom = info.positionFrom
 
-                    sender != null && receiver != null -> {
-                        val position = receiver.localPosition
-                        _normalizedSteps.value =
-                            StoryState(
-                                stories = changePositionOfStep(sender, position),
-                                focusId = receiver.id
-                            )
-                    }
-                }
+        if (info.positionFrom == info.positionTo) return
+
+        val mutableHistory = _normalizedSteps.value.stories.toEditState()
+        val receiverStepList = mutableHistory[positionTo]
+        receiverStepList?.plus(sender.copyWithNewParent(receiver.parentId))?.let { newList ->
+            mutableHistory[positionTo] = newList
+        }
+
+        if (sender.parentId == null) {
+            mutableHistory.remove(positionFrom)
+        } else {
+            val fromGroup = (mutableHistory[positionFrom]?.first() as? GroupStep)
+            val newList = fromGroup?.steps?.filter { storyUnit -> storyUnit.id != sender.id }
+
+            if (newList != null) {
+                mutableHistory[positionFrom] = listOf(fromGroup.copy(steps = newList))
             }
+        }
+
+        _normalizedSteps.value = StoryStateMap(stories = stepsNormalizer(mutableHistory))
     }
 
-    private fun changePositionOfStep(sender: StoryUnit, position: Int): List<StoryUnit> {
-        val mutableHistory = _normalizedSteps.value.stories.toMutableList()
-        mutableHistory[sender.localPosition] = sender.copyWithNewPosition(position)
+    fun moveRequest(moveInfo: MoveInfo) {
+        val mutable = _normalizedSteps.value.stories.toMutableMap()
+        if (mutable[moveInfo.positionTo]?.type != "space") throw IllegalStateException()
 
-        return stepsNormalizer(mutableHistory)
+        mutable[moveInfo.positionTo] = moveInfo.storyUnit.copyWithNewParent(null)
+
+        if (moveInfo.storyUnit.parentId == null) {
+            mutable.remove(moveInfo.positionFrom)
+        } else {
+            val fromGroup = (mutable[moveInfo.positionFrom] as? GroupStep)
+            val newList = fromGroup?.steps?.filter { storyUnit ->
+                storyUnit.id != moveInfo.storyUnit.id
+            }
+
+            if (newList != null) {
+                mutable[moveInfo.positionFrom] = fromGroup.copy(steps = newList)
+            }
+        }
+
+        _normalizedSteps.value = StoryStateMap(stepsNormalizer(mutable.toEditState()))
     }
 
-    fun moveRequest(unitId: String, newPosition: Int) {
-        _normalizedSteps.value = StoryState(
-            moveHandler.handleMove(
-                _normalizedSteps.value.stories,
-                unitId,
-                newPosition
-            ).let(stepsNormalizer)
-        )
-
-        _scrollToPosition.value =
-            FindStory.findById(_normalizedSteps.value.stories, unitId)
-                ?.let { (unit, group) ->
-                    group?.localPosition ?: unit?.localPosition
-                }
-    }
-
-    fun checkRequest(unitId: String, checked: Boolean) {
+    fun checkRequest(checkInfo: CheckInfo) {
         updateState()
+        val parentId = checkInfo.storyUnit.parentId
 
-        FindStory.findById(_normalizedSteps.value.stories, unitId)
-            ?.first
-            ?.let { storyUnit -> storyUnit as? StoryStep }
-            ?.let { step ->
-                val newStep = step.copy(checked = checked)
-                val newList = _normalizedSteps.value.stories.toMutableList()
-
-                newList[newStep.localPosition] = newStep
-
-                _normalizedSteps.value = StoryState(newList, null)
-            }
-    }
-
-    fun onListCommand(command: Command) {
-        when (command.type) {
-            "move_up" -> {
-                updateState()
-                _normalizedSteps.value = moveUp(
-                    command.step.localPosition,
-                    _normalizedSteps.value.stories
-                )
-            }
-
-            "move_down" -> {
-                updateState()
-                _normalizedSteps.value = moveDown(
-                    command.step.localPosition,
-                    _normalizedSteps.value.stories
-                )
-            }
-
-            "delete" -> {
-                onDelete(command.step)
-            }
+        val storyUnit = if (parentId != null) {
+            FindStory.findById(_normalizedSteps.value.stories.values, parentId)?.first ?: return
+        } else {
+            checkInfo.storyUnit
         }
+
+        val newStep = (storyUnit as? StoryStep)?.copy(checked = checkInfo.checked) ?: return
+        val newMap = _normalizedSteps.value.stories.toMutableMap()
+
+        newMap[checkInfo.position] = newStep
+
+        _normalizedSteps.value = StoryStateMap(newMap)
+
     }
 
     fun onTextEdit(text: String, position: Int) {
@@ -140,95 +126,83 @@ class StoryTellerViewModel(
     }
 
     //Todo: Add unit test for this method!
-    fun onLineBreak(storyStep: StoryStep) {
-        val updatedStories = updateTexts()
-        _normalizedSteps.value = separateMessages(updatedStories.stories, storyStep)
+    fun onLineBreak(lineBreakInfo: LineBreakInfo) {
+        val updatedStories = updateTexts(_normalizedSteps.value.stories)
+        _normalizedSteps.value = separateMessages(updatedStories.stories, lineBreakInfo)
     }
 
-    private fun separateMessages(stories: List<StoryUnit>, storyStep: StoryStep): StoryState {
+    private fun separateMessages(
+        stories: Map<Int, StoryUnit>,
+        lineBreakInfo: LineBreakInfo
+    ): StoryStateMap {
+        val storyStep = lineBreakInfo.storyStep
         storyStep.text?.split("\n", limit = 2)?.let { list ->
             val secondText = list.elementAtOrNull(1) ?: ""
 
-            val mutable = _normalizedSteps.value.stories.toMutableList()
+            val mutable = stories.values.toMutableList()
             mutable.add(
-                storyStep.localPosition + 1,
-                StoryStepFactory.space(localPosition = storyStep.localPosition + 1)
+                lineBreakInfo.position + 1,
+                StoryStepFactory.space()
             )
 
             val secondMessage = StoryStep(
                 id = UUID.randomUUID().toString(),
                 type = storyStep.type,
                 text = secondText,
-                localPosition = storyStep.localPosition + 2,
             )
-            mutable.add(storyStep.localPosition + 2, secondMessage)
+            mutable.add(lineBreakInfo.position + 1, secondMessage)
 
-            return StoryState(stepsNormalizer(mutable), focusId = secondMessage.id)
+            return StoryStateMap(
+                stories = stepsNormalizer(mutable.associateWithPosition().toEditState()),
+                focusId = secondMessage.id
+            )
         }
 
-        return StoryState(stories)
+        return StoryStateMap(stories)
     }
 
     fun updateState() {
-        _normalizedSteps.value = updateTexts()
+        _normalizedSteps.value = updateTexts(_normalizedSteps.value.stories)
     }
 
-    private fun updateTexts(): StoryState {
-        val steps = _normalizedSteps.value.stories.toMutableList()
+    private fun updateTexts(stepMap: Map<Int, StoryUnit>): StoryStateMap {
+        val mutableSteps = stepMap.toMutableMap()
 
         textChanges.forEach { (position, text) ->
-            val editStep = steps[position]
+            val editStep = mutableSteps[position]
 
             (editStep as? StoryStep)?.copy(text = text)?.let { step ->
-                steps[position] = step
+                mutableSteps[position] = step
             }
         }
 
         textChanges.clear()
 
-        return StoryState(steps)
+        return StoryStateMap(mutableSteps)
     }
 
-    private fun moveUp(
-        position: Int,
-        history: List<StoryUnit>,
-    ): StoryState {
-        val thisStep = history[position]
-        val upStep = history[position - 1]
-
-        val mutableHistory = history.toMutableList()
-        mutableHistory[position] = upStep.copyWithNewPosition(position)
-
-        mutableHistory[position - 1] = thisStep.copyWithNewPosition(position - 1)
-
-        return StoryState(stepsNormalizer(mutableHistory))
-    }
-
-    private fun moveDown(
-        position: Int,
-        history: List<StoryUnit>,
-    ): StoryState = moveUp(position + 1, history)
-
-    fun onDelete(step: StoryUnit) {
+    fun onDelete(deleteInfo: DeleteInfo) {
         updateState()
-        delete(step, _normalizedSteps.value.stories)
+        delete(deleteInfo, _normalizedSteps.value.stories)
     }
 
     private fun delete(
-        step: StoryUnit,
-        history: List<StoryUnit>,
+        deleteInfo: DeleteInfo,
+        history: Map<Int, StoryUnit>,
     ) {
+        val step = deleteInfo.storyUnit
         val parentId = step.parentId
-        val mutableSteps = _normalizedSteps.value.stories.toMutableList()
+        val mutableSteps = history.toMutableMap()
 
         if (parentId == null) {
-            mutableSteps.removeAt(step.localPosition)
-            val previousFocus = FindStory.previousFocus(mutableSteps, step.localPosition)
-            val normalized = stepsNormalizer(mutableSteps)
+            mutableSteps.remove(deleteInfo.position)
+            val previousFocus =
+                FindStory.previousFocus(history.values.toList(), deleteInfo.position)
+            val normalized = stepsNormalizer(mutableSteps.toEditState())
 
-            _normalizedSteps.value = StoryState(normalized, focusId = previousFocus?.id)
+            _normalizedSteps.value = StoryStateMap(normalized, focusId = previousFocus?.id)
         } else {
-            FindStory.findById(history, parentId)
+            FindStory.findById(history.values, parentId)
                 ?.first
                 ?.let { group ->
                     val newSteps = (group as GroupStep).steps.filter { storyUnit ->
@@ -236,13 +210,14 @@ class StoryTellerViewModel(
                     }
 
                     val newStoryUnit = if (newSteps.size == 1) {
-                        newSteps.first().copyWithNewPosition(group.localPosition)
+                        newSteps.first()
                     } else {
                         group.copy(steps = newSteps)
                     }
 
-                    mutableSteps[group.localPosition] = newStoryUnit.copyWithNewParent(null)
-                    _normalizedSteps.value = StoryState(stepsNormalizer(mutableSteps))
+                    mutableSteps[deleteInfo.position] = newStoryUnit.copyWithNewParent(null)
+                    _normalizedSteps.value =
+                        StoryStateMap(stepsNormalizer(mutableSteps.toEditState()))
                 }
         }
     }

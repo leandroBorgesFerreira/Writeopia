@@ -20,9 +20,12 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import br.com.leandroferreira.storyteller.drawer.DrawInfo
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
-import br.com.leandroferreira.storyteller.model.StoryStep
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
+import br.com.leandroferreira.storyteller.model.change.DeleteInfo
+import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
 
 /**
  * Draw a text that can be edited. The edition of the text is both reflect in this Composable and
@@ -33,29 +36,24 @@ class MessageStepDrawer(
     private val containerModifier: Modifier = Modifier,
     private val innerContainerModifier: Modifier = Modifier,
     private val onTextEdit: (String, Int) -> Unit,
-    private val onLineBreak: (StoryStep) -> Unit,
-    private val onDeleteRequest: (StoryStep) -> Unit
+    private val onLineBreak: (LineBreakInfo) -> Unit,
+    private val onDeleteRequest: (DeleteInfo) -> Unit
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(
-        step: StoryUnit,
-        editable: Boolean,
-        focusId: String?,
-        extraData: Map<String, Any>
-    ) {
+    override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
         val messageStep = step as StoryStep
 
         Box(modifier = containerModifier) {
-            if (editable) {
+            if (drawInfo.editable) {
                 var inputText by remember {
                     val text = messageStep.text ?: ""
                     mutableStateOf(TextFieldValue(text, TextRange(text.length)))
                 }
                 val focusRequester = remember { FocusRequester() }
 
-                LaunchedEffect(focusId) {
-                    if (focusId == step.id) {
+                LaunchedEffect(drawInfo.focusId) {
+                    if (drawInfo.focusId == step.id) {
                         focusRequester.requestFocus()
                     }
                 }
@@ -68,7 +66,7 @@ class MessageStepDrawer(
                             if (keyEvent.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DEL &&
                                 inputText.selection.start == 0
                             ) {
-                                onDeleteRequest(step)
+                                onDeleteRequest(DeleteInfo(step, drawInfo.position))
                                 true
                             } else {
                                 false
@@ -77,10 +75,15 @@ class MessageStepDrawer(
                     value = inputText,
                     onValueChange = { value ->
                         if (value.text.contains("\n")) {
-                            onLineBreak(step.copy(text = value.text))
+                            onLineBreak(
+                                LineBreakInfo(
+                                    step.copy(text = value.text),
+                                    position = drawInfo.position
+                                )
+                            )
                         } else {
                             inputText = value
-                            onTextEdit(value.text, step.localPosition)
+                            onTextEdit(value.text, drawInfo.position)
                         }
                     },
                 )

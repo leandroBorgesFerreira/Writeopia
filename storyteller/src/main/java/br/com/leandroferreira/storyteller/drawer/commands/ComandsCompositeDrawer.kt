@@ -12,17 +12,16 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import br.com.leandroferreira.storyteller.drawer.DrawInfo
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
-import br.com.leandroferreira.storyteller.model.Command
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
+import br.com.leandroferreira.storyteller.model.change.DeleteInfo
 
 /**
  * Drawer for commands. This drawer adds commands for move up, move down and delete on top of any
@@ -31,33 +30,28 @@ import br.com.leandroferreira.storyteller.model.StoryUnit
  */
 class CommandsDecoratorDrawer(
     private val innerStep: StoryUnitDrawer,
-    private val onDelete: (Command) -> Unit = {}
+    private val onDelete: (DeleteInfo) -> Unit = {}
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(
-        step: StoryUnit,
-        editable: Boolean,
-        focusId: String?,
-        extraData: Map<String, Any>
-    ) {
+    override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
         Box(modifier = Modifier.padding(vertical = 3.dp)) {
             Box(modifier = Modifier.padding(top = 3.dp)) {
-                innerStep.run { Step(step = step, editable, focusId, extraData) }
+                innerStep.run { Step(step = step, drawInfo = drawInfo) }
             }
 
-            DeleteButton(step)
+            DeleteButton(step, drawInfo.position)
         }
     }
 
     @Composable
-    private fun BoxScope.DeleteButton(step: StoryUnit) {
+    private fun BoxScope.DeleteButton(step: StoryUnit, position: Int) {
         Box(
             modifier = Modifier
                 .buttonModifier()
                 .align(Alignment.TopStart)
         ) {
-            IconButton(onClick = { onDelete(Command(type = "delete", step)) }) {
+            IconButton(onClick = { onDelete(DeleteInfo(step, position)) }) {
                 Icon(
                     imageVector = Icons.Outlined.Close,
                     contentDescription = "",

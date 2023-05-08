@@ -10,12 +10,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.draganddrop.DropInfo
 
 @Composable
 fun DropTarget(
     modifier: Modifier = Modifier,
-    content: @Composable BoxScope.(inBound: Boolean, data: StoryUnit?) -> Unit
+    content: @Composable BoxScope.(inBound: Boolean, data: DropInfo?) -> Unit
 ) {
 
     val dragInfo: DragTargetInfo = LocalDragTargetInfo.current

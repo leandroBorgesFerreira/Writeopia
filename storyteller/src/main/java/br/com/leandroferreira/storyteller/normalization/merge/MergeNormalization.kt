@@ -1,20 +1,21 @@
 package br.com.leandroferreira.storyteller.normalization.merge
 
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
 
 
 /**
  *
  */
-class MergeNormalization(private val stepMergers: Set<StepsMergerCoordinator>) {
+class MergeNormalization(private val stepMergers: List<StepsMergerCoordinator>) {
 
-    fun mergeSteps(storySteps: Iterable<StoryUnit>): List<StoryUnit> =
-        // First, group all the elements by its position
-        storySteps.groupBy { storyStep -> storyStep.localPosition }
-            // Then reduce all the possible steps in the same position
-            .mapValues { (_, steps) -> reducePossibleSteps(steps) }
-            // At last, create the final list by merge all the intermediate lists.
-            .values.reduce { list1, list2 -> list1 + list2 }
+    /**
+     * When using the Map version of the normalizer, it is necessary to end up with
+     * Map<Int, StoryUnit> instead of Map<Int, List<StoryUnit>> so if some list contains more than
+     * one item, this means that some incorrect merge was made. No elements that can't be merged
+     * should be together. This normalizer removes the elements that could not be merged.
+     */
+    fun mergeSteps(stories: Map<Int, List<StoryUnit>>): Map<Int, StoryUnit> =
+        stories.mapValues { (_, steps) -> reducePossibleSteps(steps).first() }
 
     /**
      * Note that it may happen that some elements in the same position may not be able to be
@@ -41,13 +42,12 @@ class MergeNormalization(private val stepMergers: Set<StepsMergerCoordinator>) {
         }
     }
 
-
     companion object {
         fun build(buildFunc: Builder.() -> Unit) = Builder().apply(buildFunc).build()
     }
 
     class Builder internal constructor() {
-        private val stepMergers: MutableSet<StepsMergerCoordinator> = mutableSetOf()
+        private val stepMergers: MutableList<StepsMergerCoordinator> = mutableListOf()
 
         fun addMerger(stepMerger: StepsMergerCoordinator): Builder = apply {
             stepMergers.add(stepMerger)

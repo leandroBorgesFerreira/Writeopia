@@ -16,27 +16,30 @@ import br.com.leandroferreira.storyteller.drawer.content.ImageStepDrawer.Compani
 import br.com.leandroferreira.storyteller.drawer.content.MessageStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.VideoStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.SpaceDrawer
-import br.com.leandroferreira.storyteller.model.Command
-import br.com.leandroferreira.storyteller.model.StepType
-import br.com.leandroferreira.storyteller.model.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StepType
+import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.model.change.CheckInfo
+import br.com.leandroferreira.storyteller.model.change.DeleteInfo
+import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
+import br.com.leandroferreira.storyteller.model.change.MergeInfo
+import br.com.leandroferreira.storyteller.model.change.MoveInfo
 
 object DefaultDrawers {
 
     fun create(
         editable: Boolean = false,
-        onListCommand: (Command) -> Unit,
         onTextEdit: (String, Int) -> Unit,
-        onLineBreak: (StoryStep) -> Unit,
-        mergeRequest: (receiverId: String, senderId: String) -> Unit = { _, _ -> },
-        moveRequest: (String, Int) -> Unit = { _, _ -> },
-        checkRequest: (String, Boolean) -> Unit = { _, _ -> },
-        onDeleteRequest: (StoryStep) -> Unit
+        onLineBreak: (LineBreakInfo) -> Unit,
+        mergeRequest: (receiver: MergeInfo) -> Unit = { },
+        moveRequest: (moveInfo: MoveInfo) -> Unit = { },
+        checkRequest: (checkInfo: CheckInfo) -> Unit = { },
+        onDeleteRequest: (DeleteInfo) -> Unit
     ): Map<String, StoryUnitDrawer> =
         buildMap {
             val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->
                 CommandsDecoratorDrawer(
                     stepDrawer,
-                    onDelete = onListCommand,
+                    onDelete = onDeleteRequest,
                 )
             }
 

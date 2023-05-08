@@ -1,4 +1,4 @@
-package br.com.leandroferreira.storyteller.model
+package br.com.leandroferreira.storyteller.model.story
 
 /**
  * The default types of [StepType]. You can add more types without extending this enum (which

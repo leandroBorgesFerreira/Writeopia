@@ -1,8 +1,8 @@
 package br.com.leandroferreira.storyteller.normalization.merge.steps
 
-import br.com.leandroferreira.storyteller.model.GroupStep
-import br.com.leandroferreira.storyteller.model.StoryStep
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.story.GroupStep
+import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.merge.StepMerger
 import java.util.UUID
 
@@ -22,7 +22,6 @@ open class StepToGroupMerger : StepMerger {
                 GroupStep(
                     id = groupId,
                     type = type,
-                    localPosition = step2.localPosition,
                     steps = listOf(step1.copy(parentId = groupId), step2.copy(parentId = groupId))
                 )
             }
@@ -32,7 +31,6 @@ open class StepToGroupMerger : StepMerger {
             )
 
             step1 is StoryStep && step2 is GroupStep -> step2.copy(
-                localPosition = step2.localPosition,
                 steps = listOf(step1.copy(parentId = step2.id)) + step2.steps
             )
 
@@ -43,10 +41,10 @@ open class StepToGroupMerger : StepMerger {
             )
         }
 
-    // Todo: step2.steps should change the parentId.
     override fun groupsMerger(step1: GroupStep, step2: GroupStep): StoryUnit =
         step1.copy(
-            steps = step1.steps + step2.steps,
-            localPosition = step2.localPosition
+            steps = step1.steps + step2.steps.map { step ->
+                step.copyWithNewParent(step1.id)
+            },
         )
 }

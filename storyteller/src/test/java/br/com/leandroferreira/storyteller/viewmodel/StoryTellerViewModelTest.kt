@@ -1,16 +1,18 @@
 package br.com.leandroferreira.storyteller.viewmodel
 
-import br.com.leandroferreira.storyteller.model.Command
-import br.com.leandroferreira.storyteller.model.GroupStep
-import br.com.leandroferreira.storyteller.model.StoryStep
-import br.com.leandroferreira.storyteller.model.StoryUnit
+import br.com.leandroferreira.storyteller.model.change.DeleteInfo
+import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
+import br.com.leandroferreira.storyteller.model.change.MergeInfo
+import br.com.leandroferreira.storyteller.model.change.MoveInfo
+import br.com.leandroferreira.storyteller.model.story.GroupStep
+import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.repository.StoriesRepository
 import br.com.leandroferreira.storyteller.utils.MainDispatcherRule
-import br.com.leandroferreira.storyteller.utils.StoryData
+import br.com.leandroferreira.storyteller.utils.MapStoryData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import java.util.Stack
@@ -22,32 +24,37 @@ class StoryTellerViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val imagesInLineRepo: StoriesRepository = object : StoriesRepository {
-        override suspend fun history(): List<StoryUnit> = StoryData.imagesInLine()
+        override suspend fun history(): Map<Int, StoryUnit> = MapStoryData.imageStepsList()
     }
 
     private val imageGroupRepo: StoriesRepository = object : StoriesRepository {
-        override suspend fun history(): List<StoryUnit> = StoryData.imageGroup()
+        override suspend fun history(): Map<Int, StoryUnit> = MapStoryData.imageGroup()
     }
 
     private val messagesRepo: StoriesRepository = object : StoriesRepository {
-        override suspend fun history(): List<StoryUnit> = StoryData.messagesInLine()
+        override suspend fun history(): Map<Int, StoryUnit> = MapStoryData.messagesInLine()
+    }
+
+    private val singleMessageRepo: StoriesRepository = object : StoriesRepository {
+        override suspend fun history(): Map<Int, StoryUnit> = MapStoryData.singleMessage()
+    }
+
+    private val complexMessagesRepository: StoriesRepository = object : StoriesRepository {
+        override suspend fun history(): Map<Int, StoryUnit> = MapStoryData.syncHistory()
     }
 
 
     @Test
-    fun `normalization should work correctly`() {
+    fun `one space has to be added between steps`() = runTest {
         val storyViewModel = StoryTellerViewModel(messagesRepo)
+
+        val oldSize = messagesRepo.history().size
+
         storyViewModel.requestHistoriesFromApi()
 
-        assertEquals(11, storyViewModel.normalizedStepsState.value.stories.size)
-    }
+        val newStory = storyViewModel.normalizedStepsState.value.stories
 
-    @Test
-    fun `merge request should be able to be initialized`() = runTest {
-        val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
-        storyViewModel.requestHistoriesFromApi()
-
-        assertTrue(storyViewModel.normalizedStepsState.value.stories.isNotEmpty())
+        assertEquals("a space should be added between each step", oldSize * 2 + 1, newStory.size)
     }
 
     @Test
@@ -55,12 +62,23 @@ class StoryTellerViewModelTest {
         val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
         storyViewModel.requestHistoriesFromApi()
 
-        val currentStory = storyViewModel.normalizedStepsState.value.stories.toList()
+        val currentStory = storyViewModel.normalizedStepsState.value.stories
         val initialSize = currentStory.size
 
+        val positionFrom = currentStory.size - 2
+        val positionTo = 1
+        val sender = currentStory[positionFrom]!!
+        val receiver = currentStory[positionTo]!!
+
+        assertTrue("The first step is not a GroupStep", currentStory[1] is StoryStep)
+
         storyViewModel.mergeRequest(
-            receiverId = currentStory[1].id,
-            senderId = currentStory[currentStory.lastIndex - 1].id
+            MergeInfo(
+                sender = sender,
+                receiver = receiver,
+                positionFrom = positionFrom,
+                positionTo = positionTo,
+            )
         )
 
         val newStory = storyViewModel.normalizedStepsState.value.stories
@@ -70,11 +88,7 @@ class StoryTellerViewModelTest {
             initialSize - 2,
             newStory.size
         )
-        assertTrue(newStory[1] is GroupStep)
-
-        newStory.forEachIndexed { index, storyUnit ->
-            assertEquals(index, storyUnit.localPosition)
-        }
+        assertTrue("The first step should be now a GroupStep", newStory[1] is GroupStep)
     }
 
     @Test
@@ -82,12 +96,19 @@ class StoryTellerViewModelTest {
         val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
         storyViewModel.requestHistoriesFromApi()
 
-        val currentStory = storyViewModel.normalizedStepsState.value.stories.toList()
+        val currentStory = storyViewModel.normalizedStepsState.value.stories
         val initialSize = currentStory.size
 
+        val positionFrom = currentStory.size - 2
+        val positionTo = 1
+
         storyViewModel.mergeRequest(
-            receiverId = currentStory[1].id,
-            currentStory[currentStory.lastIndex - 1].id
+            MergeInfo(
+                receiver = currentStory[positionTo]!!,
+                sender = currentStory[positionFrom]!!,
+                positionTo = positionTo,
+                positionFrom = positionFrom
+            )
         )
 
         val newStory = storyViewModel.normalizedStepsState.value.stories
@@ -95,52 +116,6 @@ class StoryTellerViewModelTest {
         assertEquals(initialSize - 2, newStory.size)
         assertTrue("The first image should be a GroupImage now", newStory[1] is GroupStep)
         assertTrue("Other images should still exist", newStory[3] is StoryStep)
-
-        newStory.forEachIndexed { index, storyUnit ->
-            assertEquals(index, storyUnit.localPosition)
-        }
-    }
-
-    @Test
-    @Ignore("To fix!")
-    fun `the merge must be idempotent`() = runTest {
-        val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
-        storyViewModel.requestHistoriesFromApi()
-
-        val currentStory = storyViewModel.normalizedStepsState.value.stories.toList()
-        val initialSize = currentStory.size
-
-        val firstItemId = currentStory[1].id
-        val lastItemId = currentStory[currentStory.lastIndex - 1].id
-
-        storyViewModel.mergeRequest(receiverId = firstItemId, senderId = lastItemId)
-        val newStory = storyViewModel.normalizedStepsState.value.stories
-
-        assertEquals(initialSize - 2, newStory.size)
-        assertTrue(newStory[1] is GroupStep)
-        // The last item was moved to the last position of a GroupStep
-        assertEquals((newStory[1] as GroupStep).steps.last().id, lastItemId)
-
-        newStory.forEachIndexed { index, storyUnit ->
-            assertEquals(index, storyUnit.localPosition)
-        }
-
-        /*
-         If a second merge exactly the same is asked, nothing should happen, because the merge
-         already happened.
-         */
-        storyViewModel.mergeRequest(receiverId = firstItemId, senderId = lastItemId)
-
-        val newStory2 = storyViewModel.normalizedStepsState.value.stories
-
-        assertEquals(initialSize - 2, newStory2.size)
-        assertTrue(newStory2[1] is GroupStep)
-        // The last item was moved to the last position of a GroupStep
-        assertEquals((newStory2[1] as GroupStep).steps.last().id, lastItemId)
-
-        newStory2.forEachIndexed { index, storyUnit ->
-            assertEquals(index, storyUnit.localPosition)
-        }
     }
 
     @Test
@@ -148,15 +123,22 @@ class StoryTellerViewModelTest {
         val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
         storyViewModel.requestHistoriesFromApi()
 
-        val currentStory = storyViewModel.normalizedStepsState.value.stories.toList()
+        val currentStory = storyViewModel.normalizedStepsState.value.stories
         val initialSize = currentStory.size
 
+        val positionFrom = currentStory.size - 2
+        val positionTo = 1
+
         storyViewModel.mergeRequest(
-            receiverId = currentStory[1].id,
-            senderId = currentStory[currentStory.lastIndex - 1].id
+            MergeInfo(
+                receiver = currentStory[positionTo]!!,
+                sender = currentStory[positionFrom]!!,
+                positionTo = positionTo,
+                positionFrom = positionFrom
+            )
         )
 
-        val newHistory = storyViewModel.normalizedStepsState.value.stories.toList()
+        val newHistory = storyViewModel.normalizedStepsState.value.stories
 
         assertEquals("One space and one image were removed", initialSize - 2, newHistory.size)
         assertTrue(
@@ -169,16 +151,35 @@ class StoryTellerViewModelTest {
             (newHistory[1] as GroupStep).steps.size
         )
 
-        storyViewModel.mergeRequest(
-            receiverId = newHistory[1].id,
-            senderId = newHistory[newHistory.lastIndex - 1].id
+        repeat(2) {
+            val newHistory2 = storyViewModel.normalizedStepsState.value.stories
+
+            val newPositionFrom = newHistory2.size - 2
+            val newPositionTo = 1
+
+            storyViewModel.mergeRequest(
+                MergeInfo(
+                    receiver = newHistory2[newPositionTo]!!,
+                    sender = newHistory2[newPositionFrom]!!,
+                    positionTo = newPositionTo,
+                    positionFrom = newPositionFrom
+                )
+            )
+        }
+
+        val newHistory3 = storyViewModel.normalizedStepsState.value.stories
+
+        assertEquals(
+            "The minimum side should be 3 (space, group, space)",
+            3,
+            newHistory3.size
         )
-
-        val newHistory2 = storyViewModel.normalizedStepsState.value.stories
-
-        assertEquals(initialSize - 4, newHistory2.size)
-        assertTrue("The GroupImage should still exist", newHistory2[1] is GroupStep)
-        assertEquals("Now the group has 3 images", 3, (newHistory2[1] as GroupStep).steps.size)
+        assertTrue("The GroupImage should still exist", newHistory3[1] is GroupStep)
+        assertEquals(
+            "Now the group has 3 images",
+            3,
+            (newHistory3[1] as GroupStep).steps.size
+        )
     }
 
     @Test
@@ -186,13 +187,20 @@ class StoryTellerViewModelTest {
         val storyViewModel = StoryTellerViewModel(imageGroupRepo)
         storyViewModel.requestHistoriesFromApi()
 
-        val currentStory = storyViewModel.normalizedStepsState.value.stories.toList()
+        val currentStory = storyViewModel.normalizedStepsState.value.stories
         val initialSize = currentStory.size
         val initialImageGroupSize = (currentStory[1] as GroupStep).steps.size
 
+        val positionFrom = currentStory.size - 2
+        val positionTo = 1
+
         storyViewModel.mergeRequest(
-            receiverId = currentStory[1].id,
-            senderId = currentStory[currentStory.lastIndex - 1].id
+            MergeInfo(
+                receiver = currentStory[positionTo]!!,
+                sender = currentStory[positionFrom]!!,
+                positionTo = positionTo,
+                positionFrom = positionFrom
+            )
         )
 
         val newStory = storyViewModel.normalizedStepsState.value.stories
@@ -204,14 +212,6 @@ class StoryTellerViewModelTest {
             initialImageGroupSize + 1,
             (newStory[1] as GroupStep).steps.size
         )
-
-        newStory.forEachIndexed { index, storyUnit ->
-            assertEquals(
-                "Each story unit should have the correct position",
-                index,
-                storyUnit.localPosition
-            )
-        }
     }
 
     @Test
@@ -222,17 +222,24 @@ class StoryTellerViewModelTest {
         val currentStory = storyViewModel.normalizedStepsState.value.stories
         val initialGroupSize = (currentStory[1] as GroupStep).steps.size
 
-        storyViewModel.moveRequest(
-            unitId = "1",
-            newPosition = 2
+        val positionTo = currentStory.size - 2
+        val positionFrom = 1
+
+        storyViewModel.mergeRequest(
+            MergeInfo(
+                receiver = currentStory[positionTo]!!,
+                sender = (currentStory[positionFrom] as GroupStep).steps[0],
+                positionTo = positionTo,
+                positionFrom = positionFrom
+            )
         )
 
         val newStory = storyViewModel.normalizedStepsState.value.stories
 
         assertEquals(
             "The image should be now in the position 3, because of spaces.",
-            "image",
-            newStory[3].type
+            "group_image",
+            newStory[3]!!.type
         )
         assertEquals(
             "The new story now it the GroupImage",
@@ -242,26 +249,67 @@ class StoryTellerViewModelTest {
     }
 
     @Test
-    fun `it should be possible to switch images places`() {
-        val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
+    fun `when moving outside of a group, the parent Id should be null now`() {
+        val storyViewModel = StoryTellerViewModel(imageGroupRepo)
         storyViewModel.requestHistoriesFromApi()
 
+        val currentStory = storyViewModel.normalizedStepsState.value.stories
+
+        val positionTo = currentStory.size - 1
+        val positionFrom = 1
+
+        val storyToMove = (currentStory[positionFrom] as GroupStep).steps[0]
+
         storyViewModel.moveRequest(
-            unitId = "1",
-            newPosition = 4
+            MoveInfo(
+                storyUnit = storyToMove,
+                positionTo = positionTo,
+                positionFrom = positionFrom
+            )
         )
 
         val newStory = storyViewModel.normalizedStepsState.value.stories
 
-        assertEquals("The history 4 should have been moved", newStory[3].id, "1")
+        assertEquals(
+            "The last StoryUnit should be an image.",
+            "image",
+            newStory[newStory.size - 2]!!.type
+        )
+        assertEquals(
+            "The image should be in the correct place now.",
+            storyToMove.id,
+            newStory[newStory.size - 2]!!.id
+        )
+        assertNull(
+            "The parent of the separated image, should not be there.",
+            newStory[newStory.size - 2]!!.parentId
+        )
+        assertFalse(
+            "The moved image should not be in the group anymore",
+            (newStory[positionFrom] as GroupStep).steps.any { storyUnit ->
+                storyUnit.id == storyToMove.id
+            })
+    }
 
-        newStory.reduce { acc, storyUnit ->
-            if (acc.type == "space" && storyUnit.type == "space") {
-                fail("No duplicated elements are accepted")
-            }
+    @Test
+    fun `it should be possible to switch images places`() {
+        val storyViewModel = StoryTellerViewModel(imagesInLineRepo)
+        storyViewModel.requestHistoriesFromApi()
 
-            storyUnit
-        }
+        val currentStory = storyViewModel.normalizedStepsState.value.stories
+        val storyUnitToMove = currentStory[1]!!
+
+        storyViewModel.moveRequest(
+            MoveInfo(currentStory[1]!!, 1, 4)
+        )
+
+        val newStory = storyViewModel.normalizedStepsState.value.stories
+
+        assertEquals(
+            "The first story should have been moved",
+            newStory[3]!!.id,
+            storyUnitToMove.id
+        )
     }
 
     @Test
@@ -269,33 +317,39 @@ class StoryTellerViewModelTest {
         val storyViewModel = StoryTellerViewModel(imageGroupRepo)
         storyViewModel.requestHistoriesFromApi()
 
-        val currentStory = storyViewModel.normalizedStepsState.value.stories.toList()
+        val currentStory = storyViewModel.normalizedStepsState.value.stories
         assertEquals(
             "initial the story unit should be a group",
             "group_image",
-            currentStory[1].type
+            currentStory[1]!!.type
         )
 
-        storyViewModel.onListCommand(
-            Command(
-                "delete",
-                (storyViewModel.normalizedStepsState.value.stories.toList()[1] as GroupStep).steps[1]
+        val lastImageInsideGroup = {
+            (storyViewModel.normalizedStepsState.value.stories[1] as GroupStep)
+                .steps
+                .last()
+        }
+
+        storyViewModel.onDelete(
+            DeleteInfo(
+                storyUnit = lastImageInsideGroup(),
+                position = 1
             )
         )
 
-        storyViewModel.onListCommand(
-            Command(
-                "delete",
-                (storyViewModel.normalizedStepsState.value.stories.toList()[1] as GroupStep).steps[1]
+        storyViewModel.onDelete(
+            DeleteInfo(
+                storyUnit = lastImageInsideGroup(),
+                position = 1
             )
         )
 
-        val newStory = storyViewModel.normalizedStepsState.value.stories.toList()
+        val newStory = storyViewModel.normalizedStepsState.value.stories
 
         assertEquals(
             "the group become just an image because there's only a single image",
             "image",
-            newStory[1].type
+            newStory[1]!!.type
         )
     }
 
@@ -304,16 +358,15 @@ class StoryTellerViewModelTest {
         val storyViewModel = StoryTellerViewModel(messagesRepo)
         storyViewModel.requestHistoriesFromApi()
 
-        storyViewModel.onListCommand(
-            Command(
-                "delete",
-                storyViewModel.normalizedStepsState.value.stories.toList()[3]
+        storyViewModel.onDelete(
+            DeleteInfo(
+                storyViewModel.normalizedStepsState.value.stories[3]!!, 3
             )
         )
 
         val stack: Stack<StoryUnit> = Stack()
 
-        storyViewModel.normalizedStepsState.value.stories.forEach { storyUnit ->
+        storyViewModel.normalizedStepsState.value.stories.forEach { (_, storyUnit) ->
             if (stack.isNotEmpty() && stack.peek().type == "space" && storyUnit.type == "space") {
                 fail("Consecutive spaces happened.")
             }
@@ -321,4 +374,114 @@ class StoryTellerViewModelTest {
             stack.add(storyUnit)
         }
     }
+
+    @Test
+    fun `when a line break happens, a new story unit with the same type should be created - simple`() {
+        val storyViewModel = StoryTellerViewModel(singleMessageRepo)
+        storyViewModel.requestHistoriesFromApi()
+
+        val stories = storyViewModel.normalizedStepsState.value.stories
+        val initialSize = stories.size
+
+        storyViewModel.onLineBreak(LineBreakInfo(stories[1] as StoryStep, position = 1))
+
+        assertEquals(
+            "2 new stories should have been added",
+            initialSize + 2,
+            storyViewModel.normalizedStepsState.value.stories.size
+        )
+    }
+
+    @Test
+    fun `when a line break happens, a new story unit with the same type should be created - complex`() {
+        val storyViewModel = StoryTellerViewModel(messagesRepo)
+        storyViewModel.requestHistoriesFromApi()
+
+        val stories = storyViewModel.normalizedStepsState.value.stories
+        val initialSize = stories.size
+
+        storyViewModel.onLineBreak(LineBreakInfo(stories[1] as StoryStep, 1))
+
+        assertEquals(
+            "2 new stories should have been added",
+            initialSize + 2,
+            storyViewModel.normalizedStepsState.value.stories.size
+        )
+    }
+
+    @Test
+    fun `Complex move case1`() {
+        /**
+         * Steps:
+         * 1 - Make 3 single images into a group
+         * - Check that the 3 images are in a group
+         * 2 - Move one image away.
+         * - Check that the correct image was moved correctly
+         */
+        val storyViewModel = StoryTellerViewModel(complexMessagesRepository)
+        storyViewModel.requestHistoriesFromApi()
+
+        val stories = storyViewModel.normalizedStepsState.value.stories
+
+        val positionTo = 1
+        val positionFrom = 3
+        storyViewModel.mergeRequest(
+            MergeInfo(
+                receiver = stories[positionTo]!!,
+                sender = stories[positionFrom]!!,
+                positionFrom = positionFrom,
+                positionTo = positionTo,
+            )
+        )
+
+        val newStory = storyViewModel.normalizedStepsState.value.stories
+
+        assertEquals("The images should have been merged", 2, (newStory[1] as GroupStep).steps.size)
+
+        val stories2 = storyViewModel.normalizedStepsState.value.stories
+
+        val positionTo2 = 1
+        val positionFrom2 = 3
+        storyViewModel.mergeRequest(
+            MergeInfo(
+                receiver = (stories2[positionTo2] as GroupStep).steps.first(),
+                sender = stories2[positionFrom2]!!,
+                positionFrom = positionFrom2,
+                positionTo = positionTo2,
+            )
+        )
+
+        val newStory2 = storyViewModel.normalizedStepsState.value.stories
+
+        assertEquals(
+            "The images should have been merged",
+            3,
+            (newStory2[1] as GroupStep).steps.distinctBy { storyUnit -> storyUnit.id }.size
+        )
+
+        val positionFrom3 = 1
+        val positionTo3 = 4
+        val storyToMove = (newStory[positionFrom3] as GroupStep).steps.first()
+        storyViewModel.moveRequest(
+            MoveInfo(
+                storyUnit = storyToMove,
+                positionFrom = positionFrom3,
+                positionTo = positionTo3,
+            )
+        )
+
+        val newStory3 = storyViewModel.normalizedStepsState.value.stories
+
+        assertEquals(
+            "One image should have been separated",
+            2,
+            (newStory3[1] as GroupStep).steps.size
+        )
+        assertEquals(
+            "The correct StoryUnit should have been moved",
+            storyToMove.id,
+            newStory3[5]!!.id
+        )
+    }
+
 }
