@@ -44,6 +44,7 @@ val coilVersion = "2.3.0"
 dependencies {
 
     implementation(project(":storyteller"))
+    implementation(project(":storyteller_persistence"))
 
     implementation("androidx.core:core-ktx:1.10.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
