@@ -13,7 +13,7 @@ data class StoryStep(
     val path: String? = null,
     val text: String? = null,
     val title: String? = null,
-    val checked: Boolean = false,
+    val checked: Boolean? = false,
     val steps: List<StoryUnit> = emptyList()
 ): StoryUnit {
 
@@ -22,4 +22,6 @@ data class StoryStep(
     override fun copyWithNewParent(parentId: String?): StoryUnit = copy(parentId = parentId)
 
     override fun copyWithNewId(id: String): StoryUnit = copy(id = id)
+
+    override val isGroup: Boolean = false
 }

@@ -1,11 +1,9 @@
 package br.com.leandroferreira.storyteller.normalization.merge.steps
 
 import br.com.leandroferreira.storyteller.model.story.GroupStep
-import br.com.leandroferreira.storyteller.model.story.StepType
+import br.com.leandroferreira.storyteller.model.story.StoryType
 import br.com.leandroferreira.storyteller.model.story.StoryStep
-import br.com.leandroferreira.storyteller.utils.MapStoryData
 import org.junit.Assert.assertEquals
-import org.junit.Assert.fail
 import org.junit.Test
 import java.util.UUID
 
@@ -43,7 +41,7 @@ class StepToGroupMergerTest {
         val group1 =
             GroupStep(
                 id = parent1Id,
-                type = StepType.GROUP_IMAGE.type,
+                type = StoryType.GROUP_IMAGE.type,
                 steps = listOf(
                     StoryStep(
                         id = "1",
@@ -66,7 +64,7 @@ class StepToGroupMergerTest {
         val group2 =
             GroupStep(
                 id = parent2Id,
-                type = StepType.GROUP_IMAGE.type,
+                type = StoryType.GROUP_IMAGE.type,
                 steps = listOf(
                     StoryStep(
                         id = "11",

@@ -1,8 +1,7 @@
 package br.com.leandroferreira.storyteller.utils
 
-import android.content.Context
 import br.com.leandroferreira.storyteller.model.story.GroupStep
-import br.com.leandroferreira.storyteller.model.story.StepType
+import br.com.leandroferreira.storyteller.model.story.StoryType
 import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import java.util.UUID
@@ -158,7 +157,7 @@ object MapStoryData {
             0 to listOf(
                 GroupStep(
                     id = parent1Id,
-                    type = StepType.GROUP_IMAGE.type,
+                    type = StoryType.GROUP_IMAGE.type,
                     steps = listOf(
                         StoryStep(
                             id = "1",
@@ -179,7 +178,7 @@ object MapStoryData {
                 ),
                 GroupStep(
                     id = parent2Id,
-                    type = StepType.GROUP_IMAGE.type,
+                    type = StoryType.GROUP_IMAGE.type,
                     steps = listOf(
                         StoryStep(
                             id = "12",

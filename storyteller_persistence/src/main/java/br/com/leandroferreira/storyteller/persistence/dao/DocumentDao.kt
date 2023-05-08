@@ -14,10 +14,10 @@ import br.com.leandroferreira.storyteller.persistence.entity.story.StoryUnitEnti
 interface DocumentDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertDocuments(vararg documents: DocumentEntity)
+    suspend fun insertDocuments(vararg documents: DocumentEntity)
 
     @Delete
-    fun deleteUsers(vararg documents: DocumentEntity)
+    suspend fun deleteDocuments(vararg documents: DocumentEntity)
 
     @Query("SELECT * FROM $DOCUMENT_ENTITY")
     suspend fun loadAllDocuments(): List<DocumentEntity>

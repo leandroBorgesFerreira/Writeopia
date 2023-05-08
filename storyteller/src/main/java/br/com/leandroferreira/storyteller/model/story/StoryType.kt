@@ -1,10 +1,10 @@
 package br.com.leandroferreira.storyteller.model.story
 
 /**
- * The default types of [StepType]. You can add more types without extending this enum (which
+ * The default types of [StoryType]. You can add more types without extending this enum (which
  * is final), by creating new strings of types.
  */
-enum class StepType(val type: String) {
+enum class StoryType(val type: String) {
     MESSAGE("message"),
     MESSAGE_BOX("message_box"),
     IMAGE("image"),
@@ -14,5 +14,10 @@ enum class StepType(val type: String) {
     VIDEO("video"),
     SPACE("space"),
     ADD_BUTTON("add_button"),
-    CHECK_ITEM("check_item"),
+    CHECK_ITEM("check_item");
+
+    companion object {
+        fun fromStringType(stringValue: String) =
+            StoryType.values().firstOrNull { it.name == stringValue }
+    }
 }

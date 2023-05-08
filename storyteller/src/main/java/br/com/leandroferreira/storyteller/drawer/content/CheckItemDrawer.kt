@@ -61,7 +61,7 @@ class CheckItemDrawer(
                 )
 
                 Checkbox(
-                    checked = checkItem.checked,
+                    checked = checkItem.checked ?: false,
                     onCheckedChange = { checked ->
                         onCheckedChange(
                             CheckInfo(
@@ -79,7 +79,7 @@ class CheckItemDrawer(
                     mutableStateOf(TextFieldValue(text, TextRange(text.length)))
                 }
 
-                val textStyle = if (checkItem.checked) {
+                val textStyle = if (checkItem.checked == true) {
                     TextStyle(textDecoration = TextDecoration.LineThrough)
                 } else {
                     TextStyle()

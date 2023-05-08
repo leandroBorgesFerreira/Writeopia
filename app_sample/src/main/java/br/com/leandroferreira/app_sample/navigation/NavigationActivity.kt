@@ -14,6 +14,7 @@ import br.com.leandroferreira.app_sample.screens.addstory.StoriesRepo
 import br.com.leandroferreira.app_sample.viewmodel.StoriesViewModel
 import br.com.leandroferreira.storyteller.VideoFrameConfig
 import br.com.leandroferreira.storyteller.manager.StoryTellerManager
+import br.com.leandroferreira.storyteller.persistence.database.StoryTellerDatabase
 
 class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +34,11 @@ fun NavigationGraph() {
 
     NavHost(navController = navController, startDestination = Destinations.ADD_HISTORY.id) {
         composable(Destinations.ADD_HISTORY.id) {
-            val repo = StoriesRepo(LocalContext.current)
+            val context = LocalContext.current
+
+            val database = StoryTellerDatabase.database(context)
+
+            val repo = StoriesRepo(context, database.documentDao(), database.storyUnitDao())
             val storyTellerManager = StoryTellerManager()
             val storiesViewModel: StoriesViewModel = viewModel(initializer = {
                 StoriesViewModel(storyTellerManager, repo)

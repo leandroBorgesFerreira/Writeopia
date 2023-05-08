@@ -1,7 +1,7 @@
 package br.com.leandroferreira.storyteller.normalization.merge
 
 import br.com.leandroferreira.storyteller.model.story.GroupStep
-import br.com.leandroferreira.storyteller.model.story.StepType
+import br.com.leandroferreira.storyteller.model.story.StoryType
 import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.normalization.merge.steps.StepToStepMerger
 import br.com.leandroferreira.storyteller.utils.MapStoryData
@@ -59,7 +59,7 @@ class MergeNormalizationTest {
         assertTrue("the first story unit should still be a GroupStep", mergedStep[0] is GroupStep)
         assertEquals(
             "the first story unit should still be a GroupImage",
-            StepType.GROUP_IMAGE.type,
+            StoryType.GROUP_IMAGE.type,
             mergedStep[0]!!.type
         )
     }

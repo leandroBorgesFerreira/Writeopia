@@ -14,6 +14,8 @@ interface StoryUnit {
     val parentId: String?
     val key: Int
 
+    val isGroup: Boolean
+
     fun copyWithNewParent(parentId: String?): StoryUnit
     fun copyWithNewId(id: String = UUID.randomUUID().toString()): StoryUnit
 }

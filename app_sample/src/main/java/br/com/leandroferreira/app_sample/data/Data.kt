@@ -197,5 +197,3 @@ fun syncHistory(context: Context): Map<Int, StoryUnit> =
                 text = "And it was super awesome!!",
             )
     )
-
-

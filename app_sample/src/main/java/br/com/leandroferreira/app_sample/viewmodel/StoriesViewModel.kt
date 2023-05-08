@@ -29,6 +29,10 @@ class StoriesViewModel(
         }
     }
 
+    fun loadMockData() {
+
+    }
+
     fun updateState() {
         storyTellerManager.updateState()
     }

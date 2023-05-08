@@ -103,7 +103,6 @@ class StoryTellerManager(
         newMap[checkInfo.position] = newStep
 
         _normalizedSteps.value = StoryState(newMap)
-
     }
 
     fun onTextEdit(text: String, position: Int) {
