@@ -11,37 +11,37 @@ import java.util.UUID
  * a List<StoryUnit> this normalizer can be very useful to insert spaces between a list
  * of StoryUnits.
  */
-class AddInBetween(private val unitToAdd: StoryUnit) {
+class AddInBetween(private val unitToAdd: () -> StoryUnit) {
 
     fun insert(unit: Map<Int, StoryUnit>): Map<Int, StoryUnit> =
         insert(unit.values).associateWithPosition()
 
     fun insert(units: Iterable<StoryUnit>): List<StoryUnit> {
         val stack: Stack<StoryUnit> = Stack()
-        val typeToAdd = unitToAdd.type
+        val typeToAdd = unitToAdd().type
 
         units.forEach { storyUnit ->
             when {
                 stack.isEmpty() && storyUnit.type != typeToAdd -> {
-                    stack.add(unitToAdd)
-                    stack.add(storyUnit)
+                    stack.add(unitToAdd())
+                    stack.add(storyUnit.copyWithNewId(UUID.randomUUID().toString()))
                 }
 
                 stack.isEmpty() && storyUnit.type == typeToAdd -> {
-                    stack.add(storyUnit)
+                    stack.add(storyUnit.copyWithNewId(UUID.randomUUID().toString()))
                 }
 
                 storyUnit.type != typeToAdd && stack.peek().type == typeToAdd -> {
-                    stack.add(storyUnit)
+                    stack.add(storyUnit.copyWithNewId(UUID.randomUUID().toString()))
                 }
 
                 storyUnit.type == typeToAdd && stack.peek()?.type != typeToAdd -> {
-                    stack.add(storyUnit)
+                    stack.add(storyUnit.copyWithNewId(UUID.randomUUID().toString()))
                 }
 
                 storyUnit.type != typeToAdd && stack.peek()?.type != typeToAdd -> {
-                    stack.add(unitToAdd)
-                    stack.add(storyUnit)
+                    stack.add(unitToAdd())
+                    stack.add(storyUnit.copyWithNewId(UUID.randomUUID().toString()))
                 }
 
                 storyUnit.type == typeToAdd && stack.peek()?.type == typeToAdd -> {}
@@ -49,7 +49,7 @@ class AddInBetween(private val unitToAdd: StoryUnit) {
         }
 
         if (stack.peek().type != typeToAdd) {
-            stack.add(unitToAdd)
+            stack.add(unitToAdd())
         }
 
         return stack.toList()
@@ -59,10 +59,12 @@ class AddInBetween(private val unitToAdd: StoryUnit) {
     companion object {
         fun spaces(): AddInBetween =
             AddInBetween(
-                unitToAdd = StoryStep(
-                    id = UUID.randomUUID().toString(),
-                    type = "space",
-                )
+                unitToAdd = {
+                    StoryStep(
+                        id = UUID.randomUUID().toString(),
+                        type = "space",
+                    )
+                }
             )
     }
 }

@@ -31,7 +31,7 @@ fun StoryTellerTimeline(
             content = {
                 itemsIndexed(
                     storyState.stories.values.toList(),
-//                    key = { _, storyUnit -> storyUnit.key },
+                    key = { _, storyUnit -> storyUnit.key },
                     itemContent = {index, storyUnit ->
                         drawers[storyUnit.type]?.run {
                             Step(

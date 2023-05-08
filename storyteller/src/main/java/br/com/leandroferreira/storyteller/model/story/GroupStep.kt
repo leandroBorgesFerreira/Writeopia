@@ -13,4 +13,6 @@ data class GroupStep(
     override val key: Int = hashCode()
 
     override fun copyWithNewParent(parentId: String?): StoryUnit = copy(parentId = parentId)
+
+    override fun copyWithNewId(id: String): StoryUnit = copy(id = id)
 }
