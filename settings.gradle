@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "StoryTeller"
 include ':app_sample'
 include ':storyteller'
+include ':storyteller_persistence'
