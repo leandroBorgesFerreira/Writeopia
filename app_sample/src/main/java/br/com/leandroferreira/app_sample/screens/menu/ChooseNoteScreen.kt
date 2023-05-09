@@ -43,7 +43,7 @@ fun Content(chooseNoteViewModel: ChooseNoteViewModel, navigateToNote: (String) -
                         items(documents.data) { document ->
                             Text(
                                 modifier = Modifier
-                                    .padding(8.dp)
+                                    .padding(20.dp)
                                     .fillMaxWidth()
                                     .clickable {
                                         navigateToNote(document.id)

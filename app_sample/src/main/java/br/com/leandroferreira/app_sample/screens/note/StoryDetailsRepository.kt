@@ -6,6 +6,9 @@ import br.com.leandroferreira.storyteller.model.document.Document
 import br.com.leandroferreira.storyteller.persistence.dao.DocumentDao
 import br.com.leandroferreira.storyteller.persistence.dao.StoryUnitDao
 
+/**
+ * Evaluate to move this class to persistence module
+ */
 class StoryDetailsRepository(
     private val documentDao: DocumentDao,
     private val storyUnitDao: StoryUnitDao
@@ -14,9 +17,21 @@ class StoryDetailsRepository(
     suspend fun loadDocumentBy(id: String): Document? {
         return documentDao.loadDocumentWithContent(id)?.map { (documentEntity, storyEntity) ->
             val content = storyEntity
-                .sortedBy { story -> story.position } //Todo: Move this to the SQL query
-                .associateBy { story -> story.position }
-                .mapValues { (_, story) -> story.toModel() }
+                .sortedBy { entity -> entity.position } //Todo: Move this to the SQL query
+                .associateBy { entity -> entity.position }
+                .mapValues { (_, entity) ->
+                    val innerIds = entity.innerUnitIds
+
+                    if(innerIds?.isEmpty() == false) {
+                        val innerSteps = innerIds.mapNotNull { id ->
+                            storyUnitDao.queryById(id)
+                        }
+
+                        entity.toModel(innerSteps)
+                    } else {
+                        entity.toModel()
+                    }
+                }
 
             documentEntity.toModel(content)
         }?.firstOrNull()

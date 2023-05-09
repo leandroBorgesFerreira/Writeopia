@@ -17,6 +17,9 @@ interface StoryUnitDao {
     @Query("DELETE FROM $STORY_UNIT_ENTITY WHERE $STORY_UNIT_ENTITY.document_id = :documentId")
     suspend fun deleteDocumentContent(documentId: String)
 
-    @Query("SELECT * FROM $STORY_UNIT_ENTITY")
-    suspend fun loadDocumentContent(): List<StoryUnitEntity>
+    @Query("SELECT * FROM $STORY_UNIT_ENTITY WHERE $STORY_UNIT_ENTITY.document_id = :documentId" )
+    suspend fun loadDocumentContent(documentId: String): List<StoryUnitEntity>
+
+    @Query("SELECT * FROM $STORY_UNIT_ENTITY WHERE $STORY_UNIT_ENTITY.id = :storyId" )
+    suspend fun queryById(storyId: String): StoryUnitEntity
 }

@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import br.com.leandroferreira.storyteller.persistence.converter.IdListConverter
 import br.com.leandroferreira.storyteller.persistence.dao.DocumentDao
 import br.com.leandroferreira.storyteller.persistence.dao.StoryUnitDao
 import br.com.leandroferreira.storyteller.persistence.entity.document.DocumentEntity
@@ -16,9 +18,10 @@ private const val DATABASE_NAME = "StoryTellerDatabase"
         DocumentEntity::class,
         StoryUnitEntity::class,
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
+@TypeConverters(IdListConverter::class)
 abstract class StoryTellerDatabase : RoomDatabase() {
 
     abstract fun documentDao(): DocumentDao
@@ -34,6 +37,7 @@ abstract class StoryTellerDatabase : RoomDatabase() {
                     StoryTellerDatabase::class.java,
                     databaseName
                 )
+                    .fallbackToDestructiveMigration()
                     .build()
                     .also { database ->
                         instance = database
