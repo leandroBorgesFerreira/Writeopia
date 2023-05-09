@@ -14,6 +14,9 @@ interface StoryUnitDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertStoryUnits(vararg documents: StoryUnitEntity)
 
+    @Query("DELETE FROM $STORY_UNIT_ENTITY WHERE $STORY_UNIT_ENTITY.document_id = :documentId")
+    suspend fun deleteDocumentContent(documentId: String)
+
     @Query("SELECT * FROM $STORY_UNIT_ENTITY")
     suspend fun loadDocumentContent(): List<StoryUnitEntity>
 }

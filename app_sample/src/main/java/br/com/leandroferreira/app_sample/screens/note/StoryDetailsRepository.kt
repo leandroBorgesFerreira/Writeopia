@@ -26,6 +26,7 @@ class StoryDetailsRepository(
         documentDao.insertDocuments(document.toEntity())
 
         document.content?.toEntity(document.id)?.let { data ->
+            storyUnitDao.deleteDocumentContent(documentId = document.id)
             storyUnitDao.insertStoryUnits(*data.toTypedArray())
         }
     }
