@@ -60,7 +60,10 @@ fun NavigationGraph() {
             arguments = listOf(navArgument("noteId") { type = NavType.StringType })
         ) { backStackEntry ->
             backStackEntry.arguments?.getString("noteId")?.let { id ->
-                val repository = StoryDetailsRepository(database.documentDao())
+                val repository = StoryDetailsRepository(
+                    database.documentDao(),
+                    database.storyUnitDao()
+                )
                 val storyTellerManager = StoryTellerManager()
                 val noteDetailsViewModel = NoteDetailsViewModel(storyTellerManager, repository)
 

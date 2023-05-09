@@ -3,6 +3,7 @@ package br.com.leandroferreira.app_sample.screens.note
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.leandroferreira.storyteller.manager.StoryTellerManager
+import br.com.leandroferreira.storyteller.model.document.Document
 import br.com.leandroferreira.storyteller.model.story.StoryState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +20,8 @@ class NoteDetailsViewModel(
 
     val story: StateFlow<StoryState> = storyTellerManager.normalizedStepsState
 
+    private var _documentState: MutableStateFlow<Document?> = MutableStateFlow(null)
+
     fun toggleEdit() {
         _editModeState.value = !_editModeState.value
     }
@@ -27,9 +30,9 @@ class NoteDetailsViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val document = storyDetailsRepository.loadDocumentBy(documentId)
             val content = document?.content
+            _documentState.value = document
 
             if (content != null) {
-                val title = document.title //Todo: Use this later!
                 storyTellerManager.addStories(content)
             }
         }
@@ -38,4 +41,15 @@ class NoteDetailsViewModel(
     fun updateState() {
         storyTellerManager.updateState()
     }
+
+    fun saveNote() {
+        updateState()
+
+        _documentState.value?.let { document ->
+            viewModelScope.launch {
+                storyDetailsRepository.saveDocument(document.copy(content = story.value.stories))
+            }
+        }
+    }
+
 }

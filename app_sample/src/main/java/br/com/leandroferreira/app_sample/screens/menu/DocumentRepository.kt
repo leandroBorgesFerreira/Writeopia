@@ -32,16 +32,8 @@ class DocumentRepository(
         val travelContent = syncHistory(context).toEntity(travelNoteId)
         val supermarketContent = supermarketList().toEntity(superMarketNoteId)
 
-        storyUnitDao.insertDocuments(*travelContent.toTypedArray())
-        storyUnitDao.insertDocuments(*supermarketContent.toTypedArray())
+        storyUnitDao.insertStoryUnits(*travelContent.toTypedArray())
+        storyUnitDao.insertStoryUnits(*supermarketContent.toTypedArray())
     }
 }
 
-fun Map<Int, StoryUnit>.toEntity(id: String): List<StoryUnitEntity> =
-    map { (position, storyUnit) ->
-        if (storyUnit is GroupStep) {
-            storyUnit.toEntity(position, id)
-        } else {
-            (storyUnit as StoryStep).toEntity(position, id)
-        }
-    }

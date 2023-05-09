@@ -5,6 +5,16 @@ import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.persistence.entity.story.StoryUnitEntity
 
+fun Map<Int, StoryUnit>.toEntity(id: String): List<StoryUnitEntity> =
+    map { (position, storyUnit) ->
+        if (storyUnit is GroupStep) {
+            storyUnit.toEntity(position, id)
+        } else {
+            (storyUnit as StoryStep).toEntity(position, id)
+        }
+    }
+
+
 fun StoryUnitEntity.toModel(): StoryUnit =
     if (isGroup) {
         GroupStep(
@@ -38,7 +48,7 @@ fun StoryStep.toEntity(position: Int, documentId: String): StoryUnitEntity =
         text = text,
         title = title,
         checked = checked,
-//        innerUnitIds = innerUnitIds, Todo!!!
+//        innerUnitIds = this.steps.map { storyUnit -> storyUnit.id },
         position = position,
         documentId = documentId,
         isGroup = false,
@@ -50,7 +60,7 @@ fun GroupStep.toEntity(position: Int, documentId: String): StoryUnitEntity =
         id = id,
         type = type,
         parentId = parentId,
-//        innerUnitIds = innerUnitIds, Todo!!!
+//        innerUnitIds = this.steps.map { it.id }, Todo!
         position = position,
         documentId = documentId,
         isGroup = false,
