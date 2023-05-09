@@ -457,7 +457,7 @@ class StoryTellerManagerTest {
         assertEquals(
             "The images should have been merged",
             3,
-            (newStory2[1] as GroupStep).steps.distinctBy { storyUnit -> storyUnit.id }.size
+            (newStory2[1] as GroupStep).steps.distinctBy { storyUnit -> storyUnit.localId }.size
         )
 
         val positionFrom3 = 1

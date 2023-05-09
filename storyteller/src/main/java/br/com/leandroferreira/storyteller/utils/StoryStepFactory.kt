@@ -8,7 +8,7 @@ object StoryStepFactory {
 
     fun space() =
         StoryStep(
-            id = UUID.randomUUID().toString(),
+            localId = UUID.randomUUID().toString(),
             type = StoryType.SPACE.type,
         )
     

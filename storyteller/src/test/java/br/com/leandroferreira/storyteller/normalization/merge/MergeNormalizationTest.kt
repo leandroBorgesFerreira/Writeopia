@@ -72,7 +72,7 @@ class MergeNormalizationTest {
 
         val last = listOf(
             StoryStep(
-                id = "6",
+                localId = "6",
                 type = "unknown",
             )
         )
@@ -91,17 +91,17 @@ class MergeNormalizationTest {
         }
 
         val last = StoryStep(
-            id = "6",
+            localId = "6",
             type = "image",
         )
 
         val story = listOf(
             GroupStep(
-                id = "1",
+                localId = "1",
                 type = "group_image",
                 steps = listOf(
                     StoryStep(
-                        id = "2",
+                        localId = "2",
                         type = "image",
                     ),
                     last
@@ -111,6 +111,6 @@ class MergeNormalizationTest {
 
         val mergedStep = mergeNormalization.mergeSteps(story.toEditState())
 
-        assertEquals(last.id, (mergedStep[0] as GroupStep).steps.first().id)
+        assertEquals(last.localId, (mergedStep[0] as GroupStep).steps.first().localId)
     }
 }

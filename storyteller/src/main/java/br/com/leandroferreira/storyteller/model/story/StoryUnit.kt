@@ -9,6 +9,7 @@ import java.util.UUID
  */
 interface StoryUnit {
     val id: String
+    val localId: String
     val type: String
 
     val parentId: String?

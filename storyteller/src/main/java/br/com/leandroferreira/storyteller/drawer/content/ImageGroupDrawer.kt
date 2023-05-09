@@ -30,7 +30,7 @@ class ImageGroupDrawer(
         val focusRequester = remember { FocusRequester() }
 
         LaunchedEffect(drawInfo.focusId) {
-            if (drawInfo.focusId == step.id) {
+            if (drawInfo.focusId == step.localId) {
                 focusRequester.requestFocus()
             }
         }

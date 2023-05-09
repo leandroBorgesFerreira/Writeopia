@@ -65,7 +65,7 @@ class ImageStepDrawer(
                 modifier = imageModifier
                     .focusRequester(focusRequester)
                     .onGloballyPositioned {
-                        if (drawInfo.focusId == step.id) {
+                        if (drawInfo.focusId == step.localId) {
                             focusRequester.requestFocus()
                         }
                     },

@@ -18,14 +18,14 @@ fun Map<Int, StoryUnit>.toEntity(id: String): List<StoryUnitEntity> =
 fun StoryUnitEntity.toModel(): StoryUnit =
     if (isGroup) {
         GroupStep(
-            id = id,
+            localId = id,
             type = type,
             parentId = parentId,
 //            steps = steps, Todo!!!
         )
     } else {
         StoryStep(
-            id = id,
+            localId = id,
             type = type,
             parentId = parentId,
             url = url,
@@ -40,7 +40,7 @@ fun StoryUnitEntity.toModel(): StoryUnit =
 
 fun StoryStep.toEntity(position: Int, documentId: String): StoryUnitEntity =
     StoryUnitEntity(
-        id = id,
+        id = localId,
         type = type,
         parentId = parentId,
         url = url,
@@ -57,7 +57,7 @@ fun StoryStep.toEntity(position: Int, documentId: String): StoryUnitEntity =
 
 fun GroupStep.toEntity(position: Int, documentId: String): StoryUnitEntity =
     StoryUnitEntity(
-        id = id,
+        id = localId,
         type = type,
         parentId = parentId,
 //        innerUnitIds = this.steps.map { it.id }, Todo!

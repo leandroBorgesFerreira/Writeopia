@@ -55,7 +55,7 @@ class StoryTellerManager(
             mutableHistory.remove(positionFrom)
         } else {
             val fromGroup = (mutableHistory[positionFrom]?.first() as? GroupStep)
-            val newList = fromGroup?.steps?.filter { storyUnit -> storyUnit.id != sender.id }
+            val newList = fromGroup?.steps?.filter { storyUnit -> storyUnit.localId != sender.localId }
 
             if (newList != null) {
                 mutableHistory[positionFrom] = listOf(fromGroup.copy(steps = newList))
@@ -76,7 +76,7 @@ class StoryTellerManager(
         } else {
             val fromGroup = (mutable[moveInfo.positionFrom] as? GroupStep)
             val newList = fromGroup?.steps?.filter { storyUnit ->
-                storyUnit.id != moveInfo.storyUnit.id
+                storyUnit.localId != moveInfo.storyUnit.localId
             }
 
             if (newList != null) {
@@ -87,15 +87,12 @@ class StoryTellerManager(
         _normalizedSteps.value = StoryState(stepsNormalizer(mutable.toEditState()))
     }
 
+    /**
+     * At the moment it is only possible to check items not inside groups. Todo: Fix it!
+     */
     fun checkRequest(checkInfo: CheckInfo) {
         updateState()
-        val parentId = checkInfo.storyUnit.parentId
-
-        val storyUnit = if (parentId != null) {
-            FindStory.findById(_normalizedSteps.value.stories.values, parentId)?.first ?: return
-        } else {
-            checkInfo.storyUnit
-        }
+        val storyUnit = checkInfo.storyUnit
 
         val newStep = (storyUnit as? StoryStep)?.copy(checked = checkInfo.checked) ?: return
         val newMap = _normalizedSteps.value.stories.toMutableMap()
@@ -130,7 +127,7 @@ class StoryTellerManager(
             )
 
             val secondMessage = StoryStep(
-                id = UUID.randomUUID().toString(),
+                localId = UUID.randomUUID().toString(),
                 type = storyStep.type,
                 text = secondText,
             )
@@ -138,7 +135,7 @@ class StoryTellerManager(
 
             return StoryState(
                 stories = stepsNormalizer(mutable.associateWithPosition().toEditState()),
-                focusId = secondMessage.id
+                focusId = secondMessage.localId
             )
         }
 
@@ -184,25 +181,23 @@ class StoryTellerManager(
                 FindStory.previousFocus(history.values.toList(), deleteInfo.position)
             val normalized = stepsNormalizer(mutableSteps.toEditState())
 
-            _normalizedSteps.value = StoryState(normalized, focusId = previousFocus?.id)
+            _normalizedSteps.value = StoryState(normalized, focusId = previousFocus?.localId)
         } else {
-            FindStory.findById(history.values, parentId)
-                ?.first
-                ?.let { group ->
-                    val newSteps = (group as GroupStep).steps.filter { storyUnit ->
-                        storyUnit.id != step.id
-                    }
-
-                    val newStoryUnit = if (newSteps.size == 1) {
-                        newSteps.first()
-                    } else {
-                        group.copy(steps = newSteps)
-                    }
-
-                    mutableSteps[deleteInfo.position] = newStoryUnit.copyWithNewParent(null)
-                    _normalizedSteps.value =
-                        StoryState(stepsNormalizer(mutableSteps.toEditState()))
+            (mutableSteps[deleteInfo.position] as? GroupStep)?.let { group ->
+                val newSteps = group.steps.filter { storyUnit ->
+                    storyUnit.localId != step.localId
                 }
+
+                val newStoryUnit = if (newSteps.size == 1) {
+                    newSteps.first()
+                } else {
+                    group.copy(steps = newSteps)
+                }
+
+                mutableSteps[deleteInfo.position] = newStoryUnit.copyWithNewParent(null)
+                _normalizedSteps.value =
+                    StoryState(stepsNormalizer(mutableSteps.toEditState()))
+            }
         }
     }
 }

@@ -47,7 +47,7 @@ class StepsMapNormalizationBuilderTest {
         group.steps.forEach { storyUnit ->
             TestCase.assertEquals(
                 "The steps inside the group should reference it as the parent",
-                group.id,
+                group.localId,
                 storyUnit.parentId
             )
         }
