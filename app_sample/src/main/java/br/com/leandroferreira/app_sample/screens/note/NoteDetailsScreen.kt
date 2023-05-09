@@ -46,14 +46,15 @@ private fun TopBar() {
 @Composable
 fun Body(noteDetailsViewModel: NoteDetailsViewModel) {
     val storyState by noteDetailsViewModel.story.collectAsStateWithLifecycle()
+    val editable by noteDetailsViewModel.editModeState.collectAsStateWithLifecycle()
 
     StoryTellerTimeline(
         modifier = Modifier.fillMaxSize(),
         storyState = storyState,
         contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp),
-        editable = false,
+        editable = editable,
 //            listState = listState,
-        drawers = DefaultDrawers.create(false, noteDetailsViewModel.storyTellerManager)
+        drawers = DefaultDrawers.create(editable, noteDetailsViewModel.storyTellerManager)
     )
 }
 

@@ -117,6 +117,33 @@ fun imagesMap(): Map<Int, StoryUnit> =
         )
     )
 
+fun supermarketList(): Map<Int, StoryUnit> = mapOf(
+    0 to StoryStep(
+        id = UUID.randomUUID().toString(),
+        type = "message",
+        text = "To Buy:",
+    ),
+    1 to StoryStep(
+        id = UUID.randomUUID().toString(),
+        type = "check_item",
+        text = "Corn",
+    ),
+    2 to StoryStep(
+        id = UUID.randomUUID().toString(),
+        type = "check_item",
+        text = "Chicken",
+    ),
+    3 to StoryStep(
+        id = UUID.randomUUID().toString(),
+        type = "check_item",
+        text = "Olives",
+    ),
+    4 to StoryStep(
+        id = UUID.randomUUID().toString(),
+        type = "check_item",
+        text = "Soup",
+    )
+)
 
 fun syncHistory(context: Context): Map<Int, StoryUnit> =
     mapOf(
