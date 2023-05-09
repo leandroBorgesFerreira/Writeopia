@@ -18,5 +18,5 @@ interface StoryUnitDao {
     suspend fun deleteUsers(vararg documents: StoryUnitEntity)
 
     @Query("SELECT * FROM $STORY_UNIT_ENTITY")
-    suspend fun loadAllStoryUnits(): List<StoryUnitEntity>
+    suspend fun loadDocumentContent(): List<StoryUnitEntity>
 }

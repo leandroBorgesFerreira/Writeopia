@@ -1,4 +1,4 @@
-package br.com.leandroferreira.app_sample.viewmodel
+package br.com.leandroferreira.app_sample.screens.addstory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,10 +27,6 @@ class StoriesViewModel(
         viewModelScope.launch {
             storyTellerManager.addStories(repo.history())
         }
-    }
-
-    fun loadMockData() {
-
     }
 
     fun updateState() {

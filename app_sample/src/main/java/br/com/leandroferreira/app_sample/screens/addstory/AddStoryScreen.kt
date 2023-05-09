@@ -36,7 +36,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
 import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION
-import br.com.leandroferreira.app_sample.viewmodel.StoriesViewModel
 import br.com.leandroferreira.storyteller.StoryTellerTimeline
 import br.com.leandroferreira.storyteller.drawer.DefaultDrawers
 

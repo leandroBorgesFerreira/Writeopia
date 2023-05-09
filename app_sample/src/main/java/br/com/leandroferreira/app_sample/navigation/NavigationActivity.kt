@@ -6,12 +6,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import br.com.leandroferreira.app_sample.screens.addstory.AddStoryScreen
 import br.com.leandroferreira.app_sample.screens.addstory.StoriesRepo
-import br.com.leandroferreira.app_sample.viewmodel.StoriesViewModel
+import br.com.leandroferreira.app_sample.screens.addstory.StoriesViewModel
+import br.com.leandroferreira.app_sample.screens.menu.ChooseNoteScreen
+import br.com.leandroferreira.app_sample.screens.menu.ChooseNoteViewModel
+import br.com.leandroferreira.app_sample.screens.menu.DocumentRepository
+import br.com.leandroferreira.app_sample.screens.note.NoteDetailsScreen
+import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModel
+import br.com.leandroferreira.app_sample.screens.note.StoryDetailsRepository
 import br.com.leandroferreira.storyteller.VideoFrameConfig
 import br.com.leandroferreira.storyteller.manager.StoryTellerManager
 import br.com.leandroferreira.storyteller.persistence.database.StoryTellerDatabase
@@ -31,14 +39,40 @@ class NavigationActivity : AppCompatActivity() {
 @Composable
 fun NavigationGraph() {
     val navController = rememberNavController()
+    val context = LocalContext.current
+    val database = StoryTellerDatabase.database(context)
 
-    NavHost(navController = navController, startDestination = Destinations.ADD_HISTORY.id) {
-        composable(Destinations.ADD_HISTORY.id) {
-            val context = LocalContext.current
+    NavHost(navController = navController, startDestination = Destinations.CHOOSE_NOTE.id) {
+        composable(Destinations.CHOOSE_NOTE.id) {
+            val documentRepository = DocumentRepository(
+                database.documentDao(),
+                database.storyUnitDao()
+            )
+            val chooseNoteViewModel = ChooseNoteViewModel(documentRepository)
 
-            val database = StoryTellerDatabase.database(context)
+            ChooseNoteScreen(chooseNoteViewModel = chooseNoteViewModel) { noteId ->
+                navController.navigate("${Destinations.NOTE_DETAILS.id}/$noteId")
+            }
+        }
 
-            val repo = StoriesRepo(context, database.documentDao(), database.storyUnitDao())
+        composable(
+            route = "${Destinations.NOTE_DETAILS.id}/{noteId}",
+            arguments = listOf(navArgument("noteId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getString("noteId")?.let { id ->
+                val repository = StoryDetailsRepository(database.documentDao())
+                val storyTellerManager = StoryTellerManager()
+                val noteDetailsViewModel = NoteDetailsViewModel(storyTellerManager, repository)
+
+                NoteDetailsScreen(id, noteDetailsViewModel)
+            }
+        }
+
+        composable(
+            route = "${Destinations.ADD_STORY.id}/{noteId}",
+            arguments = listOf(navArgument("noteId") { type = NavType.StringType })
+        ) {
+            val repo = StoriesRepo(context, database.documentDao())
             val storyTellerManager = StoryTellerManager()
             val storiesViewModel: StoriesViewModel = viewModel(initializer = {
                 StoriesViewModel(storyTellerManager, repo)
@@ -50,6 +84,8 @@ fun NavigationGraph() {
 }
 
 enum class Destinations(val id: String) {
-    ADD_HISTORY("add_story"),
+    NOTE_DETAILS("note_details"),
+    ADD_STORY("add_story"),
+    CHOOSE_NOTE("choose_note"),
 }
 

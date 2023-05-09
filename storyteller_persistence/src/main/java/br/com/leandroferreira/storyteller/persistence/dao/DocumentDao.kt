@@ -22,9 +22,15 @@ interface DocumentDao {
     @Query("SELECT * FROM $DOCUMENT_ENTITY")
     suspend fun loadAllDocuments(): List<DocumentEntity>
 
+    @Query("SELECT * FROM $DOCUMENT_ENTITY WHERE $DOCUMENT_ENTITY.id = :id")
+    suspend fun loadDocumentById(id: String): DocumentEntity
+
     @Query(
         "SELECT * FROM $DOCUMENT_ENTITY " +
-            "JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id"
+            "JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
+            "WHERE $DOCUMENT_ENTITY.id = :documentId "
     )
-    suspend fun loadDocumentWithContent(): Map<DocumentEntity, List<StoryUnitEntity>>
+    suspend fun loadDocumentWithContent(
+        documentId: String
+    ): Map<DocumentEntity, List<StoryUnitEntity>>?
 }
