@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import br.com.leandroferreira.storyteller.model.document.Document
+import br.com.leandroferreira.storyteller.model.story.GroupStep
 import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.persistence.dao.DocumentDao
@@ -110,6 +111,22 @@ class DocumentRepositoryTest {
 
         assertEquals(document, loadedDocument)
     }
+
+
+    @Test
+    fun savingAndLoadingDocumentOneImageGroupInRepository() = runTest {
+        val id = UUID.randomUUID().toString()
+        val document = Document(
+            id = id,
+            title = "Document1",
+            content = imageGroup()
+        )
+
+        documentRepository.saveDocument(document)
+        val loadedDocument = documentRepository.loadDocumentBy(id)
+
+        assertEquals(document, loadedDocument)
+    }
 }
 
 fun simpleImage(): Map<Int, StoryUnit> = mapOf(
@@ -133,3 +150,25 @@ fun imageStepsList(): Map<Int, StoryUnit> = mapOf(
         type = "image",
     ),
 )
+
+fun imageGroup() =
+    mapOf(
+        0 to GroupStep(
+            localId = "1",
+            type = "group_image",
+            steps = listOf(
+                StoryStep(
+                    localId = "2",
+                    type = "image",
+                ),
+                StoryStep(
+                    localId = "3",
+                    type = "image",
+                ),
+                StoryStep(
+                    localId = "4",
+                    type = "image",
+                )
+            )
+        ),
+    )
