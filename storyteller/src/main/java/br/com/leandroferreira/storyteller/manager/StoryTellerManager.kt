@@ -118,11 +118,13 @@ class StoryTellerManager(
     ): StoryState {
         val storyStep = lineBreakInfo.storyStep
         storyStep.text?.split("\n", limit = 2)?.let { list ->
+            var acc = lineBreakInfo.position + 1
+
             val secondText = list.elementAtOrNull(1) ?: ""
 
             val mutable = stories.values.toMutableList()
             mutable.add(
-                lineBreakInfo.position + 1,
+                acc++,
                 StoryStepFactory.space()
             )
 
@@ -131,7 +133,7 @@ class StoryTellerManager(
                 type = storyStep.type,
                 text = secondText,
             )
-            mutable.add(lineBreakInfo.position + 1, secondMessage)
+            mutable.add(acc, secondMessage)
 
             return StoryState(
                 stories = mutable.associateWithPosition(),
