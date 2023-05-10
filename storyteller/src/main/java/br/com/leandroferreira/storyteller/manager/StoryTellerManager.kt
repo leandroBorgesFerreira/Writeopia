@@ -135,7 +135,7 @@ class StoryTellerManager(
 
             return StoryState(
                 stories = mutable.associateWithPosition(),
-                focusId = secondMessage.localId
+                focusId = secondMessage.id
             )
         }
 
@@ -163,8 +163,8 @@ class StoryTellerManager(
     }
 
     fun onDelete(deleteInfo: DeleteInfo) {
-        updateState()
-        delete(deleteInfo, _normalizedSteps.value.stories)
+        val newSteps = updateTexts(_normalizedSteps.value.stories)
+        delete(deleteInfo, newSteps.stories)
     }
 
     private fun delete(
@@ -181,7 +181,7 @@ class StoryTellerManager(
                 FindStory.previousFocus(history.values.toList(), deleteInfo.position)
             val normalized = stepsNormalizer(mutableSteps.toEditState())
 
-            _normalizedSteps.value = StoryState(normalized, focusId = previousFocus?.localId)
+            _normalizedSteps.value = StoryState(normalized, focusId = previousFocus?.id)
         } else {
             (mutableSteps[deleteInfo.position] as? GroupStep)?.let { group ->
                 val newSteps = group.steps.filter { storyUnit ->
