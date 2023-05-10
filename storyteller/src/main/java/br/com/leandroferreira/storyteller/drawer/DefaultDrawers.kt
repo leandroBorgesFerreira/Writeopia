@@ -16,8 +16,8 @@ import br.com.leandroferreira.storyteller.drawer.content.ImageStepDrawer.Compani
 import br.com.leandroferreira.storyteller.drawer.content.MessageStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.VideoStepDrawer
 import br.com.leandroferreira.storyteller.drawer.content.SpaceDrawer
-import br.com.leandroferreira.storyteller.model.story.StepType
-import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.manager.StoryTellerManager
+import br.com.leandroferreira.storyteller.model.story.StoryType
 import br.com.leandroferreira.storyteller.model.change.CheckInfo
 import br.com.leandroferreira.storyteller.model.change.DeleteInfo
 import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
@@ -28,11 +28,25 @@ object DefaultDrawers {
 
     fun create(
         editable: Boolean = false,
+        manager: StoryTellerManager
+    ): Map<String, StoryUnitDrawer> =
+        create(
+            editable = editable,
+            onTextEdit = manager::onTextEdit,
+            onLineBreak = manager::onLineBreak,
+            mergeRequest = manager::mergeRequest,
+            moveRequest = manager::moveRequest,
+            checkRequest = manager::checkRequest,
+            onDeleteRequest = manager::onDelete,
+        )
+
+    fun create(
+        editable: Boolean = false,
         onTextEdit: (String, Int) -> Unit,
         onLineBreak: (LineBreakInfo) -> Unit,
-        mergeRequest: (receiver: MergeInfo) -> Unit = { },
-        moveRequest: (moveInfo: MoveInfo) -> Unit = { },
-        checkRequest: (checkInfo: CheckInfo) -> Unit = { },
+        mergeRequest: (MergeInfo) -> Unit = { },
+        moveRequest: (MoveInfo) -> Unit = { },
+        checkRequest: (CheckInfo) -> Unit = { },
         onDeleteRequest: (DeleteInfo) -> Unit
     ): Map<String, StoryUnitDrawer> =
         buildMap {
@@ -79,12 +93,12 @@ object DefaultDrawers {
                 onDeleteRequest = onDeleteRequest
             )
 
-            put(StepType.MESSAGE_BOX.type, messageBoxDrawer)
-            put(StepType.MESSAGE.type, messageDrawer)
-            put(StepType.ADD_BUTTON.type, AddButtonDrawer())
-            put(StepType.IMAGE.type, if (editable) commandsComposite(imageDrawer) else imageDrawer)
+            put(StoryType.MESSAGE_BOX.type, messageBoxDrawer)
+            put(StoryType.MESSAGE.type, messageDrawer)
+            put(StoryType.ADD_BUTTON.type, AddButtonDrawer())
+            put(StoryType.IMAGE.type, if (editable) commandsComposite(imageDrawer) else imageDrawer)
             put(
-                StepType.GROUP_IMAGE.type,
+                StoryType.GROUP_IMAGE.type,
                 if (editable) {
                     commandsComposite(ImageGroupDrawer(commandsComposite(imageDrawerInGroup)))
                 } else {
@@ -92,11 +106,11 @@ object DefaultDrawers {
                 }
             )
             put(
-                StepType.VIDEO.type,
+                StoryType.VIDEO.type,
                 if (editable) commandsComposite(VideoStepDrawer()) else VideoStepDrawer()
             )
 
-            put(StepType.SPACE.type, SpaceDrawer(moveRequest))
-            put(StepType.CHECK_ITEM.type, checkItemDrawer)
+            put(StoryType.SPACE.type, SpaceDrawer(moveRequest))
+            put(StoryType.CHECK_ITEM.type, checkItemDrawer)
         }
 }

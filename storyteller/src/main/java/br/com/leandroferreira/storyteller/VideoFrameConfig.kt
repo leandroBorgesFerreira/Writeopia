@@ -5,8 +5,8 @@ import coil.Coil
 import coil.decode.VideoFrameDecoder
 
 /**
- * Configs Coil to show Video Thumnails. Please call [VideoFrameConfig.configCoilForVideoFrame] if
- * you pretend to show Thumnails for videos.
+ * Configs Coil to show Video Thumbnails. Please call [VideoFrameConfig.configCoilForVideoFrame] if
+ * you pretend to show Thumbnails for videos.
  */
 object VideoFrameConfig {
 

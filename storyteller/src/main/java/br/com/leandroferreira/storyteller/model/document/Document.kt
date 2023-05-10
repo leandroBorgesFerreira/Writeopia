@@ -5,5 +5,5 @@ import br.com.leandroferreira.storyteller.model.story.StoryUnit
 data class Document(
     val id: String,
     val title: String,
-    val content: Map<Int, StoryUnit>,
+    val content: Map<Int, StoryUnit>?,
 )

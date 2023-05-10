@@ -61,7 +61,7 @@ class AddInBetween(private val unitToAdd: () -> StoryUnit) {
             AddInBetween(
                 unitToAdd = {
                     StoryStep(
-                        id = UUID.randomUUID().toString(),
+                        localId = UUID.randomUUID().toString(),
                         type = "space",
                     )
                 }

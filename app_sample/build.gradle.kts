@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
 }
 android {
     namespace = "br.com.leandroferreira.app_sample"
@@ -44,11 +45,11 @@ val coilVersion = "2.3.0"
 dependencies {
 
     implementation(project(":storyteller"))
+    implementation(project(":storyteller_persistence"))
 
     implementation("androidx.core:core-ktx:1.10.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
@@ -59,6 +60,13 @@ dependencies {
 
     implementation("io.coil-kt:coil-compose:$coilVersion")
     implementation("io.coil-kt:coil-video:$coilVersion")
+
+    val roomVersion = "2.5.1"
+
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    implementation("androidx.room:room-paging:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

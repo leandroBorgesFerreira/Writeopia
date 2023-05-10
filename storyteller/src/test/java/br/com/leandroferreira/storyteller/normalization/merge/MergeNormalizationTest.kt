@@ -1,7 +1,7 @@
 package br.com.leandroferreira.storyteller.normalization.merge
 
 import br.com.leandroferreira.storyteller.model.story.GroupStep
-import br.com.leandroferreira.storyteller.model.story.StepType
+import br.com.leandroferreira.storyteller.model.story.StoryType
 import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.normalization.merge.steps.StepToStepMerger
 import br.com.leandroferreira.storyteller.utils.MapStoryData
@@ -59,7 +59,7 @@ class MergeNormalizationTest {
         assertTrue("the first story unit should still be a GroupStep", mergedStep[0] is GroupStep)
         assertEquals(
             "the first story unit should still be a GroupImage",
-            StepType.GROUP_IMAGE.type,
+            StoryType.GROUP_IMAGE.type,
             mergedStep[0]!!.type
         )
     }
@@ -72,7 +72,7 @@ class MergeNormalizationTest {
 
         val last = listOf(
             StoryStep(
-                id = "6",
+                localId = "6",
                 type = "unknown",
             )
         )
@@ -91,17 +91,17 @@ class MergeNormalizationTest {
         }
 
         val last = StoryStep(
-            id = "6",
+            localId = "6",
             type = "image",
         )
 
         val story = listOf(
             GroupStep(
-                id = "1",
+                localId = "1",
                 type = "group_image",
                 steps = listOf(
                     StoryStep(
-                        id = "2",
+                        localId = "2",
                         type = "image",
                     ),
                     last
@@ -111,6 +111,6 @@ class MergeNormalizationTest {
 
         val mergedStep = mergeNormalization.mergeSteps(story.toEditState())
 
-        assertEquals(last.id, (mergedStep[0] as GroupStep).steps.first().id)
+        assertEquals(last.localId, (mergedStep[0] as GroupStep).steps.first().localId)
     }
 }

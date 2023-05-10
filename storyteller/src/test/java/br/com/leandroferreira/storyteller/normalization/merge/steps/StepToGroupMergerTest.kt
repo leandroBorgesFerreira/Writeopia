@@ -1,11 +1,9 @@
 package br.com.leandroferreira.storyteller.normalization.merge.steps
 
 import br.com.leandroferreira.storyteller.model.story.GroupStep
-import br.com.leandroferreira.storyteller.model.story.StepType
+import br.com.leandroferreira.storyteller.model.story.StoryType
 import br.com.leandroferreira.storyteller.model.story.StoryStep
-import br.com.leandroferreira.storyteller.utils.MapStoryData
 import org.junit.Assert.assertEquals
-import org.junit.Assert.fail
 import org.junit.Test
 import java.util.UUID
 
@@ -16,12 +14,12 @@ class StepToGroupMergerTest {
         val merger = StepToGroupMerger()
 
         val image1 = StoryStep(
-            id = "1",
+            localId = "1",
             type = "image",
         )
 
         val image2 = StoryStep(
-            id = "2",
+            localId = "2",
             type = "image",
         )
 
@@ -29,8 +27,8 @@ class StepToGroupMergerTest {
 
         assertEquals("group_image", result.type)
         assertEquals(2, (result as GroupStep).steps.size)
-        assertEquals(result.id, result.steps[0].parentId)
-        assertEquals(result.id, result.steps[1].parentId)
+        assertEquals(result.localId, result.steps[0].parentId)
+        assertEquals(result.localId, result.steps[1].parentId)
     }
 
     @Test
@@ -42,21 +40,21 @@ class StepToGroupMergerTest {
 
         val group1 =
             GroupStep(
-                id = parent1Id,
-                type = StepType.GROUP_IMAGE.type,
+                localId = parent1Id,
+                type = StoryType.GROUP_IMAGE.type,
                 steps = listOf(
                     StoryStep(
-                        id = "1",
+                        localId = "1",
                         type = "image",
                         parentId = parent1Id
                     ),
                     StoryStep(
-                        id = "2",
+                        localId = "2",
                         type = "image",
                         parentId = parent1Id
                     ),
                     StoryStep(
-                        id = "3",
+                        localId = "3",
                         type = "image",
                         parentId = parent1Id
                     )
@@ -65,21 +63,21 @@ class StepToGroupMergerTest {
 
         val group2 =
             GroupStep(
-                id = parent2Id,
-                type = StepType.GROUP_IMAGE.type,
+                localId = parent2Id,
+                type = StoryType.GROUP_IMAGE.type,
                 steps = listOf(
                     StoryStep(
-                        id = "11",
+                        localId = "11",
                         type = "image",
                         parentId = parent2Id
                     ),
                     StoryStep(
-                        id = "22",
+                        localId = "22",
                         type = "image",
                         parentId = parent2Id
                     ),
                     StoryStep(
-                        id = "33",
+                        localId = "33",
                         type = "image",
                         parentId = parent2Id
                     )
