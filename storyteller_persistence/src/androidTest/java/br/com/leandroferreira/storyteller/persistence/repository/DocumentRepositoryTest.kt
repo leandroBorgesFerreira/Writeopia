@@ -9,6 +9,7 @@ import br.com.leandroferreira.storyteller.model.story.GroupStep
 import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.persistence.dao.DocumentDao
+import br.com.leandroferreira.storyteller.persistence.dao.StoryUnitDao
 import br.com.leandroferreira.storyteller.persistence.database.StoryTellerDatabase
 import br.com.leandroferreira.storyteller.persistence.parse.toEntity
 import br.com.leandroferreira.storyteller.persistence.parse.toModel
@@ -27,6 +28,7 @@ class DocumentRepositoryTest {
 
     lateinit var database: StoryTellerDatabase
     lateinit var documentDao: DocumentDao
+    lateinit var storyUnitDao: StoryUnitDao
     lateinit var documentRepository: DocumentRepository
 
     @Before
@@ -38,11 +40,9 @@ class DocumentRepositoryTest {
         ).build()
 
         documentDao = database.documentDao()
+        storyUnitDao = database.storyUnitDao()
 
-        documentRepository = DocumentRepository(
-            documentDao,
-            database.storyUnitDao()
-        )
+        documentRepository = DocumentRepository(documentDao, storyUnitDao)
     }
 
     @After
@@ -109,6 +109,8 @@ class DocumentRepositoryTest {
         documentRepository.saveDocument(document)
         val loadedDocument = documentRepository.loadDocumentBy(id)
 
+        assertTrue(storyUnitDao.loadDocumentContent(id).isNotEmpty())
+        assertTrue(documentDao.loadDocumentWithContent(id)?.values?.isNotEmpty() ?: false)
         assertEquals(document, loadedDocument)
     }
 
@@ -123,7 +125,7 @@ class DocumentRepositoryTest {
         )
 
         documentRepository.saveDocument(document)
-        val loadedDocument = documentDao.loadDocumentWithContent(id)
+        val loadedDocument = documentRepository.loadDocumentBy(id)
 
         assertEquals(document, loadedDocument)
     }
@@ -151,24 +153,32 @@ fun imageStepsList(): Map<Int, StoryUnit> = mapOf(
     ),
 )
 
-fun imageGroup() =
-    mapOf(
+fun imageGroup() : Map<Int, StoryUnit>{
+    val groupId = UUID.randomUUID().toString()
+
+    return mapOf(
         0 to GroupStep(
+            id = groupId,
             localId = "1",
             type = "group_image",
             steps = listOf(
                 StoryStep(
                     localId = "2",
                     type = "image",
+                    parentId = groupId,
                 ),
                 StoryStep(
                     localId = "3",
                     type = "image",
+                    parentId = groupId,
                 ),
                 StoryStep(
                     localId = "4",
                     type = "image",
+                    parentId = groupId,
                 )
             )
         ),
     )
+
+}

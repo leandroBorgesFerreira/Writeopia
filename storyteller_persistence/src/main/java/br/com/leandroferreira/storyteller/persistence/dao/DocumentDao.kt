@@ -28,7 +28,7 @@ interface DocumentDao {
     @Query(
         "SELECT * FROM $DOCUMENT_ENTITY " +
             "JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
-            "WHERE $DOCUMENT_ENTITY.id = :documentId"
+            "WHERE $DOCUMENT_ENTITY.id = :documentId "
     )
     suspend fun loadDocumentWithContent(
         documentId: String

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class ChooseNoteViewModel(private val documentRepository: DocumentRepository) : ViewModel() {
+class ChooseNoteViewModel(private val notesRepository: NotesRepository) : ViewModel() {
 
     private val _documentsState: MutableStateFlow<ResultData<List<Document>>> =
         MutableStateFlow(ResultData.Idle())
@@ -24,7 +24,7 @@ class ChooseNoteViewModel(private val documentRepository: DocumentRepository) : 
                 _documentsState.value = ResultData.Loading()
 
                 try {
-                    val data = documentRepository.loadDocuments()
+                    val data = notesRepository.loadDocuments()
                         .map { documentEntity -> documentEntity.toModel() }
 
                     _documentsState.value = ResultData.Complete(data)
@@ -37,9 +37,9 @@ class ChooseNoteViewModel(private val documentRepository: DocumentRepository) : 
 
     fun addMockData(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            documentRepository.mockData(context)
+            notesRepository.mockData(context)
 
-            val data = documentRepository.loadDocuments()
+            val data = notesRepository.loadDocuments()
                 .map { documentEntity -> documentEntity.toModel() }
 
             _documentsState.value = ResultData.Complete(data)

@@ -17,8 +17,8 @@ data class StoryUnitEntity(
     @ColumnInfo(name = "text") val text: String? = null,
     @ColumnInfo(name = "title") val title: String? = null,
     @ColumnInfo(name = "checked") val checked: Boolean? = false,
-    @ColumnInfo(name = "inner_unit_ids") val innerUnitIds: List<String>? = null,
     @ColumnInfo(name = "position") val position: Int,
     @ColumnInfo(name = "document_id") val documentId: String,
     @ColumnInfo(name = "is_group") val isGroup: Boolean,
+    @ColumnInfo(name = "has_inner_steps") val hasInnerSteps: Boolean,
 )

@@ -22,4 +22,7 @@ interface StoryUnitDao {
 
     @Query("SELECT * FROM $STORY_UNIT_ENTITY WHERE $STORY_UNIT_ENTITY.id = :storyId" )
     suspend fun queryById(storyId: String): StoryUnitEntity?
+
+    @Query("SELECT * FROM $STORY_UNIT_ENTITY WHERE $STORY_UNIT_ENTITY.parent_id = :parentId" )
+    suspend fun queryInnerSteps(parentId: String): List<StoryUnitEntity>
 }

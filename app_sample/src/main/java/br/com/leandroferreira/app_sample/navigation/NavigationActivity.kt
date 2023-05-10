@@ -16,7 +16,7 @@ import br.com.leandroferreira.app_sample.screens.addstory.StoriesRepo
 import br.com.leandroferreira.app_sample.screens.addstory.StoriesViewModel
 import br.com.leandroferreira.app_sample.screens.menu.ChooseNoteScreen
 import br.com.leandroferreira.app_sample.screens.menu.ChooseNoteViewModel
-import br.com.leandroferreira.app_sample.screens.menu.DocumentRepository
+import br.com.leandroferreira.app_sample.screens.menu.NotesRepository
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsScreen
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModel
 import br.com.leandroferreira.storyteller.persistence.repository.DocumentRepository
@@ -44,11 +44,11 @@ fun NavigationGraph() {
 
     NavHost(navController = navController, startDestination = Destinations.CHOOSE_NOTE.id) {
         composable(Destinations.CHOOSE_NOTE.id) {
-            val documentRepository = DocumentRepository(
+            val notesRepository = NotesRepository(
                 database.documentDao(),
                 database.storyUnitDao()
             )
-            val chooseNoteViewModel = ChooseNoteViewModel(documentRepository)
+            val chooseNoteViewModel = ChooseNoteViewModel(notesRepository)
 
             ChooseNoteScreen(chooseNoteViewModel = chooseNoteViewModel) { noteId ->
                 navController.navigate("${Destinations.NOTE_DETAILS.id}/$noteId")
@@ -60,7 +60,7 @@ fun NavigationGraph() {
             arguments = listOf(navArgument("noteId") { type = NavType.StringType })
         ) { backStackEntry ->
             backStackEntry.arguments?.getString("noteId")?.let { id ->
-                val repository = br.com.leandroferreira.storyteller.persistence.repository.DocumentRepository(
+                val repository = DocumentRepository(
                     database.documentDao(),
                     database.storyUnitDao()
                 )

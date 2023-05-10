@@ -58,10 +58,10 @@ fun StoryStep.toEntity(position: Int, documentId: String): StoryUnitEntity =
         text = text,
         title = title,
         checked = checked,
-        innerUnitIds = this.steps.map { storyUnit -> storyUnit.id },
         position = position,
         documentId = documentId,
         isGroup = false,
+        hasInnerSteps = this.steps.isNotEmpty(),
     )
 
 
@@ -71,8 +71,8 @@ fun GroupStep.toEntity(position: Int, documentId: String): StoryUnitEntity =
         localId = localId,
         type = type,
         parentId = parentId,
-        innerUnitIds = this.steps.map { storyUnit ->  storyUnit.id },
         position = position,
         documentId = documentId,
         isGroup = true,
+        hasInnerSteps = this.steps.isNotEmpty(),
     )

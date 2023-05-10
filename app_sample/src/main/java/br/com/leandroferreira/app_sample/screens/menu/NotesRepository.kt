@@ -9,7 +9,7 @@ import br.com.leandroferreira.storyteller.persistence.dao.StoryUnitDao
 import br.com.leandroferreira.storyteller.persistence.entity.document.DocumentEntity
 import java.util.UUID
 
-class DocumentRepository(
+class NotesRepository(
     private val documentDao: DocumentDao,
     private val storyUnitDao: StoryUnitDao,
 ) {
