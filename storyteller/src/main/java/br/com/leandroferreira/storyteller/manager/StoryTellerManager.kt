@@ -1,5 +1,6 @@
 package br.com.leandroferreira.storyteller.manager
 
+import android.util.Log
 import br.com.leandroferreira.storyteller.model.change.CheckInfo
 import br.com.leandroferreira.storyteller.model.change.DeleteInfo
 import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
@@ -133,7 +134,7 @@ class StoryTellerManager(
             mutable.add(lineBreakInfo.position + 1, secondMessage)
 
             return StoryState(
-                stories = stepsNormalizer(mutable.associateWithPosition().toEditState()),
+                stories = mutable.associateWithPosition(),
                 focusId = secondMessage.localId
             )
         }
