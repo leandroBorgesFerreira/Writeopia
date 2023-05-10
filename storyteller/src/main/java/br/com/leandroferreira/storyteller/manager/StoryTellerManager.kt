@@ -106,7 +106,6 @@ class StoryTellerManager(
         textChanges[position] = text
     }
 
-    //Todo: Add unit test for this method!
     fun onLineBreak(lineBreakInfo: LineBreakInfo) {
         val updatedStories = updateTexts(_normalizedSteps.value.stories)
         _normalizedSteps.value = separateMessages(updatedStories.stories, lineBreakInfo)
