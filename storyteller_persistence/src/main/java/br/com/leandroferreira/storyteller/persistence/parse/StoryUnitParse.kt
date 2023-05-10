@@ -8,8 +8,8 @@ import br.com.leandroferreira.storyteller.persistence.entity.story.StoryUnitEnti
 fun Map<Int, StoryUnit>.toEntity(documentId: String): List<StoryUnitEntity> =
     flatMap { (position, storyUnit) ->
         if (storyUnit is GroupStep) {
-            listOf(storyUnit.toEntity(position, documentId)) + storyUnit.steps.map { storyUnit ->
-                storyUnit.toEntity(position, documentId)
+            listOf(storyUnit.toEntity(position, documentId)) + storyUnit.steps.map { innerStory ->
+                innerStory.copyWithNewParent(storyUnit.id).toEntity(position, documentId)
             }
         } else {
             listOf((storyUnit as StoryStep).toEntity(position, documentId))

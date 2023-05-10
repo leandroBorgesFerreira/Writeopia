@@ -123,7 +123,7 @@ class DocumentRepositoryTest {
         )
 
         documentRepository.saveDocument(document)
-        val loadedDocument = documentRepository.loadDocumentBy(id)
+        val loadedDocument = documentDao.loadDocumentWithContent(id)
 
         assertEquals(document, loadedDocument)
     }
