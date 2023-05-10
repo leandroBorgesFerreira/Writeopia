@@ -1,4 +1,4 @@
-package br.com.leandroferreira.app_sample.parse
+package br.com.leandroferreira.storyteller.persistence.parse
 
 import br.com.leandroferreira.storyteller.model.story.GroupStep
 import br.com.leandroferreira.storyteller.model.story.StoryStep
@@ -19,14 +19,16 @@ fun Map<Int, StoryUnit>.toEntity(documentId: String): List<StoryUnitEntity> =
 fun StoryUnitEntity.toModel(steps: List<StoryUnitEntity> = emptyList()): StoryUnit =
     if (isGroup) {
         GroupStep(
-            localId = id,
+            id = id,
+            localId = localId,
             type = type,
             parentId = parentId,
             steps = steps.map { storyUnitEntity -> storyUnitEntity.toModel() },
         )
     } else {
         StoryStep(
-            localId = id,
+            id = id,
+            localId = localId,
             type = type,
             parentId = parentId,
             url = url,
@@ -47,7 +49,8 @@ fun StoryUnit.toEntity(position: Int, documentId: String): StoryUnitEntity =
 
 fun StoryStep.toEntity(position: Int, documentId: String): StoryUnitEntity =
     StoryUnitEntity(
-        id = localId,
+        id = id,
+        localId = localId,
         type = type,
         parentId = parentId,
         url = url,
@@ -64,10 +67,11 @@ fun StoryStep.toEntity(position: Int, documentId: String): StoryUnitEntity =
 
 fun GroupStep.toEntity(position: Int, documentId: String): StoryUnitEntity =
     StoryUnitEntity(
-        id = localId,
+        id = id,
+        localId = localId,
         type = type,
         parentId = parentId,
-        innerUnitIds = this.steps.map { it.id },
+        innerUnitIds = this.steps.map { storyUnit ->  storyUnit.id },
         position = position,
         documentId = documentId,
         isGroup = true,

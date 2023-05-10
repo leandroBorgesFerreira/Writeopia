@@ -1,7 +1,7 @@
-package br.com.leandroferreira.app_sample.screens.note
+package br.com.leandroferreira.storyteller.persistence.repository
 
-import br.com.leandroferreira.app_sample.parse.toEntity
-import br.com.leandroferreira.app_sample.parse.toModel
+import br.com.leandroferreira.storyteller.persistence.parse.toEntity
+import br.com.leandroferreira.storyteller.persistence.parse.toModel
 import br.com.leandroferreira.storyteller.model.document.Document
 import br.com.leandroferreira.storyteller.persistence.dao.DocumentDao
 import br.com.leandroferreira.storyteller.persistence.dao.StoryUnitDao
@@ -9,7 +9,7 @@ import br.com.leandroferreira.storyteller.persistence.dao.StoryUnitDao
 /**
  * Evaluate to move this class to persistence module
  */
-class StoryDetailsRepository(
+class DocumentRepository(
     private val documentDao: DocumentDao,
     private val storyUnitDao: StoryUnitDao
 ) {

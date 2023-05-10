@@ -21,5 +21,5 @@ interface StoryUnitDao {
     suspend fun loadDocumentContent(documentId: String): List<StoryUnitEntity>
 
     @Query("SELECT * FROM $STORY_UNIT_ENTITY WHERE $STORY_UNIT_ENTITY.id = :storyId" )
-    suspend fun queryById(storyId: String): StoryUnitEntity
+    suspend fun queryById(storyId: String): StoryUnitEntity?
 }

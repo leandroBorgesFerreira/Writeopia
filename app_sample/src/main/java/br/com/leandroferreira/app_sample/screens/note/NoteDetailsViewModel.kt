@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.leandroferreira.storyteller.manager.StoryTellerManager
 import br.com.leandroferreira.storyteller.model.document.Document
 import br.com.leandroferreira.storyteller.model.story.StoryState
+import br.com.leandroferreira.storyteller.persistence.repository.DocumentRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class NoteDetailsViewModel(
     val storyTellerManager: StoryTellerManager,
-    private val storyDetailsRepository: StoryDetailsRepository
+    private val documentRepository: DocumentRepository
 ) : ViewModel() {
 
     private val _editModeState = MutableStateFlow(true)
@@ -28,7 +29,7 @@ class NoteDetailsViewModel(
 
     fun requestDocumentContent(documentId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val document = storyDetailsRepository.loadDocumentBy(documentId)
+            val document = documentRepository.loadDocumentBy(documentId)
             val content = document?.content
             _documentState.value = document
 
@@ -47,7 +48,7 @@ class NoteDetailsViewModel(
 
         _documentState.value?.let { document ->
             viewModelScope.launch {
-                storyDetailsRepository.saveDocument(document.copy(content = story.value.stories))
+                documentRepository.saveDocument(document.copy(content = story.value.stories))
             }
         }
     }

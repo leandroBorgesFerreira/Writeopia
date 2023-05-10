@@ -19,7 +19,7 @@ import br.com.leandroferreira.app_sample.screens.menu.ChooseNoteViewModel
 import br.com.leandroferreira.app_sample.screens.menu.DocumentRepository
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsScreen
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModel
-import br.com.leandroferreira.app_sample.screens.note.StoryDetailsRepository
+import br.com.leandroferreira.storyteller.persistence.repository.DocumentRepository
 import br.com.leandroferreira.storyteller.VideoFrameConfig
 import br.com.leandroferreira.storyteller.manager.StoryTellerManager
 import br.com.leandroferreira.storyteller.persistence.database.StoryTellerDatabase
@@ -60,7 +60,7 @@ fun NavigationGraph() {
             arguments = listOf(navArgument("noteId") { type = NavType.StringType })
         ) { backStackEntry ->
             backStackEntry.arguments?.getString("noteId")?.let { id ->
-                val repository = StoryDetailsRepository(
+                val repository = br.com.leandroferreira.storyteller.persistence.repository.DocumentRepository(
                     database.documentDao(),
                     database.storyUnitDao()
                 )

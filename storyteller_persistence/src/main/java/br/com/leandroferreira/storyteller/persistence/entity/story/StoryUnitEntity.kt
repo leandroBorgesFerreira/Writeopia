@@ -9,6 +9,7 @@ internal const val STORY_UNIT_ENTITY: String = "STORY_UNIT_ENTITY_TABLE"
 @Entity(tableName = STORY_UNIT_ENTITY)
 data class StoryUnitEntity(
     @PrimaryKey val id: String,
+    @ColumnInfo(name = "localId") val localId: String,
     @ColumnInfo(name = "type") val type: String,
     @ColumnInfo(name = "parent_id") val parentId: String? = null,
     @ColumnInfo(name = "url") val url: String? = null,

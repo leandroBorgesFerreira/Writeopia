@@ -3,7 +3,7 @@ package br.com.leandroferreira.app_sample.screens.menu
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.leandroferreira.app_sample.parse.toModel
+import br.com.leandroferreira.storyteller.persistence.parse.toModel
 import br.com.leandroferreira.app_sample.utils.ResultData
 import br.com.leandroferreira.storyteller.model.document.Document
 import kotlinx.coroutines.Dispatchers
