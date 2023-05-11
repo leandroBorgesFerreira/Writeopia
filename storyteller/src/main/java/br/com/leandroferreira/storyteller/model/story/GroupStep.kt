@@ -13,7 +13,7 @@ data class GroupStep(
     val steps: List<StoryUnit> = emptyList()
 ): StoryUnit {
 
-    override val key: Int = hashCode()
+    override val key: Int = localId.hashCode()
 
     override fun copyWithNewParent(parentId: String?): StoryUnit = copy(parentId = parentId)
 

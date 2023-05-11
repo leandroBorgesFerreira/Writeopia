@@ -8,6 +8,7 @@ import br.com.leandroferreira.storyteller.model.change.MoveInfo
 import br.com.leandroferreira.storyteller.model.story.GroupStep
 import br.com.leandroferreira.storyteller.model.story.StoryState
 import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StoryType
 import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
 import br.com.leandroferreira.storyteller.utils.StoryStepFactory
@@ -24,6 +25,10 @@ class StoryTellerManager(
         StepsMapNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
         },
+    private val focusableTypes: Set<String> = setOf(
+        StoryType.CHECK_ITEM.type,
+        StoryType.MESSAGE.type
+    )
 ) {
 
     private val textChanges: MutableMap<Int, String> = mutableMapOf()
@@ -106,7 +111,6 @@ class StoryTellerManager(
         textChanges[position] = text
     }
 
-    //Todo: Add unit test for this method!
     fun onLineBreak(lineBreakInfo: LineBreakInfo) {
         val updatedStories = updateTexts(_normalizedSteps.value.stories)
         _normalizedSteps.value = separateMessages(updatedStories.stories, lineBreakInfo)
@@ -118,11 +122,13 @@ class StoryTellerManager(
     ): StoryState {
         val storyStep = lineBreakInfo.storyStep
         storyStep.text?.split("\n", limit = 2)?.let { list ->
+            var acc = lineBreakInfo.position + 1
+
             val secondText = list.elementAtOrNull(1) ?: ""
 
             val mutable = stories.values.toMutableList()
             mutable.add(
-                lineBreakInfo.position + 1,
+                acc++,
                 StoryStepFactory.space()
             )
 
@@ -131,11 +137,11 @@ class StoryTellerManager(
                 type = storyStep.type,
                 text = secondText,
             )
-            mutable.add(lineBreakInfo.position + 1, secondMessage)
+            mutable.add(acc, secondMessage)
 
             return StoryState(
-                stories = stepsNormalizer(mutable.associateWithPosition().toEditState()),
-                focusId = secondMessage.localId
+                stories = mutable.associateWithPosition(),
+                focusId = secondMessage.id
             )
         }
 
@@ -163,8 +169,8 @@ class StoryTellerManager(
     }
 
     fun onDelete(deleteInfo: DeleteInfo) {
-        updateState()
-        delete(deleteInfo, _normalizedSteps.value.stories)
+        val newSteps = updateTexts(_normalizedSteps.value.stories)
+        delete(deleteInfo, newSteps.stories)
     }
 
     private fun delete(
@@ -178,10 +184,10 @@ class StoryTellerManager(
         if (parentId == null) {
             mutableSteps.remove(deleteInfo.position)
             val previousFocus =
-                FindStory.previousFocus(history.values.toList(), deleteInfo.position)
+                FindStory.previousFocus(history.values.toList(), deleteInfo.position, focusableTypes)
             val normalized = stepsNormalizer(mutableSteps.toEditState())
 
-            _normalizedSteps.value = StoryState(normalized, focusId = previousFocus?.localId)
+            _normalizedSteps.value = StoryState(normalized, focusId = previousFocus?.id)
         } else {
             (mutableSteps[deleteInfo.position] as? GroupStep)?.let { group ->
                 val newSteps = group.steps.filter { storyUnit ->

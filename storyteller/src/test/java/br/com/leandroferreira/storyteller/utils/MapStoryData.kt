@@ -8,6 +8,15 @@ import java.util.UUID
 
 object MapStoryData {
 
+    fun singleCheckItem(): Map<Int, StoryUnit> = mapOf(
+        0 to StoryStep(
+            id = UUID.randomUUID().toString(),
+            localId = UUID.randomUUID().toString(),
+            type = "check_item",
+            text = "something \n"
+        )
+    )
+
     fun imageGroup(): Map<Int, StoryUnit> = mapOf(
         0 to GroupStep(
             localId = "0",

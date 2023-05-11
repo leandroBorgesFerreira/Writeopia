@@ -1,5 +1,6 @@
 package br.com.leandroferreira.storyteller.drawer.content
 
+import android.util.Log
 import android.view.KeyEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -88,7 +89,7 @@ class CheckItemDrawer(
                 val focusRequester = remember { FocusRequester() }
 
                 LaunchedEffect(drawInfo.focusId) {
-                    if (drawInfo.focusId == step.localId) {
+                    if (drawInfo.focusId == step.id) {
                         focusRequester.requestFocus()
                     }
                 }

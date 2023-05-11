@@ -57,6 +57,26 @@ class StoryTellerManagerTest {
     }
 
     @Test
+    fun `when a line break happens, one (and only one) new item should be created`() {
+        val input = MapStoryData.singleCheckItem()
+        val checkItem = input[0]
+
+        val storyManager = StoryTellerManager().apply {
+            addStories(input)
+        }
+
+        storyManager.onLineBreak(
+            LineBreakInfo(storyStep = checkItem as StoryStep, position = 1)
+        )
+
+        val newStory = storyManager.normalizedStepsState.value.stories
+
+        assertEquals("the first item should be a check_item", "check_item", newStory[1]!!.type)
+        assertEquals("the second item should be a check_item","check_item", newStory[3]!!.type)
+        assertEquals("the size of the story should be 5", 5, newStory.size)
+    }
+
+    @Test
     fun `merge request should work`() = runTest {
         val storyManager = StoryTellerManager()
         storyManager.addStories(imagesInLineRepo.history())
