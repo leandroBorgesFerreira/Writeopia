@@ -1,6 +1,5 @@
 package br.com.leandroferreira.storyteller.manager
 
-import android.util.Log
 import br.com.leandroferreira.storyteller.model.change.CheckInfo
 import br.com.leandroferreira.storyteller.model.change.DeleteInfo
 import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
@@ -9,6 +8,7 @@ import br.com.leandroferreira.storyteller.model.change.MoveInfo
 import br.com.leandroferreira.storyteller.model.story.GroupStep
 import br.com.leandroferreira.storyteller.model.story.StoryState
 import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StoryType
 import br.com.leandroferreira.storyteller.model.story.StoryUnit
 import br.com.leandroferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
 import br.com.leandroferreira.storyteller.utils.StoryStepFactory
@@ -25,6 +25,10 @@ class StoryTellerManager(
         StepsMapNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
         },
+    private val focusableTypes: Set<String> = setOf(
+        StoryType.CHECK_ITEM.type,
+        StoryType.MESSAGE.type
+    )
 ) {
 
     private val textChanges: MutableMap<Int, String> = mutableMapOf()
@@ -180,7 +184,7 @@ class StoryTellerManager(
         if (parentId == null) {
             mutableSteps.remove(deleteInfo.position)
             val previousFocus =
-                FindStory.previousFocus(history.values.toList(), deleteInfo.position)
+                FindStory.previousFocus(history.values.toList(), deleteInfo.position, focusableTypes)
             val normalized = stepsNormalizer(mutableSteps.toEditState())
 
             _normalizedSteps.value = StoryState(normalized, focusId = previousFocus?.id)

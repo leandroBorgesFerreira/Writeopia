@@ -1,7 +1,5 @@
 package br.com.leandroferreira.storyteller.manager
 
-import br.com.leandroferreira.storyteller.model.story.GroupStep
-import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.model.story.StoryUnit
 
 /**
@@ -13,9 +11,13 @@ object FindStory {
     /**
      * Todo: Add unit test
      */
-    fun previousFocus(storyList: List<StoryUnit>, localPosition: Int): StoryUnit? {
-        for (i in localPosition downTo 0) {
-            if ((storyList[i] as? StoryStep)?.text?.isNotEmpty() == true) {
+    fun previousFocus(
+        storyList: List<StoryUnit>,
+        localPosition: Int,
+        focusableTypes: Set<String>
+    ): StoryUnit? {
+        for (i in (localPosition - 1) downTo 0) {
+            if (focusableTypes.contains(storyList[i].type)) {
                 return storyList[i]
             }
         }
