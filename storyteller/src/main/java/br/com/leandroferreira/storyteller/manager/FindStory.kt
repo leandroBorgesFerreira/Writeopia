@@ -7,10 +7,7 @@ import br.com.leandroferreira.storyteller.model.story.StoryUnit
  * also in GroupSteps.
  */
 object FindStory {
-
-    /**
-     * Todo: Add unit test
-     */
+    
     fun previousFocus(
         storyList: List<StoryUnit>,
         localPosition: Int,
