@@ -18,6 +18,8 @@ class StoriesViewModel(
 
     val story: StateFlow<StoryState> = storyTellerManager.currentStory
 
+    val scrollToPosition = storyTellerManager.scrollToPosition
+
     fun toggleEdit() {
         _editModeState.value = !_editModeState.value
     }

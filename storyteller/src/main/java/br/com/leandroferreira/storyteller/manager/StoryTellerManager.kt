@@ -38,6 +38,9 @@ class StoryTellerManager(
     private val backStackManager: BackStackManager = BackStackManager()
 ) : BackstackHandler, BackstackInform by backStackManager {
 
+    private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
+    val scrollToPosition: StateFlow<Int?> = _scrollToPosition.asStateFlow()
+
     private val textChanges: MutableMap<Int, String> = mutableMapOf()
 
     private val _currentStory: MutableStateFlow<StoryState> = MutableStateFlow(
@@ -122,9 +125,13 @@ class StoryTellerManager(
 
     fun onLineBreak(lineBreakInfo: LineBreakInfo) {
         val updatedStories = updateTexts(_currentStory.value.stories)
-        val newContent = separateMessages(updatedStories.stories, lineBreakInfo)
+        val (position, newContent: StoryState) = separateMessages(
+            updatedStories.stories,
+            lineBreakInfo
+        )
 
         _currentStory.value = newContent
+        _scrollToPosition.value = position
     }
 
     fun updateState() {
@@ -199,7 +206,7 @@ class StoryTellerManager(
     private fun separateMessages(
         stories: Map<Int, StoryUnit>,
         lineBreakInfo: LineBreakInfo
-    ): StoryState {
+    ): Pair<Int?, StoryState> {
         val storyStep = lineBreakInfo.storyStep
         storyStep.text?.split("\n", limit = 2)?.let { list ->
             val secondText = list.elementAtOrNull(1) ?: ""
@@ -214,13 +221,13 @@ class StoryTellerManager(
             val (addedPosition, newStory) = addNewContent(stories, secondMessage, position)
             backStackManager.addAction(AddStoryUnit(secondMessage, position = addedPosition))
 
-            return StoryState(
+            return addedPosition to StoryState(
                 stories = newStory,
                 focusId = secondMessage.id
             )
         }
 
-        return StoryState(stories)
+        return null to StoryState(stories)
     }
 
     private fun addNewContent(

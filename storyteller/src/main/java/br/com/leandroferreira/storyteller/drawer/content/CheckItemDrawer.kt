@@ -54,12 +54,12 @@ class CheckItemDrawer(
 
         DragTarget(dataToDrop = DropInfo(checkItem, drawInfo.position)) {
             Row(
-                modifier = Modifier.padding(horizontal = 10.dp),
+                modifier = Modifier.padding(horizontal = 2.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
                     modifier = Modifier
-                        .size(20.dp)
+                        .size(10.dp)
                         .background(Color.Cyan)
                 )
 
@@ -98,6 +98,7 @@ class CheckItemDrawer(
 
                 TextField(
                     modifier = Modifier
+                        .padding(0.dp)
                         .focusRequester(focusRequester)
                         .onKeyEvent { keyEvent ->
                             if (keyEvent.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DEL &&

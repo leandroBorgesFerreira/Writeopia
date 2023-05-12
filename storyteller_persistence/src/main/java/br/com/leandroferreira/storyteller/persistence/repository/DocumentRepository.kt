@@ -1,6 +1,5 @@
 package br.com.leandroferreira.storyteller.persistence.repository
 
-import android.util.Log
 import br.com.leandroferreira.storyteller.persistence.parse.toEntity
 import br.com.leandroferreira.storyteller.persistence.parse.toModel
 import br.com.leandroferreira.storyteller.model.document.Document
@@ -20,7 +19,6 @@ class DocumentRepository(
 
     suspend fun loadDocumentBy(id: String): Document? {
         return documentDao.loadDocumentWithContent(id)?.map { (documentEntity, storyEntity) ->
-            Log.d("loadDocumentBy", "Loaded content size: ${storyEntity.size}")
             val content = storyEntity
                 .filter { entity -> entity.parentId == null }
                 .sortedBy { entity -> entity.position } //Todo: Move this to the SQL query

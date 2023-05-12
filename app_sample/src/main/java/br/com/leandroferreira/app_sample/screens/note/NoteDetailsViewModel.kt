@@ -24,6 +24,7 @@ class NoteDetailsViewModel(
     val editModeState: StateFlow<Boolean> = _editModeState
 
     val story: StateFlow<StoryState> = storyTellerManager.currentStory
+    val scrollToPosition = storyTellerManager.scrollToPosition
 
     private var _documentState: MutableStateFlow<Document?> = MutableStateFlow(null)
 
