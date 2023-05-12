@@ -41,6 +41,7 @@ fun NoteDetailsScreen(documentId: String, noteDetailsViewModel: NoteDetailsViewM
 
                 InputScreen(
                     onBackPress = noteDetailsViewModel::undo,
+                    onForwardPress = noteDetailsViewModel::redo,
                     canUndoState = noteDetailsViewModel.canUndo,
                     canRedoState = noteDetailsViewModel.canRedo
                 )

@@ -52,14 +52,14 @@ class BackStackManager: BackstackInform {
             }
         }
 
+        forwardStack.clear()
         _canUndo.value = backStack.isNotEmpty()
+        _canRedo.value = forwardStack.isNotEmpty()
     }
 
     fun peek(): Any = backStack.peek()
 
     private fun addActionWhenEmpty(action: Any) {
-        forwardStack.clear()
-
         if (action is TextEditInfo) {
             backStack.add(
                 AddText(
@@ -80,7 +80,6 @@ class BackStackManager: BackstackInform {
             backStack.add((popped as AddText).copy(isComplete = true))
         }
 
-        forwardStack.clear()
         backStack.add(action)
     }
 

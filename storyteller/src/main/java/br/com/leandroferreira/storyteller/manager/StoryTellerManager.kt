@@ -3,6 +3,8 @@ package br.com.leandroferreira.storyteller.manager
 import br.com.leandroferreira.storyteller.backstack.BackstackHandler
 import br.com.leandroferreira.storyteller.backstack.BackStackManager
 import br.com.leandroferreira.storyteller.backstack.BackstackInform
+import br.com.leandroferreira.storyteller.model.backtrack.AddStoryUnit
+import br.com.leandroferreira.storyteller.model.backtrack.AddText
 import br.com.leandroferreira.storyteller.model.change.CheckInfo
 import br.com.leandroferreira.storyteller.model.change.DeleteInfo
 import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
@@ -22,6 +24,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.util.UUID
+import kotlin.math.max
 
 class StoryTellerManager(
     private val stepsNormalizer: UnitsNormalizationMap =
@@ -33,7 +36,7 @@ class StoryTellerManager(
         StoryType.MESSAGE.type
     ),
     private val backStackManager: BackStackManager = BackStackManager()
-): BackstackHandler, BackstackInform by backStackManager {
+) : BackstackHandler, BackstackInform by backStackManager {
 
     private val textChanges: MutableMap<Int, String> = mutableMapOf()
 
@@ -43,7 +46,7 @@ class StoryTellerManager(
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
 
-    fun addStories(stories: Map<Int, StoryUnit>) {
+    fun initStories(stories: Map<Int, StoryUnit>) {
         _currentStory.value = StoryState(stepsNormalizer(stories.toEditState()), null)
     }
 
@@ -129,21 +132,59 @@ class StoryTellerManager(
     }
 
     override fun undo() {
-        val newStory = when (val backAction = backStackManager.undo()) {
-            is DeleteInfo -> undoDelete(backAction)
+        when (val backAction = backStackManager.undo()) {
+            is DeleteInfo -> {
+                _currentStory.value = revertDelete(backAction)
+            }
+
+            is AddStoryUnit -> {
+                revertAddStory(backAction)
+            }
+
+            is AddText -> {
+
+            }
 
             else -> return
         }
-
-        _currentStory.value = newStory
     }
+
 
     override fun redo() {
+        when (val action = backStackManager.redo()) {
+            is DeleteInfo -> {
+                delete(action, currentStory.value.stories)
+            }
 
+            is AddStoryUnit -> {
+                val (position, newStory) = addNewContent(
+                    currentStory.value.stories,
+                    action.storyUnit,
+                    action.position
+                )
+                _currentStory.value = StoryState(
+                    newStory,
+                    newStory[position]?.id
+                )
+            }
+
+            is AddText -> {
+
+            }
+
+            else -> return
+        }
     }
 
-    private fun undoDelete(deleteInfo: DeleteInfo): StoryState {
-        val newStory = addNewContent(
+    private fun revertAddStory(addStoryUnit: AddStoryUnit) {
+        delete(
+            DeleteInfo(addStoryUnit.storyUnit, position = addStoryUnit.position),
+            currentStory.value.stories
+        )
+    }
+
+    private fun revertDelete(deleteInfo: DeleteInfo): StoryState {
+        val (_, newStory) = addNewContent(
             currentStory.value.stories,
             deleteInfo.storyUnit,
             deleteInfo.position
@@ -168,7 +209,10 @@ class StoryTellerManager(
                 text = secondText,
             )
 
-            val newStory = addNewContent(stories, secondMessage, lineBreakInfo.position + 1)
+            val position = lineBreakInfo.position + 1
+
+            val (addedPosition, newStory) = addNewContent(stories, secondMessage, position)
+            backStackManager.addAction(AddStoryUnit(secondMessage, position = addedPosition))
 
             return StoryState(
                 stories = newStory,
@@ -183,14 +227,14 @@ class StoryTellerManager(
         currentStory: Map<Int, StoryUnit>,
         newStoryUnit: StoryUnit,
         position: Int
-    ): Map<Int, StoryUnit> {
-        var acc = position
+    ): Pair<Int, Map<Int, StoryUnit>> {
         val mutable = currentStory.values.toMutableList()
+        var acc = max(position, mutable.lastIndex - 1)
 
         mutable.add(acc++, StoryStepFactory.space())
         mutable.add(acc, newStoryUnit)
 
-        return mutable.associateWithPosition()
+        return acc to mutable.associateWithPosition()
     }
 
     private fun updateTexts(stepMap: Map<Int, StoryUnit>): StoryState {
@@ -213,6 +257,7 @@ class StoryTellerManager(
         val newSteps = updateTexts(_currentStory.value.stories)
 
         delete(deleteInfo, newSteps.stories)
+        backStackManager.addAction(deleteInfo)
     }
 
     private fun delete(
@@ -233,7 +278,10 @@ class StoryTellerManager(
                 )
             val normalized = stepsNormalizer(mutableSteps.toEditState())
 
-            _currentStory.value = StoryState(normalized, focusId = previousFocus?.id)
+            _currentStory.value = StoryState(
+                normalized,
+                focusId = previousFocus?.id
+            )
         } else {
             (mutableSteps[deleteInfo.position] as? GroupStep)?.let { group ->
                 val newSteps = group.steps.filter { storyUnit ->
@@ -251,7 +299,5 @@ class StoryTellerManager(
                     StoryState(stepsNormalizer(mutableSteps.toEditState()))
             }
         }
-
-        backStackManager.addAction(deleteInfo)
     }
 }

@@ -24,7 +24,7 @@ class StoriesViewModel(
 
     fun requestStories() {
         viewModelScope.launch {
-            storyTellerManager.addStories(repo.history())
+            storyTellerManager.initStories(repo.history())
         }
     }
 

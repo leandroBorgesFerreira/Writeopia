@@ -49,7 +49,7 @@ class StoryTellerManagerTest {
         val storyManager = StoryTellerManager()
         val oldSize = messagesRepo.history().size
 
-        storyManager.addStories(messagesRepo.history())
+        storyManager.initStories(messagesRepo.history())
 
         val newStory = storyManager.currentStory.value.stories
 
@@ -62,7 +62,7 @@ class StoryTellerManagerTest {
         val checkItem = input[0]
 
         val storyManager = StoryTellerManager().apply {
-            addStories(input)
+            initStories(input)
         }
 
         storyManager.onLineBreak(
@@ -79,7 +79,7 @@ class StoryTellerManagerTest {
     @Test
     fun `merge request should work`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(imagesInLineRepo.history())
+        storyManager.initStories(imagesInLineRepo.history())
 
         val currentStory = storyManager.currentStory.value.stories
         val initialSize = currentStory.size
@@ -113,7 +113,7 @@ class StoryTellerManagerTest {
     @Test
     fun `merge request should work2`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(imagesInLineRepo.history())
+        storyManager.initStories(imagesInLineRepo.history())
 
         val currentStory = storyManager.currentStory.value.stories
         val initialSize = currentStory.size
@@ -140,7 +140,7 @@ class StoryTellerManagerTest {
     @Test
     fun `multiple merge requests should work`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(imagesInLineRepo.history())
+        storyManager.initStories(imagesInLineRepo.history())
 
         val currentStory = storyManager.currentStory.value.stories
         val initialSize = currentStory.size
@@ -204,7 +204,7 @@ class StoryTellerManagerTest {
     @Test
     fun `it should be possible to merge an image inside a message group`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(imageGroupRepo.history())
+        storyManager.initStories(imageGroupRepo.history())
 
         val currentStory = storyManager.currentStory.value.stories
         val initialSize = currentStory.size
@@ -236,7 +236,7 @@ class StoryTellerManagerTest {
     @Test
     fun `it should be possible to merge an image outside a message group`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(imageGroupRepo.history())
+        storyManager.initStories(imageGroupRepo.history())
 
         val currentStory = storyManager.currentStory.value.stories
         val initialGroupSize = (currentStory[1] as GroupStep).steps.size
@@ -270,7 +270,7 @@ class StoryTellerManagerTest {
     @Test
     fun `when moving outside of a group, the parent Id should be null now`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(imageGroupRepo.history())
+        storyManager.initStories(imageGroupRepo.history())
 
         val currentStory = storyManager.currentStory.value.stories
 
@@ -313,7 +313,7 @@ class StoryTellerManagerTest {
     @Test
     fun `it should be possible to switch images places`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(imagesInLineRepo.history())
+        storyManager.initStories(imagesInLineRepo.history())
 
         val currentStory = storyManager.currentStory.value.stories
         val storyUnitToMove = currentStory[1]!!
@@ -334,7 +334,7 @@ class StoryTellerManagerTest {
     @Test
     fun `deleting and leave a single element in a group destroys the group`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(imageGroupRepo.history())
+        storyManager.initStories(imageGroupRepo.history())
 
         val currentStory = storyManager.currentStory.value.stories
         assertEquals(
@@ -375,7 +375,7 @@ class StoryTellerManagerTest {
     @Test
     fun `when deleting a message it should not leave consecutive spaces`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(messagesRepo.history())
+        storyManager.initStories(messagesRepo.history())
 
         storyManager.onDelete(
             DeleteInfo(
@@ -398,7 +398,7 @@ class StoryTellerManagerTest {
     fun `when a line break happens, a new story unit with the same type should be created - simple`() =
         runTest {
             val storyManager = StoryTellerManager()
-            storyManager.addStories(singleMessageRepo.history())
+            storyManager.initStories(singleMessageRepo.history())
 
             val stories = storyManager.currentStory.value.stories
             val initialSize = stories.size
@@ -416,7 +416,7 @@ class StoryTellerManagerTest {
     fun `when a line break happens, a new story unit with the same type should be created - complex`() =
         runTest {
             val storyManager = StoryTellerManager()
-            storyManager.addStories(messagesRepo.history())
+            storyManager.initStories(messagesRepo.history())
 
             val stories = storyManager.currentStory.value.stories
             val initialSize = stories.size
@@ -440,7 +440,7 @@ class StoryTellerManagerTest {
          * - Check that the correct image was moved correctly
          */
         val storyManager = StoryTellerManager()
-        storyManager.addStories(complexMessagesRepository.history())
+        storyManager.initStories(complexMessagesRepository.history())
 
         val stories = storyManager.currentStory.value.stories
 
@@ -503,6 +503,38 @@ class StoryTellerManagerTest {
             storyToMove.id,
             newStory3[5]!!.id
         )
+    }
+
+    @Test
+    fun `it should be possible to add content and undo it - 1 unit`() {
+        val storyManager = StoryTellerManager()
+        val input = MapStoryData.singleCheckItem()
+
+        storyManager.initStories(input)
+        val currentStory = storyManager.currentStory.value.stories
+
+        storyManager.onLineBreak(LineBreakInfo(input[0] as StoryStep, 1))
+        storyManager.undo()
+
+        assertEquals(currentStory.size, storyManager.currentStory.value.stories.size)
+    }
+
+    @Test
+    fun `it should be possible to add content and undo it - many units`() {
+        val storyManager = StoryTellerManager()
+        val input = MapStoryData.singleCheckItem()
+
+        storyManager.initStories(input)
+        val currentStory = storyManager.currentStory.value.stories
+
+        storyManager.onLineBreak(LineBreakInfo(input[0] as StoryStep, 1))
+        storyManager.onLineBreak(LineBreakInfo(input[0] as StoryStep, 3))
+        storyManager.onLineBreak(LineBreakInfo(input[0] as StoryStep, 5))
+        storyManager.undo()
+        storyManager.undo()
+        storyManager.undo()
+
+        assertEquals(currentStory.size, storyManager.currentStory.value.stories.size)
     }
 
 }

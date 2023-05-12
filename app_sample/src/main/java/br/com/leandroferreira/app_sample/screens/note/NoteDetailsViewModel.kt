@@ -38,7 +38,7 @@ class NoteDetailsViewModel(
             _documentState.value = document
 
             if (content != null) {
-                storyTellerManager.addStories(content)
+                storyTellerManager.initStories(content)
             }
         }
     }
