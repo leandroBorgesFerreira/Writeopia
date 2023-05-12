@@ -3,4 +3,6 @@
     <string name="error_loading_notes">Error loading notes</string>
     <string name="you_dont_have_notes">You don\'t have notes</string>
     <string name="add_sample_notes">Add sample notes</string>
+    <string name="undo">Undo</string>
+    <string name="redo">Redo</string>
 </resources>

@@ -1,25 +1,22 @@
 package br.com.leandroferreira.app_sample.screens.note
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.com.leandroferreira.app_sample.screens.note.input.InputScreen
 import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
 import br.com.leandroferreira.storyteller.StoryTellerTimeline
 import br.com.leandroferreira.storyteller.drawer.DefaultDrawers
@@ -32,8 +29,10 @@ fun NoteDetailsScreen(documentId: String, noteDetailsViewModel: NoteDetailsViewM
         Scaffold(
             topBar = { TopBar(noteDetailsViewModel = noteDetailsViewModel) },
         ) { paddingValues ->
-            Box(modifier = Modifier.padding(top = paddingValues.calculateTopPadding())) {
+            Column(modifier = Modifier.padding(top = paddingValues.calculateTopPadding())) {
                 Body(noteDetailsViewModel)
+
+                InputScreen()
             }
         }
     }
@@ -58,12 +57,12 @@ private fun TopBar(noteDetailsViewModel: NoteDetailsViewModel) {
 }
 
 @Composable
-fun Body(noteDetailsViewModel: NoteDetailsViewModel) {
+fun ColumnScope.Body(noteDetailsViewModel: NoteDetailsViewModel) {
     val storyState by noteDetailsViewModel.story.collectAsStateWithLifecycle()
     val editable by noteDetailsViewModel.editModeState.collectAsStateWithLifecycle()
 
     StoryTellerTimeline(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxWidth().weight(1F),
         storyState = storyState,
         contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp),
         editable = editable,
