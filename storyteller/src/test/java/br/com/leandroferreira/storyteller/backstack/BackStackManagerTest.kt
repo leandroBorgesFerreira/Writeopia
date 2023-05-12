@@ -18,7 +18,7 @@ class BackStackManagerTest {
             TextEditInfo(text, position = 1)
         )
 
-        val backAction = backStackManager.backAction()
+        val backAction = backStackManager.undo()
 
         assertEquals(AddText(text, position = 1, isComplete = true), backAction)
     }
@@ -45,7 +45,7 @@ class BackStackManagerTest {
 
         editInfoList.forEach(backStackManager::addAction)
 
-        val backAction = backStackManager.backAction()
+        val backAction = backStackManager.undo()
         assertEquals(AddText("text!", position = 1, isComplete = false), backAction)
     }
 
@@ -59,11 +59,11 @@ class BackStackManagerTest {
 
         assertEquals(
             AddText("you!", position = 1, isComplete = false),
-            backStackManager.backAction()
+            backStackManager.undo()
         )
         assertEquals(
             AddText("hey,       ", position = 1, isComplete = true),
-            backStackManager.backAction()
+            backStackManager.undo()
         )
     }
 
@@ -78,17 +78,17 @@ class BackStackManagerTest {
 
         assertEquals(
             AddText("text!", position = 1, isComplete = false),
-            backStackManager.backAction()
+            backStackManager.undo()
         )
-        assertEquals(AddText("a ", position = 1, isComplete = true), backStackManager.backAction())
-        assertEquals(AddText("is ", position = 1, isComplete = true), backStackManager.backAction())
+        assertEquals(AddText("a ", position = 1, isComplete = true), backStackManager.undo())
+        assertEquals(AddText("is ", position = 1, isComplete = true), backStackManager.undo())
         assertEquals(
             AddText("this ", position = 1, isComplete = true),
-            backStackManager.backAction()
+            backStackManager.undo()
         )
         assertEquals(
             AddText("hey, ", position = 1, isComplete = true),
-            backStackManager.backAction()
+            backStackManager.undo()
         )
     }
 }

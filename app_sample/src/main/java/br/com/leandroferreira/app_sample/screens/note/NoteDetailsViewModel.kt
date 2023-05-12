@@ -2,6 +2,8 @@ package br.com.leandroferreira.app_sample.screens.note
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.leandroferreira.storyteller.backstack.BackstackHandler
+import br.com.leandroferreira.storyteller.backstack.BackstackInform
 import br.com.leandroferreira.storyteller.manager.StoryTellerManager
 import br.com.leandroferreira.storyteller.model.document.Document
 import br.com.leandroferreira.storyteller.model.story.StoryState
@@ -14,12 +16,14 @@ import kotlinx.coroutines.launch
 class NoteDetailsViewModel(
     val storyTellerManager: StoryTellerManager,
     private val documentRepository: DocumentRepository
-) : ViewModel() {
+) : ViewModel(),
+    BackstackInform by storyTellerManager,
+    BackstackHandler by storyTellerManager {
 
     private val _editModeState = MutableStateFlow(true)
     val editModeState: StateFlow<Boolean> = _editModeState
 
-    val story: StateFlow<StoryState> = storyTellerManager.normalizedStepsState
+    val story: StateFlow<StoryState> = storyTellerManager.currentStory
 
     private var _documentState: MutableStateFlow<Document?> = MutableStateFlow(null)
 

@@ -32,7 +32,11 @@ fun NoteDetailsScreen(documentId: String, noteDetailsViewModel: NoteDetailsViewM
             Column(modifier = Modifier.padding(top = paddingValues.calculateTopPadding())) {
                 Body(noteDetailsViewModel)
 
-                InputScreen()
+                InputScreen(
+                    onBackPress = noteDetailsViewModel::undo,
+                    canUndoState = noteDetailsViewModel.canUndo,
+                    canRedoState = noteDetailsViewModel.canRedo
+                )
             }
         }
     }
@@ -62,7 +66,9 @@ fun ColumnScope.Body(noteDetailsViewModel: NoteDetailsViewModel) {
     val editable by noteDetailsViewModel.editModeState.collectAsStateWithLifecycle()
 
     StoryTellerTimeline(
-        modifier = Modifier.fillMaxWidth().weight(1F),
+        modifier = Modifier
+            .fillMaxWidth()
+            .weight(1F),
         storyState = storyState,
         contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp),
         editable = editable,
