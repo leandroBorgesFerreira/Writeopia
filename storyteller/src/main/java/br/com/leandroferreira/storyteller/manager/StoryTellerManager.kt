@@ -173,6 +173,8 @@ class StoryTellerManager(
                     newStory,
                     newStory[position]?.id
                 )
+
+                _scrollToPosition.value = position
             }
 
             is AddText -> {
