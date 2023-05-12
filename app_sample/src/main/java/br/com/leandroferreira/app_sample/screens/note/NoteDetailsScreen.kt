@@ -3,7 +3,9 @@ package br.com.leandroferreira.app_sample.screens.note
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -29,7 +31,12 @@ fun NoteDetailsScreen(documentId: String, noteDetailsViewModel: NoteDetailsViewM
         Scaffold(
             topBar = { TopBar(noteDetailsViewModel = noteDetailsViewModel) },
         ) { paddingValues ->
-            Column(modifier = Modifier.padding(top = paddingValues.calculateTopPadding())) {
+            Column(
+                modifier = Modifier
+                    .padding(top = paddingValues.calculateTopPadding())
+                    .fillMaxSize()
+                    .imePadding()
+            ) {
                 Body(noteDetailsViewModel)
 
                 InputScreen(
