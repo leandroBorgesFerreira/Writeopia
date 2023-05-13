@@ -10,6 +10,7 @@ import br.com.leandroferreira.storyteller.model.change.DeleteInfo
 import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
 import br.com.leandroferreira.storyteller.model.change.MergeInfo
 import br.com.leandroferreira.storyteller.model.change.MoveInfo
+import br.com.leandroferreira.storyteller.model.change.TextEditInfo
 import br.com.leandroferreira.storyteller.model.story.GroupStep
 import br.com.leandroferreira.storyteller.model.story.StoryState
 import br.com.leandroferreira.storyteller.model.story.StoryStep
@@ -123,6 +124,7 @@ class StoryTellerManager(
 
     fun onTextEdit(text: String, position: Int) {
         textChanges[position] = text
+        backStackManager.addAction(TextEditInfo(text, position))
     }
 
     fun onLineBreak(lineBreakInfo: LineBreakInfo) {
@@ -180,7 +182,7 @@ class StoryTellerManager(
             }
 
             is AddText -> {
-
+                redoAddText(currentStory.value.stories, action)
             }
 
             else -> return
@@ -205,6 +207,17 @@ class StoryTellerManager(
 
             _currentStory.value = StoryState(mutableSteps, focusId = revertStep.id)
         }
+    }
+
+    private fun redoAddText(currentStory: Map<Int, StoryUnit>, addText: AddText) {
+        val position = addText.position
+        val mutableSteps = currentStory.toMutableMap()
+        val editStep = mutableSteps[position] as StoryStep
+        val newText = "${editStep.text.toString()}${addText.text}"
+
+        mutableSteps[position] = editStep.copy(text = newText)
+
+        _currentStory.value = StoryState(mutableSteps, focusId = editStep.id)
     }
 
     private fun revertAddStory(addStoryUnit: AddStoryUnit) {
@@ -277,8 +290,6 @@ class StoryTellerManager(
             (editStep as? StoryStep)?.copy(text = text)?.let { step ->
                 mutableSteps[position] = step
             }
-
-            backStackManager.addAction(AddText(text, position, true))
         }
 
         textChanges.clear()

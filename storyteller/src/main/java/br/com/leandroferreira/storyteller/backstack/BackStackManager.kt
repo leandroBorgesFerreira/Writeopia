@@ -111,6 +111,15 @@ class BackStackManager: BackstackInform {
                     )
                 )
             }
+        } else {
+            //Todo: Review this whole method!
+            backStack.add(
+                AddText(
+                    text = action.text,
+                    position = action.position,
+                    isComplete = false
+                )
+            )
         }
     }
 }

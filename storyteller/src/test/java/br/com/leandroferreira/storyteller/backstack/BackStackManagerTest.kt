@@ -75,7 +75,6 @@ class BackStackManagerTest {
 
         editInfoList.forEach(backStackManager::addAction)
 
-
         assertEquals(
             AddText("text!", position = 1, isComplete = false),
             backStackManager.undo()
@@ -90,5 +89,10 @@ class BackStackManagerTest {
             AddText("hey, ", position = 1, isComplete = true),
             backStackManager.undo()
         )
+    }
+
+    @Test
+    fun `when adding text expanding the current text, the manager should work correctly`() {
+
     }
 }
