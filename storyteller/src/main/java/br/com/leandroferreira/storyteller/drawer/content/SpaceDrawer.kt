@@ -39,7 +39,7 @@ class SpaceDrawer(private val moveRequest: (MoveInfo) -> Unit = {}) : StoryUnitD
                 modifier = Modifier
                     .height(10.dp)
                     .fillMaxWidth()
-                    .background(if (inBound) Color.LightGray else Color.Transparent)
+                    .background(if (inBound) Color.LightGray else Color.Cyan)
             )
         }
     }

@@ -168,7 +168,7 @@ class StoryTellerManager(
             }
 
             is AddStoryUnit -> {
-                val (position, newStory) = addNewContent(
+                val (position, newStory) = redoNewContent(
                     currentStory.value.stories,
                     action.storyUnit,
                     action.position
@@ -267,13 +267,29 @@ class StoryTellerManager(
         return null to StoryState(stories)
     }
 
+
+
+    private fun redoNewContent(
+        currentStory: Map<Int, StoryUnit>,
+        newStoryUnit: StoryUnit,
+        position: Int
+    ): Pair<Int, Map<Int, StoryUnit>> {
+        val mutable = currentStory.values.toMutableList()
+        var acc = position
+        
+        mutable.add(acc++, newStoryUnit)
+        mutable.add(acc, StoryStepFactory.space())
+
+        return acc to mutable.associateWithPosition()
+    }
+
     private fun addNewContent(
         currentStory: Map<Int, StoryUnit>,
         newStoryUnit: StoryUnit,
         position: Int
     ): Pair<Int, Map<Int, StoryUnit>> {
         val mutable = currentStory.values.toMutableList()
-        var acc = max(position, mutable.lastIndex - 1)
+        var acc = position
 
         mutable.add(acc++, StoryStepFactory.space())
         mutable.add(acc, newStoryUnit)
