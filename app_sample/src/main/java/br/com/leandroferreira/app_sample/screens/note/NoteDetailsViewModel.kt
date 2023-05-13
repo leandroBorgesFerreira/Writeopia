@@ -61,6 +61,11 @@ class NoteDetailsViewModel(
         }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+
+        storyTellerManager.updateState()
+    }
 }
 
 class NoteDetailsViewModelFactory(
