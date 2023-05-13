@@ -151,7 +151,7 @@ class StoryTellerManager(
             }
 
             is AddText -> {
-
+                revertAddText(currentStory.value.stories, backAction)
             }
 
             else -> return
@@ -184,6 +184,26 @@ class StoryTellerManager(
             }
 
             else -> return
+        }
+    }
+
+    private fun revertAddText(currentStory: Map<Int, StoryUnit>, addText: AddText) {
+        val mutableSteps = currentStory.toMutableMap()
+        //Todo: Merging StoryStep and StoryGroups could reduce casts
+        val revertStep = mutableSteps[addText.position] as StoryStep
+        val currentText = revertStep.text
+
+        if (!currentText.isNullOrEmpty()) {
+            val newText = if (currentText.length <= addText.text.length) {
+                ""
+            } else {
+                currentText.substring(currentText.length - addText.text.length)
+            }
+
+            mutableSteps[addText.position] =
+                revertStep.copy(localId = UUID.randomUUID().toString(), text = newText)
+
+            _currentStory.value = StoryState(mutableSteps, focusId = revertStep.id)
         }
     }
 
@@ -257,6 +277,8 @@ class StoryTellerManager(
             (editStep as? StoryStep)?.copy(text = text)?.let { step ->
                 mutableSteps[position] = step
             }
+
+            backStackManager.addAction(AddText(text, position, true))
         }
 
         textChanges.clear()
