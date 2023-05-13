@@ -36,7 +36,15 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.6"
+        kotlinCompilerExtensionVersion = "1.4.7"
+    }
+}
+
+kotlin{
+    sourceSets.all {
+        languageSettings {
+            languageVersion = "1.9"
+        }
     }
 }
 
@@ -47,7 +55,7 @@ dependencies {
     implementation(project(":storyteller"))
     implementation(project(":storyteller_persistence"))
 
-    implementation("androidx.core:core-ktx:1.10.0")
+    implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
 
