@@ -1,6 +1,7 @@
 package br.com.leandroferreira.app_sample.screens.note
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import br.com.leandroferreira.storyteller.backstack.BackstackHandler
 import br.com.leandroferreira.storyteller.backstack.BackstackInform
@@ -33,6 +34,8 @@ class NoteDetailsViewModel(
     }
 
     fun requestDocumentContent(documentId: String) {
+        if (storyTellerManager.isInitialized()) return
+
         viewModelScope.launch(Dispatchers.IO) {
             val document = documentRepository.loadDocumentBy(documentId)
             val content = document?.content
@@ -58,4 +61,18 @@ class NoteDetailsViewModel(
         }
     }
 
+}
+
+class NoteDetailsViewModelFactory(
+    private val storyTellerManager: StoryTellerManager,
+    private val documentRepository: DocumentRepository
+) : ViewModelProvider.Factory {
+
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(NoteDetailsViewModel::class.java)) {
+            return NoteDetailsViewModel(storyTellerManager, documentRepository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }

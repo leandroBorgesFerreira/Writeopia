@@ -49,6 +49,8 @@ class StoryTellerManager(
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
 
+    fun isInitialized(): Boolean = _currentStory.value.stories.isNotEmpty()
+
     fun initStories(stories: Map<Int, StoryUnit>) {
         _currentStory.value = StoryState(stepsNormalizer(stories.toEditState()), null)
     }
