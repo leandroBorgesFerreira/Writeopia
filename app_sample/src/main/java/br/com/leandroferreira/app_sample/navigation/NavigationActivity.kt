@@ -19,6 +19,7 @@ import br.com.leandroferreira.app_sample.screens.menu.ChooseNoteViewModel
 import br.com.leandroferreira.app_sample.screens.menu.NotesRepository
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsScreen
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModel
+import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModelFactory
 import br.com.leandroferreira.storyteller.persistence.repository.DocumentRepository
 import br.com.leandroferreira.storyteller.VideoFrameConfig
 import br.com.leandroferreira.storyteller.manager.StoryTellerManager
@@ -65,7 +66,9 @@ fun NavigationGraph() {
                     database.storyUnitDao()
                 )
                 val storyTellerManager = StoryTellerManager()
-                val noteDetailsViewModel = NoteDetailsViewModel(storyTellerManager, repository)
+
+                val noteDetailsViewModel: NoteDetailsViewModel =
+                    viewModel(factory = NoteDetailsViewModelFactory(storyTellerManager, repository))
 
                 NoteDetailsScreen(id, noteDetailsViewModel)
             }
