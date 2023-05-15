@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import br.com.leandroferreira.storyteller.BuildConfig
 import br.com.leandroferreira.storyteller.draganddrop.target.DropTarget
 import br.com.leandroferreira.storyteller.drawer.DrawInfo
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
@@ -35,11 +36,18 @@ class SpaceDrawer(private val moveRequest: (MoveInfo) -> Unit = {}) : StoryUnitD
                 )
             }
 
+            val spaceBgColor =
+                when {
+                    inBound -> Color.LightGray
+                    BuildConfig.DEBUG -> Color.Cyan
+                    else -> Color.Transparent
+                }
+
             Box(
                 modifier = Modifier
                     .height(10.dp)
                     .fillMaxWidth()
-                    .background(if (inBound) Color.LightGray else Color.Cyan)
+                    .background(spaceBgColor)
             )
         }
     }
