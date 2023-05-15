@@ -33,25 +33,23 @@ import kotlinx.coroutines.flow.filterNotNull
 fun NoteDetailsScreen(documentId: String, noteDetailsViewModel: NoteDetailsViewModel) {
     noteDetailsViewModel.requestDocumentContent(documentId)
 
-    ApplicationComposeTheme {
-        Scaffold(
-            topBar = { TopBar(noteDetailsViewModel = noteDetailsViewModel) },
-        ) { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .padding(top = paddingValues.calculateTopPadding())
-                    .fillMaxSize()
-                    .imePadding()
-            ) {
-                Body(noteDetailsViewModel)
+    Scaffold(
+        topBar = { TopBar(noteDetailsViewModel = noteDetailsViewModel) },
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(top = paddingValues.calculateTopPadding())
+                .fillMaxSize()
+                .imePadding()
+        ) {
+            Body(noteDetailsViewModel)
 
-                InputScreen(
-                    onBackPress = noteDetailsViewModel::undo,
-                    onForwardPress = noteDetailsViewModel::redo,
-                    canUndoState = noteDetailsViewModel.canUndo,
-                    canRedoState = noteDetailsViewModel.canRedo
-                )
-            }
+            InputScreen(
+                onBackPress = noteDetailsViewModel::undo,
+                onForwardPress = noteDetailsViewModel::redo,
+                canUndoState = noteDetailsViewModel.canUndo,
+                canRedoState = noteDetailsViewModel.canRedo
+            )
         }
     }
 }
