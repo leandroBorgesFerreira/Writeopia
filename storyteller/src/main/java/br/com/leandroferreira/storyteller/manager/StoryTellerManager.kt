@@ -1,7 +1,7 @@
 package br.com.leandroferreira.storyteller.manager
 
-import br.com.leandroferreira.storyteller.backstack.BackstackHandler
 import br.com.leandroferreira.storyteller.backstack.BackStackManager
+import br.com.leandroferreira.storyteller.backstack.BackstackHandler
 import br.com.leandroferreira.storyteller.backstack.BackstackInform
 import br.com.leandroferreira.storyteller.model.backtrack.AddStoryUnit
 import br.com.leandroferreira.storyteller.model.backtrack.AddText
@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.util.UUID
-import kotlin.math.max
 
 class StoryTellerManager(
     private val stepsNormalizer: UnitsNormalizationMap =
@@ -168,10 +167,10 @@ class StoryTellerManager(
             }
 
             is AddStoryUnit -> {
-                val (position, newStory) = redoNewContent(
+                val (position, newStory) = addNewContent(
                     currentStory.value.stories,
                     action.storyUnit,
-                    action.position
+                    action.position - 1
                 )
                 _currentStory.value = StoryState(
                     newStory,
@@ -265,22 +264,6 @@ class StoryTellerManager(
         }
 
         return null to StoryState(stories)
-    }
-
-
-
-    private fun redoNewContent(
-        currentStory: Map<Int, StoryUnit>,
-        newStoryUnit: StoryUnit,
-        position: Int
-    ): Pair<Int, Map<Int, StoryUnit>> {
-        val mutable = currentStory.values.toMutableList()
-        var acc = position
-        
-        mutable.add(acc++, newStoryUnit)
-        mutable.add(acc, StoryStepFactory.space())
-
-        return acc to mutable.associateWithPosition()
     }
 
     private fun addNewContent(

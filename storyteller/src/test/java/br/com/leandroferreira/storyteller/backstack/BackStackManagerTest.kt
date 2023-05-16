@@ -3,6 +3,7 @@ package br.com.leandroferreira.storyteller.backstack
 import br.com.leandroferreira.storyteller.model.backtrack.AddText
 import br.com.leandroferreira.storyteller.model.change.TextEditInfo
 import org.junit.Assert.*
+import org.junit.Ignore
 import org.junit.Test
 
 class BackStackManagerTest {
@@ -92,6 +93,7 @@ class BackStackManagerTest {
     }
 
     @Test
+    @Ignore
     fun `when adding text expanding the current text, the manager should work correctly`() {
 
     }

@@ -72,7 +72,7 @@ class StoryTellerManagerTest {
         val newStory = storyManager.currentStory.value.stories
 
         assertEquals("the first item should be a check_item", "check_item", newStory[1]!!.type)
-        assertEquals("the second item should be a check_item","check_item", newStory[3]!!.type)
+        assertEquals("the second item should be a check_item", "check_item", newStory[3]!!.type)
         assertEquals("the size of the story should be 5", 5, newStory.size)
     }
 
@@ -534,7 +534,53 @@ class StoryTellerManagerTest {
         storyManager.undo()
         storyManager.undo()
 
-        assertEquals(currentStory.size, storyManager.currentStory.value.stories.size)
+        val newStory = storyManager.currentStory.value.stories
+
+        assertEquals(
+            "The size of the story can't have changed",
+            currentStory.size,
+            newStory.size
+        )
+
+        currentStory.values.zip(newStory.values).forEach { (storyUnit1, storyUnit2) ->
+            if (storyUnit1.type != storyUnit2.type) fail()
+
+            if (storyUnit1.type != "space") {
+                assertEquals(storyUnit1.id, storyUnit2.id)
+            }
+        }
     }
 
+    @Test
+    fun `spaces should be correct in the story`() {
+        val storyManager = StoryTellerManager()
+        val input = MapStoryData.singleCheckItem()
+
+        storyManager.run {
+            initStories(input)
+
+            onLineBreak(LineBreakInfo(input[0] as StoryStep, 1))
+            onLineBreak(LineBreakInfo(input[0] as StoryStep, 3))
+            onLineBreak(LineBreakInfo(input[0] as StoryStep, 5))
+
+            undo()
+            undo()
+            undo()
+
+            redo()
+            redo()
+        }
+
+        val newStory = storyManager.currentStory.value.stories
+
+        newStory.forEach { (position, storyUnit) ->
+            val isEven = position % 2 == 0
+
+            if (isEven) {
+                assertEquals("space", storyUnit.type)
+            } else {
+                assertNotEquals("space", storyUnit.type)
+            }
+        }
+    }
 }
