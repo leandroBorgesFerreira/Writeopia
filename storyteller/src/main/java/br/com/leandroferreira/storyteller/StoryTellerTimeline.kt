@@ -23,7 +23,7 @@ fun StoryTellerTimeline(
     drawers: Map<String, StoryUnitDrawer>,
     listState: LazyListState = rememberLazyListState()
 ) {
-    DraggableScreen(modifier = Modifier.fillMaxSize()) {
+    DraggableScreen(modifier = modifier) {
         LazyColumn(
             modifier = modifier,
             contentPadding = contentPadding,

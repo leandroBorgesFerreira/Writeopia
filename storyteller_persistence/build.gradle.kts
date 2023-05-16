@@ -33,6 +33,14 @@ android {
     }
 }
 
+kotlin{
+    sourceSets.all {
+        languageSettings {
+            languageVersion = "1.9"
+        }
+    }
+}
+
 dependencies {
     val roomVersion = "2.5.1"
 

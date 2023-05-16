@@ -19,6 +19,8 @@ import br.com.leandroferreira.app_sample.screens.menu.ChooseNoteViewModel
 import br.com.leandroferreira.app_sample.screens.menu.NotesRepository
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsScreen
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModel
+import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModelFactory
+import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
 import br.com.leandroferreira.storyteller.persistence.repository.DocumentRepository
 import br.com.leandroferreira.storyteller.VideoFrameConfig
 import br.com.leandroferreira.storyteller.manager.StoryTellerManager
@@ -42,46 +44,57 @@ fun NavigationGraph() {
     val context = LocalContext.current
     val database = StoryTellerDatabase.database(context)
 
-    NavHost(navController = navController, startDestination = Destinations.CHOOSE_NOTE.id) {
-        composable(Destinations.CHOOSE_NOTE.id) {
-            val notesRepository = NotesRepository(
-                database.documentDao(),
-                database.storyUnitDao()
-            )
-            val chooseNoteViewModel = ChooseNoteViewModel(notesRepository)
+    ApplicationComposeTheme {
 
-            ChooseNoteScreen(chooseNoteViewModel = chooseNoteViewModel) { noteId ->
-                navController.navigate("${Destinations.NOTE_DETAILS.id}/$noteId")
-            }
-        }
-
-        composable(
-            route = "${Destinations.NOTE_DETAILS.id}/{noteId}",
-            arguments = listOf(navArgument("noteId") { type = NavType.StringType })
-        ) { backStackEntry ->
-            backStackEntry.arguments?.getString("noteId")?.let { id ->
-                val repository = DocumentRepository(
+        NavHost(navController = navController, startDestination = Destinations.CHOOSE_NOTE.id) {
+            composable(Destinations.CHOOSE_NOTE.id) {
+                val notesRepository = NotesRepository(
                     database.documentDao(),
                     database.storyUnitDao()
                 )
-                val storyTellerManager = StoryTellerManager()
-                val noteDetailsViewModel = NoteDetailsViewModel(storyTellerManager, repository)
+                val chooseNoteViewModel = ChooseNoteViewModel(notesRepository)
 
-                NoteDetailsScreen(id, noteDetailsViewModel)
+                ChooseNoteScreen(chooseNoteViewModel = chooseNoteViewModel) { noteId ->
+                    navController.navigate("${Destinations.NOTE_DETAILS.id}/$noteId")
+                }
             }
-        }
 
-        composable(
-            route = "${Destinations.ADD_STORY.id}/{noteId}",
-            arguments = listOf(navArgument("noteId") { type = NavType.StringType })
-        ) {
-            val repo = StoriesRepo(context, database.documentDao())
-            val storyTellerManager = StoryTellerManager()
-            val storiesViewModel: StoriesViewModel = viewModel(initializer = {
-                StoriesViewModel(storyTellerManager, repo)
-            })
+            composable(
+                route = "${Destinations.NOTE_DETAILS.id}/{noteId}",
+                arguments = listOf(navArgument("noteId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                backStackEntry.arguments?.getString("noteId")?.let { id ->
+                    val repository = DocumentRepository(
+                        database.documentDao(),
+                        database.storyUnitDao()
+                    )
+                    val storyTellerManager = StoryTellerManager()
 
-            AddStoryScreen(storiesViewModel)
+                    val noteDetailsViewModel: NoteDetailsViewModel =
+                        viewModel(
+                            factory = NoteDetailsViewModelFactory(
+                                storyTellerManager,
+                                repository
+                            )
+                        )
+
+                    NoteDetailsScreen(id, noteDetailsViewModel)
+                }
+            }
+
+            composable(
+                route = "${Destinations.ADD_STORY.id}/{noteId}",
+                arguments = listOf(navArgument("noteId") { type = NavType.StringType })
+            ) {
+                val repo = StoriesRepo(context, database.documentDao())
+                val storyTellerManager = StoryTellerManager()
+                val storiesViewModel: StoriesViewModel = viewModel(initializer = {
+                    StoriesViewModel(storyTellerManager, repo)
+                })
+
+                AddStoryScreen(storiesViewModel)
+            }
+
         }
     }
 }

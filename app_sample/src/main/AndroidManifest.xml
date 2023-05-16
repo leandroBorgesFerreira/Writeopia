@@ -15,6 +15,7 @@
         tools:targetApi="33">
         <activity
             android:name=".navigation.NavigationActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

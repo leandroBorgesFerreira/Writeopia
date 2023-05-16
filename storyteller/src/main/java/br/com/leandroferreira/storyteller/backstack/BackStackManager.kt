@@ -2,14 +2,34 @@ package br.com.leandroferreira.storyteller.backstack
 
 import br.com.leandroferreira.storyteller.model.backtrack.AddText
 import br.com.leandroferreira.storyteller.model.change.TextEditInfo
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.util.Stack
 
 private const val HAS_SPACE_REGEX = "\\s\\S"
 
-class BackStackManager {
+class BackStackManager: BackstackInform {
 
     private val backStack: Stack<Any> = Stack()
     private val forwardStack: Stack<Any> = Stack()
+
+    private val _canUndo = MutableStateFlow(false)
+    private val _canRedo = MutableStateFlow(false)
+
+    override val canUndo: StateFlow<Boolean> = _canUndo
+    override val canRedo: StateFlow<Boolean> = _canRedo
+
+    fun undo(): Any = backStack.pop().also { action ->
+        forwardStack.add(action)
+        _canUndo.value = backStack.isNotEmpty()
+        _canRedo.value = forwardStack.isNotEmpty()
+    }
+
+    fun redo(): Any = forwardStack.pop().also{ action ->
+        backStack.add(action)
+        _canUndo.value = backStack.isNotEmpty()
+        _canRedo.value = forwardStack.isNotEmpty()
+    }
 
     /**
      * Add action evaluates if the action is a whole action, like move, delete, merge content or
@@ -18,28 +38,28 @@ class BackStackManager {
      * backstack.
      */
     fun addAction(action: Any) {
-        if (backStack.isEmpty()) {
-            addActionWhenEmpty(action)
-            return
+        when {
+            backStack.isEmpty() -> {
+                addActionWhenEmpty(action)
+            }
+
+            action !is TextEditInfo -> {
+                addWhenWholeAction(action)
+            }
+
+            else -> {
+                handleNewTextAdded(action)
+            }
         }
 
-        if (action !is TextEditInfo) {
-            addWhenWholeAction(action)
-            return
-        }
-
-        handleNewTextAdded(action)
+        forwardStack.clear()
+        _canUndo.value = backStack.isNotEmpty()
+        _canRedo.value = forwardStack.isNotEmpty()
     }
-
-    fun backAction(): Any = backStack.pop().also(forwardStack::add)
-
-    fun forwardAction(): Any = forwardStack.pop().also(backStack::add)
 
     fun peek(): Any = backStack.peek()
 
     private fun addActionWhenEmpty(action: Any) {
-        forwardStack.clear()
-
         if (action is TextEditInfo) {
             backStack.add(
                 AddText(
@@ -60,7 +80,6 @@ class BackStackManager {
             backStack.add((popped as AddText).copy(isComplete = true))
         }
 
-        forwardStack.clear()
         backStack.add(action)
     }
 
@@ -92,6 +111,15 @@ class BackStackManager {
                     )
                 )
             }
+        } else {
+            //Todo: Review this whole method!
+            backStack.add(
+                AddText(
+                    text = action.text,
+                    position = action.position,
+                    isComplete = false
+                )
+            )
         }
     }
 }

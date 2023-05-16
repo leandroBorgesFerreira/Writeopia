@@ -49,9 +49,9 @@ class StoryTellerManagerTest {
         val storyManager = StoryTellerManager()
         val oldSize = messagesRepo.history().size
 
-        storyManager.addStories(messagesRepo.history())
+        storyManager.initStories(messagesRepo.history())
 
-        val newStory = storyManager.normalizedStepsState.value.stories
+        val newStory = storyManager.currentStory.value.stories
 
         assertEquals("a space should be added between each step", oldSize * 2 + 1, newStory.size)
     }
@@ -62,26 +62,26 @@ class StoryTellerManagerTest {
         val checkItem = input[0]
 
         val storyManager = StoryTellerManager().apply {
-            addStories(input)
+            initStories(input)
         }
 
         storyManager.onLineBreak(
             LineBreakInfo(storyStep = checkItem as StoryStep, position = 1)
         )
 
-        val newStory = storyManager.normalizedStepsState.value.stories
+        val newStory = storyManager.currentStory.value.stories
 
         assertEquals("the first item should be a check_item", "check_item", newStory[1]!!.type)
-        assertEquals("the second item should be a check_item","check_item", newStory[3]!!.type)
+        assertEquals("the second item should be a check_item", "check_item", newStory[3]!!.type)
         assertEquals("the size of the story should be 5", 5, newStory.size)
     }
 
     @Test
     fun `merge request should work`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(imagesInLineRepo.history())
+        storyManager.initStories(imagesInLineRepo.history())
 
-        val currentStory = storyManager.normalizedStepsState.value.stories
+        val currentStory = storyManager.currentStory.value.stories
         val initialSize = currentStory.size
 
         val positionFrom = currentStory.size - 2
@@ -100,7 +100,7 @@ class StoryTellerManagerTest {
             )
         )
 
-        val newStory = storyManager.normalizedStepsState.value.stories
+        val newStory = storyManager.currentStory.value.stories
 
         assertEquals(
             "One image should be removed and one space",
@@ -113,9 +113,9 @@ class StoryTellerManagerTest {
     @Test
     fun `merge request should work2`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(imagesInLineRepo.history())
+        storyManager.initStories(imagesInLineRepo.history())
 
-        val currentStory = storyManager.normalizedStepsState.value.stories
+        val currentStory = storyManager.currentStory.value.stories
         val initialSize = currentStory.size
 
         val positionFrom = currentStory.size - 2
@@ -130,7 +130,7 @@ class StoryTellerManagerTest {
             )
         )
 
-        val newStory = storyManager.normalizedStepsState.value.stories
+        val newStory = storyManager.currentStory.value.stories
 
         assertEquals(initialSize - 2, newStory.size)
         assertTrue("The first image should be a GroupImage now", newStory[1] is GroupStep)
@@ -140,9 +140,9 @@ class StoryTellerManagerTest {
     @Test
     fun `multiple merge requests should work`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(imagesInLineRepo.history())
+        storyManager.initStories(imagesInLineRepo.history())
 
-        val currentStory = storyManager.normalizedStepsState.value.stories
+        val currentStory = storyManager.currentStory.value.stories
         val initialSize = currentStory.size
 
         val positionFrom = currentStory.size - 2
@@ -157,7 +157,7 @@ class StoryTellerManagerTest {
             )
         )
 
-        val newHistory = storyManager.normalizedStepsState.value.stories
+        val newHistory = storyManager.currentStory.value.stories
 
         assertEquals("One space and one image were removed", initialSize - 2, newHistory.size)
         assertTrue(
@@ -171,7 +171,7 @@ class StoryTellerManagerTest {
         )
 
         repeat(2) {
-            val newHistory2 = storyManager.normalizedStepsState.value.stories
+            val newHistory2 = storyManager.currentStory.value.stories
 
             val newPositionFrom = newHistory2.size - 2
             val newPositionTo = 1
@@ -186,7 +186,7 @@ class StoryTellerManagerTest {
             )
         }
 
-        val newHistory3 = storyManager.normalizedStepsState.value.stories
+        val newHistory3 = storyManager.currentStory.value.stories
 
         assertEquals(
             "The minimum side should be 3 (space, group, space)",
@@ -204,9 +204,9 @@ class StoryTellerManagerTest {
     @Test
     fun `it should be possible to merge an image inside a message group`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(imageGroupRepo.history())
+        storyManager.initStories(imageGroupRepo.history())
 
-        val currentStory = storyManager.normalizedStepsState.value.stories
+        val currentStory = storyManager.currentStory.value.stories
         val initialSize = currentStory.size
         val initialImageGroupSize = (currentStory[1] as GroupStep).steps.size
 
@@ -222,7 +222,7 @@ class StoryTellerManagerTest {
             )
         )
 
-        val newStory = storyManager.normalizedStepsState.value.stories
+        val newStory = storyManager.currentStory.value.stories
 
         assertEquals("One image and one space were removed", initialSize - 2, newStory.size)
         assertTrue(newStory[1] is GroupStep)
@@ -236,9 +236,9 @@ class StoryTellerManagerTest {
     @Test
     fun `it should be possible to merge an image outside a message group`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(imageGroupRepo.history())
+        storyManager.initStories(imageGroupRepo.history())
 
-        val currentStory = storyManager.normalizedStepsState.value.stories
+        val currentStory = storyManager.currentStory.value.stories
         val initialGroupSize = (currentStory[1] as GroupStep).steps.size
 
         val positionTo = currentStory.size - 2
@@ -253,7 +253,7 @@ class StoryTellerManagerTest {
             )
         )
 
-        val newStory = storyManager.normalizedStepsState.value.stories
+        val newStory = storyManager.currentStory.value.stories
 
         assertEquals(
             "The image should be now in the position 3, because of spaces.",
@@ -270,9 +270,9 @@ class StoryTellerManagerTest {
     @Test
     fun `when moving outside of a group, the parent Id should be null now`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(imageGroupRepo.history())
+        storyManager.initStories(imageGroupRepo.history())
 
-        val currentStory = storyManager.normalizedStepsState.value.stories
+        val currentStory = storyManager.currentStory.value.stories
 
         val positionTo = currentStory.size - 1
         val positionFrom = 1
@@ -287,7 +287,7 @@ class StoryTellerManagerTest {
             )
         )
 
-        val newStory = storyManager.normalizedStepsState.value.stories
+        val newStory = storyManager.currentStory.value.stories
 
         assertEquals(
             "The last StoryUnit should be an image.",
@@ -313,16 +313,16 @@ class StoryTellerManagerTest {
     @Test
     fun `it should be possible to switch images places`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(imagesInLineRepo.history())
+        storyManager.initStories(imagesInLineRepo.history())
 
-        val currentStory = storyManager.normalizedStepsState.value.stories
+        val currentStory = storyManager.currentStory.value.stories
         val storyUnitToMove = currentStory[1]!!
 
         storyManager.moveRequest(
             MoveInfo(currentStory[1]!!, 1, 4)
         )
 
-        val newStory = storyManager.normalizedStepsState.value.stories
+        val newStory = storyManager.currentStory.value.stories
 
         assertEquals(
             "The first story should have been moved",
@@ -334,9 +334,9 @@ class StoryTellerManagerTest {
     @Test
     fun `deleting and leave a single element in a group destroys the group`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(imageGroupRepo.history())
+        storyManager.initStories(imageGroupRepo.history())
 
-        val currentStory = storyManager.normalizedStepsState.value.stories
+        val currentStory = storyManager.currentStory.value.stories
         assertEquals(
             "initial the story unit should be a group",
             "group_image",
@@ -344,7 +344,7 @@ class StoryTellerManagerTest {
         )
 
         val lastImageInsideGroup = {
-            (storyManager.normalizedStepsState.value.stories[1] as GroupStep)
+            (storyManager.currentStory.value.stories[1] as GroupStep)
                 .steps
                 .last()
         }
@@ -363,7 +363,7 @@ class StoryTellerManagerTest {
             )
         )
 
-        val newStory = storyManager.normalizedStepsState.value.stories
+        val newStory = storyManager.currentStory.value.stories
 
         assertEquals(
             "the group become just an image because there's only a single image",
@@ -375,17 +375,17 @@ class StoryTellerManagerTest {
     @Test
     fun `when deleting a message it should not leave consecutive spaces`() = runTest {
         val storyManager = StoryTellerManager()
-        storyManager.addStories(messagesRepo.history())
+        storyManager.initStories(messagesRepo.history())
 
         storyManager.onDelete(
             DeleteInfo(
-                storyManager.normalizedStepsState.value.stories[3]!!, 3
+                storyManager.currentStory.value.stories[3]!!, 3
             )
         )
 
         val stack: Stack<StoryUnit> = Stack()
 
-        storyManager.normalizedStepsState.value.stories.forEach { (_, storyUnit) ->
+        storyManager.currentStory.value.stories.forEach { (_, storyUnit) ->
             if (stack.isNotEmpty() && stack.peek().type == "space" && storyUnit.type == "space") {
                 fail("Consecutive spaces happened.")
             }
@@ -398,9 +398,9 @@ class StoryTellerManagerTest {
     fun `when a line break happens, a new story unit with the same type should be created - simple`() =
         runTest {
             val storyManager = StoryTellerManager()
-            storyManager.addStories(singleMessageRepo.history())
+            storyManager.initStories(singleMessageRepo.history())
 
-            val stories = storyManager.normalizedStepsState.value.stories
+            val stories = storyManager.currentStory.value.stories
             val initialSize = stories.size
 
             storyManager.onLineBreak(LineBreakInfo(stories[1] as StoryStep, position = 1))
@@ -408,7 +408,7 @@ class StoryTellerManagerTest {
             assertEquals(
                 "2 new stories should have been added",
                 initialSize + 2,
-                storyManager.normalizedStepsState.value.stories.size
+                storyManager.currentStory.value.stories.size
             )
         }
 
@@ -416,9 +416,9 @@ class StoryTellerManagerTest {
     fun `when a line break happens, a new story unit with the same type should be created - complex`() =
         runTest {
             val storyManager = StoryTellerManager()
-            storyManager.addStories(messagesRepo.history())
+            storyManager.initStories(messagesRepo.history())
 
-            val stories = storyManager.normalizedStepsState.value.stories
+            val stories = storyManager.currentStory.value.stories
             val initialSize = stories.size
 
             storyManager.onLineBreak(LineBreakInfo(stories[1] as StoryStep, 1))
@@ -426,7 +426,7 @@ class StoryTellerManagerTest {
             assertEquals(
                 "2 new stories should have been added",
                 initialSize + 2,
-                storyManager.normalizedStepsState.value.stories.size
+                storyManager.currentStory.value.stories.size
             )
         }
 
@@ -440,9 +440,9 @@ class StoryTellerManagerTest {
          * - Check that the correct image was moved correctly
          */
         val storyManager = StoryTellerManager()
-        storyManager.addStories(complexMessagesRepository.history())
+        storyManager.initStories(complexMessagesRepository.history())
 
-        val stories = storyManager.normalizedStepsState.value.stories
+        val stories = storyManager.currentStory.value.stories
 
         val positionTo = 1
         val positionFrom = 3
@@ -455,11 +455,11 @@ class StoryTellerManagerTest {
             )
         )
 
-        val newStory = storyManager.normalizedStepsState.value.stories
+        val newStory = storyManager.currentStory.value.stories
 
         assertEquals("The images should have been merged", 2, (newStory[1] as GroupStep).steps.size)
 
-        val stories2 = storyManager.normalizedStepsState.value.stories
+        val stories2 = storyManager.currentStory.value.stories
 
         val positionTo2 = 1
         val positionFrom2 = 3
@@ -472,7 +472,7 @@ class StoryTellerManagerTest {
             )
         )
 
-        val newStory2 = storyManager.normalizedStepsState.value.stories
+        val newStory2 = storyManager.currentStory.value.stories
 
         assertEquals(
             "The images should have been merged",
@@ -491,7 +491,7 @@ class StoryTellerManagerTest {
             )
         )
 
-        val newStory3 = storyManager.normalizedStepsState.value.stories
+        val newStory3 = storyManager.currentStory.value.stories
 
         assertEquals(
             "One image should have been separated",
@@ -505,4 +505,82 @@ class StoryTellerManagerTest {
         )
     }
 
+    @Test
+    fun `it should be possible to add content and undo it - 1 unit`() {
+        val storyManager = StoryTellerManager()
+        val input = MapStoryData.singleCheckItem()
+
+        storyManager.initStories(input)
+        val currentStory = storyManager.currentStory.value.stories
+
+        storyManager.onLineBreak(LineBreakInfo(input[0] as StoryStep, 1))
+        storyManager.undo()
+
+        assertEquals(currentStory.size, storyManager.currentStory.value.stories.size)
+    }
+
+    @Test
+    fun `it should be possible to add content and undo it - many units`() {
+        val storyManager = StoryTellerManager()
+        val input = MapStoryData.singleCheckItem()
+
+        storyManager.initStories(input)
+        val currentStory = storyManager.currentStory.value.stories
+
+        storyManager.onLineBreak(LineBreakInfo(input[0] as StoryStep, 1))
+        storyManager.onLineBreak(LineBreakInfo(input[0] as StoryStep, 3))
+        storyManager.onLineBreak(LineBreakInfo(input[0] as StoryStep, 5))
+        storyManager.undo()
+        storyManager.undo()
+        storyManager.undo()
+
+        val newStory = storyManager.currentStory.value.stories
+
+        assertEquals(
+            "The size of the story can't have changed",
+            currentStory.size,
+            newStory.size
+        )
+
+        currentStory.values.zip(newStory.values).forEach { (storyUnit1, storyUnit2) ->
+            if (storyUnit1.type != storyUnit2.type) fail()
+
+            if (storyUnit1.type != "space") {
+                assertEquals(storyUnit1.id, storyUnit2.id)
+            }
+        }
+    }
+
+    @Test
+    fun `spaces should be correct in the story`() {
+        val storyManager = StoryTellerManager()
+        val input = MapStoryData.singleCheckItem()
+
+        storyManager.run {
+            initStories(input)
+
+            onLineBreak(LineBreakInfo(input[0] as StoryStep, 1))
+            onLineBreak(LineBreakInfo(input[0] as StoryStep, 3))
+            onLineBreak(LineBreakInfo(input[0] as StoryStep, 5))
+
+            undo()
+            undo()
+            undo()
+
+            redo()
+            redo()
+        }
+
+        val newStory = storyManager.currentStory.value.stories
+
+        newStory.forEach { (position, storyUnit) ->
+            val isEven = position % 2 == 0
+
+            if (isEven) {
+                assertEquals("space", storyUnit.type)
+            } else {
+                assertNotEquals("space", storyUnit.type)
+            }
+        }
+    }
 }
