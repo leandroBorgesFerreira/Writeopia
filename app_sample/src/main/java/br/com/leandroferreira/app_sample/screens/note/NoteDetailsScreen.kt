@@ -9,32 +9,32 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.leandroferreira.app_sample.screens.note.input.InputScreen
-import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
 import br.com.leandroferreira.storyteller.StoryTellerTimeline
 import br.com.leandroferreira.storyteller.drawer.DefaultDrawers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filterNotNull
 
 @Composable
 fun NoteDetailsScreen(documentId: String, noteDetailsViewModel: NoteDetailsViewModel) {
     noteDetailsViewModel.requestDocumentContent(documentId)
 
     Scaffold(
-        topBar = { TopBar(noteDetailsViewModel = noteDetailsViewModel) },
+        topBar = { TopBar() },
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -55,20 +55,9 @@ fun NoteDetailsScreen(documentId: String, noteDetailsViewModel: NoteDetailsViewM
 }
 
 @Composable
-private fun TopBar(noteDetailsViewModel: NoteDetailsViewModel) {
+private fun TopBar() {
     TopAppBar(
         title = { Text(text = "Note") },
-        actions = {
-            TextButton(onClick = noteDetailsViewModel::saveNote) {
-                Text(
-                    text = "Save",
-                    style = MaterialTheme.typography.h6.copy(
-                        fontSize = 19.sp,
-                        color = MaterialTheme.colors.onPrimary
-                    )
-                )
-            }
-        }
     )
 }
 
@@ -88,6 +77,14 @@ fun ColumnScope.Body(noteDetailsViewModel: NoteDetailsViewModel) {
         })
     }
 
+    OnLifecycleEvent { _, event ->
+        // do stuff on event
+
+        if (event == Lifecycle.Event.ON_PAUSE) {
+            noteDetailsViewModel.saveNote()
+        }
+    }
+
     StoryTellerTimeline(
         modifier = Modifier
             .fillMaxWidth()
@@ -100,4 +97,20 @@ fun ColumnScope.Body(noteDetailsViewModel: NoteDetailsViewModel) {
     )
 }
 
+@Composable
+fun OnLifecycleEvent(onEvent: (owner: LifecycleOwner, event: Lifecycle.Event) -> Unit) {
+    val eventHandler = rememberUpdatedState(onEvent)
+    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
 
+    DisposableEffect(lifecycleOwner.value) {
+        val lifecycle = lifecycleOwner.value.lifecycle
+        val observer = LifecycleEventObserver { owner, event ->
+            eventHandler.value(owner, event)
+        }
+
+        lifecycle.addObserver(observer)
+        onDispose {
+            lifecycle.removeObserver(observer)
+        }
+    }
+}
