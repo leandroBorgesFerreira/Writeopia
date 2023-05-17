@@ -70,6 +70,16 @@ class StoryTellerManager(
 
     fun isInitialized(): Boolean = _currentStory.value.stories.isNotEmpty()
 
+    fun newStory() {
+        val firstMessage = StoryStep(
+            localId = UUID.randomUUID().toString(),
+            type = "message"
+        )
+        val stories: Map<Int, StoryUnit> = mapOf(0 to firstMessage)
+
+        _currentStory.value = StoryState(stepsNormalizer(stories.toEditState()), firstMessage.id)
+    }
+
     fun initStories(stories: Map<Int, StoryUnit>) {
         _currentStory.value = StoryState(stepsNormalizer(stories.toEditState()), null)
     }

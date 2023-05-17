@@ -33,6 +33,10 @@ class NoteDetailsViewModel(
         _editModeState.value = !_editModeState.value
     }
 
+    fun createNewNote() {
+        storyTellerManager.newStory()
+    }
+
     fun requestDocumentContent(documentId: String) {
         if (storyTellerManager.isInitialized()) return
 

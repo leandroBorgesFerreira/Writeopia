@@ -78,7 +78,7 @@ fun NavigationGraph() {
                             )
                         )
 
-                    NoteDetailsScreen(id, noteDetailsViewModel)
+                    NoteDetailsScreen(id.takeIf { it != "null" }, noteDetailsViewModel)
                 }
             }
 

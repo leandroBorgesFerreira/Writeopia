@@ -56,7 +56,7 @@ class MessageStepDrawer(
                 val focusRequester = remember { FocusRequester() }
 
                 LaunchedEffect(drawInfo.focusId) {
-                    if (drawInfo.focusId == step.localId) {
+                    if (drawInfo.focusId == step.id) {
                         focusRequester.requestFocus()
                     }
                 }

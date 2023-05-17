@@ -35,8 +35,12 @@ import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NoteDetailsScreen(documentId: String, noteDetailsViewModel: NoteDetailsViewModel) {
-    noteDetailsViewModel.requestDocumentContent(documentId)
+fun NoteDetailsScreen(documentId: String?, noteDetailsViewModel: NoteDetailsViewModel) {
+    if (documentId != null) {
+        noteDetailsViewModel.requestDocumentContent(documentId)
+    } else {
+        noteDetailsViewModel.createNewNote()
+    }
 
     Scaffold(
         topBar = { TopBar() },
@@ -84,8 +88,6 @@ fun ColumnScope.Body(noteDetailsViewModel: NoteDetailsViewModel) {
     }
 
     OnLifecycleEvent { _, event ->
-        // do stuff on event
-
         if (event == Lifecycle.Event.ON_PAUSE) {
             noteDetailsViewModel.saveNote()
         }
