@@ -1,5 +1,6 @@
 package br.com.leandroferreira.app_sample.screens.note
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,10 +10,10 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -26,10 +27,13 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.leandroferreira.app_sample.screens.note.input.InputScreen
+import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION
+import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION_DARK
 import br.com.leandroferreira.storyteller.StoryTellerTimeline
 import br.com.leandroferreira.storyteller.drawer.DefaultDrawers
 import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteDetailsScreen(documentId: String, noteDetailsViewModel: NoteDetailsViewModel) {
     noteDetailsViewModel.requestDocumentContent(documentId)
@@ -55,6 +59,7 @@ fun NoteDetailsScreen(documentId: String, noteDetailsViewModel: NoteDetailsViewM
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar() {
     TopAppBar(
@@ -97,7 +102,7 @@ fun ColumnScope.Body(noteDetailsViewModel: NoteDetailsViewModel) {
         drawers = DefaultDrawers.create(
             editable,
             noteDetailsViewModel.storyTellerManager,
-            groupsBackgroundColor = MaterialTheme.colors.primaryVariant
+            groupsBackgroundColor = if (isSystemInDarkTheme()) BACKGROUND_VARIATION_DARK else BACKGROUND_VARIATION
         )
     )
 }

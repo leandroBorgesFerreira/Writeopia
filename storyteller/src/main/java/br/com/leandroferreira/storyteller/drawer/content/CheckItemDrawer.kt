@@ -9,10 +9,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Checkbox
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.LocalMinimumInteractiveComponentEnforcement
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalMinimumTouchTargetEnforcement
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -51,7 +51,7 @@ class CheckItemDrawer(
     private val onDeleteRequest: (DeleteInfo) -> Unit
 ) : StoryUnitDrawer {
 
-    @OptIn(ExperimentalMaterialApi::class)
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
         val checkItem = step as StoryStep
@@ -76,10 +76,10 @@ class CheckItemDrawer(
                 val textStyle = if (checkItem.checked == true) {
                     TextStyle(
                         textDecoration = TextDecoration.LineThrough,
-                        color = MaterialTheme.colors.onBackground
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 } else {
-                    TextStyle(color = MaterialTheme.colors.onBackground)
+                    TextStyle(color = MaterialTheme.colorScheme.onBackground)
                 }
 
                 LaunchedEffect(drawInfo.focusId) {
@@ -94,7 +94,7 @@ class CheckItemDrawer(
                         .background(Color.Cyan)
                 )
 
-                CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
+                CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
                     Checkbox(
                         modifier = Modifier.padding(6.dp),
                         checked = checkItem.checked ?: false,
