@@ -1,28 +1,28 @@
 package br.com.leandroferreira.app_sample.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColors(
+private val DarkColorPalette = darkColorScheme(
   primary = ORANGE,
-  primaryVariant = BACKGROUND_VARIATION_DARK,
   secondary = ORANGE,
   onPrimary = Color.White,
   onSecondary = Color.White,
   onBackground = Color.White,
+  surface = ORANGE
 )
 
-private val LightColorPalette = lightColors(
+private val LightColorPalette = lightColorScheme(
   primary = ORANGE,
-  primaryVariant = BACKGROUND_VARIATION,
   secondary = ORANGE,
   onPrimary = Color.White,
   onSecondary = Color.White,
-  onBackground = Color.Black
+  onBackground = Color.Black,
+  surface = ORANGE
 )
 
 @Composable
@@ -37,7 +37,7 @@ fun ApplicationComposeTheme(
   }
 
   MaterialTheme(
-    colors = colors,
+    colorScheme = colors,
     typography = Typography,
     shapes = Shapes,
     content = content
