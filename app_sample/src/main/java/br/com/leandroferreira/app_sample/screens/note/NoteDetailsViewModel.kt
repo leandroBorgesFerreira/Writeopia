@@ -42,6 +42,11 @@ class NoteDetailsViewModel(
             _documentState.value = document
 
             if (content != null) {
+                storyTellerManager.saveOnStoryChanges(
+                    viewModelScope,
+                    documentId,
+                    documentRepository
+                )
                 storyTellerManager.initStories(content)
             }
         }
@@ -65,6 +70,7 @@ class NoteDetailsViewModel(
         super.onCleared()
 
         storyTellerManager.updateState()
+        saveNote()
     }
 }
 

@@ -21,9 +21,14 @@ import br.com.leandroferreira.storyteller.utils.StoryStepFactory
 import br.com.leandroferreira.storyteller.utils.UnitsNormalizationMap
 import br.com.leandroferreira.storyteller.utils.extensions.associateWithPosition
 import br.com.leandroferreira.storyteller.utils.extensions.toEditState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import java.util.UUID
 
 class StoryTellerManager(
@@ -35,7 +40,7 @@ class StoryTellerManager(
         StoryType.CHECK_ITEM.type,
         StoryType.MESSAGE.type
     ),
-    private val backStackManager: BackStackManager = BackStackManager()
+    private val backStackManager: BackStackManager = BackStackManager(),
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
@@ -48,6 +53,20 @@ class StoryTellerManager(
     )
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
+
+    fun saveOnStoryChanges(
+        coroutineScope: CoroutineScope,
+        documentId: String,
+        storyStateSaver: StoryStateSaver
+    ) {
+        coroutineScope.launch(Dispatchers.IO) {
+            currentStory.map { storyState ->
+                storyState.stories
+            }.collectLatest { content ->
+                storyStateSaver.saveState(documentId, content)
+            }
+        }
+    }
 
     fun isInitialized(): Boolean = _currentStory.value.stories.isNotEmpty()
 
