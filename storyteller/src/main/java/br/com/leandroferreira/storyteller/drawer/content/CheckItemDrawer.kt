@@ -1,19 +1,19 @@
 package br.com.leandroferreira.storyteller.drawer.content
 
-import android.util.Log
-import android.view.KeyEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Checkbox
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,22 +24,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import br.com.leandroferreira.storyteller.R
 import br.com.leandroferreira.storyteller.draganddrop.target.DragTarget
 import br.com.leandroferreira.storyteller.drawer.DrawInfo
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
-import br.com.leandroferreira.storyteller.model.story.StoryStep
-import br.com.leandroferreira.storyteller.model.story.StoryUnit
+import br.com.leandroferreira.storyteller.drawer.modifier.callOnEmptyErase
 import br.com.leandroferreira.storyteller.model.change.CheckInfo
 import br.com.leandroferreira.storyteller.model.change.DeleteInfo
 import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
 import br.com.leandroferreira.storyteller.model.draganddrop.DropInfo
+import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.model.story.StoryUnit
 
 class CheckItemDrawer(
     private val onCheckedChange: (CheckInfo) -> Unit,
@@ -48,39 +50,27 @@ class CheckItemDrawer(
     private val onDeleteRequest: (DeleteInfo) -> Unit
 ) : StoryUnitDrawer {
 
+    @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
         val checkItem = step as StoryStep
 
         DragTarget(dataToDrop = DropInfo(checkItem, drawInfo.position)) {
             Row(
-                modifier = Modifier.padding(horizontal = 2.dp),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier
+                    .padding(horizontal = 2.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(10.dp)
-                        .background(Color.Cyan)
-                )
-
-                Checkbox(
-                    checked = checkItem.checked ?: false,
-                    onCheckedChange = { checked ->
-                        onCheckedChange(
-                            CheckInfo(
-                                checkItem,
-                                drawInfo.position,
-                                checked
-                            )
-                        )
-                    },
-                    enabled = drawInfo.editable
-                )
+                val todoPlaceHolder = stringResource(R.string.to_do)
 
                 var inputText by remember {
-                    val text = checkItem.text ?: ""
+                    val text = checkItem.text
+                        .takeIf { text -> text?.isNotEmpty() == true }
+                        ?: todoPlaceHolder
                     mutableStateOf(TextFieldValue(text, TextRange(text.length)))
                 }
+                val focusRequester = remember { FocusRequester() }
 
                 val textStyle = if (checkItem.checked == true) {
                     TextStyle(textDecoration = TextDecoration.LineThrough)
@@ -88,30 +78,35 @@ class CheckItemDrawer(
                     TextStyle()
                 }
 
-                val focusRequester = remember { FocusRequester() }
-
                 LaunchedEffect(drawInfo.focusId) {
                     if (drawInfo.focusId == step.id) {
                         focusRequester.requestFocus()
                     }
                 }
 
-                TextField(
+                Box(
                     modifier = Modifier
-                        .padding(0.dp)
-                        .focusRequester(focusRequester)
-                        .onKeyEvent { keyEvent ->
-                            if (keyEvent.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DEL &&
-                                inputText.selection.start == 0
-                            ) {
-                                onDeleteRequest(DeleteInfo(step, position = drawInfo.position))
-                                true
-                            } else {
-                                false
-                            }
+                        .size(10.dp)
+                        .background(Color.Cyan)
+                )
+
+                CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
+                    Checkbox(
+                        modifier = Modifier.padding(6.dp),
+                        checked = checkItem.checked ?: false,
+                        onCheckedChange = { checked ->
+                            onCheckedChange(CheckInfo(checkItem, drawInfo.position, checked))
+                        },
+                        enabled = drawInfo.editable
+                    )
+                }
+
+                BasicTextField(
+                    modifier = Modifier.focusRequester(focusRequester)
+                        .callOnEmptyErase(inputText.selection) {
+                            onDeleteRequest(DeleteInfo(step, drawInfo.position))
                         },
                     value = inputText,
-                    placeholder = { Text(text = "To-do") },
                     onValueChange = { value ->
                         if (value.text.contains("\n")) {
                             onLineBreak(
@@ -124,14 +119,7 @@ class CheckItemDrawer(
                             inputText = value
                             onTextEdit(value.text, drawInfo.position)
                         }
-
                     },
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Color.Transparent,
-                        unfocusedBorderColor = Color.Transparent,
-                        disabledBorderColor = Color.Transparent
-                    ),
-                    maxLines = 1,
                     textStyle = textStyle,
                     enabled = drawInfo.editable,
                     keyboardOptions = KeyboardOptions(

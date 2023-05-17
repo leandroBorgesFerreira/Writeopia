@@ -25,7 +25,6 @@ import br.com.leandroferreira.app_sample.utils.ResultData
 fun ChooseNoteScreen(chooseNoteViewModel: ChooseNoteViewModel, navigateToNote: (String) -> Unit) {
     chooseNoteViewModel.requestDocuments()
 
-
     Content(chooseNoteViewModel = chooseNoteViewModel, navigateToNote = navigateToNote)
 }
 
