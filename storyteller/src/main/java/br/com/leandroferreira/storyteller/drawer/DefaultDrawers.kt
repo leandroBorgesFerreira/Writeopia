@@ -3,6 +3,7 @@ package br.com.leandroferreira.storyteller.drawer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -28,7 +29,8 @@ object DefaultDrawers {
 
     fun create(
         editable: Boolean = false,
-        manager: StoryTellerManager
+        manager: StoryTellerManager,
+        groupsBackgroundColor: Color = Color.Transparent
     ): Map<String, StoryUnitDrawer> =
         create(
             editable = editable,
@@ -38,6 +40,7 @@ object DefaultDrawers {
             moveRequest = manager::moveRequest,
             checkRequest = manager::checkRequest,
             onDeleteRequest = manager::onDelete,
+            groupsBackgroundColor = groupsBackgroundColor
         )
 
     fun create(
@@ -47,7 +50,8 @@ object DefaultDrawers {
         mergeRequest: (MergeInfo) -> Unit = { },
         moveRequest: (MoveInfo) -> Unit = { },
         checkRequest: (CheckInfo) -> Unit = { },
-        onDeleteRequest: (DeleteInfo) -> Unit
+        onDeleteRequest: (DeleteInfo) -> Unit,
+        groupsBackgroundColor: Color = Color.Transparent
     ): Map<String, StoryUnitDrawer> =
         buildMap {
             val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->
@@ -71,7 +75,7 @@ object DefaultDrawers {
                 containerModifier = Modifier
                     .padding(vertical = 4.dp, horizontal = 8.dp)
                     .clip(shape = RoundedCornerShape(size = 12.dp))
-                    .background(Color(0xFFFAF8F2)),
+                    .background(groupsBackgroundColor),
                 innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
                 onTextEdit = onTextEdit,
                 onLineBreak = {},

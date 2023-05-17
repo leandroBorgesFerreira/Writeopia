@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
-import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION
 import br.com.leandroferreira.storyteller.StoryTellerTimeline
 import br.com.leandroferreira.storyteller.drawer.DefaultDrawers
 
@@ -47,21 +46,19 @@ fun AddStoryScreen(storiesViewModel: StoriesViewModel) {
     storiesViewModel.requestStories()
     storiesViewModel.updateState()
 
-    ApplicationComposeTheme {
-        Scaffold(
-            topBar = { TopBar() },
-            floatingActionButton = {
-                FloatingActionButton(onClick = {
-                    storiesViewModel.updateState()
-                    storiesViewModel.toggleEdit()
-                }) {
-                    Icon(imageVector = Icons.Outlined.Edit, contentDescription = "")
-                }
+    Scaffold(
+        topBar = { TopBar() },
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                storiesViewModel.updateState()
+                storiesViewModel.toggleEdit()
+            }) {
+                Icon(imageVector = Icons.Outlined.Edit, contentDescription = "")
             }
-        ) { paddingValues ->
-            Box(modifier = Modifier.padding(top = paddingValues.calculateTopPadding())) {
-                Body(storiesViewModel)
-            }
+        }
+    ) { paddingValues ->
+        Box(modifier = Modifier.padding(top = paddingValues.calculateTopPadding())) {
+            Body(storiesViewModel)
         }
     }
 }
@@ -120,7 +117,7 @@ private fun Body(storiesViewModel: StoriesViewModel) {
 
 @Composable
 private fun InfoHeader() {
-    Column(modifier = Modifier.background(BACKGROUND_VARIATION)) {
+    Column(modifier = Modifier.background(MaterialTheme.colors.primary)) {
         var storyName by remember { mutableStateOf("") }
         var date by remember { mutableStateOf("") }
 

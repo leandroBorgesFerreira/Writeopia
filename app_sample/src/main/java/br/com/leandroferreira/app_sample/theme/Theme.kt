@@ -9,18 +9,20 @@ import androidx.compose.ui.graphics.Color
 
 private val DarkColorPalette = darkColors(
   primary = ORANGE,
-  primaryVariant = ORANGE,
+  primaryVariant = BACKGROUND_VARIATION_DARK,
   secondary = ORANGE,
   onPrimary = Color.White,
   onSecondary = Color.White,
+  onBackground = Color.White,
 )
 
 private val LightColorPalette = lightColors(
   primary = ORANGE,
-  primaryVariant = ORANGE,
+  primaryVariant = BACKGROUND_VARIATION,
   secondary = ORANGE,
   onPrimary = Color.White,
-  onSecondary = Color.White
+  onSecondary = Color.White,
+  onBackground = Color.Black
 )
 
 @Composable
