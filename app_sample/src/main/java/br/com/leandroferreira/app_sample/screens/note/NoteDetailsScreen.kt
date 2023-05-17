@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -93,7 +94,11 @@ fun ColumnScope.Body(noteDetailsViewModel: NoteDetailsViewModel) {
         contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp),
         editable = editable,
         listState = listState,
-        drawers = DefaultDrawers.create(editable, noteDetailsViewModel.storyTellerManager)
+        drawers = DefaultDrawers.create(
+            editable,
+            noteDetailsViewModel.storyTellerManager,
+            groupsBackgroundColor = MaterialTheme.colors.primaryVariant
+        )
     )
 }
 

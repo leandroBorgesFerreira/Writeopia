@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Checkbox
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.LocalMinimumInteractiveComponentEnforcement
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -73,9 +74,12 @@ class CheckItemDrawer(
                 val focusRequester = remember { FocusRequester() }
 
                 val textStyle = if (checkItem.checked == true) {
-                    TextStyle(textDecoration = TextDecoration.LineThrough)
+                    TextStyle(
+                        textDecoration = TextDecoration.LineThrough,
+                        color = MaterialTheme.colors.onBackground
+                    )
                 } else {
-                    TextStyle()
+                    TextStyle(color = MaterialTheme.colors.onBackground)
                 }
 
                 LaunchedEffect(drawInfo.focusId) {
@@ -102,7 +106,8 @@ class CheckItemDrawer(
                 }
 
                 BasicTextField(
-                    modifier = Modifier.focusRequester(focusRequester)
+                    modifier = Modifier
+                        .focusRequester(focusRequester)
                         .callOnEmptyErase(inputText.selection) {
                             onDeleteRequest(DeleteInfo(step, drawInfo.position))
                         },
