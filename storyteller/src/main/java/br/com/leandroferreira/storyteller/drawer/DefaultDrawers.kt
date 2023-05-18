@@ -72,7 +72,7 @@ object DefaultDrawers {
 
             val messageBoxDrawer = MessageStepDrawer(
                 containerModifier = Modifier
-                    .padding(vertical = 4.dp, horizontal = 8.dp)
+                    .padding(horizontal = 8.dp)
                     .clip(shape = RoundedCornerShape(size = 12.dp))
                     .background(groupsBackgroundColor),
                 innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
