@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -72,8 +74,16 @@ fun NoteDetailsScreen(documentId: String?, noteDetailsViewModel: NoteDetailsView
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar() {
+
     TopAppBar(
-        title = { Text(text = "Note") },
+        title = {
+            Text(
+                text = "Note",
+            )
+        },
+        colors = TopAppBarDefaults.mediumTopAppBarColors(
+            titleContentColor = MaterialTheme.colorScheme.onPrimary
+        )
     )
 }
 
