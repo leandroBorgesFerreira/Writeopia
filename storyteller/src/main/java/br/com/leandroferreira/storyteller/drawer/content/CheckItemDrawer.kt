@@ -45,12 +45,13 @@ import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
 import br.com.leandroferreira.storyteller.model.draganddrop.DropInfo
 import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.model.story.StoryUnit
+import br.com.leandroferreira.storyteller.text.edition.TextCommandHandler
 
 class CheckItemDrawer(
     private val onCheckedChange: (CheckInfo) -> Unit,
     private val onTextEdit: (String, Int) -> Unit,
-    private val onLineBreak: (LineBreakInfo) -> Unit,
-    private val onDeleteRequest: (DeleteInfo) -> Unit
+    private val onDeleteRequest: (DeleteInfo) -> Unit,
+    private val commandHandler: TextCommandHandler
 ) : StoryUnitDrawer {
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -113,14 +114,12 @@ class CheckItemDrawer(
                         },
                     value = inputText,
                     onValueChange = { value: TextFieldValue ->
-                        if (value.text.contains("\n")) {
-                            onLineBreak(
-                                LineBreakInfo(
-                                    step.copy(text = value.text),
-                                    position = drawInfo.position
-                                )
+                        if (!commandHandler.handleCommand(
+                                value.text,
+                                checkItem,
+                                drawInfo.position
                             )
-                        } else {
+                        ) {
                             inputText = value
                             onTextEdit(value.text, drawInfo.position)
                         }
