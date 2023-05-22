@@ -12,6 +12,7 @@ import br.com.leandroferreira.storyteller.persistence.repository.DocumentReposit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class NoteDetailsViewModel(
@@ -27,7 +28,8 @@ class NoteDetailsViewModel(
     val story: StateFlow<StoryState> = storyTellerManager.currentStory
     val scrollToPosition = storyTellerManager.scrollToPosition
 
-    private var _documentState: MutableStateFlow<Document?> = MutableStateFlow(null)
+    private val _documentState: MutableStateFlow<Document?> = MutableStateFlow(null)
+    val documentState: StateFlow<Document?> = _documentState.asStateFlow()
 
     fun toggleEdit() {
         _editModeState.value = !_editModeState.value
@@ -45,13 +47,14 @@ class NoteDetailsViewModel(
         storyTellerManager.newStory()
 
         viewModelScope.launch(Dispatchers.IO) {
-            documentRepository.saveDocument(
-                Document(
-                    id = documentId,
-                    title = title,
-                    content = storyTellerManager.currentStory.value.stories
-                )
+            val document = Document(
+                id = documentId,
+                title = title,
+                content = storyTellerManager.currentStory.value.stories
             )
+
+            documentRepository.saveDocument(document)
+            _documentState.value = document
         }
     }
 
