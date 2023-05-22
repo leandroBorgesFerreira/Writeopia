@@ -1,3 +1,6 @@
+![Java CI with Gradle](https://github.com/leandroBorgesFerreira/StoryTeller/workflows/Build%20and%20test/badge.svg)
+
+
 # StoryTeller - WIP
 
 An SDK to create a editor for stories. 
