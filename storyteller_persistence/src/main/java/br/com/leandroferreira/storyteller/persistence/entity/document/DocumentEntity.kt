@@ -8,6 +8,6 @@ internal const val DOCUMENT_ENTITY: String = "DOCUMENT_ENTITY_TABLE"
 
 @Entity(tableName = DOCUMENT_ENTITY)
 data class DocumentEntity(
-    @PrimaryKey() val id: String,
+    @PrimaryKey val id: String,
     @ColumnInfo("title") val title: String,
 )

@@ -21,17 +21,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.com.leandroferreira.app_sample.R
 import br.com.leandroferreira.app_sample.screens.note.input.InputScreen
 import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION
 import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION_DARK
 import br.com.leandroferreira.storyteller.StoryTellerTimeline
 import br.com.leandroferreira.storyteller.drawer.DefaultDrawers
 import kotlinx.coroutines.flow.collectLatest
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,7 +42,10 @@ fun NoteDetailsScreen(documentId: String?, noteDetailsViewModel: NoteDetailsView
     if (documentId != null) {
         noteDetailsViewModel.requestDocumentContent(documentId)
     } else {
-        noteDetailsViewModel.createNewNote()
+        noteDetailsViewModel.createNewNote(
+            UUID.randomUUID().toString(),
+            stringResource(R.string.untitled)
+        )
     }
 
     Scaffold(

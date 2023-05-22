@@ -81,6 +81,8 @@ class StoryTellerManager(
     }
 
     fun initStories(stories: Map<Int, StoryUnit>) {
+        if (isInitialized()) return
+
         _currentStory.value = StoryState(stepsNormalizer(stories.toEditState()), null)
     }
 
