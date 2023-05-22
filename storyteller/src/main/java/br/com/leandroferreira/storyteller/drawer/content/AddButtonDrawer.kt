@@ -26,7 +26,7 @@ class AddButtonDrawer : StoryUnitDrawer {
 
     @Composable
     override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
-        Box(modifier = Modifier.padding(5.dp)) {
+        Box(modifier = Modifier.padding(horizontal = 5.dp)) {
             Button(
                 onClick = { },
                 shape = CircleShape,

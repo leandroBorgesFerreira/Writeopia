@@ -47,7 +47,7 @@ class ImageStepDrawer(
     override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
         val imageStep = step as StoryStep
 
-        DropTarget(modifier = Modifier.padding(6.dp)) { inBound, data ->
+        DropTarget(modifier = Modifier.padding(horizontal = 6.dp)) { inBound, data ->
             if (inBound && data != null) {
                 mergeRequest(
                     MergeInfo(

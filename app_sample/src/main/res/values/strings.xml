@@ -5,4 +5,5 @@
     <string name="add_sample_notes">Add sample notes</string>
     <string name="undo">Undo</string>
     <string name="redo">Redo</string>
+    <string name="untitled">untitled</string>
 </resources>

@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyItemScope
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalMinimumTouchTargetEnforcement
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -66,9 +68,7 @@ class CheckItemDrawer(
                 val todoPlaceHolder = stringResource(R.string.to_do)
 
                 var inputText by remember {
-                    val text = checkItem.text
-                        .takeIf { text -> text?.isNotEmpty() == true }
-                        ?: todoPlaceHolder
+                    val text = checkItem.text ?: ""
                     mutableStateOf(TextFieldValue(text, TextRange(text.length)))
                 }
                 val focusRequester = remember { FocusRequester() }
@@ -90,7 +90,7 @@ class CheckItemDrawer(
 
                 Box(
                     modifier = Modifier
-                        .size(10.dp)
+                        .size(20.dp)
                         .background(Color.Cyan)
                 )
 
@@ -105,14 +105,14 @@ class CheckItemDrawer(
                     )
                 }
 
-                BasicTextField(
+                TextField(
                     modifier = Modifier
                         .focusRequester(focusRequester)
                         .callOnEmptyErase(inputText.selection) {
                             onDeleteRequest(DeleteInfo(step, drawInfo.position))
                         },
                     value = inputText,
-                    onValueChange = { value ->
+                    onValueChange = { value: TextFieldValue ->
                         if (value.text.contains("\n")) {
                             onLineBreak(
                                 LineBreakInfo(
@@ -125,11 +125,17 @@ class CheckItemDrawer(
                             onTextEdit(value.text, drawInfo.position)
                         }
                     },
+                    placeholder = { Text(text = todoPlaceHolder) },
                     textStyle = textStyle,
                     enabled = drawInfo.editable,
                     keyboardOptions = KeyboardOptions(
                         capitalization = KeyboardCapitalization.Sentences
-                    )
+                    ),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent,
+                        disabledBorderColor = Color.Transparent
+                    ),
                 )
             }
         }

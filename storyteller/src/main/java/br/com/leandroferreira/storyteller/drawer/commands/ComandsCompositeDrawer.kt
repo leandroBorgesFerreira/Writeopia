@@ -35,7 +35,7 @@ class CommandsDecoratorDrawer(
 
     @Composable
     override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
-        Box(modifier = Modifier.padding(vertical = 3.dp)) {
+        Box {
             Box(modifier = Modifier.padding(top = 3.dp)) {
                 innerStep.run { Step(step = step, drawInfo = drawInfo) }
             }

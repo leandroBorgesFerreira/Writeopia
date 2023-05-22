@@ -33,6 +33,28 @@ class NoteDetailsViewModel(
         _editModeState.value = !_editModeState.value
     }
 
+    fun createNewNote(documentId: String, title: String) {
+        if (storyTellerManager.isInitialized()) return
+
+        storyTellerManager.saveOnStoryChanges(
+            viewModelScope,
+            documentId,
+            documentRepository
+        )
+
+        storyTellerManager.newStory()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            documentRepository.saveDocument(
+                Document(
+                    id = documentId,
+                    title = title,
+                    content = storyTellerManager.currentStory.value.stories
+                )
+            )
+        }
+    }
+
     fun requestDocumentContent(documentId: String) {
         if (storyTellerManager.isInitialized()) return
 
