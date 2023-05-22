@@ -35,6 +35,8 @@ import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION
 import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION_DARK
 import br.com.leandroferreira.storyteller.StoryTellerTimeline
 import br.com.leandroferreira.storyteller.drawer.DefaultDrawers
+import br.com.leandroferreira.storyteller.model.document.Document
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import java.util.UUID
 
@@ -51,7 +53,7 @@ fun NoteDetailsScreen(documentId: String?, noteDetailsViewModel: NoteDetailsView
     }
 
     Scaffold(
-        topBar = { TopBar() },
+        topBar = { TopBar(noteDetailsViewModel.documentState) },
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -73,12 +75,13 @@ fun NoteDetailsScreen(documentId: String?, noteDetailsViewModel: NoteDetailsView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBar() {
+private fun TopBar(documentState: StateFlow<Document?>) {
+    val document by documentState.collectAsStateWithLifecycle()
 
     TopAppBar(
         title = {
             Text(
-                text = "Note",
+                text = document?.title ?: stringResource(R.string.note),
             )
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
