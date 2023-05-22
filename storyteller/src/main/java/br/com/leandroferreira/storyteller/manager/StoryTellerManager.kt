@@ -152,6 +152,20 @@ class StoryTellerManager(
         _currentStory.value = StoryState(newMap)
     }
 
+    fun createCheckItem(position: Int) {
+        updateState()
+
+        val newMap = _currentStory.value.stories.toMutableMap()
+        val newCheck = StoryStep(
+            id = UUID.randomUUID().toString(),
+            localId = UUID.randomUUID().toString(),
+            type = StoryType.CHECK_ITEM.type,
+        )
+        newMap[position] = newCheck
+
+        _currentStory.value = StoryState(newMap, newCheck.id)
+    }
+
     fun onTextEdit(text: String, position: Int) {
         textChanges[position] = text
         backStackManager.addAction(TextEditInfo(text, position))

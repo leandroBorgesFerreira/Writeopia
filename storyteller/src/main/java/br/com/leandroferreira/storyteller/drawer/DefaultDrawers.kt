@@ -23,6 +23,8 @@ import br.com.leandroferreira.storyteller.model.change.DeleteInfo
 import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
 import br.com.leandroferreira.storyteller.model.change.MergeInfo
 import br.com.leandroferreira.storyteller.model.change.MoveInfo
+import br.com.leandroferreira.storyteller.model.story.StoryStep
+import br.com.leandroferreira.storyteller.text.edition.TextCommandHandler
 
 object DefaultDrawers {
 
@@ -39,6 +41,7 @@ object DefaultDrawers {
             moveRequest = manager::moveRequest,
             checkRequest = manager::checkRequest,
             onDeleteRequest = manager::onDelete,
+            createCheckItem = manager::createCheckItem,
             groupsBackgroundColor = groupsBackgroundColor
         )
 
@@ -50,9 +53,29 @@ object DefaultDrawers {
         moveRequest: (MoveInfo) -> Unit = { },
         checkRequest: (CheckInfo) -> Unit = { },
         onDeleteRequest: (DeleteInfo) -> Unit,
+        createCheckItem: (Int) -> Unit,
         groupsBackgroundColor: Color = Color.Transparent
     ): Map<String, StoryUnitDrawer> =
         buildMap {
+            val textCommandHandlerMessage = TextCommandHandler(
+                mapOf(
+                    "\n" to { storyStep, position ->
+                        onLineBreak(LineBreakInfo(storyStep, position))
+                    },
+                    "-[]" to { _, position ->
+                        createCheckItem(position)
+                    }
+                )
+            )
+
+            val textCommandHandlerCheckItem = TextCommandHandler(
+                mapOf(
+                    "\n" to { storyStep, position ->
+                        onLineBreak(LineBreakInfo(storyStep, position))
+                    },
+                )
+            )
+
             val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->
                 CommandsDecoratorDrawer(
                     stepDrawer,
@@ -77,23 +100,23 @@ object DefaultDrawers {
                     .background(groupsBackgroundColor),
                 innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
                 onTextEdit = onTextEdit,
-                onLineBreak = {},
-                onDeleteRequest = onDeleteRequest
+                onDeleteRequest = onDeleteRequest,
+                commandHandler = textCommandHandlerMessage
             )
 
             val messageDrawer = MessageStepDrawer(
                 containerModifier = Modifier,
                 innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
                 onTextEdit = onTextEdit,
-                onLineBreak = onLineBreak,
-                onDeleteRequest = onDeleteRequest
+                onDeleteRequest = onDeleteRequest,
+                commandHandler = textCommandHandlerMessage
             )
 
             val checkItemDrawer = CheckItemDrawer(
                 onCheckedChange = checkRequest,
                 onTextEdit = onTextEdit,
-                onLineBreak = onLineBreak,
-                onDeleteRequest = onDeleteRequest
+                onDeleteRequest = onDeleteRequest,
+                commandHandler = textCommandHandlerCheckItem
             )
 
             put(StoryType.MESSAGE_BOX.type, messageBoxDrawer)

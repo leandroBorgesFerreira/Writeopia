@@ -26,9 +26,9 @@ import br.com.leandroferreira.storyteller.drawer.DrawInfo
 import br.com.leandroferreira.storyteller.drawer.StoryUnitDrawer
 import br.com.leandroferreira.storyteller.drawer.modifier.callOnEmptyErase
 import br.com.leandroferreira.storyteller.model.change.DeleteInfo
-import br.com.leandroferreira.storyteller.model.change.LineBreakInfo
 import br.com.leandroferreira.storyteller.model.story.StoryStep
 import br.com.leandroferreira.storyteller.model.story.StoryUnit
+import br.com.leandroferreira.storyteller.text.edition.TextCommandHandler
 
 /**
  * Draw a text that can be edited. The edition of the text is both reflect in this Composable and
@@ -39,8 +39,8 @@ class MessageStepDrawer(
     private val containerModifier: Modifier = Modifier,
     private val innerContainerModifier: Modifier = Modifier,
     private val onTextEdit: (String, Int) -> Unit,
-    private val onLineBreak: (LineBreakInfo) -> Unit,
-    private val onDeleteRequest: (DeleteInfo) -> Unit
+    private val onDeleteRequest: (DeleteInfo) -> Unit,
+    private val commandHandler: TextCommandHandler,
 ) : StoryUnitDrawer {
 
     @Composable
@@ -70,14 +70,12 @@ class MessageStepDrawer(
                         },
                     value = inputText,
                     onValueChange = { value ->
-                        if (value.text.contains("\n")) {
-                            onLineBreak(
-                                LineBreakInfo(
-                                    step.copy(text = value.text),
-                                    position = drawInfo.position
-                                )
-                            )
-                        } else {
+                        if (!commandHandler.handleCommand(
+                            value.text,
+                            messageStep,
+                            drawInfo.position
+                        )
+                        ) {
                             inputText = value
                             onTextEdit(value.text, drawInfo.position)
                         }
