@@ -1,10 +1,7 @@
 ![Java CI with Gradle](https://github.com/leandroBorgesFerreira/StoryTeller/workflows/Build%20and%20test/badge.svg) ![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.leandroborgesferreira/storyteller/badge.png?&gav=true)
 
-
-<h1 align="center"> StoryTeller </h1><br>
-<p align="center">
-Embeded text editor for apps.
-</p>
+<h1 align="center">  ![Logo](./logo.png) </h1><br>
+<p align="center">Embeded text editor for apps.</p>
 
 # Intro
 
