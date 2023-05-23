@@ -1,4 +1,4 @@
-![Java CI with Gradle](https://github.com/leandroBorgesFerreira/StoryTeller/workflows/Build%20and%20test/badge.svg) ![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.leandroborgesferreira/StoryTeller/badge.png?&gav=true)
+![Java CI with Gradle](https://github.com/leandroBorgesFerreira/StoryTeller/workflows/Build%20and%20test/badge.svg) ![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.leandroborgesferreira/storyteller/badge.png?&gav=true)
 
 
 <h1 align="center"> StoryTeller </h1><br>
@@ -9,9 +9,7 @@ A text editor embeded inside apps.
 
 This SDK allows you to create a text editor. You can use this library to create a better story editing experience within apps, such as social media (posts), travel logs, blog apps (like Medium), and chats (like Slack). By using this library, you can provide a great experience for editing text with media.
 
-Rather than having to post all media separately and add an EditText feature, the library enables media and text to be combined in a story format. This allows for a more engaging and interactive experience for users. An example of an app created with this SDK is shown below.
-
-https://user-images.githubusercontent.com/10619102/232607035-3be9444d-e66d-4e4f-a0f6-d557b63e8fcc.mov
+Rather than having to post all media separately and add an EditText feature, the library enables media and text to be combined in a story format. This allows for a more engaging and interactive experience for users. 
 
 ## Examples of usage
 
