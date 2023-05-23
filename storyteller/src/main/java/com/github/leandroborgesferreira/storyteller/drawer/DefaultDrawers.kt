@@ -42,7 +42,7 @@ object DefaultDrawers {
             checkRequest = manager::checkRequest,
             onDeleteRequest = manager::onDelete,
             createCheckItem = manager::createCheckItem,
-            previousFocus = manager::previousFocus,
+            previousFocus = manager::messageAtEnd,
             groupsBackgroundColor = groupsBackgroundColor
         )
 

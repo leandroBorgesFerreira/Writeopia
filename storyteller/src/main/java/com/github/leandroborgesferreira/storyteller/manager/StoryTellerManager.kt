@@ -82,10 +82,9 @@ class StoryTellerManager(
         //Todo: Extract to another method
         var acc = normalized.size
         val lastSteps = mapOf(
-            acc++ to StoryStep(type = StoryType.MESSAGE.type),
-            acc++ to StoryStep(type = StoryType.SPACE.type),
-            acc to StoryStep(type = StoryType.LARGE_SPACE.type)
+            normalized.size to StoryStep(type = StoryType.LARGE_SPACE.type)
         )
+
         _currentStory.value = StoryState(
             normalized + lastSteps,
             firstMessage.id
@@ -99,11 +98,8 @@ class StoryTellerManager(
         val normalized = stepsNormalizer(stories.toEditState())
 
         //Todo: Extract to another method
-        var acc = normalized.size
         val lastSteps = mapOf(
-            acc++ to StoryStep(type = StoryType.MESSAGE.type),
-            acc++ to StoryStep(type = StoryType.SPACE.type),
-            acc to StoryStep(type = StoryType.LARGE_SPACE.type)
+            normalized.size to StoryStep(type = StoryType.LARGE_SPACE.type)
         )
         _currentStory.value = StoryState(normalized + lastSteps)
     }
@@ -204,14 +200,33 @@ class StoryTellerManager(
         _scrollToPosition.value = position
     }
 
-    fun previousFocus(position: Int) {
+    fun messageAtEnd(position: Int) {
+        val stories = _currentStory.value.stories
+        val lastContentStory = stories[stories.size - 3]
+
+        if (lastContentStory?.type == StoryType.MESSAGE.type) {
+            val newState = _currentStory.value.copy(focusId = lastContentStory.id)
+            _currentStory.value = newState
+        } else {
+            var acc = stories.size - 1
+            val newLastMessage = StoryStep(type = StoryType.MESSAGE.type)
+
+            val newStories = stories + mapOf(
+                acc++ to newLastMessage,
+                acc to StoryStep(type = StoryType.SPACE.type),
+            )
+
+            
+        }
+
+
+
         FindStory.previousFocus(
             currentStory.value.stories.values.toList(),
             position,
             focusableTypes
         )?.let { previousFocus ->
-            val newState = _currentStory.value.copy(focusId = previousFocus.id)
-            _currentStory.value = newState
+
         }
     }
 
