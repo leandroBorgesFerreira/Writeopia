@@ -1,4 +1,4 @@
-![Java CI with Gradle](https://github.com/leandroBorgesFerreira/StoryTeller/workflows/Build%20and%20test/badge.svg) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.leandroborgesferreira/storyteller/badge.png?&gav=true)](https://img.shields.io/maven-central/v/com.github.leandroborgesferreira/storyteller)
+![Java CI with Gradle](https://github.com/leandroBorgesFerreira/StoryTeller/workflows/Build%20and%20test/badge.svg)![Maven Central](https://img.shields.io/maven-central/v/com.github.leandroborgesferreira/storyteller)
 
 /maven-central/v/:groupId/:artifactId
 
