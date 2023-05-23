@@ -28,7 +28,7 @@ artifacts {
     archives javadocJar
 }
 
-afterEvaluate {
+afterEvaluate { project ->
     publishing {
         publications {
             release(MavenPublication) {

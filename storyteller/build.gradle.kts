@@ -44,6 +44,9 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.7"
     }
+    publishing {
+        singleVariant("release")
+    }
 }
 
 kotlin{
