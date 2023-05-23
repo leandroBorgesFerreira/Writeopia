@@ -13,6 +13,7 @@ enum class StoryType(val type: String) {
     GROUP_VIDEO("group_video"),
     VIDEO("video"),
     SPACE("space"),
+    LARGE_SPACE("large_space"),
     ADD_BUTTON("add_button"),
     CHECK_ITEM("check_item");
 

@@ -13,6 +13,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.content.CheckItemDraw
 import com.github.leandroborgesferreira.storyteller.drawer.content.ImageGroupDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.ImageStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.ImageStepDrawer.Companion.defaultModifier
+import com.github.leandroborgesferreira.storyteller.drawer.content.LargeEmptySpace
 import com.github.leandroborgesferreira.storyteller.drawer.content.MessageStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.VideoStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.SpaceDrawer
@@ -41,6 +42,7 @@ object DefaultDrawers {
             checkRequest = manager::checkRequest,
             onDeleteRequest = manager::onDelete,
             createCheckItem = manager::createCheckItem,
+            previousFocus = manager::previousFocus,
             groupsBackgroundColor = groupsBackgroundColor
         )
 
@@ -53,6 +55,7 @@ object DefaultDrawers {
         checkRequest: (CheckInfo) -> Unit = { },
         onDeleteRequest: (DeleteInfo) -> Unit,
         createCheckItem: (Int) -> Unit,
+        previousFocus: (Int) -> Unit,
         groupsBackgroundColor: Color = Color.Transparent
     ): Map<String, StoryUnitDrawer> =
         buildMap {
@@ -136,6 +139,7 @@ object DefaultDrawers {
             )
 
             put(StoryType.SPACE.type, SpaceDrawer(moveRequest))
+            put(StoryType.LARGE_SPACE.type, LargeEmptySpace(previousFocus))
             put(StoryType.CHECK_ITEM.type, checkItemDrawer)
         }
 }
