@@ -6,7 +6,7 @@ plugins {
 rootProject.extra.apply {
     set("PUBLISH_GROUP_ID", "com.github.leandroborgesferreira")
     set("PUBLISH_ARTIFACT_ID", "storyteller")
-    set("PUBLISH_VERSION", "0.1.0")
+    set("PUBLISH_VERSION", "0.1.1")
 }
 
 apply(from = "${rootDir}/scripts/publish-module.gradle")
