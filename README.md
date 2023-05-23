@@ -1,4 +1,4 @@
-![Java CI with Gradle](https://github.com/leandroBorgesFerreira/StoryTeller/workflows/Build%20and%20test/badge.svg)![Maven Central](https://img.shields.io/maven-central/v/com.github.leandroborgesferreira/storyteller)
+![Java CI with Gradle](https://github.com/leandroBorgesFerreira/StoryTeller/workflows/Build%20and%20test/badge.svg) ![Maven Central](https://img.shields.io/maven-central/v/com.github.leandroborgesferreira/storyteller)
 
 /maven-central/v/:groupId/:artifactId
 
@@ -28,8 +28,8 @@ https://github.com/leandroBorgesFerreira/StoryTeller/assets/10619102/cd68d513-77
 ## Quick start
 Add the project in your gradle file:
 ```
-implementation("com.github.leandroborgesferreira:storyteller:0.1.0")
-implementation("com.github.leandroborgesferreira:storyteller-persistence:0.1.0")
+implementation("com.github.leandroborgesferreira:storyteller:[version]")
+implementation("com.github.leandroborgesferreira:storyteller-persistence:[version]")
 ```
 
 ### Create the library
