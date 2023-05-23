@@ -33,9 +33,9 @@ import br.com.leandroferreira.app_sample.R
 import br.com.leandroferreira.app_sample.screens.note.input.InputScreen
 import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION
 import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION_DARK
-import com.github.leandroferreira.storyteller.StoryTellerTimeline
-import com.github.leandroferreira.storyteller.drawer.DefaultDrawers
-import com.github.leandroferreira.storyteller.model.document.Document
+import com.github.leandroborgesferreira.storyteller.StoryTellerTimeline
+import com.github.leandroborgesferreira.storyteller.drawer.DefaultDrawers
+import com.github.leandroborgesferreira.storyteller.model.document.Document
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import java.util.UUID
