@@ -3,6 +3,14 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+rootProject.extra.apply {
+    set("PUBLISH_GROUP_ID", "com.github.leandroborgesferreira")
+    set("PUBLISH_ARTIFACT_ID", "storyteller")
+    set("PUBLISH_VERSION", "0.1.0")
+}
+
+apply(from = "${rootDir}/scripts/publish-module.gradle")
+
 android {
     namespace = "br.com.leandroferreira.storyteller"
     compileSdk = 33
