@@ -2,14 +2,15 @@
 
 
 <h1 align="center"> StoryTeller </h1><br>
+<p align="center">
+Embeded text editor for apps.
+</p>
 
 # Intro
 
-A text editor embeded inside apps. 
+This SDK allows you to create a text editor an use it instead of a simple `TextField`. You can use this library to create a better story editing experience within apps, such as social media (posts), travel logs, blog apps (like Medium), and chats (like Slack). By using this library, you can provide a great experience for editing text with media.
 
-This SDK allows you to create a text editor. You can use this library to create a better story editing experience within apps, such as social media (posts), travel logs, blog apps (like Medium), and chats (like Slack). By using this library, you can provide a great experience for editing text with media.
-
-Rather than having to post all media separately and add an EditText feature, the library enables media and text to be combined in a story format. This allows for a more engaging and interactive experience for users. 
+Rather than having to post all media separately and add an `TextField` feature, the library enables media and text to be combined in a story format. This allows for a more engaging and interactive experience for users. 
 
 ## Examples of usage
 
