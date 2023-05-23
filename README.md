@@ -1,4 +1,6 @@
-![Java CI with Gradle](https://github.com/leandroBorgesFerreira/StoryTeller/workflows/Build%20and%20test/badge.svg) ![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.leandroborgesferreira/storyteller/badge.png?&gav=true)
+![Java CI with Gradle](https://github.com/leandroBorgesFerreira/StoryTeller/workflows/Build%20and%20test/badge.svg) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.leandroborgesferreira/storyteller/badge.png?&gav=true)](https://img.shields.io/maven-central/v/com.github.leandroborgesferreira/storyteller)
+
+/maven-central/v/:groupId/:artifactId
 
 <h1 align="center"> <img src="https://github.com/leandroBorgesFerreira/StoryTeller/assets/10619102/bd7172de-51f0-40a2-ba29-dea50c13e7b7" alt="logo" /> </h1><br>
 <p align="center">Embeded text editor for apps.</p>
