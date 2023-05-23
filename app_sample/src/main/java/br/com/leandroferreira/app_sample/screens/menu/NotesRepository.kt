@@ -3,10 +3,10 @@ package br.com.leandroferreira.app_sample.screens.menu
 import android.content.Context
 import br.com.leandroferreira.app_sample.data.supermarketList
 import br.com.leandroferreira.app_sample.data.syncHistory
-import br.com.leandroferreira.storyteller.persistence.parse.toEntity
-import br.com.leandroferreira.storyteller.persistence.dao.DocumentDao
-import br.com.leandroferreira.storyteller.persistence.dao.StoryUnitDao
-import br.com.leandroferreira.storyteller.persistence.entity.document.DocumentEntity
+import com.github.leandroferreira.storyteller.persistence.parse.toEntity
+import com.github.leandroferreira.storyteller.persistence.dao.DocumentDao
+import com.github.leandroferreira.storyteller.persistence.dao.StoryUnitDao
+import com.github.leandroferreira.storyteller.persistence.entity.document.DocumentEntity
 import java.util.UUID
 
 class NotesRepository(

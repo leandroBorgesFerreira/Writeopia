@@ -14,7 +14,7 @@ rootProject.extra.apply {
 apply(from = "${rootDir}/scripts/publish-module.gradle")
 
 android {
-    namespace = "br.com.leandroferreira.storyteller.persistence"
+    namespace = "com.github.leandroferreira.storyteller.persistence"
     compileSdk = 33
 
     defaultConfig {

@@ -2,8 +2,8 @@ package br.com.leandroferreira.app_sample.data
 
 import android.content.Context
 import br.com.leandroferreira.app_sample.R
-import br.com.leandroferreira.storyteller.model.story.StoryStep
-import br.com.leandroferreira.storyteller.model.story.StoryUnit
+import com.github.leandroferreira.storyteller.model.story.StoryStep
+import com.github.leandroferreira.storyteller.model.story.StoryUnit
 import java.util.UUID
 
 fun messages(): List<StoryUnit> = buildList {

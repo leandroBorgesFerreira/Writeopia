@@ -35,8 +35,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.com.leandroferreira.storyteller.StoryTellerTimeline
-import br.com.leandroferreira.storyteller.drawer.DefaultDrawers
+import com.github.leandroferreira.storyteller.StoryTellerTimeline
+import com.github.leandroferreira.storyteller.drawer.DefaultDrawers
 
 
 @OptIn(ExperimentalMaterial3Api::class)

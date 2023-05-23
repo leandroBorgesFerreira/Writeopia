@@ -2,8 +2,8 @@ package br.com.leandroferreira.app_sample.screens.addstory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.leandroferreira.storyteller.manager.StoryTellerManager
-import br.com.leandroferreira.storyteller.model.story.StoryState
+import com.github.leandroferreira.storyteller.manager.StoryTellerManager
+import com.github.leandroferreira.storyteller.model.story.StoryState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
