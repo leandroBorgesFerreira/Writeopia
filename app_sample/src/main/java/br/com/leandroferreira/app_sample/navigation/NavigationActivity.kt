@@ -21,10 +21,10 @@ import br.com.leandroferreira.app_sample.screens.note.NoteDetailsScreen
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModel
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModelFactory
 import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
-import br.com.leandroferreira.storyteller.persistence.repository.DocumentRepository
-import br.com.leandroferreira.storyteller.VideoFrameConfig
-import br.com.leandroferreira.storyteller.manager.StoryTellerManager
-import br.com.leandroferreira.storyteller.persistence.database.StoryTellerDatabase
+import com.github.leandroferreira.storyteller.persistence.repository.DocumentRepository
+import com.github.leandroferreira.storyteller.VideoFrameConfig
+import com.github.leandroferreira.storyteller.manager.StoryTellerManager
+import com.github.leandroferreira.storyteller.persistence.database.StoryTellerDatabase
 
 class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

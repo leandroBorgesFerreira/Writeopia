@@ -1,0 +1,80 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+apply plugin: 'org.jetbrains.dokka'
+
+group = PUBLISH_GROUP_ID
+version = PUBLISH_VERSION
+
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+
+    from android.sourceSets.main.java.srcDirs
+    from android.sourceSets.main.kotlin.srcDirs
+}
+
+tasks.withType(dokkaHtmlPartial.getClass()).configureEach {
+    pluginsMapConfiguration.set(
+            ["org.jetbrains.dokka.base.DokkaBase": """{ "separateInheritedMembers": true}"""]
+    )
+}
+
+task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+    archiveClassifier.set('javadoc')
+    from dokkaJavadoc.outputDirectory
+}
+
+artifacts {
+    archives androidSourcesJar
+    archives javadocJar
+}
+
+afterEvaluate { project ->
+    publishing {
+        publications {
+            release(MavenPublication) {
+                groupId "com.github.leandroborgesferreira"
+                artifactId PUBLISH_ARTIFACT_ID
+                version PUBLISH_VERSION
+
+                from components.release
+
+                artifact androidSourcesJar
+                artifact javadocJar
+
+                pom {
+                    name = "storyteller"
+                    description = "A library to create complex text editors inside apps"
+                    url = 'https://https://github.com/leandroBorgesFerreira/StoryTeller'
+                    licenses {
+                        license {
+                            name = 'The Apache Software License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'leandroBorgesFerreira'
+                            name = 'Leandro Borges Ferreira'
+                            email = "lehen01@gmail.com"
+                            url = "https://github.com/leandroBorgesFerreira"
+                        }
+                    }
+                    scm {
+                        connection = "scm:git@github.com:leandroBorgesFerreira/StoryTeller.git"
+                        developerConnection = "scm:git:ssh://github.com/leandroBorgesFerreira/StoryTeller.git"
+                        url = "https://github.com/leandroBorgesFerreira/StoryTeller"
+                    }
+                }
+            }
+        }
+    }
+}
+
+signing {
+    useInMemoryPgpKeys(
+            rootProject.ext["signing.keyId"],
+            rootProject.ext["signing.key"],
+            rootProject.ext["signing.password"],
+    )
+    sign publishing.publications
+}

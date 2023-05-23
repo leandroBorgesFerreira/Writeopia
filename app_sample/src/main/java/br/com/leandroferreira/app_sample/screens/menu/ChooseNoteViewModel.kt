@@ -3,9 +3,9 @@ package br.com.leandroferreira.app_sample.screens.menu
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.leandroferreira.storyteller.persistence.parse.toModel
+import com.github.leandroferreira.storyteller.persistence.parse.toModel
 import br.com.leandroferreira.app_sample.utils.ResultData
-import br.com.leandroferreira.storyteller.model.document.Document
+import com.github.leandroferreira.storyteller.model.document.Document
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
