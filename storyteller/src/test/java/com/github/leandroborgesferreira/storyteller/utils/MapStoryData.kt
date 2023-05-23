@@ -461,11 +461,5 @@ object MapStoryData {
                         "do and enjoyed the day. We went to many cozy Cafes and we enjoyed the city by foot. " +
                         "We had to buy some Syn Cards to be able to communicate in the new country. ",
                 ),
-            11 to
-                StoryStep(
-                    localId = UUID.randomUUID().toString(),
-                    type = "add_button",
-                    text = "And it was super awesome!!",
-                )
         )
 }

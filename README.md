@@ -1,17 +1,22 @@
-![Java CI with Gradle](https://github.com/leandroBorgesFerreira/StoryTeller/workflows/Build%20and%20test/badge.svg)
+![Java CI with Gradle](https://github.com/leandroBorgesFerreira/StoryTeller/workflows/Build%20and%20test/badge.svg) ![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.leandroborgesferreira/StoryTeller/badge.png?&gav=true)
 
 
-# StoryTeller - WIP
+<h1 align="center"> StoryTeller </h1><br>
 
-An SDK to create a editor for stories. 
+# Intro
 
-This SDK allows you to create an editor for stories. You can use this library to create a better story editing experience within apps, such as social media (posts), travel logs, blog apps (like Medium), and chats (like Slack). By using this library, you can provide a great experience for editing text with media.
+A text editor embeded inside apps. 
+
+This SDK allows you to create a text editor. You can use this library to create a better story editing experience within apps, such as social media (posts), travel logs, blog apps (like Medium), and chats (like Slack). By using this library, you can provide a great experience for editing text with media.
 
 Rather than having to post all media separately and add an EditText feature, the library enables media and text to be combined in a story format. This allows for a more engaging and interactive experience for users. An example of an app created with this SDK is shown below.
 
 https://user-images.githubusercontent.com/10619102/232607035-3be9444d-e66d-4e4f-a0f6-d557b63e8fcc.mov
 
 ## Examples of usage
+
+### Todo app:
+https://github.com/leandroBorgesFerreira/StoryTeller/assets/10619102/cd68d513-77e2-4a32-88e5-ac38999d32a1
 
 ### Medium-Style blog text editor: 
 [To do]
@@ -23,13 +28,45 @@ https://user-images.githubusercontent.com/10619102/232607035-3be9444d-e66d-4e4f-
 [To do]
 
 ## Quick start
-[To do]
+Add the project in your gradle file:
+```
+implementation("com.github.leandroborgesferreira:storyteller:0.1.0")
+implementation("com.github.leandroborgesferreira:storyteller-persistence:0.1.0")
+```
+
+### Create the library
+Add `StoryTellerEditor` to your app:
+
+```
+StoryTellerEditor(
+        modifier = Modifier
+            .fillMaxWidth()
+            .weight(1F),
+        storyState = storyState,
+        contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp),
+        editable = editable,
+        listState = listState,
+        drawers = DefaultDrawers.create(
+            editable,
+            noteDetailsViewModel.storyTellerManager,
+            groupsBackgroundColor = if (isSystemInDarkTheme()) BACKGROUND_VARIATION_DARK else BACKGROUND_VARIATION
+        )
+    )
+```
+
+Use `StoryTellerManager` to controll the state of the editor. It is recommended to add it to your ViewModel. You can use it to create new documents, load documents from the database, save the current state, etc. 
+
+You can check an example of created view model [in view model of the sample app](https://github.com/leandroBorgesFerreira/StoryTeller/blob/main/app_sample/src/main/java/br/com/leandroferreira/app_sample/screens/note/NoteDetailsViewModel.kt)
+
+### Persistence
+You can use `DocumentRepository` to persist the documents you create with ease. This the [in view model of the sample app](https://github.com/leandroBorgesFerreira/StoryTeller/blob/main/app_sample/src/main/java/br/com/leandroferreira/app_sample/screens/note/NoteDetailsViewModel.kt) for examples.
+
 
 ## Features
 
 This SDK allows users to edit text by changing the position of the text and media, and provides ways to interact with the list (although drag and drop functionality is still to be implemented).
 
-By providing `Drawers`, it is possible to control and customize the way information units are displayed on the screen. Using the `StepsNormalizers` and listening to user click events, it is possible to fully control how the `StoryTellerTimeline` behaves. The inputs can be changed to support many different use cases to suit any kind of app that needs an enhanced tool for creating user-generated content.
+By providing `Drawers`, it is possible to control and customize the way information units are displayed on the screen. Using the `StepsNormalizers` and listening to user click events, it is possible to control how the `StoryTellerEditor` behaves. The inputs can be changed to support many different use cases to suit any kind of app that needs an enhanced tool for creating user-generated content.
 
 The following sections provide a detailed explanation of how each part of the SDK works and how to use it.
 
@@ -44,6 +81,8 @@ Currently the library supports by default:
 - ImageStepDrawer
 - MessageStepDrawer
 - VideoStepDrawer
+- SpaceDrawer
+- CheckItemDrawer
 
 Each Drawer can be substituted to change the default behaviour of the library to suit your intended behaviour. 
 

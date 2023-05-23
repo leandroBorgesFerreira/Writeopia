@@ -33,7 +33,7 @@ import br.com.leandroferreira.app_sample.R
 import br.com.leandroferreira.app_sample.screens.note.input.InputScreen
 import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION
 import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION_DARK
-import com.github.leandroborgesferreira.storyteller.StoryTellerTimeline
+import com.github.leandroborgesferreira.storyteller.StoryTellerEditor
 import com.github.leandroborgesferreira.storyteller.drawer.DefaultDrawers
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import kotlinx.coroutines.flow.StateFlow
@@ -101,7 +101,7 @@ fun ColumnScope.Body(noteDetailsViewModel: NoteDetailsViewModel) {
         //Todo: Review this. Is a LaunchedEffect the correct way to do this??
         LaunchedEffect(position, block = {
             noteDetailsViewModel.scrollToPosition.collectLatest {
-                listState.animateScrollToItem(position!!, scrollOffset = 100)
+                listState.animateScrollToItem(position!!, scrollOffset = -100)
             }
         })
     }
@@ -112,7 +112,7 @@ fun ColumnScope.Body(noteDetailsViewModel: NoteDetailsViewModel) {
         }
     }
 
-    StoryTellerTimeline(
+    StoryTellerEditor(
         modifier = Modifier
             .fillMaxWidth()
             .weight(1F),

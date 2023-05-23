@@ -35,7 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.leandroborgesferreira.storyteller.StoryTellerTimeline
+import com.github.leandroborgesferreira.storyteller.StoryTellerEditor
 import com.github.leandroborgesferreira.storyteller.drawer.DefaultDrawers
 
 
@@ -105,7 +105,7 @@ private fun Body(storiesViewModel: StoriesViewModel) {
     Column {
         InfoHeader()
 
-        StoryTellerTimeline(
+        StoryTellerEditor(
             modifier = Modifier.fillMaxSize(),
             storyState = storyState,
             contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp),

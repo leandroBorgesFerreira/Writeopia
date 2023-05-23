@@ -38,7 +38,8 @@ class StoryTellerManager(
         },
     private val focusableTypes: Set<String> = setOf(
         StoryType.CHECK_ITEM.type,
-        StoryType.MESSAGE.type
+        StoryType.MESSAGE.type,
+        StoryType.MESSAGE_BOX.type,
     ),
     private val backStackManager: BackStackManager = BackStackManager(),
 ) : BackstackHandler, BackstackInform by backStackManager {

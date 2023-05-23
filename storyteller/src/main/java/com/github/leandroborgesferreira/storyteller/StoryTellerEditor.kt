@@ -14,7 +14,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 
 @Composable
-fun StoryTellerTimeline(
+fun StoryTellerEditor(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     editable: Boolean,

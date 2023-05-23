@@ -39,7 +39,7 @@ class SpaceDrawer(private val moveRequest: (MoveInfo) -> Unit = {}) : StoryUnitD
             val spaceBgColor =
                 when {
                     inBound -> Color.LightGray
-                    BuildConfig.DEBUG -> Color.Cyan
+//                    BuildConfig.DEBUG -> Color.Cyan
                     else -> Color.Transparent
                 }
 
