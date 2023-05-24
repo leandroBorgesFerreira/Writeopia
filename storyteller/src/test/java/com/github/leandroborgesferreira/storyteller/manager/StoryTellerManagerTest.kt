@@ -6,6 +6,7 @@ import com.github.leandroborgesferreira.storyteller.model.change.MergeInfo
 import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
 import com.github.leandroborgesferreira.storyteller.model.story.GroupStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 import com.github.leandroborgesferreira.storyteller.repository.StoriesRepository
 import com.github.leandroborgesferreira.storyteller.utils.MainDispatcherRule
@@ -582,5 +583,22 @@ class StoryTellerManagerTest {
                 assertNotEquals("space", storyUnit.type)
             }
         }
+    }
+
+    @Test
+    fun `initializing the stories 2 times should not add the last story unit twice`() = runTest {
+        val storyManager = StoryTellerManager()
+        storyManager.initStories(complexMessagesRepository.history())
+
+        val stories = storyManager.currentStory.value.stories
+        assertEquals(StoryType.LARGE_SPACE.type, stories.values.last().type)
+
+        storyManager.initStories(stories)
+
+        val newStories = storyManager.currentStory.value.stories
+        val storyList = newStories.values.toList()
+
+        assertEquals(StoryType.LARGE_SPACE.type, storyList.last().type)
+        assertNotEquals(StoryType.LARGE_SPACE.type, storyList[storyList.lastIndex - 1].type)
     }
 }

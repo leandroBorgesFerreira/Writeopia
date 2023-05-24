@@ -1,7 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.normalization.builder
 
 import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
-import com.github.leandroborgesferreira.storyteller.normalization.addinbetween.AddInBetween
+import com.github.leandroborgesferreira.storyteller.normalization.addinbetween.AddSteps
 import com.github.leandroborgesferreira.storyteller.normalization.merge.MergeLogic
 import com.github.leandroborgesferreira.storyteller.normalization.merge.MergeNormalization
 import com.github.leandroborgesferreira.storyteller.normalization.merge.StepsMergerCoordinator
@@ -51,7 +51,7 @@ class StepsMapNormalizationBuilder {
         }
 
         this.mergeNormalization  = mergeNormalization::mergeSteps
-        normalizations.add(AddInBetween.spaces()::insert)
+        normalizations.add(AddSteps.spaces()::insert)
     }
 
     private fun build(): UnitsNormalizationMap = { units ->

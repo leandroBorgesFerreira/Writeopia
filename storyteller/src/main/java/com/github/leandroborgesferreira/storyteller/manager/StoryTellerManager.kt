@@ -79,14 +79,8 @@ class StoryTellerManager(
         val stories: Map<Int, StoryUnit> = mapOf(0 to firstMessage)
         val normalized = stepsNormalizer(stories.toEditState())
 
-        //Todo: Extract to another method
-        var acc = normalized.size
-        val lastSteps = mapOf(
-            normalized.size to StoryStep(type = StoryType.LARGE_SPACE.type)
-        )
-
         _currentStory.value = StoryState(
-            normalized + lastSteps,
+            normalized + normalized,
             firstMessage.id
         )
     }
@@ -97,11 +91,8 @@ class StoryTellerManager(
         _currentStory.value = StoryState(stepsNormalizer(stories.toEditState()), null)
         val normalized = stepsNormalizer(stories.toEditState())
 
-        //Todo: Extract to another method
-        val lastSteps = mapOf(
-            normalized.size to StoryStep(type = StoryType.LARGE_SPACE.type)
-        )
-        _currentStory.value = StoryState(normalized + lastSteps)
+
+        _currentStory.value = StoryState(normalized)
     }
 
     fun mergeRequest(info: MergeInfo) {
@@ -200,6 +191,7 @@ class StoryTellerManager(
         _scrollToPosition.value = position
     }
 
+    //Todo: Fix this!
     fun messageAtEnd(position: Int) {
         val stories = _currentStory.value.stories
         val lastContentStory = stories[stories.size - 3]
@@ -215,18 +207,6 @@ class StoryTellerManager(
                 acc++ to newLastMessage,
                 acc to StoryStep(type = StoryType.SPACE.type),
             )
-
-            
-        }
-
-
-
-        FindStory.previousFocus(
-            currentStory.value.stories.values.toList(),
-            position,
-            focusableTypes
-        )?.let { previousFocus ->
-
         }
     }
 

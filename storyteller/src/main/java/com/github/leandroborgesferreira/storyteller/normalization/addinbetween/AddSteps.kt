@@ -1,6 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.normalization.addinbetween
 
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 import com.github.leandroborgesferreira.storyteller.utils.extensions.associateWithPosition
 import java.util.Stack
@@ -11,19 +12,22 @@ import java.util.UUID
  * a List<StoryUnit> this normalizer can be very useful to insert spaces between a list
  * of StoryUnits.
  */
-class AddInBetween(private val unitToAdd: () -> StoryUnit) {
+class AddSteps(
+    private val addInBetween: () -> StoryUnit,
+    private val addAtLast:() -> StoryUnit
+) {
 
     fun insert(unit: Map<Int, StoryUnit>): Map<Int, StoryUnit> =
         insert(unit.values).associateWithPosition()
 
     fun insert(units: Iterable<StoryUnit>): List<StoryUnit> {
         val stack: Stack<StoryUnit> = Stack()
-        val typeToAdd = unitToAdd().type
+        val typeToAdd = addInBetween().type
 
         units.forEach { storyUnit ->
             when {
                 stack.isEmpty() && storyUnit.type != typeToAdd -> {
-                    stack.add(unitToAdd())
+                    stack.add(addInBetween())
                     stack.add(storyUnit.copyWithNewId(UUID.randomUUID().toString()))
                 }
 
@@ -40,7 +44,7 @@ class AddInBetween(private val unitToAdd: () -> StoryUnit) {
                 }
 
                 storyUnit.type != typeToAdd && stack.peek()?.type != typeToAdd -> {
-                    stack.add(unitToAdd())
+                    stack.add(addInBetween())
                     stack.add(storyUnit.copyWithNewId(UUID.randomUUID().toString()))
                 }
 
@@ -49,7 +53,7 @@ class AddInBetween(private val unitToAdd: () -> StoryUnit) {
         }
 
         if (stack.peek().type != typeToAdd) {
-            stack.add(unitToAdd())
+            stack.add(addAtLast())
         }
 
         return stack.toList()
@@ -57,13 +61,13 @@ class AddInBetween(private val unitToAdd: () -> StoryUnit) {
 
 
     companion object {
-        fun spaces(): AddInBetween =
-            AddInBetween(
-                unitToAdd = {
-                    StoryStep(
-                        localId = UUID.randomUUID().toString(),
-                        type = "space",
-                    )
+        fun spaces(): AddSteps =
+            AddSteps(
+                addInBetween = {
+                    StoryStep(type = StoryType.SPACE.type)
+                },
+                addAtLast = {
+                    StoryStep(type = StoryType.LARGE_SPACE.type)
                 }
             )
     }

@@ -117,7 +117,6 @@ fun ColumnScope.Body(noteDetailsViewModel: NoteDetailsViewModel) {
             .fillMaxWidth()
             .weight(1F),
         storyState = storyState,
-        contentPadding = PaddingValues(top = 4.dp, bottom = 60.dp),
         editable = editable,
         listState = listState,
         drawers = DefaultDrawers.create(

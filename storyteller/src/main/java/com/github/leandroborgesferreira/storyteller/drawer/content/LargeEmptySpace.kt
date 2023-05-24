@@ -20,7 +20,7 @@ class LargeEmptySpace(private val moveFocus: (Int) -> Unit = {}) : StoryUnitDraw
     override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
         Box(
             modifier = Modifier
-                .height(300.dp)
+                .height(500.dp)
                 .fillMaxWidth()
                 .background(Color.Transparent)
                 .clickable { moveFocus(drawInfo.position) }
