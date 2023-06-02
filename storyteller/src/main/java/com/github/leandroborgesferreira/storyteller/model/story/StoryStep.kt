@@ -9,7 +9,7 @@ import java.util.UUID
  */
 data class StoryStep(
     override val id: String = UUID.randomUUID().toString(),
-    override val localId: String,
+    override val localId: String = UUID.randomUUID().toString(),
     override val type: String,
     override val parentId: String? = null,
     val url: String? = null,

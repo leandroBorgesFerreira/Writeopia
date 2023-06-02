@@ -77,14 +77,22 @@ class StoryTellerManager(
             type = "message"
         )
         val stories: Map<Int, StoryUnit> = mapOf(0 to firstMessage)
+        val normalized = stepsNormalizer(stories.toEditState())
 
-        _currentStory.value = StoryState(stepsNormalizer(stories.toEditState()), firstMessage.id)
+        _currentStory.value = StoryState(
+            normalized + normalized,
+            firstMessage.id
+        )
     }
 
     fun initStories(stories: Map<Int, StoryUnit>) {
         if (isInitialized()) return
 
         _currentStory.value = StoryState(stepsNormalizer(stories.toEditState()), null)
+        val normalized = stepsNormalizer(stories.toEditState())
+
+
+        _currentStory.value = StoryState(normalized)
     }
 
     fun mergeRequest(info: MergeInfo) {
@@ -181,6 +189,28 @@ class StoryTellerManager(
 
         _currentStory.value = newContent
         _scrollToPosition.value = position
+    }
+
+    fun clickAtTheEnd() {
+        val stories = _currentStory.value.stories
+        val lastContentStory = stories[stories.size - 3]
+
+        if (lastContentStory?.type == StoryType.MESSAGE.type) {
+            val newState = _currentStory.value.copy(focusId = lastContentStory.id)
+            _currentStory.value = newState
+        } else {
+            var acc = stories.size - 1
+            val newLastMessage = StoryStep(type = StoryType.MESSAGE.type)
+
+            //Todo: It should be possible to customize which steps are add
+            val newStories = stories + mapOf(
+                acc++ to newLastMessage,
+                acc++ to StoryStep(type = StoryType.SPACE.type),
+                acc to StoryStep(type = StoryType.LARGE_SPACE.type),
+            )
+
+            _currentStory.value = StoryState(newStories, newLastMessage.id)
+        }
     }
 
     fun updateState() {
