@@ -14,7 +14,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 
-class LargeEmptySpace(private val moveFocus: (Int) -> Unit = {}) : StoryUnitDrawer {
+class LargeEmptySpace(private val click: () -> Unit = {}) : StoryUnitDrawer {
 
     @Composable
     override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
@@ -23,7 +23,7 @@ class LargeEmptySpace(private val moveFocus: (Int) -> Unit = {}) : StoryUnitDraw
                 .height(500.dp)
                 .fillMaxWidth()
                 .background(Color.Transparent)
-                .clickable { moveFocus(drawInfo.position) }
+                .clickable(onClick = click)
         )
     }
 }

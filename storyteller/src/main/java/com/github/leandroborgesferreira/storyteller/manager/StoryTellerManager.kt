@@ -191,8 +191,7 @@ class StoryTellerManager(
         _scrollToPosition.value = position
     }
 
-    //Todo: Fix this!
-    fun messageAtEnd(position: Int) {
+    fun clickAtTheEnd() {
         val stories = _currentStory.value.stories
         val lastContentStory = stories[stories.size - 3]
 
@@ -203,10 +202,14 @@ class StoryTellerManager(
             var acc = stories.size - 1
             val newLastMessage = StoryStep(type = StoryType.MESSAGE.type)
 
+            //Todo: It should be possible to customize which steps are add
             val newStories = stories + mapOf(
                 acc++ to newLastMessage,
-                acc to StoryStep(type = StoryType.SPACE.type),
+                acc++ to StoryStep(type = StoryType.SPACE.type),
+                acc to StoryStep(type = StoryType.LARGE_SPACE.type),
             )
+
+            _currentStory.value = StoryState(newStories, newLastMessage.id)
         }
     }
 

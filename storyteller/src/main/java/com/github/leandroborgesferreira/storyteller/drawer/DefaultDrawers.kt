@@ -42,7 +42,7 @@ object DefaultDrawers {
             checkRequest = manager::checkRequest,
             onDeleteRequest = manager::onDelete,
             createCheckItem = manager::createCheckItem,
-            previousFocus = manager::messageAtEnd,
+            clickAtTheEnd = manager::clickAtTheEnd,
             groupsBackgroundColor = groupsBackgroundColor
         )
 
@@ -55,7 +55,7 @@ object DefaultDrawers {
         checkRequest: (CheckInfo) -> Unit = { },
         onDeleteRequest: (DeleteInfo) -> Unit,
         createCheckItem: (Int) -> Unit,
-        previousFocus: (Int) -> Unit,
+        clickAtTheEnd: () -> Unit,
         groupsBackgroundColor: Color = Color.Transparent
     ): Map<String, StoryUnitDrawer> =
         buildMap {
@@ -139,7 +139,7 @@ object DefaultDrawers {
             )
 
             put(StoryType.SPACE.type, SpaceDrawer(moveRequest))
-            put(StoryType.LARGE_SPACE.type, LargeEmptySpace(previousFocus))
+            put(StoryType.LARGE_SPACE.type, LargeEmptySpace(clickAtTheEnd))
             put(StoryType.CHECK_ITEM.type, checkItemDrawer)
         }
 }
