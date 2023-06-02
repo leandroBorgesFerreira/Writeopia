@@ -14,7 +14,7 @@ import java.util.UUID
  */
 class AddSteps(
     private val addInBetween: () -> StoryUnit,
-    private val addAtLast:() -> StoryUnit
+    private val addAtLast: () -> StoryUnit
 ) {
 
     fun insert(unit: Map<Int, StoryUnit>): Map<Int, StoryUnit> =
@@ -23,9 +23,17 @@ class AddSteps(
     fun insert(units: Iterable<StoryUnit>): List<StoryUnit> {
         val stack: Stack<StoryUnit> = Stack()
         val typeToAdd = addInBetween().type
+        val typeAtLast = addAtLast().type
 
         units.forEach { storyUnit ->
             when {
+                storyUnit.type == typeAtLast -> {
+                    if (stack.peek().type != typeToAdd) {
+                        stack.add(addInBetween())
+                    }
+                    stack.add(addAtLast())
+                }
+
                 stack.isEmpty() && storyUnit.type != typeToAdd -> {
                     stack.add(addInBetween())
                     stack.add(storyUnit.copyWithNewId(UUID.randomUUID().toString()))
@@ -52,7 +60,13 @@ class AddSteps(
             }
         }
 
-        if (stack.peek().type != typeToAdd) {
+        val lastElement = stack.peek()
+
+        if (lastElement.type != typeAtLast) {
+            if (lastElement.type != typeToAdd) {
+                stack.add(addInBetween())
+            }
+
             stack.add(addAtLast())
         }
 

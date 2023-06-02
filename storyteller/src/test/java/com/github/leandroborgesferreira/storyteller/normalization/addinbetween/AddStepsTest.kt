@@ -18,7 +18,7 @@ class AddStepsTest {
 
         val result = addSteps.insert(input)
 
-        assertEquals(initialSize * 2 + 1, result.size)
+        assertEquals(initialSize * 2 + 2, result.size)
         result.forEachIndexed { index, storyUnit ->
             val isEven = index % 2 == 0
             val isLast = index == result.lastIndex
@@ -39,7 +39,7 @@ class AddStepsTest {
 
         val result = addSteps.insert(input)
 
-        assertEquals(initialSize * 2 + 1, result.size)
+        assertEquals(initialSize * 2 + 2, result.size)
         val resultList = result.values.toList()
         resultList.forEachIndexed { index, storyUnit ->
             val isEven = index % 2 == 0
@@ -77,7 +77,7 @@ class AddStepsTest {
         val input = ListStoryData.spaces()
         val result = AddSteps.spaces().insert(input)
 
-        assertEquals("only one item should be in the result", 1, result.size)
+        assertEquals("only 2 itemm should be in the result", 2, result.size)
         assertEquals("only one space should be in the result", "space", result.first().type)
     }
 

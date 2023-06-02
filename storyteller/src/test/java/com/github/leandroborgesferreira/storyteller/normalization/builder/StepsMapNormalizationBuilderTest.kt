@@ -24,7 +24,7 @@ class StepsMapNormalizationBuilderTest {
 
         assertEquals(
             "There should be an space between all the story units",
-            15,
+            input.size * 2 + 2,
             normalized.size
         )
         assertEquals(
@@ -40,7 +40,7 @@ class StepsMapNormalizationBuilderTest {
         assertEquals(
             "The last message should stay as it was",
             "message",
-            normalized[normalized.size - 2]?.type
+            normalized[normalized.size - 3]?.type
         )
 
         val group = (normalized[5] as GroupStep)
