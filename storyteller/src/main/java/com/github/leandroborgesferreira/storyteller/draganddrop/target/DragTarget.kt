@@ -10,8 +10,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalHapticFeedback
 import com.github.leandroborgesferreira.storyteller.model.draganddrop.DropInfo
 
 internal val LocalDragTargetInfo = compositionLocalOf { DragTargetInfo() }
@@ -24,6 +26,7 @@ fun DragTarget(
 ) {
     var currentPosition by remember { mutableStateOf(Offset.Zero) }
     val currentState = LocalDragTargetInfo.current
+    val haptic = LocalHapticFeedback.current
 
     Box(modifier = modifier
         .onGloballyPositioned { layoutCoordinates ->
@@ -32,6 +35,8 @@ fun DragTarget(
         }
         .pointerInput(Unit) {
             detectDragGesturesAfterLongPress(onDragStart = { offset ->
+                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+
                 currentState.dataToDrop = dataToDrop
                 currentState.isDragging = true
                 currentState.dragPosition = currentPosition + offset
