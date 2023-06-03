@@ -7,9 +7,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DragIndicator
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalMinimumTouchTargetEnforcement
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
@@ -36,6 +41,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.R
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTarget
+import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTargetWithDragItem
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyErase
@@ -58,7 +64,7 @@ class CheckItemDrawer(
     override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
         val checkItem = step as StoryStep
 
-        DragTarget(dataToDrop = DropInfo(checkItem, drawInfo.position)) {
+        DragTargetWithDragItem(dataToDrop = DropInfo(checkItem, drawInfo.position)) {
             Row(
                 modifier = Modifier
                     .padding(horizontal = 2.dp)
@@ -88,24 +94,18 @@ class CheckItemDrawer(
                     }
                 }
 
-                Box(
-                    modifier = Modifier
-                        .size(20.dp)
-                        .background(Color.Cyan)
-                )
-
                 CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
                     Checkbox(
-                        modifier = Modifier.padding(6.dp),
+                        modifier = Modifier.padding(6.dp).background(Color.Cyan),
                         checked = checkItem.checked ?: false,
                         onCheckedChange = { checked ->
                             onCheckedChange(CheckInfo(checkItem, drawInfo.position, checked))
                         },
-                        enabled = drawInfo.editable
+                        enabled = drawInfo.editable,
                     )
                 }
 
-                TextField(
+                BasicTextField(
                     modifier = Modifier
                         .focusRequester(focusRequester)
                         .callOnEmptyErase(inputText.selection) {
@@ -123,17 +123,12 @@ class CheckItemDrawer(
                             onTextEdit(value.text, drawInfo.position)
                         }
                     },
-                    placeholder = { Text(text = todoPlaceHolder) },
                     textStyle = textStyle,
                     enabled = drawInfo.editable,
                     keyboardOptions = KeyboardOptions(
                         capitalization = KeyboardCapitalization.Sentences
                     ),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Color.Transparent,
-                        unfocusedBorderColor = Color.Transparent,
-                        disabledBorderColor = Color.Transparent
-                    ),
+                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
                 )
             }
         }
