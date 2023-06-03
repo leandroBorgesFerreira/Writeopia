@@ -46,7 +46,7 @@ fun DragTargetWithDragItem(
 
         Icon(
             modifier = Modifier
-                .size(20.dp)
+                .size(25.dp)
                 .pointerInput(Unit) {
                     detectDragGestures(onDragStart = { offset ->
                         currentState.dataToDrop = dataToDrop
