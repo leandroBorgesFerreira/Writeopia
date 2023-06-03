@@ -3,9 +3,11 @@ package com.github.leandroborgesferreira.storyteller.drawer.content
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -96,7 +98,7 @@ class CheckItemDrawer(
 
                 CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
                     Checkbox(
-                        modifier = Modifier.padding(6.dp).background(Color.Cyan),
+                        modifier = Modifier.padding(6.dp),
                         checked = checkItem.checked ?: false,
                         onCheckedChange = { checked ->
                             onCheckedChange(CheckInfo(checkItem, drawInfo.position, checked))
