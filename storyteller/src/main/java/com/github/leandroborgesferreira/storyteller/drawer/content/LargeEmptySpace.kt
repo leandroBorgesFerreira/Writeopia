@@ -10,20 +10,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.github.leandroborgesferreira.storyteller.draganddrop.target.DropTarget
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
+import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 
-class LargeEmptySpace(private val click: () -> Unit = {}) : StoryUnitDrawer {
+class LargeEmptySpace(
+    private val moveRequest: (MoveInfo) -> Unit = {},
+    private val click: () -> Unit = {}
+) : StoryUnitDrawer {
 
     @Composable
     override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
-        Box(
-            modifier = Modifier
-                .height(500.dp)
-                .fillMaxWidth()
-                .background(Color.Transparent)
-                .clickable(onClick = click)
-        )
+        DropTarget { inBound, data ->
+            if (inBound && data != null) {
+                moveRequest(
+                    MoveInfo(
+                        data.storyUnit,
+                        positionFrom = data.positionFrom,
+                        positionTo = drawInfo.position - 1
+                    )
+                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .height(500.dp)
+                    .fillMaxWidth()
+                    .background(Color.Transparent)
+                    .clickable(onClick = click)
+            )
+        }
     }
 }

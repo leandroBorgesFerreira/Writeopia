@@ -139,7 +139,7 @@ object DefaultDrawers {
             )
 
             put(StoryType.SPACE.type, SpaceDrawer(moveRequest))
-            put(StoryType.LARGE_SPACE.type, LargeEmptySpace(clickAtTheEnd))
+            put(StoryType.LARGE_SPACE.type, LargeEmptySpace(moveRequest, clickAtTheEnd))
             put(StoryType.CHECK_ITEM.type, checkItemDrawer)
         }
 }
