@@ -125,25 +125,27 @@ class StoryTellerManager(
     }
 
     fun moveRequest(moveInfo: MoveInfo) {
-        val mutable = _currentStory.value.stories.toMutableMap()
+        val mutable = updateTexts(_currentStory.value.stories).toMutableMap()
         if (mutable[moveInfo.positionTo]?.type != "space") throw IllegalStateException()
 
-        mutable[moveInfo.positionTo] = moveInfo.storyUnit.copyWithNewParent(null)
+        mutable[moveInfo.positionFrom]?.let { moveStory ->
+            mutable[moveInfo.positionTo] = moveStory.copyWithNewParent(null)
 
-        if (moveInfo.storyUnit.parentId == null) {
-            mutable.remove(moveInfo.positionFrom)
-        } else {
-            val fromGroup = (mutable[moveInfo.positionFrom] as? GroupStep)
-            val newList = fromGroup?.steps?.filter { storyUnit ->
-                storyUnit.localId != moveInfo.storyUnit.localId
+            if (moveInfo.storyUnit.parentId == null) {
+                mutable.remove(moveInfo.positionFrom)
+            } else {
+                val fromGroup = (mutable[moveInfo.positionFrom] as? GroupStep)
+                val newList = fromGroup?.steps?.filter { storyUnit ->
+                    storyUnit.localId != moveInfo.storyUnit.localId
+                }
+
+                if (newList != null) {
+                    mutable[moveInfo.positionFrom] = fromGroup.copy(steps = newList)
+                }
             }
 
-            if (newList != null) {
-                mutable[moveInfo.positionFrom] = fromGroup.copy(steps = newList)
-            }
+            _currentStory.value = StoryState(stepsNormalizer(mutable.toEditState()))
         }
-
-        _currentStory.value = StoryState(stepsNormalizer(mutable.toEditState()))
     }
 
     /**
@@ -183,7 +185,7 @@ class StoryTellerManager(
     fun onLineBreak(lineBreakInfo: LineBreakInfo) {
         val updatedStories = updateTexts(_currentStory.value.stories)
         val (position, newContent: StoryState) = separateMessages(
-            updatedStories.stories,
+            updatedStories,
             lineBreakInfo
         )
 
@@ -214,7 +216,7 @@ class StoryTellerManager(
     }
 
     fun updateState() {
-        _currentStory.value = updateTexts(_currentStory.value.stories)
+        _currentStory.value = StoryState(updateTexts(_currentStory.value.stories))
     }
 
     override fun undo() {
@@ -356,7 +358,7 @@ class StoryTellerManager(
         return acc to mutable.associateWithPosition()
     }
 
-    private fun updateTexts(stepMap: Map<Int, StoryUnit>): StoryState {
+    private fun updateTexts(stepMap: Map<Int, StoryUnit>): Map<Int, StoryUnit> {
         val mutableSteps = stepMap.toMutableMap()
 
         textChanges.forEach { (position, text) ->
@@ -369,13 +371,13 @@ class StoryTellerManager(
 
         textChanges.clear()
 
-        return StoryState(mutableSteps)
+        return mutableSteps
     }
 
     fun onDelete(deleteInfo: DeleteInfo) {
         val newSteps = updateTexts(_currentStory.value.stories)
 
-        delete(deleteInfo, newSteps.stories)
+        delete(deleteInfo, newSteps)
         backStackManager.addAction(deleteInfo)
     }
 
