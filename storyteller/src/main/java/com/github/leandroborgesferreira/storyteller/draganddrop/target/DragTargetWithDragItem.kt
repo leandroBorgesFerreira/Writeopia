@@ -1,9 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.draganddrop.target
 
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
@@ -12,7 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DragIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,8 +16,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.model.draganddrop.DropInfo
 
@@ -34,6 +32,7 @@ fun DragTargetWithDragItem(
 ) {
     var currentPosition by remember { mutableStateOf(Offset.Zero) }
     val currentState = LocalDragTargetInfo.current
+    val haptic = LocalHapticFeedback.current
 
     Row(modifier = modifier
         .onGloballyPositioned { layoutCoordinates ->
@@ -46,9 +45,11 @@ fun DragTargetWithDragItem(
 
         Icon(
             modifier = Modifier
-                .size(20.dp)
+                .size(25.dp)
                 .pointerInput(Unit) {
                     detectDragGestures(onDragStart = { offset ->
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+
                         currentState.dataToDrop = dataToDrop
                         currentState.isDragging = true
                         currentState.dragPosition = currentPosition + offset

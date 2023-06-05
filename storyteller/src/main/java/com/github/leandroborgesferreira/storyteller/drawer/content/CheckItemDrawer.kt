@@ -1,26 +1,15 @@
 package com.github.leandroborgesferreira.storyteller.drawer.content
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DragIndicator
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalMinimumTouchTargetEnforcement
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -32,16 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import com.github.leandroborgesferreira.storyteller.R
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTarget
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTargetWithDragItem
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
@@ -65,73 +51,74 @@ class CheckItemDrawer(
     @Composable
     override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
         val checkItem = step as StoryStep
+        val dropInfo = DropInfo(checkItem, drawInfo.position)
 
-        DragTargetWithDragItem(dataToDrop = DropInfo(checkItem, drawInfo.position)) {
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 2.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                val todoPlaceHolder = stringResource(R.string.to_do)
-
-                var inputText by remember {
-                    val text = checkItem.text ?: ""
-                    mutableStateOf(TextFieldValue(text, TextRange(text.length)))
-                }
-                val focusRequester = remember { FocusRequester() }
-
-                val textStyle = if (checkItem.checked == true) {
-                    TextStyle(
-                        textDecoration = TextDecoration.LineThrough,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                } else {
-                    TextStyle(color = MaterialTheme.colorScheme.onBackground)
-                }
-
-                LaunchedEffect(drawInfo.focusId) {
-                    if (drawInfo.focusId == step.id) {
-                        focusRequester.requestFocus()
-                    }
-                }
-
-                CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
-                    Checkbox(
-                        modifier = Modifier.padding(6.dp),
-                        checked = checkItem.checked ?: false,
-                        onCheckedChange = { checked ->
-                            onCheckedChange(CheckInfo(checkItem, drawInfo.position, checked))
-                        },
-                        enabled = drawInfo.editable,
-                    )
-                }
-
-                BasicTextField(
+        DragTargetWithDragItem(dataToDrop = dropInfo) {
+            DragTarget(dataToDrop = dropInfo) {
+                Row(
                     modifier = Modifier
-                        .focusRequester(focusRequester)
-                        .callOnEmptyErase(inputText.selection) {
-                            onDeleteRequest(DeleteInfo(step, drawInfo.position))
-                        },
-                    value = inputText,
-                    onValueChange = { value: TextFieldValue ->
-                        if (!commandHandler.handleCommand(
-                                value.text,
-                                checkItem,
-                                drawInfo.position
-                            )
-                        ) {
-                            inputText = value
-                            onTextEdit(value.text, drawInfo.position)
+                        .padding(horizontal = 2.dp)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    var inputText by remember {
+                        val text = checkItem.text ?: ""
+                        mutableStateOf(TextFieldValue(text, TextRange(text.length)))
+                    }
+                    val focusRequester = remember { FocusRequester() }
+
+                    val textStyle = if (checkItem.checked == true) {
+                        TextStyle(
+                            textDecoration = TextDecoration.LineThrough,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    } else {
+                        TextStyle(color = MaterialTheme.colorScheme.onBackground)
+                    }
+
+                    LaunchedEffect(drawInfo.focusId) {
+                        if (drawInfo.focusId == step.id) {
+                            focusRequester.requestFocus()
                         }
-                    },
-                    textStyle = textStyle,
-                    enabled = drawInfo.editable,
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Sentences
-                    ),
-                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
-                )
+                    }
+
+                    CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
+                        Checkbox(
+                            modifier = Modifier.padding(6.dp),
+                            checked = checkItem.checked ?: false,
+                            onCheckedChange = { checked ->
+                                onCheckedChange(CheckInfo(checkItem, drawInfo.position, checked))
+                            },
+                            enabled = drawInfo.editable,
+                        )
+                    }
+
+                    BasicTextField(
+                        modifier = Modifier
+                            .focusRequester(focusRequester)
+                            .callOnEmptyErase(inputText.selection) {
+                                onDeleteRequest(DeleteInfo(step, drawInfo.position))
+                            },
+                        value = inputText,
+                        onValueChange = { value: TextFieldValue ->
+                            if (!commandHandler.handleCommand(
+                                    value.text,
+                                    checkItem,
+                                    drawInfo.position
+                                )
+                            ) {
+                                inputText = value
+                                onTextEdit(value.text, drawInfo.position)
+                            }
+                        },
+                        textStyle = textStyle,
+                        enabled = drawInfo.editable,
+                        keyboardOptions = KeyboardOptions(
+                            capitalization = KeyboardCapitalization.Sentences
+                        ),
+                        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
+                    )
+                }
             }
         }
     }
