@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTarget
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTargetWithDragItem
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
@@ -50,71 +51,74 @@ class CheckItemDrawer(
     @Composable
     override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
         val checkItem = step as StoryStep
+        val dropInfo = DropInfo(checkItem, drawInfo.position)
 
-        DragTargetWithDragItem(dataToDrop = DropInfo(checkItem, drawInfo.position)) {
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 2.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                var inputText by remember {
-                    val text = checkItem.text ?: ""
-                    mutableStateOf(TextFieldValue(text, TextRange(text.length)))
-                }
-                val focusRequester = remember { FocusRequester() }
-
-                val textStyle = if (checkItem.checked == true) {
-                    TextStyle(
-                        textDecoration = TextDecoration.LineThrough,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                } else {
-                    TextStyle(color = MaterialTheme.colorScheme.onBackground)
-                }
-
-                LaunchedEffect(drawInfo.focusId) {
-                    if (drawInfo.focusId == step.id) {
-                        focusRequester.requestFocus()
-                    }
-                }
-
-                CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
-                    Checkbox(
-                        modifier = Modifier.padding(6.dp),
-                        checked = checkItem.checked ?: false,
-                        onCheckedChange = { checked ->
-                            onCheckedChange(CheckInfo(checkItem, drawInfo.position, checked))
-                        },
-                        enabled = drawInfo.editable,
-                    )
-                }
-
-                BasicTextField(
+        DragTargetWithDragItem(dataToDrop = dropInfo) {
+            DragTarget(dataToDrop = dropInfo) {
+                Row(
                     modifier = Modifier
-                        .focusRequester(focusRequester)
-                        .callOnEmptyErase(inputText.selection) {
-                            onDeleteRequest(DeleteInfo(step, drawInfo.position))
-                        },
-                    value = inputText,
-                    onValueChange = { value: TextFieldValue ->
-                        if (!commandHandler.handleCommand(
-                                value.text,
-                                checkItem,
-                                drawInfo.position
-                            )
-                        ) {
-                            inputText = value
-                            onTextEdit(value.text, drawInfo.position)
+                        .padding(horizontal = 2.dp)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    var inputText by remember {
+                        val text = checkItem.text ?: ""
+                        mutableStateOf(TextFieldValue(text, TextRange(text.length)))
+                    }
+                    val focusRequester = remember { FocusRequester() }
+
+                    val textStyle = if (checkItem.checked == true) {
+                        TextStyle(
+                            textDecoration = TextDecoration.LineThrough,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    } else {
+                        TextStyle(color = MaterialTheme.colorScheme.onBackground)
+                    }
+
+                    LaunchedEffect(drawInfo.focusId) {
+                        if (drawInfo.focusId == step.id) {
+                            focusRequester.requestFocus()
                         }
-                    },
-                    textStyle = textStyle,
-                    enabled = drawInfo.editable,
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Sentences
-                    ),
-                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
-                )
+                    }
+
+                    CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
+                        Checkbox(
+                            modifier = Modifier.padding(6.dp),
+                            checked = checkItem.checked ?: false,
+                            onCheckedChange = { checked ->
+                                onCheckedChange(CheckInfo(checkItem, drawInfo.position, checked))
+                            },
+                            enabled = drawInfo.editable,
+                        )
+                    }
+
+                    BasicTextField(
+                        modifier = Modifier
+                            .focusRequester(focusRequester)
+                            .callOnEmptyErase(inputText.selection) {
+                                onDeleteRequest(DeleteInfo(step, drawInfo.position))
+                            },
+                        value = inputText,
+                        onValueChange = { value: TextFieldValue ->
+                            if (!commandHandler.handleCommand(
+                                    value.text,
+                                    checkItem,
+                                    drawInfo.position
+                                )
+                            ) {
+                                inputText = value
+                                onTextEdit(value.text, drawInfo.position)
+                            }
+                        },
+                        textStyle = textStyle,
+                        enabled = drawInfo.editable,
+                        keyboardOptions = KeyboardOptions(
+                            capitalization = KeyboardCapitalization.Sentences
+                        ),
+                        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
+                    )
+                }
             }
         }
     }
