@@ -32,5 +32,5 @@ data class StoryStep(
         return copy(localId = id, steps = newSteps)
     }
 
-    override val isGroup: Boolean = false
+    override val isGroup: Boolean = steps.isNotEmpty()
 }

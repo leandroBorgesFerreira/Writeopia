@@ -5,7 +5,6 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.leandroborgesferreira.storyteller.model.document.Document
-import com.github.leandroborgesferreira.storyteller.model.story.GroupStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 import com.github.leandroborgesferreira.storyteller.persistence.dao.DocumentDao
@@ -26,10 +25,10 @@ import java.util.UUID
 @RunWith(AndroidJUnit4::class)
 class DocumentRepositoryTest {
 
-    lateinit var database: StoryTellerDatabase
-    lateinit var documentDao: DocumentDao
-    lateinit var storyUnitDao: StoryUnitDao
-    lateinit var documentRepository: DocumentRepository
+    private lateinit var database: StoryTellerDatabase
+    private lateinit var documentDao: DocumentDao
+    private lateinit var storyUnitDao: StoryUnitDao
+    private lateinit var documentRepository: DocumentRepository
 
     @Before
     fun createDb() {
@@ -157,7 +156,7 @@ fun imageGroup() : Map<Int, StoryUnit>{
     val groupId = UUID.randomUUID().toString()
 
     return mapOf(
-        0 to GroupStep(
+        0 to StoryStep(
             id = groupId,
             localId = "1",
             type = "group_image",

@@ -11,7 +11,6 @@ import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
 import com.github.leandroborgesferreira.storyteller.model.change.MergeInfo
 import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
 import com.github.leandroborgesferreira.storyteller.model.change.TextEditInfo
-import com.github.leandroborgesferreira.storyteller.model.story.GroupStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
@@ -112,7 +111,7 @@ class StoryTellerManager(
         if (sender.parentId == null) {
             mutableHistory.remove(positionFrom)
         } else {
-            val fromGroup = (mutableHistory[positionFrom]?.first() as? GroupStep)
+            val fromGroup = (mutableHistory[positionFrom]?.first() as? StoryStep)
             val newList =
                 fromGroup?.steps?.filter { storyUnit -> storyUnit.localId != sender.localId }
 
@@ -134,7 +133,7 @@ class StoryTellerManager(
             if (moveInfo.storyUnit.parentId == null) {
                 mutable.remove(moveInfo.positionFrom)
             } else {
-                val fromGroup = (mutable[moveInfo.positionFrom] as? GroupStep)
+                val fromGroup = (mutable[moveInfo.positionFrom] as? StoryStep)
                 val newList = fromGroup?.steps?.filter { storyUnit ->
                     storyUnit.localId != moveInfo.storyUnit.localId
                 }
@@ -404,7 +403,7 @@ class StoryTellerManager(
                 focusId = previousFocus?.id
             )
         } else {
-            (mutableSteps[deleteInfo.position] as? GroupStep)?.let { group ->
+            (mutableSteps[deleteInfo.position] as? StoryStep)?.let { group ->
                 val newSteps = group.steps.filter { storyUnit ->
                     storyUnit.localId != step.localId
                 }

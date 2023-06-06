@@ -11,7 +11,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
-import com.github.leandroborgesferreira.storyteller.model.story.GroupStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 
@@ -25,7 +24,7 @@ class ImageGroupDrawer(
 
     @Composable
     override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
-        val imageGroup = step as GroupStep
+        val imageGroup = step as StoryStep
         val steps = imageGroup.steps.map { storyUnit -> storyUnit as StoryStep }
         val focusRequester = remember { FocusRequester() }
 

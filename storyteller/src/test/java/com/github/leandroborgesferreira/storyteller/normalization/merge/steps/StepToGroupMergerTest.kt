@@ -1,6 +1,5 @@
 package com.github.leandroborgesferreira.storyteller.normalization.merge.steps
 
-import com.github.leandroborgesferreira.storyteller.model.story.GroupStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import org.junit.Assert.assertEquals
@@ -26,7 +25,7 @@ class StepToGroupMergerTest {
         val result = merger.merge(image1, image2, "group_image")
 
         assertEquals("group_image", result.type)
-        assertEquals(2, (result as GroupStep).steps.size)
+        assertEquals(2, (result as StoryStep).steps.size)
         assertEquals(result.localId, result.steps[0].parentId)
         assertEquals(result.localId, result.steps[1].parentId)
     }
@@ -39,7 +38,7 @@ class StepToGroupMergerTest {
         val parent2Id = UUID.randomUUID().toString()
 
         val group1 =
-            GroupStep(
+            StoryStep(
                 localId = parent1Id,
                 type = StoryType.GROUP_IMAGE.type,
                 steps = listOf(
@@ -62,7 +61,7 @@ class StepToGroupMergerTest {
             )
 
         val group2 =
-            GroupStep(
+            StoryStep(
                 localId = parent2Id,
                 type = StoryType.GROUP_IMAGE.type,
                 steps = listOf(
@@ -88,7 +87,7 @@ class StepToGroupMergerTest {
         val result = merger.merge(group1, group2, "group_image")
 
         assertEquals("group_image", result.type)
-        assertEquals(6, (result as GroupStep).steps.size)
+        assertEquals(6, (result as StoryStep).steps.size)
 
         result.steps.forEachIndexed { i, storyUnit ->
             assertEquals(

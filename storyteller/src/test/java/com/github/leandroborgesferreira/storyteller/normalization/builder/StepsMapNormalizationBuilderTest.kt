@@ -1,6 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.normalization.builder
 
-import com.github.leandroborgesferreira.storyteller.model.story.GroupStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.utils.MapStoryData
 import junit.framework.TestCase
 import junit.framework.TestCase.assertEquals
@@ -35,7 +35,7 @@ class StepsMapNormalizationBuilderTest {
         assertEquals(
             "The images in the same position should be merged into GroupImage",
             3,
-            (normalized[5] as GroupStep).steps.size
+            (normalized[5] as StoryStep).steps.size
         )
         assertEquals(
             "The last message should stay as it was",
@@ -43,7 +43,7 @@ class StepsMapNormalizationBuilderTest {
             normalized[normalized.size - 3]?.type
         )
 
-        val group = (normalized[5] as GroupStep)
+        val group = (normalized[5] as StoryStep)
         group.steps.forEach { storyUnit ->
             TestCase.assertEquals(
                 "The steps inside the group should reference it as the parent",

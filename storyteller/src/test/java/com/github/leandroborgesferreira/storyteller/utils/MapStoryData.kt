@@ -1,6 +1,5 @@
 package com.github.leandroborgesferreira.storyteller.utils
 
-import com.github.leandroborgesferreira.storyteller.model.story.GroupStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
@@ -18,7 +17,7 @@ object MapStoryData {
     )
 
     fun imageGroup(): Map<Int, StoryUnit> = mapOf(
-        0 to GroupStep(
+        0 to StoryStep(
             localId = "0",
             type = "group_image",
             steps = listOf(
@@ -43,70 +42,6 @@ object MapStoryData {
         ),
         1 to StoryStep(
             localId = "4",
-            type = "image",
-        )
-    )
-
-    fun imageGroupToDetach(): Map<Int, StoryUnit> = mapOf(
-        0 to GroupStep(
-            localId = "0",
-            type = "group_image",
-            steps = listOf(
-                StoryStep(
-                    localId = "1",
-                    type = "image",
-                ),
-                StoryStep(
-                    localId = "2",
-                    type = "image",
-                ),
-
-                StoryStep(
-                    localId = "3",
-                    type = "image",
-                )
-            )
-        ),
-        1 to StoryStep(
-            localId = "4",
-            type = "image",
-        )
-    )
-
-    fun spaces(): Map<Int, StoryUnit> = mapOf(
-        0 to StoryStep(
-            localId = "1",
-            type = "space",
-        ),
-        1 to StoryStep(
-            localId = "2",
-            type = "space",
-        ),
-        2 to StoryStep(
-            localId = "2",
-            type = "space",
-        )
-    )
-
-    fun spacedImageStepsList(): Map<Int, StoryUnit> = mapOf(
-        0 to StoryStep(
-            localId = "1",
-            type = "image",
-        ),
-        1 to StoryStep(
-            localId = "pamsdplams",
-            type = "space",
-        ),
-        2 to StoryStep(
-            localId = "3",
-            type = "image",
-        ),
-        3 to StoryStep(
-            localId = "askndpalsd",
-            type = "space",
-        ),
-        4 to StoryStep(
-            localId = "5",
             type = "image",
         )
     )
@@ -143,28 +78,13 @@ object MapStoryData {
         )
     )
 
-    fun messageStepsList(): Map<Int, StoryUnit> = mapOf(
-        0 to StoryStep(
-            localId = "1",
-            type = "message",
-        ),
-        1 to StoryStep(
-            localId = "2",
-            type = "message",
-        ),
-        2 to StoryStep(
-            localId = "3",
-            type = "message",
-        )
-    )
-
     fun twoGroupsImageList(): Map<Int, List<StoryUnit>> {
         val parent1Id = UUID.randomUUID().toString()
         val parent2Id = UUID.randomUUID().toString()
 
         return mapOf(
             0 to listOf(
-                GroupStep(
+                StoryStep(
                     localId = parent1Id,
                     type = StoryType.GROUP_IMAGE.type,
                     steps = listOf(
@@ -185,7 +105,7 @@ object MapStoryData {
                         )
                     )
                 ),
-                GroupStep(
+                StoryStep(
                     localId = parent2Id,
                     type = StoryType.GROUP_IMAGE.type,
                     steps = listOf(
