@@ -18,23 +18,23 @@ open class StepToGroupMerger : StepMerger {
                 val groupId = UUID.randomUUID().toString()
 
                 StoryStep(
-                    localId = groupId,
+                    id = groupId,
                     type = type,
                     steps = listOf(step1.copy(parentId = groupId), step2.copy(parentId = groupId))
                 )
             }
 
             step1.isGroup && !step2.isGroup -> step1.copy(
-                steps = listOf(step2.copy(parentId = step1.localId)) + step1.steps
+                steps = listOf(step2.copy(parentId = step1.id)) + step1.steps
             )
 
             !step1.isGroup && step2.isGroup -> step2.copy(
-                steps = listOf(step1.copy(parentId = step2.localId)) + step2.steps
+                steps = listOf(step1.copy(parentId = step2.id)) + step2.steps
             )
 
             step1.isGroup && step2.isGroup -> step1.copy(
                 steps = step1.steps + step2.steps.map { step ->
-                    step.copy(parentId = step1.localId)
+                    step.copy(parentId = step1.id)
                 },
             )
 
