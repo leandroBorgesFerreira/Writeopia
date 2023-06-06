@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.request.videoFrameMillis
@@ -31,8 +30,7 @@ import coil.request.videoFrameMillis
 class VideoStepDrawer(private val containerModifier: Modifier? = null) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
-        val videoStep = step as StoryStep
+    override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
 
         Box(modifier = Modifier.padding(vertical = 3.dp, horizontal = 8.dp)) {
             Box(
@@ -46,7 +44,7 @@ class VideoStepDrawer(private val containerModifier: Modifier? = null) : StoryUn
                     .align(Alignment.Center)
             ) {
                 val request = ImageRequest.Builder(LocalContext.current)
-                    .data(videoStep.url)
+                    .data(step.url)
                     .videoFrameMillis(1000)
                     .build()
 

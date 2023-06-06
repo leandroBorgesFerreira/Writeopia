@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
+import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
 /**
  * A simple Add button.
@@ -25,7 +25,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 class AddButtonDrawer : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
+    override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
         Box(modifier = Modifier.padding(horizontal = 5.dp)) {
             Button(
                 onClick = { },

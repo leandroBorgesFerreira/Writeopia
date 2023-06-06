@@ -9,12 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.github.leandroborgesferreira.storyteller.BuildConfig
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DropTarget
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
+import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
 /**
  * Draws a white space. This Drawer is very important for accepting drop os other Composables for
@@ -24,7 +23,7 @@ import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
 class SpaceDrawer(private val moveRequest: (MoveInfo) -> Unit = {}) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
+    override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
         DropTarget { inBound, data ->
             if (inBound && data != null) {
                 moveRequest(

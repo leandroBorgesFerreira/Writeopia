@@ -1,8 +1,8 @@
 package com.github.leandroborgesferreira.storyteller.repository
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
+import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
 interface StoriesRepository {
 
-    suspend fun history(): Map<Int, StoryUnit>
+    suspend fun history(): Map<Int, StoryStep>
 }

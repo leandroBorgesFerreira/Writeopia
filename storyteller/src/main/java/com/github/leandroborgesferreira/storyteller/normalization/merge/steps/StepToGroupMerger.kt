@@ -34,7 +34,7 @@ open class StepToGroupMerger : StepMerger {
 
             step1.isGroup && step2.isGroup -> step1.copy(
                 steps = step1.steps + step2.steps.map { step ->
-                    step.copyWithNewParent(step1.localId)
+                    step.copy(parentId = step1.localId)
                 },
             )
 

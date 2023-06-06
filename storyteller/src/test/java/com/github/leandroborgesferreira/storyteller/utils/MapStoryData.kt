@@ -2,12 +2,11 @@ package com.github.leandroborgesferreira.storyteller.utils
 
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 import java.util.UUID
 
 object MapStoryData {
 
-    fun singleCheckItem(): Map<Int, StoryUnit> = mapOf(
+    fun singleCheckItem(): Map<Int, StoryStep> = mapOf(
         0 to StoryStep(
             id = UUID.randomUUID().toString(),
             localId = UUID.randomUUID().toString(),
@@ -16,7 +15,7 @@ object MapStoryData {
         )
     )
 
-    fun imageGroup(): Map<Int, StoryUnit> = mapOf(
+    fun imageGroup(): Map<Int, StoryStep> = mapOf(
         0 to StoryStep(
             localId = "0",
             type = "group_image",
@@ -46,7 +45,7 @@ object MapStoryData {
         )
     )
 
-    fun imageStepsList(): Map<Int, StoryUnit> = mapOf(
+    fun imageStepsList(): Map<Int, StoryStep> = mapOf(
         0 to StoryStep(
             localId = "1",
             type = "image",
@@ -61,7 +60,7 @@ object MapStoryData {
         ),
     )
 
-    fun imageSimpleGroup(): Map<Int, List<StoryUnit>> = mapOf(
+    fun imageSimpleGroup(): Map<Int, List<StoryStep>> = mapOf(
         0 to listOf(
             StoryStep(
                 localId = "1",
@@ -78,7 +77,7 @@ object MapStoryData {
         )
     )
 
-    fun twoGroupsImageList(): Map<Int, List<StoryUnit>> {
+    fun twoGroupsImageList(): Map<Int, List<StoryStep>> {
         val parent1Id = UUID.randomUUID().toString()
         val parent2Id = UUID.randomUUID().toString()
 
@@ -159,7 +158,7 @@ object MapStoryData {
         )
     )
 
-    fun singleMessage(): Map<Int, StoryUnit> = mapOf(
+    fun singleMessage(): Map<Int, StoryStep> = mapOf(
         0 to StoryStep(
             localId = "0",
             type = "message",
@@ -167,7 +166,7 @@ object MapStoryData {
         )
     )
 
-    fun messagesInLine(): Map<Int, StoryUnit> = mapOf(
+    fun messagesInLine(): Map<Int, StoryStep> = mapOf(
         0 to StoryStep(
             localId = "0",
             type = "message",
@@ -240,7 +239,7 @@ object MapStoryData {
             )
     )
 
-    fun complexList(): Map<Int, List<StoryUnit>> = mapOf(
+    fun complexList(): Map<Int, List<StoryStep>> = mapOf(
         0 to listOf(
             StoryStep(
                 localId = UUID.randomUUID().toString(),
@@ -310,7 +309,7 @@ object MapStoryData {
         )
     )
 
-    fun syncHistory(): Map<Int, StoryUnit> =
+    fun syncHistory(): Map<Int, StoryStep> =
         mapOf(
             0 to
                 StoryStep(

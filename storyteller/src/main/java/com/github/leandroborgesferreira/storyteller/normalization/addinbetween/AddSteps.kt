@@ -2,7 +2,6 @@ package com.github.leandroborgesferreira.storyteller.normalization.addinbetween
 
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 import com.github.leandroborgesferreira.storyteller.utils.extensions.associateWithPosition
 import java.util.Stack
 import java.util.UUID
@@ -13,15 +12,15 @@ import java.util.UUID
  * of StoryUnits.
  */
 class AddSteps(
-    private val addInBetween: () -> StoryUnit,
-    private val addAtLast: () -> StoryUnit
+    private val addInBetween: () -> StoryStep,
+    private val addAtLast: () -> StoryStep
 ) {
 
-    fun insert(unit: Map<Int, StoryUnit>): Map<Int, StoryUnit> =
+    fun insert(unit: Map<Int, StoryStep>): Map<Int, StoryStep> =
         insert(unit.values).associateWithPosition()
 
-    fun insert(units: Iterable<StoryUnit>): List<StoryUnit> {
-        val stack: Stack<StoryUnit> = Stack()
+    fun insert(units: Iterable<StoryStep>): List<StoryStep> {
+        val stack: Stack<StoryStep> = Stack()
         val typeToAdd = addInBetween().type
         val typeAtLast = addAtLast().type
 
@@ -36,24 +35,24 @@ class AddSteps(
 
                 stack.isEmpty() && storyUnit.type != typeToAdd -> {
                     stack.add(addInBetween())
-                    stack.add(storyUnit.copyWithNewId(UUID.randomUUID().toString()))
+                    stack.add(storyUnit.copy(localId = UUID.randomUUID().toString()))
                 }
 
                 stack.isEmpty() && storyUnit.type == typeToAdd -> {
-                    stack.add(storyUnit.copyWithNewId(UUID.randomUUID().toString()))
+                    stack.add(storyUnit.copy(localId = UUID.randomUUID().toString()))
                 }
 
                 storyUnit.type != typeToAdd && stack.peek().type == typeToAdd -> {
-                    stack.add(storyUnit.copyWithNewId(UUID.randomUUID().toString()))
+                    stack.add(storyUnit.copy(localId = UUID.randomUUID().toString()))
                 }
 
                 storyUnit.type == typeToAdd && stack.peek()?.type != typeToAdd -> {
-                    stack.add(storyUnit.copyWithNewId(UUID.randomUUID().toString()))
+                    stack.add(storyUnit.copy(localId = UUID.randomUUID().toString()))
                 }
 
                 storyUnit.type != typeToAdd && stack.peek()?.type != typeToAdd -> {
                     stack.add(addInBetween())
-                    stack.add(storyUnit.copyWithNewId(UUID.randomUUID().toString()))
+                    stack.add(storyUnit.copy(localId = UUID.randomUUID().toString()))
                 }
 
                 storyUnit.type == typeToAdd && stack.peek()?.type == typeToAdd -> {}

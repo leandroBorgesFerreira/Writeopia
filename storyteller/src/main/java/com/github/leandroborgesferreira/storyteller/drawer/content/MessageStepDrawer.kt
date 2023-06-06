@@ -28,7 +28,6 @@ import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyErase
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 
 /**
@@ -45,13 +44,12 @@ class MessageStepDrawer(
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
-        val messageStep = step as StoryStep
+    override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
 
         Box(modifier = containerModifier) {
             if (drawInfo.editable) {
                 var inputText by remember {
-                    val text = messageStep.text ?: ""
+                    val text = step.text ?: ""
                     mutableStateOf(TextFieldValue(text, TextRange(text.length)))
                 }
                 val focusRequester = remember { FocusRequester() }
@@ -72,10 +70,10 @@ class MessageStepDrawer(
                     value = inputText,
                     onValueChange = { value ->
                         if (!commandHandler.handleCommand(
-                            value.text,
-                            messageStep,
-                            drawInfo.position
-                        )
+                                value.text,
+                                step,
+                                drawInfo.position
+                            )
                         ) {
                             inputText = value
                             onTextEdit(value.text, drawInfo.position)
@@ -89,7 +87,7 @@ class MessageStepDrawer(
                 )
             } else {
                 Text(
-                    text = messageStep.text ?: "",
+                    text = step.text ?: "",
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
                 )
             }

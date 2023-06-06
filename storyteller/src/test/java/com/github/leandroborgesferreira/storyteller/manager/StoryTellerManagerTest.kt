@@ -6,7 +6,6 @@ import com.github.leandroborgesferreira.storyteller.model.change.MergeInfo
 import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 import com.github.leandroborgesferreira.storyteller.repository.StoriesRepository
 import com.github.leandroborgesferreira.storyteller.utils.MainDispatcherRule
 import com.github.leandroborgesferreira.storyteller.utils.MapStoryData
@@ -25,23 +24,23 @@ class StoryTellerManagerTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val imagesInLineRepo: StoriesRepository = object : StoriesRepository {
-        override suspend fun history(): Map<Int, StoryUnit> = MapStoryData.imageStepsList()
+        override suspend fun history(): Map<Int, StoryStep> = MapStoryData.imageStepsList()
     }
 
     private val imageGroupRepo: StoriesRepository = object : StoriesRepository {
-        override suspend fun history(): Map<Int, StoryUnit> = MapStoryData.imageGroup()
+        override suspend fun history(): Map<Int, StoryStep> = MapStoryData.imageGroup()
     }
 
     private val messagesRepo: StoriesRepository = object : StoriesRepository {
-        override suspend fun history(): Map<Int, StoryUnit> = MapStoryData.messagesInLine()
+        override suspend fun history(): Map<Int, StoryStep> = MapStoryData.messagesInLine()
     }
 
     private val singleMessageRepo: StoriesRepository = object : StoriesRepository {
-        override suspend fun history(): Map<Int, StoryUnit> = MapStoryData.singleMessage()
+        override suspend fun history(): Map<Int, StoryStep> = MapStoryData.singleMessage()
     }
 
     private val complexMessagesRepository: StoriesRepository = object : StoriesRepository {
-        override suspend fun history(): Map<Int, StoryUnit> = MapStoryData.syncHistory()
+        override suspend fun history(): Map<Int, StoryStep> = MapStoryData.syncHistory()
     }
 
 
@@ -389,7 +388,7 @@ class StoryTellerManagerTest {
             )
         )
 
-        val stack: Stack<StoryUnit> = Stack()
+        val stack: Stack<StoryStep> = Stack()
 
         storyManager.currentStory.value.stories.forEach { (_, storyUnit) ->
             if (stack.isNotEmpty() && stack.peek().type == "space" && storyUnit.type == "space") {

@@ -1,10 +1,9 @@
 package com.github.leandroborgesferreira.storyteller.normalization.merge
 
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 import com.github.leandroborgesferreira.storyteller.normalization.merge.steps.StepToGroupMerger
 
-typealias MergeLogicFunction = (StoryUnit, StoryUnit, String, String?) -> Boolean
+typealias MergeLogicFunction = (StoryStep, StoryStep, String, String?) -> Boolean
 
 class StepsMergerCoordinator(
     private val stepMerger: StepMerger = StepToGroupMerger(),
@@ -21,11 +20,11 @@ class StepsMergerCoordinator(
 
 }
 
-public object MergeLogic {
+object MergeLogic {
 
     fun create(
-        step1: StoryUnit,
-        step2: StoryUnit,
+        step1: StoryStep,
+        step2: StoryStep,
         typeOfStep: String,
         typeOfGroup: String?
     ): Boolean =

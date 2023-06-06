@@ -20,8 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
+import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
 /**
  * Drawer for commands. This drawer adds commands for move up, move down and delete on top of any
@@ -34,7 +34,7 @@ class CommandsDecoratorDrawer(
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
+    override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
         Box {
             Box(modifier = Modifier.padding(top = 3.dp)) {
                 innerStep.run { Step(step = step, drawInfo = drawInfo) }
@@ -45,7 +45,7 @@ class CommandsDecoratorDrawer(
     }
 
     @Composable
-    private fun BoxScope.DeleteButton(step: StoryUnit, position: Int) {
+    private fun BoxScope.DeleteButton(step: StoryStep, position: Int) {
         Box(
             modifier = Modifier
                 .buttonModifier()

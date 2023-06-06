@@ -1,6 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.normalization.builder
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
+import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.normalization.addinbetween.AddSteps
 import com.github.leandroborgesferreira.storyteller.normalization.merge.MergeLogic
 import com.github.leandroborgesferreira.storyteller.normalization.merge.MergeNormalization
@@ -18,7 +18,7 @@ class StepsMapNormalizationBuilder {
             StepsMapNormalizationBuilder().apply(buildFunc).build()
     }
 
-    private var mergeNormalization: ((Map<Int, List<StoryUnit>>) -> Map<Int, StoryUnit>)? = null
+    private var mergeNormalization: ((Map<Int, List<StoryStep>>) -> Map<Int, StoryStep>)? = null
     private val normalizations: MutableList<UnitsMapTransformation> = mutableListOf()
 
     /**
@@ -30,7 +30,7 @@ class StepsMapNormalizationBuilder {
         normalizations.add(normalization)
     }
 
-    fun addMergeNormalization(merge: (Map<Int, List<StoryUnit>>) -> Map<Int, StoryUnit>) {
+    fun addMergeNormalization(merge: (Map<Int, List<StoryStep>>) -> Map<Int, StoryStep>) {
         mergeNormalization = merge
     }
 

@@ -1,16 +1,15 @@
 package com.github.leandroborgesferreira.storyteller.persistence.utils
 
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 
-fun simpleImage(): Map<Int, StoryUnit> = mapOf(
+fun simpleImage(): Map<Int, StoryStep> = mapOf(
     0 to StoryStep(
         localId = "1",
         type = "image",
     )
 )
 
-fun imageStepsList(): Map<Int, StoryUnit> = mapOf(
+fun imageStepsList(): Map<Int, StoryStep> = mapOf(
     0 to StoryStep(
         localId = "1",
         type = "image",

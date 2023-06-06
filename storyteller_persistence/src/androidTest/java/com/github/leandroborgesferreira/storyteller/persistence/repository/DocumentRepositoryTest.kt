@@ -6,7 +6,6 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 import com.github.leandroborgesferreira.storyteller.persistence.dao.DocumentDao
 import com.github.leandroborgesferreira.storyteller.persistence.dao.StoryUnitDao
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
@@ -130,14 +129,14 @@ class DocumentRepositoryTest {
     }
 }
 
-fun simpleImage(): Map<Int, StoryUnit> = mapOf(
+fun simpleImage(): Map<Int, StoryStep> = mapOf(
     0 to StoryStep(
         localId = "1",
         type = "image",
     )
 )
 
-fun imageStepsList(): Map<Int, StoryUnit> = mapOf(
+fun imageStepsList(): Map<Int, StoryStep> = mapOf(
     0 to StoryStep(
         localId = "1",
         type = "image",
@@ -152,7 +151,7 @@ fun imageStepsList(): Map<Int, StoryUnit> = mapOf(
     ),
 )
 
-fun imageGroup() : Map<Int, StoryUnit>{
+fun imageGroup() : Map<Int, StoryStep>{
     val groupId = UUID.randomUUID().toString()
 
     return mapOf(

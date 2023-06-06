@@ -12,7 +12,6 @@ import androidx.compose.ui.focus.focusRequester
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 
 /**
  * Draws a scrollable list of images accordingly with the imageStepDrawer provided.
@@ -23,7 +22,7 @@ class ImageGroupDrawer(
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
+    override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
         val imageGroup = step as StoryStep
         val steps = imageGroup.steps.map { storyUnit -> storyUnit as StoryStep }
         val focusRequester = remember { FocusRequester() }

@@ -1,11 +1,10 @@
 package com.github.leandroborgesferreira.storyteller.utils
 
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 
 object ListStoryData {
 
-    fun imageGroup(): List<StoryUnit> = buildList {
+    fun imageGroup(): List<StoryStep> = buildList {
         add(
             StoryStep(
                 localId = "0",

@@ -4,7 +4,7 @@ import com.github.leandroborgesferreira.storyteller.manager.StoryStateSaver
 import com.github.leandroborgesferreira.storyteller.persistence.parse.toEntity
 import com.github.leandroborgesferreira.storyteller.persistence.parse.toModel
 import com.github.leandroborgesferreira.storyteller.model.document.Document
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
+import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.persistence.dao.DocumentDao
 import com.github.leandroborgesferreira.storyteller.persistence.dao.StoryUnitDao
 import com.github.leandroborgesferreira.storyteller.persistence.entity.document.DocumentEntity
@@ -48,7 +48,7 @@ class DocumentRepository(
         }
     }
 
-    override suspend fun saveState(documentId: String, content: Map<Int, StoryUnit>) {
+    override suspend fun saveState(documentId: String, content: Map<Int, StoryStep>) {
         storyUnitDao.deleteDocumentContent(documentId = documentId)
         storyUnitDao.insertStoryUnits(*content.toEntity(documentId).toTypedArray())
     }

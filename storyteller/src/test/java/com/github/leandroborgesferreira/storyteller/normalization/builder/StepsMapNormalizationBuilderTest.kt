@@ -43,9 +43,9 @@ class StepsMapNormalizationBuilderTest {
             normalized[normalized.size - 3]?.type
         )
 
-        val group = (normalized[5] as StoryStep)
-        group.steps.forEach { storyUnit ->
-            TestCase.assertEquals(
+        val group = (normalized[5])
+        group!!.steps.forEach { storyUnit ->
+            assertEquals(
                 "The steps inside the group should reference it as the parent",
                 group.localId,
                 storyUnit.parentId

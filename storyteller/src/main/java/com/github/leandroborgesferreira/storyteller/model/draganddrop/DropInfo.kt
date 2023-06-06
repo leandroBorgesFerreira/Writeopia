@@ -1,5 +1,5 @@
 package com.github.leandroborgesferreira.storyteller.model.draganddrop
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
+import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
-data class DropInfo(val storyUnit: StoryUnit, val positionFrom: Int)
+data class DropInfo(val storyUnit: StoryStep, val positionFrom: Int)
