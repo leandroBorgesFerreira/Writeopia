@@ -2,7 +2,7 @@ package com.github.leandroborgesferreira.storyteller.drawer
 
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.runtime.Composable
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
+import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
 /**
  * [StoryUnitDrawer] is the interface for drawing StoryUnits in the screen. It you would like
@@ -12,7 +12,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 fun interface StoryUnitDrawer {
     @Composable
     fun LazyItemScope.Step(
-        step: StoryUnit,
+        step: StoryStep,
         drawInfo: DrawInfo
     )
 }

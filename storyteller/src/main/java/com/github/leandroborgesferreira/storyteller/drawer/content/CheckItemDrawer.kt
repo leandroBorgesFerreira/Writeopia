@@ -37,7 +37,6 @@ import com.github.leandroborgesferreira.storyteller.model.change.CheckInfo
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
 import com.github.leandroborgesferreira.storyteller.model.draganddrop.DropInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 
 class CheckItemDrawer(
@@ -49,9 +48,8 @@ class CheckItemDrawer(
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
-        val checkItem = step as StoryStep
-        val dropInfo = DropInfo(checkItem, drawInfo.position)
+    override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
+        val dropInfo = DropInfo(step, drawInfo.position)
 
         DragTargetWithDragItem(dataToDrop = dropInfo) {
             DragTarget(dataToDrop = dropInfo) {
@@ -62,12 +60,12 @@ class CheckItemDrawer(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     var inputText by remember {
-                        val text = checkItem.text ?: ""
+                        val text = step.text ?: ""
                         mutableStateOf(TextFieldValue(text, TextRange(text.length)))
                     }
                     val focusRequester = remember { FocusRequester() }
 
-                    val textStyle = if (checkItem.checked == true) {
+                    val textStyle = if (step.checked == true) {
                         TextStyle(
                             textDecoration = TextDecoration.LineThrough,
                             color = MaterialTheme.colorScheme.onBackground
@@ -85,9 +83,9 @@ class CheckItemDrawer(
                     CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
                         Checkbox(
                             modifier = Modifier.padding(6.dp),
-                            checked = checkItem.checked ?: false,
+                            checked = step.checked ?: false,
                             onCheckedChange = { checked ->
-                                onCheckedChange(CheckInfo(checkItem, drawInfo.position, checked))
+                                onCheckedChange(CheckInfo(step, drawInfo.position, checked))
                             },
                             enabled = drawInfo.editable,
                         )
@@ -103,7 +101,7 @@ class CheckItemDrawer(
                         onValueChange = { value: TextFieldValue ->
                             if (!commandHandler.handleCommand(
                                     value.text,
-                                    checkItem,
+                                    step,
                                     drawInfo.position
                                 )
                             ) {

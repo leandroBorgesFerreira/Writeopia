@@ -29,7 +29,6 @@ import com.github.leandroborgesferreira.storyteller.draganddrop.target.DropTarge
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 import com.github.leandroborgesferreira.storyteller.model.change.MergeInfo
 import com.github.leandroborgesferreira.storyteller.model.draganddrop.DropInfo
 import coil.compose.AsyncImage
@@ -44,14 +43,13 @@ class ImageStepDrawer(
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
-        val imageStep = step as StoryStep
+    override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
 
         DropTarget(modifier = Modifier.padding(horizontal = 6.dp)) { inBound, data ->
             if (inBound && data != null) {
                 mergeRequest(
                     MergeInfo(
-                        receiver = imageStep,
+                        receiver = step,
                         sender = data.storyUnit,
                         positionFrom = data.positionFrom,
                         positionTo = drawInfo.position
@@ -74,11 +72,11 @@ class ImageStepDrawer(
             ) {
                 DragTarget(
                     modifier = imageModifier,
-                    dataToDrop = DropInfo(imageStep, drawInfo.position)
+                    dataToDrop = DropInfo(step, drawInfo.position)
                 ) {
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(imageStep.path ?: imageStep.url)
+                            .data(step.path ?: step.url)
                             .build(),
                         contentScale = ContentScale.Crop,
                         contentDescription = "",

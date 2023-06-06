@@ -14,7 +14,7 @@ import com.github.leandroborgesferreira.storyteller.draganddrop.target.DropTarge
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
 import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
+import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
 class LargeEmptySpace(
     private val moveRequest: (MoveInfo) -> Unit = {},
@@ -22,7 +22,7 @@ class LargeEmptySpace(
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryUnit, drawInfo: DrawInfo) {
+    override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
         DropTarget { inBound, data ->
             if (inBound && data != null) {
                 moveRequest(

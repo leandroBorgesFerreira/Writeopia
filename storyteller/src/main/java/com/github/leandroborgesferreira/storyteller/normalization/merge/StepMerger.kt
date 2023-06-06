@@ -1,12 +1,9 @@
 package com.github.leandroborgesferreira.storyteller.normalization.merge
 
-import com.github.leandroborgesferreira.storyteller.model.story.GroupStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
+import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
 interface StepMerger {
 
-    fun merge(step1: StoryUnit, step2: StoryUnit, type: String): StoryUnit
-
-    fun groupsMerger(step1: GroupStep, step2: GroupStep): StoryUnit
+    fun merge(step1: StoryStep, step2: StoryStep, type: String): StoryStep
 
 }

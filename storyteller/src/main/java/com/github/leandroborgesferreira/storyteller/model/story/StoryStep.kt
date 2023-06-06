@@ -8,29 +8,19 @@ import java.util.UUID
  * button, empty space, etc.
  */
 data class StoryStep(
-    override val id: String = UUID.randomUUID().toString(),
-    override val localId: String = UUID.randomUUID().toString(),
-    override val type: String,
-    override val parentId: String? = null,
+    val id: String = UUID.randomUUID().toString(),
+    val localId: String = UUID.randomUUID().toString(),
+    val type: String,
+    val parentId: String? = null,
     val url: String? = null,
     val path: String? = null,
     val text: String? = null,
     val title: String? = null,
     val checked: Boolean? = false,
-    val steps: List<StoryUnit> = emptyList()
-): StoryUnit {
+    val steps: List<StoryStep> = emptyList()
+) {
 
-    override val key: Int = localId.hashCode()
+    val key: Int = localId.hashCode()
 
-    override fun copyWithNewParent(parentId: String?): StoryUnit = copy(parentId = parentId)
-
-    override fun copyWithNewId(id: String): StoryUnit {
-        val newSteps = steps.map { storyUnit ->
-            storyUnit.copyWithNewParent(id)
-        }
-
-        return copy(localId = id, steps = newSteps)
-    }
-
-    override val isGroup: Boolean = false
+    val isGroup: Boolean = steps.isNotEmpty()
 }

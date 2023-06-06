@@ -3,10 +3,9 @@ package br.com.leandroferreira.app_sample.data
 import android.content.Context
 import br.com.leandroferreira.app_sample.R
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 import java.util.UUID
 
-fun messages(): List<StoryUnit> = buildList {
+fun messages(): List<StoryStep> = buildList {
     add(
         StoryStep(
             localId = UUID.randomUUID().toString(),
@@ -32,7 +31,7 @@ fun messages(): List<StoryUnit> = buildList {
     )
 }
 
-fun messagesMap(): Map<Int, StoryUnit> =
+fun messagesMap(): Map<Int, StoryStep> =
     mapOf(
         0 to
             StoryStep(
@@ -56,7 +55,7 @@ fun messagesMap(): Map<Int, StoryUnit> =
             )
     )
 
-fun images(): List<StoryUnit> = buildList {
+fun images(): List<StoryStep> = buildList {
     add(
         StoryStep(
             localId = UUID.randomUUID().toString(),
@@ -90,7 +89,7 @@ fun images(): List<StoryUnit> = buildList {
     )
 }
 
-fun imagesMap(): Map<Int, StoryUnit> =
+fun imagesMap(): Map<Int, StoryStep> =
     mapOf(
         0 to StoryStep(
             localId = UUID.randomUUID().toString(),
@@ -117,7 +116,7 @@ fun imagesMap(): Map<Int, StoryUnit> =
         )
     )
 
-fun supermarketList(): Map<Int, StoryUnit> = mapOf(
+fun supermarketList(): Map<Int, StoryStep> = mapOf(
     0 to StoryStep(
         localId = UUID.randomUUID().toString(),
         type = "message",
@@ -145,7 +144,7 @@ fun supermarketList(): Map<Int, StoryUnit> = mapOf(
     )
 )
 
-fun syncHistory(context: Context): Map<Int, StoryUnit> =
+fun syncHistory(context: Context): Map<Int, StoryStep> =
     mapOf(
         0 to
             StoryStep(

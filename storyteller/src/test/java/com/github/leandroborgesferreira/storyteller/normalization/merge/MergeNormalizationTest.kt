@@ -1,6 +1,5 @@
 package com.github.leandroborgesferreira.storyteller.normalization.merge
 
-import com.github.leandroborgesferreira.storyteller.model.story.GroupStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.normalization.merge.steps.StepToStepMerger
@@ -23,7 +22,7 @@ class MergeNormalizationTest {
         val mergedStep = mergeNormalization.mergeSteps(MapStoryData.imageSimpleGroup())
 
         assertEquals(mergedStep.size, 1)
-        assertTrue(mergedStep[0] is GroupStep)
+        assertTrue(mergedStep[0]?.isGroup ?: false)
     }
 
     @Test
@@ -35,7 +34,7 @@ class MergeNormalizationTest {
         val mergedStep = mergeNormalization.mergeSteps(MapStoryData.stepsList())
 
         assertEquals(3, mergedStep.size)
-        assertTrue(mergedStep[0] is GroupStep)
+        assertTrue(mergedStep[0]?.isGroup ?: false)
         assertTrue(mergedStep[1] is StoryStep)
         assertTrue(mergedStep[2] is StoryStep)
         assertEquals("group_image", mergedStep[0]!!.type)
@@ -56,7 +55,7 @@ class MergeNormalizationTest {
             mergeNormalization.mergeSteps(MapStoryData.twoGroupsImageList())
 
         assertEquals("2 image groups should have been merged into one", 1, mergedStep.size)
-        assertTrue("the first story unit should still be a GroupStep", mergedStep[0] is GroupStep)
+        assertTrue("the first story unit should still be a GroupStep", mergedStep[0]?.isGroup ?: false)
         assertEquals(
             "the first story unit should still be a GroupImage",
             StoryType.GROUP_IMAGE.type,
@@ -96,7 +95,7 @@ class MergeNormalizationTest {
         )
 
         val story = listOf(
-            GroupStep(
+            StoryStep(
                 localId = "1",
                 type = "group_image",
                 steps = listOf(
@@ -111,6 +110,6 @@ class MergeNormalizationTest {
 
         val mergedStep = mergeNormalization.mergeSteps(story.toEditState())
 
-        assertEquals(last.localId, (mergedStep[0] as GroupStep).steps.first().localId)
+        assertEquals(last.localId, (mergedStep[0] as StoryStep).steps.first().localId)
     }
 }

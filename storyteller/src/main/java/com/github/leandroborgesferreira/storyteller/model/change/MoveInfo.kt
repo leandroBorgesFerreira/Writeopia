@@ -1,5 +1,5 @@
 package com.github.leandroborgesferreira.storyteller.model.change
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
+import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
-data class MoveInfo(val storyUnit: StoryUnit, val positionFrom: Int, val positionTo: Int)
+data class MoveInfo(val storyUnit: StoryStep, val positionFrom: Int, val positionTo: Int)
