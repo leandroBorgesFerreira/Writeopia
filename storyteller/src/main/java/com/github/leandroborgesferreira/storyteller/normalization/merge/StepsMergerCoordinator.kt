@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.normalization.merge
 
+import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 import com.github.leandroborgesferreira.storyteller.normalization.merge.steps.StepToGroupMerger
 
@@ -12,10 +13,10 @@ class StepsMergerCoordinator(
     private val mergeLogic: MergeLogicFunction = MergeLogic::create
 ) {
 
-    fun canMerge(step1: StoryUnit, step2: StoryUnit): Boolean =
+    fun canMerge(step1: StoryStep, step2: StoryStep): Boolean =
         mergeLogic(step1, step2, typeOfStep, typeOfGroup)
 
-    fun merge(step1: StoryUnit, step2: StoryUnit): StoryUnit =
+    fun merge(step1: StoryStep, step2: StoryStep): StoryStep =
         stepMerger.merge(step1, step2, typeOfGroup ?: typeOfStep)
 
 }

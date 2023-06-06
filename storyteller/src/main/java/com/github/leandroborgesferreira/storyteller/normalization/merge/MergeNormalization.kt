@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.normalization.merge
 
+import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryUnit
 
 
@@ -15,13 +16,17 @@ class MergeNormalization(private val stepMergers: List<StepsMergerCoordinator>) 
      * should be together. This normalizer removes the elements that could not be merged.
      */
     fun mergeSteps(stories: Map<Int, List<StoryUnit>>): Map<Int, StoryUnit> =
-        stories.mapValues { (_, steps) -> reducePossibleSteps(steps).first() }
+        stories
+            .mapValues { (_, steps) ->
+                //Todo: Remove this filter!
+                reducePossibleSteps(steps.filterIsInstance<StoryStep>()).first()
+            }
 
     /**
      * Note that it may happen that some elements in the same position may not be able to be
      * merged, that's why this method returns a List<StoryUnit> instead of StoryUnit.
      */
-    private fun reducePossibleSteps(steps: List<StoryUnit>): List<StoryUnit> {
+    private fun reducePossibleSteps(steps: List<StoryStep>): List<StoryStep> {
         return steps.fold(mutableListOf()) { acc, storyStep ->
             val lastStep = acc.lastOrNull()
 
