@@ -34,13 +34,16 @@ class StoryTellerManager(
         StepsMapNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
         },
-    private val focusableTypes: Set<String> = setOf(
-        StoryType.CHECK_ITEM.type,
-        StoryType.MESSAGE.type,
-        StoryType.MESSAGE_BOX.type,
-    ),
     private val backStackManager: BackStackManager = BackStackManager(),
-    private val movementHandler: MovementHandler = MovementHandler()
+    private val movementHandler: MovementHandler = MovementHandler(),
+    private val contentHandler: ContentHandler = ContentHandler(
+        focusableTypes = setOf(
+            StoryType.CHECK_ITEM.type,
+            StoryType.MESSAGE.type,
+            StoryType.MESSAGE_BOX.type,
+        ),
+        stepsNormalizer = stepsNormalizer
+    )
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
@@ -196,7 +199,7 @@ class StoryTellerManager(
     override fun redo() {
         when (val action = backStackManager.redo()) {
             is DeleteInfo -> {
-                delete(action, currentStory.value.stories)
+                contentHandler.deleteStory(action, currentStory.value.stories)
             }
 
             is AddStoryUnit -> {
@@ -253,10 +256,12 @@ class StoryTellerManager(
     }
 
     private fun revertAddStory(addStoryUnit: AddStoryUnit) {
-        delete(
+        contentHandler.deleteStory(
             DeleteInfo(addStoryUnit.storyUnit, position = addStoryUnit.position),
             currentStory.value.stories
-        )
+        )?.let { newState ->
+            _currentStory.value = newState
+        }
     }
 
     private fun revertDelete(deleteInfo: DeleteInfo): StoryState {
@@ -332,48 +337,10 @@ class StoryTellerManager(
     fun onDelete(deleteInfo: DeleteInfo) {
         val newSteps = updateTexts(_currentStory.value.stories)
 
-        delete(deleteInfo, newSteps)
-        backStackManager.addAction(deleteInfo)
-    }
-
-    private fun delete(
-        deleteInfo: DeleteInfo,
-        history: Map<Int, StoryStep>,
-    ) {
-        val step = deleteInfo.storyUnit
-        val parentId = step.parentId
-        val mutableSteps = history.toMutableMap()
-
-        if (parentId == null) {
-            mutableSteps.remove(deleteInfo.position)
-            val previousFocus =
-                FindStory.previousFocus(
-                    history.values.toList(),
-                    deleteInfo.position,
-                    focusableTypes
-                )
-            val normalized = stepsNormalizer(mutableSteps.toEditState())
-
-            _currentStory.value = StoryState(
-                normalized,
-                focusId = previousFocus?.id
-            )
-        } else {
-            mutableSteps[deleteInfo.position]?.let { group ->
-                val newSteps = group.steps.filter { storyUnit ->
-                    storyUnit.localId != step.localId
-                }
-
-                val newStoryUnit = if (newSteps.size == 1) {
-                    newSteps.first()
-                } else {
-                    group.copy(steps = newSteps)
-                }
-
-                mutableSteps[deleteInfo.position] = newStoryUnit.copy(parentId = null)
-                _currentStory.value =
-                    StoryState(stepsNormalizer(mutableSteps.toEditState()))
-            }
+        contentHandler.deleteStory(deleteInfo, newSteps)?.let { newState ->
+            _currentStory.value = newState
         }
+
+        backStackManager.addAction(deleteInfo)
     }
 }
