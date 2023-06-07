@@ -6,6 +6,9 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.utils.UnitsNormalizationMap
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 
+/**
+ * Class dedicated to handle adding and/or deleting new StorySteps
+ */
 class ContentHandler(
     private val focusableTypes: Set<String>,
     private val stepsNormalizer: UnitsNormalizationMap
