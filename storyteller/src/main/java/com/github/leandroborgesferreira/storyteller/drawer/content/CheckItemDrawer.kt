@@ -10,7 +10,7 @@ import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Cancel
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -136,7 +136,7 @@ class CheckItemDrawer(
                             modifier = Modifier.clickable {
                                 onDeleteRequest(DeleteInfo(step, drawInfo.position))
                             },
-                            imageVector = Icons.Outlined.Cancel,
+                            imageVector = Icons.Default.Close,
                             contentDescription = stringResource(R.string.delete_check_item)
                         )
 
