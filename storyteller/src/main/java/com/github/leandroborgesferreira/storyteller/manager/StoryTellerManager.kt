@@ -15,9 +15,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
-import com.github.leandroborgesferreira.storyteller.utils.StoryStepFactory
 import com.github.leandroborgesferreira.storyteller.utils.UnitsNormalizationMap
-import com.github.leandroborgesferreira.storyteller.utils.extensions.associateWithPosition
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -123,16 +121,7 @@ class StoryTellerManager(
 
     fun createCheckItem(position: Int) {
         updateState()
-
-        val newMap = _currentStory.value.stories.toMutableMap()
-        val newCheck = StoryStep(
-            id = UUID.randomUUID().toString(),
-            localId = UUID.randomUUID().toString(),
-            type = StoryType.CHECK_ITEM.type,
-        )
-        newMap[position] = newCheck
-
-        _currentStory.value = StoryState(newMap, newCheck.id)
+        _currentStory.value = contentHandler.createCheckItem(_currentStory.value.stories, position)
     }
 
     fun onTextEdit(text: String, position: Int) {
@@ -142,13 +131,14 @@ class StoryTellerManager(
 
     fun onLineBreak(lineBreakInfo: LineBreakInfo) {
         val updatedStories = updateTexts(_currentStory.value.stories)
-        val (position, newContent: StoryState) = separateMessages(
-            updatedStories,
-            lineBreakInfo
-        )
 
-        _currentStory.value = newContent
-        _scrollToPosition.value = position
+        contentHandler.onLineBreak(updatedStories, lineBreakInfo)?.let { (info, newState) ->
+            // Todo: Fix this when the inner position are completed
+            backStackManager.addAction(AddStoryUnit(info.second, position = info.first))
+
+            _currentStory.value = newState
+            _scrollToPosition.value = info.first
+        }
     }
 
     fun clickAtTheEnd() {
@@ -203,7 +193,7 @@ class StoryTellerManager(
             }
 
             is AddStoryUnit -> {
-                val (position, newStory) = addNewContent(
+                val (position, newStory) = contentHandler.addNewContent(
                     currentStory.value.stories,
                     action.storyUnit,
                     action.position - 1
@@ -263,7 +253,7 @@ class StoryTellerManager(
     }
 
     private fun revertDelete(deleteInfo: DeleteInfo): StoryState {
-        val (_, newStory) = addNewContent(
+        val (_, newStory) = contentHandler.addNewContent(
             currentStory.value.stories,
             deleteInfo.storyUnit,
             deleteInfo.position
@@ -273,47 +263,6 @@ class StoryTellerManager(
             stories = newStory,
             focusId = deleteInfo.storyUnit.id
         )
-    }
-
-    private fun separateMessages(
-        stories: Map<Int, StoryStep>,
-        lineBreakInfo: LineBreakInfo
-    ): Pair<Int?, StoryState> {
-        val storyStep = lineBreakInfo.storyStep
-        storyStep.text?.split("\n", limit = 2)?.let { list ->
-            val secondText = list.elementAtOrNull(1) ?: ""
-            val secondMessage = StoryStep(
-                localId = UUID.randomUUID().toString(),
-                type = storyStep.type,
-                text = secondText,
-            )
-
-            val position = lineBreakInfo.position + 1
-
-            val (addedPosition, newStory) = addNewContent(stories, secondMessage, position)
-            backStackManager.addAction(AddStoryUnit(secondMessage, position = addedPosition))
-
-            return addedPosition to StoryState(
-                stories = newStory,
-                focusId = secondMessage.id
-            )
-        }
-
-        return null to StoryState(stories)
-    }
-
-    private fun addNewContent(
-        currentStory: Map<Int, StoryStep>,
-        newStoryUnit: StoryStep,
-        position: Int
-    ): Pair<Int, Map<Int, StoryStep>> {
-        val mutable = currentStory.values.toMutableList()
-        var acc = position
-
-        mutable.add(acc++, StoryStepFactory.space())
-        mutable.add(acc, newStoryUnit)
-
-        return acc to mutable.associateWithPosition()
     }
 
     private fun updateTexts(stepMap: Map<Int, StoryStep>): Map<Int, StoryStep> {
