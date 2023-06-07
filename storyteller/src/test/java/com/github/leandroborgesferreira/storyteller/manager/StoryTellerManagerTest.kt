@@ -68,7 +68,7 @@ class StoryTellerManagerTest {
         val currentStory = storyManager.currentStory.value.stories
 
         storyManager.onLineBreak(
-            LineBreakInfo(storyStep = checkItem as StoryStep, position = 1)
+            LineBreakInfo(storyStep = checkItem!!, position = 1)
         )
 
         val newStory = storyManager.currentStory.value.stories
@@ -170,7 +170,7 @@ class StoryTellerManagerTest {
         assertEquals(
             "The new created GroupImage should have 2 images",
             2,
-            (newHistory[1] as StoryStep).steps.size
+            newHistory[1]!!.steps.size
         )
 
         repeat(2) {
@@ -200,7 +200,7 @@ class StoryTellerManagerTest {
         assertEquals(
             "Now the group has 3 images",
             3,
-            (newHistory3[1] as StoryStep).steps.size
+            newHistory3[1]!!.steps.size
         )
     }
 
@@ -211,7 +211,7 @@ class StoryTellerManagerTest {
 
         val currentStory = storyManager.currentStory.value.stories
         val initialSize = currentStory.size
-        val initialImageGroupSize = (currentStory[1] as StoryStep).steps.size
+        val initialImageGroupSize = currentStory[1]!!.steps.size
 
         val positionFrom = currentStory.size - 3
         val positionTo = 1
@@ -232,7 +232,7 @@ class StoryTellerManagerTest {
         assertEquals(
             "One element was added to the GroupStep",
             initialImageGroupSize + 1,
-            (newStory[1] as StoryStep).steps.size
+            newStory[1]!!.steps.size
         )
     }
 
@@ -242,7 +242,7 @@ class StoryTellerManagerTest {
         storyManager.initStories(imageGroupRepo.history())
 
         val currentStory = storyManager.currentStory.value.stories
-        val initialGroupSize = (currentStory[1] as StoryStep).steps.size
+        val initialGroupSize = currentStory[1]!!.steps.size
 
         val positionTo = currentStory.size - 3
         val positionFrom = 1
@@ -250,7 +250,7 @@ class StoryTellerManagerTest {
         storyManager.mergeRequest(
             MergeInfo(
                 receiver = currentStory[positionTo]!!,
-                sender = (currentStory[positionFrom] as StoryStep).steps[0],
+                sender = currentStory[positionFrom]!!.steps[0],
                 positionTo = positionTo,
                 positionFrom = positionFrom
             )
@@ -266,7 +266,7 @@ class StoryTellerManagerTest {
         assertEquals(
             "The new story now it the GroupImage",
             initialGroupSize - 1,
-            (newStory[1] as StoryStep).steps.size
+            newStory[1]!!.steps.size
         )
     }
 
@@ -281,7 +281,7 @@ class StoryTellerManagerTest {
         val positionTo = currentStory.size - 2
         val positionFrom = 1
 
-        val storyToMove = (currentStory[positionFrom] as StoryStep).steps[0]
+        val storyToMove = currentStory[positionFrom]!!.steps[0]
 
         storyManager.moveRequest(
             MoveInfo(
@@ -310,7 +310,7 @@ class StoryTellerManagerTest {
         )
         assertFalse(
             "The moved image should not be in the group anymore",
-            (newStory[positionFrom] as StoryStep).steps.any { storyUnit ->
+            newStory[positionFrom]!!.steps.any { storyUnit ->
                 storyUnit.id == storyToMove.id
             })
     }
@@ -348,11 +348,7 @@ class StoryTellerManagerTest {
             currentStory[1]!!.type
         )
 
-        val lastImageInsideGroup = {
-            (storyManager.currentStory.value.stories[1] as StoryStep)
-                .steps
-                .last()
-        }
+        val lastImageInsideGroup = { storyManager.currentStory.value.stories[1]!!.steps.last() }
 
         storyManager.onDelete(
             DeleteInfo(
@@ -408,7 +404,7 @@ class StoryTellerManagerTest {
             val stories = storyManager.currentStory.value.stories
             val initialSize = stories.size
 
-            storyManager.onLineBreak(LineBreakInfo(stories[1] as StoryStep, position = 1))
+            storyManager.onLineBreak(LineBreakInfo(stories[1]!!, position = 1))
 
             assertEquals(
                 "2 new stories should have been added",
@@ -426,7 +422,7 @@ class StoryTellerManagerTest {
             val stories = storyManager.currentStory.value.stories
             val initialSize = stories.size
 
-            storyManager.onLineBreak(LineBreakInfo(stories[1] as StoryStep, 1))
+            storyManager.onLineBreak(LineBreakInfo(stories[1]!!, 1))
 
             assertEquals(
                 "2 new stories should have been added",
@@ -463,7 +459,7 @@ class StoryTellerManagerTest {
 
         val newStory = storyManager.currentStory.value.stories
 
-        assertEquals("The images should have been merged", 2, (newStory[1] as StoryStep).steps.size)
+        assertEquals("The images should have been merged", 2, (newStory[1]!!).steps.size)
 
         val stories2 = storyManager.currentStory.value.stories
 
@@ -471,7 +467,7 @@ class StoryTellerManagerTest {
         val positionFrom2 = 3
         storyManager.mergeRequest(
             MergeInfo(
-                receiver = (stories2[positionTo2] as StoryStep).steps.first(),
+                receiver = (stories2[positionTo2]!!).steps.first(),
                 sender = stories2[positionFrom2]!!,
                 positionFrom = positionFrom2,
                 positionTo = positionTo2,
@@ -483,12 +479,12 @@ class StoryTellerManagerTest {
         assertEquals(
             "The images should have been merged",
             3,
-            (newStory2[1] as StoryStep).steps.distinctBy { storyUnit -> storyUnit.localId }.size
+            (newStory2[1]!!).steps.distinctBy { storyUnit -> storyUnit.localId }.size
         )
 
         val positionFrom3 = 1
         val positionTo3 = 4
-        val storyToMove = (newStory[positionFrom3] as StoryStep).steps.first()
+        val storyToMove = (newStory[positionFrom3]!!).steps.first()
         storyManager.moveRequest(
             MoveInfo(
                 storyUnit = storyToMove,
@@ -502,7 +498,7 @@ class StoryTellerManagerTest {
         assertEquals(
             "One image should have been separated",
             2,
-            (newStory3[1] as StoryStep).steps.size
+            (newStory3[1]!!).steps.size
         )
         assertEquals(
             "The correct StoryUnit should have been moved",
@@ -519,7 +515,7 @@ class StoryTellerManagerTest {
         storyManager.initStories(input)
         val currentStory = storyManager.currentStory.value.stories
 
-        storyManager.onLineBreak(LineBreakInfo(input[0] as StoryStep, 1))
+        storyManager.onLineBreak(LineBreakInfo(input[0]!!, 1))
         storyManager.undo()
 
         assertEquals(currentStory.size, storyManager.currentStory.value.stories.size)
@@ -533,9 +529,9 @@ class StoryTellerManagerTest {
         storyManager.initStories(input)
         val currentStory = storyManager.currentStory.value.stories
 
-        storyManager.onLineBreak(LineBreakInfo(input[0] as StoryStep, 1))
-        storyManager.onLineBreak(LineBreakInfo(input[0] as StoryStep, 3))
-        storyManager.onLineBreak(LineBreakInfo(input[0] as StoryStep, 5))
+        storyManager.onLineBreak(LineBreakInfo(input[0]!!, 1))
+        storyManager.onLineBreak(LineBreakInfo(input[0]!!, 3))
+        storyManager.onLineBreak(LineBreakInfo(input[0]!!, 5))
         storyManager.undo()
         storyManager.undo()
         storyManager.undo()
@@ -567,9 +563,9 @@ class StoryTellerManagerTest {
         storyManager.run {
             initStories(input)
 
-            onLineBreak(LineBreakInfo(input[0] as StoryStep, 1))
-            onLineBreak(LineBreakInfo(input[0] as StoryStep, 3))
-            onLineBreak(LineBreakInfo(input[0] as StoryStep, 5))
+            onLineBreak(LineBreakInfo(input[0]!!, 1))
+            onLineBreak(LineBreakInfo(input[0]!!, 3))
+            onLineBreak(LineBreakInfo(input[0]!!, 5))
 
             undo()
             undo()

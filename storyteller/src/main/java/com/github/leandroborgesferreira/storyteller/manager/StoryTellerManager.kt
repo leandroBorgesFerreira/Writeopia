@@ -15,9 +15,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
-import com.github.leandroborgesferreira.storyteller.utils.StoryStepFactory
 import com.github.leandroborgesferreira.storyteller.utils.UnitsNormalizationMap
-import com.github.leandroborgesferreira.storyteller.utils.extensions.associateWithPosition
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,13 +32,16 @@ class StoryTellerManager(
         StepsMapNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
         },
-    private val focusableTypes: Set<String> = setOf(
-        StoryType.CHECK_ITEM.type,
-        StoryType.MESSAGE.type,
-        StoryType.MESSAGE_BOX.type,
-    ),
     private val backStackManager: BackStackManager = BackStackManager(),
-    private val movementHandler: MovementHandler = MovementHandler()
+    private val movementHandler: MovementHandler = MovementHandler(),
+    private val contentHandler: ContentHandler = ContentHandler(
+        focusableTypes = setOf(
+            StoryType.CHECK_ITEM.type,
+            StoryType.MESSAGE.type,
+            StoryType.MESSAGE_BOX.type,
+        ),
+        stepsNormalizer = stepsNormalizer
+    )
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
@@ -120,16 +121,7 @@ class StoryTellerManager(
 
     fun createCheckItem(position: Int) {
         updateState()
-
-        val newMap = _currentStory.value.stories.toMutableMap()
-        val newCheck = StoryStep(
-            id = UUID.randomUUID().toString(),
-            localId = UUID.randomUUID().toString(),
-            type = StoryType.CHECK_ITEM.type,
-        )
-        newMap[position] = newCheck
-
-        _currentStory.value = StoryState(newMap, newCheck.id)
+        _currentStory.value = contentHandler.createCheckItem(_currentStory.value.stories, position)
     }
 
     fun onTextEdit(text: String, position: Int) {
@@ -139,13 +131,14 @@ class StoryTellerManager(
 
     fun onLineBreak(lineBreakInfo: LineBreakInfo) {
         val updatedStories = updateTexts(_currentStory.value.stories)
-        val (position, newContent: StoryState) = separateMessages(
-            updatedStories,
-            lineBreakInfo
-        )
 
-        _currentStory.value = newContent
-        _scrollToPosition.value = position
+        contentHandler.onLineBreak(updatedStories, lineBreakInfo)?.let { (info, newState) ->
+            // Todo: Fix this when the inner position are completed
+            backStackManager.addAction(AddStoryUnit(info.second, position = info.first))
+
+            _currentStory.value = newState
+            _scrollToPosition.value = info.first
+        }
     }
 
     fun clickAtTheEnd() {
@@ -196,11 +189,11 @@ class StoryTellerManager(
     override fun redo() {
         when (val action = backStackManager.redo()) {
             is DeleteInfo -> {
-                delete(action, currentStory.value.stories)
+                contentHandler.deleteStory(action, currentStory.value.stories)
             }
 
             is AddStoryUnit -> {
-                val (position, newStory) = addNewContent(
+                val (position, newStory) = contentHandler.addNewContent(
                     currentStory.value.stories,
                     action.storyUnit,
                     action.position - 1
@@ -223,9 +216,8 @@ class StoryTellerManager(
 
     private fun revertAddText(currentStory: Map<Int, StoryStep>, addText: AddText) {
         val mutableSteps = currentStory.toMutableMap()
-        //Todo: Merging StoryStep and StoryGroups could reduce casts
-        val revertStep = mutableSteps[addText.position] as StoryStep
-        val currentText = revertStep.text
+        val revertStep = mutableSteps[addText.position]
+        val currentText = revertStep?.text
 
         if (!currentText.isNullOrEmpty()) {
             val newText = if (currentText.length <= addText.text.length) {
@@ -244,23 +236,24 @@ class StoryTellerManager(
     private fun redoAddText(currentStory: Map<Int, StoryStep>, addText: AddText) {
         val position = addText.position
         val mutableSteps = currentStory.toMutableMap()
-        val editStep = mutableSteps[position] as StoryStep
-        val newText = "${editStep.text.toString()}${addText.text}"
-
-        mutableSteps[position] = editStep.copy(text = newText)
-
-        _currentStory.value = StoryState(mutableSteps, focusId = editStep.id)
+        mutableSteps[position]?.let { editStep ->
+            val newText = "${editStep.text.toString()}${addText.text}"
+            mutableSteps[position] = editStep.copy(text = newText)
+            _currentStory.value = StoryState(mutableSteps, focusId = editStep.id)
+        }
     }
 
     private fun revertAddStory(addStoryUnit: AddStoryUnit) {
-        delete(
+        contentHandler.deleteStory(
             DeleteInfo(addStoryUnit.storyUnit, position = addStoryUnit.position),
             currentStory.value.stories
-        )
+        )?.let { newState ->
+            _currentStory.value = newState
+        }
     }
 
     private fun revertDelete(deleteInfo: DeleteInfo): StoryState {
-        val (_, newStory) = addNewContent(
+        val (_, newStory) = contentHandler.addNewContent(
             currentStory.value.stories,
             deleteInfo.storyUnit,
             deleteInfo.position
@@ -270,47 +263,6 @@ class StoryTellerManager(
             stories = newStory,
             focusId = deleteInfo.storyUnit.id
         )
-    }
-
-    private fun separateMessages(
-        stories: Map<Int, StoryStep>,
-        lineBreakInfo: LineBreakInfo
-    ): Pair<Int?, StoryState> {
-        val storyStep = lineBreakInfo.storyStep
-        storyStep.text?.split("\n", limit = 2)?.let { list ->
-            val secondText = list.elementAtOrNull(1) ?: ""
-            val secondMessage = StoryStep(
-                localId = UUID.randomUUID().toString(),
-                type = storyStep.type,
-                text = secondText,
-            )
-
-            val position = lineBreakInfo.position + 1
-
-            val (addedPosition, newStory) = addNewContent(stories, secondMessage, position)
-            backStackManager.addAction(AddStoryUnit(secondMessage, position = addedPosition))
-
-            return addedPosition to StoryState(
-                stories = newStory,
-                focusId = secondMessage.id
-            )
-        }
-
-        return null to StoryState(stories)
-    }
-
-    private fun addNewContent(
-        currentStory: Map<Int, StoryStep>,
-        newStoryUnit: StoryStep,
-        position: Int
-    ): Pair<Int, Map<Int, StoryStep>> {
-        val mutable = currentStory.values.toMutableList()
-        var acc = position
-
-        mutable.add(acc++, StoryStepFactory.space())
-        mutable.add(acc, newStoryUnit)
-
-        return acc to mutable.associateWithPosition()
     }
 
     private fun updateTexts(stepMap: Map<Int, StoryStep>): Map<Int, StoryStep> {
@@ -332,48 +284,10 @@ class StoryTellerManager(
     fun onDelete(deleteInfo: DeleteInfo) {
         val newSteps = updateTexts(_currentStory.value.stories)
 
-        delete(deleteInfo, newSteps)
-        backStackManager.addAction(deleteInfo)
-    }
-
-    private fun delete(
-        deleteInfo: DeleteInfo,
-        history: Map<Int, StoryStep>,
-    ) {
-        val step = deleteInfo.storyUnit
-        val parentId = step.parentId
-        val mutableSteps = history.toMutableMap()
-
-        if (parentId == null) {
-            mutableSteps.remove(deleteInfo.position)
-            val previousFocus =
-                FindStory.previousFocus(
-                    history.values.toList(),
-                    deleteInfo.position,
-                    focusableTypes
-                )
-            val normalized = stepsNormalizer(mutableSteps.toEditState())
-
-            _currentStory.value = StoryState(
-                normalized,
-                focusId = previousFocus?.id
-            )
-        } else {
-            mutableSteps[deleteInfo.position]?.let { group ->
-                val newSteps = group.steps.filter { storyUnit ->
-                    storyUnit.localId != step.localId
-                }
-
-                val newStoryUnit = if (newSteps.size == 1) {
-                    newSteps.first()
-                } else {
-                    group.copy(steps = newSteps)
-                }
-
-                mutableSteps[deleteInfo.position] = newStoryUnit.copy(parentId = null)
-                _currentStory.value =
-                    StoryState(stepsNormalizer(mutableSteps.toEditState()))
-            }
+        contentHandler.deleteStory(deleteInfo, newSteps)?.let { newState ->
+            _currentStory.value = newState
         }
+
+        backStackManager.addAction(deleteInfo)
     }
 }
