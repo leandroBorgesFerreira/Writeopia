@@ -23,8 +23,7 @@ class ImageGroupDrawer(
 
     @Composable
     override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
-        val imageGroup = step as StoryStep
-        val steps = imageGroup.steps.map { storyUnit -> storyUnit as StoryStep }
+        val steps = step.steps
         val focusRequester = remember { FocusRequester() }
 
         LaunchedEffect(drawInfo.focusId) {

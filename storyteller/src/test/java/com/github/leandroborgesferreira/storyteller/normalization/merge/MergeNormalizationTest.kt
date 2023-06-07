@@ -110,6 +110,6 @@ class MergeNormalizationTest {
 
         val mergedStep = mergeNormalization.mergeSteps(story.toEditState())
 
-        assertEquals(last.localId, (mergedStep[0] as StoryStep).steps.first().localId)
+        assertEquals(last.localId, mergedStep[0]!!.steps.first().localId)
     }
 }

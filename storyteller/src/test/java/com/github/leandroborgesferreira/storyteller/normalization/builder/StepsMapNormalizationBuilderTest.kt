@@ -35,7 +35,7 @@ class StepsMapNormalizationBuilderTest {
         assertEquals(
             "The images in the same position should be merged into GroupImage",
             3,
-            (normalized[5] as StoryStep).steps.size
+            normalized[5]?.steps?.size
         )
         assertEquals(
             "The last message should stay as it was",

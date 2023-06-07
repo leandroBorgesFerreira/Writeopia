@@ -226,9 +226,8 @@ class StoryTellerManager(
 
     private fun revertAddText(currentStory: Map<Int, StoryStep>, addText: AddText) {
         val mutableSteps = currentStory.toMutableMap()
-        //Todo: Merging StoryStep and StoryGroups could reduce casts
-        val revertStep = mutableSteps[addText.position] as StoryStep
-        val currentText = revertStep.text
+        val revertStep = mutableSteps[addText.position]
+        val currentText = revertStep?.text
 
         if (!currentText.isNullOrEmpty()) {
             val newText = if (currentText.length <= addText.text.length) {
@@ -247,12 +246,11 @@ class StoryTellerManager(
     private fun redoAddText(currentStory: Map<Int, StoryStep>, addText: AddText) {
         val position = addText.position
         val mutableSteps = currentStory.toMutableMap()
-        val editStep = mutableSteps[position] as StoryStep
-        val newText = "${editStep.text.toString()}${addText.text}"
-
-        mutableSteps[position] = editStep.copy(text = newText)
-
-        _currentStory.value = StoryState(mutableSteps, focusId = editStep.id)
+        mutableSteps[position]?.let { editStep ->
+            val newText = "${editStep.text.toString()}${addText.text}"
+            mutableSteps[position] = editStep.copy(text = newText)
+            _currentStory.value = StoryState(mutableSteps, focusId = editStep.id)
+        }
     }
 
     private fun revertAddStory(addStoryUnit: AddStoryUnit) {
