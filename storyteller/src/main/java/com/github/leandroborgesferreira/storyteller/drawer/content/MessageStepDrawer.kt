@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.drawer.content
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -45,14 +46,16 @@ class MessageStepDrawer(
 
     @Composable
     override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
+        val focusRequester = remember { FocusRequester() }
 
-        Box(modifier = containerModifier) {
+        Box(modifier = containerModifier.clickable {
+            focusRequester.requestFocus()
+        }) {
             if (drawInfo.editable) {
                 var inputText by remember {
                     val text = step.text ?: ""
                     mutableStateOf(TextFieldValue(text, TextRange(text.length)))
                 }
-                val focusRequester = remember { FocusRequester() }
 
                 LaunchedEffect(drawInfo.focusId) {
                     if (drawInfo.focusId == step.id) {

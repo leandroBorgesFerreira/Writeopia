@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.drawer.content
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -50,20 +51,23 @@ class CheckItemDrawer(
     @Composable
     override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
         val dropInfo = DropInfo(step, drawInfo.position)
+        val focusRequester = remember { FocusRequester() }
 
         DragTargetWithDragItem(dataToDrop = dropInfo) {
             DragTarget(dataToDrop = dropInfo) {
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 2.dp)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .clickable {
+                           focusRequester.requestFocus()
+                        },
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     var inputText by remember {
                         val text = step.text ?: ""
                         mutableStateOf(TextFieldValue(text, TextRange(text.length)))
                     }
-                    val focusRequester = remember { FocusRequester() }
 
                     val textStyle = if (step.checked == true) {
                         TextStyle(
