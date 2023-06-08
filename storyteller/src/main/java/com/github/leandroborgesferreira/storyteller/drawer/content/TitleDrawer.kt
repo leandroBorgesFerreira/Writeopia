@@ -1,14 +1,17 @@
 package com.github.leandroborgesferreira.storyteller.drawer.content
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyItemScope
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,11 +21,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import com.github.leandroborgesferreira.storyteller.R
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
@@ -33,6 +39,7 @@ import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHand
  * also notified by onTextEdit. It is necessary to reflect here to avoid losing the focus on the
  * TextField.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 class TitleDrawer(
     private val containerModifier: Modifier = Modifier,
     private val innerContainerModifier: Modifier = Modifier,
@@ -44,7 +51,7 @@ class TitleDrawer(
     override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
         val focusRequester = remember { FocusRequester() }
 
-        Box(modifier = containerModifier.clickable {
+        Column(modifier = containerModifier.clickable {
             focusRequester.requestFocus()
         }) {
             if (drawInfo.editable) {
@@ -59,7 +66,7 @@ class TitleDrawer(
                     }
                 }
 
-                BasicTextField(
+                TextField(
                     modifier = innerContainerModifier
                         .focusRequester(focusRequester)
                         .fillMaxWidth(),
@@ -78,8 +85,25 @@ class TitleDrawer(
                     keyboardOptions = KeyboardOptions(
                         capitalization = KeyboardCapitalization.Sentences
                     ),
-                    textStyle = MaterialTheme.typography.titleLarge,
-                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
+                    placeholder = {
+                        Text(
+                            stringResource(R.string.title),
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                color = Color.Gray,
+                                fontWeight = FontWeight.Bold,
+                            ),
+                        )
+                    },
+                    textStyle = MaterialTheme.typography.titleLarge.copy(
+                        fontWeight = FontWeight.Bold
+                    ),
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        containerColor = Color.Transparent,
+                        cursorColor = MaterialTheme.colorScheme.primary
+                    )
                 )
             } else {
                 Text(

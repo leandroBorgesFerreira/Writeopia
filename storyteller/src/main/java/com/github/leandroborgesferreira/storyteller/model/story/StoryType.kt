@@ -15,7 +15,8 @@ enum class StoryType(val type: String) {
     SPACE("space"),
     LARGE_SPACE("large_space"),
     ADD_BUTTON("add_button"),
-    CHECK_ITEM("check_item");
+    CHECK_ITEM("check_item"),
+    TITLE("title");
 
     companion object {
         fun fromStringType(stringValue: String) =

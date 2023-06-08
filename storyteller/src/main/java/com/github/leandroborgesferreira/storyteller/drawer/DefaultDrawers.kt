@@ -79,6 +79,12 @@ object DefaultDrawers {
                 )
             )
 
+            val textCommandHandlerTitle = TextCommandHandler(
+                mapOf(
+                    "\n" to { storyStep, position -> },
+                )
+            )
+
             val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->
                 CommandsDecoratorDrawer(
                     stepDrawer,
@@ -123,7 +129,8 @@ object DefaultDrawers {
             )
 
             val titleDrawer = TitleDrawer(
-                
+                onTextEdit = onTextEdit,
+                commandHandler = textCommandHandlerTitle
             )
 
             put(StoryType.MESSAGE_BOX.type, messageBoxDrawer)
@@ -146,5 +153,6 @@ object DefaultDrawers {
             put(StoryType.SPACE.type, SpaceDrawer(moveRequest))
             put(StoryType.LARGE_SPACE.type, LargeEmptySpace(moveRequest, clickAtTheEnd))
             put(StoryType.CHECK_ITEM.type, checkItemDrawer)
+            put(StoryType.TITLE.type, titleDrawer)
         }
 }

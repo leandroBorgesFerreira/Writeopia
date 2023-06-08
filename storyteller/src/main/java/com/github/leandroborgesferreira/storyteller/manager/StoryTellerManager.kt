@@ -74,7 +74,7 @@ class StoryTellerManager(
     fun newStory() {
         val firstMessage = StoryStep(
             localId = UUID.randomUUID().toString(),
-            type = "message"
+            type = StoryType.TITLE.type
         )
         val stories: Map<Int, StoryStep> = mapOf(0 to firstMessage)
         val normalized = stepsNormalizer(stories.toEditState())
