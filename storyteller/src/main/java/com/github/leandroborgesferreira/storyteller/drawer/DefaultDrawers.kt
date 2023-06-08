@@ -17,6 +17,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.content.LargeEmptySpa
 import com.github.leandroborgesferreira.storyteller.drawer.content.MessageStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.VideoStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.SpaceDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.content.TitleDrawer
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.model.change.CheckInfo
@@ -119,6 +120,10 @@ object DefaultDrawers {
                 onTextEdit = onTextEdit,
                 onDeleteRequest = onDeleteRequest,
                 commandHandler = textCommandHandlerCheckItem
+            )
+
+            val titleDrawer = TitleDrawer(
+                
             )
 
             put(StoryType.MESSAGE_BOX.type, messageBoxDrawer)
