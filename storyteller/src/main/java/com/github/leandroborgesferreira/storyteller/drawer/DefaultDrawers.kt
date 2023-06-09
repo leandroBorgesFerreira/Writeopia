@@ -17,6 +17,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.content.LargeEmptySpa
 import com.github.leandroborgesferreira.storyteller.drawer.content.MessageStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.VideoStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.SpaceDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.content.TitleDrawer
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.model.change.CheckInfo
@@ -78,6 +79,12 @@ object DefaultDrawers {
                 )
             )
 
+            val textCommandHandlerTitle = TextCommandHandler(
+                mapOf(
+                    "\n" to { storyStep, position -> },
+                )
+            )
+
             val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->
                 CommandsDecoratorDrawer(
                     stepDrawer,
@@ -121,6 +128,11 @@ object DefaultDrawers {
                 commandHandler = textCommandHandlerCheckItem
             )
 
+            val titleDrawer = TitleDrawer(
+                onTextEdit = onTextEdit,
+                commandHandler = textCommandHandlerTitle
+            )
+
             put(StoryType.MESSAGE_BOX.type, messageBoxDrawer)
             put(StoryType.MESSAGE.type, messageDrawer)
             put(StoryType.ADD_BUTTON.type, AddButtonDrawer())
@@ -141,5 +153,6 @@ object DefaultDrawers {
             put(StoryType.SPACE.type, SpaceDrawer(moveRequest))
             put(StoryType.LARGE_SPACE.type, LargeEmptySpace(moveRequest, clickAtTheEnd))
             put(StoryType.CHECK_ITEM.type, checkItemDrawer)
+            put(StoryType.TITLE.type, titleDrawer)
         }
 }
