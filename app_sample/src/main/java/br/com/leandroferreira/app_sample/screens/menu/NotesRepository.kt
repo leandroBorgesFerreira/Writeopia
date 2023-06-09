@@ -2,7 +2,7 @@ package br.com.leandroferreira.app_sample.screens.menu
 
 import android.content.Context
 import br.com.leandroferreira.app_sample.data.supermarketList
-import br.com.leandroferreira.app_sample.data.syncHistory
+import br.com.leandroferreira.app_sample.data.mockHistory
 import com.github.leandroborgesferreira.storyteller.persistence.dao.DocumentDao
 import com.github.leandroborgesferreira.storyteller.persistence.dao.StoryUnitDao
 import com.github.leandroborgesferreira.storyteller.persistence.entity.document.DocumentEntity
@@ -25,7 +25,7 @@ class NotesRepository(
             DocumentEntity(superMarketNoteId, "Supermarket List")
         )
 
-        val travelContent = syncHistory(context).toEntity(travelNoteId)
+        val travelContent = mockHistory(context).toEntity(travelNoteId)
         val supermarketContent = supermarketList().toEntity(superMarketNoteId)
 
         storyUnitDao.insertStoryUnits(*travelContent.toTypedArray())
