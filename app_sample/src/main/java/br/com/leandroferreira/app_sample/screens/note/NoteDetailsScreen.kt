@@ -52,9 +52,7 @@ fun NoteDetailsScreen(documentId: String?, noteDetailsViewModel: NoteDetailsView
         )
     }
 
-    Scaffold(
-        topBar = { TopBar(noteDetailsViewModel.documentState) },
-    ) { paddingValues ->
+    Scaffold { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(top = paddingValues.calculateTopPadding())
@@ -71,23 +69,6 @@ fun NoteDetailsScreen(documentId: String?, noteDetailsViewModel: NoteDetailsView
             )
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TopBar(documentState: StateFlow<Document?>) {
-    val document by documentState.collectAsStateWithLifecycle()
-
-    TopAppBar(
-        title = {
-            Text(
-                text = document?.title ?: stringResource(R.string.note),
-            )
-        },
-        colors = TopAppBarDefaults.mediumTopAppBarColors(
-            titleContentColor = MaterialTheme.colorScheme.onPrimary
-        )
-    )
 }
 
 @Composable

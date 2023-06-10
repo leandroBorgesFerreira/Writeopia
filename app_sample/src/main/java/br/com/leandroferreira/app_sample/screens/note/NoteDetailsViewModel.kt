@@ -77,7 +77,7 @@ class NoteDetailsViewModel(
         }
     }
 
-    fun updateState() {
+    private fun updateState() {
         storyTellerManager.updateState()
     }
 
@@ -86,7 +86,14 @@ class NoteDetailsViewModel(
 
         _documentState.value?.let { document ->
             viewModelScope.launch {
-                documentRepository.saveDocument(document.copy(content = story.value.stories))
+                documentRepository.saveDocument(
+                    document.copy(
+                        content = story.value.stories,
+                        title = story.value.stories.values.firstOrNull { story ->
+                            story.isTitle
+                        }?.text ?: ""
+                    )
+                )
             }
         }
     }
@@ -95,7 +102,6 @@ class NoteDetailsViewModel(
         super.onCleared()
 
         storyTellerManager.updateState()
-        saveNote()
     }
 }
 

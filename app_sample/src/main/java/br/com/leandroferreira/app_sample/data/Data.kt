@@ -3,6 +3,7 @@ package br.com.leandroferreira.app_sample.data
 import android.content.Context
 import br.com.leandroferreira.app_sample.R
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import java.util.UUID
 
 fun messages(): List<StoryStep> = buildList {
@@ -119,8 +120,8 @@ fun imagesMap(): Map<Int, StoryStep> =
 fun supermarketList(): Map<Int, StoryStep> = mapOf(
     0 to StoryStep(
         localId = UUID.randomUUID().toString(),
-        type = "message",
-        text = "To Buy:",
+        type = StoryType.TITLE.type,
+        text = "Supermarket List",
     ),
     1 to StoryStep(
         localId = UUID.randomUUID().toString(),
@@ -144,9 +145,14 @@ fun supermarketList(): Map<Int, StoryStep> = mapOf(
     )
 )
 
-fun syncHistory(context: Context): Map<Int, StoryStep> =
+fun mockHistory(context: Context): Map<Int, StoryStep> =
     mapOf(
-        0 to
+        0 to StoryStep(
+            localId = UUID.randomUUID().toString(),
+            type = StoryType.TITLE.type,
+            text = "Travel notes",
+        ),
+        1 to
             StoryStep(
                 localId = UUID.randomUUID().toString(),
                 type = "image",
@@ -158,7 +164,7 @@ fun syncHistory(context: Context): Map<Int, StoryStep> =
                 type = "image",
                 url = "https://fastly.picsum.photos/id/1018/400/400.jpg?hmac=MwHJoMaVXsBbqg-LFoDVL6P8TCDkSEikExptCkkHESQ",
             ),
-        2 to
+        1 to
             StoryStep(
                 localId = UUID.randomUUID().toString(),
                 type = "image",

@@ -41,7 +41,8 @@ class StoryTellerManager(
             StoryType.MESSAGE_BOX.type,
         ),
         stepsNormalizer = stepsNormalizer
-    )
+    ),
+    private val focusHandler: FocusHandler = FocusHandler()
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
@@ -83,6 +84,17 @@ class StoryTellerManager(
             normalized + normalized,
             firstMessage.id
         )
+    }
+
+    fun nextFocus(position: Int) {
+        val storyMap = _currentStory.value.stories
+        focusHandler.findNextFocus(position, _currentStory.value.stories)
+            ?.let { (position, storyStep) ->
+                val mutable = storyMap.toMutableMap()
+                mutable[position] = storyStep.copy(localId = UUID.randomUUID().toString())
+                _currentStory.value =
+                    _currentStory.value.copy(stories = mutable, focusId = storyStep.id)
+            }
     }
 
     fun initStories(stories: Map<Int, StoryStep>) {
