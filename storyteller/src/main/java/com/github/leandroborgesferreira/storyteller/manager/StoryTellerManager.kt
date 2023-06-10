@@ -16,7 +16,6 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
 import com.github.leandroborgesferreira.storyteller.utils.UnitsNormalizationMap
-
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -88,9 +87,14 @@ class StoryTellerManager(
     }
 
     fun nextFocus(position: Int) {
-        focusHandler.findNextFocus(position, _currentStory.value.stories)?.let { focusId ->
-            _currentStory.value = _currentStory.value.copy(focusId = focusId)
-        }
+        val storyMap = _currentStory.value.stories
+        focusHandler.findNextFocus(position, _currentStory.value.stories)
+            ?.let { (position, storyStep) ->
+                val mutable = storyMap.toMutableMap()
+                mutable[position] = storyStep.copy(localId = UUID.randomUUID().toString())
+                _currentStory.value =
+                    _currentStory.value.copy(stories = mutable, focusId = storyStep.id)
+            }
     }
 
     fun initStories(stories: Map<Int, StoryStep>) {

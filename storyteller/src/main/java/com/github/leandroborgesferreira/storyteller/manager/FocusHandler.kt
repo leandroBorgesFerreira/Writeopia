@@ -11,11 +11,16 @@ class FocusHandler(
     }
 ) {
 
-    fun findNextFocus(position: Int, stories: Map<Int, StoryStep>): String? {
+    fun findNextFocus(position: Int, stories: Map<Int, StoryStep>): Pair<Int, StoryStep>? {
         val storyList = stories.values.toList()
 
-        return storyList.subList(position, storyList.lastIndex)
-            .firstOrNull { storyStep -> isMessageFn(storyStep.type) }
-            ?.id
+        for (i in position..storyList.lastIndex) {
+            val storyStep = storyList[i]
+            if (isMessageFn(storyStep.type)) {
+                return i to storyStep
+            }
+        }
+
+        return null
     }
 }
