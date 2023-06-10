@@ -16,6 +16,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
 import com.github.leandroborgesferreira.storyteller.utils.UnitsNormalizationMap
+
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +42,8 @@ class StoryTellerManager(
             StoryType.MESSAGE_BOX.type,
         ),
         stepsNormalizer = stepsNormalizer
-    )
+    ),
+    private val focusHandler: FocusHandler = FocusHandler()
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
@@ -83,6 +85,12 @@ class StoryTellerManager(
             normalized + normalized,
             firstMessage.id
         )
+    }
+
+    fun nextFocus(position: Int) {
+        focusHandler.findNextFocus(position, _currentStory.value.stories)?.let { focusId ->
+            _currentStory.value = _currentStory.value.copy(focusId = focusId)
+        }
     }
 
     fun initStories(stories: Map<Int, StoryStep>) {

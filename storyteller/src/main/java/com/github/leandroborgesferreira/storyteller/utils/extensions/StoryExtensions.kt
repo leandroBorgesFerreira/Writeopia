@@ -11,5 +11,3 @@ fun <T> Iterable<T>.associateWithPosition(): Map<Int, T> {
 
     return associateBy { ++acc }
 }
-
-fun StoryStep.isTitle(): Boolean = type == StoryType.TITLE.type

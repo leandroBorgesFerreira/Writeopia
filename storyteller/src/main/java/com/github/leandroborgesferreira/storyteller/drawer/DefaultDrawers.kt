@@ -43,6 +43,7 @@ object DefaultDrawers {
             checkRequest = manager::checkRequest,
             onDeleteRequest = manager::onDelete,
             createCheckItem = manager::createCheckItem,
+            nextFocus = manager::nextFocus,
             clickAtTheEnd = manager::clickAtTheEnd,
             groupsBackgroundColor = groupsBackgroundColor
         )
@@ -57,6 +58,7 @@ object DefaultDrawers {
         onDeleteRequest: (DeleteInfo) -> Unit,
         createCheckItem: (Int) -> Unit,
         clickAtTheEnd: () -> Unit,
+        nextFocus: (Int) -> Unit,
         groupsBackgroundColor: Color = Color.Transparent
     ): Map<String, StoryUnitDrawer> =
         buildMap {
@@ -76,12 +78,6 @@ object DefaultDrawers {
                     "\n" to { storyStep, position ->
                         onLineBreak(LineBreakInfo(storyStep, position))
                     },
-                )
-            )
-
-            val textCommandHandlerTitle = TextCommandHandler(
-                mapOf(
-                    "\n" to { storyStep, position -> },
                 )
             )
 
@@ -130,7 +126,7 @@ object DefaultDrawers {
 
             val titleDrawer = TitleDrawer(
                 onTextEdit = onTextEdit,
-                commandHandler = textCommandHandlerTitle
+                nextFocus = nextFocus
             )
 
             put(StoryType.MESSAGE_BOX.type, messageBoxDrawer)

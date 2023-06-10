@@ -1,17 +1,14 @@
 package br.com.leandroferreira.app_sample.screens.note
 
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import br.com.leandroferreira.app_sample.R
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepository
-import com.github.leandroborgesferreira.storyteller.utils.extensions.isTitle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -80,7 +77,7 @@ class NoteDetailsViewModel(
         }
     }
 
-    fun updateState() {
+    private fun updateState() {
         storyTellerManager.updateState()
     }
 
@@ -93,7 +90,7 @@ class NoteDetailsViewModel(
                     document.copy(
                         content = story.value.stories,
                         title = story.value.stories.values.firstOrNull { story ->
-                            story.isTitle()
+                            story.isTitle
                         }?.text ?: ""
                     )
                 )

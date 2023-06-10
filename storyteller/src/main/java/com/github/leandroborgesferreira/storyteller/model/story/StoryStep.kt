@@ -23,4 +23,6 @@ data class StoryStep(
     val key: Int = localId.hashCode()
 
     val isGroup: Boolean = steps.isNotEmpty()
+
+    val isTitle: Boolean = type == StoryType.TITLE.type
 }

@@ -44,7 +44,7 @@ class TitleDrawer(
     private val containerModifier: Modifier = Modifier,
     private val innerContainerModifier: Modifier = Modifier,
     private val onTextEdit: (String, Int) -> Unit,
-    private val commandHandler: TextCommandHandler,
+    private val nextFocus: (Int) -> Unit,
 ) : StoryUnitDrawer {
 
     @Composable
@@ -72,12 +72,9 @@ class TitleDrawer(
                         .fillMaxWidth(),
                     value = inputText,
                     onValueChange = { value ->
-                        if (!commandHandler.handleCommand(
-                                value.text,
-                                step,
-                                drawInfo.position
-                            )
-                        ) {
+                        if (value.text.contains("\n")) {
+                            nextFocus(drawInfo.position)
+                        } else {
                             inputText = value
                             onTextEdit(value.text, drawInfo.position)
                         }
