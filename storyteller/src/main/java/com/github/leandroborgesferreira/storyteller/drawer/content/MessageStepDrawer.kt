@@ -53,7 +53,7 @@ class MessageStepDrawer(
     private val onTextEdit: (String, Int) -> Unit,
     private val onDeleteRequest: (DeleteInfo) -> Unit,
     private val commandHandler: TextCommandHandler,
-    private val onSelectMode: (Int) -> Unit
+    private val onSelected: (Int) -> Unit
 ) : StoryUnitDrawer {
 
     @Composable

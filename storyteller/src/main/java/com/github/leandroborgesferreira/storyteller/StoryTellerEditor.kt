@@ -39,7 +39,8 @@ fun StoryTellerEditor(
                                     editable = editable,
                                     focusId = storyState.focusId,
                                     position = index,
-                                    extraData = mapOf("listSize" to storyState.stories.size)
+                                    extraData = mapOf("listSize" to storyState.stories.size),
+                                    selectMode = false
                                 )
                             )
                         }

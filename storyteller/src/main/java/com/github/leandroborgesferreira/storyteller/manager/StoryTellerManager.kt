@@ -153,6 +153,10 @@ class StoryTellerManager(
         }
     }
 
+    fun onSelected(position: Int) {
+
+    }
+
     fun clickAtTheEnd() {
         val stories = _currentStory.value.stories
         val lastContentStory = stories[stories.size - 3]

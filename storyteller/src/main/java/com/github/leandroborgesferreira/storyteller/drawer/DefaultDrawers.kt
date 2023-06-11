@@ -45,6 +45,7 @@ object DefaultDrawers {
             createCheckItem = manager::createCheckItem,
             nextFocus = manager::nextFocus,
             clickAtTheEnd = manager::clickAtTheEnd,
+            onSelected = manager::onSelected,
             groupsBackgroundColor = groupsBackgroundColor
         )
 
@@ -57,6 +58,7 @@ object DefaultDrawers {
         checkRequest: (CheckInfo) -> Unit = { },
         onDeleteRequest: (DeleteInfo) -> Unit,
         createCheckItem: (Int) -> Unit,
+        onSelected: (Int) -> Unit,
         clickAtTheEnd: () -> Unit,
         nextFocus: (Int) -> Unit,
         groupsBackgroundColor: Color = Color.Transparent
@@ -106,7 +108,8 @@ object DefaultDrawers {
                 innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
                 onTextEdit = onTextEdit,
                 onDeleteRequest = onDeleteRequest,
-                commandHandler = textCommandHandlerMessage
+                commandHandler = textCommandHandlerMessage,
+                onSelected = onSelected,
             )
 
             val messageDrawer = MessageStepDrawer(
@@ -114,7 +117,8 @@ object DefaultDrawers {
                 innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
                 onTextEdit = onTextEdit,
                 onDeleteRequest = onDeleteRequest,
-                commandHandler = textCommandHandlerMessage
+                commandHandler = textCommandHandlerMessage,
+                onSelected = onSelected,
             )
 
             val checkItemDrawer = CheckItemDrawer(
