@@ -1,6 +1,8 @@
 package com.github.leandroborgesferreira.storyteller.drawer.content
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,7 +20,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -47,10 +51,18 @@ class MessageStepDrawer(
     @Composable
     override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
         val focusRequester = remember { FocusRequester() }
+        var isOnEditMode by remember { mutableStateOf(false) }
 
-        Box(modifier = containerModifier.clickable {
-            focusRequester.requestFocus()
-        }) {
+        Box(modifier = containerModifier
+            .background(if (isOnEditMode) Color.Cyan else Color.Transparent)
+            .pointerInput(Unit) {
+                detectHorizontalDragGestures(onDragStart = { _ ->
+                    isOnEditMode = true
+                }, onHorizontalDrag = { _, _ -> })
+            }
+            .clickable {
+                focusRequester.requestFocus()
+            }) {
             if (drawInfo.editable) {
                 var inputText by remember {
                     val text = step.text ?: ""
