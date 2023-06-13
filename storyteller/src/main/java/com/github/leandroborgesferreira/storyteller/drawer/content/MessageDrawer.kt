@@ -2,8 +2,10 @@ package com.github.leandroborgesferreira.storyteller.drawer.content
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateIntOffset
 import androidx.compose.animation.core.animateOffset
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -61,6 +63,9 @@ class MessageDrawer(
 
     @Composable
     override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
+        val backgroundColor = MaterialTheme.colorScheme.background
+        val backgroundEditColor = MaterialTheme.colorScheme.primary
+
         val focusRequester = remember { FocusRequester() }
         var isOnEditMode by remember { mutableStateOf(false) }
         val haptic = LocalHapticFeedback.current
@@ -71,11 +76,19 @@ class MessageDrawer(
             label = "editionMultipleAnimation"
         )
 
-        val color by transition.animateColor(label = "colorAnimation") { isEdit ->
-            if (isEdit) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.background
+        val colorAnimated by transition.animateColor(label = "colorAnimation") { isEdit ->
+            if (isEdit) backgroundEditColor else backgroundColor
         }
 
-        val animatedOffset by transition.animateIntOffset(label = "offsetAnimation") { isEdit ->
+        val animatedOffset by transition.animateIntOffset(
+            transitionSpec = {
+                spring(
+                    dampingRatio = Spring.DampingRatioLowBouncy,
+                    visibilityThreshold = IntOffset(1, 1)
+                )
+            },
+            label = "offsetAnimation",
+        ) { isEdit ->
             if (isEdit) IntOffset(0, 0) else IntOffset(swipeOffset.roundToInt(), 0)
         }
 
@@ -87,25 +100,24 @@ class MessageDrawer(
                     IntOffset(swipeOffset.roundToInt(), 0)
                 }
             }
-            .background(color)
+            .background(colorAnimated)
             .pointerInput(Unit) {
                 detectHorizontalDragGestures(
                     onDragStart = { _ -> },
                     onHorizontalDrag = { _, dragAmount ->
                         if (!isOnEditMode) {
-                            swipeOffset += dragAmount
-                        }
-
-                        if (swipeOffset > 130) {
-                            swipeOffset = 0F
-                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                            isOnEditMode = true
+                            swipeOffset += dragAmount * 0.2F
                         }
                     },
                     onDragCancel = {
                         swipeOffset = 0F
                     },
                     onDragEnd = {
+                        if (swipeOffset > 60) {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                            isOnEditMode = true
+                        }
+
                         swipeOffset = 0F
                     })
             }
