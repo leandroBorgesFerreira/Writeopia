@@ -37,7 +37,7 @@ import coil.request.ImageRequest
 /**
  * Draws a image. Uses Coil to parse the image.
  */
-class ImageStepDrawer(
+class ImageDrawer(
     private val containerModifier: (Boolean) -> Modifier? = { null },
     private val mergeRequest: (MergeInfo) -> Unit = { }
 ) : StoryUnitDrawer {

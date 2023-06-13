@@ -1,6 +1,10 @@
 package com.github.leandroborgesferreira.storyteller.drawer.content
 
-import android.util.Log
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateIntOffset
+import androidx.compose.animation.core.animateOffset
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
@@ -24,7 +28,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -47,7 +50,7 @@ import kotlin.math.roundToInt
  * also notified by onTextEdit. It is necessary to reflect here to avoid losing the focus on the
  * TextField.
  */
-class MessageStepDrawer(
+class MessageDrawer(
     private val containerModifier: Modifier = Modifier,
     private val innerContainerModifier: Modifier = Modifier,
     private val onTextEdit: (String, Int) -> Unit,
@@ -63,9 +66,28 @@ class MessageStepDrawer(
         val haptic = LocalHapticFeedback.current
         var swipeOffset by remember { mutableStateOf(0F) }
 
+        val transition = updateTransition(
+            targetState = isOnEditMode,
+            label = "editionMultipleAnimation"
+        )
+
+        val color by transition.animateColor(label = "colorAnimation") { isEdit ->
+            if (isEdit) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.background
+        }
+
+        val animatedOffset by transition.animateIntOffset(label = "offsetAnimation") { isEdit ->
+            if (isEdit) IntOffset(0, 0) else IntOffset(swipeOffset.roundToInt(), 0)
+        }
+
         Box(modifier = containerModifier
-            .offset { IntOffset(swipeOffset.roundToInt(), 0) }
-            .background(if (isOnEditMode) Color.Cyan else Color.Transparent)
+            .offset {
+                if (isOnEditMode) {
+                    animatedOffset
+                } else {
+                    IntOffset(swipeOffset.roundToInt(), 0)
+                }
+            }
+            .background(color)
             .pointerInput(Unit) {
                 detectHorizontalDragGestures(
                     onDragStart = { _ -> },
