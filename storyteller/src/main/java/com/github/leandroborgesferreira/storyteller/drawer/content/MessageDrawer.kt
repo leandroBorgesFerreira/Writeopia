@@ -45,6 +45,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyE
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
+import kotlin.math.absoluteValue
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
@@ -107,7 +108,7 @@ class MessageDrawer(
                     onDragStart = { _ -> },
                     onHorizontalDrag = { _, dragAmount ->
                         val maxDistance = 80
-                        val correction = (maxDistance - swipeOffset) / maxDistance
+                        val correction = (maxDistance - swipeOffset.absoluteValue) / maxDistance
 
                         if (!isOnEditMode) {
                             swipeOffset += dragAmount * correction.pow(3)
@@ -117,7 +118,7 @@ class MessageDrawer(
                         swipeOffset = 0F
                     },
                     onDragEnd = {
-                        if (swipeOffset > 40) {
+                        if (swipeOffset.absoluteValue > 40) {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             isOnEditMode = true
                         }
