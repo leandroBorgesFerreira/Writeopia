@@ -27,7 +27,7 @@ import coil.request.videoFrameMillis
 /**
  * Draws a simple video thumnail using Coil.
  */
-class VideoStepDrawer(private val containerModifier: Modifier? = null) : StoryUnitDrawer {
+class VideoDrawer(private val containerModifier: Modifier? = null) : StoryUnitDrawer {
 
     @Composable
     override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {

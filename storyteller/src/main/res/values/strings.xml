@@ -3,4 +3,5 @@
     <string name="to_do">To do</string>
     <string name="delete_check_item">Delete check item</string>
     <string name="title">Title</string>
+    <string name="drag_icon">Drag icon</string>
 </resources>

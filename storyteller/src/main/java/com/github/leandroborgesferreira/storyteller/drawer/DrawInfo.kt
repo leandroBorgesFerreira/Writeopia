@@ -5,4 +5,5 @@ data class DrawInfo(
     val focusId: String?,
     val position: Int,
     val extraData: Map<String, Any>,
+    val selectMode: Boolean
 )

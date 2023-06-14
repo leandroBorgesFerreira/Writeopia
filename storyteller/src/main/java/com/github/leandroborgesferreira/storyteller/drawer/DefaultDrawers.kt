@@ -11,11 +11,11 @@ import com.github.leandroborgesferreira.storyteller.drawer.commands.CommandsDeco
 import com.github.leandroborgesferreira.storyteller.drawer.content.AddButtonDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.CheckItemDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.ImageGroupDrawer
-import com.github.leandroborgesferreira.storyteller.drawer.content.ImageStepDrawer
-import com.github.leandroborgesferreira.storyteller.drawer.content.ImageStepDrawer.Companion.defaultModifier
+import com.github.leandroborgesferreira.storyteller.drawer.content.ImageDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.content.ImageDrawer.Companion.defaultModifier
 import com.github.leandroborgesferreira.storyteller.drawer.content.LargeEmptySpace
-import com.github.leandroborgesferreira.storyteller.drawer.content.MessageStepDrawer
-import com.github.leandroborgesferreira.storyteller.drawer.content.VideoStepDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.content.MessageDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.content.VideoDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.SpaceDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.TitleDrawer
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
@@ -45,6 +45,7 @@ object DefaultDrawers {
             createCheckItem = manager::createCheckItem,
             nextFocus = manager::nextFocus,
             clickAtTheEnd = manager::clickAtTheEnd,
+            onSelected = manager::onSelected,
             groupsBackgroundColor = groupsBackgroundColor
         )
 
@@ -57,6 +58,7 @@ object DefaultDrawers {
         checkRequest: (CheckInfo) -> Unit = { },
         onDeleteRequest: (DeleteInfo) -> Unit,
         createCheckItem: (Int) -> Unit,
+        onSelected: (Int) -> Unit,
         clickAtTheEnd: () -> Unit,
         nextFocus: (Int) -> Unit,
         groupsBackgroundColor: Color = Color.Transparent
@@ -88,17 +90,17 @@ object DefaultDrawers {
                 )
             }
 
-            val imageDrawer = ImageStepDrawer(
+            val imageDrawer = ImageDrawer(
                 containerModifier = { inBound -> Modifier.defaultModifier(inBound) },
                 mergeRequest = mergeRequest
             )
 
-            val imageDrawerInGroup = ImageStepDrawer(
+            val imageDrawerInGroup = ImageDrawer(
                 containerModifier = { inBound -> Modifier.defaultModifier(inBound) },
                 mergeRequest = mergeRequest
             )
 
-            val messageBoxDrawer = MessageStepDrawer(
+            val messageBoxDrawer = MessageDrawer(
                 containerModifier = Modifier
                     .padding(horizontal = 8.dp)
                     .clip(shape = RoundedCornerShape(size = 12.dp))
@@ -106,15 +108,17 @@ object DefaultDrawers {
                 innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
                 onTextEdit = onTextEdit,
                 onDeleteRequest = onDeleteRequest,
-                commandHandler = textCommandHandlerMessage
+                commandHandler = textCommandHandlerMessage,
+                onSelected = onSelected,
             )
 
-            val messageDrawer = MessageStepDrawer(
+            val messageDrawer = MessageDrawer(
                 containerModifier = Modifier,
                 innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
                 onTextEdit = onTextEdit,
                 onDeleteRequest = onDeleteRequest,
-                commandHandler = textCommandHandlerMessage
+                commandHandler = textCommandHandlerMessage,
+                onSelected = onSelected,
             )
 
             val checkItemDrawer = CheckItemDrawer(
@@ -143,7 +147,7 @@ object DefaultDrawers {
             )
             put(
                 StoryType.VIDEO.type,
-                if (editable) commandsComposite(VideoStepDrawer()) else VideoStepDrawer()
+                if (editable) commandsComposite(VideoDrawer()) else VideoDrawer()
             )
 
             put(StoryType.SPACE.type, SpaceDrawer(moveRequest))
