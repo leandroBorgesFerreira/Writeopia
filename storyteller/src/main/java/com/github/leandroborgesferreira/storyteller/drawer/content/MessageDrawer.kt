@@ -45,6 +45,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyE
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
+import kotlin.math.pow
 import kotlin.math.roundToInt
 
 /**
@@ -105,15 +106,18 @@ class MessageDrawer(
                 detectHorizontalDragGestures(
                     onDragStart = { _ -> },
                     onHorizontalDrag = { _, dragAmount ->
+                        val maxDistance = 80
+                        val correction = (maxDistance - swipeOffset) / maxDistance
+
                         if (!isOnEditMode) {
-                            swipeOffset += dragAmount * 0.2F
+                            swipeOffset += dragAmount * correction.pow(3)
                         }
                     },
                     onDragCancel = {
                         swipeOffset = 0F
                     },
                     onDragEnd = {
-                        if (swipeOffset > 60) {
+                        if (swipeOffset > 40) {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             isOnEditMode = true
                         }
