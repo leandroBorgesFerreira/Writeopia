@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -72,6 +74,7 @@ class MessageDrawer(
         var isOnEditMode by remember { mutableStateOf(false) }
         val haptic = LocalHapticFeedback.current
         var swipeOffset by remember { mutableStateOf(0F) }
+        var dragging by remember { mutableStateOf(false) }
 
         val transition = updateTransition(
             targetState = isOnEditMode,
@@ -94,83 +97,86 @@ class MessageDrawer(
             if (isEdit) IntOffset(0, 0) else IntOffset(swipeOffset.roundToInt(), 0)
         }
 
-        Box(modifier = containerModifier
-            .offset {
-                if (isOnEditMode) {
-                    animatedOffset
-                } else {
-                    IntOffset(swipeOffset.roundToInt(), 0)
-                }
-            }
-            .background(colorAnimated)
-            .pointerInput(Unit) {
-                detectHorizontalDragGestures(
-                    onDragStart = { _ -> },
-                    onHorizontalDrag = { _, dragAmount ->
-                        val maxDistance = 80
-                        val correction = (maxDistance - swipeOffset.absoluteValue) / maxDistance
-
-                        if (!isOnEditMode) {
-                            swipeOffset += dragAmount * correction.pow(3)
-                        }
-                    },
-                    onDragCancel = {
-                        swipeOffset = 0F
-                    },
-                    onDragEnd = {
-                        if (swipeOffset.absoluteValue > 40) {
-                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                            isOnEditMode = true
-                        }
-
-                        swipeOffset = 0F
-                    })
-            }
-            .clickable {
-                focusRequester.requestFocus()
-            }) {
-            if (drawInfo.editable) {
-                var inputText by remember {
-                    val text = step.text ?: ""
-                    mutableStateOf(TextFieldValue(text, TextRange(text.length)))
-                }
-
-                LaunchedEffect(drawInfo.focusId) {
-                    if (drawInfo.focusId == step.id) {
-                        focusRequester.requestFocus()
+        Box(modifier = Modifier.padding(horizontal = 6.dp)) {
+            Box(modifier = containerModifier
+                .offset {
+                    if (dragging) {
+                        IntOffset(swipeOffset.roundToInt(), 0)
+                    } else {
+                        animatedOffset
                     }
                 }
+                .clip(RoundedCornerShape(3.dp))
+                .background(colorAnimated)
+                .pointerInput(Unit) {
+                    detectHorizontalDragGestures(
+                        onDragStart = { _ -> dragging = true },
+                        onHorizontalDrag = { _, dragAmount ->
+                            val maxDistance = 80
+                            val correction = (maxDistance - swipeOffset.absoluteValue) / maxDistance
 
-                BasicTextField(
-                    modifier = innerContainerModifier
-                        .focusRequester(focusRequester)
-                        .fillMaxWidth()
-                        .callOnEmptyErase(inputText.selection) {
-                            onDeleteRequest(DeleteInfo(step, drawInfo.position))
+                            swipeOffset += dragAmount * correction.pow(3)
                         },
-                    value = inputText,
-                    onValueChange = { value ->
-                        if (!commandHandler.handleCommand(
-                                value.text,
-                                step,
-                                drawInfo.position
-                            )
-                        ) {
-                            inputText = value
-                            onTextEdit(value.text, drawInfo.position)
+                        onDragCancel = {
+                            swipeOffset = 0F
+                            dragging = false
+                        },
+                        onDragEnd = {
+                            if (swipeOffset.absoluteValue > 40) {
+                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                isOnEditMode = !isOnEditMode
+                            }
+
+                            swipeOffset = 0F
+                            dragging = false
+                        })
+                }
+                .clickable {
+                    focusRequester.requestFocus()
+                }) {
+                if (drawInfo.editable) {
+                    var inputText by remember {
+                        val text = step.text ?: ""
+                        mutableStateOf(TextFieldValue(text, TextRange(text.length)))
+                    }
+
+                    LaunchedEffect(drawInfo.focusId) {
+                        if (drawInfo.focusId == step.id) {
+                            focusRequester.requestFocus()
                         }
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Sentences
-                    ),
-                    textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground),
-                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
-                )
-            } else {
-                Text(
-                    text = step.text ?: "",
-                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
-                )
+                    }
+
+                    BasicTextField(
+                        modifier = innerContainerModifier
+                            .focusRequester(focusRequester)
+                            .fillMaxWidth()
+                            .callOnEmptyErase(inputText.selection) {
+                                onDeleteRequest(DeleteInfo(step, drawInfo.position))
+                            },
+                        value = inputText,
+                        onValueChange = { value ->
+                            if (!commandHandler.handleCommand(
+                                    value.text,
+                                    step,
+                                    drawInfo.position
+                                )
+                            ) {
+                                inputText = value
+                                onTextEdit(value.text, drawInfo.position)
+                            }
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            capitalization = KeyboardCapitalization.Sentences
+                        ),
+                        textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground),
+                        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
+                    )
+                } else {
+                    Text(
+                        text = step.text ?: "",
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+                    )
+                }
             }
         }
     }
