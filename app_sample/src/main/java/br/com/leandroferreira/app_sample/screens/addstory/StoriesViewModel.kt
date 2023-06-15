@@ -29,8 +29,4 @@ class StoriesViewModel(
             storyTellerManager.initStories(repo.history())
         }
     }
-
-    fun updateState() {
-        storyTellerManager.updateState()
-    }
 }

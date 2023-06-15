@@ -77,13 +77,7 @@ class NoteDetailsViewModel(
         }
     }
 
-    private fun updateState() {
-        storyTellerManager.updateState()
-    }
-
     fun saveNote() {
-        updateState()
-
         _documentState.value?.let { document ->
             viewModelScope.launch {
                 documentRepository.saveDocument(
@@ -96,12 +90,6 @@ class NoteDetailsViewModel(
                 )
             }
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-
-        storyTellerManager.updateState()
     }
 }
 

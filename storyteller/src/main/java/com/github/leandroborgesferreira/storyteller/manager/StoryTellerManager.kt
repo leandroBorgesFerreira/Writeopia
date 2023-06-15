@@ -122,8 +122,6 @@ class StoryTellerManager(
      * At the moment it is only possible to check items not inside groups. Todo: Fix it!
      */
     fun checkRequest(checkInfo: CheckInfo) {
-        updateState()
-
         val storyUnit = checkInfo.storyUnit
         val newStep = (storyUnit as? StoryStep)?.copy(checked = checkInfo.checked) ?: return
 
@@ -131,25 +129,25 @@ class StoryTellerManager(
     }
 
     fun createCheckItem(position: Int) {
-        updateState()
         _currentStory.value = contentHandler.createCheckItem(_currentStory.value.stories, position)
     }
 
     fun onTextEdit(text: String, position: Int) {
-        textChanges[position] = text
-        backStackManager.addAction(TextEditInfo(text, position))
+        _currentStory.value.stories[position]?.copy(text = text)?.let { newStory ->
+            updateStory(position, newStory)
+            backStackManager.addAction(TextEditInfo(text, position))
+        }
     }
 
     fun onLineBreak(lineBreakInfo: LineBreakInfo) {
-        val updatedStories = updateTexts(_currentStory.value.stories)
+        contentHandler.onLineBreak(_currentStory.value.stories, lineBreakInfo)
+            ?.let { (info, newState) ->
+                // Todo: Fix this when the inner position are completed
+                backStackManager.addAction(AddStoryUnit(info.second, position = info.first))
 
-        contentHandler.onLineBreak(updatedStories, lineBreakInfo)?.let { (info, newState) ->
-            // Todo: Fix this when the inner position are completed
-            backStackManager.addAction(AddStoryUnit(info.second, position = info.first))
-
-            _currentStory.value = newState
-            _scrollToPosition.value = info.first
-        }
+                _currentStory.value = newState
+                _scrollToPosition.value = info.first
+            }
     }
 
     fun onSelected(isSelected: Boolean, position: Int) {
@@ -178,10 +176,6 @@ class StoryTellerManager(
 
             _currentStory.value = StoryState(newStories, newLastMessage.id)
         }
-    }
-
-    fun updateState() {
-        _currentStory.value = StoryState(updateTexts(_currentStory.value.stories))
     }
 
     override fun undo() {
@@ -288,26 +282,8 @@ class StoryTellerManager(
         )
     }
 
-    private fun updateTexts(stepMap: Map<Int, StoryStep>): Map<Int, StoryStep> {
-        val mutableSteps = stepMap.toMutableMap()
-
-        textChanges.forEach { (position, text) ->
-            val editStep = mutableSteps[position]
-
-            editStep?.copy(text = text)?.let { step ->
-                mutableSteps[position] = step
-            }
-        }
-
-        textChanges.clear()
-
-        return mutableSteps
-    }
-
     fun onDelete(deleteInfo: DeleteInfo) {
-        val newSteps = updateTexts(_currentStory.value.stories)
-
-        contentHandler.deleteStory(deleteInfo, newSteps)?.let { newState ->
+        contentHandler.deleteStory(deleteInfo, _currentStory.value.stories)?.let { newState ->
             _currentStory.value = newState
         }
 

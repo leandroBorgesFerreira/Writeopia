@@ -44,13 +44,11 @@ import com.github.leandroborgesferreira.storyteller.drawer.DefaultDrawers
 fun AddStoryScreen(storiesViewModel: StoriesViewModel) {
 
     storiesViewModel.requestStories()
-    storiesViewModel.updateState()
 
     Scaffold(
         topBar = { TopBar() },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                storiesViewModel.updateState()
                 storiesViewModel.toggleEdit()
             }) {
                 Icon(imageVector = Icons.Outlined.Edit, contentDescription = "")
