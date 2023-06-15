@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.common.SwipeToCommandBox
 import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyErase
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
@@ -67,73 +68,17 @@ class MessageDrawer(
 
     @Composable
     override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
-        val backgroundColor = MaterialTheme.colorScheme.background
-        val backgroundEditColor = MaterialTheme.colorScheme.primary
-
         val focusRequester = remember { FocusRequester() }
-        var isOnEditMode by remember { mutableStateOf(false) }
-        val haptic = LocalHapticFeedback.current
-        var swipeOffset by remember { mutableStateOf(0F) }
-        var dragging by remember { mutableStateOf(false) }
-
-        val transition = updateTransition(
-            targetState = isOnEditMode,
-            label = "editionMultipleAnimation"
-        )
-
-        val colorAnimated by transition.animateColor(label = "colorAnimation") { isEdit ->
-            if (isEdit) backgroundEditColor else backgroundColor
-        }
-
-        val animatedOffset by transition.animateIntOffset(
-            transitionSpec = {
-                spring(
-                    dampingRatio = Spring.DampingRatioLowBouncy,
-                    visibilityThreshold = IntOffset(1, 1)
-                )
-            },
-            label = "offsetAnimation",
-        ) { isEdit ->
-            if (isEdit) IntOffset(0, 0) else IntOffset(swipeOffset.roundToInt(), 0)
-        }
 
         Box(modifier = Modifier.padding(horizontal = 6.dp)) {
-            Box(modifier = containerModifier
-                .offset {
-                    if (dragging) {
-                        IntOffset(swipeOffset.roundToInt(), 0)
-                    } else {
-                        animatedOffset
-                    }
-                }
-                .clip(RoundedCornerShape(3.dp))
-                .background(colorAnimated)
-                .pointerInput(Unit) {
-                    detectHorizontalDragGestures(
-                        onDragStart = { _ -> dragging = true },
-                        onHorizontalDrag = { _, dragAmount ->
-                            val maxDistance = 80
-                            val correction = (maxDistance - swipeOffset.absoluteValue) / maxDistance
-
-                            swipeOffset += dragAmount * correction.pow(3)
-                        },
-                        onDragCancel = {
-                            swipeOffset = 0F
-                            dragging = false
-                        },
-                        onDragEnd = {
-                            if (swipeOffset.absoluteValue > 40) {
-                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                                isOnEditMode = !isOnEditMode
-                            }
-
-                            swipeOffset = 0F
-                            dragging = false
-                        })
-                }
-                .clickable {
-                    focusRequester.requestFocus()
-                }) {
+            SwipeToCommandBox(
+                modifier = containerModifier.clip(RoundedCornerShape(3.dp))
+                    .clickable {
+                        focusRequester.requestFocus()
+                    },
+                defaultColor = MaterialTheme.colorScheme.background,
+                activeColor = MaterialTheme.colorScheme.primary
+            ) {
                 if (drawInfo.editable) {
                     var inputText by remember {
                         val text = step.text ?: ""
