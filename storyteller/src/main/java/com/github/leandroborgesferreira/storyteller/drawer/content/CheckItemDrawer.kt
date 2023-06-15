@@ -74,7 +74,9 @@ class CheckItemDrawer(
                         focusRequester.requestFocus()
                     },
                 defaultColor = MaterialTheme.colorScheme.background,
-                activeColor = MaterialTheme.colorScheme.primary
+                activeColor = MaterialTheme.colorScheme.primary,
+                state = drawInfo.selectMode,
+                listener = {}
             ) {
                 DragTargetWithDragItem(dataToDrop = dropInfo) {
                     DragTarget(dataToDrop = dropInfo) {

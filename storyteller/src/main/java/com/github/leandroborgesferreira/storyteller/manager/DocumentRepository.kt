@@ -2,7 +2,7 @@ package com.github.leandroborgesferreira.storyteller.manager
 
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
-interface StoryStateSaver {
+interface DocumentRepository {
 
-    suspend fun saveState(documentId: String, content: Map<Int, StoryStep>)
+    suspend fun save(documentId: String, content: Map<Int, StoryStep>)
 }

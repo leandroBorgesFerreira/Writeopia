@@ -63,7 +63,7 @@ class MessageDrawer(
     private val onTextEdit: (String, Int) -> Unit,
     private val onDeleteRequest: (DeleteInfo) -> Unit,
     private val commandHandler: TextCommandHandler,
-    private val onSelected: (Int) -> Unit
+    private val onSelected: (Boolean, Int) -> Unit
 ) : StoryUnitDrawer {
 
     @Composable
@@ -77,7 +77,11 @@ class MessageDrawer(
                         focusRequester.requestFocus()
                     },
                 defaultColor = MaterialTheme.colorScheme.background,
-                activeColor = MaterialTheme.colorScheme.primary
+                activeColor = MaterialTheme.colorScheme.primary,
+                state = drawInfo.selectMode,
+                listener = { isSelected ->
+                    onSelected(isSelected, drawInfo.position)
+                }
             ) {
                 if (drawInfo.editable) {
                     var inputText by remember {

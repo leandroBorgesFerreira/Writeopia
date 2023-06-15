@@ -10,7 +10,6 @@ import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,7 +17,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
@@ -34,16 +32,18 @@ fun SwipeToCommandBox(
     modifier: Modifier,
     defaultColor: Color = MaterialTheme.colorScheme.background,
     activeColor: Color = MaterialTheme.colorScheme.background,
+    state: Boolean,
+    listener: (Boolean) -> Unit,
     content: @Composable () -> Unit
 ) {
-    var isOnEditMode by remember { mutableStateOf(false) }
+    var isOnEditMode by remember { mutableStateOf(state) }
     val haptic = LocalHapticFeedback.current
     var swipeOffset by remember { mutableStateOf(0F) }
     var dragging by remember { mutableStateOf(false) }
 
     val transition = updateTransition(
         targetState = isOnEditMode,
-        label = "editionMultipleAnimation"
+        label = "editionMultipleAnimation",
     )
 
     val colorAnimated by transition.animateColor(label = "colorAnimation") { isEdit ->
@@ -89,6 +89,8 @@ fun SwipeToCommandBox(
                         if (swipeOffset.absoluteValue > 40) {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             isOnEditMode = !isOnEditMode
+
+                            listener(isOnEditMode)
                         }
 
                         swipeOffset = 0F

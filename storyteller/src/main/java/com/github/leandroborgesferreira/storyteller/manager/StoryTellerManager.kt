@@ -56,16 +56,18 @@ class StoryTellerManager(
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
 
+    private val _positionsOnEdit = MutableStateFlow(listOf<Int>())
+
     fun saveOnStoryChanges(
         coroutineScope: CoroutineScope,
         documentId: String,
-        storyStateSaver: StoryStateSaver
+        documentRepository: DocumentRepository
     ) {
         coroutineScope.launch(Dispatchers.IO) {
-            currentStory.map { storyState ->
+            _currentStory.map { storyState ->
                 storyState.stories
             }.collectLatest { content ->
-                storyStateSaver.saveState(documentId, content)
+                documentRepository.save(documentId, content)
             }
         }
     }
@@ -121,14 +123,11 @@ class StoryTellerManager(
      */
     fun checkRequest(checkInfo: CheckInfo) {
         updateState()
+
         val storyUnit = checkInfo.storyUnit
-
         val newStep = (storyUnit as? StoryStep)?.copy(checked = checkInfo.checked) ?: return
-        val newMap = _currentStory.value.stories.toMutableMap()
 
-        newMap[checkInfo.position] = newStep
-
-        _currentStory.value = StoryState(newMap)
+        updateStory(checkInfo.position, newStep)
     }
 
     fun createCheckItem(position: Int) {
@@ -153,8 +152,10 @@ class StoryTellerManager(
         }
     }
 
-    fun onSelected(position: Int) {
-
+    fun onSelected(isSelected: Boolean, position: Int) {
+        _currentStory.value.stories[position]?.copy()?.let { newStory ->
+            updateStory(position, newStory)
+        }
     }
 
     fun clickAtTheEnd() {
@@ -194,7 +195,7 @@ class StoryTellerManager(
             }
 
             is AddText -> {
-                revertAddText(currentStory.value.stories, backAction)
+                revertAddText(_currentStory.value.stories, backAction)
             }
 
             else -> return
@@ -205,12 +206,12 @@ class StoryTellerManager(
     override fun redo() {
         when (val action = backStackManager.redo()) {
             is DeleteInfo -> {
-                contentHandler.deleteStory(action, currentStory.value.stories)
+                contentHandler.deleteStory(action, _currentStory.value.stories)
             }
 
             is AddStoryUnit -> {
                 val (position, newStory) = contentHandler.addNewContent(
-                    currentStory.value.stories,
+                    _currentStory.value.stories,
                     action.storyUnit,
                     action.position - 1
                 )
@@ -223,16 +224,22 @@ class StoryTellerManager(
             }
 
             is AddText -> {
-                redoAddText(currentStory.value.stories, action)
+                redoAddText(_currentStory.value.stories, action)
             }
 
             else -> return
         }
     }
 
+    private fun updateStory(position: Int, newStep: StoryStep, focusId: String? = null) {
+        val newMap = _currentStory.value.stories.toMutableMap()
+        newMap[position] = newStep
+        _currentStory.value = StoryState(newMap, focusId)
+    }
+
     private fun revertAddText(currentStory: Map<Int, StoryStep>, addText: AddText) {
         val mutableSteps = currentStory.toMutableMap()
-        val revertStep = mutableSteps[addText.position]
+        val revertStep = currentStory[addText.position]
         val currentText = revertStep?.text
 
         if (!currentText.isNullOrEmpty()) {
@@ -262,7 +269,7 @@ class StoryTellerManager(
     private fun revertAddStory(addStoryUnit: AddStoryUnit) {
         contentHandler.deleteStory(
             DeleteInfo(addStoryUnit.storyUnit, position = addStoryUnit.position),
-            currentStory.value.stories
+            _currentStory.value.stories
         )?.let { newState ->
             _currentStory.value = newState
         }
@@ -270,7 +277,7 @@ class StoryTellerManager(
 
     private fun revertDelete(deleteInfo: DeleteInfo): StoryState {
         val (_, newStory) = contentHandler.addNewContent(
-            currentStory.value.stories,
+            _currentStory.value.stories,
             deleteInfo.storyUnit,
             deleteInfo.position
         )
