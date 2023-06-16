@@ -11,6 +11,8 @@ import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
 import com.github.leandroborgesferreira.storyteller.model.change.MergeInfo
 import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
 import com.github.leandroborgesferreira.storyteller.model.change.TextEditInfo
+import com.github.leandroborgesferreira.storyteller.model.story.DrawState
+import com.github.leandroborgesferreira.storyteller.model.story.DrawStory
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
@@ -48,15 +50,22 @@ class StoryTellerManager(
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
     val scrollToPosition: StateFlow<Int?> = _scrollToPosition.asStateFlow()
 
-    private val textChanges: MutableMap<Int, String> = mutableMapOf()
-
     private val _currentStory: MutableStateFlow<StoryState> = MutableStateFlow(
         StoryState(stories = emptyMap())
     )
 
-    val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
+    private val _positionsOnEdit = mutableSetOf<String>()
 
-    private val _positionsOnEdit = MutableStateFlow(listOf<Int>())
+    val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
+    
+    val toDraw = currentStory.map { storyState ->
+        val focus = storyState.focusId
+        val toDrawStories = storyState.stories.mapValues {(_, storyStep) ->
+            DrawStory(storyStep, _positionsOnEdit.contains(storyStep.id))
+        }
+
+        DrawState(toDrawStories, focus)
+    }
 
     fun saveOnStoryChanges(
         coroutineScope: CoroutineScope,
@@ -151,9 +160,14 @@ class StoryTellerManager(
     }
 
     fun onSelected(isSelected: Boolean, position: Int) {
-        _currentStory.value.stories[position]?.copy()?.let { newStory ->
-            updateStory(position, newStory)
+        _currentStory.value.stories[position]?.localId?.let { id ->
+            if (isSelected) {
+                _positionsOnEdit.add(id)
+            } else {
+                _positionsOnEdit.remove(id)
+            }
         }
+
     }
 
     fun clickAtTheEnd() {

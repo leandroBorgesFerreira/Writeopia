@@ -7,12 +7,15 @@ import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.model.document.Document
+import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class NoteDetailsViewModel(
@@ -25,8 +28,13 @@ class NoteDetailsViewModel(
     private val _editModeState = MutableStateFlow(true)
     val editModeState: StateFlow<Boolean> = _editModeState
 
-    val story: StateFlow<StoryState> = storyTellerManager.currentStory
+    private val story: StateFlow<StoryState> = storyTellerManager.currentStory
     val scrollToPosition = storyTellerManager.scrollToPosition
+    val toDraw = storyTellerManager.toDraw.stateIn(
+        viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = DrawState(emptyMap())
+    )
 
     private val _documentState: MutableStateFlow<Document?> = MutableStateFlow(null)
     val documentState: StateFlow<Document?> = _documentState.asStateFlow()

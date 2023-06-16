@@ -73,7 +73,7 @@ fun NoteDetailsScreen(documentId: String?, noteDetailsViewModel: NoteDetailsView
 
 @Composable
 fun ColumnScope.Body(noteDetailsViewModel: NoteDetailsViewModel) {
-    val storyState by noteDetailsViewModel.story.collectAsStateWithLifecycle()
+    val storyState by noteDetailsViewModel.toDraw.collectAsStateWithLifecycle()
     val editable by noteDetailsViewModel.editModeState.collectAsStateWithLifecycle()
     val listState: LazyListState = rememberLazyListState()
     val position by noteDetailsViewModel.scrollToPosition.collectAsStateWithLifecycle()

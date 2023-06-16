@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class StoriesViewModel(
-    val storyTellerManager: StoryTellerManager,
+    private val storyTellerManager: StoryTellerManager,
     private val repo: StoriesRepo
 ) : ViewModel() {
 
