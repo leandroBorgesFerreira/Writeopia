@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -29,6 +30,9 @@ class NoteDetailsViewModel(
     val editModeState: StateFlow<Boolean> = _editModeState
 
     val toEditState = storyTellerManager.positionsOnEdit
+    val isEditState = storyTellerManager.positionsOnEdit.map { set ->
+        set.isNotEmpty()
+    }.stateIn(viewModelScope, started = SharingStarted.Lazily, initialValue = false)
 
     private val story: StateFlow<StoryState> = storyTellerManager.currentStory
     val scrollToPosition = storyTellerManager.scrollToPosition

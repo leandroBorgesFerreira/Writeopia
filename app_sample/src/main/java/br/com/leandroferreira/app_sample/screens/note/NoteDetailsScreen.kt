@@ -1,5 +1,12 @@
 package br.com.leandroferreira.app_sample.screens.note
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
@@ -10,6 +17,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -105,25 +113,46 @@ fun ColumnScope.TextEditor(noteDetailsViewModel: NoteDetailsViewModel) {
     )
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun BottomScreen(noteDetailsViewModel: NoteDetailsViewModel) {
-    val editState by noteDetailsViewModel.toEditState.collectAsStateWithLifecycle()
+    val editState by noteDetailsViewModel.isEditState.collectAsStateWithLifecycle()
 
-    if (editState.isEmpty()) {
-        InputScreen(
-            onBackPress = noteDetailsViewModel::undo,
-            onForwardPress = noteDetailsViewModel::redo,
-            canUndoState = noteDetailsViewModel.canUndo,
-            canRedoState = noteDetailsViewModel.canRedo
-        )
-    } else {
-        EditionScreen(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 6.dp, horizontal = 6.dp)
-                .clip(RoundedCornerShape(8.dp))
-                .background(MaterialTheme.colorScheme.primary)
-        )
+    AnimatedContent(
+        targetState = editState,
+        label = "bottomSheetAnimation",
+        transitionSpec = {
+            fadeIn() + slideInVertically(
+                animationSpec = tween(),
+                initialOffsetY = { fullHeight -> fullHeight }
+            ) with fadeOut(animationSpec = tween())
+        }
+    ) { isEdit ->
+        if (isEdit) {
+            val topCorner = CornerSize(10.dp)
+            val bottomCorner = CornerSize(0.dp)
+
+            EditionScreen(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(
+                        RoundedCornerShape(
+                            topCorner,
+                            topCorner,
+                            bottomCorner,
+                            bottomCorner
+                        )
+                    )
+                    .background(MaterialTheme.colorScheme.primary)
+            )
+        } else {
+            InputScreen(
+                onBackPress = noteDetailsViewModel::undo,
+                onForwardPress = noteDetailsViewModel::redo,
+                canUndoState = noteDetailsViewModel.canUndo,
+                canRedoState = noteDetailsViewModel.canRedo
+            )
+        }
     }
 }
 
