@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
+import android.util.Log
 import com.github.leandroborgesferreira.storyteller.backstack.BackStackManager
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
@@ -54,14 +55,15 @@ class StoryTellerManager(
         StoryState(stories = emptyMap())
     )
 
-    private val _positionsOnEdit = mutableSetOf<String>()
+    private val _positionsOnEdit = MutableStateFlow(setOf<String>())
+    val positionsOnEdit = _positionsOnEdit.asStateFlow()
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
-    
+
     val toDraw = currentStory.map { storyState ->
         val focus = storyState.focusId
-        val toDrawStories = storyState.stories.mapValues {(_, storyStep) ->
-            DrawStory(storyStep, _positionsOnEdit.contains(storyStep.id))
+        val toDrawStories = storyState.stories.mapValues { (_, storyStep) ->
+            DrawStory(storyStep, _positionsOnEdit.value.contains(storyStep.id))
         }
 
         DrawState(toDrawStories, focus)
@@ -160,14 +162,18 @@ class StoryTellerManager(
     }
 
     fun onSelected(isSelected: Boolean, position: Int) {
+        Log.d("Manager", "onSelected")
         _currentStory.value.stories[position]?.localId?.let { id ->
-            if (isSelected) {
-                _positionsOnEdit.add(id)
+            val newOnEdit = if (isSelected) {
+                _positionsOnEdit.value + id
             } else {
-                _positionsOnEdit.remove(id)
+                _positionsOnEdit.value - id
             }
-        }
 
+            _positionsOnEdit.value = newOnEdit
+
+            Log.d("Manager", "New positions on edit: ${positionsOnEdit.value.joinToString()}")
+        }
     }
 
     fun clickAtTheEnd() {

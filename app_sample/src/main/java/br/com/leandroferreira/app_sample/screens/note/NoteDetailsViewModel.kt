@@ -28,6 +28,8 @@ class NoteDetailsViewModel(
     private val _editModeState = MutableStateFlow(true)
     val editModeState: StateFlow<Boolean> = _editModeState
 
+    val toEditState = storyTellerManager.positionsOnEdit
+
     private val story: StateFlow<StoryState> = storyTellerManager.currentStory
     val scrollToPosition = storyTellerManager.scrollToPosition
     val toDraw = storyTellerManager.toDraw.stateIn(
