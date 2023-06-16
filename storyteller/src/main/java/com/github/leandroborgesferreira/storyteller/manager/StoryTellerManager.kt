@@ -1,6 +1,5 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import android.util.Log
 import com.github.leandroborgesferreira.storyteller.backstack.BackStackManager
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
@@ -161,8 +160,8 @@ class StoryTellerManager(
             }
     }
 
+    //Todo: Unit test
     fun onSelected(isSelected: Boolean, position: Int) {
-        Log.d("Manager", "onSelected")
         _currentStory.value.stories[position]?.localId?.let { id ->
             val newOnEdit = if (isSelected) {
                 _positionsOnEdit.value + id
@@ -171,11 +170,10 @@ class StoryTellerManager(
             }
 
             _positionsOnEdit.value = newOnEdit
-
-            Log.d("Manager", "New positions on edit: ${positionsOnEdit.value.joinToString()}")
         }
     }
 
+    //Todo: Unit test
     fun clickAtTheEnd() {
         val stories = _currentStory.value.stories
         val lastContentStory = stories[stories.size - 3]
