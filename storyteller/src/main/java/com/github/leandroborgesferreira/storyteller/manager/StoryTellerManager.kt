@@ -54,15 +54,15 @@ class StoryTellerManager(
         StoryState(stories = emptyMap())
     )
 
-    private val _positionsOnEdit = MutableStateFlow(setOf<String>())
+    private val _positionsOnEdit = MutableStateFlow(setOf<Int>())
     val positionsOnEdit = _positionsOnEdit.asStateFlow()
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
 
     val toDraw = currentStory.map { storyState ->
         val focus = storyState.focusId
-        val toDrawStories = storyState.stories.mapValues { (_, storyStep) ->
-            DrawStory(storyStep, _positionsOnEdit.value.contains(storyStep.id))
+        val toDrawStories = storyState.stories.mapValues { (position, storyStep) ->
+            DrawStory(storyStep, _positionsOnEdit.value.contains(position))
         }
 
         DrawState(toDrawStories, focus)
@@ -160,13 +160,12 @@ class StoryTellerManager(
             }
     }
 
-    //Todo: Unit test
     fun onSelected(isSelected: Boolean, position: Int) {
-        _currentStory.value.stories[position]?.localId?.let { id ->
+        if (_currentStory.value.stories[position] != null) {
             val newOnEdit = if (isSelected) {
-                _positionsOnEdit.value + id
+                _positionsOnEdit.value + position
             } else {
-                _positionsOnEdit.value - id
+                _positionsOnEdit.value - position
             }
 
             _positionsOnEdit.value = newOnEdit
@@ -308,16 +307,14 @@ class StoryTellerManager(
         backStackManager.addAction(deleteInfo)
     }
 
-    //Todo: Run unit test!!
     fun deleteSelection() {
-        val mutable = _currentStory.value.stories.toMutableMap()
-
-        mutable.filterNot { (_, storyStep) ->
-            _positionsOnEdit.value.contains(storyStep.id)
-        }
+        val newStories = contentHandler.bulkDeletion(
+            _positionsOnEdit.value,
+            _currentStory.value.stories
+        )
 
         _positionsOnEdit.value = emptySet()
-
-        _currentStory.value = _currentStory.value.copy(stories = mutable)
+        _currentStory.value =
+            _currentStory.value.copy(stories = stepsNormalizer(newStories.toEditState()))
     }
 }

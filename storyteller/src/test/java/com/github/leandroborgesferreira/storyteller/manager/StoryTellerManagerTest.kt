@@ -604,4 +604,57 @@ class StoryTellerManagerTest {
         assertEquals(StoryType.LARGE_SPACE.type, storyList.last().type)
         assertNotEquals(StoryType.LARGE_SPACE.type, storyList[storyList.lastIndex - 1].type)
     }
+
+    @Test
+    fun `it should be possible to select messages`() = runTest {
+        val storyManager = StoryTellerManager()
+        storyManager.initStories(complexMessagesRepository.history())
+
+        storyManager.onSelected(true, 1)
+        storyManager.onSelected(true, 3)
+        storyManager.onSelected(true, 5)
+
+        assertEquals(setOf(1, 3, 5), storyManager.positionsOnEdit.value)
+    }
+
+    @Test
+    fun `it should be possible to delete selected messages`() = runTest {
+        val storyManager = StoryTellerManager()
+        storyManager.initStories(messagesRepo.history())
+
+        val selectionCount = 3
+        val selections = buildList {
+            repeat(selectionCount) { index ->
+                this.add(index * 2 + 1)
+            }
+        }
+
+        selections.forEach { index ->
+            storyManager.onSelected(true, index)
+        }
+
+        val initialStories = storyManager.currentStory.value.stories
+        val initialSize = initialStories.size
+
+        val selectedStories = selections.map { position ->
+            initialStories[position]!!
+        }
+
+        storyManager.deleteSelection()
+
+        val newStories = storyManager.currentStory.value.stories
+        assertEquals(initialSize - selectionCount * 2, newStories.size)
+
+        selectedStories.forEach { storyStep ->
+            assertFalse(
+                "The deleted story step should not be in the manager anymore",
+                newStories.values.map { it.id }.contains(storyStep.id)
+            )
+        }
+
+        assertTrue(
+            "The selection should be empty now",
+            storyManager.positionsOnEdit.value.isEmpty()
+        )
+    }
 }
