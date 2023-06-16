@@ -49,6 +49,10 @@ class NoteDetailsViewModel(
         _editModeState.value = !_editModeState.value
     }
 
+    fun deleteSelection() {
+        storyTellerManager.deleteSelection()
+    }
+
     fun createNewNote(documentId: String, title: String) {
         if (storyTellerManager.isInitialized()) return
 

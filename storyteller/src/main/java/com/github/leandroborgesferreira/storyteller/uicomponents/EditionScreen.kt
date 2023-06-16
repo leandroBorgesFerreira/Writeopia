@@ -19,7 +19,8 @@ import com.github.leandroborgesferreira.storyteller.R
 
 @Composable
 fun EditionScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDelete: () -> Unit
 ) {
     Box(modifier = modifier) {
         Icon(
@@ -28,9 +29,7 @@ fun EditionScreen(
                 .size(50.dp)
                 .padding(8.dp)
                 .clip(RoundedCornerShape(8.dp))
-                .clickable {
-
-                },
+                .clickable(onClick = onDelete),
             imageVector = Icons.Default.DeleteOutline,
             contentDescription = stringResource(R.string.delete),
             tint = MaterialTheme.colorScheme.onPrimary

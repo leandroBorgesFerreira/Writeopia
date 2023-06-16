@@ -307,4 +307,17 @@ class StoryTellerManager(
 
         backStackManager.addAction(deleteInfo)
     }
+
+    //Todo: Run unit test!!
+    fun deleteSelection() {
+        val mutable = _currentStory.value.stories.toMutableMap()
+
+        mutable.filterNot { (_, storyStep) ->
+            _positionsOnEdit.value.contains(storyStep.id)
+        }
+
+        _positionsOnEdit.value = emptySet()
+
+        _currentStory.value = _currentStory.value.copy(stories = mutable)
+    }
 }

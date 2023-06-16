@@ -143,7 +143,8 @@ fun BottomScreen(noteDetailsViewModel: NoteDetailsViewModel) {
                             bottomCorner
                         )
                     )
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(MaterialTheme.colorScheme.primary),
+                onDelete = noteDetailsViewModel::deleteSelection
             )
         } else {
             InputScreen(
