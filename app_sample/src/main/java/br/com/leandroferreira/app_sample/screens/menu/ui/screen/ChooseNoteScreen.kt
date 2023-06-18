@@ -100,16 +100,13 @@ fun Content(
 fun DocumentItem(documentCard: DocumentCard, documentClick: (String) -> Unit) {
     Box(modifier = Modifier.padding(8.dp)) {
         Card(modifier = Modifier
-            .height(90.dp)
             .fillMaxWidth()
             .clickable {
                 documentClick(documentCard.documentId)
             }) {
-            Column {
+            Column(modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp)) {
                 Text(
-                    modifier = Modifier
-                        .padding(horizontal = 10.dp, vertical = 10.dp)
-                        .fillMaxWidth(),
+                    modifier = Modifier.padding(bottom = 8.dp),
                     text = documentCard.title,
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
