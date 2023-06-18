@@ -108,7 +108,7 @@ class DocumentRepositoryTest {
         val loadedDocument = documentRepository.loadDocumentBy(id)
 
         assertTrue(storyUnitDao.loadDocumentContent(id).isNotEmpty())
-        assertTrue(documentDao.loadDocumentWithContent(id)?.values?.isNotEmpty() ?: false)
+        assertTrue(documentDao.loadDocumentWithContentById(id)?.values?.isNotEmpty() ?: false)
         assertEquals(document, loadedDocument)
     }
 

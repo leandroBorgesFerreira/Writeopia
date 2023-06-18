@@ -11,9 +11,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import br.com.leandroferreira.app_sample.screens.menu.ChooseNoteScreen
+import br.com.leandroferreira.app_sample.screens.menu.ui.screen.ChooseNoteScreen
 import br.com.leandroferreira.app_sample.screens.menu.ChooseNoteViewModel
-import br.com.leandroferreira.app_sample.screens.menu.NotesRepository
+import br.com.leandroferreira.app_sample.screens.menu.NotesUseCase
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsScreen
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModel
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModelFactory
@@ -45,11 +45,17 @@ fun NavigationGraph() {
 
         NavHost(navController = navController, startDestination = Destinations.CHOOSE_NOTE.id) {
             composable(Destinations.CHOOSE_NOTE.id) {
-                val notesRepository = NotesRepository(
+                val repository = DocumentRepository(
                     database.documentDao(),
                     database.storyUnitDao()
                 )
-                val chooseNoteViewModel = ChooseNoteViewModel(notesRepository)
+
+                val notesUseCase = NotesUseCase(
+                    database.documentDao(),
+                    database.storyUnitDao(),
+                    repository
+                )
+                val chooseNoteViewModel = ChooseNoteViewModel(notesUseCase)
 
                 ChooseNoteScreen(chooseNoteViewModel = chooseNoteViewModel) { noteId ->
                     navController.navigate("${Destinations.NOTE_DETAILS.id}/$noteId")

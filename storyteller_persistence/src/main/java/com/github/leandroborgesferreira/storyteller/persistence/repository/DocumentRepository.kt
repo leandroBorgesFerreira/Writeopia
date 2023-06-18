@@ -18,7 +18,11 @@ class DocumentRepository(
     private val storyUnitDao: StoryUnitDao
 ) : DocumentRepository {
 
-    suspend fun loadDocuments(): List<DocumentEntity> = documentDao.loadAllDocuments()
+    suspend fun loadDocuments(): List<Document> =
+        documentDao.loadDocumentWithContent()?.map { (documentEntity, storyEntity) ->
+            val content = loadInnerSteps(storyEntity)
+            documentEntity.toModel(content)
+        } ?: emptyList()
 
     suspend fun loadDocumentBy(id: String): Document? =
         documentDao.loadDocumentWithContentById(id)
