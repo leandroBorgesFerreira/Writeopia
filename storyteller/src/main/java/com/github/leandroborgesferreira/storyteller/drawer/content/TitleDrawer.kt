@@ -48,7 +48,7 @@ class TitleDrawer(
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
+    override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         val focusRequester = remember { FocusRequester() }
 
         Column(modifier = containerModifier.clickable {

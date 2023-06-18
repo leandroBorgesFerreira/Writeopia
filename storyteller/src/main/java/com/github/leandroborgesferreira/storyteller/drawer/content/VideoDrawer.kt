@@ -30,7 +30,7 @@ import coil.request.videoFrameMillis
 class VideoDrawer(private val containerModifier: Modifier? = null) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
+    override fun Step(step: StoryStep, drawInfo: DrawInfo) {
 
         Box(modifier = Modifier.padding(vertical = 3.dp, horizontal = 8.dp)) {
             Box(
