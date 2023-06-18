@@ -1,4 +1,4 @@
-package br.com.leandroferreira.app_sample.screens.menu
+package br.com.leandroferreira.app_sample.screens.menu.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -26,13 +27,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.leandroferreira.app_sample.R
+import br.com.leandroferreira.app_sample.screens.menu.ChooseNoteViewModel
+import br.com.leandroferreira.app_sample.screens.menu.ui.dto.DocumentCard
 import br.com.leandroferreira.app_sample.utils.ResultData
+import com.github.leandroborgesferreira.storyteller.model.document.Document
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChooseNoteScreen(chooseNoteViewModel: ChooseNoteViewModel, navigateToNote: (String?) -> Unit) {
     chooseNoteViewModel.requestDocuments()
@@ -68,20 +72,7 @@ fun Content(
                 } else {
                     LazyColumn(content = {
                         items(documents.data) { document ->
-                            Box(modifier = Modifier
-                                .height(90.dp)
-                                .fillMaxWidth()
-                                .clickable {
-                                    navigateToNote(document.id)
-                                }) {
-                                Text(
-                                    modifier = Modifier.padding(30.dp).fillMaxWidth(),
-                                    text = document.title,
-                                    style = TextStyle(color = MaterialTheme.colorScheme.onBackground),
-                                    textAlign = TextAlign.Start
-                                )
-                            }
-
+                            DocumentItem(document, navigateToNote)
                         }
                     })
                 }
@@ -104,6 +95,36 @@ fun Content(
         }
     }
 }
+
+@Composable
+fun DocumentItem(documentCard: DocumentCard, documentClick: (String) -> Unit) {
+    Box(modifier = Modifier.padding(8.dp)) {
+        Card(modifier = Modifier
+            .height(90.dp)
+            .fillMaxWidth()
+            .clickable {
+                documentClick(documentCard.documentId)
+            }) {
+            Column {
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp, vertical = 10.dp)
+                        .fillMaxWidth(),
+                    text = documentCard.title,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Start
+                )
+
+                documentCard.preview.forEach { storyStep ->
+                    Text(storyStep.text ?: "")
+                }
+            }
+
+        }
+    }
+}
+
 
 @Composable
 fun MockDataScreen(chooseNoteViewModel: ChooseNoteViewModel) {
