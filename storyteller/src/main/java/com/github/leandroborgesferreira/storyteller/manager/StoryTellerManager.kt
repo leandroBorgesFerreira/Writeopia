@@ -172,7 +172,6 @@ class StoryTellerManager(
         }
     }
 
-    //Todo: Unit test
     fun clickAtTheEnd() {
         val stories = _currentStory.value.stories
         val lastContentStory = stories[stories.size - 3]

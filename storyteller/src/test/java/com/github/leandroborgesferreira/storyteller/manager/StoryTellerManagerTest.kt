@@ -657,4 +657,18 @@ class StoryTellerManagerTest {
             storyManager.positionsOnEdit.value.isEmpty()
         )
     }
+
+    @Test
+    fun `when clicking in the last position, a message should be added at the bottom`() = runTest {
+        val storyManager = StoryTellerManager()
+        storyManager.initStories(imagesInLineRepo.history())
+
+        storyManager.clickAtTheEnd()
+
+        val currentStory = storyManager.currentStory.value.stories
+        val lastContentStory = currentStory[currentStory.size - 3]
+
+        assertEquals(lastContentStory!!.type, StoryType.MESSAGE.type)
+        assertEquals(storyManager.currentStory.value.focusId, lastContentStory.id)
+    }
 }
