@@ -43,7 +43,7 @@ class ImageDrawer(
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
+    override fun Step(step: StoryStep, drawInfo: DrawInfo) {
 
         DropTarget(modifier = Modifier.padding(horizontal = 6.dp)) { inBound, data ->
             if (inBound && data != null) {

@@ -23,7 +23,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 class SpaceDrawer(private val moveRequest: (MoveInfo) -> Unit = {}) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
+    override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         DropTarget { inBound, data ->
             if (inBound && data != null) {
                 moveRequest(

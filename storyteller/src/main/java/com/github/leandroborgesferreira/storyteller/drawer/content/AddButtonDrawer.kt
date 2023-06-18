@@ -25,7 +25,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 class AddButtonDrawer : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
+    override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         Box(modifier = Modifier.padding(horizontal = 5.dp)) {
             Button(
                 onClick = { },

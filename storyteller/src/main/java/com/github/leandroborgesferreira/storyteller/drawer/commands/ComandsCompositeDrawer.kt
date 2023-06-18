@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
@@ -29,15 +28,15 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
  * buttons, later it will be added the possibility to chose which button appears to the user.
  */
 class CommandsDecoratorDrawer(
-    private val innerStep: StoryUnitDrawer,
+    private val innerStepDrawer: StoryUnitDrawer,
     private val onDelete: (DeleteInfo) -> Unit = {}
 ) : StoryUnitDrawer {
 
     @Composable
-    override fun LazyItemScope.Step(step: StoryStep, drawInfo: DrawInfo) {
+    override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         Box {
             Box(modifier = Modifier.padding(top = 3.dp)) {
-                innerStep.run { Step(step = step, drawInfo = drawInfo) }
+                innerStepDrawer.Step(step = step, drawInfo = drawInfo)
             }
 
             DeleteButton(step, drawInfo.position)

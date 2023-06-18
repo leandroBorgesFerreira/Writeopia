@@ -11,7 +11,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
  */
 fun interface StoryUnitDrawer {
     @Composable
-    fun LazyItemScope.Step(
+    fun Step(
         step: StoryStep,
         drawInfo: DrawInfo
     )
