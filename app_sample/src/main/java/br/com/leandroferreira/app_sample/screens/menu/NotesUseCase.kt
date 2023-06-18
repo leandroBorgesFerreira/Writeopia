@@ -29,4 +29,3 @@ class NotesUseCase(private val documentRepository: DocumentRepository) {
         )
     }
 }
-

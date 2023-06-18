@@ -30,8 +30,8 @@ class ChooseNoteViewModel(
 
                 try {
                     val data = notesUseCase.loadDocuments()
-                        .map { documentEntity ->
-                            documentEntity.toUiCard(previewParser)
+                        .map { document ->
+                            document.toUiCard(previewParser)
                         }
 
                     _documentsState.value = ResultData.Complete(data)
@@ -47,8 +47,8 @@ class ChooseNoteViewModel(
             notesUseCase.mockData(context)
 
             val data = notesUseCase.loadDocuments()
-                .map { documentEntity ->
-                    documentEntity.toUiCard(previewParser)
+                .map { document ->
+                    document.toUiCard(previewParser)
                 }
 
             _documentsState.value = ResultData.Complete(data)
