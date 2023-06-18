@@ -145,7 +145,7 @@ fun supermarketList(): Map<Int, StoryStep> = mapOf(
     )
 )
 
-fun mockHistory(context: Context): Map<Int, StoryStep> =
+fun travelHistory(context: Context): Map<Int, StoryStep> =
     mapOf(
         0 to StoryStep(
             localId = UUID.randomUUID().toString(),

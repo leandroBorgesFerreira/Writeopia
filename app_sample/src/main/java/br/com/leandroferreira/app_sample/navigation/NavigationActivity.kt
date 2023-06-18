@@ -50,11 +50,7 @@ fun NavigationGraph() {
                     database.storyUnitDao()
                 )
 
-                val notesUseCase = NotesUseCase(
-                    database.documentDao(),
-                    database.storyUnitDao(),
-                    repository
-                )
+                val notesUseCase = NotesUseCase(repository)
                 val chooseNoteViewModel = ChooseNoteViewModel(notesUseCase)
 
                 ChooseNoteScreen(chooseNoteViewModel = chooseNoteViewModel) { noteId ->

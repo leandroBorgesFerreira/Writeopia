@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class ChooseNoteViewModel(
-    private val notesUsecase: NotesUseCase,
+    private val notesUseCase: NotesUseCase,
     private val previewParser: PreviewParser = PreviewParser()
 ) : ViewModel() {
 
@@ -29,7 +29,7 @@ class ChooseNoteViewModel(
                 _documentsState.value = ResultData.Loading()
 
                 try {
-                    val data = notesUsecase.loadDocuments()
+                    val data = notesUseCase.loadDocuments()
                         .map { documentEntity ->
                             documentEntity.toUiCard(previewParser)
                         }
@@ -44,9 +44,9 @@ class ChooseNoteViewModel(
 
     fun addMockData(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            notesUsecase.mockData(context)
+            notesUseCase.mockData(context)
 
-            val data = notesUsecase.loadDocuments()
+            val data = notesUseCase.loadDocuments()
                 .map { documentEntity ->
                     documentEntity.toUiCard(previewParser)
                 }
