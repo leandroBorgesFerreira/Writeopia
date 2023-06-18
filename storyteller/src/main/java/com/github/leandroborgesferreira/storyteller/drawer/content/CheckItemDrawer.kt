@@ -1,12 +1,14 @@
 package com.github.leandroborgesferreira.storyteller.drawer.content
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -25,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -41,6 +44,7 @@ import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTarge
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTargetWithDragItem
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.common.SwipeToCommandBox
 import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyErase
 import com.github.leandroborgesferreira.storyteller.model.change.CheckInfo
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
@@ -62,85 +66,87 @@ class CheckItemDrawer(
         val focusRequester = remember { FocusRequester() }
         var hasFocus by remember { mutableStateOf(false) }
 
-        DragTargetWithDragItem(dataToDrop = dropInfo) {
-            DragTarget(dataToDrop = dropInfo) {
-                Row(
-                    modifier = Modifier
-                        .padding(horizontal = 2.dp)
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    var inputText by remember {
-                        val text = step.text ?: ""
-                        mutableStateOf(TextFieldValue(text, TextRange(text.length)))
-                    }
-
-                    val textStyle = if (step.checked == true) {
-                        TextStyle(
-                            textDecoration = TextDecoration.LineThrough,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                    } else {
-                        TextStyle(color = MaterialTheme.colorScheme.onBackground)
-                    }
-
-                    LaunchedEffect(drawInfo.focusId) {
-                        if (drawInfo.focusId == step.id) {
-                            focusRequester.requestFocus()
-                        }
-                    }
-
-                    CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
-                        Checkbox(
-                            modifier = Modifier.padding(6.dp),
-                            checked = step.checked ?: false,
-                            onCheckedChange = { checked ->
-                                onCheckedChange(CheckInfo(step, drawInfo.position, checked))
-                            },
-                            enabled = drawInfo.editable,
-                        )
-                    }
-
-                    BasicTextField(
-                        modifier = Modifier
-                            .weight(1F)
-                            .focusRequester(focusRequester)
-                            .onFocusChanged { focusState ->
-                                hasFocus = focusState.hasFocus
+        Box(modifier = Modifier.padding(horizontal = 6.dp)) {
+            SwipeToCommandBox(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(3.dp))
+                    .clickable {
+                        focusRequester.requestFocus()
+                    },
+                defaultColor = MaterialTheme.colorScheme.background,
+                activeColor = MaterialTheme.colorScheme.primary,
+                state = drawInfo.selectMode,
+                listener = {}
+            ) {
+                DragTargetWithDragItem(dataToDrop = dropInfo) {
+                    DragTarget(dataToDrop = dropInfo) {
+                        Row(
+                            modifier = Modifier
+                                .padding(horizontal = 2.dp)
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            var inputText by remember {
+                                val text = step.text ?: ""
+                                mutableStateOf(TextFieldValue(text, TextRange(text.length)))
                             }
-                            .callOnEmptyErase(inputText.selection) {
-                                onDeleteRequest(DeleteInfo(step, drawInfo.position))
-                            },
-                        value = inputText,
-                        onValueChange = { value: TextFieldValue ->
-                            if (!commandHandler.handleCommand(
-                                    value.text,
-                                    step,
-                                    drawInfo.position
+
+                            val textStyle = if (step.checked == true) {
+                                TextStyle(
+                                    textDecoration = TextDecoration.LineThrough,
+                                    color = MaterialTheme.colorScheme.onBackground
                                 )
-                            ) {
-                                inputText = value
-                                onTextEdit(value.text, drawInfo.position)
+                            } else {
+                                TextStyle(color = MaterialTheme.colorScheme.onBackground)
                             }
-                        },
-                        textStyle = textStyle,
-                        enabled = drawInfo.editable,
-                        keyboardOptions = KeyboardOptions(
-                            capitalization = KeyboardCapitalization.Sentences
-                        ),
-                        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
-                    )
 
-                    if (hasFocus) {
-                        Icon(
-                            modifier = Modifier.clickable {
-                                onDeleteRequest(DeleteInfo(step, drawInfo.position))
-                            },
-                            imageVector = Icons.Default.Close,
-                            contentDescription = stringResource(R.string.delete_check_item)
-                        )
+                            LaunchedEffect(drawInfo.focusId) {
+                                if (drawInfo.focusId == step.id) {
+                                    focusRequester.requestFocus()
+                                }
+                            }
 
-                        Spacer(modifier = Modifier.width(20.dp))
+                            CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
+                                Checkbox(
+                                    modifier = Modifier.padding(6.dp),
+                                    checked = step.checked ?: false,
+                                    onCheckedChange = { checked ->
+                                        onCheckedChange(CheckInfo(step, drawInfo.position, checked))
+                                    },
+                                    enabled = drawInfo.editable,
+                                )
+                            }
+
+                            BasicTextField(
+                                modifier = Modifier
+                                    .weight(1F)
+                                    .focusRequester(focusRequester)
+                                    .onFocusChanged { focusState ->
+                                        hasFocus = focusState.hasFocus
+                                    }
+                                    .callOnEmptyErase(inputText.selection) {
+                                        onDeleteRequest(DeleteInfo(step, drawInfo.position))
+                                    },
+                                value = inputText,
+                                onValueChange = { value: TextFieldValue ->
+                                    if (!commandHandler.handleCommand(
+                                            value.text,
+                                            step,
+                                            drawInfo.position
+                                        )
+                                    ) {
+                                        inputText = value
+                                        onTextEdit(value.text, drawInfo.position)
+                                    }
+                                },
+                                textStyle = textStyle,
+                                enabled = drawInfo.editable,
+                                keyboardOptions = KeyboardOptions(
+                                    capitalization = KeyboardCapitalization.Sentences
+                                ),
+                                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
+                            )
+                        }
                     }
                 }
             }

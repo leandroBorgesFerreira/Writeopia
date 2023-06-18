@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DraggableScreen
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
+import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 
 @Composable
@@ -18,7 +19,7 @@ fun StoryTellerEditor(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     editable: Boolean,
-    storyState: StoryState,
+    storyState: DrawState,
     drawers: Map<String, StoryUnitDrawer>,
     listState: LazyListState = rememberLazyListState()
 ) {
@@ -30,17 +31,17 @@ fun StoryTellerEditor(
             content = {
                 itemsIndexed(
                     storyState.stories.values.toList(),
-                    key = { _, storyUnit -> storyUnit.key },
-                    itemContent = {index, storyUnit ->
-                        drawers[storyUnit.type]?.run {
+                    key = { _, drawStory -> drawStory.storyStep.key },
+                    itemContent = {index, drawStory ->
+                        drawers[drawStory.storyStep.type]?.run {
                             Step(
-                                step = storyUnit,
+                                step = drawStory.storyStep,
                                 drawInfo = DrawInfo(
                                     editable = editable,
                                     focusId = storyState.focusId,
                                     position = index,
                                     extraData = mapOf("listSize" to storyState.stories.size),
-                                    selectMode = false
+                                    selectMode = drawStory.isSelected
                                 )
                             )
                         }

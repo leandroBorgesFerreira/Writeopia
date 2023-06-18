@@ -7,12 +7,16 @@ import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.model.document.Document
+import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class NoteDetailsViewModel(
@@ -25,14 +29,28 @@ class NoteDetailsViewModel(
     private val _editModeState = MutableStateFlow(true)
     val editModeState: StateFlow<Boolean> = _editModeState
 
-    val story: StateFlow<StoryState> = storyTellerManager.currentStory
+    val toEditState = storyTellerManager.positionsOnEdit
+    val isEditState = storyTellerManager.positionsOnEdit.map { set ->
+        set.isNotEmpty()
+    }.stateIn(viewModelScope, started = SharingStarted.Lazily, initialValue = false)
+
+    private val story: StateFlow<StoryState> = storyTellerManager.currentStory
     val scrollToPosition = storyTellerManager.scrollToPosition
+    val toDraw = storyTellerManager.toDraw.stateIn(
+        viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = DrawState(emptyMap())
+    )
 
     private val _documentState: MutableStateFlow<Document?> = MutableStateFlow(null)
     val documentState: StateFlow<Document?> = _documentState.asStateFlow()
 
     fun toggleEdit() {
         _editModeState.value = !_editModeState.value
+    }
+
+    fun deleteSelection() {
+        storyTellerManager.deleteSelection()
     }
 
     fun createNewNote(documentId: String, title: String) {
@@ -77,13 +95,7 @@ class NoteDetailsViewModel(
         }
     }
 
-    private fun updateState() {
-        storyTellerManager.updateState()
-    }
-
     fun saveNote() {
-        updateState()
-
         _documentState.value?.let { document ->
             viewModelScope.launch {
                 documentRepository.saveDocument(
@@ -96,12 +108,6 @@ class NoteDetailsViewModel(
                 )
             }
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-
-        storyTellerManager.updateState()
     }
 }
 

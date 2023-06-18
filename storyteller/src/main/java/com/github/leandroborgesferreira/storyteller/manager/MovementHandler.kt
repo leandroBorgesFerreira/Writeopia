@@ -5,6 +5,11 @@ import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 
+/**
+ * Class responsible to handle move requests of Stories. This class handles the logic to move a
+ * Story to another position, when a Story is grouped together with another one and when a
+ * Story is separated from a group.
+ */
 class MovementHandler {
 
     fun merge(stories: Map<Int, StoryStep>, info: MergeInfo): Map<Int, List<StoryStep>> {

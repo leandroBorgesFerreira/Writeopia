@@ -1,27 +1,34 @@
 package br.com.leandroferreira.app_sample.screens.note
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.with
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -35,8 +42,7 @@ import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION
 import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION_DARK
 import com.github.leandroborgesferreira.storyteller.StoryTellerEditor
 import com.github.leandroborgesferreira.storyteller.drawer.DefaultDrawers
-import com.github.leandroborgesferreira.storyteller.model.document.Document
-import kotlinx.coroutines.flow.StateFlow
+import com.github.leandroborgesferreira.storyteller.uicomponents.EditionScreen
 import kotlinx.coroutines.flow.collectLatest
 import java.util.UUID
 
@@ -59,21 +65,16 @@ fun NoteDetailsScreen(documentId: String?, noteDetailsViewModel: NoteDetailsView
                 .fillMaxSize()
                 .imePadding()
         ) {
-            Body(noteDetailsViewModel)
+            TextEditor(noteDetailsViewModel)
 
-            InputScreen(
-                onBackPress = noteDetailsViewModel::undo,
-                onForwardPress = noteDetailsViewModel::redo,
-                canUndoState = noteDetailsViewModel.canUndo,
-                canRedoState = noteDetailsViewModel.canRedo
-            )
+            BottomScreen(noteDetailsViewModel)
         }
     }
 }
 
 @Composable
-fun ColumnScope.Body(noteDetailsViewModel: NoteDetailsViewModel) {
-    val storyState by noteDetailsViewModel.story.collectAsStateWithLifecycle()
+fun ColumnScope.TextEditor(noteDetailsViewModel: NoteDetailsViewModel) {
+    val storyState by noteDetailsViewModel.toDraw.collectAsStateWithLifecycle()
     val editable by noteDetailsViewModel.editModeState.collectAsStateWithLifecycle()
     val listState: LazyListState = rememberLazyListState()
     val position by noteDetailsViewModel.scrollToPosition.collectAsStateWithLifecycle()
@@ -103,9 +104,57 @@ fun ColumnScope.Body(noteDetailsViewModel: NoteDetailsViewModel) {
         drawers = DefaultDrawers.create(
             editable,
             noteDetailsViewModel.storyTellerManager,
-            groupsBackgroundColor = if (isSystemInDarkTheme()) BACKGROUND_VARIATION_DARK else BACKGROUND_VARIATION
+            groupsBackgroundColor = if (isSystemInDarkTheme()) {
+                BACKGROUND_VARIATION_DARK
+            } else {
+                BACKGROUND_VARIATION
+            }
         )
     )
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun BottomScreen(noteDetailsViewModel: NoteDetailsViewModel) {
+    val editState by noteDetailsViewModel.isEditState.collectAsStateWithLifecycle()
+
+    AnimatedContent(
+        targetState = editState,
+        label = "bottomSheetAnimation",
+        transitionSpec = {
+            fadeIn() + slideInVertically(
+                animationSpec = tween(),
+                initialOffsetY = { fullHeight -> fullHeight }
+            ) with fadeOut(animationSpec = tween())
+        }
+    ) { isEdit ->
+        if (isEdit) {
+            val topCorner = CornerSize(10.dp)
+            val bottomCorner = CornerSize(0.dp)
+
+            EditionScreen(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(
+                        RoundedCornerShape(
+                            topCorner,
+                            topCorner,
+                            bottomCorner,
+                            bottomCorner
+                        )
+                    )
+                    .background(MaterialTheme.colorScheme.primary),
+                onDelete = noteDetailsViewModel::deleteSelection
+            )
+        } else {
+            InputScreen(
+                onBackPress = noteDetailsViewModel::undo,
+                onForwardPress = noteDetailsViewModel::redo,
+                canUndoState = noteDetailsViewModel.canUndo,
+                canRedoState = noteDetailsViewModel.canRedo
+            )
+        }
+    }
 }
 
 @Composable

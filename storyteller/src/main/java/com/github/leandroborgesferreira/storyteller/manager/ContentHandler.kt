@@ -107,6 +107,11 @@ class ContentHandler(
                 StoryState(stepsNormalizer(mutableSteps.toEditState()))
             }
         }
+    }
 
+    fun bulkDeletion(positions: Iterable<Int>, stories: Map<Int, StoryStep>): Map<Int, StoryStep> {
+        val mutable = stories.toMutableMap()
+        positions.forEach(mutable::remove)
+        return mutable
     }
 }

@@ -11,9 +11,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import br.com.leandroferreira.app_sample.screens.addstory.AddStoryScreen
-import br.com.leandroferreira.app_sample.screens.addstory.StoriesRepo
-import br.com.leandroferreira.app_sample.screens.addstory.StoriesViewModel
 import br.com.leandroferreira.app_sample.screens.menu.ChooseNoteScreen
 import br.com.leandroferreira.app_sample.screens.menu.ChooseNoteViewModel
 import br.com.leandroferreira.app_sample.screens.menu.NotesRepository
@@ -21,10 +18,10 @@ import br.com.leandroferreira.app_sample.screens.note.NoteDetailsScreen
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModel
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModelFactory
 import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
-import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepository
 import com.github.leandroborgesferreira.storyteller.VideoFrameConfig
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
+import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepository
 
 class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,27 +78,12 @@ fun NavigationGraph() {
                     NoteDetailsScreen(id.takeIf { it != "null" }, noteDetailsViewModel)
                 }
             }
-
-            composable(
-                route = "${Destinations.ADD_STORY.id}/{noteId}",
-                arguments = listOf(navArgument("noteId") { type = NavType.StringType })
-            ) {
-                val repo = StoriesRepo(context, database.documentDao())
-                val storyTellerManager = StoryTellerManager()
-                val storiesViewModel: StoriesViewModel = viewModel(initializer = {
-                    StoriesViewModel(storyTellerManager, repo)
-                })
-
-                AddStoryScreen(storiesViewModel)
-            }
-
         }
     }
 }
 
 enum class Destinations(val id: String) {
     NOTE_DETAILS("note_details"),
-    ADD_STORY("add_story"),
     CHOOSE_NOTE("choose_note"),
 }
 

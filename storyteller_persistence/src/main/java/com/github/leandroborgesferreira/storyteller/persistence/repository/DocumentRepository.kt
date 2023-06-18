@@ -1,6 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.persistence.repository
 
-import com.github.leandroborgesferreira.storyteller.manager.StoryStateSaver
+import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
 import com.github.leandroborgesferreira.storyteller.persistence.parse.toEntity
 import com.github.leandroborgesferreira.storyteller.persistence.parse.toModel
 import com.github.leandroborgesferreira.storyteller.model.document.Document
@@ -15,7 +15,7 @@ import com.github.leandroborgesferreira.storyteller.persistence.entity.document.
 class DocumentRepository(
     private val documentDao: DocumentDao,
     private val storyUnitDao: StoryUnitDao
-) : StoryStateSaver {
+) : DocumentRepository {
 
     suspend fun loadDocuments(): List<DocumentEntity> = documentDao.loadAllDocuments()
 
@@ -48,7 +48,7 @@ class DocumentRepository(
         }
     }
 
-    override suspend fun saveState(documentId: String, content: Map<Int, StoryStep>) {
+    override suspend fun save(documentId: String, content: Map<Int, StoryStep>) {
         storyUnitDao.deleteDocumentContent(documentId = documentId)
         storyUnitDao.insertStoryUnits(*content.toEntity(documentId).toTypedArray())
     }

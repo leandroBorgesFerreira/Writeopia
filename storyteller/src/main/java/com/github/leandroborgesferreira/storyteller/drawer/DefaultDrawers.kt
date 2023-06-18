@@ -58,7 +58,7 @@ object DefaultDrawers {
         checkRequest: (CheckInfo) -> Unit = { },
         onDeleteRequest: (DeleteInfo) -> Unit,
         createCheckItem: (Int) -> Unit,
-        onSelected: (Int) -> Unit,
+        onSelected: (Boolean, Int) -> Unit,
         clickAtTheEnd: () -> Unit,
         nextFocus: (Int) -> Unit,
         groupsBackgroundColor: Color = Color.Transparent
