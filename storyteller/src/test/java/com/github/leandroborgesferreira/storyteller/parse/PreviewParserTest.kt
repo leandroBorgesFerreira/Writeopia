@@ -20,12 +20,13 @@ class PreviewParserTest {
 
     @Test
     fun `a complex document should be parsed`() {
+        val maxSize = 3
         val input = MapStoryData.syncHistory().values.toList()
-        val result = PreviewParser().preview(input)
+        val result = PreviewParser().preview(input, maxSize)
 
         assertEquals(
             "The check item provided should be in the preview",
-            4,
+            maxSize,
             result.size
         )
     }
