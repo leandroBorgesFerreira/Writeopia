@@ -100,8 +100,8 @@ fun Content(
 
 private fun previewDrawers(): Map<String, StoryUnitDrawer> =
     mapOf(
-        StoryType.MESSAGE.type to MessageDrawer(customBackgroundColor = Color.Transparent),
-        StoryType.CHECK_ITEM.type to CheckItemDrawer(customBackgroundColor = Color.Transparent)
+        StoryType.MESSAGE.type to MessageDrawer(customBackgroundColor = Color.Transparent, clickable = false),
+        StoryType.CHECK_ITEM.type to CheckItemDrawer(customBackgroundColor = Color.Transparent, clickable = false)
     )
 
 @Composable

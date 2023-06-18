@@ -50,7 +50,8 @@ class CheckItemDrawer(
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
     private val onDeleteRequest: (DeleteInfo) -> Unit = {},
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
-    private val customBackgroundColor: Color? = null
+    private val customBackgroundColor: Color? = null,
+    private val clickable: Boolean = true
 ) : StoryUnitDrawer {
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -64,8 +65,12 @@ class CheckItemDrawer(
             SwipeToCommandBox(
                 modifier = Modifier
                     .clip(RoundedCornerShape(3.dp))
-                    .clickable {
-                        focusRequester.requestFocus()
+                    .apply {
+                        if (clickable) {
+                            clickable {
+                                focusRequester.requestFocus()
+                            }
+                        }
                     },
                 defaultColor = customBackgroundColor ?: MaterialTheme.colorScheme.background,
                 activeColor = MaterialTheme.colorScheme.primary,

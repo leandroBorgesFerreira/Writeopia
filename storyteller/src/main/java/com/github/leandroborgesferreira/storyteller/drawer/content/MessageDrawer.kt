@@ -47,7 +47,8 @@ class MessageDrawer(
     private val onDeleteRequest: (DeleteInfo) -> Unit = {},
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
-    private val customBackgroundColor: Color? = null
+    private val customBackgroundColor: Color? = null,
+    private val clickable: Boolean = true
 ) : StoryUnitDrawer {
 
     @Composable
@@ -58,9 +59,14 @@ class MessageDrawer(
             SwipeToCommandBox(
                 modifier = containerModifier
                     .clip(RoundedCornerShape(3.dp))
-                    .clickable {
-                        focusRequester.requestFocus()
-                    },
+                    .apply {
+                        if (clickable) {
+                            clickable {
+                                focusRequester.requestFocus()
+                            }
+                        }
+                    }
+                    ,
                 defaultColor = customBackgroundColor ?: MaterialTheme.colorScheme.background,
                 activeColor = MaterialTheme.colorScheme.primary,
                 state = drawInfo.selectMode,
