@@ -1,8 +1,9 @@
 package com.github.leandroborgesferreira.storyteller.parse
 
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 
-class PreviewParser(private val acceptedTypes: Set<String>) {
+class PreviewParser(private val acceptedTypes: Set<String> = defaultTypes()) {
 
     fun preview(stories: Iterable<StoryStep>): List<StoryStep> {
         var acc = 0
@@ -13,3 +14,8 @@ class PreviewParser(private val acceptedTypes: Set<String>) {
             .toList()
     }
 }
+
+private fun defaultTypes() = setOf(
+    StoryType.MESSAGE.type,
+    StoryType.CHECK_ITEM.type,
+)
