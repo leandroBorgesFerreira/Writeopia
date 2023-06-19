@@ -18,6 +18,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.Date
 import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -27,7 +28,7 @@ class DocumentRepositoryTest {
     private lateinit var database: StoryTellerDatabase
     private lateinit var documentDao: DocumentDao
     private lateinit var storyUnitDao: StoryUnitDao
-    private lateinit var documentRepository: DocumentRepository
+    private lateinit var documentRepository: DocumentRepositoryImpl
 
     @Before
     fun createDb() {
@@ -40,7 +41,7 @@ class DocumentRepositoryTest {
         documentDao = database.documentDao()
         storyUnitDao = database.storyUnitDao()
 
-        documentRepository = DocumentRepository(documentDao, storyUnitDao)
+        documentRepository = DocumentRepositoryImpl(documentDao, storyUnitDao)
     }
 
     @After
@@ -54,7 +55,9 @@ class DocumentRepositoryTest {
         val document = Document(
             id = id,
             title = "Document1",
-            content = emptyMap()
+            content = emptyMap(),
+            createdAt = Date(),
+            lastUpdatedAt = Date()
         )
 
         val loadedDocument = documentDao.run {
@@ -71,7 +74,9 @@ class DocumentRepositoryTest {
         val document = Document(
             id = id,
             title = "Document1",
-            content = emptyMap()
+            content = emptyMap(),
+            createdAt = Date(),
+            lastUpdatedAt = Date()
         )
 
         documentRepository.saveDocument(document)
@@ -86,7 +91,9 @@ class DocumentRepositoryTest {
         val document = Document(
             id = id,
             title = "Document1",
-            content = simpleImage()
+            content = simpleImage(),
+            createdAt = Date(),
+            lastUpdatedAt = Date()
         )
 
         documentRepository.saveDocument(document)
@@ -101,7 +108,9 @@ class DocumentRepositoryTest {
         val document = Document(
             id = id,
             title = "Document1",
-            content = imageStepsList()
+            content = imageStepsList(),
+            createdAt = Date(),
+            lastUpdatedAt = Date()
         )
 
         documentRepository.saveDocument(document)
@@ -119,7 +128,9 @@ class DocumentRepositoryTest {
         val document = Document(
             id = id,
             title = "Document1",
-            content = imageGroup()
+            content = imageGroup(),
+            createdAt = Date(),
+            lastUpdatedAt = Date()
         )
 
         documentRepository.saveDocument(document)

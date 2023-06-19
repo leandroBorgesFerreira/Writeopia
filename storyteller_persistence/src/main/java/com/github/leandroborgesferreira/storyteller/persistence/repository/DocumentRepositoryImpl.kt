@@ -7,13 +7,12 @@ import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.persistence.dao.DocumentDao
 import com.github.leandroborgesferreira.storyteller.persistence.dao.StoryUnitDao
-import com.github.leandroborgesferreira.storyteller.persistence.entity.document.DocumentEntity
 import com.github.leandroborgesferreira.storyteller.persistence.entity.story.StoryUnitEntity
 
 /**
  * Evaluate to move this class to persistence module
  */
-class DocumentRepository(
+class DocumentRepositoryImpl(
     private val documentDao: DocumentDao,
     private val storyUnitDao: StoryUnitDao
 ) : DocumentRepository {
@@ -53,7 +52,6 @@ class DocumentRepository(
      */
     private suspend fun loadInnerSteps(storyEntities: List<StoryUnitEntity>): Map<Int, StoryStep> =
         storyEntities.filter { entity -> entity.parentId == null }
-            .sortedBy { entity -> entity.position } //Todo: Move this to the SQL query
             .associateBy { entity -> entity.position }
             .mapValues { (_, entity) ->
                 if (entity.hasInnerSteps) {

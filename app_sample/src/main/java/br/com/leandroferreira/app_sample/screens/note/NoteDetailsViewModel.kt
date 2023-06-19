@@ -9,7 +9,7 @@ import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
-import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepository
+import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,10 +18,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class NoteDetailsViewModel(
     val storyTellerManager: StoryTellerManager,
-    private val documentRepository: DocumentRepository
+    private val documentRepository: DocumentRepositoryImpl
 ) : ViewModel(),
     BackstackInform by storyTellerManager,
     BackstackHandler by storyTellerManager {
@@ -68,7 +69,9 @@ class NoteDetailsViewModel(
             val document = Document(
                 id = documentId,
                 title = title,
-                content = storyTellerManager.currentStory.value.stories
+                content = storyTellerManager.currentStory.value.stories,
+                createdAt = Date(),
+                lastUpdatedAt = Date()
             )
 
             documentRepository.saveDocument(document)
@@ -113,7 +116,7 @@ class NoteDetailsViewModel(
 
 class NoteDetailsViewModelFactory(
     private val storyTellerManager: StoryTellerManager,
-    private val documentRepository: DocumentRepository
+    private val documentRepository: DocumentRepositoryImpl
 ) : ViewModelProvider.Factory {
 
 

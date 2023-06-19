@@ -30,8 +30,9 @@ interface DocumentDao {
 
     @Query(
         "SELECT * FROM $DOCUMENT_ENTITY " +
-            "JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
-            "WHERE $DOCUMENT_ENTITY.id = :documentId "
+                "JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
+                "WHERE $DOCUMENT_ENTITY.id = :documentId " +
+                "ORDER BY $DOCUMENT_ENTITY.created_at, $STORY_UNIT_ENTITY.position"
     )
     suspend fun loadDocumentWithContentById(
         documentId: String
@@ -39,7 +40,8 @@ interface DocumentDao {
 
     @Query(
         "SELECT * FROM $DOCUMENT_ENTITY " +
-            "JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id "
+                "JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
+                "ORDER BY $DOCUMENT_ENTITY.created_at, $STORY_UNIT_ENTITY.position"
     )
     suspend fun loadDocumentWithContent(): Map<DocumentEntity, List<StoryUnitEntity>>?
 }
