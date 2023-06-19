@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.github.leandroborgesferreira.storyteller.persistence.converter.DateConverter
 import com.github.leandroborgesferreira.storyteller.persistence.converter.IdListConverter
 import com.github.leandroborgesferreira.storyteller.persistence.dao.DocumentDao
 import com.github.leandroborgesferreira.storyteller.persistence.dao.StoryUnitDao
@@ -18,10 +19,10 @@ private const val DATABASE_NAME = "StoryTellerDatabase"
         DocumentEntity::class,
         StoryUnitEntity::class,
     ],
-    version = 3,
+    version = 1,
     exportSchema = false
 )
-@TypeConverters(IdListConverter::class)
+@TypeConverters(IdListConverter::class, DateConverter::class)
 abstract class StoryTellerDatabase : RoomDatabase() {
 
     abstract fun documentDao(): DocumentDao

@@ -21,7 +21,7 @@ import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
 import com.github.leandroborgesferreira.storyteller.VideoFrameConfig
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
-import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepository
+import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepositoryImpl
 
 class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +45,7 @@ fun NavigationGraph() {
 
         NavHost(navController = navController, startDestination = Destinations.CHOOSE_NOTE.id) {
             composable(Destinations.CHOOSE_NOTE.id) {
-                val repository = DocumentRepository(
+                val repository = DocumentRepositoryImpl(
                     database.documentDao(),
                     database.storyUnitDao()
                 )
@@ -63,7 +63,7 @@ fun NavigationGraph() {
                 arguments = listOf(navArgument("noteId") { type = NavType.StringType })
             ) { backStackEntry ->
                 backStackEntry.arguments?.getString("noteId")?.let { id ->
-                    val repository = DocumentRepository(
+                    val repository = DocumentRepositoryImpl(
                         database.documentDao(),
                         database.storyUnitDao()
                     )

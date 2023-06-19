@@ -10,4 +10,5 @@ class IdListConverter {
 
         @TypeConverter
         fun String.toList() = this.split(STRING_SEPARATOR)
+
 }
