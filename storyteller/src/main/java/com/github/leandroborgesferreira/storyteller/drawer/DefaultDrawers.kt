@@ -125,7 +125,8 @@ object DefaultDrawers {
                 onCheckedChange = checkRequest,
                 onTextEdit = onTextEdit,
                 onDeleteRequest = onDeleteRequest,
-                commandHandler = textCommandHandlerCheckItem
+                commandHandler = textCommandHandlerCheckItem,
+                onSelected = onSelected,
             )
 
             val titleDrawer = TitleDrawer(

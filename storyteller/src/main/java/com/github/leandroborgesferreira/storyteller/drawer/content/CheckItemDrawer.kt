@@ -49,6 +49,7 @@ class CheckItemDrawer(
     private val onCheckedChange: (CheckInfo) -> Unit = {},
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
     private val onDeleteRequest: (DeleteInfo) -> Unit = {},
+    private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     private val customBackgroundColor: Color? = null,
     private val clickable: Boolean = true
@@ -75,7 +76,9 @@ class CheckItemDrawer(
                 defaultColor = customBackgroundColor ?: MaterialTheme.colorScheme.background,
                 activeColor = MaterialTheme.colorScheme.primary,
                 state = drawInfo.selectMode,
-                listener = {}
+                listener = { isSelected ->
+                    onSelected(isSelected, drawInfo.position)
+                }
             ) {
                 DragTargetWithDragItem(dataToDrop = dropInfo) {
                     DragTarget(dataToDrop = dropInfo) {
