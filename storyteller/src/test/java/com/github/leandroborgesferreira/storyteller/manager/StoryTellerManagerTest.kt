@@ -659,6 +659,49 @@ class StoryTellerManagerTest {
     }
 
     @Test
+    fun `it should be possible to undo bulk deletion`() = runTest {
+        val storyManager = StoryTellerManager()
+        storyManager.initStories(messagesRepo.history())
+
+        val selectionCount = 3
+        val selections = buildList {
+            repeat(selectionCount) { index ->
+                this.add(index * 2 + 1)
+            }
+        }
+
+        selections.forEach { index ->
+            storyManager.onSelected(true, index)
+        }
+
+        val initialStories = storyManager.currentStory.value.stories
+        val initialSize = initialStories.size
+
+        val selectedStories = selections.map { position ->
+            initialStories[position]!!
+        }
+
+        storyManager.deleteSelection()
+
+        val newStories = storyManager.currentStory.value.stories
+        assertEquals(initialSize - selectionCount * 2, newStories.size)
+
+        selectedStories.forEach { storyStep ->
+            assertFalse(
+                "The deleted story step should not be in the manager anymore",
+                newStories.values.map { it.id }.contains(storyStep.id)
+            )
+        }
+
+        assertTrue(
+            "The selection should be empty now",
+            storyManager.positionsOnEdit.value.isEmpty()
+        )
+
+        storyManager.undo()
+    }
+
+    @Test
     fun `when clicking in the last position, a message should be added at the bottom`() = runTest {
         val storyManager = StoryTellerManager()
         storyManager.initStories(imagesInLineRepo.history())

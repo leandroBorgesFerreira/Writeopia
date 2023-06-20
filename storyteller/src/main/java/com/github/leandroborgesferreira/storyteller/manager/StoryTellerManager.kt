@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
+import android.util.Log
 import com.github.leandroborgesferreira.storyteller.backstack.BackStackManager
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
@@ -208,7 +209,10 @@ class StoryTellerManager(
             is BulkDelete -> {
                 val newState = contentHandler.addNewContentBulk(
                     _currentStory.value.stories,
-                    backAction.deletedUnits
+                    backAction.deletedUnits,
+                    addInBetween = {
+                        StoryStep(type = StoryType.SPACE.type)
+                    }
                 ).let{ newStories ->
                     StoryState(stepsNormalizer(newStories.toEditState()))
                 }
@@ -323,6 +327,9 @@ class StoryTellerManager(
             _positionsOnEdit.value,
             _currentStory.value.stories
         )
+
+        Log.d("manager", "deleted: ${deletedStories.values.joinToString { it.text.toString() }} " +
+                "positions: ${_positionsOnEdit.value.joinToString { it.toString() }}")
 
         backStackManager.addAction(BulkDelete(deletedStories))
         _positionsOnEdit.value = emptySet()

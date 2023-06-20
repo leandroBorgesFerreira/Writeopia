@@ -31,8 +31,7 @@ fun StoryTellerEditor(
             content = {
                 itemsIndexed(
                     storyState.stories.values.toList(),
-                    key = { _, drawStory -> drawStory.storyStep.key },
-                    itemContent = {index, drawStory ->
+                    key = { index, drawStory -> drawStory.storyStep.key + index  }, itemContent = {index, drawStory ->
                         drawers[drawStory.storyStep.type]?.run {
                             Step(
                                 step = drawStory.storyStep,

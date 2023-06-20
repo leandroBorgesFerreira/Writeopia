@@ -13,7 +13,8 @@ import java.util.UUID
  */
 class AddSteps(
     private val addInBetween: () -> StoryStep,
-    private val addAtLast: () -> StoryStep
+    private val addAtLast: () -> StoryStep,
+    private val skipFirst: Boolean = true
 ) {
 
     fun insert(unit: Map<Int, StoryStep>): Map<Int, StoryStep> =
@@ -34,7 +35,9 @@ class AddSteps(
                 }
 
                 stack.isEmpty() && storyUnit.type != typeToAdd -> {
-                    stack.add(addInBetween())
+                    if (!skipFirst) {
+                        stack.add(addInBetween())
+                    }
                     stack.add(storyUnit.copy(localId = UUID.randomUUID().toString()))
                 }
 

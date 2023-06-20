@@ -5,29 +5,16 @@ object MapOperations {
     fun <T> mergeSortedMaps(
         originalMap: Map<Int, T>,
         newMap: Map<Int, T>,
-        keepLast: Boolean = true
+        addInBetween: () -> T
     ): Map<Int, T> {
-        val mutable = originalMap.mapKeys { (key, _) -> key * 10 }.toMutableMap()
-        var lastStep: T? = null
-        if (keepLast) {
-            lastStep = mutable.remove(mutable.size - 1)
-        }
+        val mutableList = originalMap.values.toMutableList()
 
-        newMap.mapKeys { (key, _) -> key * 10 }.forEach { (key, value) ->
-            if (mutable[key] != null) {
-                mutable[key - 1] = value
-            } else {
-                mutable[key] = value
-            }
+        newMap.toSortedMap().forEach { (position, value) ->
+            mutableList.add(position, addInBetween())
+            mutableList.add(position, value)
         }
 
         var acc = 0
-        return mutable.toSortedMap()
-            .mapKeys { acc++ }
-            .apply {
-                if (keepLast) {
-                    toMutableMap()[size] = lastStep
-                }
-            }
+        return mutableList.associateBy { acc++ }
     }
 }

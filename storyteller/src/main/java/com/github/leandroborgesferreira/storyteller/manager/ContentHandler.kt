@@ -48,8 +48,9 @@ class ContentHandler(
 
     fun addNewContentBulk(
         currentStory: Map<Int, StoryStep>,
-        newStory: Map<Int, StoryStep>
-    ): Map<Int, StoryStep> = MapOperations.mergeSortedMaps(currentStory, newStory)
+        newStory: Map<Int, StoryStep>,
+        addInBetween: () -> StoryStep
+    ): Map<Int, StoryStep> = MapOperations.mergeSortedMaps(currentStory, newStory, addInBetween)
 
     fun onLineBreak(
         currentStory: Map<Int, StoryStep>,
