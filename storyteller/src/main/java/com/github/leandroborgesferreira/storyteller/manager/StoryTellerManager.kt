@@ -23,10 +23,12 @@ import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizati
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -61,14 +63,31 @@ class StoryTellerManager(
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
 
-    val toDraw = currentStory.map { storyState ->
-        val focus = storyState.focusId
-        val toDrawStories = storyState.stories.mapValues { (position, storyStep) ->
-            DrawStory(storyStep, _positionsOnEdit.value.contains(position))
-        }
+//    val toDraw = currentStory.map { storyState ->
+//        val focus = storyState.focusId
+//        val toDrawStories = storyState.stories.mapValues { (position, storyStep) ->
+//            DrawStory(storyStep, _positionsOnEdit.value.contains(position))
+//        }
+//
+//        DrawState(toDrawStories, focus)
+//    }
 
-        DrawState(toDrawStories, focus)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val toDraw = _positionsOnEdit.flatMapLatest { positions ->
+        Log.d("Manager", "new edit positions: ${positions.joinToString()}")
+        currentStory.map { storyState ->
+            val focus = storyState.focusId
+
+            val toDrawStories = storyState.stories.mapValues { (position, storyStep) ->
+                DrawStory(storyStep, positions.contains(position))
+            }
+
+            DrawState(toDrawStories, focus)
+        }
     }
+
+    private val isOnSelection: Boolean
+        get() = _positionsOnEdit.value.isNotEmpty()
 
     fun saveOnStoryChanges(
         coroutineScope: CoroutineScope,
@@ -121,11 +140,19 @@ class StoryTellerManager(
     }
 
     fun mergeRequest(info: MergeInfo) {
+        if (isOnSelection) {
+            cancelSelection()
+        }
+
         val movedStories = movementHandler.merge(_currentStory.value.stories, info)
         _currentStory.value = StoryState(stories = stepsNormalizer(movedStories))
     }
 
     fun moveRequest(moveInfo: MoveInfo) {
+        if (isOnSelection) {
+            cancelSelection()
+        }
+
         val newStory = movementHandler.move(_currentStory.value.stories, moveInfo)
         _currentStory.value = StoryState(stepsNormalizer(newStory.toEditState()))
     }
@@ -134,6 +161,10 @@ class StoryTellerManager(
      * At the moment it is only possible to check items not inside groups. Todo: Fix it!
      */
     fun checkRequest(checkInfo: CheckInfo) {
+        if (isOnSelection) {
+            cancelSelection()
+        }
+
         val storyUnit = checkInfo.storyUnit
         val newStep = (storyUnit as? StoryStep)?.copy(checked = checkInfo.checked) ?: return
 
@@ -141,10 +172,18 @@ class StoryTellerManager(
     }
 
     fun createCheckItem(position: Int) {
+        if (isOnSelection) {
+            cancelSelection()
+        }
+
         _currentStory.value = contentHandler.createCheckItem(_currentStory.value.stories, position)
     }
 
     fun onTextEdit(text: String, position: Int) {
+        if (isOnSelection) {
+            cancelSelection()
+        }
+
         _currentStory.value.stories[position]?.copy(text = text)?.let { newStory ->
             updateStory(position, newStory)
             backStackManager.addAction(TextEditInfo(text, position))
@@ -152,6 +191,10 @@ class StoryTellerManager(
     }
 
     fun onLineBreak(lineBreakInfo: LineBreakInfo) {
+        if (isOnSelection) {
+            cancelSelection()
+        }
+
         contentHandler.onLineBreak(_currentStory.value.stories, lineBreakInfo)
             ?.let { (info, newState) ->
                 // Todo: Fix this when the inner position are completed
@@ -257,6 +300,31 @@ class StoryTellerManager(
         }
     }
 
+
+    fun onDelete(deleteInfo: DeleteInfo) {
+        contentHandler.deleteStory(deleteInfo, _currentStory.value.stories)?.let { newState ->
+            _currentStory.value = newState
+        }
+
+        backStackManager.addAction(deleteInfo)
+    }
+
+    fun deleteSelection() {
+        val (newStories, deletedStories) = contentHandler.bulkDeletion(
+            _positionsOnEdit.value,
+            _currentStory.value.stories
+        )
+
+        Log.d("manager", "deleted: ${deletedStories.values.joinToString { it.text.toString() }} " +
+                "positions: ${_positionsOnEdit.value.joinToString { it.toString() }}")
+
+        backStackManager.addAction(BulkDelete(deletedStories))
+        _positionsOnEdit.value = emptySet()
+
+        _currentStory.value =
+            _currentStory.value.copy(stories = stepsNormalizer(newStories.toEditState()))
+    }
+
     private fun updateStory(position: Int, newStep: StoryStep, focusId: String? = null) {
         val newMap = _currentStory.value.stories.toMutableMap()
         newMap[position] = newStep
@@ -314,27 +382,9 @@ class StoryTellerManager(
         )
     }
 
-    fun onDelete(deleteInfo: DeleteInfo) {
-        contentHandler.deleteStory(deleteInfo, _currentStory.value.stories)?.let { newState ->
-            _currentStory.value = newState
-        }
-
-        backStackManager.addAction(deleteInfo)
-    }
-
-    fun deleteSelection() {
-        val (newStories, deletedStories) = contentHandler.bulkDeletion(
-            _positionsOnEdit.value,
-            _currentStory.value.stories
-        )
-
-        Log.d("manager", "deleted: ${deletedStories.values.joinToString { it.text.toString() }} " +
-                "positions: ${_positionsOnEdit.value.joinToString { it.toString() }}")
-
-        backStackManager.addAction(BulkDelete(deletedStories))
+    private fun cancelSelection() {
+        Log.d("Manager", "Cancelling selection")
         _positionsOnEdit.value = emptySet()
-
-        _currentStory.value =
-            _currentStory.value.copy(stories = stepsNormalizer(newStories.toEditState()))
     }
+
 }
