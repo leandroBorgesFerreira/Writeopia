@@ -5,6 +5,7 @@ import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
 import com.github.leandroborgesferreira.storyteller.model.backtrack.AddStoryUnit
 import com.github.leandroborgesferreira.storyteller.model.backtrack.AddText
+import com.github.leandroborgesferreira.storyteller.model.change.BulkDelete
 import com.github.leandroborgesferreira.storyteller.model.change.CheckInfo
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
 import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
@@ -204,6 +205,17 @@ class StoryTellerManager(
                 revertAddStory(backAction)
             }
 
+            is BulkDelete -> {
+                val newState = contentHandler.addNewContentBulk(
+                    _currentStory.value.stories,
+                    backAction.deletedUnits
+                ).let{ newStories ->
+                    StoryState(stepsNormalizer(newStories.toEditState()))
+                }
+
+                _currentStory.value = newState
+            }
+
             is AddText -> {
                 revertAddText(_currentStory.value.stories, backAction)
             }
@@ -307,12 +319,14 @@ class StoryTellerManager(
     }
 
     fun deleteSelection() {
-        val newStories = contentHandler.bulkDeletion(
+        val (newStories, deletedStories) = contentHandler.bulkDeletion(
             _positionsOnEdit.value,
             _currentStory.value.stories
         )
 
+        backStackManager.addAction(BulkDelete(deletedStories))
         _positionsOnEdit.value = emptySet()
+
         _currentStory.value =
             _currentStory.value.copy(stories = stepsNormalizer(newStories.toEditState()))
     }

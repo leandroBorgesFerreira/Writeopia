@@ -2,8 +2,16 @@ package com.github.leandroborgesferreira.storyteller.utils.iterables
 
 object MapOperations {
 
-    fun <T> mergeSortedMaps(originalMap: Map<Int, T>, newMap: Map<Int, T>): Map<Int, T> {
+    fun <T> mergeSortedMaps(
+        originalMap: Map<Int, T>,
+        newMap: Map<Int, T>,
+        keepLast: Boolean = true
+    ): Map<Int, T> {
         val mutable = originalMap.mapKeys { (key, _) -> key * 10 }.toMutableMap()
+        var lastStep: T? = null
+        if (keepLast) {
+            lastStep = mutable.remove(mutable.size - 1)
+        }
 
         newMap.mapKeys { (key, _) -> key * 10 }.forEach { (key, value) ->
             if (mutable[key] != null) {
@@ -14,6 +22,12 @@ object MapOperations {
         }
 
         var acc = 0
-        return mutable.toSortedMap().mapKeys { acc++ }
+        return mutable.toSortedMap()
+            .mapKeys { acc++ }
+            .apply {
+                if (keepLast) {
+                    toMutableMap()[size] = lastStep
+                }
+            }
     }
 }

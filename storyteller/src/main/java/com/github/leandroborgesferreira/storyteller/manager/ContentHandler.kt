@@ -9,6 +9,7 @@ import com.github.leandroborgesferreira.storyteller.utils.StoryStepFactory
 import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizationMap
 import com.github.leandroborgesferreira.storyteller.utils.extensions.associateWithPosition
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
+import com.github.leandroborgesferreira.storyteller.utils.iterables.MapOperations
 import java.util.UUID
 
 /**
@@ -44,6 +45,11 @@ class ContentHandler(
 
         return acc to mutable.associateWithPosition()
     }
+
+    fun addNewContentBulk(
+        currentStory: Map<Int, StoryStep>,
+        newStory: Map<Int, StoryStep>
+    ): Map<Int, StoryStep> = MapOperations.mergeSortedMaps(currentStory, newStory)
 
     fun onLineBreak(
         currentStory: Map<Int, StoryStep>,
@@ -108,9 +114,18 @@ class ContentHandler(
         }
     }
 
-    fun bulkDeletion(positions: Iterable<Int>, stories: Map<Int, StoryStep>): Map<Int, StoryStep> {
+    fun bulkDeletion(
+        positions: Iterable<Int>,
+        stories: Map<Int, StoryStep>
+    ): Pair<Map<Int, StoryStep>, Map<Int, StoryStep>> {
+        val deleted = mutableMapOf<Int, StoryStep>()
         val mutable = stories.toMutableMap()
-        positions.forEach(mutable::remove)
-        return mutable
+        positions.forEach { position ->
+            mutable.remove(position)?.let { deletedStory ->
+                deleted[position] = deletedStory
+            }
+        }
+
+        return mutable to deleted
     }
 }
