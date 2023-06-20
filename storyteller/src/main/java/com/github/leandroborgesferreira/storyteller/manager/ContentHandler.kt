@@ -1,13 +1,12 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import com.github.leandroborgesferreira.storyteller.model.backtrack.AddStoryUnit
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
 import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.utils.StoryStepFactory
-import com.github.leandroborgesferreira.storyteller.utils.UnitsNormalizationMap
+import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizationMap
 import com.github.leandroborgesferreira.storyteller.utils.extensions.associateWithPosition
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 import java.util.UUID

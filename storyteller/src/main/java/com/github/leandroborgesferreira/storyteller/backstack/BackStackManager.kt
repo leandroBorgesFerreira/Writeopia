@@ -8,7 +8,7 @@ import java.util.Stack
 
 private const val HAS_SPACE_REGEX = "\\s\\S"
 
-class BackStackManager: BackstackInform {
+class BackStackManager : BackstackInform {
 
     private val backStack: Stack<Any> = Stack()
     private val forwardStack: Stack<Any> = Stack()
@@ -25,7 +25,7 @@ class BackStackManager: BackstackInform {
         _canRedo.value = forwardStack.isNotEmpty()
     }
 
-    fun redo(): Any = forwardStack.pop().also{ action ->
+    fun redo(): Any = forwardStack.pop().also { action ->
         backStack.add(action)
         _canUndo.value = backStack.isNotEmpty()
         _canRedo.value = forwardStack.isNotEmpty()
