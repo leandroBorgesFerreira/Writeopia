@@ -51,7 +51,7 @@ class StepsMapNormalizationBuilder {
         }
 
         this.mergeNormalization  = mergeNormalization::mergeSteps
-        normalizations.add(AddSteps.spaces()::insert)
+        normalizations.add(AddSteps.spaces(skipFirst = true)::insert)
     }
 
     private fun build(): UnitsNormalizationMap = { units ->

@@ -14,7 +14,7 @@ import java.util.UUID
 class AddSteps(
     private val addInBetween: () -> StoryStep,
     private val addAtLast: () -> StoryStep,
-    private val skipFirst: Boolean = true
+    private val skipFirst: Boolean = false
 ) {
 
     fun insert(unit: Map<Int, StoryStep>): Map<Int, StoryStep> =
@@ -77,14 +77,15 @@ class AddSteps(
 
 
     companion object {
-        fun spaces(): AddSteps =
+        fun spaces(skipFirst: Boolean): AddSteps =
             AddSteps(
                 addInBetween = {
                     StoryStep(type = StoryType.SPACE.type)
                 },
                 addAtLast = {
                     StoryStep(type = StoryType.LARGE_SPACE.type)
-                }
+                },
+                skipFirst = skipFirst
             )
     }
 }
