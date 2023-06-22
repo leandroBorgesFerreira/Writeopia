@@ -131,7 +131,7 @@ object DefaultDrawers {
 
             val titleDrawer = TitleDrawer(
                 onTextEdit = onTextEdit,
-                nextFocus = nextFocus
+                onLineBreak = onLineBreak
             )
 
             put(StoryType.MESSAGE_BOX.type, messageBoxDrawer)

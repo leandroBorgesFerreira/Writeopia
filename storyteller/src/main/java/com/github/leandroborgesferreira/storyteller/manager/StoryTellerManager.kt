@@ -129,8 +129,6 @@ class StoryTellerManager(
             mutable[nextPosition] = storyStep.copy(localId = UUID.randomUUID().toString())
             _currentStory.value =
                 _currentStory.value.copy(stories = mutable, focusId = storyStep.id)
-        } else {
-            onLineBreak(LineBreakInfo(position = ))
         }
     }
 

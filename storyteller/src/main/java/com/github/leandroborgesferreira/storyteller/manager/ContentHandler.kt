@@ -18,7 +18,10 @@ import java.util.UUID
  */
 class ContentHandler(
     private val focusableTypes: Set<String>,
-    private val stepsNormalizer: UnitsNormalizationMap
+    private val stepsNormalizer: UnitsNormalizationMap,
+    private val nonDuplicatableTypes: Map<String, String> = mapOf(
+        StoryType.TITLE.type to StoryType.MESSAGE.type
+    )
 ) {
 
     fun createCheckItem(currentStory: Map<Int, StoryStep>, position: Int): StoryState {
@@ -58,11 +61,12 @@ class ContentHandler(
     ): Pair<Pair<Int, StoryStep>, StoryState>? {
         val storyStep = lineBreakInfo.storyStep
 
+        //Todo: Remove the storyStep from LineBreakInfo!! It is not needed!!
         return storyStep.text?.split("\n", limit = 2)?.let { list ->
             val secondText = list.elementAtOrNull(1) ?: ""
             val secondMessage = StoryStep(
                 localId = UUID.randomUUID().toString(),
-                type = storyStep.type,
+                type = getStoryType(storyStep.type),
                 text = secondText,
             )
 
@@ -138,4 +142,7 @@ class ContentHandler(
 
         return mutable to deleted
     }
+
+    //Uses the preset conversion (example: Title becomes Message) of simply duplicate the type
+    private fun getStoryType(type: String) = nonDuplicatableTypes[type] ?: type
 }
