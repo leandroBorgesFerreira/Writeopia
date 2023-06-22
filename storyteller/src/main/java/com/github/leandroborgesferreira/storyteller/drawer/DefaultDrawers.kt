@@ -43,7 +43,7 @@ object DefaultDrawers {
             checkRequest = manager::checkRequest,
             onDeleteRequest = manager::onDelete,
             createCheckItem = manager::createCheckItem,
-            nextFocus = manager::nextFocus,
+            nextFocus = manager::nextFocusOrCreate,
             clickAtTheEnd = manager::clickAtTheEnd,
             onSelected = manager::onSelected,
             groupsBackgroundColor = groupsBackgroundColor
@@ -125,12 +125,13 @@ object DefaultDrawers {
                 onCheckedChange = checkRequest,
                 onTextEdit = onTextEdit,
                 onDeleteRequest = onDeleteRequest,
-                commandHandler = textCommandHandlerCheckItem
+                commandHandler = textCommandHandlerCheckItem,
+                onSelected = onSelected,
             )
 
             val titleDrawer = TitleDrawer(
                 onTextEdit = onTextEdit,
-                nextFocus = nextFocus
+                onLineBreak = onLineBreak
             )
 
             put(StoryType.MESSAGE_BOX.type, messageBoxDrawer)

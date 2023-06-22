@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storyteller.utils
+package com.github.leandroborgesferreira.storyteller.utils.alias
 
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 

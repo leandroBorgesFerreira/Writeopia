@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.R
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
+import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 
@@ -44,7 +45,7 @@ class TitleDrawer(
     private val containerModifier: Modifier = Modifier,
     private val innerContainerModifier: Modifier = Modifier,
     private val onTextEdit: (String, Int) -> Unit,
-    private val nextFocus: (Int) -> Unit,
+    private val onLineBreak: (LineBreakInfo) -> Unit,
 ) : StoryUnitDrawer {
 
     @Composable
@@ -73,7 +74,7 @@ class TitleDrawer(
                     value = inputText,
                     onValueChange = { value ->
                         if (value.text.contains("\n")) {
-                            nextFocus(drawInfo.position)
+                            onLineBreak(LineBreakInfo(step, drawInfo.position))
                         } else {
                             inputText = value
                             onTextEdit(value.text, drawInfo.position)

@@ -1,15 +1,16 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import com.github.leandroborgesferreira.storyteller.model.backtrack.AddStoryUnit
+import android.widget.Space
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
 import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.utils.StoryStepFactory
-import com.github.leandroborgesferreira.storyteller.utils.UnitsNormalizationMap
+import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizationMap
 import com.github.leandroborgesferreira.storyteller.utils.extensions.associateWithPosition
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
+import com.github.leandroborgesferreira.storyteller.utils.iterables.MapOperations
 import java.util.UUID
 
 /**
@@ -17,6 +18,9 @@ import java.util.UUID
  */
 class ContentHandler(
     private val focusableTypes: Set<String>,
+    private val nonDuplicatableTypes: Map<String, String> = mapOf(
+        StoryType.TITLE.type to StoryType.MESSAGE.type
+    ),
     private val stepsNormalizer: UnitsNormalizationMap
 ) {
 
@@ -32,19 +36,24 @@ class ContentHandler(
         return StoryState(newMap, newCheck.id)
     }
 
+    //Todo: Add unit test
     fun addNewContent(
         currentStory: Map<Int, StoryStep>,
         newStoryUnit: StoryStep,
         position: Int
-    ): Pair<Int, Map<Int, StoryStep>> {
-        val mutable = currentStory.values.toMutableList()
-        var acc = position
+    ): Map<Int, StoryStep> =
+        MapOperations.addElementInPosition(
+            currentStory,
+            newStoryUnit,
+            StoryStepFactory.space(),
+            position
+        )
 
-        mutable.add(acc++, StoryStepFactory.space())
-        mutable.add(acc, newStoryUnit)
-
-        return acc to mutable.associateWithPosition()
-    }
+    fun addNewContentBulk(
+        currentStory: Map<Int, StoryStep>,
+        newStory: Map<Int, StoryStep>,
+        addInBetween: () -> StoryStep
+    ): Map<Int, StoryStep> = MapOperations.mergeSortedMaps(currentStory, newStory, addInBetween)
 
     fun onLineBreak(
         currentStory: Map<Int, StoryStep>,
@@ -52,23 +61,31 @@ class ContentHandler(
     ): Pair<Pair<Int, StoryStep>, StoryState>? {
         val storyStep = lineBreakInfo.storyStep
 
+        //Todo: Remove the storyStep from LineBreakInfo!! It is not needed!!
         return storyStep.text?.split("\n", limit = 2)?.let { list ->
             val secondText = list.elementAtOrNull(1) ?: ""
             val secondMessage = StoryStep(
                 localId = UUID.randomUUID().toString(),
-                type = storyStep.type,
+                type = getStoryType(storyStep.type),
                 text = secondText,
             )
 
-            val position = lineBreakInfo.position + 1
+            val position = lineBreakInfo.position + 2
 
-            val (addedPosition, newStory) = addNewContent(
+            //Todo: Cover this in unit tests!
+            if (currentStory[position]?.type == StoryType.SPACE.type) {
+                throw IllegalStateException(
+                    "it should not be possible to add content in the place of a space"
+                )
+            }
+
+            val newStory = addNewContent(
                 currentStory,
                 secondMessage,
                 position
             )
 
-            (addedPosition to secondMessage) to StoryState(
+            (position to secondMessage) to StoryState(
                 stories = newStory,
                 focusId = secondMessage.id
             )
@@ -109,9 +126,23 @@ class ContentHandler(
         }
     }
 
-    fun bulkDeletion(positions: Iterable<Int>, stories: Map<Int, StoryStep>): Map<Int, StoryStep> {
+    fun bulkDeletion(
+        positions: Iterable<Int>,
+        stories: Map<Int, StoryStep>
+    ): Pair<Map<Int, StoryStep>, Map<Int, StoryStep>> {
+        val deleted = mutableMapOf<Int, StoryStep>()
         val mutable = stories.toMutableMap()
-        positions.forEach(mutable::remove)
-        return mutable
+        positions.forEach { position ->
+            mutable.remove(position)?.let { deletedStory ->
+                deleted[position] = deletedStory
+            }
+
+            mutable.remove(position + 1)
+        }
+
+        return mutable to deleted
     }
+
+    //Uses the preset conversion (example: Title becomes Message) of simply duplicate the type
+    private fun getStoryType(type: String) = nonDuplicatableTypes[type] ?: type
 }

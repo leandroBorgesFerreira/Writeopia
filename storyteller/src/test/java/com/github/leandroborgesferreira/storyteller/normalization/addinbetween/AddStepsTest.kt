@@ -14,7 +14,7 @@ class AddStepsTest {
     fun `it should be possible to add spacers between a LIST of stories`() {
         val input = ListStoryData.imageGroup()
         val initialSize = input.size
-        val addSteps = AddSteps.spaces()
+        val addSteps = AddSteps.spaces(skipFirst = false)
 
         val result = addSteps.insert(input)
 
@@ -35,7 +35,7 @@ class AddStepsTest {
     fun `it should be possible to add spacers between a MAP of stories`() {
         val input = MapStoryData.imageGroup()
         val initialSize = input.size
-        val addSteps = AddSteps.spaces()
+        val addSteps = AddSteps.spaces(skipFirst = false)
 
         val result = addSteps.insert(input)
 
@@ -56,7 +56,7 @@ class AddStepsTest {
     @Test
     fun `it should add only when necessary`() {
         val input = ListStoryData.spacedImageStepsList()
-        val addSteps = AddSteps.spaces()
+        val addSteps = AddSteps.spaces(skipFirst = false)
 
         val result = addSteps.insert(input)
 
@@ -64,7 +64,7 @@ class AddStepsTest {
             if (acc.type == "space" && storyUnit.type == "space") {
                 fail(
                     "The AddInBetween should not add repeated StoryUnits, " +
-                        "it should only add the missing ones."
+                            "it should only add the missing ones."
                 )
             }
 
@@ -75,7 +75,7 @@ class AddStepsTest {
     @Test
     fun `it should filter repeated spaces`() {
         val input = ListStoryData.spaces()
-        val result = AddSteps.spaces().insert(input)
+        val result = AddSteps.spaces(skipFirst = false).insert(input)
 
         assertEquals("only 2 itemm should be in the result", 2, result.size)
         assertEquals("only one space should be in the result", "space", result.first().type)
@@ -84,7 +84,7 @@ class AddStepsTest {
     @Test
     fun `running the normalization twice should not change the data`() {
         val input = ListStoryData.spacedImageStepsList()
-        val addSteps = AddSteps.spaces()
+        val addSteps = AddSteps.spaces(skipFirst = false)
 
         val result = addSteps.insert(input)
         val result2 = addSteps.insert(result)

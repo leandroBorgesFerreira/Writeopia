@@ -6,8 +6,8 @@ import com.github.leandroborgesferreira.storyteller.normalization.merge.MergeLog
 import com.github.leandroborgesferreira.storyteller.normalization.merge.MergeNormalization
 import com.github.leandroborgesferreira.storyteller.normalization.merge.StepsMergerCoordinator
 import com.github.leandroborgesferreira.storyteller.normalization.merge.steps.StepToStepMerger
-import com.github.leandroborgesferreira.storyteller.utils.UnitsMapTransformation
-import com.github.leandroborgesferreira.storyteller.utils.UnitsNormalizationMap
+import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsMapTransformation
+import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizationMap
 
 class StepsMapNormalizationBuilder {
 
@@ -51,7 +51,7 @@ class StepsMapNormalizationBuilder {
         }
 
         this.mergeNormalization  = mergeNormalization::mergeSteps
-        normalizations.add(AddSteps.spaces()::insert)
+        normalizations.add(AddSteps.spaces(skipFirst = true)::insert)
     }
 
     private fun build(): UnitsNormalizationMap = { units ->

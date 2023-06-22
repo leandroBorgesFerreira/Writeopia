@@ -1,10 +1,12 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
+import android.util.Log
 import com.github.leandroborgesferreira.storyteller.backstack.BackStackManager
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
 import com.github.leandroborgesferreira.storyteller.model.backtrack.AddStoryUnit
 import com.github.leandroborgesferreira.storyteller.model.backtrack.AddText
+import com.github.leandroborgesferreira.storyteller.model.change.BulkDelete
 import com.github.leandroborgesferreira.storyteller.model.change.CheckInfo
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
 import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
@@ -17,14 +19,16 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
-import com.github.leandroborgesferreira.storyteller.utils.UnitsNormalizationMap
+import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizationMap
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -59,14 +63,31 @@ class StoryTellerManager(
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
 
-    val toDraw = currentStory.map { storyState ->
-        val focus = storyState.focusId
-        val toDrawStories = storyState.stories.mapValues { (position, storyStep) ->
-            DrawStory(storyStep, _positionsOnEdit.value.contains(position))
-        }
+//    val toDraw = currentStory.map { storyState ->
+//        val focus = storyState.focusId
+//        val toDrawStories = storyState.stories.mapValues { (position, storyStep) ->
+//            DrawStory(storyStep, _positionsOnEdit.value.contains(position))
+//        }
+//
+//        DrawState(toDrawStories, focus)
+//    }
 
-        DrawState(toDrawStories, focus)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val toDraw = _positionsOnEdit.flatMapLatest { positions ->
+        Log.d("Manager", "new edit positions: ${positions.joinToString()}")
+        currentStory.map { storyState ->
+            val focus = storyState.focusId
+
+            val toDrawStories = storyState.stories.mapValues { (position, storyStep) ->
+                DrawStory(storyStep, positions.contains(position))
+            }
+
+            DrawState(toDrawStories, focus)
+        }
     }
+
+    private val isOnSelection: Boolean
+        get() = _positionsOnEdit.value.isNotEmpty()
 
     fun saveOnStoryChanges(
         coroutineScope: CoroutineScope,
@@ -98,15 +119,17 @@ class StoryTellerManager(
         )
     }
 
-    fun nextFocus(position: Int) {
+    //Todo: Add unit test fot this!!
+    fun nextFocusOrCreate(position: Int) {
         val storyMap = _currentStory.value.stories
-        focusHandler.findNextFocus(position, _currentStory.value.stories)
-            ?.let { (position, storyStep) ->
-                val mutable = storyMap.toMutableMap()
-                mutable[position] = storyStep.copy(localId = UUID.randomUUID().toString())
-                _currentStory.value =
-                    _currentStory.value.copy(stories = mutable, focusId = storyStep.id)
-            }
+        val nextFocus = focusHandler.findNextFocus(position, _currentStory.value.stories)
+        if (nextFocus != null) {
+            val (nextPosition, storyStep) = nextFocus
+            val mutable = storyMap.toMutableMap()
+            mutable[nextPosition] = storyStep.copy(localId = UUID.randomUUID().toString())
+            _currentStory.value =
+                _currentStory.value.copy(stories = mutable, focusId = storyStep.id)
+        }
     }
 
     fun initStories(stories: Map<Int, StoryStep>) {
@@ -119,11 +142,19 @@ class StoryTellerManager(
     }
 
     fun mergeRequest(info: MergeInfo) {
+        if (isOnSelection) {
+            cancelSelection()
+        }
+
         val movedStories = movementHandler.merge(_currentStory.value.stories, info)
         _currentStory.value = StoryState(stories = stepsNormalizer(movedStories))
     }
 
     fun moveRequest(moveInfo: MoveInfo) {
+        if (isOnSelection) {
+            cancelSelection()
+        }
+
         val newStory = movementHandler.move(_currentStory.value.stories, moveInfo)
         _currentStory.value = StoryState(stepsNormalizer(newStory.toEditState()))
     }
@@ -132,6 +163,10 @@ class StoryTellerManager(
      * At the moment it is only possible to check items not inside groups. Todo: Fix it!
      */
     fun checkRequest(checkInfo: CheckInfo) {
+        if (isOnSelection) {
+            cancelSelection()
+        }
+
         val storyUnit = checkInfo.storyUnit
         val newStep = (storyUnit as? StoryStep)?.copy(checked = checkInfo.checked) ?: return
 
@@ -139,10 +174,18 @@ class StoryTellerManager(
     }
 
     fun createCheckItem(position: Int) {
+        if (isOnSelection) {
+            cancelSelection()
+        }
+
         _currentStory.value = contentHandler.createCheckItem(_currentStory.value.stories, position)
     }
 
     fun onTextEdit(text: String, position: Int) {
+        if (isOnSelection) {
+            cancelSelection()
+        }
+
         _currentStory.value.stories[position]?.copy(text = text)?.let { newStory ->
             updateStory(position, newStory)
             backStackManager.addAction(TextEditInfo(text, position))
@@ -150,6 +193,10 @@ class StoryTellerManager(
     }
 
     fun onLineBreak(lineBreakInfo: LineBreakInfo) {
+        if (isOnSelection) {
+            cancelSelection()
+        }
+
         contentHandler.onLineBreak(_currentStory.value.stories, lineBreakInfo)
             ?.let { (info, newState) ->
                 // Todo: Fix this when the inner position are completed
@@ -204,6 +251,20 @@ class StoryTellerManager(
                 revertAddStory(backAction)
             }
 
+            is BulkDelete -> {
+                val newState = contentHandler.addNewContentBulk(
+                    _currentStory.value.stories,
+                    backAction.deletedUnits,
+                    addInBetween = {
+                        StoryStep(type = StoryType.SPACE.type)
+                    }
+                ).let { newStories ->
+                    StoryState(stepsNormalizer(newStories.toEditState()))
+                }
+
+                _currentStory.value = newState
+            }
+
             is AddText -> {
                 revertAddText(_currentStory.value.stories, backAction)
             }
@@ -220,17 +281,17 @@ class StoryTellerManager(
             }
 
             is AddStoryUnit -> {
-                val (position, newStory) = contentHandler.addNewContent(
+                val newStory = contentHandler.addNewContent(
                     _currentStory.value.stories,
                     action.storyUnit,
-                    action.position - 1
+                    action.position
                 )
                 _currentStory.value = StoryState(
                     newStory,
-                    newStory[position]?.id
+                    newStory[action.position]?.id
                 )
 
-                _scrollToPosition.value = position
+                _scrollToPosition.value = action.position
             }
 
             is AddText -> {
@@ -239,6 +300,31 @@ class StoryTellerManager(
 
             else -> return
         }
+    }
+
+
+    fun onDelete(deleteInfo: DeleteInfo) {
+        contentHandler.deleteStory(deleteInfo, _currentStory.value.stories)?.let { newState ->
+            _currentStory.value = newState
+        }
+
+        backStackManager.addAction(deleteInfo)
+    }
+
+    fun deleteSelection() {
+        val (newStories, deletedStories) = contentHandler.bulkDeletion(
+            _positionsOnEdit.value,
+            _currentStory.value.stories
+        )
+
+//        Log.d("manager", "deleted: ${deletedStories.values.joinToString { it.text.toString() }} " +
+//                "positions: ${_positionsOnEdit.value.joinToString { it.toString() }}")
+
+        backStackManager.addAction(BulkDelete(deletedStories))
+        _positionsOnEdit.value = emptySet()
+
+        _currentStory.value =
+            _currentStory.value.copy(stories = newStories)
     }
 
     private fun updateStory(position: Int, newStep: StoryStep, focusId: String? = null) {
@@ -286,7 +372,7 @@ class StoryTellerManager(
     }
 
     private fun revertDelete(deleteInfo: DeleteInfo): StoryState {
-        val (_, newStory) = contentHandler.addNewContent(
+        val newStory = contentHandler.addNewContent(
             _currentStory.value.stories,
             deleteInfo.storyUnit,
             deleteInfo.position
@@ -298,22 +384,9 @@ class StoryTellerManager(
         )
     }
 
-    fun onDelete(deleteInfo: DeleteInfo) {
-        contentHandler.deleteStory(deleteInfo, _currentStory.value.stories)?.let { newState ->
-            _currentStory.value = newState
-        }
-
-        backStackManager.addAction(deleteInfo)
-    }
-
-    fun deleteSelection() {
-        val newStories = contentHandler.bulkDeletion(
-            _positionsOnEdit.value,
-            _currentStory.value.stories
-        )
-
+    private fun cancelSelection() {
+        Log.d("Manager", "Cancelling selection")
         _positionsOnEdit.value = emptySet()
-        _currentStory.value =
-            _currentStory.value.copy(stories = stepsNormalizer(newStories.toEditState()))
     }
+
 }
