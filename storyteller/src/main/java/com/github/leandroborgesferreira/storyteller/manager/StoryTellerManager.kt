@@ -315,14 +315,14 @@ class StoryTellerManager(
             _currentStory.value.stories
         )
 
-        Log.d("manager", "deleted: ${deletedStories.values.joinToString { it.text.toString() }} " +
-                "positions: ${_positionsOnEdit.value.joinToString { it.toString() }}")
+//        Log.d("manager", "deleted: ${deletedStories.values.joinToString { it.text.toString() }} " +
+//                "positions: ${_positionsOnEdit.value.joinToString { it.toString() }}")
 
         backStackManager.addAction(BulkDelete(deletedStories))
         _positionsOnEdit.value = emptySet()
 
         _currentStory.value =
-            _currentStory.value.copy(stories = stepsNormalizer(newStories.toEditState()))
+            _currentStory.value.copy(stories = newStories)
     }
 
     private fun updateStory(position: Int, newStep: StoryStep, focusId: String? = null) {

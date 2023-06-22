@@ -125,6 +125,8 @@ class ContentHandler(
             mutable.remove(position)?.let { deletedStory ->
                 deleted[position] = deletedStory
             }
+
+            mutable.remove(position + 1)
         }
 
         return mutable to deleted
