@@ -43,6 +43,26 @@ class StoryTellerManagerTest {
         override suspend fun history(): Map<Int, StoryStep> = MapStoryData.syncHistory()
     }
 
+    @Test
+    fun `a new story should start correctly`() {
+        val manager = StoryTellerManager()
+
+        manager.newStory()
+
+        val currentStory = manager.currentStory.value.stories
+        val expected = mapOf(
+            0 to StoryStep(type = StoryType.TITLE.type),
+            1 to StoryStep(type = StoryType.SPACE.type),
+            2 to StoryStep(type = StoryType.LARGE_SPACE.type),
+        ).mapValues { (_, storyStep) ->
+            storyStep.type
+        }
+
+        assertEquals(
+            expected,
+            currentStory.mapValues { (_, storyStep) -> storyStep.type }
+        )
+    }
 
     @Test
     fun `one space has to be added between steps`() = runTest {

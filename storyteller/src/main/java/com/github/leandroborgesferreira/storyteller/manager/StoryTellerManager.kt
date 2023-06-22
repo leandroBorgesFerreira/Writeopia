@@ -119,15 +119,19 @@ class StoryTellerManager(
         )
     }
 
-    fun nextFocus(position: Int) {
+    //Todo: Add unit test fot this!!
+    fun nextFocusOrCreate(position: Int) {
         val storyMap = _currentStory.value.stories
-        focusHandler.findNextFocus(position, _currentStory.value.stories)
-            ?.let { (position, storyStep) ->
-                val mutable = storyMap.toMutableMap()
-                mutable[position] = storyStep.copy(localId = UUID.randomUUID().toString())
-                _currentStory.value =
-                    _currentStory.value.copy(stories = mutable, focusId = storyStep.id)
-            }
+        val nextFocus = focusHandler.findNextFocus(position, _currentStory.value.stories)
+        if (nextFocus != null) {
+            val (nextPosition, storyStep) = nextFocus
+            val mutable = storyMap.toMutableMap()
+            mutable[nextPosition] = storyStep.copy(localId = UUID.randomUUID().toString())
+            _currentStory.value =
+                _currentStory.value.copy(stories = mutable, focusId = storyStep.id)
+        } else {
+            onLineBreak(LineBreakInfo(position = ))
+        }
     }
 
     fun initStories(stories: Map<Int, StoryStep>) {
@@ -256,7 +260,7 @@ class StoryTellerManager(
                     addInBetween = {
                         StoryStep(type = StoryType.SPACE.type)
                     }
-                ).let{ newStories ->
+                ).let { newStories ->
                     StoryState(stepsNormalizer(newStories.toEditState()))
                 }
 

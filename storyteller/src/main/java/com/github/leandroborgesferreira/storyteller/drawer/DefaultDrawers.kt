@@ -43,7 +43,7 @@ object DefaultDrawers {
             checkRequest = manager::checkRequest,
             onDeleteRequest = manager::onDelete,
             createCheckItem = manager::createCheckItem,
-            nextFocus = manager::nextFocus,
+            nextFocus = manager::nextFocusOrCreate,
             clickAtTheEnd = manager::clickAtTheEnd,
             onSelected = manager::onSelected,
             groupsBackgroundColor = groupsBackgroundColor
