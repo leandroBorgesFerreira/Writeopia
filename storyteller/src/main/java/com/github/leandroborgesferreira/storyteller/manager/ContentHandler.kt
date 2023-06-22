@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
+import android.widget.Space
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
 import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
@@ -32,19 +33,18 @@ class ContentHandler(
         return StoryState(newMap, newCheck.id)
     }
 
+    //Todo: Add unit test
     fun addNewContent(
         currentStory: Map<Int, StoryStep>,
         newStoryUnit: StoryStep,
         position: Int
-    ): Pair<Int, Map<Int, StoryStep>> {
-        val mutable = currentStory.values.toMutableList()
-        var acc = position
-
-        mutable.add(acc++, StoryStepFactory.space())
-        mutable.add(acc, newStoryUnit)
-
-        return acc to mutable.associateWithPosition()
-    }
+    ): Map<Int, StoryStep> =
+        MapOperations.addElementInPosition(
+            currentStory,
+            newStoryUnit,
+            StoryStepFactory.space(),
+            position
+        )
 
     fun addNewContentBulk(
         currentStory: Map<Int, StoryStep>,
@@ -68,13 +68,13 @@ class ContentHandler(
 
             val position = lineBreakInfo.position + 1
 
-            val (addedPosition, newStory) = addNewContent(
+            val newStory = addNewContent(
                 currentStory,
                 secondMessage,
                 position
             )
 
-            (addedPosition to secondMessage) to StoryState(
+            (position to secondMessage) to StoryState(
                 stories = newStory,
                 focusId = secondMessage.id
             )

@@ -279,17 +279,17 @@ class StoryTellerManager(
             }
 
             is AddStoryUnit -> {
-                val (position, newStory) = contentHandler.addNewContent(
+                val newStory = contentHandler.addNewContent(
                     _currentStory.value.stories,
                     action.storyUnit,
-                    action.position - 1
+                    action.position
                 )
                 _currentStory.value = StoryState(
                     newStory,
-                    newStory[position]?.id
+                    newStory[action.position]?.id
                 )
 
-                _scrollToPosition.value = position
+                _scrollToPosition.value = action.position
             }
 
             is AddText -> {
@@ -370,7 +370,7 @@ class StoryTellerManager(
     }
 
     private fun revertDelete(deleteInfo: DeleteInfo): StoryState {
-        val (_, newStory) = contentHandler.addNewContent(
+        val newStory = contentHandler.addNewContent(
             _currentStory.value.stories,
             deleteInfo.storyUnit,
             deleteInfo.position
