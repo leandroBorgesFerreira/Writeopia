@@ -528,10 +528,11 @@ class StoryTellerManagerTest {
         storyManager.initStories(input)
         val currentStory = storyManager.currentStory.value.stories
 
-        storyManager.onLineBreak(LineBreakInfo(input[0]!!, 1))
+        storyManager.onLineBreak(LineBreakInfo(input[0]!!, 0))
         storyManager.undo()
+        val newStory = storyManager.currentStory.value.stories
 
-        assertEquals(currentStory.size, storyManager.currentStory.value.stories.size)
+        assertEquals(currentStory.size, newStory.size)
     }
 
     @Test
@@ -542,9 +543,9 @@ class StoryTellerManagerTest {
         storyManager.initStories(input)
         val currentStory = storyManager.currentStory.value.stories
 
-        storyManager.onLineBreak(LineBreakInfo(input[0]!!, 1))
-        storyManager.onLineBreak(LineBreakInfo(input[0]!!, 3))
-        storyManager.onLineBreak(LineBreakInfo(input[0]!!, 5))
+        storyManager.onLineBreak(LineBreakInfo(input[0]!!, 0))
+        storyManager.onLineBreak(LineBreakInfo(input[0]!!, 2))
+        storyManager.onLineBreak(LineBreakInfo(input[0]!!, 4))
         storyManager.undo()
         storyManager.undo()
         storyManager.undo()
@@ -576,9 +577,9 @@ class StoryTellerManagerTest {
         storyManager.run {
             initStories(input)
 
-            onLineBreak(LineBreakInfo(input[0]!!, 1))
-            onLineBreak(LineBreakInfo(input[0]!!, 3))
-            onLineBreak(LineBreakInfo(input[0]!!, 5))
+            onLineBreak(LineBreakInfo(input[0]!!, 0))
+            onLineBreak(LineBreakInfo(input[0]!!, 2))
+            onLineBreak(LineBreakInfo(input[0]!!, 4))
 
             undo()
             undo()

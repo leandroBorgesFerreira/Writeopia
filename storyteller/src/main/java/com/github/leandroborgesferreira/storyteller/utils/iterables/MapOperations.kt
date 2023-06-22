@@ -30,8 +30,8 @@ object MapOperations {
     : Map<Int, T> {
         val mutable = originalMap.values.toMutableList()
 
-        mutable.add(position, element)
         mutable.add(position, addInBetween)
+        mutable.add(position, element)
 
         return mutable.associateWithPosition()
     }

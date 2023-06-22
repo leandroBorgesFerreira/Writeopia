@@ -66,7 +66,14 @@ class ContentHandler(
                 text = secondText,
             )
 
-            val position = lineBreakInfo.position + 1
+            val position = lineBreakInfo.position + 2
+
+            //Todo: Cover this in unit tests!
+            if (currentStory[position]?.type == StoryType.SPACE.type) {
+                throw IllegalStateException(
+                    "it should not be possible to add content in the place of a space"
+                )
+            }
 
             val newStory = addNewContent(
                 currentStory,
