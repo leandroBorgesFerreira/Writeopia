@@ -18,10 +18,10 @@ import java.util.UUID
  */
 class ContentHandler(
     private val focusableTypes: Set<String>,
-    private val stepsNormalizer: UnitsNormalizationMap,
     private val nonDuplicatableTypes: Map<String, String> = mapOf(
         StoryType.TITLE.type to StoryType.MESSAGE.type
-    )
+    ),
+    private val stepsNormalizer: UnitsNormalizationMap
 ) {
 
     fun createCheckItem(currentStory: Map<Int, StoryStep>, position: Int): StoryState {
