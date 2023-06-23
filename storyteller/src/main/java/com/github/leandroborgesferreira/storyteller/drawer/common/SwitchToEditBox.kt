@@ -53,7 +53,7 @@ fun SwipeToCommandBox(
     val animatedOffset by transition.animateIntOffset(
         transitionSpec = {
             spring(
-                dampingRatio = Spring.DampingRatioLowBouncy,
+                dampingRatio = Spring.DampingRatioMediumBouncy,
                 visibilityThreshold = IntOffset(1, 1)
             )
         },
