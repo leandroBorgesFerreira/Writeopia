@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.drawer.common
 
+import android.os.Handler
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateIntOffset
@@ -33,7 +34,7 @@ fun SwipeToCommandBox(
     defaultColor: Color = MaterialTheme.colorScheme.background,
     activeColor: Color = MaterialTheme.colorScheme.background,
     state: Boolean,
-    listener: (Boolean) -> Unit,
+    swipeListener: (Boolean) -> Unit,
     content: @Composable () -> Unit
 ) {
     var isOnEditMode by remember { mutableStateOf(state) }
@@ -86,16 +87,18 @@ fun SwipeToCommandBox(
                         dragging = false
                     },
                     onDragEnd = {
+                        dragging = false
+                        
                         if (swipeOffset.absoluteValue > 40) {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             isOnEditMode = !isOnEditMode
 
-                            listener(isOnEditMode)
+                            swipeListener(isOnEditMode)
                         }
 
                         swipeOffset = 0F
-                        dragging = false
-                    })
+                    }
+                )
             }
         ) {
             content()

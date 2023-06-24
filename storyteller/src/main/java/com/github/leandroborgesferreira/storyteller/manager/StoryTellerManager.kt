@@ -48,7 +48,8 @@ class StoryTellerManager(
         ),
         stepsNormalizer = stepsNormalizer
     ),
-    private val focusHandler: FocusHandler = FocusHandler()
+    private val focusHandler: FocusHandler = FocusHandler(),
+    private val coroutineScope: CoroutineScope
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
@@ -208,14 +209,16 @@ class StoryTellerManager(
     }
 
     fun onSelected(isSelected: Boolean, position: Int) {
-        if (_currentStory.value.stories[position] != null) {
-            val newOnEdit = if (isSelected) {
-                _positionsOnEdit.value + position
-            } else {
-                _positionsOnEdit.value - position
-            }
+        coroutineScope.launch(Dispatchers.IO) {
+            if (_currentStory.value.stories[position] != null) {
+                val newOnEdit = if (isSelected) {
+                    _positionsOnEdit.value + position
+                } else {
+                    _positionsOnEdit.value - position
+                }
 
-            _positionsOnEdit.value = newOnEdit
+                _positionsOnEdit.value = newOnEdit
+            }
         }
     }
 
@@ -316,9 +319,6 @@ class StoryTellerManager(
             _positionsOnEdit.value,
             _currentStory.value.stories
         )
-
-//        Log.d("manager", "deleted: ${deletedStories.values.joinToString { it.text.toString() }} " +
-//                "positions: ${_positionsOnEdit.value.joinToString { it.toString() }}")
 
         backStackManager.addAction(BulkDelete(deletedStories))
         _positionsOnEdit.value = emptySet()

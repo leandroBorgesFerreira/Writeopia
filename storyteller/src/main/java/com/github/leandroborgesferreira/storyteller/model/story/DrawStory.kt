@@ -6,5 +6,5 @@ package com.github.leandroborgesferreira.storyteller.model.story
  */
 data class DrawStory(val storyStep: StoryStep, val isSelected: Boolean) {
 
-    val key = storyStep.key + isSelected.hashCode()
+    val key = storyStep.key
 }

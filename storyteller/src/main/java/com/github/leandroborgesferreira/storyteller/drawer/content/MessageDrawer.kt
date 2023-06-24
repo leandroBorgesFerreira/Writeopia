@@ -69,7 +69,7 @@ class MessageDrawer(
                 defaultColor = customBackgroundColor ?: MaterialTheme.colorScheme.background,
                 activeColor = MaterialTheme.colorScheme.primary,
                 state = drawInfo.selectMode,
-                listener = { isSelected ->
+                swipeListener = { isSelected ->
                     onSelected(isSelected, drawInfo.position)
                 }
             ) {

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
@@ -67,7 +68,8 @@ fun NavigationGraph() {
                         database.documentDao(),
                         database.storyUnitDao()
                     )
-                    val storyTellerManager = StoryTellerManager()
+                    val storyTellerManager =
+                        StoryTellerManager(coroutineScope = rememberCoroutineScope())
 
                     val noteDetailsViewModel: NoteDetailsViewModel =
                         viewModel(
