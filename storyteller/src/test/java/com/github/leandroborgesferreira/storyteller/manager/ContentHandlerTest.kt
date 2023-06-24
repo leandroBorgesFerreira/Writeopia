@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
+import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.normalization.addinbetween.AddSteps
@@ -34,6 +35,19 @@ class ContentHandlerTest {
             storyStep.type
         }
 
-        assertEquals(expected, newStory.mapValues {(_, storyStep) -> storyStep.type })
+        assertEquals(expected, newStory.mapValues { (_, storyStep) -> storyStep.type })
+    }
+
+    @Test
+    fun `when a line break happens, the text should be divided correctly`() {
+        val contentHandler = ContentHandler { _ -> mapOf() }
+        val storyStep = StoryStep(type = "message", text = "line1\nline2")
+
+        val (_, newState) = contentHandler.onLineBreak(
+            mapOf(0 to storyStep),
+            LineBreakInfo(storyStep, 0)
+        )!!
+
+        assertEquals("line1", newState.stories[0]!!.text)
     }
 }
