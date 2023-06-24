@@ -2,6 +2,7 @@ package com.github.leandroborgesferreira.storyteller.utils.iterables
 
 import com.github.leandroborgesferreira.storyteller.utils.StoryStepFactory
 import com.github.leandroborgesferreira.storyteller.utils.extensions.associateWithPosition
+import kotlin.math.min
 
 object MapOperations {
 
@@ -26,12 +27,12 @@ object MapOperations {
         originalMap: Map<Int, T>,
         element: T,
         addInBetween: T,
-        position: Int)
-    : Map<Int, T> {
+        position: Int
+    ): Map<Int, T> {
         val mutable = originalMap.values.toMutableList()
 
-        mutable.add(position, addInBetween)
-        mutable.add(position, element)
+        mutable.add(min(position, mutable.lastIndex + 1), addInBetween)
+        mutable.add(min(position, mutable.lastIndex + 1), element)
 
         return mutable.associateWithPosition()
     }

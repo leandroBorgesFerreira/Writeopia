@@ -65,8 +65,7 @@ class MessageDrawer(
                                 focusRequester.requestFocus()
                             }
                         }
-                    }
-                    ,
+                    },
                 defaultColor = customBackgroundColor ?: MaterialTheme.colorScheme.background,
                 activeColor = MaterialTheme.colorScheme.primary,
                 state = drawInfo.selectMode,
@@ -95,13 +94,16 @@ class MessageDrawer(
                             },
                         value = inputText,
                         onValueChange = { value ->
-                            if (!commandHandler.handleCommand(
-                                    value.text,
-                                    step,
-                                    drawInfo.position
-                                )
-                            ) {
-                                inputText = value
+                            val text = value.text
+                            
+                            inputText = if (text.contains("\n")) {
+                                val newText = text.split("\n", limit = 2)[0]
+                                TextFieldValue(newText, TextRange(newText.length))
+                            } else {
+                                value
+                            }
+
+                            if (!commandHandler.handleCommand(text, step, drawInfo.position)) {
                                 onTextEdit(value.text, drawInfo.position)
                             }
                         },

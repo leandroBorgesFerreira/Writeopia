@@ -1,6 +1,5 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import android.widget.Space
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
 import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
@@ -8,7 +7,6 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.utils.StoryStepFactory
 import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizationMap
-import com.github.leandroborgesferreira.storyteller.utils.extensions.associateWithPosition
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 import com.github.leandroborgesferreira.storyteller.utils.iterables.MapOperations
 import java.util.UUID
@@ -17,7 +15,11 @@ import java.util.UUID
  * Class dedicated to handle adding and/or deleting new StorySteps
  */
 class ContentHandler(
-    private val focusableTypes: Set<String>,
+    private val focusableTypes: Set<String> = setOf(
+        StoryType.TITLE.type,
+        StoryType.MESSAGE.type,
+        StoryType.CHECK_ITEM.type
+    ),
     private val nonDuplicatableTypes: Map<String, String> = mapOf(
         StoryType.TITLE.type to StoryType.MESSAGE.type
     ),
@@ -61,8 +63,8 @@ class ContentHandler(
     ): Pair<Pair<Int, StoryStep>, StoryState>? {
         val storyStep = lineBreakInfo.storyStep
 
-        //Todo: Remove the storyStep from LineBreakInfo!! It is not needed!!
         return storyStep.text?.split("\n", limit = 2)?.let { list ->
+            val firstText = list.elementAtOrNull(0) ?: ""
             val secondText = list.elementAtOrNull(1) ?: ""
             val secondMessage = StoryStep(
                 localId = UUID.randomUUID().toString(),
@@ -70,22 +72,26 @@ class ContentHandler(
                 text = secondText,
             )
 
-            val position = lineBreakInfo.position + 2
+            val addPosition = lineBreakInfo.position + 2
 
             //Todo: Cover this in unit tests!
-            if (currentStory[position]?.type == StoryType.SPACE.type) {
+            if (currentStory[addPosition]?.type == StoryType.SPACE.type) {
                 throw IllegalStateException(
                     "it should not be possible to add content in the place of a space"
                 )
             }
 
+            val mutable = currentStory.toMutableMap().apply {
+                this[lineBreakInfo.position] = storyStep.copy(text = firstText)
+            }
+
             val newStory = addNewContent(
-                currentStory,
+                mutable,
                 secondMessage,
-                position
+                addPosition
             )
 
-            (position to secondMessage) to StoryState(
+            (addPosition to secondMessage) to StoryState(
                 stories = newStory,
                 focusId = secondMessage.id
             )
