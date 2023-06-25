@@ -4,14 +4,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,14 +29,13 @@ import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
 import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
+import com.github.leandroborgesferreira.storyteller.utils.ui.transparentTextInputColors
 
 /**
  * Draw a text that can be edited. The edition of the text is both reflect in this Composable and
  * also notified by onTextEdit. It is necessary to reflect here to avoid losing the focus on the
  * TextField.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 class TitleDrawer(
     private val containerModifier: Modifier = Modifier,
     private val innerContainerModifier: Modifier = Modifier,
@@ -95,13 +90,7 @@ class TitleDrawer(
                     textStyle = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold
                     ),
-                    colors = TextFieldDefaults.textFieldColors(
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-                        containerColor = Color.Transparent,
-                        cursorColor = MaterialTheme.colorScheme.primary
-                    )
+                    colors = transparentTextInputColors()
                 )
             } else {
                 Text(

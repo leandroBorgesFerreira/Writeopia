@@ -2,7 +2,7 @@ package com.github.leandroborgesferreira.storyteller.drawer.common
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateIntOffset
+import androidx.compose.animation.core.animateIntOffsetAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
@@ -33,7 +33,7 @@ fun SwipeToCommandBox(
     defaultColor: Color = MaterialTheme.colorScheme.background,
     activeColor: Color = MaterialTheme.colorScheme.background,
     state: Boolean,
-    listener: (Boolean) -> Unit,
+    swipeListener: (Boolean) -> Unit,
     content: @Composable () -> Unit
 ) {
     var isOnEditMode by remember { mutableStateOf(state) }
@@ -50,17 +50,19 @@ fun SwipeToCommandBox(
         if (isEdit) activeColor else defaultColor
     }
 
-    val animatedOffset by transition.animateIntOffset(
-        transitionSpec = {
+    val animatedOffset by animateIntOffsetAsState(
+        targetValue = IntOffset(swipeOffset.roundToInt(), 0),
+        animationSpec =
             spring(
                 dampingRatio = Spring.DampingRatioMediumBouncy,
                 visibilityThreshold = IntOffset(1, 1)
             )
-        },
+        ,
         label = "offsetAnimation",
-    ) { isEdit ->
-        if (isEdit) IntOffset(0, 0) else IntOffset(swipeOffset.roundToInt(), 0)
-    }
+        finishedListener = {
+            swipeListener(isOnEditMode)
+        }
+    )
 
     Box(modifier = Modifier.padding(horizontal = 6.dp)) {
         Box(modifier = modifier
@@ -86,16 +88,16 @@ fun SwipeToCommandBox(
                         dragging = false
                     },
                     onDragEnd = {
+                        dragging = false
+
                         if (swipeOffset.absoluteValue > 40) {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             isOnEditMode = !isOnEditMode
-
-                            listener(isOnEditMode)
                         }
 
                         swipeOffset = 0F
-                        dragging = false
-                    })
+                    }
+                )
             }
         ) {
             content()

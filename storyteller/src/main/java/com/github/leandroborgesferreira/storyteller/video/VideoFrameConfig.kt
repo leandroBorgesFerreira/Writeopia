@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storyteller
+package com.github.leandroborgesferreira.storyteller.video
 
 import android.content.Context
 import coil.Coil

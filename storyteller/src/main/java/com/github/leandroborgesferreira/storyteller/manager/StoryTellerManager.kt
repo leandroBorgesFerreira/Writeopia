@@ -21,9 +21,12 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
 import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizationMap
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -48,7 +51,11 @@ class StoryTellerManager(
         ),
         stepsNormalizer = stepsNormalizer
     ),
-    private val focusHandler: FocusHandler = FocusHandler()
+    private val focusHandler: FocusHandler = FocusHandler(),
+    private val coroutineScope: CoroutineScope = CoroutineScope(
+        SupervisorJob() + Dispatchers.Main.immediate
+    ),
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
@@ -63,18 +70,8 @@ class StoryTellerManager(
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
 
-//    val toDraw = currentStory.map { storyState ->
-//        val focus = storyState.focusId
-//        val toDrawStories = storyState.stories.mapValues { (position, storyStep) ->
-//            DrawStory(storyStep, _positionsOnEdit.value.contains(position))
-//        }
-//
-//        DrawState(toDrawStories, focus)
-//    }
-
     @OptIn(ExperimentalCoroutinesApi::class)
     val toDraw = _positionsOnEdit.flatMapLatest { positions ->
-        Log.d("Manager", "new edit positions: ${positions.joinToString()}")
         currentStory.map { storyState ->
             val focus = storyState.focusId
 
@@ -89,12 +86,8 @@ class StoryTellerManager(
     private val isOnSelection: Boolean
         get() = _positionsOnEdit.value.isNotEmpty()
 
-    fun saveOnStoryChanges(
-        coroutineScope: CoroutineScope,
-        documentId: String,
-        documentRepository: DocumentRepository
-    ) {
-        coroutineScope.launch(Dispatchers.IO) {
+    fun saveOnStoryChanges(documentId: String, documentRepository: DocumentRepository) {
+        coroutineScope.launch(dispatcher) {
             _currentStory.map { storyState ->
                 storyState.stories
             }.collectLatest { content ->
@@ -121,14 +114,16 @@ class StoryTellerManager(
 
     //Todo: Add unit test fot this!!
     fun nextFocusOrCreate(position: Int) {
-        val storyMap = _currentStory.value.stories
-        val nextFocus = focusHandler.findNextFocus(position, _currentStory.value.stories)
-        if (nextFocus != null) {
-            val (nextPosition, storyStep) = nextFocus
-            val mutable = storyMap.toMutableMap()
-            mutable[nextPosition] = storyStep.copy(localId = UUID.randomUUID().toString())
-            _currentStory.value =
-                _currentStory.value.copy(stories = mutable, focusId = storyStep.id)
+        coroutineScope.launch(dispatcher) {
+            val storyMap = _currentStory.value.stories
+            val nextFocus = focusHandler.findNextFocus(position, _currentStory.value.stories)
+            if (nextFocus != null) {
+                val (nextPosition, storyStep) = nextFocus
+                val mutable = storyMap.toMutableMap()
+                mutable[nextPosition] = storyStep.copy(localId = UUID.randomUUID().toString())
+                _currentStory.value =
+                    _currentStory.value.copy(stories = mutable, focusId = storyStep.id)
+            }
         }
     }
 
@@ -197,25 +192,28 @@ class StoryTellerManager(
             cancelSelection()
         }
 
-        contentHandler.onLineBreak(_currentStory.value.stories, lineBreakInfo)
-            ?.let { (info, newState) ->
-                // Todo: Fix this when the inner position are completed
-                backStackManager.addAction(AddStoryUnit(info.second, position = info.first))
+        coroutineScope.launch(dispatcher) {
+            contentHandler.onLineBreak(_currentStory.value.stories, lineBreakInfo)
+                ?.let { (info, newState) ->
+                    // Todo: Fix this when the inner position are completed
+                    backStackManager.addAction(AddStoryUnit(info.second, position = info.first))
 
-                _currentStory.value = newState
-                _scrollToPosition.value = info.first
-            }
+                    _currentStory.value = newState
+                    _scrollToPosition.value = info.first
+                }
+        }
     }
 
     fun onSelected(isSelected: Boolean, position: Int) {
-        if (_currentStory.value.stories[position] != null) {
-            val newOnEdit = if (isSelected) {
-                _positionsOnEdit.value + position
-            } else {
-                _positionsOnEdit.value - position
+        coroutineScope.launch(dispatcher) {
+            if (_currentStory.value.stories[position] != null) {
+                val newOnEdit = if (isSelected) {
+                    _positionsOnEdit.value + position
+                } else {
+                    _positionsOnEdit.value - position
+                }
+                _positionsOnEdit.value = newOnEdit
             }
-
-            _positionsOnEdit.value = newOnEdit
         }
     }
 
@@ -244,7 +242,9 @@ class StoryTellerManager(
     override fun undo() {
         when (val backAction = backStackManager.undo()) {
             is DeleteInfo -> {
-                _currentStory.value = revertDelete(backAction)
+                coroutineScope.launch(dispatcher) {
+                    _currentStory.value = revertDelete(backAction)
+                }
             }
 
             is AddStoryUnit -> {
@@ -252,17 +252,19 @@ class StoryTellerManager(
             }
 
             is BulkDelete -> {
-                val newState = contentHandler.addNewContentBulk(
-                    _currentStory.value.stories,
-                    backAction.deletedUnits,
-                    addInBetween = {
-                        StoryStep(type = StoryType.SPACE.type)
+                coroutineScope.launch(dispatcher) {
+                    val newState = contentHandler.addNewContentBulk(
+                        _currentStory.value.stories,
+                        backAction.deletedUnits,
+                        addInBetween = {
+                            StoryStep(type = StoryType.SPACE.type)
+                        }
+                    ).let { newStories ->
+                        StoryState(stepsNormalizer(newStories.toEditState()))
                     }
-                ).let { newStories ->
-                    StoryState(stepsNormalizer(newStories.toEditState()))
-                }
 
-                _currentStory.value = newState
+                    _currentStory.value = newState
+                }
             }
 
             is AddText -> {
@@ -304,27 +306,28 @@ class StoryTellerManager(
 
 
     fun onDelete(deleteInfo: DeleteInfo) {
-        contentHandler.deleteStory(deleteInfo, _currentStory.value.stories)?.let { newState ->
-            _currentStory.value = newState
-        }
+        coroutineScope.launch(dispatcher) {
+            contentHandler.deleteStory(deleteInfo, _currentStory.value.stories)?.let { newState ->
+                _currentStory.value = newState
+            }
 
-        backStackManager.addAction(deleteInfo)
+            backStackManager.addAction(deleteInfo)
+        }
     }
 
     fun deleteSelection() {
-        val (newStories, deletedStories) = contentHandler.bulkDeletion(
-            _positionsOnEdit.value,
-            _currentStory.value.stories
-        )
+        coroutineScope.launch(dispatcher) {
+            val (newStories, deletedStories) = contentHandler.bulkDeletion(
+                _positionsOnEdit.value,
+                _currentStory.value.stories
+            )
 
-//        Log.d("manager", "deleted: ${deletedStories.values.joinToString { it.text.toString() }} " +
-//                "positions: ${_positionsOnEdit.value.joinToString { it.toString() }}")
+            backStackManager.addAction(BulkDelete(deletedStories))
+            _positionsOnEdit.value = emptySet()
 
-        backStackManager.addAction(BulkDelete(deletedStories))
-        _positionsOnEdit.value = emptySet()
-
-        _currentStory.value =
-            _currentStory.value.copy(stories = newStories)
+            _currentStory.value =
+                _currentStory.value.copy(stories = newStories)
+        }
     }
 
     private fun updateStory(position: Int, newStep: StoryStep, focusId: String? = null) {
@@ -363,11 +366,13 @@ class StoryTellerManager(
     }
 
     private fun revertAddStory(addStoryUnit: AddStoryUnit) {
-        contentHandler.deleteStory(
-            DeleteInfo(addStoryUnit.storyUnit, position = addStoryUnit.position),
-            _currentStory.value.stories
-        )?.let { newState ->
-            _currentStory.value = newState
+        coroutineScope.launch(dispatcher) {
+            contentHandler.deleteStory(
+                DeleteInfo(addStoryUnit.storyUnit, position = addStoryUnit.position),
+                _currentStory.value.stories
+            )?.let { newState ->
+                _currentStory.value = newState
+            }
         }
     }
 

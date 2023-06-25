@@ -18,7 +18,7 @@ import br.com.leandroferreira.app_sample.screens.note.NoteDetailsScreen
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModel
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModelFactory
 import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
-import com.github.leandroborgesferreira.storyteller.VideoFrameConfig
+import com.github.leandroborgesferreira.storyteller.video.VideoFrameConfig
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepositoryImpl
