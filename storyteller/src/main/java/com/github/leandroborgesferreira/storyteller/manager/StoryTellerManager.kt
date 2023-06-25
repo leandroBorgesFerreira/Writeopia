@@ -24,6 +24,7 @@ import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -49,7 +50,9 @@ class StoryTellerManager(
         stepsNormalizer = stepsNormalizer
     ),
     private val focusHandler: FocusHandler = FocusHandler(),
-    private val coroutineScope: CoroutineScope
+    private val coroutineScope: CoroutineScope = CoroutineScope(
+        SupervisorJob() + Dispatchers.Main.immediate
+    )
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
@@ -64,18 +67,8 @@ class StoryTellerManager(
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
 
-//    val toDraw = currentStory.map { storyState ->
-//        val focus = storyState.focusId
-//        val toDrawStories = storyState.stories.mapValues { (position, storyStep) ->
-//            DrawStory(storyStep, _positionsOnEdit.value.contains(position))
-//        }
-//
-//        DrawState(toDrawStories, focus)
-//    }
-
     @OptIn(ExperimentalCoroutinesApi::class)
     val toDraw = _positionsOnEdit.flatMapLatest { positions ->
-        Log.d("Manager", "new edit positions: ${positions.joinToString()}")
         currentStory.map { storyState ->
             val focus = storyState.focusId
 
@@ -90,11 +83,7 @@ class StoryTellerManager(
     private val isOnSelection: Boolean
         get() = _positionsOnEdit.value.isNotEmpty()
 
-    fun saveOnStoryChanges(
-        coroutineScope: CoroutineScope,
-        documentId: String,
-        documentRepository: DocumentRepository
-    ) {
+    fun saveOnStoryChanges(documentId: String, documentRepository: DocumentRepository) {
         coroutineScope.launch(Dispatchers.IO) {
             _currentStory.map { storyState ->
                 storyState.stories

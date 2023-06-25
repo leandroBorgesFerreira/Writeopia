@@ -57,12 +57,7 @@ class NoteDetailsViewModel(
     fun createNewNote(documentId: String, title: String) {
         if (storyTellerManager.isInitialized()) return
 
-        storyTellerManager.saveOnStoryChanges(
-            viewModelScope,
-            documentId,
-            documentRepository
-        )
-
+        storyTellerManager.saveOnStoryChanges(documentId, documentRepository)
         storyTellerManager.newStory()
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -88,11 +83,7 @@ class NoteDetailsViewModel(
             _documentState.value = document
 
             if (content != null) {
-                storyTellerManager.saveOnStoryChanges(
-                    viewModelScope,
-                    documentId,
-                    documentRepository
-                )
+                storyTellerManager.saveOnStoryChanges(documentId, documentRepository)
                 storyTellerManager.initStories(content)
             }
         }

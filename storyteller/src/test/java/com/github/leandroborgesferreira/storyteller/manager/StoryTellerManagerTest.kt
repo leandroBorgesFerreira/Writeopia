@@ -653,7 +653,7 @@ class StoryTellerManagerTest {
 
     @Test
     fun `it should be possible to delete selected messages`() = runTest {
-        val storyManager = StoryTellerManager()
+        val storyManager = StoryTellerManager(coroutineScope = this)
         storyManager.initStories(messagesRepo.history())
 
         val selectionCount = 3
