@@ -122,8 +122,8 @@ fun BottomScreen(noteDetailsViewModel: NoteDetailsViewModel) {
         targetState = editState,
         label = "bottomSheetAnimation",
         transitionSpec = {
-            fadeIn() + slideInVertically(
-                animationSpec = tween(),
+            slideInVertically(
+                animationSpec = tween(durationMillis = 100),
                 initialOffsetY = { fullHeight -> fullHeight }
             ) with fadeOut(animationSpec = tween())
         }

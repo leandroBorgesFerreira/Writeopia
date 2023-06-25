@@ -1,9 +1,8 @@
 package com.github.leandroborgesferreira.storyteller.drawer.common
 
-import android.os.Handler
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateIntOffset
+import androidx.compose.animation.core.animateIntOffsetAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
@@ -51,17 +50,19 @@ fun SwipeToCommandBox(
         if (isEdit) activeColor else defaultColor
     }
 
-    val animatedOffset by transition.animateIntOffset(
-        transitionSpec = {
+    val animatedOffset by animateIntOffsetAsState(
+        targetValue = IntOffset(swipeOffset.roundToInt(), 0),
+        animationSpec =
             spring(
                 dampingRatio = Spring.DampingRatioMediumBouncy,
                 visibilityThreshold = IntOffset(1, 1)
             )
-        },
+        ,
         label = "offsetAnimation",
-    ) { isEdit ->
-        if (isEdit) IntOffset(0, 0) else IntOffset(swipeOffset.roundToInt(), 0)
-    }
+        finishedListener = {
+            swipeListener(isOnEditMode)
+        }
+    )
 
     Box(modifier = Modifier.padding(horizontal = 6.dp)) {
         Box(modifier = modifier
@@ -88,12 +89,10 @@ fun SwipeToCommandBox(
                     },
                     onDragEnd = {
                         dragging = false
-                        
+
                         if (swipeOffset.absoluteValue > 40) {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             isOnEditMode = !isOnEditMode
-
-                            swipeListener(isOnEditMode)
                         }
 
                         swipeOffset = 0F
