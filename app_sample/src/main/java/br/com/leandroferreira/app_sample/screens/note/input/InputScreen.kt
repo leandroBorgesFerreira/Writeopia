@@ -1,5 +1,6 @@
 package br.com.leandroferreira.app_sample.screens.note.input
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -28,6 +29,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun InputScreen(
+    modifier: Modifier = Modifier,
     onBackPress: () -> Unit = {},
     onForwardPress: () -> Unit = {},
     canUndoState: StateFlow<Boolean>,
@@ -37,9 +39,10 @@ fun InputScreen(
     val canRedo by canRedoState.collectAsStateWithLifecycle()
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .height(50.dp),
+            .height(50.dp)
+            .background(Color.DarkGray),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(modifier = Modifier.fillMaxSize()) {

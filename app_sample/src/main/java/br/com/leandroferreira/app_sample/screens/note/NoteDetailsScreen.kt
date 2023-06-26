@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -123,15 +124,18 @@ fun BottomScreen(noteDetailsViewModel: NoteDetailsViewModel) {
         label = "bottomSheetAnimation",
         transitionSpec = {
             slideInVertically(
-                animationSpec = tween(durationMillis = 100),
+                animationSpec = tween(durationMillis = 130),
                 initialOffsetY = { fullHeight -> fullHeight }
-            ) with fadeOut(animationSpec = tween())
+            ) + fadeIn() with slideOutVertically(
+                animationSpec = tween(durationMillis = 130),
+                        targetOffsetY = { fullHeight -> fullHeight }
+            )
         }
     ) { isEdit ->
-        if (isEdit) {
-            val topCorner = CornerSize(10.dp)
-            val bottomCorner = CornerSize(0.dp)
+        val topCorner = CornerSize(10.dp)
+        val bottomCorner = CornerSize(0.dp)
 
+        if (isEdit) {
             EditionScreen(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -148,6 +152,16 @@ fun BottomScreen(noteDetailsViewModel: NoteDetailsViewModel) {
             )
         } else {
             InputScreen(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(
+                        RoundedCornerShape(
+                            topCorner,
+                            topCorner,
+                            bottomCorner,
+                            bottomCorner
+                        )
+                    ),
                 onBackPress = noteDetailsViewModel::undo,
                 onForwardPress = noteDetailsViewModel::redo,
                 canUndoState = noteDetailsViewModel.canUndo,
