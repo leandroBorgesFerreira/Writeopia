@@ -7,4 +7,6 @@
     <string name="redo">Redo</string>
     <string name="untitled">untitled</string>
     <string name="note">Note</string>
+    <string name="more_options">More options</string>
+    <string name="staggered_card">staggered card</string>
 </resources>

@@ -1,32 +1,58 @@
 package br.com.leandroferreira.app_sample.screens.menu.ui.screen
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.with
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Dashboard
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.leandroferreira.app_sample.R
@@ -39,11 +65,54 @@ import com.github.leandroborgesferreira.storyteller.drawer.content.CheckItemDraw
 import com.github.leandroborgesferreira.storyteller.drawer.content.MessageDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 
+
+private fun Modifier.optionBackground(): Modifier =
+    this
+        .padding(8.dp)
+        .clip(RoundedCornerShape(4.dp))
+        .background(Color.Cyan)
+
+private fun previewDrawers(): Map<String, StoryUnitDrawer> =
+    mapOf(
+        StoryType.MESSAGE.type to MessageDrawer(
+            customBackgroundColor = Color.Transparent,
+            clickable = false
+        ),
+        StoryType.CHECK_ITEM.type to CheckItemDrawer(
+            customBackgroundColor = Color.Transparent,
+            clickable = false
+        )
+    )
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChooseNoteScreen(chooseNoteViewModel: ChooseNoteViewModel, navigateToNote: (String?) -> Unit) {
+fun ChooseNoteScreen(
+    chooseNoteViewModel: ChooseNoteViewModel,
+    navigateToNote: (String?) -> Unit
+) {
     chooseNoteViewModel.requestDocuments()
 
+    var configOptionsAppears by remember { mutableStateOf(false) }
+
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = "StoryTeller")
+                },
+                actions = {
+                    Icon(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .clickable {
+                                configOptionsAppears = !configOptionsAppears
+                            },
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = stringResource(R.string.more_options)
+                    )
+                }
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = { navigateToNote(null) }, content = {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add note")
@@ -53,70 +122,165 @@ fun ChooseNoteScreen(chooseNoteViewModel: ChooseNoteViewModel, navigateToNote: (
         Content(
             chooseNoteViewModel = chooseNoteViewModel,
             navigateToNote = navigateToNote,
-            paddingValues
+            paddingValues = paddingValues,
+            editState = configOptionsAppears
         )
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun Content(
-    chooseNoteViewModel: ChooseNoteViewModel,
-    navigateToNote: (String) -> Unit,
-    paddingValues: PaddingValues
-) {
-    when (val documents = chooseNoteViewModel.documentsState.collectAsStateWithLifecycle().value) {
-        is ResultData.Complete -> {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                val data = documents.data
-
-                if (data.isEmpty()) {
-                    MockDataScreen(chooseNoteViewModel)
-                } else {
-                    LazyColumn(content = {
-                        items(documents.data) { document ->
-                            DocumentItem(document, navigateToNote, previewDrawers())
-                        }
-                    })
-                }
-            }
+private fun BoxScope.ConfigurationsMenu(editState: Boolean) {
+    AnimatedContent(
+        modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .fillMaxWidth(),
+        targetState = editState,
+        label = "configurationsMenuAnimation",
+        transitionSpec = {
+            slideInVertically(
+//                animationSpec = tween(),
+                initialOffsetY = { fullHeight -> fullHeight }
+            ) with slideOutVertically(
+                animationSpec = tween(),
+            )
         }
+    ) { isEdit ->
+        if (isEdit) {
+            val topCorner = CornerSize(24.dp)
+            val bottomCorner = CornerSize(0.dp)
 
-        is ResultData.Error -> {
-            Box(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(
+                        RoundedCornerShape(
+                            topCorner,
+                            topCorner,
+                            bottomCorner,
+                            bottomCorner
+                        )
+                    )
+                    .background(MaterialTheme.colorScheme.primary)
+                    .padding(16.dp),
+            ) {
                 Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = stringResource(R.string.error_loading_notes)
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Ordering",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
-            }
-        }
 
-        is ResultData.Loading, is ResultData.Idle -> {
-            Box(modifier = Modifier.fillMaxSize()) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                OrderOptions()
+
+                Spacer(modifier = Modifier.height(90.dp))
             }
+        } else {
+            Box(
+                modifier = Modifier
+                    .height(0.dp)
+                    .fillMaxWidth()
+            )
         }
     }
 }
 
-private fun previewDrawers(): Map<String, StoryUnitDrawer> =
-    mapOf(
-        StoryType.MESSAGE.type to MessageDrawer(customBackgroundColor = Color.Transparent, clickable = false),
-        StoryType.CHECK_ITEM.type to CheckItemDrawer(customBackgroundColor = Color.Transparent, clickable = false)
-    )
+@Composable
+private fun OrderOptions() {
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Image(
+            modifier = Modifier
+                .optionBackground()
+                .weight(1F),
+            imageVector = Icons.Default.Dashboard,
+            contentDescription = stringResource(R.string.staggered_card)
+        )
+
+        Image(
+            modifier = Modifier
+                .optionBackground()
+                .weight(1F),
+            imageVector = Icons.Default.Dashboard,
+            contentDescription = stringResource(R.string.staggered_card)
+        )
+
+        Image(
+            modifier = Modifier
+                .optionBackground()
+                .weight(1F),
+            imageVector = Icons.Default.Dashboard,
+            contentDescription = stringResource(R.string.staggered_card)
+        )
+    }
+}
+
 
 @Composable
-fun DocumentItem(
+private fun Content(
+    chooseNoteViewModel: ChooseNoteViewModel,
+    navigateToNote: (String) -> Unit,
+    paddingValues: PaddingValues,
+    editState: Boolean
+) {
+    Box(
+        modifier = Modifier
+            .padding(paddingValues)
+            .fillMaxSize()
+    ) {
+        when (val documents =
+            chooseNoteViewModel.documentsState.collectAsStateWithLifecycle().value) {
+            is ResultData.Complete -> {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    val data = documents.data
+
+                    if (data.isEmpty()) {
+                        MockDataScreen(chooseNoteViewModel)
+                    } else {
+                        LazyColumn(content = {
+                            items(documents.data) { document ->
+                                DocumentItem(document, navigateToNote, previewDrawers())
+                            }
+                        })
+                    }
+                }
+            }
+
+            is ResultData.Error -> {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        modifier = Modifier.align(Alignment.Center),
+                        text = stringResource(R.string.error_loading_notes)
+                    )
+                }
+            }
+
+            is ResultData.Loading, is ResultData.Idle -> {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+            }
+        }
+
+        ConfigurationsMenu(editState = editState)
+    }
+}
+
+@Composable
+private fun DocumentItem(
     documentCard: DocumentCard,
     documentClick: (String) -> Unit,
     drawers: Map<String, StoryUnitDrawer>,
 ) {
-    Box(modifier = Modifier.padding(8.dp)) {
-        Card(modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-                documentClick(documentCard.documentId)
-            }) {
-            Column(modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp)) {
+    Box(modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    documentClick(documentCard.documentId)
+                },
+            shape = RoundedCornerShape(24.dp)
+        ) {
+            Column(modifier = Modifier.padding(20.dp)) {
                 Text(
                     modifier = Modifier.padding(bottom = 8.dp),
                     text = documentCard.title,
@@ -139,7 +303,7 @@ fun DocumentItem(
 
 
 @Composable
-fun MockDataScreen(chooseNoteViewModel: ChooseNoteViewModel) {
+private fun MockDataScreen(chooseNoteViewModel: ChooseNoteViewModel) {
     val context = LocalContext.current
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -159,3 +323,10 @@ fun MockDataScreen(chooseNoteViewModel: ChooseNoteViewModel) {
         }
     }
 }
+
+@Preview
+@Composable
+fun OrderOptions_Preview() {
+    OrderOptions()
+}
+
