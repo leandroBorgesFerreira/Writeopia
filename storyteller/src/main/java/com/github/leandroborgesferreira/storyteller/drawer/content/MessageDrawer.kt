@@ -116,7 +116,7 @@ class MessageDrawer(
                 } else {
                     Text(
                         text = step.text ?: "",
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+                        modifier = Modifier.padding(vertical = 5.dp),
                     )
                 }
             }

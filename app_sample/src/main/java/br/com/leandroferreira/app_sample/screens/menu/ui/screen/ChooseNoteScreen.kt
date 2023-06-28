@@ -1,9 +1,11 @@
 package br.com.leandroferreira.app_sample.screens.menu.ui.screen
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -15,7 +17,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -59,6 +67,8 @@ import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.CheckItemDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.MessageDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.preview.CheckItemPreviewDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.preview.MessagePreviewDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 
 
@@ -71,14 +81,8 @@ private fun Modifier.orderConfigModifier(clickable: () -> Unit): Modifier =
 
 private fun previewDrawers(): Map<String, StoryUnitDrawer> =
     mapOf(
-        StoryType.MESSAGE.type to MessageDrawer(
-            customBackgroundColor = Color.Transparent,
-            clickable = false
-        ),
-        StoryType.CHECK_ITEM.type to CheckItemDrawer(
-            customBackgroundColor = Color.Transparent,
-            clickable = false
-        )
+        StoryType.MESSAGE.type to MessagePreviewDrawer(),
+        StoryType.CHECK_ITEM.type to CheckItemPreviewDrawer()
     )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -159,7 +163,7 @@ private fun BoxScope.ConfigurationsMenu(editState: Boolean) {
                     color = MaterialTheme.colorScheme.onPrimary
                 )
 
-                OrderOptions()
+                ArrangementOptions()
 
                 Spacer(modifier = Modifier.height(90.dp))
             }
@@ -174,7 +178,7 @@ private fun BoxScope.ConfigurationsMenu(editState: Boolean) {
 }
 
 @Composable
-private fun OrderOptions() {
+private fun ArrangementOptions() {
     Row(modifier = Modifier.fillMaxWidth()) {
         Image(
             modifier = Modifier
@@ -188,16 +192,8 @@ private fun OrderOptions() {
             modifier = Modifier
                 .orderConfigModifier(clickable = {})
                 .weight(1F),
-            imageVector = Icons.Filled.GridView,
-            contentDescription = stringResource(R.string.staggered_card)
-        )
-
-        Image(
-            modifier = Modifier
-                .orderConfigModifier(clickable = {})
-                .weight(1F),
             imageVector = Icons.Outlined.List,
-            contentDescription = stringResource(R.string.staggered_card)
+            contentDescription = stringResource(R.string.note_list)
         )
     }
 }
@@ -215,42 +211,75 @@ private fun Content(
             .padding(paddingValues)
             .fillMaxSize()
     ) {
-        when (val documents =
-            chooseNoteViewModel.documentsState.collectAsStateWithLifecycle().value) {
-            is ResultData.Complete -> {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    val data = documents.data
+        Notes(chooseNoteViewModel = chooseNoteViewModel, navigateToNote = navigateToNote)
 
-                    if (data.isEmpty()) {
-                        MockDataScreen(chooseNoteViewModel)
-                    } else {
-                        LazyColumn(content = {
-                            items(documents.data) { document ->
-                                DocumentItem(document, navigateToNote, previewDrawers())
-                            }
-                        })
-                    }
-                }
-            }
+        ConfigurationsMenu(editState = editState)
+    }
+}
 
-            is ResultData.Error -> {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Text(
-                        modifier = Modifier.align(Alignment.Center),
-                        text = stringResource(R.string.error_loading_notes)
-                    )
-                }
-            }
+@Composable
+fun Notes(chooseNoteViewModel: ChooseNoteViewModel, navigateToNote: (String) -> Unit) {
+    when (val documents =
+        chooseNoteViewModel.documentsState.collectAsStateWithLifecycle().value) {
+        is ResultData.Complete -> {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                val data = documents.data
 
-            is ResultData.Loading, is ResultData.Idle -> {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                if (data.isEmpty()) {
+                    MockDataScreen(chooseNoteViewModel)
+                } else {
+//                        LazyColumnNotes(documents.data, onDocumentClick = navigateToNote)
+
+                    LazyGridNotes(documents.data, onDocumentClick = navigateToNote)
                 }
             }
         }
 
-        ConfigurationsMenu(editState = editState)
+        is ResultData.Error -> {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Text(
+                    modifier = Modifier.align(Alignment.Center),
+                    text = stringResource(R.string.error_loading_notes)
+                )
+            }
+        }
+
+        is ResultData.Loading, is ResultData.Idle -> {
+            Box(modifier = Modifier.fillMaxSize()) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
+        }
     }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun LazyGridNotes(documents: List<DocumentCard>, onDocumentClick: (String) -> Unit) {
+    LazyVerticalStaggeredGrid(
+        modifier = Modifier.padding(6.dp),
+        columns = StaggeredGridCells.Adaptive(minSize = 200.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        content = {
+            items(documents) { document ->
+                DocumentItem(document, onDocumentClick, previewDrawers())
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun LazyColumnNotes(documents: List<DocumentCard>, onDocumentClick: (String) -> Unit) {
+    LazyVerticalStaggeredGrid(
+        modifier = Modifier.padding(6.dp),
+        columns = StaggeredGridCells.Adaptive(minSize = 200.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        content = {
+            items(documents) { document ->
+                DocumentItem(document, onDocumentClick, previewDrawers())
+            }
+        }
+    )
 }
 
 @Composable
@@ -259,32 +288,29 @@ private fun DocumentItem(
     documentClick: (String) -> Unit,
     drawers: Map<String, StoryUnitDrawer>,
 ) {
-    Box(modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                    documentClick(documentCard.documentId)
-                },
-            shape = RoundedCornerShape(24.dp)
-        ) {
-            Column(modifier = Modifier.padding(20.dp)) {
-                Text(
-                    modifier = Modifier.padding(bottom = 8.dp),
-                    text = documentCard.title,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Start
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                documentClick(documentCard.documentId)
+            },
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(modifier = Modifier.padding(10.dp)) {
+            Text(
+                modifier = Modifier.padding(bottom = 8.dp),
+                text = documentCard.title,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Start
+            )
+
+            documentCard.preview.forEachIndexed { i, storyStep ->
+                drawers[storyStep.type]?.Step(
+                    step = storyStep, drawInfo =
+                    DrawInfo(editable = false, position = i)
                 )
-
-                documentCard.preview.forEachIndexed { i, storyStep ->
-                    drawers[storyStep.type]?.Step(
-                        step = storyStep, drawInfo =
-                        DrawInfo(editable = false, position = i)
-                    )
-                }
             }
-
         }
     }
 }
@@ -314,7 +340,7 @@ private fun MockDataScreen(chooseNoteViewModel: ChooseNoteViewModel) {
 
 @Preview
 @Composable
-fun OrderOptions_Preview() {
-    OrderOptions()
+fun ArrangementOptions_Preview() {
+    ArrangementOptions()
 }
 
