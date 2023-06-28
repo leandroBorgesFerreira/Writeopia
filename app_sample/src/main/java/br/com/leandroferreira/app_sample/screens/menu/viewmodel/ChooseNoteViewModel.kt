@@ -1,16 +1,17 @@
-package br.com.leandroferreira.app_sample.screens.menu
+package br.com.leandroferreira.app_sample.screens.menu.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.leandroferreira.app_sample.extensions.toUiCard
+import br.com.leandroferreira.app_sample.screens.menu.NotesUseCase
 import br.com.leandroferreira.app_sample.screens.menu.ui.dto.DocumentCard
-import com.github.leandroborgesferreira.storyteller.persistence.parse.toModel
 import br.com.leandroferreira.app_sample.utils.ResultData
 import com.github.leandroborgesferreira.storyteller.parse.PreviewParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ChooseNoteViewModel(
@@ -22,6 +23,9 @@ class ChooseNoteViewModel(
         MutableStateFlow(ResultData.Idle())
 
     val documentsState: StateFlow<ResultData<List<DocumentCard>>> = _documentsState
+
+    private val _notesArrangement = MutableStateFlow(NotesArrangement.GRID)
+    val notesArrangement = _notesArrangement.asStateFlow()
 
     fun requestDocuments() {
         if (documentsState.value !is ResultData.Complete) {
@@ -53,6 +57,14 @@ class ChooseNoteViewModel(
 
             _documentsState.value = ResultData.Complete(data)
         }
+    }
+
+    fun listArrangementSelected() {
+        _notesArrangement.value = NotesArrangement.LIST
+    }
+
+    fun gridArrangementSelected() {
+        _notesArrangement.value = NotesArrangement.GRID
     }
 
 }

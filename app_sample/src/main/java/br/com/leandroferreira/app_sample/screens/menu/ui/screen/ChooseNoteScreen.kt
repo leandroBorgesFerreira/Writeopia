@@ -17,9 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -28,7 +25,6 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.GridView
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Dashboard
 import androidx.compose.material.icons.outlined.List
@@ -59,14 +55,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.leandroferreira.app_sample.R
-import br.com.leandroferreira.app_sample.screens.menu.ChooseNoteViewModel
+import br.com.leandroferreira.app_sample.screens.menu.viewmodel.ChooseNoteViewModel
 import br.com.leandroferreira.app_sample.screens.menu.ui.dto.DocumentCard
+import br.com.leandroferreira.app_sample.screens.menu.viewmodel.NotesArrangement
 import br.com.leandroferreira.app_sample.utils.ResultData
 import br.com.leandroferreira.app_sample.views.SlideInBox
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
-import com.github.leandroborgesferreira.storyteller.drawer.content.CheckItemDrawer
-import com.github.leandroborgesferreira.storyteller.drawer.content.MessageDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.CheckItemPreviewDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.MessagePreviewDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
@@ -129,9 +124,8 @@ fun ChooseNoteScreen(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
-private fun BoxScope.ConfigurationsMenu(editState: Boolean) {
+private fun BoxScope.ConfigurationsMenu(editState: Boolean, viewModel: ChooseNoteViewModel) {
     // Todo: Extract to a global use function
     SlideInBox(
         modifier = Modifier.align(Alignment.BottomCenter),
@@ -163,7 +157,10 @@ private fun BoxScope.ConfigurationsMenu(editState: Boolean) {
                     color = MaterialTheme.colorScheme.onPrimary
                 )
 
-                ArrangementOptions()
+                ArrangementOptions(
+                    listOptionClick = viewModel::listArrangementSelected,
+                    gridOptionClick = viewModel::gridArrangementSelected,
+                )
 
                 Spacer(modifier = Modifier.height(90.dp))
             }
@@ -178,11 +175,11 @@ private fun BoxScope.ConfigurationsMenu(editState: Boolean) {
 }
 
 @Composable
-private fun ArrangementOptions() {
+private fun ArrangementOptions(listOptionClick: () -> Unit, gridOptionClick: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth()) {
         Image(
             modifier = Modifier
-                .orderConfigModifier(clickable = {})
+                .orderConfigModifier(clickable = gridOptionClick)
                 .weight(1F),
             imageVector = Icons.Outlined.Dashboard,
             contentDescription = stringResource(R.string.staggered_card)
@@ -190,7 +187,7 @@ private fun ArrangementOptions() {
 
         Image(
             modifier = Modifier
-                .orderConfigModifier(clickable = {})
+                .orderConfigModifier(clickable = listOptionClick)
                 .weight(1F),
             imageVector = Icons.Outlined.List,
             contentDescription = stringResource(R.string.note_list)
@@ -213,7 +210,7 @@ private fun Content(
     ) {
         Notes(chooseNoteViewModel = chooseNoteViewModel, navigateToNote = navigateToNote)
 
-        ConfigurationsMenu(editState = editState)
+        ConfigurationsMenu(editState = editState, chooseNoteViewModel)
     }
 }
 
@@ -228,9 +225,18 @@ fun Notes(chooseNoteViewModel: ChooseNoteViewModel, navigateToNote: (String) -> 
                 if (data.isEmpty()) {
                     MockDataScreen(chooseNoteViewModel)
                 } else {
-//                        LazyColumnNotes(documents.data, onDocumentClick = navigateToNote)
+                    val arrangement by chooseNoteViewModel.notesArrangement
+                        .collectAsStateWithLifecycle()
 
-                    LazyGridNotes(documents.data, onDocumentClick = navigateToNote)
+                    when (arrangement) {
+                        NotesArrangement.GRID -> {
+                            LazyGridNotes(documents.data, navigateToNote)
+                        }
+
+                        NotesArrangement.LIST -> {
+                            LazyColumnNotes(documents.data, navigateToNote)
+                        }
+                    }
                 }
             }
         }
@@ -267,13 +273,11 @@ private fun LazyGridNotes(documents: List<DocumentCard>, onDocumentClick: (Strin
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun LazyColumnNotes(documents: List<DocumentCard>, onDocumentClick: (String) -> Unit) {
-    LazyVerticalStaggeredGrid(
+    LazyColumn(
         modifier = Modifier.padding(6.dp),
-        columns = StaggeredGridCells.Adaptive(minSize = 200.dp),
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
         content = {
             items(documents) { document ->
                 DocumentItem(document, onDocumentClick, previewDrawers())
@@ -341,6 +345,6 @@ private fun MockDataScreen(chooseNoteViewModel: ChooseNoteViewModel) {
 @Preview
 @Composable
 fun ArrangementOptions_Preview() {
-    ArrangementOptions()
+    ArrangementOptions({}, {})
 }
 
