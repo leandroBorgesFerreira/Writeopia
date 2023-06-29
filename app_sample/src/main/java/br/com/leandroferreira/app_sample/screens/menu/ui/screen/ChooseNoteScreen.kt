@@ -203,6 +203,7 @@ private fun DocumentItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(bottom = 6.dp)
             .clickable {
                 documentClick(documentCard.documentId)
             },
