@@ -117,7 +117,11 @@ private fun Content(
     ) {
         Notes(chooseNoteViewModel = chooseNoteViewModel, navigateToNote = navigateToNote)
 
-        ConfigurationsMenu(editState = editState, chooseNoteViewModel)
+        ConfigurationsMenu(
+            editState = editState,
+            listOptionClick = chooseNoteViewModel::listArrangementSelected,
+            gridOptionClick = chooseNoteViewModel::gridArrangementSelected
+        )
     }
 }
 
