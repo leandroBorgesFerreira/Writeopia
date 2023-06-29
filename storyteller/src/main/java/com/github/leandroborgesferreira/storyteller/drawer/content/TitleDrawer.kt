@@ -46,6 +46,9 @@ class TitleDrawer(
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         val focusRequester = remember { FocusRequester() }
+        val titleStyle = MaterialTheme.typography.headlineMedium.copy(
+            fontWeight = FontWeight.Bold
+        )
 
         Column(modifier = containerModifier.clickable {
             focusRequester.requestFocus()
@@ -81,16 +84,12 @@ class TitleDrawer(
                     placeholder = {
                         Text(
                             stringResource(R.string.title),
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                color = Color.Gray,
-                                fontWeight = FontWeight.Bold,
-                            ),
+                            style = titleStyle,
+                            color = Color.Gray
                         )
                     },
-                    textStyle = MaterialTheme.typography.titleLarge.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    colors = transparentTextInputColors()
+                    textStyle = titleStyle,
+                    colors = transparentTextInputColors(),
                 )
             } else {
                 Text(

@@ -12,7 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import br.com.leandroferreira.app_sample.screens.menu.ui.screen.ChooseNoteScreen
-import br.com.leandroferreira.app_sample.screens.menu.ChooseNoteViewModel
+import br.com.leandroferreira.app_sample.screens.menu.viewmodel.ChooseNoteViewModel
 import br.com.leandroferreira.app_sample.screens.menu.NotesUseCase
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsScreen
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModel
