@@ -117,7 +117,12 @@ private fun Content(
     ) {
         Notes(chooseNoteViewModel = chooseNoteViewModel, navigateToNote = navigateToNote)
 
-        ConfigurationsMenu(editState = editState, chooseNoteViewModel)
+        ConfigurationsMenu(
+            editState = editState,
+            listOptionClick = chooseNoteViewModel::listArrangementSelected,
+            gridOptionClick = chooseNoteViewModel::gridArrangementSelected,
+            sortingSelected = chooseNoteViewModel::sortingSelected
+        )
     }
 }
 
@@ -170,7 +175,7 @@ private fun Notes(chooseNoteViewModel: ChooseNoteViewModel, navigateToNote: (Str
 private fun LazyGridNotes(documents: List<DocumentCard>, onDocumentClick: (String) -> Unit) {
     LazyVerticalStaggeredGrid(
         modifier = Modifier.padding(6.dp),
-        columns = StaggeredGridCells.Adaptive(minSize = 200.dp),
+        columns = StaggeredGridCells.Adaptive(minSize = 150.dp),
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         content = {
             items(documents) { document ->

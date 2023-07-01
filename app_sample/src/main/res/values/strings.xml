@@ -10,4 +10,9 @@
     <string name="more_options">More options</string>
     <string name="staggered_card">staggered card</string>
     <string name="note_list">note list</string>
+    <string name="arrangement">Arrangement</string>
+    <string name="sorting">Sorting</string>
+    <string name="last_updated">Last updated</string>
+    <string name="last_created">Create</string>
+    <string name="name">Name</string>
 </resources>

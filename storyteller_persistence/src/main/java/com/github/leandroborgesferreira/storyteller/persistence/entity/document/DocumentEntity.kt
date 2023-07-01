@@ -7,10 +7,14 @@ import java.util.Date
 
 internal const val DOCUMENT_ENTITY: String = "DOCUMENT_ENTITY_TABLE"
 
+internal const val TITLE: String = "title"
+internal const val CREATED_AT: String = "created_at"
+internal const val LAST_UPDATED_AT: String = "last_updated_at"
+
 @Entity(tableName = DOCUMENT_ENTITY)
 data class DocumentEntity(
     @PrimaryKey val id: String,
-    @ColumnInfo("title") val title: String,
-    @ColumnInfo("created_at") val createdAt: Date,
-    @ColumnInfo("last_updated_at") val lastUpdatedAt: Date,
+    @ColumnInfo(TITLE) val title: String,
+    @ColumnInfo(CREATED_AT) val createdAt: Date,
+    @ColumnInfo(LAST_UPDATED_AT) val lastUpdatedAt: Date,
 )

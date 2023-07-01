@@ -1,27 +1,25 @@
 package com.github.leandroborgesferreira.storyteller.persistence.repository
 
 import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
-import com.github.leandroborgesferreira.storyteller.persistence.parse.toEntity
-import com.github.leandroborgesferreira.storyteller.persistence.parse.toModel
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.persistence.dao.DocumentDao
 import com.github.leandroborgesferreira.storyteller.persistence.dao.StoryUnitDao
 import com.github.leandroborgesferreira.storyteller.persistence.entity.story.StoryUnitEntity
+import com.github.leandroborgesferreira.storyteller.persistence.parse.toEntity
+import com.github.leandroborgesferreira.storyteller.persistence.parse.toModel
 
-/**
- * Evaluate to move this class to persistence module
- */
 class DocumentRepositoryImpl(
     private val documentDao: DocumentDao,
     private val storyUnitDao: StoryUnitDao
 ) : DocumentRepository {
 
-    suspend fun loadDocuments(): List<Document> =
-        documentDao.loadDocumentWithContent()?.map { (documentEntity, storyEntity) ->
-            val content = loadInnerSteps(storyEntity)
-            documentEntity.toModel(content)
-        } ?: emptyList()
+    suspend fun loadDocuments(orderBy: String): List<Document> =
+        documentDao.loadDocumentWithContent(orderBy)
+            ?.map { (documentEntity, storyEntity) ->
+                val content = loadInnerSteps(storyEntity)
+                documentEntity.toModel(content)
+            } ?: emptyList()
 
     suspend fun loadDocumentBy(id: String): Document? =
         documentDao.loadDocumentWithContentById(id)
