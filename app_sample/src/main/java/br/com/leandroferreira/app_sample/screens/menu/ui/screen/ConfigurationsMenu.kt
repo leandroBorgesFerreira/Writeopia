@@ -99,14 +99,6 @@ private fun ArrangementOptions(listOptionClick: () -> Unit, gridOptionClick: () 
             .fillMaxWidth()
             .padding(INNER_PADDING.dp)
     ) {
-//        Image(
-//            modifier = Modifier
-//                .orderConfigModifier(clickable = gridOptionClick)
-//                .weight(1F),
-//            imageVector = Icons.Outlined.Dashboard,
-//            contentDescription = stringResource(R.string.staggered_card),
-//        )
-
         Icon(
             modifier = Modifier
                 .orderConfigModifier(clickable = gridOptionClick)

@@ -1,5 +1,6 @@
 package br.com.leandroferreira.app_sample.navigation
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,17 +12,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import br.com.leandroferreira.app_sample.screens.menu.NotesUseCase
 import br.com.leandroferreira.app_sample.screens.menu.ui.screen.ChooseNoteScreen
 import br.com.leandroferreira.app_sample.screens.menu.viewmodel.ChooseNoteViewModel
-import br.com.leandroferreira.app_sample.screens.menu.NotesUseCase
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsScreen
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModel
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModelFactory
 import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
-import com.github.leandroborgesferreira.storyteller.video.VideoFrameConfig
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepositoryImpl
+import com.github.leandroborgesferreira.storyteller.video.VideoFrameConfig
 
 class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +41,10 @@ fun NavigationGraph() {
     val navController = rememberNavController()
     val context = LocalContext.current
     val database = StoryTellerDatabase.database(context)
+    val sharedPreferences = context.getSharedPreferences(
+        "br.com.leandroferreira.storyteller.preferences",
+        Context.MODE_PRIVATE
+    )
 
     ApplicationComposeTheme {
 
@@ -50,7 +55,7 @@ fun NavigationGraph() {
                     database.storyUnitDao()
                 )
 
-                val notesUseCase = NotesUseCase(repository)
+                val notesUseCase = NotesUseCase(repository, sharedPreferences)
                 val chooseNoteViewModel = ChooseNoteViewModel(notesUseCase)
 
                 ChooseNoteScreen(chooseNoteViewModel = chooseNoteViewModel) { noteId ->
