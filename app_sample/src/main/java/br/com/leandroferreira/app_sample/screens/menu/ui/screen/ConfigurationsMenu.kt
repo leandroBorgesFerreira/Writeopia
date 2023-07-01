@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.leandroferreira.app_sample.R
 import br.com.leandroferreira.app_sample.views.SlideInBox
+import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
 
 private const val INNER_PADDING = 3
 
@@ -38,7 +39,8 @@ private const val INNER_PADDING = 3
 internal fun BoxScope.ConfigurationsMenu(
     editState: Boolean,
     listOptionClick: () -> Unit,
-    gridOptionClick: () -> Unit
+    gridOptionClick: () -> Unit,
+    sortingSelected: (OrderBy) -> Unit,
 ) {
     // Todo: Extract to a global use function
     SlideInBox(
@@ -66,7 +68,7 @@ internal fun BoxScope.ConfigurationsMenu(
             ) {
                 ArrangementSection(listOptionClick, gridOptionClick)
 
-                SortingSection()
+                SortingSection(sortingSelected = sortingSelected)
 
                 Spacer(modifier = Modifier.height(90.dp))
             }
@@ -132,7 +134,7 @@ private fun ArrangementSection(listOptionClick: () -> Unit, gridOptionClick: () 
 }
 
 @Composable
-private fun SortingSection() {
+private fun SortingSection(sortingSelected: (OrderBy) -> Unit) {
     SectionText(text = stringResource(R.string.sorting))
     val optionStyle = MaterialTheme.typography.bodyLarge.copy(
         color = MaterialTheme.colorScheme.onPrimary,
@@ -148,7 +150,7 @@ private fun SortingSection() {
     ) {
         Text(
             modifier = Modifier
-                .clickable { }
+                .clickable { sortingSelected(OrderBy.UPDATE) }
                 .sortingOptionModifier(),
             text = stringResource(R.string.last_updated),
             style = optionStyle,
@@ -158,9 +160,9 @@ private fun SortingSection() {
 
         Text(
             modifier = Modifier
-                .clickable { }
+                .clickable { sortingSelected(OrderBy.CREATE) }
                 .sortingOptionModifier(),
-            text = stringResource(R.string.last_edited),
+            text = stringResource(R.string.last_created),
             style = optionStyle,
         )
 
@@ -168,7 +170,7 @@ private fun SortingSection() {
 
         Text(
             modifier = Modifier
-                .clickable { }
+                .clickable { sortingSelected(OrderBy.NAME) }
                 .sortingOptionModifier(),
             text = stringResource(R.string.name),
             style = optionStyle,
@@ -190,7 +192,7 @@ private fun Modifier.orderConfigModifier(clickable: () -> Unit): Modifier =
 @Composable
 private fun ConfigurationsMenu_Preview() {
     Box(modifier = Modifier.fillMaxWidth()) {
-        ConfigurationsMenu(true, {}, {})
+        ConfigurationsMenu(true, {}, {}, {})
     }
 }
 

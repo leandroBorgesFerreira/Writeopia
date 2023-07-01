@@ -13,6 +13,6 @@
     <string name="arrangement">Arrangement</string>
     <string name="sorting">Sorting</string>
     <string name="last_updated">Last updated</string>
-    <string name="last_edited">Last edited</string>
+    <string name="last_created">Create</string>
     <string name="name">Name</string>
 </resources>

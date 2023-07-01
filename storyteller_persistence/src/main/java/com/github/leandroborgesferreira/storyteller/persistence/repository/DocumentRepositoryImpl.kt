@@ -1,20 +1,14 @@
 package com.github.leandroborgesferreira.storyteller.persistence.repository
 
-import android.util.Log
 import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
-import com.github.leandroborgesferreira.storyteller.persistence.parse.toEntity
-import com.github.leandroborgesferreira.storyteller.persistence.parse.toModel
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.persistence.dao.DocumentDao
 import com.github.leandroborgesferreira.storyteller.persistence.dao.StoryUnitDao
-import com.github.leandroborgesferreira.storyteller.persistence.entity.document.DOCUMENT_ENTITY
 import com.github.leandroborgesferreira.storyteller.persistence.entity.story.StoryUnitEntity
-import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
+import com.github.leandroborgesferreira.storyteller.persistence.parse.toEntity
+import com.github.leandroborgesferreira.storyteller.persistence.parse.toModel
 
-/**
- * Evaluate to move this class to persistence module
- */
 class DocumentRepositoryImpl(
     private val documentDao: DocumentDao,
     private val storyUnitDao: StoryUnitDao

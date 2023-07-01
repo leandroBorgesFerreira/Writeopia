@@ -17,10 +17,15 @@ class NotesUseCase(
     private val sharedPreferences: SharedPreferences
 ) {
 
+    fun saveDocumentSortingPref(orderBy: OrderBy) {
+        sharedPreferences.edit()
+            .run { putString(ORDER_BY_PREFERENCE, orderBy.type.toEntityField()) }
+            .commit()
+    }
+
     suspend fun loadDocuments(): List<Document> =
         sharedPreferences
-            .getString(ORDER_BY_PREFERENCE, OrderBy.CREATE.type)
-            ?.toEntityField()
+            .getString(ORDER_BY_PREFERENCE, OrderBy.CREATE.type.toEntityField())
             ?.let { orderBy -> documentRepository.loadDocuments(orderBy) }!!
 
     suspend fun mockData(context: Context) {

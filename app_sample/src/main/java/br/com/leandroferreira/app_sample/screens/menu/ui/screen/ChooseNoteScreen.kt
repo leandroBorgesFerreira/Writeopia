@@ -120,7 +120,8 @@ private fun Content(
         ConfigurationsMenu(
             editState = editState,
             listOptionClick = chooseNoteViewModel::listArrangementSelected,
-            gridOptionClick = chooseNoteViewModel::gridArrangementSelected
+            gridOptionClick = chooseNoteViewModel::gridArrangementSelected,
+            sortingSelected = chooseNoteViewModel::sortingSelected
         )
     }
 }

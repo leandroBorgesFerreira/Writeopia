@@ -8,6 +8,7 @@ import br.com.leandroferreira.app_sample.screens.menu.NotesUseCase
 import br.com.leandroferreira.app_sample.screens.menu.ui.dto.DocumentCard
 import br.com.leandroferreira.app_sample.utils.ResultData
 import com.github.leandroborgesferreira.storyteller.parse.PreviewParser
+import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,19 +31,23 @@ class ChooseNoteViewModel(
     fun requestDocuments() {
         if (documentsState.value !is ResultData.Complete) {
             viewModelScope.launch(Dispatchers.IO) {
-                _documentsState.value = ResultData.Loading()
-
-                try {
-                    val data = notesUseCase.loadDocuments()
-                        .map { document ->
-                            document.toUiCard(previewParser)
-                        }
-
-                    _documentsState.value = ResultData.Complete(data)
-                } catch (e: Exception) {
-                    _documentsState.value = ResultData.Error(e)
-                }
+                refreshDocuments()
             }
+        }
+    }
+
+    private suspend fun refreshDocuments() {
+        _documentsState.value = ResultData.Loading()
+
+        try {
+            val data = notesUseCase.loadDocuments()
+                .map { document ->
+                    document.toUiCard(previewParser)
+                }
+
+            _documentsState.value = ResultData.Complete(data)
+        } catch (e: Exception) {
+            _documentsState.value = ResultData.Error(e)
         }
     }
 
@@ -67,4 +72,10 @@ class ChooseNoteViewModel(
         _notesArrangement.value = NotesArrangement.GRID
     }
 
+    fun sortingSelected(orderBy: OrderBy) {
+        viewModelScope.launch {
+            notesUseCase.saveDocumentSortingPref(orderBy)
+            refreshDocuments()
+        }
+    }
 }
