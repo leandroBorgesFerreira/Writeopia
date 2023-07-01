@@ -154,7 +154,6 @@ private fun Notes(chooseNoteViewModel: ChooseNoteViewModel, navigateToNote: (Str
         }
 
         is ResultData.Error -> {
-            documents.exception.printStackTrace()
             Box(modifier = Modifier.fillMaxSize()) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
