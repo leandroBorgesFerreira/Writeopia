@@ -2,9 +2,9 @@ package br.com.leandroferreira.app_sample.screens.menu
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import br.com.leandroferreira.app_sample.data.supermarketList
 import br.com.leandroferreira.app_sample.data.travelHistory
+import br.com.leandroferreira.app_sample.screens.menu.viewmodel.NotesArrangement
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepositoryImpl
 import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
@@ -17,11 +17,22 @@ class NotesUseCase(
     private val sharedPreferences: SharedPreferences
 ) {
 
+    fun saveDocumentArrangementPref(arrangement: NotesArrangement) {
+        sharedPreferences.edit()
+            .run { putString(ARRANGE_PREFERENCE, arrangement.type) }
+            .commit()
+    }
+
     fun saveDocumentSortingPref(orderBy: OrderBy) {
         sharedPreferences.edit()
             .run { putString(ORDER_BY_PREFERENCE, orderBy.type.toEntityField()) }
             .commit()
     }
+
+    fun arrangementPref(): String =
+        sharedPreferences
+            .getString(ARRANGE_PREFERENCE, NotesArrangement.GRID.type)
+            ?: NotesArrangement.GRID.type
 
     suspend fun loadDocuments(): List<Document> =
         sharedPreferences
@@ -52,5 +63,8 @@ class NotesUseCase(
 
     companion object {
         private const val ORDER_BY_PREFERENCE = "order_by_preference"
+        private const val ARRANGE_PREFERENCE = "arrange_preference"
+        private const val ARRANGE_LIST = "list"
+        private const val ARRANGE_GRID = "grid"
     }
 }

@@ -22,10 +22,9 @@ class ChooseNoteViewModel(
 
     private val _documentsState: MutableStateFlow<ResultData<List<DocumentCard>>> =
         MutableStateFlow(ResultData.Idle())
-
     val documentsState: StateFlow<ResultData<List<DocumentCard>>> = _documentsState
 
-    private val _notesArrangement = MutableStateFlow(NotesArrangement.GRID)
+    private val _notesArrangement = MutableStateFlow<NotesArrangement?>(null)
     val notesArrangement = _notesArrangement.asStateFlow()
 
     fun requestDocuments() {
@@ -45,6 +44,7 @@ class ChooseNoteViewModel(
                     document.toUiCard(previewParser)
                 }
 
+            _notesArrangement.value = NotesArrangement.fromString(notesUseCase.arrangementPref())
             _documentsState.value = ResultData.Complete(data)
         } catch (e: Exception) {
             _documentsState.value = ResultData.Error(e)
@@ -65,10 +65,12 @@ class ChooseNoteViewModel(
     }
 
     fun listArrangementSelected() {
+        notesUseCase.saveDocumentArrangementPref(NotesArrangement.LIST)
         _notesArrangement.value = NotesArrangement.LIST
     }
 
     fun gridArrangementSelected() {
+        notesUseCase.saveDocumentArrangementPref(NotesArrangement.GRID)
         _notesArrangement.value = NotesArrangement.GRID
     }
 

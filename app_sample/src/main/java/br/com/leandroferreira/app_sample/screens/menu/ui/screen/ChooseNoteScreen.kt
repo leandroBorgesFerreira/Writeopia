@@ -148,6 +148,10 @@ private fun Notes(chooseNoteViewModel: ChooseNoteViewModel, navigateToNote: (Str
                         NotesArrangement.LIST -> {
                             LazyColumnNotes(documents.data, navigateToNote)
                         }
+
+                        else -> {
+                            LazyGridNotes(documents.data, navigateToNote)
+                        }
                     }
                 }
             }

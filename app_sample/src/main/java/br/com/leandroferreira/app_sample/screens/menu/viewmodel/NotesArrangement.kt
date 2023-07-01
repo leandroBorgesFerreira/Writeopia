@@ -1,5 +1,14 @@
 package br.com.leandroferreira.app_sample.screens.menu.viewmodel
 
-enum class NotesArrangement {
-    LIST, GRID
+enum class NotesArrangement(val type: String) {
+    LIST("list"), GRID("grid");
+
+    companion object {
+
+        fun fromString(string: String): NotesArrangement =
+            values().firstOrNull { notesArrangement ->
+                notesArrangement.type == string
+            } ?: throw IllegalArgumentException("not a NotesArrangement")
+
+    }
 }
