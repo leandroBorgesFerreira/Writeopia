@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Redo
 import androidx.compose.material.icons.filled.Undo
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -38,11 +39,14 @@ fun InputScreen(
     val canUndo by canUndoState.collectAsStateWithLifecycle()
     val canRedo by canRedoState.collectAsStateWithLifecycle()
 
+    val buttonColor = MaterialTheme.colorScheme.onPrimary
+    val disabledColor = Color.LightGray
+
     Row(
         modifier = modifier
             .fillMaxWidth()
             .height(50.dp)
-            .background(Color.DarkGray),
+            .background(MaterialTheme.colorScheme.primary),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -57,7 +61,7 @@ fun InputScreen(
                         }),
                     imageVector = Icons.Default.Undo,
                     contentDescription = stringResource(R.string.undo),
-                    tint = if (canUndo) Color.Black else Color.LightGray
+                    tint = if (canUndo) buttonColor else disabledColor
                 )
                 Spacer(modifier = Modifier.width(15.dp))
                 Icon(
@@ -70,7 +74,7 @@ fun InputScreen(
                         }),
                     imageVector = Icons.Default.Redo,
                     contentDescription = stringResource(R.string.redo),
-                    tint = if (canRedo) Color.Black else Color.LightGray
+                    tint = if (canRedo) buttonColor else disabledColor
                 )
             }
         }

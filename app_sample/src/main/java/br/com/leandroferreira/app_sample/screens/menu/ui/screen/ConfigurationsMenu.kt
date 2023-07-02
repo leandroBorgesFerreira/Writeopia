@@ -25,10 +25,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import br.com.leandroferreira.app_sample.R
 import br.com.leandroferreira.app_sample.views.SlideInBox
 import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
@@ -44,7 +46,9 @@ internal fun BoxScope.ConfigurationsMenu(
 ) {
     // Todo: Extract to a global use function
     SlideInBox(
-        modifier = Modifier.align(Alignment.BottomCenter),
+        modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .background(Color.Transparent),
         editState = editState,
         animationLabel = "configurationsMenuAnimation"
     ) { isEdit ->
@@ -63,7 +67,7 @@ internal fun BoxScope.ConfigurationsMenu(
                             bottomCorner
                         )
                     )
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(MaterialTheme.colorScheme.surface)
                     .padding(16.dp),
             ) {
                 ArrangementSection(listOptionClick, gridOptionClick)
@@ -89,8 +93,11 @@ private fun SectionText(text: String) {
             .fillMaxWidth()
             .padding(top = 12.dp, bottom = 6.dp),
         text = text,
-        style = MaterialTheme.typography.titleSmall,
-        color = MaterialTheme.colorScheme.onPrimary
+        style = MaterialTheme.typography.titleMedium.copy(
+            fontSize = 18.sp
+        ),
+        color = MaterialTheme.colorScheme.onPrimary,
+        fontWeight = FontWeight.Bold
     )
 }
 
@@ -136,7 +143,7 @@ private fun ArrangementSection(listOptionClick: () -> Unit, gridOptionClick: () 
 @Composable
 private fun SortingSection(sortingSelected: (OrderBy) -> Unit) {
     SectionText(text = stringResource(R.string.sorting))
-    val optionStyle = MaterialTheme.typography.bodyLarge.copy(
+    val optionStyle = MaterialTheme.typography.bodyMedium.copy(
         color = MaterialTheme.colorScheme.onPrimary,
         fontWeight = FontWeight.Bold
     )

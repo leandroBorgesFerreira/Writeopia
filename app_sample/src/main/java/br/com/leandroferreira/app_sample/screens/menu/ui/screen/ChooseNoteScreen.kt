@@ -68,37 +68,47 @@ fun ChooseNoteScreen(
 
     var configOptionsAppears by remember { mutableStateOf(false) }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = "StoryTeller")
-                },
-                actions = {
-                    Icon(
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .clickable {
-                                configOptionsAppears = !configOptionsAppears
-                            },
-                        imageVector = Icons.Default.MoreVert,
-                        contentDescription = stringResource(R.string.more_options)
-                    )
-                }
+    MaterialTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(text = "StoryTeller")
+                    },
+                    actions = {
+                        Icon(
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .clickable {
+                                    configOptionsAppears = !configOptionsAppears
+                                },
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = stringResource(R.string.more_options),
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
+                )
+            },
+            floatingActionButton = {
+                FloatingActionButton(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    onClick = { navigateToNote(null) },
+                    content = {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(R.string.add_note)
+                        )
+                    }
+                )
+            }
+        ) { paddingValues ->
+            Content(
+                chooseNoteViewModel = chooseNoteViewModel,
+                navigateToNote = navigateToNote,
+                paddingValues = paddingValues,
+                editState = configOptionsAppears
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = { navigateToNote(null) }, content = {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add note")
-            })
         }
-    ) { paddingValues ->
-        Content(
-            chooseNoteViewModel = chooseNoteViewModel,
-            navigateToNote = navigateToNote,
-            paddingValues = paddingValues,
-            editState = configOptionsAppears
-        )
     }
 }
 
