@@ -1,5 +1,6 @@
 package br.com.leandroferreira.app_sample.screens.note
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -98,6 +99,7 @@ class NoteDetailsViewModel(
             )
 
             if (stories.noContent()) {
+                Log.d()
                 documentRepository.deleteDocument(document)
             } else {
                 documentRepository.saveDocument(

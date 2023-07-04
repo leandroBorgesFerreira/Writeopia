@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.with
@@ -23,6 +22,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -49,7 +50,11 @@ import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NoteDetailsScreen(documentId: String?, noteDetailsViewModel: NoteDetailsViewModel) {
+fun NoteDetailsScreen(
+    documentId: String?,
+    title: String?,
+    noteDetailsViewModel: NoteDetailsViewModel
+) {
     if (documentId != null) {
         noteDetailsViewModel.requestDocumentContent(documentId)
     } else {
@@ -59,7 +64,14 @@ fun NoteDetailsScreen(documentId: String?, noteDetailsViewModel: NoteDetailsView
         )
     }
 
-    Scaffold { paddingValues ->
+    Scaffold(topBar = {
+        TopAppBar(title = {
+            Text(
+                text = title?.takeIf { it.isNotBlank() } ?: stringResource(id = R.string.note),
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        })
+    }) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(top = paddingValues.calculateTopPadding())
@@ -128,7 +140,7 @@ fun BottomScreen(noteDetailsViewModel: NoteDetailsViewModel) {
                 initialOffsetY = { fullHeight -> fullHeight }
             ) + fadeIn() with slideOutVertically(
                 animationSpec = tween(durationMillis = 130),
-                        targetOffsetY = { fullHeight -> fullHeight }
+                targetOffsetY = { fullHeight -> fullHeight }
             )
         }
     ) { isEdit ->
