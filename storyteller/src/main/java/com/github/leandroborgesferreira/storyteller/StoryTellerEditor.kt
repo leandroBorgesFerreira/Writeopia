@@ -12,7 +12,6 @@ import com.github.leandroborgesferreira.storyteller.draganddrop.target.Draggable
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
-import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 
 @Composable
 fun StoryTellerEditor(
@@ -23,6 +22,8 @@ fun StoryTellerEditor(
     drawers: Map<String, StoryUnitDrawer>,
     listState: LazyListState = rememberLazyListState()
 ) {
+    val content = storyState.stories.values.toList()
+
     DraggableScreen(modifier = modifier) {
         LazyColumn(
             modifier = modifier,
@@ -30,7 +31,7 @@ fun StoryTellerEditor(
             state = listState,
             content = {
                 itemsIndexed(
-                    storyState.stories.values.toList(),
+                    content,
                     key = { index, drawStory -> drawStory.key + index },
                     itemContent = { index, drawStory ->
                         drawers[drawStory.storyStep.type]?.run {

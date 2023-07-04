@@ -64,7 +64,5 @@ class NotesUseCase(
     companion object {
         private const val ORDER_BY_PREFERENCE = "order_by_preference"
         private const val ARRANGE_PREFERENCE = "arrange_preference"
-        private const val ARRANGE_LIST = "list"
-        private const val ARRANGE_GRID = "grid"
     }
 }

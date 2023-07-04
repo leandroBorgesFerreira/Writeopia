@@ -1,7 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.drawer.preview
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Checkbox
@@ -17,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
-import com.github.leandroborgesferreira.storyteller.model.change.CheckInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
 class CheckItemPreviewDrawer(

@@ -1,6 +1,5 @@
 package com.github.leandroborgesferreira.storyteller.drawer
 
-import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.runtime.Composable
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
