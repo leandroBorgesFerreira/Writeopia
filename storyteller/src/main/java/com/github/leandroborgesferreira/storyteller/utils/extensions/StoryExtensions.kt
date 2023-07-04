@@ -12,7 +12,7 @@ fun <T> Iterable<T>.associateWithPosition(): Map<Int, T> {
 }
 
 fun Map<Int, StoryStep>.noContent(): Boolean =
-    this.values.any { storyStep ->
+    this.values.all { storyStep ->
         storyStep.run {
             url.isNullOrBlank() &&
                     path.isNullOrBlank() &&

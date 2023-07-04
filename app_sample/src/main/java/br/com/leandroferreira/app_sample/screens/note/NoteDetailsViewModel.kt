@@ -93,7 +93,9 @@ class NoteDetailsViewModel(
     fun saveNote() {
         viewModelScope.launch {
             val stories = story.value.stories
-            val document = _documentState.value ?: return@launch
+            val document = _documentState.value ?: throw IllegalStateException(
+                "Trying to save a null document, did you forget to create a note?"
+            )
 
             if (stories.noContent()) {
                 documentRepository.deleteDocument(document)

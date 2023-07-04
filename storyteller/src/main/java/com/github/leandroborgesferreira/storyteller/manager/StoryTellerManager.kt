@@ -389,7 +389,6 @@ class StoryTellerManager(
     }
 
     private fun cancelSelection() {
-        Log.d("Manager", "Cancelling selection")
         _positionsOnEdit.value = emptySet()
     }
 
