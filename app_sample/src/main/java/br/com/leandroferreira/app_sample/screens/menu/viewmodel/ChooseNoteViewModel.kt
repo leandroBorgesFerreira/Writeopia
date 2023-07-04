@@ -27,6 +27,9 @@ class ChooseNoteViewModel(
     private val _notesArrangement = MutableStateFlow<NotesArrangement?>(null)
     val notesArrangement = _notesArrangement.asStateFlow()
 
+    private val _editState = MutableStateFlow(false)
+    val editState = _editState.asStateFlow()
+
     fun requestDocuments() {
         if (documentsState.value !is ResultData.Complete) {
             viewModelScope.launch(Dispatchers.IO) {
