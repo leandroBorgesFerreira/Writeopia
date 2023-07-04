@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -35,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -66,8 +68,6 @@ fun ChooseNoteScreen(
 ) {
     chooseNoteViewModel.requestDocuments()
 
-    var configOptionsAppears by remember { mutableStateOf(false) }
-
     MaterialTheme {
         Scaffold(
             topBar = {
@@ -78,10 +78,9 @@ fun ChooseNoteScreen(
                     actions = {
                         Icon(
                             modifier = Modifier
-                                .padding(10.dp)
-                                .clickable {
-                                    configOptionsAppears = !configOptionsAppears
-                                },
+                                .clip(CircleShape)
+                                .clickable(onClick = chooseNoteViewModel::editMenu)
+                                .padding(10.dp),
                             imageVector = Icons.Default.MoreVert,
                             contentDescription = stringResource(R.string.more_options),
                             tint = MaterialTheme.colorScheme.onPrimary
@@ -106,7 +105,6 @@ fun ChooseNoteScreen(
                 chooseNoteViewModel = chooseNoteViewModel,
                 navigateToNote = navigateToNote,
                 paddingValues = paddingValues,
-                editState = configOptionsAppears
             )
         }
     }
@@ -118,7 +116,6 @@ private fun Content(
     chooseNoteViewModel: ChooseNoteViewModel,
     navigateToNote: (String) -> Unit,
     paddingValues: PaddingValues,
-    editState: Boolean
 ) {
     Box(
         modifier = Modifier
@@ -127,8 +124,11 @@ private fun Content(
     ) {
         Notes(chooseNoteViewModel = chooseNoteViewModel, navigateToNote = navigateToNote)
 
+        val editState by chooseNoteViewModel.editState.collectAsStateWithLifecycle()
+
         ConfigurationsMenu(
             editState = editState,
+            outsideClick = chooseNoteViewModel::cancelMenu,
             listOptionClick = chooseNoteViewModel::listArrangementSelected,
             gridOptionClick = chooseNoteViewModel::gridArrangementSelected,
             sortingSelected = chooseNoteViewModel::sortingSelected

@@ -1,5 +1,6 @@
 package br.com.leandroferreira.app_sample.screens.menu.ui.screen
 
+import android.graphics.drawable.ColorDrawable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -40,10 +42,21 @@ private const val INNER_PADDING = 3
 @Composable
 internal fun BoxScope.ConfigurationsMenu(
     editState: Boolean,
+    outsideClick: () -> Unit,
     listOptionClick: () -> Unit,
     gridOptionClick: () -> Unit,
     sortingSelected: (OrderBy) -> Unit,
 ) {
+
+    if (editState) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xCC000000))
+                .clickable(onClick = outsideClick)
+        )
+    }
+
     // Todo: Extract to a global use function
     SlideInBox(
         modifier = Modifier
@@ -199,7 +212,7 @@ private fun Modifier.orderConfigModifier(clickable: () -> Unit): Modifier =
 @Composable
 private fun ConfigurationsMenu_Preview() {
     Box(modifier = Modifier.fillMaxWidth()) {
-        ConfigurationsMenu(true, {}, {}, {})
+        ConfigurationsMenu(true, {}, {}, {}, {})
     }
 }
 

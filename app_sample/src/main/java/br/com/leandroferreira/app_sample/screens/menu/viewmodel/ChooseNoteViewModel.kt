@@ -27,12 +27,23 @@ class ChooseNoteViewModel(
     private val _notesArrangement = MutableStateFlow<NotesArrangement?>(null)
     val notesArrangement = _notesArrangement.asStateFlow()
 
+    private val _editState = MutableStateFlow(false)
+    val editState = _editState.asStateFlow()
+
     fun requestDocuments() {
         if (documentsState.value !is ResultData.Complete) {
             viewModelScope.launch(Dispatchers.IO) {
                 refreshDocuments()
             }
         }
+    }
+
+    fun editMenu() {
+        _editState.value = !editState.value
+    }
+
+    fun cancelMenu() {
+        _editState.value = false
     }
 
     private suspend fun refreshDocuments() {
