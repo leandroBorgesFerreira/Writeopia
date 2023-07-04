@@ -10,6 +10,7 @@ import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepositoryImpl
+import com.github.leandroborgesferreira.storyteller.utils.extensions.noContent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -90,8 +91,13 @@ class NoteDetailsViewModel(
     }
 
     fun saveNote() {
-        _documentState.value?.let { document ->
-            viewModelScope.launch {
+        viewModelScope.launch {
+            val stories = story.value.stories
+            val document = _documentState.value ?: return@launch
+
+            if (stories.noContent()) {
+                documentRepository.deleteDocument(document)
+            } else {
                 documentRepository.saveDocument(
                     document.copy(
                         content = story.value.stories,

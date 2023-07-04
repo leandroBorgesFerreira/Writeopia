@@ -10,3 +10,14 @@ fun <T> Iterable<T>.associateWithPosition(): Map<Int, T> {
 
     return associateBy { ++acc }
 }
+
+fun Map<Int, StoryStep>.noContent(): Boolean =
+    this.values.any { storyStep ->
+        storyStep.run {
+            url.isNullOrBlank() &&
+                    path.isNullOrBlank() &&
+                    text.isNullOrBlank() &&
+                    title.isNullOrBlank() &&
+                    steps.isEmpty()
+        }
+    }
