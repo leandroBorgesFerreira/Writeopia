@@ -42,6 +42,7 @@ private const val INNER_PADDING = 3
 @Composable
 internal fun BoxScope.ConfigurationsMenu(
     editState: Boolean,
+    outsideClick: () -> Unit,
     listOptionClick: () -> Unit,
     gridOptionClick: () -> Unit,
     sortingSelected: (OrderBy) -> Unit,
@@ -52,6 +53,7 @@ internal fun BoxScope.ConfigurationsMenu(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color(0xCC000000))
+                .clickable(onClick = outsideClick)
         )
     }
 
@@ -210,7 +212,7 @@ private fun Modifier.orderConfigModifier(clickable: () -> Unit): Modifier =
 @Composable
 private fun ConfigurationsMenu_Preview() {
     Box(modifier = Modifier.fillMaxWidth()) {
-        ConfigurationsMenu(true, {}, {}, {})
+        ConfigurationsMenu(true, {}, {}, {}, {})
     }
 }
 

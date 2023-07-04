@@ -68,8 +68,6 @@ fun ChooseNoteScreen(
 ) {
     chooseNoteViewModel.requestDocuments()
 
-    var configOptionsAppears by remember { mutableStateOf(false) }
-
     MaterialTheme {
         Scaffold(
             topBar = {
@@ -81,9 +79,7 @@ fun ChooseNoteScreen(
                         Icon(
                             modifier = Modifier
                                 .clip(CircleShape)
-                                .clickable {
-                                    configOptionsAppears = !configOptionsAppears
-                                }
+                                .clickable(onClick = chooseNoteViewModel::editMenu)
                                 .padding(10.dp),
                             imageVector = Icons.Default.MoreVert,
                             contentDescription = stringResource(R.string.more_options),
@@ -109,7 +105,6 @@ fun ChooseNoteScreen(
                 chooseNoteViewModel = chooseNoteViewModel,
                 navigateToNote = navigateToNote,
                 paddingValues = paddingValues,
-                editState = configOptionsAppears
             )
         }
     }
@@ -121,7 +116,6 @@ private fun Content(
     chooseNoteViewModel: ChooseNoteViewModel,
     navigateToNote: (String) -> Unit,
     paddingValues: PaddingValues,
-    editState: Boolean
 ) {
     Box(
         modifier = Modifier
@@ -130,8 +124,11 @@ private fun Content(
     ) {
         Notes(chooseNoteViewModel = chooseNoteViewModel, navigateToNote = navigateToNote)
 
+        val editState by chooseNoteViewModel.editState.collectAsStateWithLifecycle()
+
         ConfigurationsMenu(
             editState = editState,
+            outsideClick = chooseNoteViewModel::cancelMenu,
             listOptionClick = chooseNoteViewModel::listArrangementSelected,
             gridOptionClick = chooseNoteViewModel::gridArrangementSelected,
             sortingSelected = chooseNoteViewModel::sortingSelected

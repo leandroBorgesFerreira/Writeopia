@@ -38,6 +38,14 @@ class ChooseNoteViewModel(
         }
     }
 
+    fun editMenu() {
+        _editState.value = !editState.value
+    }
+
+    fun cancelMenu() {
+        _editState.value = false
+    }
+
     private suspend fun refreshDocuments() {
         _documentsState.value = ResultData.Loading()
 
