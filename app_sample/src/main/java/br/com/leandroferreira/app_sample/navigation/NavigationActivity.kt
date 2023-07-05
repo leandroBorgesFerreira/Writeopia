@@ -58,16 +58,21 @@ fun NavigationGraph() {
                 val notesUseCase = NotesUseCase(repository, sharedPreferences)
                 val chooseNoteViewModel = ChooseNoteViewModel(notesUseCase)
 
-                ChooseNoteScreen(chooseNoteViewModel = chooseNoteViewModel) { noteId ->
-                    navController.navigate("${Destinations.NOTE_DETAILS.id}/$noteId")
+                ChooseNoteScreen(chooseNoteViewModel = chooseNoteViewModel) { noteId, noteTitle ->
+                    navController.navigate(
+                        "${Destinations.NOTE_DETAILS.id}/$noteId/$noteTitle"
+                    )
                 }
             }
 
             composable(
-                route = "${Destinations.NOTE_DETAILS.id}/{noteId}",
+                route = "${Destinations.NOTE_DETAILS.id}/{noteId}/{noteTitle}",
                 arguments = listOf(navArgument("noteId") { type = NavType.StringType })
             ) { backStackEntry ->
-                backStackEntry.arguments?.getString("noteId")?.let { id ->
+                val noteId = backStackEntry.arguments?.getString("noteId")
+                val noteTitle = backStackEntry.arguments?.getString("noteTitle")
+
+                if (noteId != null && noteTitle != null) {
                     val repository = DocumentRepositoryImpl(
                         database.documentDao(),
                         database.storyUnitDao()
@@ -82,7 +87,17 @@ fun NavigationGraph() {
                             )
                         )
 
-                    NoteDetailsScreen(id.takeIf { it != "null" }, noteDetailsViewModel)
+                    NoteDetailsScreen(
+
+                        noteId.takeIf { it != "null" },
+                        noteTitle.takeIf { it != "null" },
+                        noteDetailsViewModel,
+                        navigateBack = {
+                            navController.navigateUp()
+                        }
+                    )
+                } else {
+                    throw IllegalArgumentException("Wrong route!")
                 }
             }
         }

@@ -16,4 +16,5 @@
     <string name="last_created">Create</string>
     <string name="name">Name</string>
     <string name="add_note">Add note</string>
+    <string name="back">Back</string>
 </resources>

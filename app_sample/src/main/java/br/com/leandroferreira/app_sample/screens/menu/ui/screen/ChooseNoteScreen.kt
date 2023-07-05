@@ -31,9 +31,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -64,7 +61,7 @@ private fun previewDrawers(): Map<String, StoryUnitDrawer> =
 @Composable
 fun ChooseNoteScreen(
     chooseNoteViewModel: ChooseNoteViewModel,
-    navigateToNote: (String?) -> Unit
+    navigateToNote: (String?, String?) -> Unit
 ) {
     chooseNoteViewModel.requestDocuments()
 
@@ -73,7 +70,10 @@ fun ChooseNoteScreen(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(text = "StoryTeller")
+                        Text(
+                            text = "StoryTeller",
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
                     },
                     actions = {
                         Icon(
@@ -91,7 +91,7 @@ fun ChooseNoteScreen(
             floatingActionButton = {
                 FloatingActionButton(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    onClick = { navigateToNote(null) },
+                    onClick = { navigateToNote(null, null) },
                     content = {
                         Icon(
                             imageVector = Icons.Default.Add,
@@ -114,7 +114,7 @@ fun ChooseNoteScreen(
 @Composable
 private fun Content(
     chooseNoteViewModel: ChooseNoteViewModel,
-    navigateToNote: (String) -> Unit,
+    navigateToNote: (String, String) -> Unit,
     paddingValues: PaddingValues,
 ) {
     Box(
@@ -137,7 +137,10 @@ private fun Content(
 }
 
 @Composable
-private fun Notes(chooseNoteViewModel: ChooseNoteViewModel, navigateToNote: (String) -> Unit) {
+private fun Notes(
+    chooseNoteViewModel: ChooseNoteViewModel,
+    navigateToNote: (String, String) -> Unit
+) {
     when (val documents =
         chooseNoteViewModel.documentsState.collectAsStateWithLifecycle().value) {
         is ResultData.Complete -> {
@@ -186,7 +189,10 @@ private fun Notes(chooseNoteViewModel: ChooseNoteViewModel, navigateToNote: (Str
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun LazyGridNotes(documents: List<DocumentCard>, onDocumentClick: (String) -> Unit) {
+private fun LazyGridNotes(
+    documents: List<DocumentCard>,
+    onDocumentClick: (String, String) -> Unit
+) {
     LazyVerticalStaggeredGrid(
         modifier = Modifier.padding(6.dp),
         columns = StaggeredGridCells.Adaptive(minSize = 150.dp),
@@ -200,7 +206,10 @@ private fun LazyGridNotes(documents: List<DocumentCard>, onDocumentClick: (Strin
 }
 
 @Composable
-private fun LazyColumnNotes(documents: List<DocumentCard>, onDocumentClick: (String) -> Unit) {
+private fun LazyColumnNotes(
+    documents: List<DocumentCard>,
+    onDocumentClick: (String, String) -> Unit
+) {
     LazyColumn(
         modifier = Modifier.padding(6.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp),
@@ -215,7 +224,7 @@ private fun LazyColumnNotes(documents: List<DocumentCard>, onDocumentClick: (Str
 @Composable
 private fun DocumentItem(
     documentCard: DocumentCard,
-    documentClick: (String) -> Unit,
+    documentClick: (String, String) -> Unit,
     drawers: Map<String, StoryUnitDrawer>,
 ) {
     Card(
@@ -223,7 +232,7 @@ private fun DocumentItem(
             .fillMaxWidth()
             .padding(bottom = 6.dp)
             .clickable {
-                documentClick(documentCard.documentId)
+                documentClick(documentCard.documentId, documentCard.title)
             },
         shape = RoundedCornerShape(12.dp)
     ) {
