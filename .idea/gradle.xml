@@ -9,7 +9,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app_sample" />
+            <option value="$PROJECT_DIR$/sample" />
+            <option value="$PROJECT_DIR$/sample/app_sample" />
+            <option value="$PROJECT_DIR$/sample/note_menu" />
+            <option value="$PROJECT_DIR$/sample/resourcers" />
             <option value="$PROJECT_DIR$/storyteller" />
             <option value="$PROJECT_DIR$/storyteller_persistence" />
           </set>
