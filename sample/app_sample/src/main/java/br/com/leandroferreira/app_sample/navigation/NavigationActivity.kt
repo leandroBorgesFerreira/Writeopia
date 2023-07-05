@@ -12,13 +12,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import br.com.leandroferreira.app_sample.screens.menu.NotesUseCase
-import br.com.leandroferreira.app_sample.screens.menu.ui.screen.ChooseNoteScreen
-import br.com.leandroferreira.app_sample.screens.menu.viewmodel.ChooseNoteViewModel
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsScreen
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModel
 import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModelFactory
 import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
+import br.com.leandroferreira.note_menu.data.usecase.NotesUseCase
+import br.com.leandroferreira.note_menu.ui.screen.ChooseNoteScreen
+import br.com.leandroferreira.note_menu.viewmodel.ChooseNoteViewModel
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepositoryImpl

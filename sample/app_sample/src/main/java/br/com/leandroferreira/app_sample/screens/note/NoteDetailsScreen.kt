@@ -44,7 +44,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
-import br.com.leandroferreira.app_sample.R
+import br.com.leandroferreira.resourcers.R
 import br.com.leandroferreira.app_sample.screens.note.input.InputScreen
 import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION
 import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION_DARK
@@ -69,7 +69,7 @@ fun NoteDetailsScreen(
     } else {
         noteDetailsViewModel.createNewNote(
             UUID.randomUUID().toString(),
-            stringResource(R.string.untitled)
+            stringResource(br.com.leandroferreira.resourcers.R.string.untitled)
         )
     }
 

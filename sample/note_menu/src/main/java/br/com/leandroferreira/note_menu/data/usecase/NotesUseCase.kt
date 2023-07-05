@@ -2,8 +2,8 @@ package br.com.leandroferreira.note_menu.data.usecase
 
 import android.content.Context
 import android.content.SharedPreferences
-import br.com.leandroferreira.app_sample.data.supermarketList
-import br.com.leandroferreira.app_sample.data.travelHistory
+import br.com.leandroferreira.note_menu.data.supermarketList
+import br.com.leandroferreira.note_menu.data.travelHistory
 import br.com.leandroferreira.note_menu.viewmodel.NotesArrangement
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepositoryImpl

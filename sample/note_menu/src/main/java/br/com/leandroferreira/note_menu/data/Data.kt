@@ -1,7 +1,6 @@
-package br.com.leandroferreira.app_sample.data
+package br.com.leandroferreira.note_menu.data
 
 import android.content.Context
-import br.com.leandroferreira.app_sample.R
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import java.util.UUID
@@ -211,7 +210,7 @@ fun travelHistory(context: Context): Map<Int, StoryStep> =
             StoryStep(
                 localId = UUID.randomUUID().toString(),
                 type = "video",
-                path = "android.resource://${context.packageName}/${R.raw.video}",
+//                path = "android.resource://${context.packageName}/${R.raw.video}",
                 url = "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
             ),
         10 to
