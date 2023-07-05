@@ -88,9 +88,13 @@ fun NavigationGraph() {
                         )
 
                     NoteDetailsScreen(
+
                         noteId.takeIf { it != "null" },
                         noteTitle.takeIf { it != "null" },
-                        noteDetailsViewModel
+                        noteDetailsViewModel,
+                        navigateBack = {
+                            navController.navigateUp()
+                        }
                     )
                 } else {
                     throw IllegalArgumentException("Wrong route!")

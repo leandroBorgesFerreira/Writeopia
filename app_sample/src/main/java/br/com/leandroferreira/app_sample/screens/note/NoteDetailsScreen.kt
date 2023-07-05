@@ -8,6 +8,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.with
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -17,9 +18,13 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -38,6 +43,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.compose.rememberNavController
 import br.com.leandroferreira.app_sample.R
 import br.com.leandroferreira.app_sample.screens.note.input.InputScreen
 import br.com.leandroferreira.app_sample.theme.BACKGROUND_VARIATION
@@ -53,8 +59,11 @@ import java.util.UUID
 fun NoteDetailsScreen(
     documentId: String?,
     title: String?,
-    noteDetailsViewModel: NoteDetailsViewModel
+    noteDetailsViewModel: NoteDetailsViewModel,
+    navigateBack: () -> Unit,
 ) {
+    val navController = rememberNavController()
+
     if (documentId != null) {
         noteDetailsViewModel.requestDocumentContent(documentId)
     } else {
@@ -64,14 +73,30 @@ fun NoteDetailsScreen(
         )
     }
 
-    Scaffold(topBar = {
-        TopAppBar(title = {
-            Text(
-                text = title?.takeIf { it.isNotBlank() } ?: stringResource(id = R.string.note),
-                color = MaterialTheme.colorScheme.onPrimary
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = title?.takeIf { it.isNotBlank() }
+                            ?: stringResource(id = R.string.note),
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                },
+                navigationIcon = {
+                    Icon(
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .clickable(onClick = navigateBack)
+                            .padding(10.dp),
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.back),
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
             )
-        })
-    }) { paddingValues ->
+        },
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(top = paddingValues.calculateTopPadding())
