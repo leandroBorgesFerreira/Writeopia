@@ -60,29 +60,27 @@ dependencies {
     implementation(project(":sample:resources"))
     implementation(project(":sample:editor"))
 
-    implementation("androidx.core:core-ktx:1.10.1")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
+    implementation(libs.androidx.ktx)
+    implementation(libs.appCompat)
+    implementation(libs.material)
 
-    val roomVersion = "2.5.2"
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    implementation(libs.room.paging)
+    ksp(libs.room.compiler)
 
-    implementation("androidx.room:room-runtime:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    implementation("androidx.room:room-paging:$roomVersion")
-    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation(libs.coil.compose)
+    implementation(libs.coil.video)
 
-    implementation("io.coil-kt:coil-compose:$coilVersion")
-    implementation("io.coil-kt:coil-video:$coilVersion")
+    implementation(libs.viewmodel.compose)
+    implementation(libs.runtime.compose)
+    implementation(libs.navigation.compose)
 
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
-    implementation("androidx.navigation:navigation-compose:2.6.0")
+    implementation(libs.androidx.material.icons.extended)
+
     implementation("androidx.activity:activity-compose")
-    implementation("androidx.compose.material:material-icons-extended:1.4.3")
-
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material3:material3-window-size-class")
-
 
     // Compose - Preview
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -91,7 +89,7 @@ dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2023.06.00")
     implementation(composeBom)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

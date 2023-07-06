@@ -60,19 +60,19 @@ kotlin{
 val coilVersion = "2.3.0"
 
 dependencies {
-    implementation("androidx.compose.material:material-icons-extended:1.4.3")
+    implementation(libs.androidx.material.icons.extended)
     // Coil
-    implementation("io.coil-kt:coil-compose:$coilVersion")
-    implementation("io.coil-kt:coil-video:$coilVersion")
+    implementation(libs.coil.compose)
+    implementation(libs.coil.video)
 
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material3:material3-window-size-class")
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     val composeBom = platform("androidx.compose:compose-bom:2023.06.00")
     implementation(composeBom)
