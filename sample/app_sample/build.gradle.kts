@@ -48,8 +48,6 @@ kotlin{
     }
 }
 
-val coilVersion = "2.3.0"
-
 dependencies {
 
     implementation(project(":storyteller"))

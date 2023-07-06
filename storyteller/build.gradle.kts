@@ -57,8 +57,6 @@ kotlin{
     }
 }
 
-val coilVersion = "2.3.0"
-
 dependencies {
     implementation(libs.androidx.material.icons.extended)
     // Coil
