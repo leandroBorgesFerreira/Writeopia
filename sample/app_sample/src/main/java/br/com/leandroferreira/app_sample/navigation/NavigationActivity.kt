@@ -12,10 +12,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import br.com.leandroferreira.app_sample.screens.note.NoteDetailsScreen
-import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModel
-import br.com.leandroferreira.app_sample.screens.note.NoteDetailsViewModelFactory
 import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
+import br.com.leandroferreira.editor.NoteDetailsScreen
+import br.com.leandroferreira.editor.NoteDetailsViewModel
+import br.com.leandroferreira.editor.NoteDetailsViewModelFactory
 import br.com.leandroferreira.note_menu.data.usecase.NotesUseCase
 import br.com.leandroferreira.note_menu.ui.screen.ChooseNoteScreen
 import br.com.leandroferreira.note_menu.viewmodel.ChooseNoteViewModel
@@ -88,7 +88,6 @@ fun NavigationGraph() {
                         )
 
                     NoteDetailsScreen(
-
                         noteId.takeIf { it != "null" },
                         noteTitle.takeIf { it != "null" },
                         noteDetailsViewModel,
