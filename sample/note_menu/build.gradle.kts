@@ -3,20 +3,12 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
-rootProject.extra.apply {
-    set("PUBLISH_GROUP_ID", "com.github.leandroborgesferreira")
-    set("PUBLISH_ARTIFACT_ID", "storyteller")
-    set("PUBLISH_VERSION", "0.1.1")
-}
-
-apply(from = "${rootDir}/scripts/publish-module.gradle")
-
 android {
-    namespace = "com.github.leandroborgesferreira.storyteller"
+    namespace = "br.com.leandroferreira.note_menu"
     compileSdk = 33
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -44,35 +36,32 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.7"
     }
-    publishing {
-        singleVariant("release")
-    }
 }
-
-kotlin{
-    sourceSets.all {
-        languageSettings {
-            languageVersion = "1.8"
-        }
-    }
-}
-
-val coilVersion = "2.3.0"
 
 dependencies {
+    implementation(project(":storyteller"))
+    implementation(project(":storyteller_persistence"))
+    implementation(project(":sample:resources"))
+    implementation(project(":sample:utils"))
+
+    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.9.0")
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
+    implementation("androidx.activity:activity-compose")
     implementation("androidx.compose.material:material-icons-extended:1.4.3")
-    // Coil
-    implementation("io.coil-kt:coil-compose:$coilVersion")
-    implementation("io.coil-kt:coil-video:$coilVersion")
 
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material3:material3-window-size-class")
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    // Compose - Preview
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
 
     val composeBom = platform("androidx.compose:compose-bom:2023.06.00")
     implementation(composeBom)

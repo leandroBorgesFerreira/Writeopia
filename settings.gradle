@@ -13,6 +13,10 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "StoryTeller"
-include ':app_sample'
+include ':sample:app_sample'
 include ':storyteller'
 include ':storyteller_persistence'
+include ':sample:note_menu'
+include ':sample:resources'
+include ':sample:utils'
+include ':sample:editor'
