@@ -3,7 +3,7 @@ package br.com.leandroferreira.note_menu.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.leandroferreira.note_menu.ResultData
+import br.com.leandroferreira.utils.ResultData
 import br.com.leandroferreira.note_menu.data.usecase.NotesUseCase
 import br.com.leandroferreira.note_menu.extensions.toUiCard
 import br.com.leandroferreira.note_menu.ui.dto.DocumentCard
@@ -20,9 +20,9 @@ class ChooseNoteViewModel(
     private val previewParser: PreviewParser = PreviewParser()
 ) : ViewModel() {
 
-    private val _documentsState: MutableStateFlow<ResultData<List<DocumentCard>>> =
-        MutableStateFlow(ResultData.Idle())
-    val documentsState: StateFlow<ResultData<List<DocumentCard>>> = _documentsState
+    private val _documentsState: MutableStateFlow<br.com.leandroferreira.utils.ResultData<List<DocumentCard>>> =
+        MutableStateFlow(br.com.leandroferreira.utils.ResultData.Idle())
+    val documentsState: StateFlow<br.com.leandroferreira.utils.ResultData<List<DocumentCard>>> = _documentsState
 
     private val _notesArrangement = MutableStateFlow<NotesArrangement?>(null)
     val notesArrangement = _notesArrangement.asStateFlow()
@@ -31,7 +31,7 @@ class ChooseNoteViewModel(
     val editState = _editState.asStateFlow()
 
     fun requestDocuments() {
-        if (documentsState.value !is ResultData.Complete) {
+        if (documentsState.value !is br.com.leandroferreira.utils.ResultData.Complete) {
             viewModelScope.launch(Dispatchers.IO) {
                 refreshDocuments()
             }
@@ -47,7 +47,7 @@ class ChooseNoteViewModel(
     }
 
     private suspend fun refreshDocuments() {
-        _documentsState.value = ResultData.Loading()
+        _documentsState.value = br.com.leandroferreira.utils.ResultData.Loading()
 
         try {
             val data = notesUseCase.loadDocuments()
@@ -56,9 +56,9 @@ class ChooseNoteViewModel(
                 }
 
             _notesArrangement.value = NotesArrangement.fromString(notesUseCase.arrangementPref())
-            _documentsState.value = ResultData.Complete(data)
+            _documentsState.value = br.com.leandroferreira.utils.ResultData.Complete(data)
         } catch (e: Exception) {
-            _documentsState.value = ResultData.Error(e)
+            _documentsState.value = br.com.leandroferreira.utils.ResultData.Error(e)
         }
     }
 
@@ -71,7 +71,7 @@ class ChooseNoteViewModel(
                     document.toUiCard(previewParser)
                 }
 
-            _documentsState.value = ResultData.Complete(data)
+            _documentsState.value = br.com.leandroferreira.utils.ResultData.Complete(data)
         }
     }
 

@@ -39,7 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.com.leandroferreira.note_menu.ResultData
+import br.com.leandroferreira.utils.ResultData
 import br.com.leandroferreira.note_menu.ui.dto.DocumentCard
 import br.com.leandroferreira.note_menu.viewmodel.ChooseNoteViewModel
 import br.com.leandroferreira.note_menu.viewmodel.NotesArrangement
@@ -141,7 +141,7 @@ private fun Notes(
 ) {
     when (val documents =
         chooseNoteViewModel.documentsState.collectAsStateWithLifecycle().value) {
-        is ResultData.Complete -> {
+        is br.com.leandroferreira.utils.ResultData.Complete -> {
             Column(modifier = Modifier.fillMaxWidth()) {
                 val data = documents.data
 
@@ -168,7 +168,7 @@ private fun Notes(
             }
         }
 
-        is ResultData.Error -> {
+        is br.com.leandroferreira.utils.ResultData.Error -> {
             Box(modifier = Modifier.fillMaxSize()) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
@@ -177,7 +177,7 @@ private fun Notes(
             }
         }
 
-        is ResultData.Loading, is ResultData.Idle -> {
+        is br.com.leandroferreira.utils.ResultData.Loading, is br.com.leandroferreira.utils.ResultData.Idle -> {
             Box(modifier = Modifier.fillMaxSize()) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }

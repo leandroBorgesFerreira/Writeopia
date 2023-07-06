@@ -1,4 +1,4 @@
-package br.com.leandroferreira.note_menu
+package br.com.leandroferreira.utils
 
 sealed class ResultData<T> {
 

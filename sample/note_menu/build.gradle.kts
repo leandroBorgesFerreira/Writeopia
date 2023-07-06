@@ -41,7 +41,8 @@ android {
 dependencies {
     implementation(project(":storyteller"))
     implementation(project(":storyteller_persistence"))
-    implementation(project(":sample:resourcers"))
+    implementation(project(":sample:resources"))
+    implementation(project(":sample:utils"))
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")

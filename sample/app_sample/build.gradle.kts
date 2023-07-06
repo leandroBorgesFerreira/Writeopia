@@ -56,6 +56,8 @@ dependencies {
     implementation(project(":storyteller_persistence"))
 
     implementation(project(":sample:note_menu"))
+    implementation(project(":sample:utils"))
+    implementation(project(":sample:resources"))
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
