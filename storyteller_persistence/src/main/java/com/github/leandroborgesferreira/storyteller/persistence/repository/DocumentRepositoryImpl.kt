@@ -14,14 +14,14 @@ class DocumentRepositoryImpl(
     private val storyUnitDao: StoryUnitDao
 ) : DocumentRepository {
 
-    suspend fun loadDocuments(orderBy: String): List<Document> =
+    override suspend fun loadDocuments(orderBy: String): List<Document> =
         documentDao.loadDocumentWithContent(orderBy)
             ?.map { (documentEntity, storyEntity) ->
                 val content = loadInnerSteps(storyEntity)
                 documentEntity.toModel(content)
             } ?: emptyList()
 
-    suspend fun loadDocumentBy(id: String): Document? =
+    override suspend fun loadDocumentBy(id: String): Document? =
         documentDao.loadDocumentWithContentById(id)
             ?.entries
             ?.firstOrNull()
@@ -30,7 +30,7 @@ class DocumentRepositoryImpl(
                 documentEntity.toModel(content)
             }
 
-    suspend fun saveDocument(document: Document) {
+    override suspend fun saveDocument(document: Document) {
         documentDao.insertDocuments(document.toEntity())
 
         document.content?.toEntity(document.id)?.let { data ->
@@ -39,7 +39,7 @@ class DocumentRepositoryImpl(
         }
     }
 
-    suspend fun deleteDocument(document: Document) {
+    override suspend fun deleteDocument(document: Document) {
         documentDao.deleteDocuments(document.toEntity())
     }
 
