@@ -42,7 +42,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.compose.rememberNavController
 import br.com.leandroferreira.editor.input.InputScreen
 import br.com.leandroferreira.resourcers.R
 import com.github.leandroborgesferreira.storyteller.StoryTellerEditor
@@ -59,8 +58,6 @@ fun NoteDetailsScreen(
     noteDetailsViewModel: NoteDetailsViewModel,
     navigateBack: () -> Unit,
 ) {
-    val navController = rememberNavController()
-
     if (documentId != null) {
         noteDetailsViewModel.requestDocumentContent(documentId)
     } else {

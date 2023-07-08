@@ -1,15 +1,14 @@
 package br.com.leandroferreira.editor
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
+import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
-import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepositoryImpl
 import com.github.leandroborgesferreira.storyteller.utils.extensions.noContent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +22,7 @@ import java.util.Date
 
 class NoteDetailsViewModel(
     val storyTellerManager: StoryTellerManager,
-    private val documentRepository: DocumentRepositoryImpl
+    private val documentRepository: DocumentRepository
 ) : ViewModel(),
     BackstackInform by storyTellerManager,
     BackstackHandler by storyTellerManager {
@@ -113,16 +112,3 @@ class NoteDetailsViewModel(
     }
 }
 
-class NoteDetailsViewModelFactory(
-    private val storyTellerManager: StoryTellerManager,
-    private val documentRepository: DocumentRepositoryImpl
-) : ViewModelProvider.Factory {
-
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(NoteDetailsViewModel::class.java)) {
-            return NoteDetailsViewModel(storyTellerManager, documentRepository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}

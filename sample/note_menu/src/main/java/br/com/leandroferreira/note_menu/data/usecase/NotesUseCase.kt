@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import br.com.leandroferreira.note_menu.data.supermarketList
 import br.com.leandroferreira.note_menu.data.travelHistory
 import br.com.leandroferreira.note_menu.viewmodel.NotesArrangement
+import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepositoryImpl
 import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
@@ -12,23 +13,29 @@ import com.github.leandroborgesferreira.storyteller.persistence.sorting.toEntity
 import java.util.Date
 import java.util.UUID
 
+/**
+ * UseCase responsible to perform CRUD operations in the Notes (Documents) of the app.
+ */
 class NotesUseCase(
-    private val documentRepository: DocumentRepositoryImpl,
+    private val documentRepository: DocumentRepository,
     private val sharedPreferences: SharedPreferences
 ) {
 
+    //Todo: Separate the preferences into another Repository
     fun saveDocumentArrangementPref(arrangement: NotesArrangement) {
         sharedPreferences.edit()
             .run { putString(ARRANGE_PREFERENCE, arrangement.type) }
             .commit()
     }
 
+    //Todo: Separate the preferences into another Repository
     fun saveDocumentSortingPref(orderBy: OrderBy) {
         sharedPreferences.edit()
             .run { putString(ORDER_BY_PREFERENCE, orderBy.type.toEntityField()) }
             .commit()
     }
 
+    //Todo: Separate the preferences into another Repository
     fun arrangementPref(): String =
         sharedPreferences
             .getString(ARRANGE_PREFERENCE, NotesArrangement.GRID.type)

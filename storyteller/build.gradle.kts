@@ -42,7 +42,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
+        kotlinCompilerExtensionVersion = "1.4.8"
     }
     publishing {
         singleVariant("release")
@@ -72,6 +72,5 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
 
-    val composeBom = platform("androidx.compose:compose-bom:2023.06.00")
-    implementation(composeBom)
+    implementation(platform(libs.androidx.compose.bom))
 }
