@@ -38,9 +38,10 @@ class NotesInjection(
 
     @Composable
     internal fun provideChooseNoteViewModel(
-        notesUseCase: NotesUseCase = provideNotesUseCase()
+        notesUseCase: NotesUseCase = provideNotesUseCase(),
+        notesConfig: NotesConfigurationRepository = provideNotesConfigurationRepository()
     ): ChooseNoteViewModel {
-        return viewModel(factory = ChooseNoteViewModelFactory(notesUseCase))
+        return viewModel(factory = ChooseNoteViewModelFactory(notesUseCase, notesConfig))
     }
 
     @Composable
