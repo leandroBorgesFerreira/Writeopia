@@ -3,6 +3,7 @@ package br.com.leandroferreira.note_menu.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.leandroferreira.note_menu.data.usecase.NotesConfigurationRepository
 import br.com.leandroferreira.utils.ResultData
 import br.com.leandroferreira.note_menu.data.usecase.NotesUseCase
 import br.com.leandroferreira.note_menu.extensions.toUiCard
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 
 class ChooseNoteViewModel(
     private val notesUseCase: NotesUseCase,
+    private val notesConfig: NotesConfigurationRepository,
     private val previewParser: PreviewParser = PreviewParser()
 ) : ViewModel() {
 
@@ -55,7 +57,7 @@ class ChooseNoteViewModel(
                     document.toUiCard(previewParser)
                 }
 
-            _notesArrangement.value = NotesArrangement.fromString(notesUseCase.arrangementPref())
+            _notesArrangement.value = NotesArrangement.fromString(notesConfig.arrangementPref())
             _documentsState.value = ResultData.Complete(data)
         } catch (e: Exception) {
             _documentsState.value = ResultData.Error(e)
@@ -76,18 +78,18 @@ class ChooseNoteViewModel(
     }
 
     fun listArrangementSelected() {
-        notesUseCase.saveDocumentArrangementPref(NotesArrangement.LIST)
+        notesConfig.saveDocumentArrangementPref(NotesArrangement.LIST)
         _notesArrangement.value = NotesArrangement.LIST
     }
 
     fun gridArrangementSelected() {
-        notesUseCase.saveDocumentArrangementPref(NotesArrangement.GRID)
+        notesConfig.saveDocumentArrangementPref(NotesArrangement.GRID)
         _notesArrangement.value = NotesArrangement.GRID
     }
 
     fun sortingSelected(orderBy: OrderBy) {
         viewModelScope.launch {
-            notesUseCase.saveDocumentSortingPref(orderBy)
+            notesConfig.saveDocumentSortingPref(orderBy)
             refreshDocuments()
         }
     }
