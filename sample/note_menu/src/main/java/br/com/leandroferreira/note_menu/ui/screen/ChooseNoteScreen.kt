@@ -35,10 +35,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.com.leandroferreira.resourcers.R
 import br.com.leandroferreira.utils.ResultData
 import br.com.leandroferreira.note_menu.ui.dto.DocumentCard
 import br.com.leandroferreira.note_menu.viewmodel.ChooseNoteViewModel
@@ -59,7 +63,8 @@ private fun previewDrawers(): Map<String, StoryUnitDrawer> =
 @Composable
 fun ChooseNoteScreen(
     chooseNoteViewModel: ChooseNoteViewModel,
-    navigateToNote: (String?, String?) -> Unit
+    navigateToNote: (String, String) -> Unit,
+    newNote: () -> Unit
 ) {
     chooseNoteViewModel.requestDocuments()
 
@@ -80,7 +85,7 @@ fun ChooseNoteScreen(
                                 .clickable(onClick = chooseNoteViewModel::editMenu)
                                 .padding(10.dp),
                             imageVector = Icons.Default.MoreVert,
-                            contentDescription = "",// stringResource(R.string.more_options),
+                            contentDescription = stringResource(R.string.more_options),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -88,12 +93,15 @@ fun ChooseNoteScreen(
             },
             floatingActionButton = {
                 FloatingActionButton(
+                    modifier = Modifier.semantics {
+                        testTag = "addNote"
+                    },
                     containerColor = MaterialTheme.colorScheme.primary,
-                    onClick = { navigateToNote(null, null) },
+                    onClick = newNote,
                     content = {
                         Icon(
                             imageVector = Icons.Default.Add,
-                            contentDescription = ""// stringResource(R.string.add_note)
+                            contentDescription = stringResource(R.string.add_note)
                         )
                     }
                 )
@@ -141,7 +149,7 @@ private fun Notes(
 ) {
     when (val documents =
         chooseNoteViewModel.documentsState.collectAsStateWithLifecycle().value) {
-        is br.com.leandroferreira.utils.ResultData.Complete -> {
+        is ResultData.Complete -> {
             Column(modifier = Modifier.fillMaxWidth()) {
                 val data = documents.data
 
@@ -168,7 +176,7 @@ private fun Notes(
             }
         }
 
-        is br.com.leandroferreira.utils.ResultData.Error -> {
+        is ResultData.Error -> {
             Box(modifier = Modifier.fillMaxSize()) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
@@ -177,7 +185,7 @@ private fun Notes(
             }
         }
 
-        is br.com.leandroferreira.utils.ResultData.Loading, is br.com.leandroferreira.utils.ResultData.Idle -> {
+        is ResultData.Loading, is ResultData.Idle -> {
             Box(modifier = Modifier.fillMaxSize()) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
@@ -265,12 +273,12 @@ private fun MockDataScreen(chooseNoteViewModel: ChooseNoteViewModel) {
         ) {
             Text(
                 modifier = Modifier.padding(8.dp),
-                text = ""// stringResource(R.string.you_dont_have_notes)
+                text = stringResource(R.string.you_dont_have_notes)
             )
             Button(onClick = {
                 chooseNoteViewModel.addMockData(context)
             }) {
-                Text(text = "")// stringResource(R.string.add_sample_notes))
+                Text(text = stringResource(R.string.add_sample_notes))
             }
         }
     }
