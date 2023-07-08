@@ -1,49 +1,24 @@
 package br.com.leandroferreira.note_menu.data.usecase
 
 import android.content.Context
-import android.content.SharedPreferences
 import br.com.leandroferreira.note_menu.data.supermarketList
 import br.com.leandroferreira.note_menu.data.travelHistory
-import br.com.leandroferreira.note_menu.viewmodel.NotesArrangement
 import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
 import com.github.leandroborgesferreira.storyteller.model.document.Document
-import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepositoryImpl
-import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
-import com.github.leandroborgesferreira.storyteller.persistence.sorting.toEntityField
 import java.util.Date
 import java.util.UUID
 
 /**
- * UseCase responsible to perform CRUD operations in the Notes (Documents) of the app.
+ * UseCase responsible to perform CRUD operations in the Notes (Documents) of the app taking in to
+ * consideration the configuration desired in the app.
  */
 class NotesUseCase(
     private val documentRepository: DocumentRepository,
-    private val sharedPreferences: SharedPreferences
+    private val notesConfig: NotesConfigurationRepository
 ) {
 
-    //Todo: Separate the preferences into another Repository
-    fun saveDocumentArrangementPref(arrangement: NotesArrangement) {
-        sharedPreferences.edit()
-            .run { putString(ARRANGE_PREFERENCE, arrangement.type) }
-            .commit()
-    }
-
-    //Todo: Separate the preferences into another Repository
-    fun saveDocumentSortingPref(orderBy: OrderBy) {
-        sharedPreferences.edit()
-            .run { putString(ORDER_BY_PREFERENCE, orderBy.type.toEntityField()) }
-            .commit()
-    }
-
-    //Todo: Separate the preferences into another Repository
-    fun arrangementPref(): String =
-        sharedPreferences
-            .getString(ARRANGE_PREFERENCE, NotesArrangement.GRID.type)
-            ?: NotesArrangement.GRID.type
-
     suspend fun loadDocuments(): List<Document> =
-        sharedPreferences
-            .getString(ORDER_BY_PREFERENCE, OrderBy.CREATE.type.toEntityField())
+        notesConfig.getOrderPreference()
             ?.let { orderBy -> documentRepository.loadDocuments(orderBy) }!!
 
     suspend fun mockData(context: Context) {
@@ -66,10 +41,5 @@ class NotesUseCase(
                 lastUpdatedAt = Date()
             )
         )
-    }
-
-    companion object {
-        private const val ORDER_BY_PREFERENCE = "order_by_preference"
-        private const val ARRANGE_PREFERENCE = "arrange_preference"
     }
 }

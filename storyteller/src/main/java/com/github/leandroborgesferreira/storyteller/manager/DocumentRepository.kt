@@ -3,7 +3,11 @@ package com.github.leandroborgesferreira.storyteller.manager
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
-//Todo: Add the methods from DocumentRepositoryImpl
+/**
+ * DocumentRepository is the repository for using simple CRUD operations in [Document].
+ * The implementations of this interface shouldn't control order (sorting) or oder configurations,
+ * those need to be passed as parameters.
+ */
 interface DocumentRepository {
 
     suspend fun loadDocuments(orderBy: String): List<Document>
