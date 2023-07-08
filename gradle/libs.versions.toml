@@ -12,6 +12,7 @@ materialIconsExtended = "1.4.3"
 room = "2.5.2"
 compose = "2.6.1"
 navigation-compose = "2.6.0"
+junit4-compose = "1.4.3"
 
 [libraries]
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
@@ -33,5 +34,7 @@ room-testing = { group = "androidx.room", name = "room-testing", version.ref = "
 viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "compose" }
 runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "compose" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
+androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "junit4-compose" }
+androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "junit4-compose" }
 
 [plugins]

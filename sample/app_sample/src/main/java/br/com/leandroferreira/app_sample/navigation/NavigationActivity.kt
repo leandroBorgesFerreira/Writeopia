@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -32,7 +33,6 @@ class NavigationActivity : AppCompatActivity() {
 
 @Composable
 fun NavigationGraph() {
-
     val navController = rememberNavController()
     val context = LocalContext.current
     val database = StoryTellerDatabase.database(context)
@@ -48,11 +48,11 @@ fun NavigationGraph() {
             composable(Destinations.CHOOSE_NOTE.id) {
                 val chooseNoteViewModel = notesInjection.provideChooseNoteViewModel()
 
-                ChooseNoteScreen(chooseNoteViewModel = chooseNoteViewModel) { noteId, noteTitle ->
-                    navController.navigate(
-                        "${Destinations.NOTE_DETAILS.id}/$noteId/$noteTitle"
-                    )
-                }
+                ChooseNoteScreen(
+                    chooseNoteViewModel = chooseNoteViewModel,
+                    navigateToNote = navController::navigateToNote,
+                    newNote = navController::navigateToNewNote
+                )
             }
 
             composable(
@@ -74,11 +74,34 @@ fun NavigationGraph() {
                         }
                     )
                 } else {
-                    throw IllegalArgumentException("Wrong route!")
+                    throw IllegalArgumentException("The arguments for this route are wrong!")
                 }
+            }
+
+            composable(route = Destinations.NOTE_DETAILS.id) {
+                NoteDetailsScreen(
+                    documentId = null,
+                    title = null,
+                    noteDetailsViewModel = notesInjection.provideNoteDetailsViewModel(),
+                    navigateBack = {
+                        navController.navigateUp()
+                    }
+                )
             }
         }
     }
+}
+
+private fun NavController.navigateToNote(id: String, title: String) {
+    navigate(
+        "${Destinations.NOTE_DETAILS.id}/$id/$title"
+    )
+}
+
+private fun NavController.navigateToNewNote() {
+    navigate(
+        Destinations.NOTE_DETAILS.id
+    )
 }
 
 enum class Destinations(val id: String) {

@@ -37,6 +37,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -72,6 +74,9 @@ fun NoteDetailsScreen(
             TopAppBar(
                 title = {
                     Text(
+                        modifier = Modifier.semantics {
+                            testTag = "noteEditionScreenTitle"
+                        },
                         text = title?.takeIf { it.isNotBlank() }
                             ?: stringResource(id = R.string.note),
                         color = MaterialTheme.colorScheme.onPrimary
