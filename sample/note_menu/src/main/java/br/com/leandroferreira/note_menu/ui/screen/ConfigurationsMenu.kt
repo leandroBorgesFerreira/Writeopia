@@ -40,18 +40,17 @@ private const val INNER_PADDING = 3
 
 @Composable
 internal fun BoxScope.ConfigurationsMenu(
+    modifier: Modifier = Modifier,
     editState: Boolean,
     outsideClick: () -> Unit,
     listOptionClick: () -> Unit,
     gridOptionClick: () -> Unit,
     sortingSelected: (OrderBy) -> Unit,
 ) {
-
-    // Todo: Extract to a global use function
     SlideInBox(
-        modifier = Modifier
-            .align(Alignment.BottomCenter)
-            .background(Color.Transparent),
+        modifier = modifier
+            .background(Color.Transparent)
+            .align(Alignment.BottomCenter),
         editState = editState,
         outsideClick = outsideClick,
         animationLabel = "configurationsMenuAnimation"
@@ -77,7 +76,7 @@ internal fun BoxScope.ConfigurationsMenu(
 
             SortingSection(sortingSelected = sortingSelected)
 
-            Spacer(modifier = Modifier.height(90.dp))
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }
@@ -195,7 +194,7 @@ private fun Modifier.orderConfigModifier(clickable: () -> Unit): Modifier =
 @Composable
 private fun ConfigurationsMenu_Preview() {
     Box(modifier = Modifier.fillMaxWidth()) {
-        ConfigurationsMenu(true, {}, {}, {}, {})
+        ConfigurationsMenu(Modifier, true, {}, {}, {}, {})
     }
 }
 

@@ -31,7 +31,7 @@ fun SlideInBox(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xCC000000))
+                .background(Color(0xAA000000))
                 .clickable(onClick = outsideClick)
         )
     }

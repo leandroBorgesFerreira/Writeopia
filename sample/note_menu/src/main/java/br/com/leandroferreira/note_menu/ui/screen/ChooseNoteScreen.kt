@@ -69,48 +69,60 @@ fun ChooseNoteScreen(
     chooseNoteViewModel.requestDocuments()
 
     MaterialTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = "StoryTeller",
-                            color = MaterialTheme.colorScheme.onPrimary
-                        )
-                    },
-                    actions = {
-                        Icon(
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .clickable(onClick = chooseNoteViewModel::editMenu)
-                                .padding(10.dp),
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = stringResource(R.string.more_options),
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
-                )
-            },
-            floatingActionButton = {
-                FloatingActionButton(
-                    modifier = Modifier.semantics {
-                        testTag = "addNote"
-                    },
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    onClick = newNote,
-                    content = {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(R.string.add_note)
-                        )
-                    }
+        Box(modifier = Modifier.fillMaxSize()) {
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = {
+                            Text(
+                                text = "StoryTeller",
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+                        },
+                        actions = {
+                            Icon(
+                                modifier = Modifier
+                                    .clip(CircleShape)
+                                    .clickable(onClick = chooseNoteViewModel::editMenu)
+                                    .padding(10.dp),
+                                imageVector = Icons.Default.MoreVert,
+                                contentDescription = stringResource(R.string.more_options),
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
+                    )
+                },
+                floatingActionButton = {
+                    FloatingActionButton(
+                        modifier = Modifier.semantics {
+                            testTag = "addNote"
+                        },
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        onClick = newNote,
+                        content = {
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = stringResource(R.string.add_note)
+                            )
+                        }
+                    )
+                }
+            ) { paddingValues ->
+                Content(
+                    chooseNoteViewModel = chooseNoteViewModel,
+                    navigateToNote = navigateToNote,
+                    paddingValues = paddingValues,
                 )
             }
-        ) { paddingValues ->
-            Content(
-                chooseNoteViewModel = chooseNoteViewModel,
-                navigateToNote = navigateToNote,
-                paddingValues = paddingValues,
+
+            val editState by chooseNoteViewModel.editState.collectAsStateWithLifecycle()
+
+            ConfigurationsMenu(
+                editState = editState,
+                outsideClick = chooseNoteViewModel::cancelMenu,
+                listOptionClick = chooseNoteViewModel::listArrangementSelected,
+                gridOptionClick = chooseNoteViewModel::gridArrangementSelected,
+                sortingSelected = chooseNoteViewModel::sortingSelected
             )
         }
     }
@@ -129,16 +141,6 @@ private fun Content(
             .fillMaxSize()
     ) {
         Notes(chooseNoteViewModel = chooseNoteViewModel, navigateToNote = navigateToNote)
-
-        val editState by chooseNoteViewModel.editState.collectAsStateWithLifecycle()
-
-        ConfigurationsMenu(
-            editState = editState,
-            outsideClick = chooseNoteViewModel::cancelMenu,
-            listOptionClick = chooseNoteViewModel::listArrangementSelected,
-            gridOptionClick = chooseNoteViewModel::gridArrangementSelected,
-            sortingSelected = chooseNoteViewModel::sortingSelected
-        )
     }
 }
 
