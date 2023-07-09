@@ -1,6 +1,5 @@
 package br.com.leandroferreira.note_menu.ui.screen
 
-import android.graphics.drawable.ColorDrawable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -48,53 +47,37 @@ internal fun BoxScope.ConfigurationsMenu(
     sortingSelected: (OrderBy) -> Unit,
 ) {
 
-    if (editState) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color(0xCC000000))
-                .clickable(onClick = outsideClick)
-        )
-    }
-
     // Todo: Extract to a global use function
     SlideInBox(
         modifier = Modifier
             .align(Alignment.BottomCenter)
             .background(Color.Transparent),
         editState = editState,
+        outsideClick = outsideClick,
         animationLabel = "configurationsMenuAnimation"
-    ) { isEdit ->
-        if (isEdit) {
-            val topCorner = CornerSize(16.dp)
-            val bottomCorner = CornerSize(0.dp)
+    ) {
+        val topCorner = CornerSize(16.dp)
+        val bottomCorner = CornerSize(0.dp)
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(
-                        RoundedCornerShape(
-                            topCorner,
-                            topCorner,
-                            bottomCorner,
-                            bottomCorner
-                        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(
+                    RoundedCornerShape(
+                        topCorner,
+                        topCorner,
+                        bottomCorner,
+                        bottomCorner
                     )
-                    .background(MaterialTheme.colorScheme.surface)
-                    .padding(16.dp),
-            ) {
-                ArrangementSection(listOptionClick, gridOptionClick)
+                )
+                .background(MaterialTheme.colorScheme.surface)
+                .padding(16.dp),
+        ) {
+            ArrangementSection(listOptionClick, gridOptionClick)
 
-                SortingSection(sortingSelected = sortingSelected)
+            SortingSection(sortingSelected = sortingSelected)
 
-                Spacer(modifier = Modifier.height(90.dp))
-            }
-        } else {
-            Box(
-                modifier = Modifier
-                    .height(0.dp)
-                    .fillMaxWidth()
-            )
+            Spacer(modifier = Modifier.height(90.dp))
         }
     }
 }

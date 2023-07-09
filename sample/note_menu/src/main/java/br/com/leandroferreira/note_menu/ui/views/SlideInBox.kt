@@ -1,33 +1,51 @@
 package br.com.leandroferreira.note_menu.ui.views
 
-import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.with
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun SlideInBox(
     modifier: Modifier = Modifier,
     editState: Boolean,
     animationLabel: String,
-    duration: Int = 300,
-    content: @Composable AnimatedVisibilityScope.(targetState: Boolean) -> Unit) {
-    AnimatedContent(
+    outsideClick: () -> Unit,
+    content: @Composable AnimatedVisibilityScope.() -> Unit
+) {
+    AnimatedVisibility(
+        visible = editState,
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xCC000000))
+                .clickable(onClick = outsideClick)
+        )
+    }
+
+    AnimatedVisibility(
         modifier = modifier,
-        targetState = editState,
+        visible = editState,
         label = animationLabel,
-        transitionSpec = {
-            slideInVertically(
-                animationSpec = tween(durationMillis = duration),
-                initialOffsetY = { fullHeight -> fullHeight }
-            ) with fadeOut()
-        },
+        enter = slideInVertically(
+            initialOffsetY = { fullHeight -> fullHeight }
+        ),
+        exit = slideOutVertically(
+            targetOffsetY = { fullHeight -> fullHeight }
+        ),
         content = content
     )
 }
