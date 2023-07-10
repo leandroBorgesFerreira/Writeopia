@@ -15,19 +15,16 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -38,7 +35,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
@@ -47,11 +43,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.com.leandroferreira.resourcers.R
-import br.com.leandroferreira.utils.ResultData
 import br.com.leandroferreira.note_menu.ui.dto.DocumentCard
 import br.com.leandroferreira.note_menu.viewmodel.ChooseNoteViewModel
 import br.com.leandroferreira.note_menu.viewmodel.NotesArrangement
+import br.com.leandroferreira.resourcers.R
+import br.com.leandroferreira.utils.ResultData
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.CheckItemPreviewDrawer
@@ -117,6 +113,7 @@ fun ChooseNoteScreen(
                 Content(
                     chooseNoteViewModel = chooseNoteViewModel,
                     navigateToNote = navigateToNote,
+                    selectionListener = chooseNoteViewModel::selectionListener,
                     paddingValues = paddingValues,
                 )
             }
@@ -124,11 +121,17 @@ fun ChooseNoteScreen(
             val editState by chooseNoteViewModel.editState.collectAsStateWithLifecycle()
 
             ConfigurationsMenu(
-                editState = editState,
+                visibilityState = editState,
                 outsideClick = chooseNoteViewModel::cancelMenu,
                 listOptionClick = chooseNoteViewModel::listArrangementSelected,
                 gridOptionClick = chooseNoteViewModel::gridArrangementSelected,
                 sortingSelected = chooseNoteViewModel::sortingSelected
+            )
+
+            val selectionState by chooseNoteViewModel.hasSelectedNotes.collectAsStateWithLifecycle()
+
+            NotesSelectionMenu(
+                visibilityState = selectionState
             )
         }
     }
@@ -139,6 +142,7 @@ fun ChooseNoteScreen(
 private fun Content(
     chooseNoteViewModel: ChooseNoteViewModel,
     navigateToNote: (String, String) -> Unit,
+    selectionListener: (String, Boolean) -> Unit,
     paddingValues: PaddingValues,
 ) {
     Box(
@@ -146,14 +150,19 @@ private fun Content(
             .padding(paddingValues)
             .fillMaxSize()
     ) {
-        Notes(chooseNoteViewModel = chooseNoteViewModel, navigateToNote = navigateToNote)
+        Notes(
+            chooseNoteViewModel = chooseNoteViewModel,
+            navigateToNote = navigateToNote,
+            selectionListener = selectionListener
+        )
     }
 }
 
 @Composable
 private fun Notes(
     chooseNoteViewModel: ChooseNoteViewModel,
-    navigateToNote: (String, String) -> Unit
+    navigateToNote: (String, String) -> Unit,
+    selectionListener: (String, Boolean) -> Unit,
 ) {
     when (val documents =
         chooseNoteViewModel.documentsState.collectAsStateWithLifecycle().value) {
@@ -169,15 +178,27 @@ private fun Notes(
 
                     when (arrangement) {
                         NotesArrangement.GRID -> {
-                            LazyGridNotes(documents.data, navigateToNote)
+                            LazyGridNotes(
+                                documents.data,
+                                selectionListener = selectionListener,
+                                onDocumentClick = navigateToNote
+                            )
                         }
 
                         NotesArrangement.LIST -> {
-                            LazyColumnNotes(documents.data, navigateToNote)
+                            LazyColumnNotes(
+                                documents.data,
+                                selectionListener = selectionListener,
+                                onDocumentClick = navigateToNote
+                            )
                         }
 
                         else -> {
-                            LazyGridNotes(documents.data, navigateToNote)
+                            LazyGridNotes(
+                                documents.data,
+                                selectionListener = selectionListener,
+                                onDocumentClick = navigateToNote
+                            )
                         }
                     }
                 }
@@ -205,7 +226,8 @@ private fun Notes(
 @Composable
 private fun LazyGridNotes(
     documents: List<DocumentCard>,
-    onDocumentClick: (String, String) -> Unit
+    onDocumentClick: (String, String) -> Unit,
+    selectionListener: (String, Boolean) -> Unit
 ) {
     LazyVerticalStaggeredGrid(
         modifier = Modifier.padding(6.dp),
@@ -213,7 +235,7 @@ private fun LazyGridNotes(
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         content = {
             items(documents) { document ->
-                DocumentItem(document, onDocumentClick, previewDrawers())
+                DocumentItem(document, onDocumentClick, selectionListener, previewDrawers())
             }
         }
     )
@@ -222,14 +244,15 @@ private fun LazyGridNotes(
 @Composable
 private fun LazyColumnNotes(
     documents: List<DocumentCard>,
-    onDocumentClick: (String, String) -> Unit
+    onDocumentClick: (String, String) -> Unit,
+    selectionListener: (String, Boolean) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.padding(6.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp),
         content = {
             items(documents) { document ->
-                DocumentItem(document, onDocumentClick, previewDrawers())
+                DocumentItem(document, onDocumentClick, selectionListener, previewDrawers())
             }
         }
     )
@@ -239,7 +262,8 @@ private fun LazyColumnNotes(
 private fun DocumentItem(
     documentCard: DocumentCard,
     documentClick: (String, String) -> Unit,
-    drawers: Map<String, StoryUnitDrawer>,
+    selectionListener: (String, Boolean) -> Unit,
+    drawers: Map<String, StoryUnitDrawer>
 ) {
     var editState by remember {
         mutableStateOf(false)
@@ -253,7 +277,7 @@ private fun DocumentItem(
                 documentClick(documentCard.documentId, documentCard.title)
             },
         state = editState,
-        swipeListener = { editState = !editState },
+        swipeListener = { state -> selectionListener(documentCard.documentId, state) },
         cornersShape = MaterialTheme.shapes.large,
         defaultColor = MaterialTheme.colorScheme.surfaceVariant
     ) {

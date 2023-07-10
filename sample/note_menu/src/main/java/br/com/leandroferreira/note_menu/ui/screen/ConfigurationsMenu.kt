@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -41,7 +40,7 @@ private const val INNER_PADDING = 3
 @Composable
 internal fun BoxScope.ConfigurationsMenu(
     modifier: Modifier = Modifier,
-    editState: Boolean,
+    visibilityState: Boolean,
     outsideClick: () -> Unit,
     listOptionClick: () -> Unit,
     gridOptionClick: () -> Unit,
@@ -51,7 +50,7 @@ internal fun BoxScope.ConfigurationsMenu(
         modifier = modifier
             .background(Color.Transparent)
             .align(Alignment.BottomCenter),
-        editState = editState,
+        editState = visibilityState,
         outsideClick = outsideClick,
         animationLabel = "configurationsMenuAnimation"
     ) {

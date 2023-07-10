@@ -12,8 +12,11 @@ import com.github.leandroborgesferreira.storyteller.parse.PreviewParser
 import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ChooseNoteViewModel(
@@ -21,6 +24,11 @@ class ChooseNoteViewModel(
     private val notesConfig: NotesConfigurationRepository,
     private val previewParser: PreviewParser = PreviewParser()
 ) : ViewModel() {
+
+    private val _selectedNotes = MutableStateFlow(setOf<String>())
+    val hasSelectedNotes = _selectedNotes.map { selectedIds ->
+        selectedIds.isNotEmpty()
+    }.stateIn(viewModelScope, SharingStarted.Lazily, false)
 
     private val _documentsState: MutableStateFlow<ResultData<List<DocumentCard>>> =
         MutableStateFlow(ResultData.Idle())
@@ -46,6 +54,13 @@ class ChooseNoteViewModel(
 
     fun cancelMenu() {
         _editState.value = false
+    }
+
+    fun selectionListener(id: String, selected: Boolean) {
+        val selectedIds = _selectedNotes.value
+        val newIds = if (selected) selectedIds + id else selectedIds - id
+
+        _selectedNotes.value = newIds
     }
 
     private suspend fun refreshDocuments() {

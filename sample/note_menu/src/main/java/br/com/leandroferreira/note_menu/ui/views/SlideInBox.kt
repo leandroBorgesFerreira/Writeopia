@@ -2,6 +2,10 @@ package br.com.leandroferreira.note_menu.ui.views
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -13,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.IntOffset
 
 @Composable
 fun SlideInBox(
@@ -20,10 +25,19 @@ fun SlideInBox(
     editState: Boolean,
     animationLabel: String,
     outsideClick: () -> Unit,
+    showBackground: Boolean = true,
+    enterAnimationSpec: FiniteAnimationSpec<IntOffset> = spring(
+        stiffness = Spring.StiffnessMediumLow,
+        visibilityThreshold = IntOffset.VisibilityThreshold
+    ),
+    exitAnimationSpec: FiniteAnimationSpec<IntOffset> = spring(
+        stiffness = Spring.StiffnessMediumLow,
+        visibilityThreshold = IntOffset.VisibilityThreshold
+    ),
     content: @Composable AnimatedVisibilityScope.() -> Unit
 ) {
     AnimatedVisibility(
-        visible = editState,
+        visible = editState && showBackground,
         enter = fadeIn(),
         exit = fadeOut()
     ) {
@@ -40,9 +54,11 @@ fun SlideInBox(
         visible = editState,
         label = animationLabel,
         enter = slideInVertically(
+            animationSpec = enterAnimationSpec,
             initialOffsetY = { fullHeight -> fullHeight }
         ),
         exit = slideOutVertically(
+            animationSpec = exitAnimationSpec,
             targetOffsetY = { fullHeight -> fullHeight }
         ),
         content = content
