@@ -37,7 +37,7 @@ import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTarge
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTargetWithDragItem
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
-import com.github.leandroborgesferreira.storyteller.drawer.common.SwipeToCommandBox
+import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyErase
 import com.github.leandroborgesferreira.storyteller.model.change.CheckInfo
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
@@ -63,9 +63,9 @@ class CheckItemDrawer(
         var hasFocus by remember { mutableStateOf(false) }
 
         Box(modifier = Modifier.padding(horizontal = 6.dp)) {
-            SwipeToCommandBox(
+            SwipeBox(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(3.dp))
+                    .padding(horizontal = 6.dp)
                     .apply {
                         if (clickable) {
                             clickable {

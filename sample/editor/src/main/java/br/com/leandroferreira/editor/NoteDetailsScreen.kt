@@ -131,6 +131,8 @@ fun ColumnScope.TextEditor(noteDetailsViewModel: NoteDetailsViewModel) {
         }
     }
 
+    val clipShape = MaterialTheme.shapes.medium
+
     StoryTellerEditor(
         modifier = Modifier
             .fillMaxWidth()
@@ -141,7 +143,8 @@ fun ColumnScope.TextEditor(noteDetailsViewModel: NoteDetailsViewModel) {
         drawers = DefaultDrawers.create(
             editable,
             noteDetailsViewModel.storyTellerManager,
-            groupsBackgroundColor = MaterialTheme.colorScheme.surface
+            defaultBorder = clipShape
+//            groupsBackgroundColor = MaterialTheme.colorScheme.surface
         )
     )
 }

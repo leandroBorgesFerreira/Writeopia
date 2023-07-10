@@ -27,13 +27,18 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
@@ -52,6 +57,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.CheckItemPreviewDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.MessagePreviewDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 
 private fun previewDrawers(): Map<String, StoryUnitDrawer> =
     mapOf(
@@ -235,14 +241,21 @@ private fun DocumentItem(
     documentClick: (String, String) -> Unit,
     drawers: Map<String, StoryUnitDrawer>,
 ) {
-    Card(
+    var editState by remember {
+        mutableStateOf(false)
+    }
+
+    SwipeBox(
         modifier = Modifier
-            .fillMaxWidth()
             .padding(bottom = 6.dp)
+            .fillMaxWidth()
             .clickable {
                 documentClick(documentCard.documentId, documentCard.title)
             },
-        shape = RoundedCornerShape(12.dp)
+        state = editState,
+        swipeListener = { editState = !editState },
+        cornersShape = MaterialTheme.shapes.large,
+        defaultColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
         Column(modifier = Modifier.padding(10.dp)) {
             Text(

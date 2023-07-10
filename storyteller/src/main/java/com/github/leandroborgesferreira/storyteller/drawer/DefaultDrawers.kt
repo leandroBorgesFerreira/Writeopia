@@ -3,9 +3,11 @@ package com.github.leandroborgesferreira.storyteller.drawer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.commands.CommandsDecoratorDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.AddButtonDrawer
@@ -32,7 +34,8 @@ object DefaultDrawers {
     fun create(
         editable: Boolean = false,
         manager: StoryTellerManager,
-        groupsBackgroundColor: Color = Color.Transparent
+        groupsBackgroundColor: Color = Color.Transparent,
+        defaultBorder: Shape
     ): Map<String, StoryUnitDrawer> =
         create(
             editable = editable,
@@ -46,7 +49,8 @@ object DefaultDrawers {
             nextFocus = manager::nextFocusOrCreate,
             clickAtTheEnd = manager::clickAtTheEnd,
             onSelected = manager::onSelected,
-            groupsBackgroundColor = groupsBackgroundColor
+            groupsBackgroundColor = groupsBackgroundColor,
+            defaultBorder = defaultBorder
         )
 
     fun create(
@@ -60,8 +64,9 @@ object DefaultDrawers {
         createCheckItem: (Int) -> Unit,
         onSelected: (Boolean, Int) -> Unit,
         clickAtTheEnd: () -> Unit,
-        nextFocus: (Int) -> Unit,
-        groupsBackgroundColor: Color = Color.Transparent
+        defaultBorder: Shape,
+        groupsBackgroundColor: Color = Color.Transparent,
+        nextFocus: (Int) -> Unit
     ): Map<String, StoryUnitDrawer> =
         buildMap {
             val textCommandHandlerMessage = TextCommandHandler(
@@ -103,7 +108,7 @@ object DefaultDrawers {
             val messageBoxDrawer = MessageDrawer(
                 containerModifier = Modifier
                     .padding(horizontal = 8.dp)
-                    .clip(shape = RoundedCornerShape(size = 12.dp))
+                    .clip(shape = defaultBorder)
                     .background(groupsBackgroundColor),
                 innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
                 onTextEdit = onTextEdit,
