@@ -1,4 +1,4 @@
-package br.com.leandroferreira.note_menu.ui.screen
+package br.com.leandroferreira.note_menu.ui.screen.configuration
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

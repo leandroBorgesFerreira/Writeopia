@@ -44,6 +44,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.leandroferreira.note_menu.ui.dto.DocumentCard
+import br.com.leandroferreira.note_menu.ui.screen.configuration.ConfigurationsMenu
+import br.com.leandroferreira.note_menu.ui.screen.configuration.NotesSelectionMenu
 import br.com.leandroferreira.note_menu.viewmodel.ChooseNoteViewModel
 import br.com.leandroferreira.note_menu.viewmodel.NotesArrangement
 import br.com.leandroferreira.resourcers.R
