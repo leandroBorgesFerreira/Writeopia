@@ -97,7 +97,7 @@ class DocumentRepositoryTest {
         )
 
         documentRepository.saveDocument(document)
-        val loadedDocument = documentRepository.loadDocumentBy(id)
+        val loadedDocument = documentRepository.loadDocumentById(id)
 
         assertEquals(document, loadedDocument)
     }
@@ -114,7 +114,7 @@ class DocumentRepositoryTest {
         )
 
         documentRepository.saveDocument(document)
-        val loadedDocument = documentRepository.loadDocumentBy(id)
+        val loadedDocument = documentRepository.loadDocumentById(id)
 
         assertTrue(storyUnitDao.loadDocumentContent(id).isNotEmpty())
         assertTrue(documentDao.loadDocumentWithContentById(id)?.values?.isNotEmpty() ?: false)
@@ -134,7 +134,7 @@ class DocumentRepositoryTest {
         )
 
         documentRepository.saveDocument(document)
-        val loadedDocument = documentRepository.loadDocumentBy(id)
+        val loadedDocument = documentRepository.loadDocumentById(id)
 
         assertEquals(document, loadedDocument)
     }

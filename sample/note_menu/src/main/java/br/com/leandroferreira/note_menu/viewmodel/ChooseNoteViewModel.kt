@@ -109,7 +109,7 @@ class ChooseNoteViewModel(
     }
 
     fun copySelectedNotes() {
-
+        notesUseCase.loadDocuments()
     }
 
     fun deleteSelectedNotes() {

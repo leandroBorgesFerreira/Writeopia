@@ -78,7 +78,7 @@ class NoteDetailsViewModel(
         if (storyTellerManager.isInitialized()) return
 
         viewModelScope.launch(Dispatchers.IO) {
-            val document = documentRepository.loadDocumentBy(documentId)
+            val document = documentRepository.loadDocumentById(documentId)
             val content = document?.content
             _documentState.value = document
 

@@ -99,7 +99,6 @@ fun ChooseNoteScreen(
         }
     }
 
-
     MaterialTheme {
         Box(modifier = Modifier.fillMaxSize()) {
             Scaffold(

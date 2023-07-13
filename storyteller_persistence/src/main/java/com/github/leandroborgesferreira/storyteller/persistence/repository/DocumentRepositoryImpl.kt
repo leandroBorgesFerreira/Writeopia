@@ -22,11 +22,19 @@ class DocumentRepositoryImpl(
                 documentEntity.toModel(content)
             } ?: emptyList()
 
-    override suspend fun loadDocumentBy(id: String): Document? =
+    override suspend fun loadDocumentById(id: String): Document? =
         documentDao.loadDocumentWithContentById(id)
             ?.entries
             ?.firstOrNull()
             ?.let { (documentEntity, storyEntity) ->
+                val content = loadInnerSteps(storyEntity)
+                documentEntity.toModel(content)
+            }
+
+    override suspend fun loadDocumentsById(ids: List<String>, orderBy: String): List<Document> =
+        documentDao.loadDocumentWithContentByIds(ids, orderBy)
+            .entries
+            .map { (documentEntity, storyEntity) ->
                 val content = loadInnerSteps(storyEntity)
                 documentEntity.toModel(content)
             }

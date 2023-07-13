@@ -32,6 +32,7 @@ interface DocumentDao {
     @Query("SELECT * FROM $DOCUMENT_ENTITY WHERE $DOCUMENT_ENTITY.id = :id")
     suspend fun loadDocumentById(id: String): DocumentEntity
 
+    /* The order here doesn't matter, because only one document should be returned */
     @Query(
         "SELECT * FROM $DOCUMENT_ENTITY " +
                 "JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
@@ -41,6 +42,21 @@ interface DocumentDao {
     suspend fun loadDocumentWithContentById(
         documentId: String
     ): Map<DocumentEntity, List<StoryUnitEntity>>?
+
+    /* The order here doesn't matter, because only one document should be returned */
+    @Query(
+        "SELECT * FROM $DOCUMENT_ENTITY " +
+                "JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
+                "WHERE $DOCUMENT_ENTITY.id IN (:documentIds) " +
+                "ORDER BY " +
+                "CASE WHEN :orderBy = \'$TITLE\' THEN $DOCUMENT_ENTITY.title END ASC, " +
+                "CASE WHEN :orderBy = \'$CREATED_AT\' THEN $DOCUMENT_ENTITY.created_at END DESC, " +
+                "CASE WHEN :orderBy = \'$LAST_UPDATED_AT\' THEN $DOCUMENT_ENTITY.last_updated_at END DESC"
+    )
+    suspend fun loadDocumentWithContentByIds(
+        documentIds: List<String>,
+        orderBy: String
+    ): Map<DocumentEntity, List<StoryUnitEntity>>
 
     @Query(
         "SELECT * FROM $DOCUMENT_ENTITY " +
