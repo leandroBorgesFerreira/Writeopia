@@ -128,12 +128,6 @@ fun ColumnScope.TextEditor(noteDetailsViewModel: NoteDetailsViewModel) {
         })
     }
 
-    OnLifecycleEvent { _, event ->
-        if (event == Lifecycle.Event.ON_PAUSE) {
-            noteDetailsViewModel.saveNote()
-        }
-    }
-
     val clipShape = MaterialTheme.shapes.medium
 
     StoryTellerEditor(

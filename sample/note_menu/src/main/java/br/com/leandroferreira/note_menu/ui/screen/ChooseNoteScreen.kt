@@ -74,7 +74,7 @@ fun ChooseNoteScreen(
     navigateUp: () -> Unit
 ) {
     LaunchedEffect(key1 = "refresh", block = {
-        chooseNoteViewModel.requestDocuments(true)
+        chooseNoteViewModel.requestDocuments(false)
     })
 
     val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher

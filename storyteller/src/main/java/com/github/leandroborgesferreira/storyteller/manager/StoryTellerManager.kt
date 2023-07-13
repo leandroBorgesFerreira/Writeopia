@@ -13,6 +13,7 @@ import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
 import com.github.leandroborgesferreira.storyteller.model.change.MergeInfo
 import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
 import com.github.leandroborgesferreira.storyteller.model.change.TextEditInfo
+import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.DrawStory
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
@@ -90,6 +91,17 @@ class StoryTellerManager(
             _currentStory.map { storyState ->
                 storyState.stories
             }.collectLatest { content ->
+//                documentRepository.saveDocument(
+//                    Document(
+//                        content = story.value.stories,
+//                    )
+//                    document.copy(
+//                        content = story.value.stories,
+//                        title = story.value.stories.values.firstOrNull { story ->
+//                            story.isTitle
+//                        }?.text ?: ""
+//                    )
+//                )
                 documentRepository.save(documentId, content)
             }
         }

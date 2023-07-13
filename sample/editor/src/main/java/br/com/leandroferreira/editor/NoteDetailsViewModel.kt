@@ -1,5 +1,6 @@
 package br.com.leandroferreira.editor
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
@@ -60,6 +61,7 @@ class NoteDetailsViewModel(
         storyTellerManager.saveOnStoryChanges(documentId, documentRepository)
         storyTellerManager.newStory()
 
+        //Todo: Move this to
         viewModelScope.launch(Dispatchers.IO) {
             val document = Document(
                 id = documentId,
@@ -69,6 +71,7 @@ class NoteDetailsViewModel(
                 lastUpdatedAt = Date()
             )
 
+            Log.d("NoteDetailsViewModel", "saving document!!")
             documentRepository.saveDocument(document)
             _documentState.value = document
         }
@@ -89,6 +92,7 @@ class NoteDetailsViewModel(
         }
     }
 
+    //Todo: Delete that and save the whole document in the manager
     fun saveNote() {
         viewModelScope.launch {
             val stories = story.value.stories
