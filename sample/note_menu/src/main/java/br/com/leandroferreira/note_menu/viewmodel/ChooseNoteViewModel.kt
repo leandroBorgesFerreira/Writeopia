@@ -109,7 +109,12 @@ class ChooseNoteViewModel(
     }
 
     fun copySelectedNotes() {
-        notesUseCase.loadDocuments()
+        viewModelScope.launch(Dispatchers.IO) {
+            notesUseCase.duplicateDocuments(_selectedNotes.value.toList())
+            clearSelection()
+            refreshNotes()
+        }
+
     }
 
     fun deleteSelectedNotes() {
