@@ -17,4 +17,8 @@ data class DocumentEntity(
     @ColumnInfo(TITLE) val title: String,
     @ColumnInfo(CREATED_AT) val createdAt: Date,
     @ColumnInfo(LAST_UPDATED_AT) val lastUpdatedAt: Date,
-)
+) {
+    companion object {
+        fun createById(id: String): DocumentEntity = DocumentEntity(id, "", Date(), Date())
+    }
+}

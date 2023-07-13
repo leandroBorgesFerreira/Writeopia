@@ -36,6 +36,9 @@ private const val INNER_PADDING = 3
 internal fun BoxScope.NotesSelectionMenu(
     modifier: Modifier = Modifier,
     visibilityState: Boolean,
+    onDelete: () -> Unit,
+    onCopy: () -> Unit,
+    onFavorite: () -> Unit,
 ) {
 
     val animationSpec = spring(
@@ -70,12 +73,12 @@ internal fun BoxScope.NotesSelectionMenu(
                 )
                 .background(MaterialTheme.colorScheme.primary),
         ) {
-            Row() {
+            Row {
                 val tintColor = MaterialTheme.colorScheme.onPrimary
 
                 Icon(
                     modifier = Modifier
-                        .clickable { }
+                        .clickable(onClick = onCopy)
                         .weight(1F)
                         .padding(vertical = 25.dp),
                     imageVector = Icons.Default.ContentCopy,
@@ -87,19 +90,19 @@ internal fun BoxScope.NotesSelectionMenu(
 
                 Icon(
                     modifier = Modifier
-                        .clickable { }
+                        .clickable(onClick = onFavorite)
                         .weight(1F)
                         .padding(vertical = 25.dp),
                     imageVector = Icons.Default.FavoriteBorder,
                     contentDescription = stringResource(
-                        br.com.leandroferreira.resourcers.R.string.copy_note
+                        br.com.leandroferreira.resourcers.R.string.favorite
                     ),
                     tint = tintColor
                 )
 
                 Icon(
                     modifier = Modifier
-                        .clickable { }
+                        .clickable(onClick = onDelete)
                         .weight(1F)
                         .padding(vertical = 25.dp),
                     imageVector = Icons.Default.DeleteOutline,
@@ -117,6 +120,6 @@ internal fun BoxScope.NotesSelectionMenu(
 @Preview
 internal fun NotesSelectionMenuPreview() {
     Box(modifier = Modifier.fillMaxSize()) {
-        NotesSelectionMenu(visibilityState = true)
+        NotesSelectionMenu(visibilityState = true, onDelete = {}, onCopy = {}, onFavorite = {})
     }
 }

@@ -45,13 +45,14 @@ fun NavigationGraph() {
 
     ApplicationComposeTheme {
         NavHost(navController = navController, startDestination = Destinations.CHOOSE_NOTE.id) {
-            composable(Destinations.CHOOSE_NOTE.id) {
+            composable(Destinations.CHOOSE_NOTE.id) { backEntry ->
                 val chooseNoteViewModel = notesInjection.provideChooseNoteViewModel()
 
                 ChooseNoteScreen(
                     chooseNoteViewModel = chooseNoteViewModel,
                     navigateToNote = navController::navigateToNote,
-                    newNote = navController::navigateToNewNote
+                    newNote = navController::navigateToNewNote,
+                    navigateUp = navController::navigateUp
                 )
             }
 
@@ -69,9 +70,7 @@ fun NavigationGraph() {
                         noteId.takeIf { it != "null" },
                         noteTitle.takeIf { it != "null" },
                         noteDetailsViewModel,
-                        navigateBack = {
-                            navController.navigateUp()
-                        }
+                        navigateBack = navController::navigateToNoteMenu
                     )
                 } else {
                     throw IllegalArgumentException("The arguments for this route are wrong!")
@@ -83,9 +82,7 @@ fun NavigationGraph() {
                     documentId = null,
                     title = null,
                     noteDetailsViewModel = notesInjection.provideNoteDetailsViewModel(),
-                    navigateBack = {
-                        navController.navigateUp()
-                    }
+                    navigateBack = navController::navigateToNoteMenu
                 )
             }
         }
@@ -101,6 +98,12 @@ private fun NavController.navigateToNote(id: String, title: String) {
 private fun NavController.navigateToNewNote() {
     navigate(
         Destinations.NOTE_DETAILS.id
+    )
+}
+
+private fun NavController.navigateToNoteMenu() {
+    navigate(
+        Destinations.CHOOSE_NOTE.id
     )
 }
 

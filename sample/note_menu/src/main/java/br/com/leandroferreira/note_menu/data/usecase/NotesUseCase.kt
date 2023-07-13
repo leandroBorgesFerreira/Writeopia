@@ -42,4 +42,8 @@ class NotesUseCase(
             )
         )
     }
+
+    suspend fun deleteNotes(ids: Set<String>) {
+        documentRepository.deleteDocumentById(ids)
+    }
 }

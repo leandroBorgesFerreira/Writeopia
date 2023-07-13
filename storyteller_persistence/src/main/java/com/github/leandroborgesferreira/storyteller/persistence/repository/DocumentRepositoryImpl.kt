@@ -5,6 +5,7 @@ import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.persistence.dao.DocumentDao
 import com.github.leandroborgesferreira.storyteller.persistence.dao.StoryUnitDao
+import com.github.leandroborgesferreira.storyteller.persistence.entity.document.DocumentEntity
 import com.github.leandroborgesferreira.storyteller.persistence.entity.story.StoryUnitEntity
 import com.github.leandroborgesferreira.storyteller.persistence.parse.toEntity
 import com.github.leandroborgesferreira.storyteller.persistence.parse.toModel
@@ -46,6 +47,10 @@ class DocumentRepositoryImpl(
     override suspend fun save(documentId: String, content: Map<Int, StoryStep>) {
         storyUnitDao.deleteDocumentContent(documentId = documentId)
         storyUnitDao.insertStoryUnits(*content.toEntity(documentId).toTypedArray())
+    }
+
+    override suspend fun deleteDocumentById(ids: Set<String>) {
+        documentDao.deleteDocuments(*ids.map(DocumentEntity::createById).toTypedArray())
     }
 
     /**
