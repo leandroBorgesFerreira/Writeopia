@@ -15,6 +15,7 @@ import com.github.leandroborgesferreira.storyteller.model.change.TextEditInfo
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.DrawStory
+import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
@@ -24,15 +25,13 @@ import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
@@ -63,7 +62,7 @@ class StoryTellerManager(
     val scrollToPosition: StateFlow<Int?> = _scrollToPosition.asStateFlow()
 
     private val _currentStory: MutableStateFlow<StoryState> = MutableStateFlow(
-        StoryState(stories = emptyMap())
+        StoryState(stories = emptyMap(), lastEdit = LastEdit.Nothing)
     )
 
     private val _documentInfo: MutableStateFlow<DocumentInfo> = MutableStateFlow(DocumentInfo())
@@ -73,45 +72,73 @@ class StoryTellerManager(
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val currentDocument: Flow<Document> = _documentInfo.flatMapLatest { info ->
-        _currentStory.map { state ->
-            val titleFromContent = state.stories.values.firstOrNull { storyStep ->
-                //Todo: Change the type of change to allow different types. The client code should decide what is a title
-                //It is also interesting to inv
-                storyStep.type == StoryType.TITLE.type
-            }?.text
+    val currentDocument: Flow<Document> = combine(_documentInfo, _currentStory) { info, state ->
+        val titleFromContent = state.stories.values.firstOrNull { storyStep ->
+            //Todo: Change the type of change to allow different types. The client code should decide what is a title
+            //It is also interesting to inv
+            storyStep.type == StoryType.TITLE.type
+        }?.text
 
-            Document(
-                id = info.id,
-                title = titleFromContent ?: info.title,
-                content = state.stories,
-                createdAt = info.createdAt,
-                lastUpdatedAt = info.lastUpdatedAt,
-            )
-        }
+        Document(
+            id = info.id,
+            title = titleFromContent ?: info.title,
+            content = state.stories,
+            createdAt = info.createdAt,
+            lastUpdatedAt = info.lastUpdatedAt,
+        )
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val toDraw = _positionsOnEdit.flatMapLatest { positions ->
-        currentStory.map { storyState ->
-            val focus = storyState.focusId
-
-            val toDrawStories = storyState.stories.mapValues { (position, storyStep) ->
-                DrawStory(storyStep, positions.contains(position))
-            }
-
-            DrawState(toDrawStories, focus)
+    private val _documentEditionState: Flow<Pair<StoryState, DocumentInfo>> =
+        combine(currentStory, _documentInfo) { storyState, documentInfo ->
+            storyState to documentInfo
         }
+
+    val toDraw = combine(_positionsOnEdit, currentStory) { positions, storyState ->
+        val focus = storyState.focusId
+
+        val toDrawStories = storyState.stories.mapValues { (position, storyStep) ->
+            DrawStory(storyStep, positions.contains(position))
+        }
+
+        DrawState(toDrawStories, focus)
     }
 
     private val isOnSelection: Boolean
         get() = _positionsOnEdit.value.isNotEmpty()
 
-    fun saveOnStoryChanges(saveNote: SaveNote) {
+    fun saveOnStoryChanges(documentUpdate: DocumentUpdate) {
         coroutineScope.launch(dispatcher) {
-            currentDocument.collectLatest { document ->
-                saveNote.saveDocument(document)
+            _documentEditionState.collectLatest { (storyState, documentInfo) ->
+                when (val lastEdit = storyState.lastEdit) {
+                    is LastEdit.LineEdition -> {
+                        documentUpdate.saveStoryStep(
+                            storyStep = lastEdit.storyStep,
+                            position = lastEdit.position,
+                            documentId = documentInfo.id
+                        )
+                    }
+
+                    LastEdit.Nothing -> {}
+
+                    LastEdit.Whole -> {
+                        val stories = storyState.stories
+                        val titleFromContent = stories.values.firstOrNull { storyStep ->
+                            //Todo: Change the type of change to allow different types. The client code should decide what is a title
+                            //It is also interesting to inv
+                            storyStep.type == StoryType.TITLE.type
+                        }?.text
+
+                        val document = Document(
+                            id = documentInfo.id,
+                            title = titleFromContent ?: documentInfo.title,
+                            content = storyState.stories,
+                            createdAt = documentInfo.createdAt,
+                            lastUpdatedAt = documentInfo.lastUpdatedAt,
+                        )
+
+                        documentUpdate.saveDocument(document)
+                    }
+                }
             }
         }
     }
@@ -135,6 +162,7 @@ class StoryTellerManager(
 
         _currentStory.value = StoryState(
             normalized + normalized,
+            LastEdit.Nothing,
             firstMessage.id
         )
     }
@@ -158,10 +186,11 @@ class StoryTellerManager(
         if (isInitialized()) return
 
         val stories = document.content ?: emptyMap()
-        _currentStory.value = StoryState(stepsNormalizer(stories.toEditState()), null)
+        _currentStory.value =
+            StoryState(stepsNormalizer(stories.toEditState()), LastEdit.Nothing, null)
         val normalized = stepsNormalizer(stories.toEditState())
 
-        _currentStory.value = StoryState(normalized)
+        _currentStory.value = StoryState(normalized, LastEdit.Nothing)
         _documentInfo.value = document.info()
     }
 
@@ -171,7 +200,10 @@ class StoryTellerManager(
         }
 
         val movedStories = movementHandler.merge(_currentStory.value.stories, info)
-        _currentStory.value = StoryState(stories = stepsNormalizer(movedStories))
+        _currentStory.value = StoryState(
+            stories = stepsNormalizer(movedStories),
+            lastEdit = LastEdit.Whole
+        )
     }
 
     fun moveRequest(moveInfo: MoveInfo) {
@@ -180,7 +212,10 @@ class StoryTellerManager(
         }
 
         val newStory = movementHandler.move(_currentStory.value.stories, moveInfo)
-        _currentStory.value = StoryState(stepsNormalizer(newStory.toEditState()))
+        _currentStory.value = StoryState(
+            stepsNormalizer(newStory.toEditState()),
+            lastEdit = LastEdit.Whole
+        )
     }
 
     /**
@@ -264,7 +299,7 @@ class StoryTellerManager(
                 acc to StoryStep(type = StoryType.LARGE_SPACE.type),
             )
 
-            _currentStory.value = StoryState(newStories, newLastMessage.id)
+            _currentStory.value = StoryState(newStories, LastEdit.Whole, newLastMessage.id)
         }
     }
 
@@ -289,7 +324,10 @@ class StoryTellerManager(
                             StoryStep(type = StoryType.SPACE.type)
                         }
                     ).let { newStories ->
-                        StoryState(stepsNormalizer(newStories.toEditState()))
+                        StoryState(
+                            stepsNormalizer(newStories.toEditState()),
+                            lastEdit = LastEdit.Whole
+                        )
                     }
 
                     _currentStory.value = newState
@@ -319,6 +357,7 @@ class StoryTellerManager(
                 )
                 _currentStory.value = StoryState(
                     newStory,
+                    LastEdit.Whole,
                     newStory[action.position]?.id
                 )
 
@@ -362,7 +401,7 @@ class StoryTellerManager(
     private fun updateStory(position: Int, newStep: StoryStep, focusId: String? = null) {
         val newMap = _currentStory.value.stories.toMutableMap()
         newMap[position] = newStep
-        _currentStory.value = StoryState(newMap, focusId)
+        _currentStory.value = StoryState(newMap, LastEdit.LineEdition(position, newStep), focusId)
     }
 
     private fun revertAddText(currentStory: Map<Int, StoryStep>, addText: AddText) {
@@ -380,7 +419,11 @@ class StoryTellerManager(
             mutableSteps[addText.position] =
                 revertStep.copy(localId = UUID.randomUUID().toString(), text = newText)
 
-            _currentStory.value = StoryState(mutableSteps, focusId = revertStep.id)
+            _currentStory.value = StoryState(
+                mutableSteps,
+                lastEdit = LastEdit.Whole,
+                focusId = revertStep.id
+            )
         }
     }
 
@@ -390,7 +433,11 @@ class StoryTellerManager(
         mutableSteps[position]?.let { editStep ->
             val newText = "${editStep.text.toString()}${addText.text}"
             mutableSteps[position] = editStep.copy(text = newText)
-            _currentStory.value = StoryState(mutableSteps, focusId = editStep.id)
+            _currentStory.value = StoryState(
+                mutableSteps,
+                lastEdit = LastEdit.Whole,
+                focusId = editStep.id
+            )
         }
     }
 
@@ -414,6 +461,7 @@ class StoryTellerManager(
 
         return StoryState(
             stories = newStory,
+            lastEdit = LastEdit.Whole,
             focusId = deleteInfo.storyUnit.id
         )
     }
