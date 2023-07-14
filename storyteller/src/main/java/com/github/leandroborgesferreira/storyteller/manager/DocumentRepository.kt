@@ -8,7 +8,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
  * The implementations of this interface shouldn't control order (sorting) or oder configurations,
  * those need to be passed as parameters.
  */
-interface DocumentRepository {
+interface DocumentRepository : SaveNote {
 
     suspend fun loadDocuments(orderBy: String): List<Document>
 
@@ -16,7 +16,7 @@ interface DocumentRepository {
 
     suspend fun loadDocumentsById(ids: List<String>, orderBy: String): List<Document>
 
-    suspend fun saveDocument(document: Document)
+    override suspend fun saveDocument(document: Document)
 
     suspend fun deleteDocument(document: Document)
 

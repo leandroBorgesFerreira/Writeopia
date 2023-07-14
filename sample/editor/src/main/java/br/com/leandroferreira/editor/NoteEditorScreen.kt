@@ -50,12 +50,14 @@ import com.github.leandroborgesferreira.storyteller.uicomponents.EditionScreen
 import kotlinx.coroutines.flow.collectLatest
 import java.util.UUID
 
-@OptIn(ExperimentalMaterial3Api::class)
+const val NAVIGATE_BACK_TEST_TAG = "NoteEditorScreenNavigateBack"
+const val NOTE_EDITION_SCREEN_TITLE_TEST_TAG = "noteEditionScreenTitle"
+
 @Composable
-fun NoteDetailsScreen(
+fun NoteEditorScreen(
     documentId: String?,
     title: String?,
-    noteDetailsViewModel: NoteDetailsViewModel,
+    noteEditorViewModel: NoteEditorViewModel,
     navigateBack: () -> Unit,
 ) {
     val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
@@ -63,7 +65,7 @@ fun NoteDetailsScreen(
     val backCallback = remember {
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                noteDetailsViewModel.removeNoteIfEmpty(onComplete = navigateBack)
+                noteEditorViewModel.removeNoteIfEmpty(onComplete = navigateBack)
             }
         }
     }
@@ -77,9 +79,9 @@ fun NoteDetailsScreen(
     }
 
     if (documentId != null) {
-        noteDetailsViewModel.requestDocumentContent(documentId)
+        noteEditorViewModel.requestDocumentContent(documentId)
     } else {
-        noteDetailsViewModel.createNewNote(
+        noteEditorViewModel.createNewDocument(
             UUID.randomUUID().toString(),
             stringResource(R.string.untitled)
         )
@@ -87,29 +89,10 @@ fun NoteDetailsScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        modifier = Modifier.semantics {
-                            testTag = "noteEditionScreenTitle"
-                        },
-                        text = title?.takeIf { it.isNotBlank() }
-                            ?: stringResource(id = R.string.note),
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                },
-                navigationIcon = {
-                    Icon(
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .clickable {
-                                noteDetailsViewModel.removeNoteIfEmpty(onComplete = navigateBack)
-                            }
-                            .padding(10.dp),
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.back),
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
+            TopBar(
+                title = title?.takeIf { it.isNotBlank() } ?: stringResource(id = R.string.note),
+                navigationClick = {
+                    noteEditorViewModel.removeNoteIfEmpty(onComplete = navigateBack)
                 }
             )
         },
@@ -120,24 +103,54 @@ fun NoteDetailsScreen(
                 .fillMaxSize()
                 .imePadding()
         ) {
-            TextEditor(noteDetailsViewModel)
+            TextEditor(noteEditorViewModel)
 
-            BottomScreen(noteDetailsViewModel)
+            BottomScreen(noteEditorViewModel)
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ColumnScope.TextEditor(noteDetailsViewModel: NoteDetailsViewModel) {
-    val storyState by noteDetailsViewModel.toDraw.collectAsStateWithLifecycle()
-    val editable by noteDetailsViewModel.editModeState.collectAsStateWithLifecycle()
+fun TopBar(title: String, navigationClick: () -> Unit) {
+    TopAppBar(
+        title = {
+            Text(
+                modifier = Modifier.semantics {
+                    testTag = NOTE_EDITION_SCREEN_TITLE_TEST_TAG
+                },
+                text = title,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        },
+        navigationIcon = {
+            Icon(
+                modifier = Modifier
+                    .semantics {
+                        testTag = NAVIGATE_BACK_TEST_TAG
+                    }
+                    .clip(CircleShape)
+                    .clickable(onClick = navigationClick)
+                    .padding(10.dp),
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = stringResource(R.string.back),
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+    )
+}
+
+@Composable
+fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
+    val storyState by noteEditorViewModel.toDraw.collectAsStateWithLifecycle()
+    val editable by noteEditorViewModel.editModeState.collectAsStateWithLifecycle()
     val listState: LazyListState = rememberLazyListState()
-    val position by noteDetailsViewModel.scrollToPosition.collectAsStateWithLifecycle()
+    val position by noteEditorViewModel.scrollToPosition.collectAsStateWithLifecycle()
 
     if (position != null) {
         //Todo: Review this. Is a LaunchedEffect the correct way to do this??
         LaunchedEffect(position, block = {
-            noteDetailsViewModel.scrollToPosition.collectLatest {
+            noteEditorViewModel.scrollToPosition.collectLatest {
                 listState.animateScrollToItem(position!!, scrollOffset = -100)
             }
         })
@@ -154,7 +167,7 @@ fun ColumnScope.TextEditor(noteDetailsViewModel: NoteDetailsViewModel) {
         listState = listState,
         drawers = DefaultDrawers.create(
             editable,
-            noteDetailsViewModel.storyTellerManager,
+            noteEditorViewModel.storyTellerManager,
             defaultBorder = clipShape
 //            groupsBackgroundColor = MaterialTheme.colorScheme.surface
         )
@@ -163,8 +176,8 @@ fun ColumnScope.TextEditor(noteDetailsViewModel: NoteDetailsViewModel) {
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun BottomScreen(noteDetailsViewModel: NoteDetailsViewModel) {
-    val editState by noteDetailsViewModel.isEditState.collectAsStateWithLifecycle()
+fun BottomScreen(noteEditorViewModel: NoteEditorViewModel) {
+    val editState by noteEditorViewModel.isEditState.collectAsStateWithLifecycle()
 
     AnimatedContent(
         targetState = editState,
@@ -195,7 +208,7 @@ fun BottomScreen(noteDetailsViewModel: NoteDetailsViewModel) {
                         )
                     )
                     .background(MaterialTheme.colorScheme.primary),
-                onDelete = noteDetailsViewModel::deleteSelection
+                onDelete = noteEditorViewModel::deleteSelection
             )
         } else {
             InputScreen(
@@ -209,10 +222,10 @@ fun BottomScreen(noteDetailsViewModel: NoteDetailsViewModel) {
                             bottomCorner
                         )
                     ),
-                onBackPress = noteDetailsViewModel::undo,
-                onForwardPress = noteDetailsViewModel::redo,
-                canUndoState = noteDetailsViewModel.canUndo,
-                canRedoState = noteDetailsViewModel.canRedo
+                onBackPress = noteEditorViewModel::undo,
+                onForwardPress = noteEditorViewModel::redo,
+                canUndoState = noteEditorViewModel.canUndo,
+                canRedoState = noteEditorViewModel.canRedo
             )
         }
     }

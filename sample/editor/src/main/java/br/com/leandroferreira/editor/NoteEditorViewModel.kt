@@ -6,7 +6,6 @@ import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
 import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
-import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.utils.extensions.noContent
@@ -14,14 +13,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.Date
 
-class NoteDetailsViewModel(
+class NoteEditorViewModel(
     val storyTellerManager: StoryTellerManager,
     private val documentRepository: DocumentRepository
 ) : ViewModel(),
@@ -43,31 +40,20 @@ class NoteDetailsViewModel(
         initialValue = DrawState(emptyMap())
     )
 
-    private val _documentState: MutableStateFlow<Document?> = MutableStateFlow(null)
-    val documentState: StateFlow<Document?> = _documentState.asStateFlow()
-
     fun deleteSelection() {
         storyTellerManager.deleteSelection()
     }
 
-    fun createNewNote(documentId: String, title: String) {
+    fun createNewDocument(documentId: String, title: String) {
         if (storyTellerManager.isInitialized()) return
 
-        storyTellerManager.saveOnStoryChanges(documentId, documentRepository)
-        storyTellerManager.newStory()
+        storyTellerManager.newStory(documentId, title)
 
-        //Todo: Move this to
-        viewModelScope.launch(Dispatchers.IO) {
-            val document = Document(
-                id = documentId,
-                title = title,
-                content = storyTellerManager.currentStory.value.stories,
-                createdAt = Date(),
-                lastUpdatedAt = Date()
-            )
+        viewModelScope.launch {
+            val document = storyTellerManager.currentDocument.stateIn(this).value
 
             documentRepository.saveDocument(document)
-            _documentState.value = document
+            storyTellerManager.saveOnStoryChanges(documentRepository)
         }
     }
 
@@ -76,28 +62,29 @@ class NoteDetailsViewModel(
 
         viewModelScope.launch(Dispatchers.IO) {
             val document = documentRepository.loadDocumentById(documentId)
-            val content = document?.content
-            _documentState.value = document
 
-            if (content != null) {
-                storyTellerManager.saveOnStoryChanges(documentId, documentRepository)
-                storyTellerManager.initStories(content)
+            if (document != null) {
+                storyTellerManager.initDocument(document)
+                storyTellerManager.saveOnStoryChanges(documentRepository)
             }
         }
     }
 
     fun removeNoteIfEmpty(onComplete: () -> Unit) {
-        val document = _documentState.value
-        if (document != null && story.value.stories.noContent()) {
-            viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val document = storyTellerManager.currentDocument.stateIn(this).value
+
+            if (story.value.stories.noContent()) {
                 documentRepository.deleteDocument(document)
 
                 withContext(Dispatchers.Main) {
                     onComplete()
                 }
+            } else {
+                withContext(Dispatchers.Main) {
+                    onComplete()
+                }
             }
-        } else {
-            onComplete()
         }
     }
 }
