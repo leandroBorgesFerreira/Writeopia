@@ -35,17 +35,12 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.leandroferreira.editor.input.InputScreen
 import br.com.leandroferreira.resourcers.R
@@ -63,6 +58,24 @@ fun NoteDetailsScreen(
     noteDetailsViewModel: NoteDetailsViewModel,
     navigateBack: () -> Unit,
 ) {
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
+    val backCallback = remember {
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                noteDetailsViewModel.removeNoteIfEmpty(onComplete = navigateBack)
+            }
+        }
+    }
+
+    DisposableEffect(key1 = backDispatcher) {
+        backDispatcher?.addCallback(backCallback)
+
+        onDispose {
+            backCallback.remove()
+        }
+    }
+
     if (documentId != null) {
         noteDetailsViewModel.requestDocumentContent(documentId)
     } else {
@@ -89,7 +102,9 @@ fun NoteDetailsScreen(
                     Icon(
                         modifier = Modifier
                             .clip(CircleShape)
-                            .clickable(onClick = navigateBack)
+                            .clickable {
+                                noteDetailsViewModel.removeNoteIfEmpty(onComplete = navigateBack)
+                            }
                             .padding(10.dp),
                         imageVector = Icons.Filled.ArrowBack,
                         contentDescription = stringResource(R.string.back),
@@ -199,24 +214,6 @@ fun BottomScreen(noteDetailsViewModel: NoteDetailsViewModel) {
                 canUndoState = noteDetailsViewModel.canUndo,
                 canRedoState = noteDetailsViewModel.canRedo
             )
-        }
-    }
-}
-
-@Composable
-fun OnLifecycleEvent(onEvent: (owner: LifecycleOwner, event: Lifecycle.Event) -> Unit) {
-    val eventHandler = rememberUpdatedState(onEvent)
-    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
-
-    DisposableEffect(lifecycleOwner.value) {
-        val lifecycle = lifecycleOwner.value.lifecycle
-        val observer = LifecycleEventObserver { owner, event ->
-            eventHandler.value(owner, event)
-        }
-
-        lifecycle.addObserver(observer)
-        onDispose {
-            lifecycle.removeObserver(observer)
         }
     }
 }

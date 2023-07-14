@@ -1,6 +1,5 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import android.util.Log
 import com.github.leandroborgesferreira.storyteller.backstack.BackStackManager
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
@@ -34,6 +33,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.util.Date
 import java.util.UUID
 
 class StoryTellerManager(
@@ -91,18 +91,15 @@ class StoryTellerManager(
             _currentStory.map { storyState ->
                 storyState.stories
             }.collectLatest { content ->
-//                documentRepository.saveDocument(
-//                    Document(
-//                        content = story.value.stories,
-//                    )
-//                    document.copy(
-//                        content = story.value.stories,
-//                        title = story.value.stories.values.firstOrNull { story ->
-//                            story.isTitle
-//                        }?.text ?: ""
-//                    )
-//                )
-                documentRepository.save(documentId, content)
+                val document = Document(
+                    id = documentId,
+                    title = content.values.firstOrNull { story -> story.isTitle }?.text ?: "",
+                    content = content,
+                    createdAt = Date(), // Todo: Fix this!
+                    lastUpdatedAt = Date()
+                )
+
+                documentRepository.saveDocument(document)
             }
         }
     }

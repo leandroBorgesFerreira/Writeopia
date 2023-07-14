@@ -52,11 +52,6 @@ class DocumentRepositoryImpl(
         documentDao.deleteDocuments(document.toEntity())
     }
 
-    override suspend fun save(documentId: String, content: Map<Int, StoryStep>) {
-        storyUnitDao.deleteDocumentContent(documentId = documentId)
-        storyUnitDao.insertStoryUnits(*content.toEntity(documentId).toTypedArray())
-    }
-
     override suspend fun deleteDocumentById(ids: Set<String>) {
         documentDao.deleteDocuments(*ids.map(DocumentEntity::createById).toTypedArray())
     }

@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Date
 
 class NoteDetailsViewModel(
@@ -92,26 +93,18 @@ class NoteDetailsViewModel(
         }
     }
 
-    //Todo: Delete that and save the whole document in the manager
-    fun saveNote() {
-        viewModelScope.launch {
-            val stories = story.value.stories
-            val document = _documentState.value ?: throw IllegalStateException(
-                "Trying to save a null document, did you forget to create a note?"
-            )
-
-            if (stories.noContent()) {
+    fun removeNoteIfEmpty(onComplete: () -> Unit) {
+        val document = _documentState.value
+        if (document != null && story.value.stories.noContent()) {
+            viewModelScope.launch(Dispatchers.IO) {
                 documentRepository.deleteDocument(document)
-            } else {
-                documentRepository.saveDocument(
-                    document.copy(
-                        content = story.value.stories,
-                        title = story.value.stories.values.firstOrNull { story ->
-                            story.isTitle
-                        }?.text ?: ""
-                    )
-                )
+
+                withContext(Dispatchers.Main) {
+                    onComplete()
+                }
             }
+        } else {
+            onComplete()
         }
     }
 }

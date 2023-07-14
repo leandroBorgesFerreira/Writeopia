@@ -18,8 +18,6 @@ interface DocumentRepository {
 
     suspend fun saveDocument(document: Document)
 
-    suspend fun save(documentId: String, content: Map<Int, StoryStep>)
-
     suspend fun deleteDocument(document: Document)
 
     suspend fun deleteDocumentById(ids: Set<String>)
