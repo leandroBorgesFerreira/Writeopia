@@ -1,13 +1,13 @@
 package br.com.leandroferreira.app_sample
 
-import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.performClick
 import br.com.leandroferreira.app_sample.navigation.NavigationGraph
+import br.com.leandroferreira.app_sample.robots.DocumentEditRobot
+import br.com.leandroferreira.app_sample.robots.DocumentsMenuRobot
+import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import org.junit.Rule
 import org.junit.Test
-import java.lang.Thread.sleep
 
 class NoteMenuAndroidTest {
 
@@ -15,13 +15,42 @@ class NoteMenuAndroidTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun myTest() {
+    fun itShouldBePossibleToAddNote() {
         composeTestRule.setContent {
-            NavigationGraph()
+            NavigationGraph(
+                database = StoryTellerDatabase.database(
+                    LocalContext.current,
+                    inMemory = true
+                )
+            )
         }
 
-        composeTestRule.onNodeWithTag("addNote").performClick()
+        DocumentsMenuRobot(composeTestRule).goToAddNote()
+        DocumentEditRobot(composeTestRule).verifyItIsInEdition()
+    }
 
-        composeTestRule.onNodeWithTag("noteEditionScreenTitle").assertIsDisplayed()
+    @Test
+    fun itShouldBePossibleToSaveNoteWithTitle() {
+        composeTestRule.setContent {
+            NavigationGraph(
+                database = StoryTellerDatabase.database(
+                    LocalContext.current,
+                    inMemory = true
+                )
+            )
+        }
+
+        val noteTitle = "Note1"
+
+        val documentsMenuRobot = DocumentsMenuRobot(composeTestRule)
+        documentsMenuRobot.goToAddNote()
+
+        DocumentEditRobot(composeTestRule).run {
+            verifyItIsInEdition()
+            writeTitle(noteTitle)
+            goBack()
+        }
+
+        documentsMenuRobot.assertNoteWithTitle(noteTitle)
     }
 }

@@ -3,7 +3,7 @@ package br.com.leandroferreira.app_sample.di
 import android.content.SharedPreferences
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import br.com.leandroferreira.editor.NoteDetailsViewModel
+import br.com.leandroferreira.editor.NoteEditorViewModel
 import br.com.leandroferreira.note_menu.data.usecase.NotesConfigurationRepository
 import br.com.leandroferreira.note_menu.data.usecase.NotesUseCase
 import br.com.leandroferreira.note_menu.viewmodel.ChooseNoteViewModel
@@ -48,9 +48,9 @@ class NotesInjection(
     internal fun provideNoteDetailsViewModel(
         documentRepository: DocumentRepository = provideDocumentRepository(),
         storyTellerManager: StoryTellerManager = provideStoryTellerManager()
-    ): NoteDetailsViewModel {
+    ): NoteEditorViewModel {
         return viewModel(initializer = {
-            NoteDetailsViewModel(storyTellerManager, documentRepository)
+            NoteEditorViewModel(storyTellerManager, documentRepository)
         })
     }
 }

@@ -31,9 +31,24 @@ abstract class StoryTellerDatabase : RoomDatabase() {
     companion object {
         private var instance: StoryTellerDatabase? = null
 
-        fun database(context: Context, databaseName: String = DATABASE_NAME): StoryTellerDatabase {
-            return instance
-                ?: Room.databaseBuilder(
+        fun database(
+            context: Context,
+            databaseName: String = DATABASE_NAME,
+            inMemory: Boolean = false
+        ): StoryTellerDatabase = instance ?: createDatabase(context, databaseName, inMemory)
+
+        private fun createDatabase(
+            context: Context,
+            databaseName: String,
+            inMemory: Boolean = false
+        ): StoryTellerDatabase =
+            if (inMemory) {
+                Room.inMemoryDatabaseBuilder(
+                    context.applicationContext,
+                    StoryTellerDatabase::class.java
+                ).build()
+            } else {
+                Room.databaseBuilder(
                     context.applicationContext,
                     StoryTellerDatabase::class.java,
                     databaseName
@@ -43,6 +58,6 @@ abstract class StoryTellerDatabase : RoomDatabase() {
                     .also { database ->
                         instance = database
                     }
-        }
+            }
     }
 }

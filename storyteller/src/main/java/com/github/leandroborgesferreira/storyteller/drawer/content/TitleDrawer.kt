@@ -19,6 +19,8 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -30,6 +32,8 @@ import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
 import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.utils.ui.transparentTextInputColors
+
+const val TITLE_DRAWER_TEST_TAG = "TitleDrawerTextField"
 
 /**
  * Draw a text that can be edited. The edition of the text is both reflect in this Composable and
@@ -50,9 +54,13 @@ class TitleDrawer(
             fontWeight = FontWeight.Bold
         )
 
-        Column(modifier = containerModifier.clickable {
-            focusRequester.requestFocus()
-        }) {
+        Column(modifier = containerModifier
+            .clickable {
+                focusRequester.requestFocus()
+            }
+            .semantics {
+                testTag = "TitleDrawer"
+            }) {
             if (drawInfo.editable) {
                 var inputText by remember {
                     val text = step.text ?: ""
@@ -68,7 +76,10 @@ class TitleDrawer(
                 TextField(
                     modifier = innerContainerModifier
                         .focusRequester(focusRequester)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .semantics {
+                            testTag = TITLE_DRAWER_TEST_TAG
+                        },
                     value = inputText,
                     onValueChange = { value ->
                         if (value.text.contains("\n")) {

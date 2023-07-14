@@ -1,12 +1,14 @@
 package br.com.leandroferreira.app_sample.navigation
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,8 +16,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import br.com.leandroferreira.app_sample.di.NotesInjection
 import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
-import br.com.leandroferreira.editor.NoteDetailsScreen
-import br.com.leandroferreira.note_menu.ui.screen.ChooseNoteScreen
+import br.com.leandroferreira.editor.NoteEditorScreen
+import br.com.leandroferreira.note_menu.ui.screen.menu.ChooseNoteScreen
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.video.VideoFrameConfig
 
@@ -32,20 +34,20 @@ class NavigationActivity : AppCompatActivity() {
 }
 
 @Composable
-fun NavigationGraph() {
-    val navController = rememberNavController()
-    val context = LocalContext.current
-    val database = StoryTellerDatabase.database(context)
-    val sharedPreferences = context.getSharedPreferences(
+fun NavigationGraph(
+    context: Context = LocalContext.current,
+    navController: NavHostController = rememberNavController(),
+    database: StoryTellerDatabase = StoryTellerDatabase.database(context),
+    sharedPreferences: SharedPreferences = context.getSharedPreferences(
         "br.com.leandroferreira.storyteller.preferences",
         Context.MODE_PRIVATE
-    )
-
-    val notesInjection = NotesInjection(database, sharedPreferences)
+    ),
+    notesInjection: NotesInjection =  NotesInjection(database, sharedPreferences)
+) {
 
     ApplicationComposeTheme {
         NavHost(navController = navController, startDestination = Destinations.CHOOSE_NOTE.id) {
-            composable(Destinations.CHOOSE_NOTE.id) { backEntry ->
+            composable(Destinations.CHOOSE_NOTE.id) {
                 val chooseNoteViewModel = notesInjection.provideChooseNoteViewModel()
 
                 ChooseNoteScreen(
@@ -66,7 +68,7 @@ fun NavigationGraph() {
                 if (noteId != null && noteTitle != null) {
                     val noteDetailsViewModel = notesInjection.provideNoteDetailsViewModel()
 
-                    NoteDetailsScreen(
+                    NoteEditorScreen(
                         noteId.takeIf { it != "null" },
                         noteTitle.takeIf { it != "null" },
                         noteDetailsViewModel,
@@ -78,10 +80,10 @@ fun NavigationGraph() {
             }
 
             composable(route = Destinations.NOTE_DETAILS.id) {
-                NoteDetailsScreen(
+                NoteEditorScreen(
                     documentId = null,
                     title = null,
-                    noteDetailsViewModel = notesInjection.provideNoteDetailsViewModel(),
+                    noteEditorViewModel = notesInjection.provideNoteDetailsViewModel(),
                     navigateBack = navController::navigateToNoteMenu
                 )
             }

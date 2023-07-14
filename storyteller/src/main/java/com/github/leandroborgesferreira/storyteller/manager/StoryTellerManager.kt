@@ -26,6 +26,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -65,10 +66,31 @@ class StoryTellerManager(
         StoryState(stories = emptyMap())
     )
 
+    private val _documentInfo: MutableStateFlow<DocumentInfo> = MutableStateFlow(DocumentInfo())
+
     private val _positionsOnEdit = MutableStateFlow(setOf<Int>())
     val positionsOnEdit = _positionsOnEdit.asStateFlow()
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val currentDocument: Flow<Document> = _documentInfo.flatMapLatest { info ->
+        _currentStory.map { state ->
+            val titleFromContent = state.stories.values.firstOrNull { storyStep ->
+                //Todo: Change the type of change to allow different types. The client code should decide what is a title
+                //It is also interesting to inv
+                storyStep.type == StoryType.TITLE.type
+            }?.text
+
+            Document(
+                id = info.id,
+                title = titleFromContent ?: info.title,
+                content = state.stories,
+                createdAt = info.createdAt,
+                lastUpdatedAt = info.lastUpdatedAt,
+            )
+        }
+    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val toDraw = _positionsOnEdit.flatMapLatest { positions ->
@@ -86,33 +108,30 @@ class StoryTellerManager(
     private val isOnSelection: Boolean
         get() = _positionsOnEdit.value.isNotEmpty()
 
-    fun saveOnStoryChanges(documentId: String, documentRepository: DocumentRepository) {
+    fun saveOnStoryChanges(saveNote: SaveNote) {
         coroutineScope.launch(dispatcher) {
-            _currentStory.map { storyState ->
-                storyState.stories
-            }.collectLatest { content ->
-                val document = Document(
-                    id = documentId,
-                    title = content.values.firstOrNull { story -> story.isTitle }?.text ?: "",
-                    content = content,
-                    createdAt = Date(), // Todo: Fix this!
-                    lastUpdatedAt = Date()
-                )
-
-                documentRepository.saveDocument(document)
+            currentDocument.collectLatest { document ->
+                saveNote.saveDocument(document)
             }
         }
     }
 
     fun isInitialized(): Boolean = _currentStory.value.stories.isNotEmpty()
 
-    fun newStory() {
+    fun newStory(documentId: String = UUID.randomUUID().toString(), title: String = "") {
         val firstMessage = StoryStep(
             localId = UUID.randomUUID().toString(),
             type = StoryType.TITLE.type
         )
         val stories: Map<Int, StoryStep> = mapOf(0 to firstMessage)
         val normalized = stepsNormalizer(stories.toEditState())
+
+        _documentInfo.value = DocumentInfo(
+            id = documentId,
+            title = title,
+            createdAt = Date(),
+            lastUpdatedAt = Date()
+        )
 
         _currentStory.value = StoryState(
             normalized + normalized,
@@ -135,13 +154,15 @@ class StoryTellerManager(
         }
     }
 
-    fun initStories(stories: Map<Int, StoryStep>) {
+    fun initDocument(document: Document) {
         if (isInitialized()) return
 
+        val stories = document.content ?: emptyMap()
         _currentStory.value = StoryState(stepsNormalizer(stories.toEditState()), null)
         val normalized = stepsNormalizer(stories.toEditState())
 
         _currentStory.value = StoryState(normalized)
+        _documentInfo.value = document.info()
     }
 
     fun mergeRequest(info: MergeInfo) {
@@ -402,3 +423,20 @@ class StoryTellerManager(
     }
 
 }
+
+/**
+ * Dto class to keep information about the document
+ */
+data class DocumentInfo(
+    val id: String = UUID.randomUUID().toString(),
+    val title: String = "",
+    val createdAt: Date = Date(),
+    val lastUpdatedAt: Date = Date(),
+)
+
+fun Document.info(): DocumentInfo = DocumentInfo(
+    id = this.id,
+    title = this.title,
+    createdAt = this.createdAt,
+    lastUpdatedAt = this.lastUpdatedAt,
+)
