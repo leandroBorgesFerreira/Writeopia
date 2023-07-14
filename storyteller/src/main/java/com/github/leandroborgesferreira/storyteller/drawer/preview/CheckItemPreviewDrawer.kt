@@ -47,7 +47,7 @@ class CheckItemPreviewDrawer(
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontSize = 15.sp
                 ),
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.onBackground,
             )
         }
     }

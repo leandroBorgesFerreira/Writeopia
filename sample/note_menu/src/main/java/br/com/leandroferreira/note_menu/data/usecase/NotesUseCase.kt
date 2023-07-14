@@ -21,6 +21,24 @@ class NotesUseCase(
         notesConfig.getOrderPreference()
             ?.let { orderBy -> documentRepository.loadDocuments(orderBy) }!!
 
+    suspend fun duplicateDocuments(ids: List<String>) {
+        notesConfig.getOrderPreference()?.let { orderBy ->
+            documentRepository.loadDocumentsById(ids, orderBy)
+        }?.let { documents ->
+            documents.map { document ->
+                document.copy(
+                    id = UUID.randomUUID().toString(),
+                    content = document.content?.mapValues { (_, storyStep) ->
+                        storyStep.copy(id = UUID.randomUUID().toString())
+                    })
+            }
+        }?.let { newDocuments ->
+            newDocuments.forEach { document ->
+                documentRepository.saveDocument(document)
+            }
+        }
+    }
+
     suspend fun mockData(context: Context) {
         documentRepository.saveDocument(
             Document(
@@ -41,5 +59,9 @@ class NotesUseCase(
                 lastUpdatedAt = Date()
             )
         )
+    }
+
+    suspend fun deleteNotes(ids: Set<String>) {
+        documentRepository.deleteDocumentById(ids)
     }
 }

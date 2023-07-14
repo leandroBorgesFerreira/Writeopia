@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
@@ -16,7 +15,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -28,11 +26,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
-import com.github.leandroborgesferreira.storyteller.drawer.common.SwipeToCommandBox
 import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyErase
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
+import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 
 /**
  * Draw a text that can be edited. The edition of the text is both reflect in this Composable and
@@ -55,9 +53,8 @@ class MessageDrawer(
         val focusRequester = remember { FocusRequester() }
 
         Box(modifier = Modifier.padding(horizontal = 6.dp)) {
-            SwipeToCommandBox(
+            SwipeBox(
                 modifier = containerModifier
-                    .clip(RoundedCornerShape(3.dp))
                     .apply {
                         if (clickable) {
                             clickable {

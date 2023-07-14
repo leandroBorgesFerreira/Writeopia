@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Date
 
 class NoteDetailsViewModel(
@@ -30,7 +31,6 @@ class NoteDetailsViewModel(
     private val _editModeState = MutableStateFlow(true)
     val editModeState: StateFlow<Boolean> = _editModeState
 
-    val toEditState = storyTellerManager.positionsOnEdit
     val isEditState = storyTellerManager.positionsOnEdit.map { set ->
         set.isNotEmpty()
     }.stateIn(viewModelScope, started = SharingStarted.Lazily, initialValue = false)
@@ -46,10 +46,6 @@ class NoteDetailsViewModel(
     private val _documentState: MutableStateFlow<Document?> = MutableStateFlow(null)
     val documentState: StateFlow<Document?> = _documentState.asStateFlow()
 
-    fun toggleEdit() {
-        _editModeState.value = !_editModeState.value
-    }
-
     fun deleteSelection() {
         storyTellerManager.deleteSelection()
     }
@@ -60,6 +56,7 @@ class NoteDetailsViewModel(
         storyTellerManager.saveOnStoryChanges(documentId, documentRepository)
         storyTellerManager.newStory()
 
+        //Todo: Move this to
         viewModelScope.launch(Dispatchers.IO) {
             val document = Document(
                 id = documentId,
@@ -78,7 +75,7 @@ class NoteDetailsViewModel(
         if (storyTellerManager.isInitialized()) return
 
         viewModelScope.launch(Dispatchers.IO) {
-            val document = documentRepository.loadDocumentBy(documentId)
+            val document = documentRepository.loadDocumentById(documentId)
             val content = document?.content
             _documentState.value = document
 
@@ -89,25 +86,18 @@ class NoteDetailsViewModel(
         }
     }
 
-    fun saveNote() {
-        viewModelScope.launch {
-            val stories = story.value.stories
-            val document = _documentState.value ?: throw IllegalStateException(
-                "Trying to save a null document, did you forget to create a note?"
-            )
-
-            if (stories.noContent()) {
+    fun removeNoteIfEmpty(onComplete: () -> Unit) {
+        val document = _documentState.value
+        if (document != null && story.value.stories.noContent()) {
+            viewModelScope.launch(Dispatchers.IO) {
                 documentRepository.deleteDocument(document)
-            } else {
-                documentRepository.saveDocument(
-                    document.copy(
-                        content = story.value.stories,
-                        title = story.value.stories.values.firstOrNull { story ->
-                            story.isTitle
-                        }?.text ?: ""
-                    )
-                )
+
+                withContext(Dispatchers.Main) {
+                    onComplete()
+                }
             }
+        } else {
+            onComplete()
         }
     }
 }

@@ -7,13 +7,20 @@ import br.com.leandroferreira.note_menu.data.usecase.NotesConfigurationRepositor
 import br.com.leandroferreira.utils.ResultData
 import br.com.leandroferreira.note_menu.data.usecase.NotesUseCase
 import br.com.leandroferreira.note_menu.extensions.toUiCard
-import br.com.leandroferreira.note_menu.ui.dto.DocumentCard
+import br.com.leandroferreira.note_menu.ui.dto.DocumentUi
+import br.com.leandroferreira.utils.map
+import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.parse.PreviewParser
 import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ChooseNoteViewModel(
@@ -22,9 +29,25 @@ class ChooseNoteViewModel(
     private val previewParser: PreviewParser = PreviewParser()
 ) : ViewModel() {
 
-    private val _documentsState: MutableStateFlow<ResultData<List<DocumentCard>>> =
+    private val _selectedNotes = MutableStateFlow(setOf<String>())
+    val hasSelectedNotes = _selectedNotes.map { selectedIds ->
+        selectedIds.isNotEmpty()
+    }.stateIn(viewModelScope, SharingStarted.Lazily, false)
+
+    private val _documentsState: MutableStateFlow<ResultData<List<Document>>> =
         MutableStateFlow(ResultData.Idle())
-    val documentsState: StateFlow<ResultData<List<DocumentCard>>> = _documentsState
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val documentsState: StateFlow<ResultData<List<DocumentUi>>> =
+        _selectedNotes.flatMapLatest { selectedNoteIds ->
+            _documentsState.map { resultData ->
+                resultData.map { documentList ->
+                    documentList.map { document ->
+                        document.toUiCard(previewParser, selectedNoteIds.contains(document.id))
+                    }
+                }
+            }
+        }.stateIn(viewModelScope, SharingStarted.Lazily, ResultData.Idle())
 
     private val _notesArrangement = MutableStateFlow<NotesArrangement?>(null)
     val notesArrangement = _notesArrangement.asStateFlow()
@@ -32,10 +55,10 @@ class ChooseNoteViewModel(
     private val _editState = MutableStateFlow(false)
     val editState = _editState.asStateFlow()
 
-    fun requestDocuments() {
-        if (documentsState.value !is ResultData.Complete) {
+    fun requestDocuments(force: Boolean) {
+        if (documentsState.value !is ResultData.Complete || force) {
             viewModelScope.launch(Dispatchers.IO) {
-                refreshDocuments()
+                refreshNotes()
             }
         }
     }
@@ -48,20 +71,15 @@ class ChooseNoteViewModel(
         _editState.value = false
     }
 
-    private suspend fun refreshDocuments() {
-        _documentsState.value = ResultData.Loading()
+    fun selectionListener(id: String, selected: Boolean) {
+        val selectedIds = _selectedNotes.value
+        val newIds = if (selected) selectedIds + id else selectedIds - id
 
-        try {
-            val data = notesUseCase.loadDocuments()
-                .map { document ->
-                    document.toUiCard(previewParser)
-                }
+        _selectedNotes.value = newIds
+    }
 
-            _notesArrangement.value = NotesArrangement.fromString(notesConfig.arrangementPref())
-            _documentsState.value = ResultData.Complete(data)
-        } catch (e: Exception) {
-            _documentsState.value = ResultData.Error(e)
-        }
+    fun clearSelection() {
+        _selectedNotes.value = emptySet()
     }
 
     fun addMockData(context: Context) {
@@ -69,10 +87,6 @@ class ChooseNoteViewModel(
             notesUseCase.mockData(context)
 
             val data = notesUseCase.loadDocuments()
-                .map { document ->
-                    document.toUiCard(previewParser)
-                }
-
             _documentsState.value = ResultData.Complete(data)
         }
     }
@@ -88,9 +102,46 @@ class ChooseNoteViewModel(
     }
 
     fun sortingSelected(orderBy: OrderBy) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             notesConfig.saveDocumentSortingPref(orderBy)
-            refreshDocuments()
+            refreshNotes()
+        }
+    }
+
+    fun copySelectedNotes() {
+        viewModelScope.launch(Dispatchers.IO) {
+            notesUseCase.duplicateDocuments(_selectedNotes.value.toList())
+            clearSelection()
+            refreshNotes()
+        }
+
+    }
+
+    fun deleteSelectedNotes() {
+        val selected = _selectedNotes.value
+
+        viewModelScope.launch(Dispatchers.IO) {
+            notesUseCase.deleteNotes(selected)
+
+            _selectedNotes.value = emptySet()
+
+            refreshNotes()
+        }
+    }
+
+    fun favoriteSelectedNotes() {
+
+    }
+
+    private suspend fun refreshNotes() {
+        _documentsState.value = ResultData.Loading()
+
+        try {
+            val data = notesUseCase.loadDocuments()
+            _notesArrangement.value = NotesArrangement.fromString(notesConfig.arrangementPref())
+            _documentsState.value = ResultData.Complete(data)
+        } catch (e: Exception) {
+            _documentsState.value = ResultData.Error(e)
         }
     }
 }

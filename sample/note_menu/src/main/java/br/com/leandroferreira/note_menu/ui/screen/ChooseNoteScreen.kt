@@ -1,5 +1,7 @@
 package br.com.leandroferreira.note_menu.ui.screen
 
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,12 +17,10 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -30,7 +30,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,16 +45,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.com.leandroferreira.resourcers.R
-import br.com.leandroferreira.utils.ResultData
-import br.com.leandroferreira.note_menu.ui.dto.DocumentCard
+import br.com.leandroferreira.note_menu.ui.dto.DocumentUi
+import br.com.leandroferreira.note_menu.ui.screen.configuration.ConfigurationsMenu
+import br.com.leandroferreira.note_menu.ui.screen.configuration.NotesSelectionMenu
 import br.com.leandroferreira.note_menu.viewmodel.ChooseNoteViewModel
 import br.com.leandroferreira.note_menu.viewmodel.NotesArrangement
+import br.com.leandroferreira.resourcers.R
+import br.com.leandroferreira.utils.ResultData
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.CheckItemPreviewDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.MessagePreviewDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 
 private fun previewDrawers(): Map<String, StoryUnitDrawer> =
     mapOf(
@@ -64,9 +70,34 @@ private fun previewDrawers(): Map<String, StoryUnitDrawer> =
 fun ChooseNoteScreen(
     chooseNoteViewModel: ChooseNoteViewModel,
     navigateToNote: (String, String) -> Unit,
-    newNote: () -> Unit
+    newNote: () -> Unit,
+    navigateUp: () -> Unit
 ) {
-    chooseNoteViewModel.requestDocuments()
+    LaunchedEffect(key1 = "refresh", block = {
+        chooseNoteViewModel.requestDocuments(false)
+    })
+
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
+    val backCallback = remember {
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (chooseNoteViewModel.hasSelectedNotes.value) {
+                    chooseNoteViewModel.clearSelection()
+                } else {
+                    navigateUp()
+                }
+            }
+        }
+    }
+
+    DisposableEffect(key1 = backDispatcher) {
+        backDispatcher?.addCallback(backCallback)
+
+        onDispose {
+            backCallback.remove()
+        }
+    }
 
     MaterialTheme {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -111,6 +142,7 @@ fun ChooseNoteScreen(
                 Content(
                     chooseNoteViewModel = chooseNoteViewModel,
                     navigateToNote = navigateToNote,
+                    selectionListener = chooseNoteViewModel::selectionListener,
                     paddingValues = paddingValues,
                 )
             }
@@ -118,11 +150,20 @@ fun ChooseNoteScreen(
             val editState by chooseNoteViewModel.editState.collectAsStateWithLifecycle()
 
             ConfigurationsMenu(
-                editState = editState,
+                visibilityState = editState,
                 outsideClick = chooseNoteViewModel::cancelMenu,
                 listOptionClick = chooseNoteViewModel::listArrangementSelected,
                 gridOptionClick = chooseNoteViewModel::gridArrangementSelected,
                 sortingSelected = chooseNoteViewModel::sortingSelected
+            )
+
+            val selectionState by chooseNoteViewModel.hasSelectedNotes.collectAsStateWithLifecycle()
+
+            NotesSelectionMenu(
+                visibilityState = selectionState,
+                onCopy = chooseNoteViewModel::copySelectedNotes,
+                onFavorite = chooseNoteViewModel::favoriteSelectedNotes,
+                onDelete = chooseNoteViewModel::deleteSelectedNotes,
             )
         }
     }
@@ -133,6 +174,7 @@ fun ChooseNoteScreen(
 private fun Content(
     chooseNoteViewModel: ChooseNoteViewModel,
     navigateToNote: (String, String) -> Unit,
+    selectionListener: (String, Boolean) -> Unit,
     paddingValues: PaddingValues,
 ) {
     Box(
@@ -140,14 +182,19 @@ private fun Content(
             .padding(paddingValues)
             .fillMaxSize()
     ) {
-        Notes(chooseNoteViewModel = chooseNoteViewModel, navigateToNote = navigateToNote)
+        Notes(
+            chooseNoteViewModel = chooseNoteViewModel,
+            navigateToNote = navigateToNote,
+            selectionListener = selectionListener
+        )
     }
 }
 
 @Composable
 private fun Notes(
     chooseNoteViewModel: ChooseNoteViewModel,
-    navigateToNote: (String, String) -> Unit
+    navigateToNote: (String, String) -> Unit,
+    selectionListener: (String, Boolean) -> Unit,
 ) {
     when (val documents =
         chooseNoteViewModel.documentsState.collectAsStateWithLifecycle().value) {
@@ -163,15 +210,27 @@ private fun Notes(
 
                     when (arrangement) {
                         NotesArrangement.GRID -> {
-                            LazyGridNotes(documents.data, navigateToNote)
+                            LazyGridNotes(
+                                documents.data,
+                                selectionListener = selectionListener,
+                                onDocumentClick = navigateToNote
+                            )
                         }
 
                         NotesArrangement.LIST -> {
-                            LazyColumnNotes(documents.data, navigateToNote)
+                            LazyColumnNotes(
+                                documents.data,
+                                selectionListener = selectionListener,
+                                onDocumentClick = navigateToNote
+                            )
                         }
 
                         else -> {
-                            LazyGridNotes(documents.data, navigateToNote)
+                            LazyGridNotes(
+                                documents.data,
+                                selectionListener = selectionListener,
+                                onDocumentClick = navigateToNote
+                            )
                         }
                     }
                 }
@@ -198,16 +257,17 @@ private fun Notes(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun LazyGridNotes(
-    documents: List<DocumentCard>,
-    onDocumentClick: (String, String) -> Unit
+    documents: List<DocumentUi>,
+    onDocumentClick: (String, String) -> Unit,
+    selectionListener: (String, Boolean) -> Unit,
 ) {
     LazyVerticalStaggeredGrid(
         modifier = Modifier.padding(6.dp),
         columns = StaggeredGridCells.Adaptive(minSize = 150.dp),
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         content = {
-            items(documents) { document ->
-                DocumentItem(document, onDocumentClick, previewDrawers())
+            items(documents, key = { document -> document.hashCode() }) { document ->
+                DocumentItem(document, onDocumentClick, selectionListener, previewDrawers())
             }
         }
     )
@@ -215,15 +275,16 @@ private fun LazyGridNotes(
 
 @Composable
 private fun LazyColumnNotes(
-    documents: List<DocumentCard>,
-    onDocumentClick: (String, String) -> Unit
+    documents: List<DocumentUi>,
+    onDocumentClick: (String, String) -> Unit,
+    selectionListener: (String, Boolean) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.padding(6.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp),
         content = {
-            items(documents) { document ->
-                DocumentItem(document, onDocumentClick, previewDrawers())
+            items(documents, key = { document -> document.hashCode() }) { document ->
+                DocumentItem(document, onDocumentClick, selectionListener, previewDrawers())
             }
         }
     )
@@ -231,29 +292,33 @@ private fun LazyColumnNotes(
 
 @Composable
 private fun DocumentItem(
-    documentCard: DocumentCard,
+    documentUi: DocumentUi,
     documentClick: (String, String) -> Unit,
-    drawers: Map<String, StoryUnitDrawer>,
+    selectionListener: (String, Boolean) -> Unit,
+    drawers: Map<String, StoryUnitDrawer>
 ) {
-    Card(
+    SwipeBox(
         modifier = Modifier
-            .fillMaxWidth()
             .padding(bottom = 6.dp)
+            .fillMaxWidth()
             .clickable {
-                documentClick(documentCard.documentId, documentCard.title)
+                documentClick(documentUi.documentId, documentUi.title)
             },
-        shape = RoundedCornerShape(12.dp)
+        state = documentUi.selected,
+        swipeListener = { state -> selectionListener(documentUi.documentId, state) },
+        cornersShape = MaterialTheme.shapes.large,
+        defaultColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
         Column(modifier = Modifier.padding(10.dp)) {
             Text(
                 modifier = Modifier.padding(bottom = 8.dp),
-                text = documentCard.title,
+                text = documentUi.title,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Start
             )
 
-            documentCard.preview.forEachIndexed { i, storyStep ->
+            documentUi.preview.forEachIndexed { i, storyStep ->
                 drawers[storyStep.type]?.Step(
                     step = storyStep, drawInfo =
                     DrawInfo(editable = false, position = i)

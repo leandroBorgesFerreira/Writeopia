@@ -17,4 +17,7 @@
     <string name="name">Name</string>
     <string name="add_note">Add note</string>
     <string name="back">Back</string>
+    <string name="copy_note">Copy note</string>
+    <string name="favorite">Favorite</string>
+    <string name="delete">Delete</string>
 </resources>

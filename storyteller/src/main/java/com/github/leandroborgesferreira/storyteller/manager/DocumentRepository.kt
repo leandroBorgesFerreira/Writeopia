@@ -12,11 +12,13 @@ interface DocumentRepository {
 
     suspend fun loadDocuments(orderBy: String): List<Document>
 
-    suspend fun loadDocumentBy(id: String): Document?
+    suspend fun loadDocumentById(id: String): Document?
+
+    suspend fun loadDocumentsById(ids: List<String>, orderBy: String): List<Document>
 
     suspend fun saveDocument(document: Document)
 
-    suspend fun save(documentId: String, content: Map<Int, StoryStep>)
-
     suspend fun deleteDocument(document: Document)
+
+    suspend fun deleteDocumentById(ids: Set<String>)
 }
