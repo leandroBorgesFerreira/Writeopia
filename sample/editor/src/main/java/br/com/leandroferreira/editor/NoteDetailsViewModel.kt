@@ -1,6 +1,5 @@
 package br.com.leandroferreira.editor
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
@@ -32,7 +31,6 @@ class NoteDetailsViewModel(
     private val _editModeState = MutableStateFlow(true)
     val editModeState: StateFlow<Boolean> = _editModeState
 
-    val toEditState = storyTellerManager.positionsOnEdit
     val isEditState = storyTellerManager.positionsOnEdit.map { set ->
         set.isNotEmpty()
     }.stateIn(viewModelScope, started = SharingStarted.Lazily, initialValue = false)
@@ -47,10 +45,6 @@ class NoteDetailsViewModel(
 
     private val _documentState: MutableStateFlow<Document?> = MutableStateFlow(null)
     val documentState: StateFlow<Document?> = _documentState.asStateFlow()
-
-    fun toggleEdit() {
-        _editModeState.value = !_editModeState.value
-    }
 
     fun deleteSelection() {
         storyTellerManager.deleteSelection()
@@ -72,7 +66,6 @@ class NoteDetailsViewModel(
                 lastUpdatedAt = Date()
             )
 
-            Log.d("NoteDetailsViewModel", "saving document!!")
             documentRepository.saveDocument(document)
             _documentState.value = document
         }

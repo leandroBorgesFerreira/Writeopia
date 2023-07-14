@@ -1,7 +1,6 @@
 package br.com.leandroferreira.note_menu.viewmodel
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.leandroferreira.note_menu.data.usecase.NotesConfigurationRepository
@@ -59,7 +58,6 @@ class ChooseNoteViewModel(
     fun requestDocuments(force: Boolean) {
         if (documentsState.value !is ResultData.Complete || force) {
             viewModelScope.launch(Dispatchers.IO) {
-                Log.d("ChooseNoteViewModel", "refreshNotes")
                 refreshNotes()
             }
         }
@@ -140,7 +138,6 @@ class ChooseNoteViewModel(
 
         try {
             val data = notesUseCase.loadDocuments()
-            Log.d("ChooseNoteViewModel", "notes: ${data.joinToString { it.title }}")
             _notesArrangement.value = NotesArrangement.fromString(notesConfig.arrangementPref())
             _documentsState.value = ResultData.Complete(data)
         } catch (e: Exception) {
