@@ -2,6 +2,7 @@ package com.github.leandroborgesferreira.storyteller.manager
 
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
 import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
+import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
@@ -35,7 +36,7 @@ class ContentHandler(
         )
         newMap[position] = newCheck
 
-        return StoryState(newMap, newCheck.id)
+        return StoryState(newMap, LastEdit.Whole, newCheck.id)
     }
 
     //Todo: Add unit test
@@ -93,6 +94,7 @@ class ContentHandler(
 
             (addPosition to secondMessage) to StoryState(
                 stories = newStory,
+                lastEdit = LastEdit.Whole,
                 focusId = secondMessage.id
             )
         }
@@ -113,7 +115,7 @@ class ContentHandler(
                 )
 
             val normalized = stepsNormalizer(mutableSteps.toEditState())
-            StoryState(normalized, focusId = previousFocus?.id)
+            StoryState(normalized, lastEdit = LastEdit.Whole, focusId = previousFocus?.id)
         } else {
             mutableSteps[deleteInfo.position]?.let { group ->
                 val newSteps = group.steps.filter { storyUnit ->
@@ -127,7 +129,7 @@ class ContentHandler(
                 }
 
                 mutableSteps[deleteInfo.position] = newStoryUnit.copy(parentId = null)
-                StoryState(stepsNormalizer(mutableSteps.toEditState()))
+                StoryState(stepsNormalizer(mutableSteps.toEditState()), lastEdit = LastEdit.Whole)
             }
         }
     }
