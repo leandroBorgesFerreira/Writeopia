@@ -2,8 +2,7 @@ package com.github.leandroborgesferreira.storyteller.drawer
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -12,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.commands.CommandsDecoratorDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.AddButtonDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.CheckItemDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.content.HeaderDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.ImageGroupDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.ImageDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.ImageDrawer.Companion.defaultModifier
@@ -36,7 +36,7 @@ object DefaultDrawers {
         manager: StoryTellerManager,
         groupsBackgroundColor: Color = Color.Transparent,
         defaultBorder: Shape
-    ): Map<String, StoryUnitDrawer> =
+    ): Map<String, StoryStepDrawer> =
         create(
             editable = editable,
             onTextEdit = manager::onTextEdit,
@@ -67,7 +67,7 @@ object DefaultDrawers {
         defaultBorder: Shape,
         groupsBackgroundColor: Color = Color.Transparent,
         nextFocus: (Int) -> Unit
-    ): Map<String, StoryUnitDrawer> =
+    ): Map<String, StoryStepDrawer> =
         buildMap {
             val textCommandHandlerMessage = TextCommandHandler(
                 mapOf(
@@ -88,7 +88,7 @@ object DefaultDrawers {
                 )
             )
 
-            val commandsComposite: (StoryUnitDrawer) -> StoryUnitDrawer = { stepDrawer ->
+            val commandsComposite: (StoryStepDrawer) -> StoryStepDrawer = { stepDrawer ->
                 CommandsDecoratorDrawer(
                     stepDrawer,
                     onDelete = onDeleteRequest,
@@ -134,10 +134,13 @@ object DefaultDrawers {
                 onSelected = onSelected,
             )
 
-            val titleDrawer = TitleDrawer(
-                onTextEdit = onTextEdit,
-                onLineBreak = onLineBreak
-            )
+            val headerDrawer = HeaderDrawer(titleDrawer = {
+                TitleDrawer(
+                    containerModifier = Modifier.align(Alignment.BottomStart),
+                    onTextEdit = onTextEdit,
+                    onLineBreak = onLineBreak
+                )
+            })
 
             put(StoryType.MESSAGE_BOX.type, messageBoxDrawer)
             put(StoryType.MESSAGE.type, messageDrawer)
@@ -159,6 +162,6 @@ object DefaultDrawers {
             put(StoryType.SPACE.type, SpaceDrawer(moveRequest))
             put(StoryType.LARGE_SPACE.type, LargeEmptySpace(moveRequest, clickAtTheEnd))
             put(StoryType.CHECK_ITEM.type, checkItemDrawer)
-            put(StoryType.TITLE.type, titleDrawer)
+            put(StoryType.TITLE.type, headerDrawer)
         }
 }

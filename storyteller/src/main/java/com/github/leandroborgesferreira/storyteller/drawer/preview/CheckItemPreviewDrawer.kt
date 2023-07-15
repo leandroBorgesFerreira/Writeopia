@@ -15,12 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
-import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
 class CheckItemPreviewDrawer(
     private val modifier: Modifier = Modifier.padding(vertical = 5.dp)
-) : StoryUnitDrawer {
+) : StoryStepDrawer {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable

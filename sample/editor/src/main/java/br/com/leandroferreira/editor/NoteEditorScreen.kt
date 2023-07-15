@@ -11,10 +11,14 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
@@ -30,16 +34,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.leandroferreira.editor.input.InputScreen
@@ -114,29 +121,43 @@ fun NoteEditorScreen(
 @Composable
 fun TopBar(title: String, navigationClick: () -> Unit) {
     TopAppBar(
+        modifier = Modifier.height(50.dp),
         title = {
-            Text(
-                modifier = Modifier.semantics {
-                    testTag = NOTE_EDITION_SCREEN_TITLE_TEST_TAG
-                },
-                text = title,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
+            Row(
+                modifier = Modifier.fillMaxHeight(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier.semantics {
+                        testTag = NOTE_EDITION_SCREEN_TITLE_TEST_TAG
+                    },
+                    text = title,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+            }
         },
         navigationIcon = {
-            Icon(
-                modifier = Modifier
-                    .semantics {
-                        testTag = NAVIGATE_BACK_TEST_TAG
-                    }
-                    .clip(CircleShape)
-                    .clickable(onClick = navigationClick)
-                    .padding(10.dp),
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = stringResource(R.string.back),
-                tint = MaterialTheme.colorScheme.onPrimary
-            )
-        }
+            Row(
+                modifier = Modifier.fillMaxHeight(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .semantics {
+                            testTag = NAVIGATE_BACK_TEST_TAG
+                        }
+                        .clip(CircleShape)
+                        .clickable(onClick = navigationClick)
+                        .padding(10.dp),
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back),
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background
+        )
     )
 }
 

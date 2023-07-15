@@ -63,11 +63,16 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.video)
 
+    implementation(libs.androidx.ktx)
+
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material3:material3-window-size-class")
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

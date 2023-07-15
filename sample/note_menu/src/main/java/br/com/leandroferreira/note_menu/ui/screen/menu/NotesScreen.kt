@@ -35,7 +35,7 @@ import br.com.leandroferreira.note_menu.viewmodel.NotesArrangement
 import br.com.leandroferreira.resourcers.R
 import br.com.leandroferreira.utils.ResultData
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
-import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.CheckItemPreviewDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.MessagePreviewDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
@@ -147,7 +147,7 @@ private fun DocumentItem(
     documentUi: DocumentUi,
     documentClick: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
-    drawers: Map<String, StoryUnitDrawer>
+    drawers: Map<String, StoryStepDrawer>
 ) {
     SwipeBox(
         modifier = Modifier
@@ -205,7 +205,7 @@ private fun MockDataScreen(chooseNoteViewModel: ChooseNoteViewModel) {
     }
 }
 
-private fun previewDrawers(): Map<String, StoryUnitDrawer> =
+private fun previewDrawers(): Map<String, StoryStepDrawer> =
     mapOf(
         StoryType.MESSAGE.type to MessagePreviewDrawer(),
         StoryType.CHECK_ITEM.type to CheckItemPreviewDrawer()

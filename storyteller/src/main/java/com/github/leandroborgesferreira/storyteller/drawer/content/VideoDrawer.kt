@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
-import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -26,7 +26,7 @@ import coil.request.videoFrameMillis
 /**
  * Draws a simple video thumnail using Coil.
  */
-class VideoDrawer(private val containerModifier: Modifier? = null) : StoryUnitDrawer {
+class VideoDrawer(private val containerModifier: Modifier? = null) : StoryStepDrawer {
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {

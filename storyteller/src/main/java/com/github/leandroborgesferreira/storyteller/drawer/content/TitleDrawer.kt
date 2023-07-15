@@ -25,12 +25,14 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.R
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
-import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.utils.ui.transparentTextInputColors
 
 const val TITLE_DRAWER_TEST_TAG = "TitleDrawerTextField"
@@ -45,7 +47,7 @@ class TitleDrawer(
     private val innerContainerModifier: Modifier = Modifier,
     private val onTextEdit: (String, Int) -> Unit,
     private val onLineBreak: (LineBreakInfo) -> Unit,
-) : StoryUnitDrawer {
+) : StoryStepDrawer {
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
@@ -112,3 +114,14 @@ class TitleDrawer(
         }
     }
 }
+
+@Preview
+@Composable
+fun TitleDrawerStepPreview() {
+    TitleDrawer(
+        onTextEdit = { _, _ -> },
+        onLineBreak = {}).Step(
+        step = StoryStep(type = StoryType.TITLE.type), drawInfo = DrawInfo()
+    )
+}
+
