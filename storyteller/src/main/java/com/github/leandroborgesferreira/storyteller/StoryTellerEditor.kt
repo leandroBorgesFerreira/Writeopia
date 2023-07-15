@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DraggableScreen
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
-import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 
 @Composable
@@ -19,7 +19,7 @@ fun StoryTellerEditor(
     contentPadding: PaddingValues = PaddingValues(0.dp),
     editable: Boolean,
     storyState: DrawState,
-    drawers: Map<String, StoryUnitDrawer>,
+    drawers: Map<String, StoryStepDrawer>,
     listState: LazyListState = rememberLazyListState()
 ) {
     val content = storyState.stories.values.toList()

@@ -9,16 +9,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
-import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
 /**
  * Draws a scrollable list of images accordingly with the imageStepDrawer provided.
  */
 class ImageGroupDrawer(
-    private val imageStepDrawer: StoryUnitDrawer,
+    private val imageStepDrawer: StoryStepDrawer,
     private val modifier: Modifier = Modifier
-) : StoryUnitDrawer {
+) : StoryStepDrawer {
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {

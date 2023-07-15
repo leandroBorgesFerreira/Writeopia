@@ -15,13 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
-import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
 /**
  * A simple Add button.
  */
-class AddButtonDrawer : StoryUnitDrawer {
+class AddButtonDrawer : StoryStepDrawer {
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {

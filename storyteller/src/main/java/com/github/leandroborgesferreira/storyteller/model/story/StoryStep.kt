@@ -17,7 +17,9 @@ data class StoryStep(
     val text: String? = null,
     val title: String? = null,
     val checked: Boolean? = false,
-    val steps: List<StoryStep> = emptyList()
+    val steps: List<StoryStep> = emptyList(),
+    val stepsMap: Map<String, StoryStep> = emptyMap(),
+    val decoration: Decoration = Decoration()
 ) {
 
     val key: Int = localId.hashCode()

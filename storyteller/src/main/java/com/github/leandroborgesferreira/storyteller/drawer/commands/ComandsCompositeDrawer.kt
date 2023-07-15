@@ -18,7 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
-import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
@@ -28,9 +28,9 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
  * buttons, later it will be added the possibility to chose which button appears to the user.
  */
 class CommandsDecoratorDrawer(
-    private val innerStepDrawer: StoryUnitDrawer,
+    private val innerStepDrawer: StoryStepDrawer,
     private val onDelete: (DeleteInfo) -> Unit = {}
-) : StoryUnitDrawer {
+) : StoryStepDrawer {
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {

@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTarget
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DropTarget
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
-import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.change.MergeInfo
 import com.github.leandroborgesferreira.storyteller.model.draganddrop.DropInfo
@@ -39,7 +39,7 @@ import coil.request.ImageRequest
 class ImageDrawer(
     private val containerModifier: (Boolean) -> Modifier? = { null },
     private val mergeRequest: (MergeInfo) -> Unit = { }
-) : StoryUnitDrawer {
+) : StoryStepDrawer {
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {

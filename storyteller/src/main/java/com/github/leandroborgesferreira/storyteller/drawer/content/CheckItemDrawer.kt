@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Checkbox
@@ -21,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -32,17 +30,19 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTarget
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTargetWithDragItem
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
-import com.github.leandroborgesferreira.storyteller.drawer.StoryUnitDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyErase
 import com.github.leandroborgesferreira.storyteller.model.change.CheckInfo
 import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
 import com.github.leandroborgesferreira.storyteller.model.draganddrop.DropInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 
 class CheckItemDrawer(
@@ -53,7 +53,7 @@ class CheckItemDrawer(
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     private val customBackgroundColor: Color? = null,
     private val clickable: Boolean = true
-) : StoryUnitDrawer {
+) : StoryStepDrawer {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -156,4 +156,13 @@ class CheckItemDrawer(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun CheckItemDrawerStepPreview() {
+    CheckItemDrawer().Step(
+        step = StoryStep(type = StoryType.CHECK_ITEM.type, text = "This is a check item"),
+        drawInfo = DrawInfo()
+    )
 }
