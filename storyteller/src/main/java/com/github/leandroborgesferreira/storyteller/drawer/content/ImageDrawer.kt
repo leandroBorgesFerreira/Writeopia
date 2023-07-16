@@ -43,7 +43,6 @@ class ImageDrawer(
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
-
         DropTarget(modifier = Modifier.padding(horizontal = 6.dp)) { inBound, data ->
             if (inBound && data != null) {
                 mergeRequest(

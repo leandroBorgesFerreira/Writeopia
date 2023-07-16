@@ -11,7 +11,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -46,7 +46,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.leandroferreira.editor.input.InputScreen
@@ -172,7 +171,7 @@ fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
         //Todo: Review this. Is a LaunchedEffect the correct way to do this??
         LaunchedEffect(position, block = {
             noteEditorViewModel.scrollToPosition.collectLatest {
-                listState.animateScrollToItem(position!!, scrollOffset = -100)
+                listState.animateScrollBy(70F)
             }
         })
     }
