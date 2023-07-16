@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,9 +18,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Dashboard
 import androidx.compose.material.icons.outlined.List
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +42,7 @@ import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
 
 private const val INNER_PADDING = 3
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun BoxScope.ConfigurationsMenu(
     modifier: Modifier = Modifier,
@@ -192,7 +198,9 @@ private fun Modifier.orderConfigModifier(clickable: () -> Unit): Modifier =
 @Preview
 @Composable
 private fun ConfigurationsMenu_Preview() {
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .background(Color.White)) {
         ConfigurationsMenu(Modifier, true, {}, {}, {}, {})
     }
 }

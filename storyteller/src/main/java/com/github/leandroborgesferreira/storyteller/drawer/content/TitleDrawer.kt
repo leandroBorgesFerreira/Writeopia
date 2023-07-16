@@ -53,7 +53,8 @@ class TitleDrawer(
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         val focusRequester = remember { FocusRequester() }
         val titleStyle = MaterialTheme.typography.headlineMedium.copy(
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Column(modifier = containerModifier
@@ -98,7 +99,7 @@ class TitleDrawer(
                         Text(
                             stringResource(R.string.title),
                             style = titleStyle,
-                            color = Color.Gray
+                            color = Color.LightGray
                         )
                     },
                     textStyle = titleStyle,
@@ -121,7 +122,7 @@ fun TitleDrawerStepPreview() {
     TitleDrawer(
         onTextEdit = { _, _ -> },
         onLineBreak = {}).Step(
-        step = StoryStep(type = StoryType.TITLE.type), drawInfo = DrawInfo()
+        step = StoryStep(type = StoryType.TITLE.type, text = "Some title"), drawInfo = DrawInfo()
     )
 }
 
