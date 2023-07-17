@@ -61,18 +61,18 @@ fun NavigationGraph(
             composable(
                 route = "${Destinations.NOTE_DETAILS.id}/{noteId}/{noteTitle}",
                 arguments = listOf(navArgument("noteId") { type = NavType.StringType }),
-                enterTransition = {
-                    slideInHorizontally(
-                        animationSpec = slideInHorizontallyAnimationSpec,
-                        initialOffsetX = { intSize -> intSize }
-                    )
-                },
-                exitTransition = {
-                    slideOutHorizontally(
-                        animationSpec = slideInHorizontallyAnimationSpec,
-                        targetOffsetX = { intSize -> intSize }
-                    )
-                }
+//                enterTransition = {
+//                    slideInHorizontally(
+//                        animationSpec = slideInHorizontallyAnimationSpec,
+//                        initialOffsetX = { intSize -> intSize }
+//                    )
+//                },
+//                exitTransition = {
+//                    slideOutHorizontally(
+//                        animationSpec = slideInHorizontallyAnimationSpec,
+//                        targetOffsetX = { intSize -> intSize }
+//                    )
+//                }
             ) { backStackEntry ->
                 val noteId = backStackEntry.arguments?.getString("noteId")
                 val noteTitle = backStackEntry.arguments?.getString("noteTitle")
