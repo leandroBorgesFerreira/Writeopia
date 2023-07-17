@@ -5,14 +5,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.VisibilityThreshold
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -48,13 +42,8 @@ fun NavigationGraph(
         "br.com.leandroferreira.storyteller.preferences",
         Context.MODE_PRIVATE
     ),
-    notesInjection: NotesInjection = NotesInjection(database, sharedPreferences)
+    notesInjection: NotesInjection =  NotesInjection(database, sharedPreferences)
 ) {
-
-    val slideInHorizontallyAnimationSpec = spring(
-        stiffness = Spring.StiffnessMediumLow,
-        visibilityThreshold = IntOffset.VisibilityThreshold
-    )
 
     ApplicationComposeTheme {
         NavHost(navController = navController, startDestination = Destinations.CHOOSE_NOTE.id) {

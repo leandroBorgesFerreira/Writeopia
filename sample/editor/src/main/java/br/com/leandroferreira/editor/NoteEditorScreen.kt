@@ -150,7 +150,7 @@ fun TopBar(title: String, navigationClick: () -> Unit) {
                         .padding(10.dp),
                     imageVector = Icons.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.back),
-                    tint = MaterialTheme.colorScheme.onBackground
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         },

@@ -15,7 +15,7 @@ apply(from = "${rootDir}/scripts/publish-module.gradle")
 
 android {
     namespace = "com.github.leandroborgesferreira.storyteller.persistence"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 24
