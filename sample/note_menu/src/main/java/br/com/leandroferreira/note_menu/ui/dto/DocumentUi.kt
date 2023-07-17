@@ -2,7 +2,7 @@ package br.com.leandroferreira.note_menu.ui.dto
 
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
-class DocumentUi(
+data class DocumentUi(
     val documentId: String,
     val title: String,
     val lastEdit: String,
