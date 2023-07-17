@@ -26,4 +26,6 @@ sealed class LastEdit {
      * possible to update just one line. 
      */
     data class LineEdition(val position: Int, val storyStep: StoryStep): LastEdit()
+
+    data class InfoEdition(val position: Int, val storyStep: StoryStep): LastEdit()
 }

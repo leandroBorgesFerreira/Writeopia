@@ -41,6 +41,7 @@ object DefaultDrawers {
         create(
             editable = editable,
             onTextEdit = manager::onTextEdit,
+            onTitleEdit = manager::onTitleEdit,
             onLineBreak = manager::onLineBreak,
             mergeRequest = manager::mergeRequest,
             moveRequest = manager::moveRequest,
@@ -57,6 +58,7 @@ object DefaultDrawers {
     fun create(
         editable: Boolean = false,
         onTextEdit: (String, Int) -> Unit,
+        onTitleEdit: (String, Int) -> Unit,
         onLineBreak: (LineBreakInfo) -> Unit,
         mergeRequest: (MergeInfo) -> Unit = { },
         moveRequest: (MoveInfo) -> Unit = { },
@@ -140,7 +142,7 @@ object DefaultDrawers {
                 titleDrawer = {
                 TitleDrawer(
                     containerModifier = Modifier.align(Alignment.BottomStart),
-                    onTextEdit = onTextEdit,
+                    onTextEdit = onTitleEdit,
                     onLineBreak = onLineBreak
                 )
             })

@@ -138,6 +138,31 @@ class StoryTellerManager(
 
                         documentUpdate.saveDocument(document)
                     }
+
+                    is LastEdit.InfoEdition -> {
+                        val stories = storyState.stories
+                        val titleFromContent = stories.values.firstOrNull { storyStep ->
+                            //Todo: Change the type of change to allow different types. The client code should decide what is a title
+                            //It is also interesting to inv
+                            storyStep.type == StoryType.TITLE.type
+                        }?.text
+
+                        documentUpdate.saveStoryStep(
+                            storyStep = lastEdit.storyStep,
+                            position = lastEdit.position,
+                            documentId = documentInfo.id
+                        )
+
+                        documentUpdate.saveDocumentMetadata(
+                            Document(
+                                id = documentInfo.id,
+                                title = titleFromContent ?: documentInfo.title,
+                                content = storyState.stories,
+                                createdAt = documentInfo.createdAt,
+                                lastUpdatedAt = documentInfo.lastUpdatedAt,
+                            )
+                        )
+                    }
                 }
             }
         }
@@ -247,6 +272,19 @@ class StoryTellerManager(
 
         _currentStory.value.stories[position]?.copy(text = text)?.let { newStory ->
             updateStory(position, newStory)
+            backStackManager.addAction(TextEditInfo(text, position))
+        }
+    }
+
+    fun onTitleEdit(text: String, position: Int) {
+        if (isOnSelection) {
+            cancelSelection()
+        }
+
+        _currentStory.value.stories[position]?.copy(text = text)?.let { newStory ->
+            val newMap = _currentStory.value.stories.toMutableMap()
+            newMap[position] = newStory
+            _currentStory.value = StoryState(newMap, LastEdit.InfoEdition(position, newStory))
             backStackManager.addAction(TextEditInfo(text, position))
         }
     }

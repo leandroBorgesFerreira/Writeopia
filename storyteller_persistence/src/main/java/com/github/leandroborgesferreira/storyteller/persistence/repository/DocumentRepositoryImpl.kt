@@ -40,12 +40,16 @@ class DocumentRepositoryImpl(
             }
 
     override suspend fun saveDocument(document: Document) {
-        documentDao.insertDocuments(document.toEntity())
+        saveDocumentMetadata(document)
 
         document.content?.toEntity(document.id)?.let { data ->
             storyUnitDao.deleteDocumentContent(documentId = document.id)
             storyUnitDao.insertStoryUnits(*data.toTypedArray())
         }
+    }
+
+    override suspend fun saveDocumentMetadata(document: Document) {
+        documentDao.insertDocuments(document.toEntity())
     }
 
     override suspend fun deleteDocument(document: Document) {
