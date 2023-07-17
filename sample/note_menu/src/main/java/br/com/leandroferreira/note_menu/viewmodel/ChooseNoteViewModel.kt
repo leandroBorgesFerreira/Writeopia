@@ -4,21 +4,20 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.leandroferreira.note_menu.data.usecase.NotesConfigurationRepository
-import br.com.leandroferreira.utils.ResultData
 import br.com.leandroferreira.note_menu.data.usecase.NotesUseCase
 import br.com.leandroferreira.note_menu.extensions.toUiCard
 import br.com.leandroferreira.note_menu.ui.dto.DocumentUi
+import br.com.leandroferreira.utils.ResultData
 import br.com.leandroferreira.utils.map
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.parse.PreviewParser
 import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -37,14 +36,11 @@ class ChooseNoteViewModel(
     private val _documentsState: MutableStateFlow<ResultData<List<Document>>> =
         MutableStateFlow(ResultData.Idle())
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val documentsState: StateFlow<ResultData<List<DocumentUi>>> =
-        _selectedNotes.flatMapLatest { selectedNoteIds ->
-            _documentsState.map { resultData ->
-                resultData.map { documentList ->
-                    documentList.map { document ->
-                        document.toUiCard(previewParser, selectedNoteIds.contains(document.id))
-                    }
+        combine(_selectedNotes, _documentsState) { selectedNoteIds, resultData ->
+            resultData.map { documentList ->
+                documentList.map { document ->
+                    document.toUiCard(previewParser, selectedNoteIds.contains(document.id))
                 }
             }
         }.stateIn(viewModelScope, SharingStarted.Lazily, ResultData.Idle())

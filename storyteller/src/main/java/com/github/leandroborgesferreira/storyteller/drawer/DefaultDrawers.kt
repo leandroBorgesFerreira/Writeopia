@@ -1,6 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.drawer
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -134,7 +135,9 @@ object DefaultDrawers {
                 onSelected = onSelected,
             )
 
-            val headerDrawer = HeaderDrawer(titleDrawer = {
+            val headerDrawer = HeaderDrawer(
+                modifier = Modifier.height(220.dp),
+                titleDrawer = {
                 TitleDrawer(
                     containerModifier = Modifier.align(Alignment.BottomStart),
                     onTextEdit = onTextEdit,

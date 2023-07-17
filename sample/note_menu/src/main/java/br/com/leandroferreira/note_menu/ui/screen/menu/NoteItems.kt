@@ -26,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.leandroferreira.note_menu.ui.dto.DocumentUi
@@ -37,7 +36,8 @@ import br.com.leandroferreira.utils.ResultData
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.CheckItemPreviewDrawer
-import com.github.leandroborgesferreira.storyteller.drawer.preview.MessagePreviewDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.preview.HeaderPreviewDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.preview.TextPreviewDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 
@@ -164,19 +164,11 @@ private fun DocumentItem(
         cornersShape = MaterialTheme.shapes.large,
         defaultColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
-        Column(modifier = Modifier.padding(10.dp)) {
-            Text(
-                modifier = Modifier.padding(bottom = 8.dp),
-                text = documentUi.title,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Start
-            )
-
+        Column {
             documentUi.preview.forEachIndexed { i, storyStep ->
                 drawers[storyStep.type]?.Step(
-                    step = storyStep, drawInfo =
-                    DrawInfo(editable = false, position = i)
+                    step = storyStep,
+                    drawInfo = DrawInfo(editable = false, position = i)
                 )
             }
         }
@@ -205,8 +197,14 @@ private fun MockDataScreen(chooseNoteViewModel: ChooseNoteViewModel) {
     }
 }
 
+@Composable
 private fun previewDrawers(): Map<String, StoryStepDrawer> =
     mapOf(
-        StoryType.MESSAGE.type to MessagePreviewDrawer(),
+        StoryType.TITLE.type to HeaderPreviewDrawer(
+            style = MaterialTheme.typography.titleLarge.copy(
+                fontWeight = FontWeight.Bold,
+            )
+        ),
+        StoryType.MESSAGE.type to TextPreviewDrawer(),
         StoryType.CHECK_ITEM.type to CheckItemPreviewDrawer()
     )

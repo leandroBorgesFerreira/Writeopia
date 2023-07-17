@@ -18,6 +18,7 @@ class PreviewParser(
 }
 
 private fun defaultTypes() = setOf(
+    StoryType.TITLE.type,
     StoryType.MESSAGE.type,
     StoryType.CHECK_ITEM.type,
 )

@@ -64,7 +64,8 @@ interface DocumentDao {
                 "ORDER BY " +
                 "CASE WHEN :orderBy = \'$TITLE\' THEN $DOCUMENT_ENTITY.title END ASC, " +
                 "CASE WHEN :orderBy = \'$CREATED_AT\' THEN $DOCUMENT_ENTITY.created_at END DESC, " +
-                "CASE WHEN :orderBy = \'$LAST_UPDATED_AT\' THEN $DOCUMENT_ENTITY.last_updated_at END DESC"
+                "CASE WHEN :orderBy = \'$LAST_UPDATED_AT\' THEN $DOCUMENT_ENTITY.last_updated_at END DESC, " +
+                "$STORY_UNIT_ENTITY.position"
     )
     suspend fun loadDocumentWithContent(orderBy: String): Map<DocumentEntity, List<StoryUnitEntity>>?
 }
