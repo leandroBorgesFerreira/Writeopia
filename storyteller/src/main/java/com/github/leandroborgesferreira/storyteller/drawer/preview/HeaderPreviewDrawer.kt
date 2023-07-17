@@ -27,15 +27,16 @@ class HeaderPreviewDrawer(
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         Box(
             modifier = modifier
+                .padding(bottom = 16.dp)
                 .fillMaxWidth()
-                .height(90.dp)
+                .height(70.dp)
                 .background(
                     step.decoration.backgroundColor ?: MaterialTheme.colorScheme.primary
                 )
         ) {
             Text(
                 modifier = Modifier
-                    .padding(5.dp)
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
                     .align(Alignment.BottomStart),
                 text = step.text ?: "",
                 style = style ?: MaterialTheme.typography.titleLarge.copy(

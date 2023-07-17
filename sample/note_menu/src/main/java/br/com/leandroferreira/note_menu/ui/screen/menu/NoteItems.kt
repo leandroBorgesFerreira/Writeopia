@@ -1,12 +1,15 @@
 package br.com.leandroferreira.note_menu.ui.screen.menu
 
+import android.widget.Space
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -165,12 +168,15 @@ private fun DocumentItem(
         defaultColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
         Column {
+
             documentUi.preview.forEachIndexed { i, storyStep ->
                 drawers[storyStep.type]?.Step(
                     step = storyStep,
                     drawInfo = DrawInfo(editable = false, position = i)
                 )
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }

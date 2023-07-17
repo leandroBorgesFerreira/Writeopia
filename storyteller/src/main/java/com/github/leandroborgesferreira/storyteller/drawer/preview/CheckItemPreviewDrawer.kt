@@ -1,8 +1,12 @@
 package com.github.leandroborgesferreira.storyteller.drawer.preview
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
@@ -12,14 +16,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 
 class CheckItemPreviewDrawer(
-    private val modifier: Modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp)
+    private val modifier: Modifier = Modifier.padding(vertical = 2.dp, horizontal = 10.dp)
 ) : StoryStepDrawer {
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -34,12 +41,14 @@ class CheckItemPreviewDrawer(
                 LocalMinimumInteractiveComponentEnforcement provides false
             ) {
                 Checkbox(
-                    modifier = Modifier.size(30.dp),
+                    modifier = Modifier.size(25.dp),
                     checked = step.checked ?: false,
                     onCheckedChange = {},
                     enabled = false,
                 )
             }
+
+            Spacer(modifier = Modifier.width(8.dp))
 
             Text(
                 text = step.text ?: "",
@@ -50,5 +59,18 @@ class CheckItemPreviewDrawer(
                 color = MaterialTheme.colorScheme.onBackground,
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun CheckItemPreviewDrawerPreview() {
+    Box(modifier = Modifier.background(Color.Cyan)) {
+        CheckItemPreviewDrawer().Step(
+            step = StoryStep(
+                type = StoryType.CHECK_ITEM.type,
+                text = "Check item"
+            ), drawInfo = DrawInfo()
+        )
     }
 }
