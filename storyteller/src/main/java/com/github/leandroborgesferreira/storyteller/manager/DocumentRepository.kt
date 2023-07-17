@@ -18,6 +18,8 @@ interface DocumentRepository : DocumentUpdate {
 
     override suspend fun saveDocument(document: Document)
 
+    override suspend fun saveDocumentMetadata(document: Document)
+
     override suspend fun saveStoryStep(storyStep: StoryStep, position: Int, documentId: String)
 
     suspend fun deleteDocument(document: Document)

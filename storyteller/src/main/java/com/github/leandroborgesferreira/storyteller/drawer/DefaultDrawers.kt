@@ -1,6 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.drawer
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +41,7 @@ object DefaultDrawers {
         create(
             editable = editable,
             onTextEdit = manager::onTextEdit,
+            onTitleEdit = manager::onTitleEdit,
             onLineBreak = manager::onLineBreak,
             mergeRequest = manager::mergeRequest,
             moveRequest = manager::moveRequest,
@@ -56,6 +58,7 @@ object DefaultDrawers {
     fun create(
         editable: Boolean = false,
         onTextEdit: (String, Int) -> Unit,
+        onTitleEdit: (String, Int) -> Unit,
         onLineBreak: (LineBreakInfo) -> Unit,
         mergeRequest: (MergeInfo) -> Unit = { },
         moveRequest: (MoveInfo) -> Unit = { },
@@ -134,10 +137,12 @@ object DefaultDrawers {
                 onSelected = onSelected,
             )
 
-            val headerDrawer = HeaderDrawer(titleDrawer = {
+            val headerDrawer = HeaderDrawer(
+                modifier = Modifier.height(220.dp),
+                titleDrawer = {
                 TitleDrawer(
                     containerModifier = Modifier.align(Alignment.BottomStart),
-                    onTextEdit = onTextEdit,
+                    onTextEdit = onTitleEdit,
                     onLineBreak = onLineBreak
                 )
             })

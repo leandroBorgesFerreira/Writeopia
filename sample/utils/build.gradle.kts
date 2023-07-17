@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "br.com.leandroferreira.mylibrary"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 24

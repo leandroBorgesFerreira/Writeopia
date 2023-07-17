@@ -19,7 +19,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
 class CheckItemPreviewDrawer(
-    private val modifier: Modifier = Modifier.padding(vertical = 5.dp)
+    private val modifier: Modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp)
 ) : StoryStepDrawer {
 
     @OptIn(ExperimentalMaterial3Api::class)
