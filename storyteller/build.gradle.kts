@@ -13,7 +13,7 @@ apply(from = "${rootDir}/scripts/publish-module.gradle")
 
 android {
     namespace = "com.github.leandroborgesferreira.storyteller"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
