@@ -5,8 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,9 +31,13 @@ class HeaderDrawer(
         Box(
             modifier = modifier
                 .clickable(onClick = headerClick)
-                .apply {
+                .let { modifierLet ->
                     if (backgroundColor != null) {
-                        height(220.dp).background(backgroundColor)
+                        modifierLet
+                            .background(backgroundColor)
+                            .padding(top = 90.dp)
+                    } else {
+                        modifierLet.padding(top = 40.dp)
                     }
                 }
                 .fillMaxWidth()
@@ -50,6 +53,27 @@ fun HeaderDrawerStepPreview() {
     val step = StoryStep(
         type = StoryType.TITLE.type,
         decoration = Decoration(backgroundColor = Color.Blue),
+        text = "Document Title",
+    )
+
+    HeaderDrawer(
+        titleDrawer = {
+            TitleDrawer(
+                containerModifier = Modifier.align(Alignment.BottomStart),
+                onTextEdit = { _, _ -> },
+                onLineBreak = {},
+            )
+        },
+        headerClick = {}
+    ).Step(step = step, drawInfo = DrawInfo())
+}
+
+@Preview
+@Composable
+fun HeaderDrawerStepPreviewNoColor() {
+    val step = StoryStep(
+        type = StoryType.TITLE.type,
+        decoration = Decoration(),
         text = "Document Title",
     )
 

@@ -141,7 +141,6 @@ object DefaultDrawers {
             )
 
             val headerDrawer = HeaderDrawer(
-                modifier = Modifier.height(220.dp),
                 titleDrawer = {
                     TitleDrawer(
                         containerModifier = Modifier.align(Alignment.BottomStart),

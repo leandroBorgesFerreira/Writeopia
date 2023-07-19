@@ -121,11 +121,10 @@ fun NoteEditorScreen(
 
             val colors = listOf(
                 Color.Blue,
-                Color.White,
-                Color.Cyan,
-                Color.LightGray,
+                Color.Yellow,
+                Color.DarkGray,
                 Color.Red,
-                Color.Blue
+                Color.Magenta
             )
 
             val headerEdition by noteEditorViewModel.editHeader.collectAsStateWithLifecycle()
