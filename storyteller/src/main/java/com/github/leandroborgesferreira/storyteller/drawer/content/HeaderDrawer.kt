@@ -35,7 +35,7 @@ class HeaderDrawer(
                     if (backgroundColor != null) {
                         modifierLet
                             .background(backgroundColor)
-                            .padding(top = 90.dp)
+                            .padding(top = 130.dp)
                     } else {
                         modifierLet.padding(top = 40.dp)
                     }
