@@ -9,4 +9,6 @@ interface DocumentUpdate {
     suspend fun saveDocumentMetadata(document: Document)
 
     suspend fun saveStoryStep(storyStep: StoryStep, position: Int, documentId: String)
+
+    suspend fun updateStoryStep(storyStep: StoryStep, position: Int, documentId: String)
 }

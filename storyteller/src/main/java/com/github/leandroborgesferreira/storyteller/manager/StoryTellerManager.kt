@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
+import android.util.Log
 import androidx.compose.ui.graphics.Color
 import com.github.leandroborgesferreira.storyteller.backstack.BackStackManager
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
@@ -107,6 +108,8 @@ class StoryTellerManager(
     private val isOnSelection: Boolean
         get() = _positionsOnEdit.value.isNotEmpty()
 
+
+    //Todo: Evaluate if this should be extract to a specific class
     fun saveOnStoryChanges(documentUpdate: DocumentUpdate) {
         coroutineScope.launch(dispatcher) {
             _documentEditionState.collectLatest { (storyState, documentInfo) ->
@@ -148,20 +151,23 @@ class StoryTellerManager(
                             storyStep.type == StoryType.TITLE.type
                         }?.text
 
-                        documentUpdate.saveStoryStep(
-                            storyStep = lastEdit.storyStep,
-                            position = lastEdit.position,
-                            documentId = documentInfo.id
-                        )
-
                         documentUpdate.saveDocumentMetadata(
                             Document(
                                 id = documentInfo.id,
                                 title = titleFromContent ?: documentInfo.title,
-                                content = storyState.stories,
                                 createdAt = documentInfo.createdAt,
                                 lastUpdatedAt = documentInfo.lastUpdatedAt,
                             )
+                        )
+
+                        Log.d(
+                            "Manager",
+                            "Saving story step!!. Color: ${lastEdit.storyStep.decoration}"
+                        )
+                        documentUpdate.saveStoryStep(
+                            storyStep = lastEdit.storyStep,
+                            position = lastEdit.position,
+                            documentId = documentInfo.id
                         )
                     }
                 }
@@ -290,6 +296,24 @@ class StoryTellerManager(
         }
     }
 
+    fun headerColorSelection(color: Int?) {
+        if (isOnSelection) {
+            cancelSelection()
+        }
+
+        val stories = currentStory.value.stories.toMutableMap()
+        val header = stories[0]
+
+        if (header != null) {
+            stories[0] = header.copy(
+                decoration = header.decoration.copy(backgroundColor = color),
+                localId = UUID.randomUUID().toString()
+            )
+            _currentStory.value = StoryState(stories, lastEdit = LastEdit.InfoEdition(0, header))
+            //Todo: Add to back stack!!
+        }
+    }
+
     fun onLineBreak(lineBreakInfo: LineBreakInfo) {
         if (isOnSelection) {
             cancelSelection()
@@ -317,19 +341,6 @@ class StoryTellerManager(
                 }
                 _positionsOnEdit.value = newOnEdit
             }
-        }
-    }
-
-    fun headerColorSelection(color: Int?) {
-        val stories = currentStory.value.stories.toMutableMap()
-        val header = stories[0]
-
-        if (header != null) {
-            stories[0] = header.copy(
-                decoration = header.decoration.copy(backgroundColor = color),
-                localId = UUID.randomUUID().toString()
-            )
-            _currentStory.value = StoryState(stories, lastEdit = LastEdit.InfoEdition(0, header))
         }
     }
 

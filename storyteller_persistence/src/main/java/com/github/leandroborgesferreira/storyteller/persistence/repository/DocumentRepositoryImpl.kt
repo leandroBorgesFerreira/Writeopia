@@ -64,6 +64,10 @@ class DocumentRepositoryImpl(
         storyUnitDao.insertStoryUnits(storyStep.toEntity(position, documentId))
     }
 
+    override suspend fun updateStoryStep(storyStep: StoryStep, position: Int, documentId: String) {
+        storyUnitDao.updateStoryStep(storyStep.toEntity(position, documentId))
+    }
+
     /**
      * This method removes the story units that are not in the root level (they don't have parents)
      * and loads the inner steps of the steps that have children.
