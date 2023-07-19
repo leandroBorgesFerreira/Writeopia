@@ -1,7 +1,9 @@
 package br.com.leandroferreira.editor
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.leandroferreira.editor.model.EditState
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
 import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
@@ -13,6 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -28,9 +32,16 @@ class NoteEditorViewModel(
     private val _editModeState = MutableStateFlow(true)
     val editModeState: StateFlow<Boolean> = _editModeState
 
-    val isEditState = storyTellerManager.positionsOnEdit.map { set ->
-        set.isNotEmpty()
-    }.stateIn(viewModelScope, started = SharingStarted.Lazily, initialValue = false)
+    private val _editHeader = MutableStateFlow(false)
+    val editHeader = _editHeader.asStateFlow()
+
+    val isEditState: StateFlow<EditState> = storyTellerManager.onEditPositions.map { set ->
+        when {
+            set.isNotEmpty() -> EditState.SELECTED_TEXT
+
+            else -> EditState.TEXT
+        }
+    }.stateIn(viewModelScope, started = SharingStarted.Lazily, initialValue = EditState.TEXT)
 
     private val story: StateFlow<StoryState> = storyTellerManager.currentStory
     val scrollToPosition = storyTellerManager.scrollToPosition
@@ -42,6 +53,10 @@ class NoteEditorViewModel(
 
     fun deleteSelection() {
         storyTellerManager.deleteSelection()
+    }
+
+    fun onHeaderClick() {
+        _editHeader.value = true
     }
 
     fun createNewDocument(documentId: String, title: String) {
@@ -86,6 +101,15 @@ class NoteEditorViewModel(
                 }
             }
         }
+    }
+
+    fun onHeaderColorSelection(color: Color?) {
+        onHeaderEditionCancel()
+        storyTellerManager.headerColorSelection(color)
+    }
+
+    fun onHeaderEditionCancel() {
+        _editHeader.value = false
     }
 }
 

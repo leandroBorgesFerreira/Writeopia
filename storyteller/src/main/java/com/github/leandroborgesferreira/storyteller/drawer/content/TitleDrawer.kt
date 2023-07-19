@@ -79,7 +79,6 @@ class TitleDrawer(
                 TextField(
                     modifier = innerContainerModifier
                         .focusRequester(focusRequester)
-                        .fillMaxWidth()
                         .semantics {
                             testTag = TITLE_DRAWER_TEST_TAG
                         },

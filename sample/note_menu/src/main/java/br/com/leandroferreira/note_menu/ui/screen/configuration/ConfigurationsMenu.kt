@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,10 +20,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,7 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.leandroferreira.resourcers.R
-import br.com.leandroferreira.note_menu.ui.views.SlideInBox
+import com.github.leandroborgesferreira.storyteller.common_ui.SlideInBox
 import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
 
 private const val INNER_PADDING = 3
@@ -53,9 +49,7 @@ internal fun BoxScope.ConfigurationsMenu(
     sortingSelected: (OrderBy) -> Unit,
 ) {
     SlideInBox(
-        modifier = modifier
-            .background(Color.Transparent)
-            .align(Alignment.BottomCenter),
+        modifier = modifier.align(Alignment.BottomCenter),
         editState = visibilityState,
         outsideClick = outsideClick,
         animationLabel = "configurationsMenuAnimation"

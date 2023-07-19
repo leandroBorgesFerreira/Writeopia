@@ -58,6 +58,7 @@ dependencies {
     implementation(project(":sample:resources"))
     implementation(project(":sample:editor"))
 
+
     implementation(libs.androidx.ktx)
     implementation(libs.appCompat)
     implementation(libs.material)

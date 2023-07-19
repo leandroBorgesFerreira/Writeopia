@@ -6,12 +6,14 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.animateScrollBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -43,16 +45,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.leandroferreira.editor.input.InputScreen
+import br.com.leandroferreira.editor.model.EditState
 import br.com.leandroferreira.resourcers.R
 import com.github.leandroborgesferreira.storyteller.StoryTellerEditor
 import com.github.leandroborgesferreira.storyteller.drawer.DefaultDrawers
 import com.github.leandroborgesferreira.storyteller.uicomponents.EditionScreen
+import br.com.leandroferreira.editor.configuration.ui.HeaderEdition
 import kotlinx.coroutines.flow.collectLatest
 import java.util.UUID
 
@@ -103,18 +108,44 @@ fun NoteEditorScreen(
             )
         },
     ) { paddingValues ->
-        Column(
+        Box(
             modifier = Modifier
                 .padding(top = paddingValues.calculateTopPadding())
                 .fillMaxSize()
                 .imePadding()
         ) {
-            TextEditor(noteEditorViewModel)
+            Column(modifier = Modifier.fillMaxSize()) {
+                TextEditor(noteEditorViewModel)
 
-            BottomScreen(noteEditorViewModel)
+                BottomScreen(noteEditorViewModel)
+            }
+
+            val colors = listOf(
+                Color.Blue,
+                Color.Yellow,
+                Color.DarkGray,
+                Color.Red,
+                Color.Magenta,
+                Color.Gray,
+                Color.Green,
+                Color.Cyan,
+                Color.Black,
+                Color.White
+            )
+
+            val headerEdition by noteEditorViewModel.editHeader.collectAsStateWithLifecycle()
+
+            HeaderEdition(
+                modifier = Modifier.fillMaxWidth(),
+                availableColors = colors,
+                onColorSelection = noteEditorViewModel::onHeaderColorSelection,
+                outsideClick = noteEditorViewModel::onHeaderEditionCancel,
+                visibilityState = headerEdition
+            )
         }
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -188,7 +219,8 @@ fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
         drawers = DefaultDrawers.create(
             editable,
             noteEditorViewModel.storyTellerManager,
-            defaultBorder = clipShape
+            defaultBorder = clipShape,
+            onHeaderClick = noteEditorViewModel::onHeaderClick
 //            groupsBackgroundColor = MaterialTheme.colorScheme.surface
         )
     )
@@ -198,6 +230,21 @@ fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
 @Composable
 fun BottomScreen(noteEditorViewModel: NoteEditorViewModel) {
     val editState by noteEditorViewModel.isEditState.collectAsStateWithLifecycle()
+
+    val topCorner = CornerSize(10.dp)
+    val bottomCorner = CornerSize(0.dp)
+
+    val containerModifier = Modifier
+        .fillMaxWidth()
+        .clip(
+            RoundedCornerShape(
+                topCorner,
+                topCorner,
+                bottomCorner,
+                bottomCorner
+            )
+        )
+        .background(MaterialTheme.colorScheme.primary)
 
     AnimatedContent(
         targetState = editState,
@@ -209,44 +256,27 @@ fun BottomScreen(noteEditorViewModel: NoteEditorViewModel) {
             ) + fadeIn() with slideOutVertically(
                 animationSpec = tween(durationMillis = 130),
                 targetOffsetY = { fullHeight -> fullHeight }
-            )
+            ) + fadeOut()
         }
-    ) { isEdit ->
-        val topCorner = CornerSize(10.dp)
-        val bottomCorner = CornerSize(0.dp)
+    ) { editStateAnimated ->
 
-        if (isEdit) {
-            EditionScreen(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(
-                        RoundedCornerShape(
-                            topCorner,
-                            topCorner,
-                            bottomCorner,
-                            bottomCorner
-                        )
-                    )
-                    .background(MaterialTheme.colorScheme.primary),
-                onDelete = noteEditorViewModel::deleteSelection
-            )
-        } else {
-            InputScreen(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(
-                        RoundedCornerShape(
-                            topCorner,
-                            topCorner,
-                            bottomCorner,
-                            bottomCorner
-                        )
-                    ),
-                onBackPress = noteEditorViewModel::undo,
-                onForwardPress = noteEditorViewModel::redo,
-                canUndoState = noteEditorViewModel.canUndo,
-                canRedoState = noteEditorViewModel.canRedo
-            )
+        when (editStateAnimated) {
+            EditState.TEXT -> {
+                InputScreen(
+                    modifier = containerModifier,
+                    onBackPress = noteEditorViewModel::undo,
+                    onForwardPress = noteEditorViewModel::redo,
+                    canUndoState = noteEditorViewModel.canUndo,
+                    canRedoState = noteEditorViewModel.canRedo
+                )
+            }
+
+            EditState.SELECTED_TEXT -> {
+                EditionScreen(
+                    modifier = containerModifier,
+                    onDelete = noteEditorViewModel::deleteSelection
+                )
+            }
         }
     }
 }

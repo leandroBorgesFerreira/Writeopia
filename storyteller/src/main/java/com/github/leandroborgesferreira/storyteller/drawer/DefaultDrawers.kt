@@ -36,6 +36,7 @@ object DefaultDrawers {
         editable: Boolean = false,
         manager: StoryTellerManager,
         groupsBackgroundColor: Color = Color.Transparent,
+        onHeaderClick: () -> Unit,
         defaultBorder: Shape
     ): Map<String, StoryStepDrawer> =
         create(
@@ -50,6 +51,7 @@ object DefaultDrawers {
             createCheckItem = manager::createCheckItem,
             nextFocus = manager::nextFocusOrCreate,
             clickAtTheEnd = manager::clickAtTheEnd,
+            onHeaderClick = onHeaderClick,
             onSelected = manager::onSelected,
             groupsBackgroundColor = groupsBackgroundColor,
             defaultBorder = defaultBorder
@@ -67,6 +69,7 @@ object DefaultDrawers {
         createCheckItem: (Int) -> Unit,
         onSelected: (Boolean, Int) -> Unit,
         clickAtTheEnd: () -> Unit,
+        onHeaderClick: () -> Unit,
         defaultBorder: Shape,
         groupsBackgroundColor: Color = Color.Transparent,
         nextFocus: (Int) -> Unit
@@ -138,14 +141,15 @@ object DefaultDrawers {
             )
 
             val headerDrawer = HeaderDrawer(
-                modifier = Modifier.height(220.dp),
                 titleDrawer = {
-                TitleDrawer(
-                    containerModifier = Modifier.align(Alignment.BottomStart),
-                    onTextEdit = onTitleEdit,
-                    onLineBreak = onLineBreak
-                )
-            })
+                    TitleDrawer(
+                        containerModifier = Modifier.align(Alignment.BottomStart),
+                        onTextEdit = onTitleEdit,
+                        onLineBreak = onLineBreak,
+                    )
+                },
+                headerClick = onHeaderClick
+            )
 
             put(StoryType.MESSAGE_BOX.type, messageBoxDrawer)
             put(StoryType.MESSAGE.type, messageDrawer)
