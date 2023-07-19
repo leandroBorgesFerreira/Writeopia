@@ -124,12 +124,18 @@ fun NoteEditorScreen(
                 Color.Yellow,
                 Color.DarkGray,
                 Color.Red,
-                Color.Magenta
+                Color.Magenta,
+                Color.Gray,
+                Color.Green,
+                Color.Cyan,
+                Color.Black,
+                Color.White
             )
 
             val headerEdition by noteEditorViewModel.editHeader.collectAsStateWithLifecycle()
 
             HeaderEdition(
+                modifier = Modifier.fillMaxWidth(),
                 availableColors = colors,
                 onColorSelection = noteEditorViewModel::onHeaderColorSelection,
                 outsideClick = noteEditorViewModel::onHeaderEditionCancel,
