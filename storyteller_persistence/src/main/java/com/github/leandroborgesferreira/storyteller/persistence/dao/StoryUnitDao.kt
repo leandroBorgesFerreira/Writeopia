@@ -5,23 +5,23 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.github.leandroborgesferreira.storyteller.persistence.entity.story.STORY_UNIT_ENTITY
-import com.github.leandroborgesferreira.storyteller.persistence.entity.story.StoryUnitEntity
+import com.github.leandroborgesferreira.storyteller.persistence.entity.story.StoryStepEntity
 
 @Dao
 interface StoryUnitDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertStoryUnits(vararg documents: StoryUnitEntity)
+    suspend fun insertStoryUnits(vararg documents: StoryStepEntity)
 
     @Query("DELETE FROM $STORY_UNIT_ENTITY WHERE $STORY_UNIT_ENTITY.document_id = :documentId")
     suspend fun deleteDocumentContent(documentId: String)
 
     @Query("SELECT * FROM $STORY_UNIT_ENTITY WHERE $STORY_UNIT_ENTITY.document_id = :documentId" )
-    suspend fun loadDocumentContent(documentId: String): List<StoryUnitEntity>
+    suspend fun loadDocumentContent(documentId: String): List<StoryStepEntity>
 
     @Query("SELECT * FROM $STORY_UNIT_ENTITY WHERE $STORY_UNIT_ENTITY.id = :storyId" )
-    suspend fun queryById(storyId: String): StoryUnitEntity?
+    suspend fun queryById(storyId: String): StoryStepEntity?
 
     @Query("SELECT * FROM $STORY_UNIT_ENTITY WHERE $STORY_UNIT_ENTITY.parent_id = :parentId" )
-    suspend fun queryInnerSteps(parentId: String): List<StoryUnitEntity>
+    suspend fun queryInnerSteps(parentId: String): List<StoryStepEntity>
 }

@@ -320,7 +320,7 @@ class StoryTellerManager(
         }
     }
 
-    fun headerColorSelection(color: Color?) {
+    fun headerColorSelection(color: Int?) {
         val stories = currentStory.value.stories.toMutableMap()
         val header = stories[0]
 

@@ -103,7 +103,7 @@ class NoteEditorViewModel(
         }
     }
 
-    fun onHeaderColorSelection(color: Color?) {
+    fun onHeaderColorSelection(color: Int?) {
         onHeaderEditionCancel()
         storyTellerManager.headerColorSelection(color)
     }

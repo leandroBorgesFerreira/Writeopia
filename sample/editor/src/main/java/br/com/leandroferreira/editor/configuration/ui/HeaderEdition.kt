@@ -13,17 +13,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.FormatColorReset
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,12 +38,12 @@ import com.github.leandroborgesferreira.storyteller.common_ui.SlideInBox
 @Composable
 fun BoxScope.HeaderEdition(
     modifier: Modifier = Modifier,
-    availableColors: List<Color>,
-    onColorSelection: (Color?) -> Unit,
+    availableColors: List<Int>,
+    onColorSelection: (Int?) -> Unit,
     visibilityState: Boolean,
     outsideClick: () -> Unit,
 ) {
-    val colors = listOf(Color.Transparent) + availableColors
+    val colors = listOf(Color.Transparent.toArgb()) + availableColors
     val shape = CircleShape
     val topCorner = CornerSize(16.dp)
     val bottomCorner = CornerSize(0.dp)
@@ -94,7 +90,7 @@ fun BoxScope.HeaderEdition(
                             .border(BorderStroke(1.dp, Color.LightGray), shape = shape)
                             .clip(shape)
                             .size(50.dp)
-                            .background(color)
+                            .background(Color(color))
                     ) {
                         if (i == 0) {
                             Icon(
@@ -116,7 +112,13 @@ fun BoxScope.HeaderEdition(
 @Preview
 @Composable
 fun HeaderEditionPreview() {
-    val colors = listOf(Color.Blue, Color.White, Color.Cyan, Color.LightGray, Color.Red, Color.Blue)
+    val colors = listOf(
+        Color.Blue.toArgb(),
+        Color.White.toArgb(),
+        Color.Cyan.toArgb(),
+        Color.LightGray.toArgb(),
+        Color.Red.toArgb(),
+    )
 
     Box(modifier = Modifier.background(Color.White)) {
         HeaderEdition(
