@@ -1,4 +1,4 @@
-package br.com.leandroferreira.note_menu.ui.views
+package com.github.leandroborgesferreira.storyteller.common_ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope

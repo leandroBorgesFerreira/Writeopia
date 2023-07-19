@@ -56,7 +56,7 @@ import br.com.leandroferreira.resourcers.R
 import com.github.leandroborgesferreira.storyteller.StoryTellerEditor
 import com.github.leandroborgesferreira.storyteller.drawer.DefaultDrawers
 import com.github.leandroborgesferreira.storyteller.uicomponents.EditionScreen
-import com.github.leandroborgesferreira.storyteller.uicomponents.HeaderEdition
+import br.com.leandroferreira.editor.configuration.ui.HeaderEdition
 import kotlinx.coroutines.flow.collectLatest
 import java.util.UUID
 

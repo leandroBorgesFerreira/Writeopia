@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/sample" />
             <option value="$PROJECT_DIR$/sample/app_sample" />
+            <option value="$PROJECT_DIR$/sample/common_ui" />
             <option value="$PROJECT_DIR$/sample/editor" />
             <option value="$PROJECT_DIR$/sample/note_menu" />
             <option value="$PROJECT_DIR$/sample/resources" />

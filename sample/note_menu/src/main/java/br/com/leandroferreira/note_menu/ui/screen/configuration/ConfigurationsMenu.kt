@@ -33,7 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.leandroferreira.resourcers.R
-import br.com.leandroferreira.note_menu.ui.views.SlideInBox
+import com.github.leandroborgesferreira.storyteller.common_ui.SlideInBox
 import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
 
 private const val INNER_PADDING = 3
@@ -48,7 +48,7 @@ internal fun BoxScope.ConfigurationsMenu(
     gridOptionClick: () -> Unit,
     sortingSelected: (OrderBy) -> Unit,
 ) {
-    SlideInBox(
+    com.github.leandroborgesferreira.storyteller.common_ui.SlideInBox(
         modifier = modifier.align(Alignment.BottomCenter),
         editState = visibilityState,
         outsideClick = outsideClick,

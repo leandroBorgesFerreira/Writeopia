@@ -1,11 +1,12 @@
+@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinAndroid)
 }
 
 android {
-    namespace = "br.com.leandroferreira.note_menu"
-    compileSdk = 34
+    namespace = "com.github.leandroborgesferreira.storyteller.common_ui"
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 24
@@ -39,13 +40,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":storyteller"))
-    implementation(project(":storyteller_persistence"))
-    implementation(project(":sample:resources"))
-    implementation(project(":sample:utils"))
-    implementation(project(":sample:common_ui"))
-
-
     implementation(libs.appCompat)
     implementation(libs.material)
 

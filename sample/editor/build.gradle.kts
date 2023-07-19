@@ -43,8 +43,7 @@ dependencies {
     implementation(project(":storyteller_persistence"))
     implementation(project(":sample:resources"))
     implementation(project(":sample:utils"))
-
-
+    implementation(project(":sample:common_ui"))
 
     implementation(libs.appCompat)
     implementation(libs.material)

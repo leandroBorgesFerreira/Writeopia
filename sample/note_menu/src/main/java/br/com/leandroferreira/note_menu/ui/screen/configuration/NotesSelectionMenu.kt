@@ -23,12 +23,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import br.com.leandroferreira.note_menu.ui.views.SlideInBox
+import br.com.leandroferreira.resourcers.R
+import com.github.leandroborgesferreira.storyteller.common_ui.SlideInBox
 
 @Composable
 internal fun BoxScope.NotesSelectionMenu(
@@ -44,7 +44,7 @@ internal fun BoxScope.NotesSelectionMenu(
         visibilityThreshold = IntOffset.VisibilityThreshold
     )
 
-    SlideInBox(
+    com.github.leandroborgesferreira.storyteller.common_ui.SlideInBox(
         modifier = modifier.align(Alignment.BottomCenter),
         editState = visibilityState,
         showBackground = false,
@@ -79,7 +79,7 @@ internal fun BoxScope.NotesSelectionMenu(
                         .padding(vertical = 25.dp),
                     imageVector = Icons.Default.ContentCopy,
                     contentDescription = stringResource(
-                        br.com.leandroferreira.resourcers.R.string.copy_note
+                        R.string.copy_note
                     ),
                     tint = tintColor
                 )
@@ -91,7 +91,7 @@ internal fun BoxScope.NotesSelectionMenu(
                         .padding(vertical = 25.dp),
                     imageVector = Icons.Default.FavoriteBorder,
                     contentDescription = stringResource(
-                        br.com.leandroferreira.resourcers.R.string.favorite
+                        R.string.favorite
                     ),
                     tint = tintColor
                 )
@@ -103,7 +103,7 @@ internal fun BoxScope.NotesSelectionMenu(
                         .padding(vertical = 25.dp),
                     imageVector = Icons.Default.DeleteOutline,
                     contentDescription = stringResource(
-                        br.com.leandroferreira.resourcers.R.string.delete
+                        R.string.delete
                     ),
                     tint = tintColor
                 )
