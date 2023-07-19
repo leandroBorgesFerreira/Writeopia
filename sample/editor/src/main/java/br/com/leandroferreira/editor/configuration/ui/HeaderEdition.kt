@@ -65,17 +65,17 @@ fun BoxScope.HeaderEdition(
                     )
                 )
                 .background(MaterialTheme.colorScheme.surface)
-                .padding(vertical = 12.dp)
+                .padding(vertical = 16.dp)
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                text = "Choose color",
+                text = "Header",
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
 
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -105,6 +105,7 @@ fun BoxScope.HeaderEdition(
                     }
                 }
             }
+            Spacer(modifier = Modifier.height(12.dp))
         }
     }
 }
