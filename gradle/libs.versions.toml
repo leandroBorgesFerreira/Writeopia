@@ -13,6 +13,8 @@ room = "2.5.2"
 compose = "2.6.1"
 navigation-compose = "2.6.0"
 junit4-compose = "1.4.3"
+agp = "8.2.0-alpha12"
+kotlin = "1.8.22"
 
 [libraries]
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
@@ -38,3 +40,5 @@ androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", versi
 androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "junit4-compose" }
 
 [plugins]
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

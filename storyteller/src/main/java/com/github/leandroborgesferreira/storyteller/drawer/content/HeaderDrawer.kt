@@ -1,6 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.drawer.content
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,17 +21,23 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 
 class HeaderDrawer(
     private val modifier: Modifier = Modifier,
-    private val titleDrawer: BoxScope.() -> TitleDrawer
+    private val titleDrawer: BoxScope.() -> TitleDrawer,
+    private val headerClick: () -> Unit,
 ) : StoryStepDrawer {
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
+        val backgroundColor = step.decoration.backgroundColor
+
         Box(
             modifier = modifier
+                .clickable(onClick = headerClick)
+                .apply {
+                    if (backgroundColor != null) {
+                        height(220.dp).background(backgroundColor)
+                    }
+                }
                 .fillMaxWidth()
-                .background(
-                    step.decoration.backgroundColor ?: MaterialTheme.colorScheme.primary
-                )
         ) {
             titleDrawer().Step(step = step, drawInfo = drawInfo)
         }
@@ -42,8 +49,8 @@ class HeaderDrawer(
 fun HeaderDrawerStepPreview() {
     val step = StoryStep(
         type = StoryType.TITLE.type,
-        decoration = Decoration(Color.Blue),
-        text = "Document Title"
+        decoration = Decoration(backgroundColor = Color.Blue),
+        text = "Document Title",
     )
 
     HeaderDrawer(
@@ -51,8 +58,9 @@ fun HeaderDrawerStepPreview() {
             TitleDrawer(
                 containerModifier = Modifier.align(Alignment.BottomStart),
                 onTextEdit = { _, _ -> },
-                onLineBreak = {}
+                onLineBreak = {},
             )
-        }
+        },
+        headerClick = {}
     ).Step(step = step, drawInfo = DrawInfo())
 }

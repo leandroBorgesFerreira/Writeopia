@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
+import androidx.compose.ui.graphics.Color
 import com.github.leandroborgesferreira.storyteller.backstack.BackStackManager
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
@@ -68,7 +69,7 @@ class StoryTellerManager(
     private val _documentInfo: MutableStateFlow<DocumentInfo> = MutableStateFlow(DocumentInfo())
 
     private val _positionsOnEdit = MutableStateFlow(setOf<Int>())
-    val positionsOnEdit = _positionsOnEdit.asStateFlow()
+    val onEditPositions = _positionsOnEdit.asStateFlow()
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
 
@@ -316,6 +317,19 @@ class StoryTellerManager(
                 }
                 _positionsOnEdit.value = newOnEdit
             }
+        }
+    }
+
+    fun headerColorSelection(color: Color?) {
+        val stories = currentStory.value.stories.toMutableMap()
+        val header = stories[0]
+
+        if (header != null) {
+            stories[0] = header.copy(
+                decoration = header.decoration.copy(backgroundColor = color),
+                localId = UUID.randomUUID().toString()
+            )
+            _currentStory.value = StoryState(stories, lastEdit = LastEdit.InfoEdition(0, header))
         }
     }
 

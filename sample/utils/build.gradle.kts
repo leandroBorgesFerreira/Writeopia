@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "br.com.leandroferreira.mylibrary"
+    namespace = "br.com.leandroferreira.utils"
     compileSdk = 34
 
     defaultConfig {

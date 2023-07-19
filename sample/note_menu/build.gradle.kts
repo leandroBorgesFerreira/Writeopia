@@ -44,6 +44,7 @@ dependencies {
     implementation(project(":sample:resources"))
     implementation(project(":sample:utils"))
 
+
     implementation(libs.appCompat)
     implementation(libs.material)
 

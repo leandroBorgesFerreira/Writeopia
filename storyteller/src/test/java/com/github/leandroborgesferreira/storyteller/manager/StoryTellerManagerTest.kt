@@ -651,7 +651,7 @@ class StoryTellerManagerTest {
         storyManager.onSelected(true, 3)
         storyManager.onSelected(true, 5)
 
-        assertEquals(setOf(1, 3, 5), storyManager.positionsOnEdit.value)
+        assertEquals(setOf(1, 3, 5), storyManager.onEditPositions.value)
     }
 
     @Test
@@ -691,7 +691,7 @@ class StoryTellerManagerTest {
 
         assertTrue(
             "The selection should be empty now",
-            storyManager.positionsOnEdit.value.isEmpty()
+            storyManager.onEditPositions.value.isEmpty()
         )
     }
 
@@ -732,7 +732,7 @@ class StoryTellerManagerTest {
 
         assertTrue(
             "The selection should be empty now",
-            storyManager.positionsOnEdit.value.isEmpty()
+            storyManager.onEditPositions.value.isEmpty()
         )
 
         storyManager.undo()
