@@ -48,7 +48,7 @@ internal fun BoxScope.ConfigurationsMenu(
     gridOptionClick: () -> Unit,
     sortingSelected: (OrderBy) -> Unit,
 ) {
-    com.github.leandroborgesferreira.storyteller.common_ui.SlideInBox(
+    SlideInBox(
         modifier = modifier.align(Alignment.BottomCenter),
         editState = visibilityState,
         outsideClick = outsideClick,
