@@ -54,7 +54,6 @@ fun NavigationGraph(
                     chooseNoteViewModel = chooseNoteViewModel,
                     navigateToNote = navController::navigateToNote,
                     newNote = navController::navigateToNewNote,
-                    navigateUp = navController::navigateUp
                 )
             }
 

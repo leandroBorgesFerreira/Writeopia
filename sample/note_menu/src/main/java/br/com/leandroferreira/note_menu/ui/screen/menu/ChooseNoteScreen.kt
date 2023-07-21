@@ -1,7 +1,6 @@
 package br.com.leandroferreira.note_menu.ui.screen.menu
 
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,10 +18,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
@@ -43,31 +40,23 @@ fun ChooseNoteScreen(
     chooseNoteViewModel: ChooseNoteViewModel,
     navigateToNote: (String, String) -> Unit,
     newNote: () -> Unit,
-    navigateUp: () -> Unit
 ) {
     LaunchedEffect(key1 = "refresh", block = {
         chooseNoteViewModel.requestDocuments(false)
     })
 
-    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    val hasSelectedNotes by chooseNoteViewModel.hasSelectedNotes.collectAsStateWithLifecycle()
+    val editState by chooseNoteViewModel.editState.collectAsStateWithLifecycle()
 
-    val backCallback = remember {
-        object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (chooseNoteViewModel.hasSelectedNotes.value) {
-                    chooseNoteViewModel.clearSelection()
-                } else {
-                    navigateUp()
-                }
+    BackHandler(hasSelectedNotes || editState) {
+        when {
+            editState -> {
+                chooseNoteViewModel.cancelMenu()
             }
-        }
-    }
 
-    DisposableEffect(key1 = backDispatcher) {
-        backDispatcher?.addCallback(backCallback)
-
-        onDispose {
-            backCallback.remove()
+            hasSelectedNotes -> {
+                chooseNoteViewModel.clearSelection()
+            }
         }
     }
 
@@ -89,7 +78,12 @@ fun ChooseNoteScreen(
                 )
             }
 
-            val editState by chooseNoteViewModel.editState.collectAsStateWithLifecycle()
+            NotesSelectionMenu(
+                visibilityState = hasSelectedNotes,
+                onCopy = chooseNoteViewModel::copySelectedNotes,
+                onFavorite = chooseNoteViewModel::favoriteSelectedNotes,
+                onDelete = chooseNoteViewModel::deleteSelectedNotes,
+            )
 
             ConfigurationsMenu(
                 visibilityState = editState,
@@ -97,15 +91,6 @@ fun ChooseNoteScreen(
                 listOptionClick = chooseNoteViewModel::listArrangementSelected,
                 gridOptionClick = chooseNoteViewModel::gridArrangementSelected,
                 sortingSelected = chooseNoteViewModel::sortingSelected
-            )
-
-            val selectionState by chooseNoteViewModel.hasSelectedNotes.collectAsStateWithLifecycle()
-
-            NotesSelectionMenu(
-                visibilityState = selectionState,
-                onCopy = chooseNoteViewModel::copySelectedNotes,
-                onFavorite = chooseNoteViewModel::favoriteSelectedNotes,
-                onDelete = chooseNoteViewModel::deleteSelectedNotes,
             )
         }
     }
