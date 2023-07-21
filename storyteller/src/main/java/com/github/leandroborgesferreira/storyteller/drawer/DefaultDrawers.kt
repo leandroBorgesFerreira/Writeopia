@@ -1,7 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.drawer
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,11 +22,11 @@ import com.github.leandroborgesferreira.storyteller.drawer.content.SpaceDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.TitleDrawer
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
-import com.github.leandroborgesferreira.storyteller.model.change.CheckInfo
-import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
-import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
-import com.github.leandroborgesferreira.storyteller.model.change.MergeInfo
-import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
+import com.github.leandroborgesferreira.storyteller.model.action.CheckInfo
+import com.github.leandroborgesferreira.storyteller.model.action.DeleteInfo
+import com.github.leandroborgesferreira.storyteller.model.action.LineBreakInfo
+import com.github.leandroborgesferreira.storyteller.model.action.MergeInfo
+import com.github.leandroborgesferreira.storyteller.model.action.MoveInfo
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 
 object DefaultDrawers {

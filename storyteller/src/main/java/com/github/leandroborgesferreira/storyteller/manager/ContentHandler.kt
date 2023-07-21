@@ -1,7 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
-import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
+import com.github.leandroborgesferreira.storyteller.model.action.DeleteInfo
+import com.github.leandroborgesferreira.storyteller.model.action.LineBreakInfo
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep

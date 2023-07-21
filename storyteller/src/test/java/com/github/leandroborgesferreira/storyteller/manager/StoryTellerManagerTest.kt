@@ -1,9 +1,9 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
-import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
-import com.github.leandroborgesferreira.storyteller.model.change.MergeInfo
-import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
+import com.github.leandroborgesferreira.storyteller.model.action.DeleteInfo
+import com.github.leandroborgesferreira.storyteller.model.action.LineBreakInfo
+import com.github.leandroborgesferreira.storyteller.model.action.MergeInfo
+import com.github.leandroborgesferreira.storyteller.model.action.MoveInfo
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType

@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DropTarget
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
-import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
+import com.github.leandroborgesferreira.storyteller.model.action.MoveInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
 class LargeEmptySpace(

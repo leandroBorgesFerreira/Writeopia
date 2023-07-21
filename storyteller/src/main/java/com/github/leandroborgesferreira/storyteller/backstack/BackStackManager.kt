@@ -1,7 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.backstack
 
 import com.github.leandroborgesferreira.storyteller.model.backtrack.AddText
-import com.github.leandroborgesferreira.storyteller.model.change.TextEditInfo
+import com.github.leandroborgesferreira.storyteller.model.action.TextEditInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.Stack

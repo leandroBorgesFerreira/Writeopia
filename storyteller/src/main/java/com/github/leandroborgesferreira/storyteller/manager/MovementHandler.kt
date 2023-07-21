@@ -1,7 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import com.github.leandroborgesferreira.storyteller.model.change.MergeInfo
-import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
+import com.github.leandroborgesferreira.storyteller.model.action.MergeInfo
+import com.github.leandroborgesferreira.storyteller.model.action.MoveInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 

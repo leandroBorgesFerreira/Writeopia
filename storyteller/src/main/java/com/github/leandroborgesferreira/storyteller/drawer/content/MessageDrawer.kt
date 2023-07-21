@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyErase
-import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
+import com.github.leandroborgesferreira.storyteller.model.action.DeleteInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox

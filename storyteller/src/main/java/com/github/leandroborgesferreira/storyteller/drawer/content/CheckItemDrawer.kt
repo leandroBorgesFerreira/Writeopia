@@ -38,8 +38,8 @@ import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyErase
-import com.github.leandroborgesferreira.storyteller.model.change.CheckInfo
-import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
+import com.github.leandroborgesferreira.storyteller.model.action.CheckInfo
+import com.github.leandroborgesferreira.storyteller.model.action.DeleteInfo
 import com.github.leandroborgesferreira.storyteller.model.draganddrop.DropInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType

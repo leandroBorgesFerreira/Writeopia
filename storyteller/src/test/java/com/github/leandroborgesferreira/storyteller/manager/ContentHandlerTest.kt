@@ -1,6 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
+import com.github.leandroborgesferreira.storyteller.model.action.LineBreakInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.normalization.addinbetween.AddSteps

@@ -1,7 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.backstack
 
 import com.github.leandroborgesferreira.storyteller.model.backtrack.AddText
-import com.github.leandroborgesferreira.storyteller.model.change.TextEditInfo
+import com.github.leandroborgesferreira.storyteller.model.action.TextEditInfo
 import org.junit.Assert.*
 import org.junit.Ignore
 import org.junit.Test
