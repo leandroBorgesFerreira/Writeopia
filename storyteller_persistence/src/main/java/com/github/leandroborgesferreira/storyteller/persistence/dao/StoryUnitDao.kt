@@ -13,7 +13,7 @@ import com.github.leandroborgesferreira.storyteller.persistence.entity.story.Sto
 @Dao
 interface StoryUnitDao {
 
-    @Upsert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertStoryUnits(vararg storyStep: StoryStepEntity)
 
     @Update

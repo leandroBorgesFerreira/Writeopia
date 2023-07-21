@@ -1,7 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
 import android.util.Log
-import androidx.compose.ui.graphics.Color
 import com.github.leandroborgesferreira.storyteller.backstack.BackStackManager
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
@@ -15,6 +14,7 @@ import com.github.leandroborgesferreira.storyteller.model.change.MergeInfo
 import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
 import com.github.leandroborgesferreira.storyteller.model.change.TextEditInfo
 import com.github.leandroborgesferreira.storyteller.model.document.Document
+import com.github.leandroborgesferreira.storyteller.model.story.Decoration
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.DrawStory
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
@@ -115,8 +115,15 @@ class StoryTellerManager(
             _documentEditionState.collectLatest { (storyState, documentInfo) ->
                 when (val lastEdit = storyState.lastEdit) {
                     is LastEdit.LineEdition -> {
+                        Log.d(
+                            "Manager",
+                            "Saving story step!!. Color: ${lastEdit.storyStep.decoration}"
+                        )
+
                         documentUpdate.saveStoryStep(
-                            storyStep = lastEdit.storyStep,
+                            storyStep = lastEdit.storyStep.copy(
+                                localId = UUID.randomUUID().toString()
+                            ),
                             position = lastEdit.position,
                             documentId = documentInfo.id
                         )
@@ -160,10 +167,6 @@ class StoryTellerManager(
                             )
                         )
 
-                        Log.d(
-                            "Manager",
-                            "Saving story step!!. Color: ${lastEdit.storyStep.decoration}"
-                        )
                         documentUpdate.saveStoryStep(
                             storyStep = lastEdit.storyStep,
                             position = lastEdit.position,
@@ -301,17 +304,10 @@ class StoryTellerManager(
             cancelSelection()
         }
 
-        val stories = currentStory.value.stories.toMutableMap()
-        val header = stories[0]
-
-        if (header != null) {
-            stories[0] = header.copy(
-                decoration = header.decoration.copy(backgroundColor = color),
-                localId = UUID.randomUUID().toString()
-            )
-            _currentStory.value = StoryState(stories, lastEdit = LastEdit.InfoEdition(0, header))
-            //Todo: Add to back stack!!
-        }
+        _currentStory.value.stories[0]?.copy(decoration = Decoration(backgroundColor = color))
+            ?.let { newStory ->
+                updateStory(0, newStory)
+            }
     }
 
     fun onLineBreak(lineBreakInfo: LineBreakInfo) {
