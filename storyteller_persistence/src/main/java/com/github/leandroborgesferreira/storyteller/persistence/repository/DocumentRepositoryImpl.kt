@@ -6,7 +6,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.persistence.dao.DocumentDao
 import com.github.leandroborgesferreira.storyteller.persistence.dao.StoryUnitDao
 import com.github.leandroborgesferreira.storyteller.persistence.entity.document.DocumentEntity
-import com.github.leandroborgesferreira.storyteller.persistence.entity.story.StoryUnitEntity
+import com.github.leandroborgesferreira.storyteller.persistence.entity.story.StoryStepEntity
 import com.github.leandroborgesferreira.storyteller.persistence.parse.toEntity
 import com.github.leandroborgesferreira.storyteller.persistence.parse.toModel
 
@@ -64,11 +64,15 @@ class DocumentRepositoryImpl(
         storyUnitDao.insertStoryUnits(storyStep.toEntity(position, documentId))
     }
 
+    override suspend fun updateStoryStep(storyStep: StoryStep, position: Int, documentId: String) {
+        storyUnitDao.updateStoryStep(storyStep.toEntity(position, documentId))
+    }
+
     /**
      * This method removes the story units that are not in the root level (they don't have parents)
      * and loads the inner steps of the steps that have children.
      */
-    private suspend fun loadInnerSteps(storyEntities: List<StoryUnitEntity>): Map<Int, StoryStep> =
+    private suspend fun loadInnerSteps(storyEntities: List<StoryStepEntity>): Map<Int, StoryStep> =
         storyEntities.filter { entity -> entity.parentId == null }
             .associateBy { entity -> entity.position }
             .mapValues { (_, entity) ->

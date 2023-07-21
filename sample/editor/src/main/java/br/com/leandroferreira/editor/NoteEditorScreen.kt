@@ -46,6 +46,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -121,16 +122,16 @@ fun NoteEditorScreen(
             }
 
             val colors = listOf(
-                Color.Blue,
-                Color.Yellow,
-                Color.DarkGray,
-                Color.Red,
-                Color.Magenta,
-                Color.Gray,
-                Color.Green,
-                Color.Cyan,
-                Color.Black,
-                Color.White
+                Color.Blue.toArgb(),
+                Color.Yellow.toArgb(),
+                Color.DarkGray.toArgb(),
+                Color.Red.toArgb(),
+                Color.Magenta.toArgb(),
+                Color.Gray.toArgb(),
+                Color.Green.toArgb(),
+                Color.Cyan.toArgb(),
+                Color.Black.toArgb(),
+                Color.White.toArgb(),
             )
 
             val headerEdition by noteEditorViewModel.editHeader.collectAsStateWithLifecycle()

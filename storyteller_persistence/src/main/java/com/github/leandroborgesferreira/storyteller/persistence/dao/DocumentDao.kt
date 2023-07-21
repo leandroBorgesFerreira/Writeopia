@@ -11,8 +11,7 @@ import com.github.leandroborgesferreira.storyteller.persistence.entity.document.
 import com.github.leandroborgesferreira.storyteller.persistence.entity.document.LAST_UPDATED_AT
 import com.github.leandroborgesferreira.storyteller.persistence.entity.document.TITLE
 import com.github.leandroborgesferreira.storyteller.persistence.entity.story.STORY_UNIT_ENTITY
-import com.github.leandroborgesferreira.storyteller.persistence.entity.story.StoryUnitEntity
-import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
+import com.github.leandroborgesferreira.storyteller.persistence.entity.story.StoryStepEntity
 
 @Dao
 interface DocumentDao {
@@ -41,7 +40,7 @@ interface DocumentDao {
     )
     suspend fun loadDocumentWithContentById(
         documentId: String
-    ): Map<DocumentEntity, List<StoryUnitEntity>>?
+    ): Map<DocumentEntity, List<StoryStepEntity>>?
 
     /* The order here doesn't matter, because only one document should be returned */
     @Query(
@@ -56,7 +55,7 @@ interface DocumentDao {
     suspend fun loadDocumentWithContentByIds(
         documentIds: List<String>,
         orderBy: String
-    ): Map<DocumentEntity, List<StoryUnitEntity>>
+    ): Map<DocumentEntity, List<StoryStepEntity>>
 
     @Query(
         "SELECT * FROM $DOCUMENT_ENTITY " +
@@ -67,5 +66,5 @@ interface DocumentDao {
                 "CASE WHEN :orderBy = \'$LAST_UPDATED_AT\' THEN $DOCUMENT_ENTITY.last_updated_at END DESC, " +
                 "$STORY_UNIT_ENTITY.position"
     )
-    suspend fun loadDocumentWithContent(orderBy: String): Map<DocumentEntity, List<StoryUnitEntity>>?
+    suspend fun loadDocumentWithContent(orderBy: String): Map<DocumentEntity, List<StoryStepEntity>>?
 }

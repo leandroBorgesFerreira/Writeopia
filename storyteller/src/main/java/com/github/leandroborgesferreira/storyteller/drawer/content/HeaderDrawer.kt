@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
@@ -34,7 +35,7 @@ class HeaderDrawer(
                 .let { modifierLet ->
                     if (backgroundColor != null) {
                         modifierLet
-                            .background(backgroundColor)
+                            .background(Color(backgroundColor))
                             .padding(top = 130.dp)
                     } else {
                         modifierLet.padding(top = 40.dp)
@@ -52,7 +53,7 @@ class HeaderDrawer(
 fun HeaderDrawerStepPreview() {
     val step = StoryStep(
         type = StoryType.TITLE.type,
-        decoration = Decoration(backgroundColor = Color.Blue),
+        decoration = Decoration(backgroundColor = Color.Blue.toArgb()),
         text = "Document Title",
     )
 

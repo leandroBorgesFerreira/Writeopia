@@ -10,16 +10,16 @@ import com.github.leandroborgesferreira.storyteller.persistence.converter.IdList
 import com.github.leandroborgesferreira.storyteller.persistence.dao.DocumentDao
 import com.github.leandroborgesferreira.storyteller.persistence.dao.StoryUnitDao
 import com.github.leandroborgesferreira.storyteller.persistence.entity.document.DocumentEntity
-import com.github.leandroborgesferreira.storyteller.persistence.entity.story.StoryUnitEntity
+import com.github.leandroborgesferreira.storyteller.persistence.entity.story.StoryStepEntity
 
 private const val DATABASE_NAME = "StoryTellerDatabase"
 
 @Database(
     entities = [
         DocumentEntity::class,
-        StoryUnitEntity::class,
+        StoryStepEntity::class,
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(IdListConverter::class, DateConverter::class)
