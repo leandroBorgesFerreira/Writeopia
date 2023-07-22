@@ -103,7 +103,7 @@ fun NoteEditorScreen(
             TopBar(
                 title = title?.takeIf { it.isNotBlank() } ?: stringResource(id = R.string.note),
                 navigationClick = {
-                    systemUiController.setSystemBarsColor(color = systemBarDefaultColor)
+                    systemUiController.setStatusBarColor(color = systemBarDefaultColor)
                     noteEditorViewModel.removeNoteIfEmpty(onComplete = navigateBack)
                 }
             )
@@ -150,7 +150,7 @@ fun NoteEditorScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(title: String, navigationClick: () -> Unit) {
+private fun TopBar(title: String, navigationClick: () -> Unit) {
     TopAppBar(
         modifier = Modifier.height(44.dp),
         title = {
