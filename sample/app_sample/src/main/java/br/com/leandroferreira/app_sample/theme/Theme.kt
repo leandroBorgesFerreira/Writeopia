@@ -13,7 +13,7 @@ private val DarkColorPalette = darkColorScheme(
   onPrimary = Color.White,
   onSecondary = Color.White,
   onBackground = Color.White,
-  surface = LIGHT_RED
+  surface = LIGHT_RED,
 )
 
 private val LightColorPalette = lightColorScheme(

@@ -78,13 +78,13 @@ fun NoteEditorScreen(
     val systemBarDefaultColor = MaterialTheme.colorScheme.primary
 
     DisposableEffect(systemUiController) {
-        systemUiController.setSystemBarsColor(color = systemBarColor)
+        systemUiController.setStatusBarColor(color = systemBarColor)
         onDispose {}
     }
 
     BackHandler {
         noteEditorViewModel.removeNoteIfEmpty(onComplete = {
-            systemUiController.setSystemBarsColor(color = systemBarDefaultColor)
+            systemUiController.setStatusBarColor(color = systemBarDefaultColor)
             navigateBack()
         })
     }
