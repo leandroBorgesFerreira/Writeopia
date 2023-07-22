@@ -1,7 +1,6 @@
 package br.com.leandroferreira.editor
 
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -41,7 +40,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,14 +49,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.com.leandroferreira.editor.configuration.ui.HeaderEdition
 import br.com.leandroferreira.editor.input.InputScreen
 import br.com.leandroferreira.editor.model.EditState
 import br.com.leandroferreira.resourcers.R
 import com.github.leandroborgesferreira.storyteller.StoryTellerEditor
 import com.github.leandroborgesferreira.storyteller.drawer.DefaultDrawers
 import com.github.leandroborgesferreira.storyteller.uicomponents.EditionScreen
-import br.com.leandroferreira.editor.configuration.ui.HeaderEdition
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.flow.collectLatest
 import java.util.UUID
 
@@ -72,22 +72,21 @@ fun NoteEditorScreen(
     noteEditorViewModel: NoteEditorViewModel,
     navigateBack: () -> Unit,
 ) {
-    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
-    val backCallback = remember {
-        object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                noteEditorViewModel.removeNoteIfEmpty(onComplete = navigateBack)
-            }
-        }
+    val systemUiController = rememberSystemUiController()
+    val systemBarColor = MaterialTheme.colorScheme.background
+    val systemBarDefaultColor = MaterialTheme.colorScheme.primary
+
+    DisposableEffect(systemUiController) {
+        systemUiController.setSystemBarsColor(color = systemBarColor)
+        onDispose {}
     }
 
-    DisposableEffect(key1 = backDispatcher) {
-        backDispatcher?.addCallback(backCallback)
-
-        onDispose {
-            backCallback.remove()
-        }
+    BackHandler {
+        noteEditorViewModel.removeNoteIfEmpty(onComplete = {
+            systemUiController.setSystemBarsColor(color = systemBarDefaultColor)
+            navigateBack()
+        })
     }
 
     if (documentId != null) {
@@ -104,6 +103,7 @@ fun NoteEditorScreen(
             TopBar(
                 title = title?.takeIf { it.isNotBlank() } ?: stringResource(id = R.string.note),
                 navigationClick = {
+                    systemUiController.setSystemBarsColor(color = systemBarDefaultColor)
                     noteEditorViewModel.removeNoteIfEmpty(onComplete = navigateBack)
                 }
             )
@@ -152,7 +152,7 @@ fun NoteEditorScreen(
 @Composable
 fun TopBar(title: String, navigationClick: () -> Unit) {
     TopAppBar(
-        modifier = Modifier.height(50.dp),
+        modifier = Modifier.height(44.dp),
         title = {
             Row(
                 modifier = Modifier.fillMaxHeight(),
@@ -164,6 +164,7 @@ fun TopBar(title: String, navigationClick: () -> Unit) {
                     },
                     text = title,
                     color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 18.sp
                 )
             }
         },
