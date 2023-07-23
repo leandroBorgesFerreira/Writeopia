@@ -14,11 +14,10 @@ class PerStateBackstackManagerTest {
     private val backstackManager =
         PerStateBackstackManager(
             contentHandler = ContentHandler(
-                stepsNormalizer = {
-                    it.mapValues { (_, storyList) ->
-                        storyList[0]
-                    }
-                })
+                stepsNormalizer = { storyMap ->
+                    storyMap.mapValues { (_, storyList) -> storyList[0] }
+                }
+            )
         )
 
     @Test
