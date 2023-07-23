@@ -7,6 +7,8 @@ sealed class Action {
     data class AddStory(val storyUnit: StoryStep, val position: Int) : Action()
     data class DeleteStory(val storyUnit: StoryStep, val position: Int) : Action()
     data class BulkDelete(val deletedUnits: Map<Int, StoryStep>) : Action()
+
+    //Maybe StoryStateChange??
     data class Check(val storyUnit: StoryStep, val position: Int, val checked: Boolean) : Action()
     data class LineBreak(val storyStep: StoryStep, val position: Int) : Action()
     data class Move(val storyUnit: StoryStep, val positionFrom: Int, val positionTo: Int) : Action()
@@ -18,5 +20,6 @@ sealed class Action {
         val positionTo: Int
     ) : Action()
 
+    //Todo: Delete this!!
     data class AddText(val text: String, val position: Int, val isComplete: Boolean): Action()
 }

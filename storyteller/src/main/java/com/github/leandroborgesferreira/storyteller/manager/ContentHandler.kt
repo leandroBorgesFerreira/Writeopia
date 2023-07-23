@@ -12,7 +12,7 @@ import com.github.leandroborgesferreira.storyteller.utils.iterables.MapOperation
 import java.util.UUID
 
 /**
- * Class dedicated to handle adding and/or deleting new StorySteps
+ * Class dedicated to handle adding, deleting or changing StorySteps
  */
 class ContentHandler(
     private val focusableTypes: Set<String> = setOf(
@@ -25,6 +25,20 @@ class ContentHandler(
     ),
     private val stepsNormalizer: UnitsNormalizationMap
 ) {
+
+    fun changeStoryStepState(
+        currentStory: Map<Int, StoryStep>,
+        newState: StoryStep,
+        position: Int
+    ): StoryState? {
+        return if (currentStory[position] != null) {
+            val newMap = currentStory.toMutableMap()
+            newMap[position] = newState
+            StoryState(newMap, LastEdit.LineEdition(position, newState), null)
+        } else {
+            null
+        }
+    }
 
     fun createCheckItem(currentStory: Map<Int, StoryStep>, position: Int): StoryState {
         val newMap = currentStory.toMutableMap()

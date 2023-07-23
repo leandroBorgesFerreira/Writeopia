@@ -7,7 +7,7 @@ import java.util.Stack
 
 private const val HAS_SPACE_REGEX = "\\s\\S"
 
-class BackStackManager : BackstackInform {
+class PerActionBackstackManager : BackstackInform {
 
     private val backStack: Stack<Action> = Stack()
     private val forwardStack: Stack<Action> = Stack()

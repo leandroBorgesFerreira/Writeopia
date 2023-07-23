@@ -1,7 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
 import android.util.Log
-import com.github.leandroborgesferreira.storyteller.backstack.BackStackManager
+import com.github.leandroborgesferreira.storyteller.backstack.PerActionBackstackManager
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
 import com.github.leandroborgesferreira.storyteller.model.action.Action
@@ -35,7 +35,7 @@ class StoryTellerManager(
         StepsMapNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
         },
-    private val backStackManager: BackStackManager = BackStackManager(),
+    private val backStackManager: PerActionBackstackManager = PerActionBackstackManager(),
     private val movementHandler: MovementHandler = MovementHandler(),
     private val contentHandler: ContentHandler = ContentHandler(
         focusableTypes = setOf(
@@ -256,7 +256,14 @@ class StoryTellerManager(
         val storyUnit = checkInfo.storyUnit
         val newStep = (storyUnit as? StoryStep)?.copy(checked = checkInfo.checked) ?: return
 
-        updateStory(checkInfo.position, newStep)
+
+        contentHandler.changeStoryStepState(
+            _currentStory.value.stories,
+            newStep,
+            checkInfo.position
+        )?.let { state ->
+            _currentStory.value = state
+        }
     }
 
     fun createCheckItem(position: Int) {
@@ -271,10 +278,15 @@ class StoryTellerManager(
         if (isOnSelection) {
             cancelSelection()
         }
+        val currentStory = _currentStory.value.stories
+        val newStory = _currentStory.value.stories[position]?.copy(text = text)
 
-        _currentStory.value.stories[position]?.copy(text = text)?.let { newStory ->
-            updateStory(position, newStory)
-            backStackManager.addAction(Action.TextEdit(text, position))
+        if (newStory != null) {
+            contentHandler.changeStoryStepState(currentStory, newStory, position)
+                ?.let { newState ->
+                    _currentStory.value = newState
+                    backStackManager.addAction(Action.TextEdit(text, position))
+                }
         }
     }
 
@@ -296,10 +308,15 @@ class StoryTellerManager(
             cancelSelection()
         }
 
-        _currentStory.value.stories[0]?.copy(decoration = Decoration(backgroundColor = color))
-            ?.let { newStory ->
-                updateStory(0, newStory)
+        val currentStory = _currentStory.value.stories
+        val newStory =
+            _currentStory.value.stories[0]?.copy(decoration = Decoration(backgroundColor = color))
+
+        if (newStory != null) {
+            contentHandler.changeStoryStepState(currentStory, newStory, 0)?.let { newState ->
+                _currentStory.value = newState
             }
+        }
     }
 
     fun onLineBreak(lineBreakInfo: Action.LineBreak) {
@@ -447,12 +464,6 @@ class StoryTellerManager(
             _currentStory.value =
                 _currentStory.value.copy(stories = newStories)
         }
-    }
-
-    private fun updateStory(position: Int, newStep: StoryStep, focusId: String? = null) {
-        val newMap = _currentStory.value.stories.toMutableMap()
-        newMap[position] = newStep
-        _currentStory.value = StoryState(newMap, LastEdit.LineEdition(position, newStep), focusId)
     }
 
     private fun revertAddText(currentStory: Map<Int, StoryStep>, addText: Action.AddText) {

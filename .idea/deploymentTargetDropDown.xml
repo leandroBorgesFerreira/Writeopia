@@ -2,22 +2,6 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="NoteMenuAndroidTest">
-        <State>
-          <runningDeviceTargetSelectedWithDropDown>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="SERIAL_NUMBER" />
-                  <value value="0075020047" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2023-07-21T19:16:43.071110Z" />
-        </State>
-      </entry>
       <entry key="app_sample">
         <State>
           <targetSelectedWithDropDown>
@@ -32,28 +16,6 @@
             </Target>
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2023-06-26T20:47:43.938636Z" />
-        </State>
-      </entry>
-      <entry key="itShouldBePossibleToAddNote()">
-        <State />
-      </entry>
-      <entry key="itShouldBePossibleToSaveNoteWithTitle()">
-        <State />
-      </entry>
-      <entry key="myTest()">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/Pixel_6a_API_33.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2023-07-08T10:57:01.273966Z" />
         </State>
       </entry>
       <entry key="sample.app_sample">

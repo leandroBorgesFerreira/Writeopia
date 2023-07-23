@@ -8,7 +8,7 @@ import org.junit.Test
 class BackStackManagerTest {
 
 
-    private val backStackManager = BackStackManager()
+    private val backStackManager = PerActionBackstackManager()
 
     @Test
     fun `when adding text it should backstack the last action`() {
