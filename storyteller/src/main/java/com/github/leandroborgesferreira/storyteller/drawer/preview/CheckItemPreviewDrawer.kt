@@ -17,6 +17,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,6 +33,21 @@ class CheckItemPreviewDrawer(
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
+        MaterialTheme.typography.bodyMedium.copy(
+            fontSize = 15.sp
+        )
+
+        val textStyle = if (step.checked == true) {
+            MaterialTheme.typography.bodyMedium.copy(
+                textDecoration = TextDecoration.LineThrough,
+                fontSize = 15.sp
+            )
+        } else {
+            MaterialTheme.typography.bodyMedium.copy(
+                fontSize = 15.sp
+            )
+        }
+
         Row(
             modifier = modifier,
             verticalAlignment = Alignment.CenterVertically
@@ -53,9 +69,7 @@ class CheckItemPreviewDrawer(
             Text(
                 text = step.text ?: "",
                 modifier = Modifier.padding(vertical = 5.dp),
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontSize = 15.sp
-                ),
+                style = textStyle,
                 color = MaterialTheme.colorScheme.onBackground,
             )
         }
