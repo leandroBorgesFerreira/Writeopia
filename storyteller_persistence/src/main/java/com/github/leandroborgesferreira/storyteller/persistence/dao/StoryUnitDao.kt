@@ -22,12 +22,14 @@ interface StoryUnitDao {
     @Query("DELETE FROM $STORY_UNIT_ENTITY WHERE $STORY_UNIT_ENTITY.document_id = :documentId")
     suspend fun deleteDocumentContent(documentId: String)
 
-    @Query("SELECT * FROM $STORY_UNIT_ENTITY WHERE $STORY_UNIT_ENTITY.document_id = :documentId" )
+    @Query("SELECT * FROM $STORY_UNIT_ENTITY WHERE $STORY_UNIT_ENTITY.document_id = :documentId " +
+            "ORDER BY position" )
     suspend fun loadDocumentContent(documentId: String): List<StoryStepEntity>
 
     @Query("SELECT * FROM $STORY_UNIT_ENTITY WHERE $STORY_UNIT_ENTITY.id = :storyId" )
     suspend fun queryById(storyId: String): StoryStepEntity?
 
-    @Query("SELECT * FROM $STORY_UNIT_ENTITY WHERE $STORY_UNIT_ENTITY.parent_id = :parentId" )
+    @Query("SELECT * FROM $STORY_UNIT_ENTITY WHERE $STORY_UNIT_ENTITY.parent_id = :parentId " +
+            "ORDER BY position")
     suspend fun queryInnerSteps(parentId: String): List<StoryStepEntity>
 }
