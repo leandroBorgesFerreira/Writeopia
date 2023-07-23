@@ -97,4 +97,26 @@ class PerStateBackstackManagerTest {
         assertEquals(true, backstackManager.canUndo.value)
         assertEquals(false, backstackManager.canRedo.value)
     }
+
+    @Test
+    fun `when adding many text some of the state should be merged`() {
+        val mockState = StoryState(emptyMap(), LastEdit.Nothing)
+        val stringBuilder = StringBuilder()
+
+        repeat(20) { i ->
+            stringBuilder.append(i)
+
+            backstackManager.addAction(
+                BackstackAction.StoryTextChange(
+                    StoryStep(type = StoryType.MESSAGE.type, text = stringBuilder.toString()),
+                    position = 0
+                )
+            )
+        }
+
+        backstackManager.previousState(mockState)
+        backstackManager.previousState(mockState)
+
+        assertEquals(false, backstackManager.canUndo.value)
+    }
 }

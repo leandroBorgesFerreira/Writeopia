@@ -9,7 +9,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 sealed class BackstackAction {
     data class StoryStateChange(val storyUnit: StoryStep, val position: Int) : BackstackAction()
 
-    data class StoryTextChange(val storyUnit: StoryStep, val position: Int) : BackstackAction()
+    data class StoryTextChange(val storyStep: StoryStep, val position: Int) : BackstackAction()
 
     data class Move(
         val storyUnit: StoryStep,

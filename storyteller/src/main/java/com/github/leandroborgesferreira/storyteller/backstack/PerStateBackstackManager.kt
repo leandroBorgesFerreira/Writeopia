@@ -14,7 +14,7 @@ internal class PerStateBackstackManager(
     //A dynamic value would be better!
     private val textEditLimit: Int = DEFAULT_TEXT_EDIT_LIMIT,
     private val contentHandler: ContentHandler
-): BackstackManager {
+) : BackstackManager {
 
     private var lastEditPosition: Int = -1
     private var textEditCount = 0
@@ -35,7 +35,19 @@ internal class PerStateBackstackManager(
             is BackstackAction.Merge -> state
             is BackstackAction.Move -> state
             is BackstackAction.StoryStateChange -> state
-            is BackstackAction.StoryTextChange -> state
+            is BackstackAction.StoryTextChange -> {
+                val stories = state.stories.toMutableMap()
+                val position = action.position
+                val storyStep = action.storyStep
+
+                stories[position] = storyStep
+
+                StoryState(
+                    stories,
+                    LastEdit.LineEdition(position, storyStep),
+                    focusId = storyStep.id
+                )
+            }
         }
     }
 
@@ -50,12 +62,12 @@ internal class PerStateBackstackManager(
         forwardStack.clear()
 
         when {
-            backStack.isEmpty() -> {
-                addState(action)
-            }
-
             action is BackstackAction.StoryTextChange -> {
                 addTextState(action)
+            }
+
+            backStack.isEmpty() -> {
+                addState(action)
             }
 
             action is BackstackAction.StoryStateChange -> {
