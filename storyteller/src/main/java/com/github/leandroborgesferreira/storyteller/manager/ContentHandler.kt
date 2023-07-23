@@ -1,7 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import com.github.leandroborgesferreira.storyteller.model.action.DeleteInfo
-import com.github.leandroborgesferreira.storyteller.model.action.LineBreakInfo
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
@@ -60,7 +59,7 @@ class ContentHandler(
 
     fun onLineBreak(
         currentStory: Map<Int, StoryStep>,
-        lineBreakInfo: LineBreakInfo
+        lineBreakInfo: Action.LineBreak
     ): Pair<Pair<Int, StoryStep>, StoryState>? {
         val storyStep = lineBreakInfo.storyStep
 
@@ -100,7 +99,7 @@ class ContentHandler(
         }
     }
 
-    fun deleteStory(deleteInfo: DeleteInfo, history: Map<Int, StoryStep>): StoryState? {
+    fun deleteStory(deleteInfo: Action.DeleteStory, history: Map<Int, StoryStep>): StoryState? {
         val step = deleteInfo.storyUnit
         val parentId = step.parentId
         val mutableSteps = history.toMutableMap()

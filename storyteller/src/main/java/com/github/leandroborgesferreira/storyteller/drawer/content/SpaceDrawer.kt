@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DropTarget
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
-import com.github.leandroborgesferreira.storyteller.model.action.MoveInfo
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
 /**
@@ -19,14 +19,14 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
  * reorder purposes. A space create a move request when dropping Composables in it while the other
  * story units create a mergeRequest.
  */
-class SpaceDrawer(private val moveRequest: (MoveInfo) -> Unit = {}) : StoryStepDrawer {
+class SpaceDrawer(private val moveRequest: (Action.Move) -> Unit = {}) : StoryStepDrawer {
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         DropTarget { inBound, data ->
             if (inBound && data != null) {
                 moveRequest(
-                    MoveInfo(
+                    Action.Move(
                         data.storyUnit,
                         positionFrom = data.positionFrom,
                         positionTo = drawInfo.position

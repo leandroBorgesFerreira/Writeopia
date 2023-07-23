@@ -1,6 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import com.github.leandroborgesferreira.storyteller.model.action.LineBreakInfo
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.normalization.addinbetween.AddSteps
@@ -45,7 +45,7 @@ class ContentHandlerTest {
 
         val (_, newState) = contentHandler.onLineBreak(
             mapOf(0 to storyStep),
-            LineBreakInfo(storyStep, 0)
+            Action.LineBreak(storyStep, 0)
         )!!
 
         assertEquals("line1", newState.stories[0]!!.text)

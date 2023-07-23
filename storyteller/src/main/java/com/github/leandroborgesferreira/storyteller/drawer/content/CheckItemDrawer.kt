@@ -38,17 +38,16 @@ import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyErase
-import com.github.leandroborgesferreira.storyteller.model.action.CheckInfo
-import com.github.leandroborgesferreira.storyteller.model.action.DeleteInfo
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.draganddrop.DropInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 
 class CheckItemDrawer(
-    private val onCheckedChange: (CheckInfo) -> Unit = {},
+    private val onCheckedChange: (Action.Check) -> Unit = {},
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
-    private val onDeleteRequest: (DeleteInfo) -> Unit = {},
+    private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
     private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     private val customBackgroundColor: Color? = null,
@@ -115,7 +114,7 @@ class CheckItemDrawer(
                                     modifier = Modifier.padding(6.dp),
                                     checked = step.checked ?: false,
                                     onCheckedChange = { checked ->
-                                        onCheckedChange(CheckInfo(step, drawInfo.position, checked))
+                                        onCheckedChange(Action.Check(step, drawInfo.position, checked))
                                     },
                                     enabled = drawInfo.editable,
                                 )
@@ -129,7 +128,7 @@ class CheckItemDrawer(
                                         hasFocus = focusState.hasFocus
                                     }
                                     .callOnEmptyErase(inputText.selection) {
-                                        onDeleteRequest(DeleteInfo(step, drawInfo.position))
+                                        onDeleteRequest(Action.DeleteStory(step, drawInfo.position))
                                     },
                                 value = inputText,
                                 onValueChange = { value: TextFieldValue ->

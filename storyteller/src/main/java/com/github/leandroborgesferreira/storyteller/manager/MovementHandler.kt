@@ -1,7 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import com.github.leandroborgesferreira.storyteller.model.action.MergeInfo
-import com.github.leandroborgesferreira.storyteller.model.action.MoveInfo
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 
@@ -12,7 +11,7 @@ import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
  */
 class MovementHandler {
 
-    fun merge(stories: Map<Int, StoryStep>, info: MergeInfo): Map<Int, List<StoryStep>> {
+    fun merge(stories: Map<Int, StoryStep>, info: Action.Merge): Map<Int, List<StoryStep>> {
         val sender = info.sender
         val receiver = info.receiver
         val positionTo = info.positionTo
@@ -42,7 +41,7 @@ class MovementHandler {
         return mutableHistory
     }
 
-    fun move(stories: Map<Int, StoryStep>, moveInfo: MoveInfo): Map<Int, StoryStep> {
+    fun move(stories: Map<Int, StoryStep>, moveInfo: Action.Move): Map<Int, StoryStep> {
         val mutable = stories.toMutableMap()
         if (mutable[moveInfo.positionTo]?.type != "space") throw IllegalStateException()
 

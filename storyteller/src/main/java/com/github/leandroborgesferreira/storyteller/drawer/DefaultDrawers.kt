@@ -21,12 +21,8 @@ import com.github.leandroborgesferreira.storyteller.drawer.content.VideoDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.SpaceDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.TitleDrawer
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
-import com.github.leandroborgesferreira.storyteller.model.action.CheckInfo
-import com.github.leandroborgesferreira.storyteller.model.action.DeleteInfo
-import com.github.leandroborgesferreira.storyteller.model.action.LineBreakInfo
-import com.github.leandroborgesferreira.storyteller.model.action.MergeInfo
-import com.github.leandroborgesferreira.storyteller.model.action.MoveInfo
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 
 object DefaultDrawers {
@@ -60,11 +56,11 @@ object DefaultDrawers {
         editable: Boolean = false,
         onTextEdit: (String, Int) -> Unit,
         onTitleEdit: (String, Int) -> Unit,
-        onLineBreak: (LineBreakInfo) -> Unit,
-        mergeRequest: (MergeInfo) -> Unit = { },
-        moveRequest: (MoveInfo) -> Unit = { },
-        checkRequest: (CheckInfo) -> Unit = { },
-        onDeleteRequest: (DeleteInfo) -> Unit,
+        onLineBreak: (Action.LineBreak) -> Unit,
+        mergeRequest: (Action.Merge) -> Unit = { },
+        moveRequest: (Action.Move) -> Unit = { },
+        checkRequest: (Action.Check) -> Unit = { },
+        onDeleteRequest: (Action.DeleteStory) -> Unit,
         createCheckItem: (Int) -> Unit,
         onSelected: (Boolean, Int) -> Unit,
         clickAtTheEnd: () -> Unit,
@@ -77,7 +73,7 @@ object DefaultDrawers {
             val textCommandHandlerMessage = TextCommandHandler(
                 mapOf(
                     "\n" to { storyStep, position ->
-                        onLineBreak(LineBreakInfo(storyStep, position))
+                        onLineBreak(Action.LineBreak(storyStep, position))
                     },
                     "-[]" to { _, position ->
                         createCheckItem(position)
@@ -88,7 +84,7 @@ object DefaultDrawers {
             val textCommandHandlerCheckItem = TextCommandHandler(
                 mapOf(
                     "\n" to { storyStep, position ->
-                        onLineBreak(LineBreakInfo(storyStep, position))
+                        onLineBreak(Action.LineBreak(storyStep, position))
                     },
                 )
             )

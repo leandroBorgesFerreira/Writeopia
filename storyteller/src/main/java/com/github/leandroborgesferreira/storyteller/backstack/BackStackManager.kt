@@ -1,7 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.backstack
 
-import com.github.leandroborgesferreira.storyteller.model.backtrack.AddText
-import com.github.leandroborgesferreira.storyteller.model.action.TextEditInfo
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.Stack
@@ -10,8 +9,8 @@ private const val HAS_SPACE_REGEX = "\\s\\S"
 
 class BackStackManager : BackstackInform {
 
-    private val backStack: Stack<Any> = Stack()
-    private val forwardStack: Stack<Any> = Stack()
+    private val backStack: Stack<Action> = Stack()
+    private val forwardStack: Stack<Action> = Stack()
 
     private val _canUndo = MutableStateFlow(false)
     private val _canRedo = MutableStateFlow(false)
@@ -19,13 +18,13 @@ class BackStackManager : BackstackInform {
     override val canUndo: StateFlow<Boolean> = _canUndo
     override val canRedo: StateFlow<Boolean> = _canRedo
 
-    fun undo(): Any = backStack.pop().also { action ->
+    fun undo(): Action = backStack.pop().also { action ->
         forwardStack.add(action)
         _canUndo.value = backStack.isNotEmpty()
         _canRedo.value = forwardStack.isNotEmpty()
     }
 
-    fun redo(): Any = forwardStack.pop().also { action ->
+    fun redo(): Action = forwardStack.pop().also { action ->
         backStack.add(action)
         _canUndo.value = backStack.isNotEmpty()
         _canRedo.value = forwardStack.isNotEmpty()
@@ -37,13 +36,13 @@ class BackStackManager : BackstackInform {
      * action with the new one in the stack. If the action is whole, it simply adds it to the
      * backstack.
      */
-    fun addAction(action: Any) {
+    fun addAction(action: Action) {
         when {
             backStack.isEmpty() -> {
                 addActionWhenEmpty(action)
             }
 
-            action !is TextEditInfo -> {
+            action !is Action.TextEdit -> {
                 addWhenWholeAction(action)
             }
 
@@ -57,12 +56,12 @@ class BackStackManager : BackstackInform {
         _canRedo.value = forwardStack.isNotEmpty()
     }
 
-    fun peek(): Any = backStack.peek()
+    fun peek(): Action = backStack.peek()
 
-    private fun addActionWhenEmpty(action: Any) {
-        if (action is TextEditInfo) {
+    private fun addActionWhenEmpty(action: Action) {
+        if (action is Action.TextEdit) {
             backStack.add(
-                AddText(
+                Action.AddText(
                     text = action.text,
                     position = action.position,
                     isComplete = action.text.contains(HAS_SPACE_REGEX.toRegex())
@@ -73,24 +72,24 @@ class BackStackManager : BackstackInform {
         }
     }
 
-    private fun addWhenWholeAction(action: Any) {
+    private fun addWhenWholeAction(action: Action) {
         val lastAction = backStack.peek()
-        if (lastAction is AddText && !lastAction.isComplete) {
+        if (lastAction is Action.AddText && !lastAction.isComplete) {
             val popped = backStack.pop()
-            backStack.add((popped as AddText).copy(isComplete = true))
+            backStack.add((popped as Action.AddText).copy(isComplete = true))
         }
 
         backStack.add(action)
     }
 
-    private fun handleNewTextAdded(action: TextEditInfo) {
+    private fun handleNewTextAdded(action: Action.TextEdit) {
         val lastAction = backStack.peek()
 
-        if (lastAction is AddText &&
+        if (lastAction is Action.AddText &&
             !lastAction.isComplete &&
             action.position == lastAction.position
         ) {
-            val popped = backStack.pop() as AddText
+            val popped = backStack.pop() as Action.AddText
             val newText = "${popped.text}${action.text}"
             val isComplete = newText.contains(HAS_SPACE_REGEX.toRegex())
 
@@ -104,7 +103,7 @@ class BackStackManager : BackstackInform {
                 val newAction = popped.copy(isComplete = true)
                 backStack.add(newAction)
                 backStack.add(
-                    AddText(
+                    Action.AddText(
                         text = action.text,
                         position = action.position,
                         isComplete = false
@@ -114,7 +113,7 @@ class BackStackManager : BackstackInform {
         } else {
             //Todo: Review this whole method!
             backStack.add(
-                AddText(
+                Action.AddText(
                     text = action.text,
                     position = action.position,
                     isComplete = false

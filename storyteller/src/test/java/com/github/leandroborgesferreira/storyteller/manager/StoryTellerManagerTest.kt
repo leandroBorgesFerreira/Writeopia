@@ -1,9 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import com.github.leandroborgesferreira.storyteller.model.action.DeleteInfo
-import com.github.leandroborgesferreira.storyteller.model.action.LineBreakInfo
-import com.github.leandroborgesferreira.storyteller.model.action.MergeInfo
-import com.github.leandroborgesferreira.storyteller.model.action.MoveInfo
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
@@ -93,7 +90,7 @@ class StoryTellerManagerTest {
         val currentStory = storyManager.currentStory.value.stories
 
         storyManager.onLineBreak(
-            LineBreakInfo(storyStep = checkItem!!, position = 0)
+            Action.LineBreak(storyStep = checkItem!!, position = 0)
         )
 
         val newStory = storyManager.currentStory.value.stories
@@ -119,7 +116,7 @@ class StoryTellerManagerTest {
         assertFalse("The first step is not a Group", currentStory[positionTo]!!.isGroup)
 
         storyManager.mergeRequest(
-            MergeInfo(
+            Action.Merge(
                 sender = sender,
                 receiver = receiver,
                 positionFrom = positionFrom,
@@ -153,7 +150,7 @@ class StoryTellerManagerTest {
         val positionTo = 0
 
         storyManager.mergeRequest(
-            MergeInfo(
+            Action.Merge(
                 receiver = currentStory[positionTo]!!,
                 sender = currentStory[positionFrom]!!,
                 positionTo = positionTo,
@@ -184,7 +181,7 @@ class StoryTellerManagerTest {
         val positionTo = 0
 
         storyManager.mergeRequest(
-            MergeInfo(
+            Action.Merge(
                 receiver = currentStory[positionTo]!!,
                 sender = currentStory[positionFrom]!!,
                 positionTo = positionTo,
@@ -213,7 +210,7 @@ class StoryTellerManagerTest {
             val newPositionTo = 0
 
             storyManager.mergeRequest(
-                MergeInfo(
+                Action.Merge(
                     receiver = newHistory2[newPositionTo]!!,
                     sender = newHistory2[newPositionFrom]!!,
                     positionTo = newPositionTo,
@@ -249,7 +246,7 @@ class StoryTellerManagerTest {
         val positionFrom = 2
         val positionTo = 0
 
-        val mergeInfo = MergeInfo(
+        val mergeInfo = Action.Merge(
             receiver = currentStory[positionTo]!!,
             sender = currentStory[positionFrom]!!,
             positionTo = positionTo,
@@ -279,7 +276,7 @@ class StoryTellerManagerTest {
         val initialGroupSize = currentStory[positionFrom]!!.steps.size
 
         storyManager.mergeRequest(
-            MergeInfo(
+            Action.Merge(
                 receiver = currentStory[positionTo]!!,
                 sender = currentStory[positionFrom]!!.steps[0],
                 positionTo = positionTo,
@@ -315,7 +312,7 @@ class StoryTellerManagerTest {
         val storyToMove = currentStory[positionFrom]!!.steps[0]
 
         storyManager.moveRequest(
-            MoveInfo(
+            Action.Move(
                 storyUnit = storyToMove,
                 positionTo = positionTo,
                 positionFrom = positionFrom
@@ -357,7 +354,7 @@ class StoryTellerManagerTest {
         val currentStory = storyManager.currentStory.value.stories
         val storyUnitToMove = currentStory[0]!!
 
-        storyManager.moveRequest(MoveInfo(storyUnitToMove, positionFrom, positionTo))
+        storyManager.moveRequest(Action.Move(storyUnitToMove, positionFrom, positionTo))
 
         val newStory = storyManager.currentStory.value.stories
 
@@ -385,14 +382,14 @@ class StoryTellerManagerTest {
             { storyManager.currentStory.value.stories[groupPosition]!!.steps.last() }
 
         storyManager.onDelete(
-            DeleteInfo(
+            Action.DeleteStory(
                 storyUnit = lastImageInsideGroup(),
                 position = groupPosition
             )
         )
 
         storyManager.onDelete(
-            DeleteInfo(
+            Action.DeleteStory(
                 storyUnit = lastImageInsideGroup(),
                 position = groupPosition
             )
@@ -413,7 +410,7 @@ class StoryTellerManagerTest {
         storyManager.initDocument(Document(content = messagesRepo.history()))
 
         storyManager.onDelete(
-            DeleteInfo(
+            Action.DeleteStory(
                 storyManager.currentStory.value.stories[3]!!, 3
             )
         )
@@ -439,7 +436,7 @@ class StoryTellerManagerTest {
             val initialSize = stories.size
             val position = 0
 
-            storyManager.onLineBreak(LineBreakInfo(stories[position]!!, position = position))
+            storyManager.onLineBreak(Action.LineBreak(stories[position]!!, position = position))
 
             assertEquals(
                 "2 new stories should have been added",
@@ -458,7 +455,7 @@ class StoryTellerManagerTest {
             val initialSize = stories.size
             val breakPosition = 0
 
-            storyManager.onLineBreak(LineBreakInfo(stories[breakPosition]!!, breakPosition))
+            storyManager.onLineBreak(Action.LineBreak(stories[breakPosition]!!, breakPosition))
 
             val newStory = storyManager.currentStory.value.stories
 
@@ -487,7 +484,7 @@ class StoryTellerManagerTest {
         val positionTo = 1
         val positionFrom = 3
         storyManager.mergeRequest(
-            MergeInfo(
+            Action.Merge(
                 receiver = stories[positionTo]!!,
                 sender = stories[positionFrom]!!,
                 positionFrom = positionFrom,
@@ -504,7 +501,7 @@ class StoryTellerManagerTest {
         val positionTo2 = 1
         val positionFrom2 = 3
         storyManager.mergeRequest(
-            MergeInfo(
+            Action.Merge(
                 receiver = (stories2[positionTo2]!!).steps.first(),
                 sender = stories2[positionFrom2]!!,
                 positionFrom = positionFrom2,
@@ -524,7 +521,7 @@ class StoryTellerManagerTest {
         val positionTo3 = 4
         val storyToMove = (newStory[positionFrom3]!!).steps.first()
         storyManager.moveRequest(
-            MoveInfo(
+            Action.Move(
                 storyUnit = storyToMove,
                 positionFrom = positionFrom3,
                 positionTo = positionTo3,
@@ -553,7 +550,7 @@ class StoryTellerManagerTest {
         storyManager.initDocument(Document(content = input))
         val currentStory = storyManager.currentStory.value.stories
 
-        storyManager.onLineBreak(LineBreakInfo(input[0]!!, 0))
+        storyManager.onLineBreak(Action.LineBreak(input[0]!!, 0))
         storyManager.undo()
         val newStory = storyManager.currentStory.value.stories
 
@@ -568,10 +565,10 @@ class StoryTellerManagerTest {
         storyManager.initDocument(Document(content = input))
         val currentStory = storyManager.currentStory.value.stories
 
-        storyManager.onLineBreak(LineBreakInfo(input[0]!!, 0))
+        storyManager.onLineBreak(Action.LineBreak(input[0]!!, 0))
 
-        storyManager.onLineBreak(LineBreakInfo(input[0]!!, 2))
-        storyManager.onLineBreak(LineBreakInfo(input[0]!!, 4))
+        storyManager.onLineBreak(Action.LineBreak(input[0]!!, 2))
+        storyManager.onLineBreak(Action.LineBreak(input[0]!!, 4))
         storyManager.undo()
         storyManager.undo()
         storyManager.undo()
@@ -603,9 +600,9 @@ class StoryTellerManagerTest {
         storyManager.run {
             initDocument(Document(content = input))
 
-            onLineBreak(LineBreakInfo(input[0]!!, 0))
-            onLineBreak(LineBreakInfo(input[0]!!, 2))
-            onLineBreak(LineBreakInfo(input[0]!!, 4))
+            onLineBreak(Action.LineBreak(input[0]!!, 0))
+            onLineBreak(Action.LineBreak(input[0]!!, 2))
+            onLineBreak(Action.LineBreak(input[0]!!, 4))
 
             undo()
             undo()

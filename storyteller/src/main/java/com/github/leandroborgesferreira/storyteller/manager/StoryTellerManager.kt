@@ -4,15 +4,7 @@ import android.util.Log
 import com.github.leandroborgesferreira.storyteller.backstack.BackStackManager
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
-import com.github.leandroborgesferreira.storyteller.model.backtrack.AddStoryUnit
-import com.github.leandroborgesferreira.storyteller.model.backtrack.AddText
-import com.github.leandroborgesferreira.storyteller.model.action.BulkDelete
-import com.github.leandroborgesferreira.storyteller.model.action.CheckInfo
-import com.github.leandroborgesferreira.storyteller.model.action.DeleteInfo
-import com.github.leandroborgesferreira.storyteller.model.action.LineBreakInfo
-import com.github.leandroborgesferreira.storyteller.model.action.MergeInfo
-import com.github.leandroborgesferreira.storyteller.model.action.MoveInfo
-import com.github.leandroborgesferreira.storyteller.model.action.TextEditInfo
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.Decoration
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
@@ -229,7 +221,7 @@ class StoryTellerManager(
         _documentInfo.value = document.info()
     }
 
-    fun mergeRequest(info: MergeInfo) {
+    fun mergeRequest(info: Action.Merge) {
         if (isOnSelection) {
             cancelSelection()
         }
@@ -241,7 +233,7 @@ class StoryTellerManager(
         )
     }
 
-    fun moveRequest(moveInfo: MoveInfo) {
+    fun moveRequest(moveInfo: Action.Move) {
         if (isOnSelection) {
             cancelSelection()
         }
@@ -256,7 +248,7 @@ class StoryTellerManager(
     /**
      * At the moment it is only possible to check items not inside groups. Todo: Fix it!
      */
-    fun checkRequest(checkInfo: CheckInfo) {
+    fun checkRequest(checkInfo: Action.Check) {
         if (isOnSelection) {
             cancelSelection()
         }
@@ -282,7 +274,7 @@ class StoryTellerManager(
 
         _currentStory.value.stories[position]?.copy(text = text)?.let { newStory ->
             updateStory(position, newStory)
-            backStackManager.addAction(TextEditInfo(text, position))
+            backStackManager.addAction(Action.TextEdit(text, position))
         }
     }
 
@@ -295,7 +287,7 @@ class StoryTellerManager(
             val newMap = _currentStory.value.stories.toMutableMap()
             newMap[position] = newStory
             _currentStory.value = StoryState(newMap, LastEdit.InfoEdition(position, newStory))
-            backStackManager.addAction(TextEditInfo(text, position))
+            backStackManager.addAction(Action.TextEdit(text, position))
         }
     }
 
@@ -310,7 +302,7 @@ class StoryTellerManager(
             }
     }
 
-    fun onLineBreak(lineBreakInfo: LineBreakInfo) {
+    fun onLineBreak(lineBreakInfo: Action.LineBreak) {
         if (isOnSelection) {
             cancelSelection()
         }
@@ -319,7 +311,7 @@ class StoryTellerManager(
             contentHandler.onLineBreak(_currentStory.value.stories, lineBreakInfo)
                 ?.let { (info, newState) ->
                     // Todo: Fix this when the inner position are completed
-                    backStackManager.addAction(AddStoryUnit(info.second, position = info.first))
+                    backStackManager.addAction(Action.AddStory(info.second, position = info.first))
 
                     _currentStory.value = newState
                     _scrollToPosition.value = info.first
@@ -364,17 +356,17 @@ class StoryTellerManager(
 
     override fun undo() {
         when (val backAction = backStackManager.undo()) {
-            is DeleteInfo -> {
+            is Action.DeleteStory -> {
                 coroutineScope.launch(dispatcher) {
                     _currentStory.value = revertDelete(backAction)
                 }
             }
 
-            is AddStoryUnit -> {
+            is Action.AddStory -> {
                 revertAddStory(backAction)
             }
 
-            is BulkDelete -> {
+            is Action.BulkDelete -> {
                 coroutineScope.launch(dispatcher) {
                     val newState = contentHandler.addNewContentBulk(
                         _currentStory.value.stories,
@@ -393,7 +385,7 @@ class StoryTellerManager(
                 }
             }
 
-            is AddText -> {
+            is Action.AddText -> {
                 revertAddText(_currentStory.value.stories, backAction)
             }
 
@@ -404,11 +396,11 @@ class StoryTellerManager(
 
     override fun redo() {
         when (val action = backStackManager.redo()) {
-            is DeleteInfo -> {
+            is Action.DeleteStory -> {
                 contentHandler.deleteStory(action, _currentStory.value.stories)
             }
 
-            is AddStoryUnit -> {
+            is Action.AddStory -> {
                 val newStory = contentHandler.addNewContent(
                     _currentStory.value.stories,
                     action.storyUnit,
@@ -423,7 +415,7 @@ class StoryTellerManager(
                 _scrollToPosition.value = action.position
             }
 
-            is AddText -> {
+            is Action.AddText -> {
                 redoAddText(_currentStory.value.stories, action)
             }
 
@@ -432,7 +424,7 @@ class StoryTellerManager(
     }
 
 
-    fun onDelete(deleteInfo: DeleteInfo) {
+    fun onDelete(deleteInfo: Action.DeleteStory) {
         coroutineScope.launch(dispatcher) {
             contentHandler.deleteStory(deleteInfo, _currentStory.value.stories)?.let { newState ->
                 _currentStory.value = newState
@@ -449,7 +441,7 @@ class StoryTellerManager(
                 _currentStory.value.stories
             )
 
-            backStackManager.addAction(BulkDelete(deletedStories))
+            backStackManager.addAction(Action.BulkDelete(deletedStories))
             _positionsOnEdit.value = emptySet()
 
             _currentStory.value =
@@ -463,7 +455,7 @@ class StoryTellerManager(
         _currentStory.value = StoryState(newMap, LastEdit.LineEdition(position, newStep), focusId)
     }
 
-    private fun revertAddText(currentStory: Map<Int, StoryStep>, addText: AddText) {
+    private fun revertAddText(currentStory: Map<Int, StoryStep>, addText: Action.AddText) {
         val mutableSteps = currentStory.toMutableMap()
         val revertStep = currentStory[addText.position]
         val currentText = revertStep?.text
@@ -486,7 +478,7 @@ class StoryTellerManager(
         }
     }
 
-    private fun redoAddText(currentStory: Map<Int, StoryStep>, addText: AddText) {
+    private fun redoAddText(currentStory: Map<Int, StoryStep>, addText: Action.AddText) {
         val position = addText.position
         val mutableSteps = currentStory.toMutableMap()
         mutableSteps[position]?.let { editStep ->
@@ -500,10 +492,10 @@ class StoryTellerManager(
         }
     }
 
-    private fun revertAddStory(addStoryUnit: AddStoryUnit) {
+    private fun revertAddStory(addStoryUnit: Action.AddStory) {
         coroutineScope.launch(dispatcher) {
             contentHandler.deleteStory(
-                DeleteInfo(addStoryUnit.storyUnit, position = addStoryUnit.position),
+                Action.DeleteStory(addStoryUnit.storyUnit, position = addStoryUnit.position),
                 _currentStory.value.stories
             )?.let { newState ->
                 _currentStory.value = newState
@@ -511,7 +503,7 @@ class StoryTellerManager(
         }
     }
 
-    private fun revertDelete(deleteInfo: DeleteInfo): StoryState {
+    private fun revertDelete(deleteInfo: Action.DeleteStory): StoryState {
         val newStory = contentHandler.addNewContent(
             _currentStory.value.stories,
             deleteInfo.storyUnit,
