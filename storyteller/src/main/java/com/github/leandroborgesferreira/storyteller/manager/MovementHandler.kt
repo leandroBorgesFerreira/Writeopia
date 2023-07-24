@@ -48,12 +48,12 @@ class MovementHandler {
         return mutable[moveInfo.positionFrom]?.let { moveStory ->
             mutable[moveInfo.positionTo] = moveStory.copy(parentId = null)
 
-            if (moveInfo.storyUnit.parentId == null) {
+            if (moveInfo.storyStep.parentId == null) {
                 mutable.remove(moveInfo.positionFrom)
             } else {
                 val fromGroup = mutable[moveInfo.positionFrom]
                 val newList = fromGroup?.steps?.filter { storyUnit ->
-                    storyUnit.localId != moveInfo.storyUnit.localId
+                    storyUnit.localId != moveInfo.storyStep.localId
                 }
 
                 if (newList != null) {

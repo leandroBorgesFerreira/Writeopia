@@ -1,9 +1,10 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
 import android.util.Log
-import com.github.leandroborgesferreira.storyteller.backstack.PerActionBackstackManager
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
+import com.github.leandroborgesferreira.storyteller.backstack.BackstackManager
+import com.github.leandroborgesferreira.storyteller.backstack.PerStateBackstackManager
 import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.Decoration
@@ -35,7 +36,6 @@ class StoryTellerManager(
         StepsMapNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
         },
-    private val backStackManager: PerActionBackstackManager = PerActionBackstackManager(),
     private val movementHandler: MovementHandler = MovementHandler(),
     private val contentHandler: ContentHandler = ContentHandler(
         focusableTypes = setOf(
@@ -44,6 +44,9 @@ class StoryTellerManager(
             StoryType.MESSAGE_BOX.type,
         ),
         stepsNormalizer = stepsNormalizer
+    ),
+    private val backStackManager: BackstackManager = PerStateBackstackManager(
+        contentHandler = contentHandler
     ),
     private val focusHandler: FocusHandler = FocusHandler(),
     private val coroutineScope: CoroutineScope = CoroutineScope(
@@ -253,7 +256,7 @@ class StoryTellerManager(
             cancelSelection()
         }
 
-        val storyUnit = checkInfo.storyUnit
+        val storyUnit = checkInfo.storyStep
         val newStep = (storyUnit as? StoryStep)?.copy(checked = checkInfo.checked) ?: return
 
 
@@ -506,7 +509,7 @@ class StoryTellerManager(
     private fun revertAddStory(addStoryUnit: Action.AddStory) {
         coroutineScope.launch(dispatcher) {
             contentHandler.deleteStory(
-                Action.DeleteStory(addStoryUnit.storyUnit, position = addStoryUnit.position),
+                Action.DeleteStory(addStoryUnit.storyStep, position = addStoryUnit.position),
                 _currentStory.value.stories
             )?.let { newState ->
                 _currentStory.value = newState
@@ -517,14 +520,14 @@ class StoryTellerManager(
     private fun revertDelete(deleteInfo: Action.DeleteStory): StoryState {
         val newStory = contentHandler.addNewContent(
             _currentStory.value.stories,
-            deleteInfo.storyUnit,
+            deleteInfo.storyStep,
             deleteInfo.position
         )
 
         return StoryState(
             stories = newStory,
             lastEdit = LastEdit.Whole,
-            focusId = deleteInfo.storyUnit.id
+            focusId = deleteInfo.storyStep.id
         )
     }
 

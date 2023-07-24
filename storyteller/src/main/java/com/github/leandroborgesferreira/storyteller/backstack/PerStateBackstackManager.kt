@@ -58,7 +58,7 @@ internal class PerStateBackstackManager(
 
     internal fun peek(): BackstackAction = backStack.peek()
 
-    fun addAction(action: BackstackAction) {
+    override fun addAction(action: BackstackAction) {
         forwardStack.clear()
 
         when {

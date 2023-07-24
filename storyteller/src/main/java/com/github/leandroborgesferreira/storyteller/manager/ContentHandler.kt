@@ -114,7 +114,7 @@ class ContentHandler(
     }
 
     fun deleteStory(deleteInfo: Action.DeleteStory, history: Map<Int, StoryStep>): StoryState? {
-        val step = deleteInfo.storyUnit
+        val step = deleteInfo.storyStep
         val parentId = step.parentId
         val mutableSteps = history.toMutableMap()
 

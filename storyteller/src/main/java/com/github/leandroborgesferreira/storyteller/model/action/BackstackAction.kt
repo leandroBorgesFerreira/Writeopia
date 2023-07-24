@@ -7,17 +7,18 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
  * manager can handle and revert.
  */
 sealed class BackstackAction {
-    data class StoryStateChange(val storyUnit: StoryStep, val position: Int) : BackstackAction()
+    data class StoryStateChange(val storyStep: StoryStep, val position: Int) : BackstackAction()
 
     data class StoryTextChange(val storyStep: StoryStep, val position: Int) : BackstackAction()
 
     data class Move(
-        val storyUnit: StoryStep,
+        val storyStep: StoryStep,
         val positionFrom: Int,
         val positionTo: Int
     ) : BackstackAction()
 
-    data class Delete(val storyUnit: StoryStep, val position: Int) : BackstackAction()
+    data class Delete(val storyStep: StoryStep, val position: Int) : BackstackAction()
+    data class Add(val storyStep: StoryStep, val position: Int) : BackstackAction()
 
     data class BulkDelete(val deletedUnits: Map<Int, StoryStep>) : BackstackAction()
 
