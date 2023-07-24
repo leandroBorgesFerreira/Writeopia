@@ -313,7 +313,7 @@ class StoryTellerManagerTest {
 
         storyManager.moveRequest(
             Action.Move(
-                storyUnit = storyToMove,
+                storyStep = storyToMove,
                 positionTo = positionTo,
                 positionFrom = positionFrom
             )
@@ -383,14 +383,14 @@ class StoryTellerManagerTest {
 
         storyManager.onDelete(
             Action.DeleteStory(
-                storyUnit = lastImageInsideGroup(),
+                storyStep = lastImageInsideGroup(),
                 position = groupPosition
             )
         )
 
         storyManager.onDelete(
             Action.DeleteStory(
-                storyUnit = lastImageInsideGroup(),
+                storyStep = lastImageInsideGroup(),
                 position = groupPosition
             )
         )
@@ -522,7 +522,7 @@ class StoryTellerManagerTest {
         val storyToMove = (newStory[positionFrom3]!!).steps.first()
         storyManager.moveRequest(
             Action.Move(
-                storyUnit = storyToMove,
+                storyStep = storyToMove,
                 positionFrom = positionFrom3,
                 positionTo = positionTo3,
             )
