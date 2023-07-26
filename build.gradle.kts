@@ -12,7 +12,7 @@ apply(from = "${rootDir}/scripts/publish-root.gradle")
 
 dagCommand {
     filter = "all"
-    defaultBranch = "origin/develop"
+    defaultBranch = "origin/main"
     outputType = "json"
     printModulesInfo = true
 }
