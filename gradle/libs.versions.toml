@@ -1,5 +1,5 @@
 [versions]
-accompanistSystemuicontroller = "0.31.5-beta"
+accompanistSystemuicontroller = "0.30.1"
 coilVersion = "2.3.0"
 composeBom = "2023.06.01"
 espressoCore = "3.5.1"
