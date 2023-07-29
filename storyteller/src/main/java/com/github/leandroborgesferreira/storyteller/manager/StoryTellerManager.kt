@@ -6,6 +6,7 @@ import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackManager
 import com.github.leandroborgesferreira.storyteller.backstack.PerStateBackstackManager
 import com.github.leandroborgesferreira.storyteller.model.action.Action
+import com.github.leandroborgesferreira.storyteller.model.action.BackstackAction
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.Decoration
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
@@ -16,6 +17,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
 import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizationMap
+import com.github.leandroborgesferreira.storyteller.utils.extensions.toBackStack
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -288,7 +290,7 @@ class StoryTellerManager(
             contentHandler.changeStoryStepState(currentStory, newStory, position)
                 ?.let { newState ->
                     _currentStory.value = newState
-                    backStackManager.addAction(Action.TextEdit(text, position))
+                    backStackManager.addAction(BackstackAction.StoryTextChange(newStory, position))
                 }
         }
     }
@@ -302,7 +304,7 @@ class StoryTellerManager(
             val newMap = _currentStory.value.stories.toMutableMap()
             newMap[position] = newStory
             _currentStory.value = StoryState(newMap, LastEdit.InfoEdition(position, newStory))
-            backStackManager.addAction(Action.TextEdit(text, position))
+            backStackManager.addAction(BackstackAction.StoryStateChange(newStory, position))
         }
     }
 
@@ -322,16 +324,16 @@ class StoryTellerManager(
         }
     }
 
-    fun onLineBreak(lineBreakInfo: Action.LineBreak) {
+    fun onLineBreak(lineBreak: Action.LineBreak) {
         if (isOnSelection) {
             cancelSelection()
         }
 
         coroutineScope.launch(dispatcher) {
-            contentHandler.onLineBreak(_currentStory.value.stories, lineBreakInfo)
+            contentHandler.onLineBreak(_currentStory.value.stories, lineBreak)
                 ?.let { (info, newState) ->
                     // Todo: Fix this when the inner position are completed
-                    backStackManager.addAction(Action.AddStory(info.second, position = info.first))
+                    backStackManager.addAction(lineBreak.toBackStack())
 
                     _currentStory.value = newState
                     _scrollToPosition.value = info.first
@@ -375,82 +377,22 @@ class StoryTellerManager(
     }
 
     override fun undo() {
-        when (val backAction = backStackManager.undo()) {
-            is Action.DeleteStory -> {
-                coroutineScope.launch(dispatcher) {
-                    _currentStory.value = revertDelete(backAction)
-                }
-            }
-
-            is Action.AddStory -> {
-                revertAddStory(backAction)
-            }
-
-            is Action.BulkDelete -> {
-                coroutineScope.launch(dispatcher) {
-                    val newState = contentHandler.addNewContentBulk(
-                        _currentStory.value.stories,
-                        backAction.deletedUnits,
-                        addInBetween = {
-                            StoryStep(type = StoryType.SPACE.type)
-                        }
-                    ).let { newStories ->
-                        StoryState(
-                            stepsNormalizer(newStories.toEditState()),
-                            lastEdit = LastEdit.Whole
-                        )
-                    }
-
-                    _currentStory.value = newState
-                }
-            }
-
-            is Action.AddText -> {
-                revertAddText(_currentStory.value.stories, backAction)
-            }
-
-            else -> return
-        }
+        _currentStory.value = backStackManager.previousState(currentStory.value)
     }
 
 
     override fun redo() {
-        when (val action = backStackManager.redo()) {
-            is Action.DeleteStory -> {
-                contentHandler.deleteStory(action, _currentStory.value.stories)
-            }
-
-            is Action.AddStory -> {
-                val newStory = contentHandler.addNewContent(
-                    _currentStory.value.stories,
-                    action.storyUnit,
-                    action.position
-                )
-                _currentStory.value = StoryState(
-                    newStory,
-                    LastEdit.Whole,
-                    newStory[action.position]?.id
-                )
-
-                _scrollToPosition.value = action.position
-            }
-
-            is Action.AddText -> {
-                redoAddText(_currentStory.value.stories, action)
-            }
-
-            else -> return
-        }
+        _currentStory.value = backStackManager.previousState(currentStory.value)
     }
 
 
-    fun onDelete(deleteInfo: Action.DeleteStory) {
+    fun onDelete(deleteStory: Action.DeleteStory) {
         coroutineScope.launch(dispatcher) {
-            contentHandler.deleteStory(deleteInfo, _currentStory.value.stories)?.let { newState ->
+            contentHandler.deleteStory(deleteStory, _currentStory.value.stories)?.let { newState ->
                 _currentStory.value = newState
             }
 
-            backStackManager.addAction(deleteInfo)
+            backStackManager.addAction(deleteStory.toBackStack())
         }
     }
 
@@ -461,7 +403,7 @@ class StoryTellerManager(
                 _currentStory.value.stories
             )
 
-            backStackManager.addAction(Action.BulkDelete(deletedStories))
+            backStackManager.addAction(BackstackAction.BulkDelete(deletedStories))
             _positionsOnEdit.value = emptySet()
 
             _currentStory.value =

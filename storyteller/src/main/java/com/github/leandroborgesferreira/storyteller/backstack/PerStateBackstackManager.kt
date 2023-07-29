@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.Stack
 
-private const val DEFAULT_TEXT_EDIT_LIMIT = 10
+private const val DEFAULT_TEXT_EDIT_LIMIT = 20
 
 internal class PerStateBackstackManager(
     //A dynamic value would be better!
@@ -29,6 +29,7 @@ internal class PerStateBackstackManager(
     override val canRedo: StateFlow<Boolean> = _canRedo
 
     override fun previousState(state: StoryState): StoryState {
+        //Todo: Change all the -> state
         return when (val action = previousAction()) {
             is BackstackAction.BulkDelete -> state
             is BackstackAction.Delete -> state
@@ -40,7 +41,7 @@ internal class PerStateBackstackManager(
                 val position = action.position
                 val storyStep = action.storyStep
 
-                stories[position] = storyStep
+                stories[position] = storyStep.copyNewLocalId()
 
                 StoryState(
                     stories,
@@ -48,6 +49,8 @@ internal class PerStateBackstackManager(
                     focusId = storyStep.id
                 )
             }
+
+            is BackstackAction.Add -> state
         }
     }
 

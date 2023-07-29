@@ -25,4 +25,6 @@ data class StoryStep(
     val key: Int = localId.hashCode()
 
     val isGroup: Boolean = steps.isNotEmpty()
+
+    fun copyNewLocalId(): StoryStep = copy(localId = UUID.randomUUID().toString())
 }
