@@ -282,7 +282,7 @@ class StoryTellerManager(
         val newStory = _currentStory.value.stories[position]?.copy(text = text)
 
         if (newStory != null && oldText != text) {
-            Log.d("Manager", "Changing story")
+            Log.d("Manager", "Changing story. Old text: $oldText, new text: $text")
 
             contentHandler.changeStoryStepState(currentStory, newStory, position)
                 ?.let { newState ->

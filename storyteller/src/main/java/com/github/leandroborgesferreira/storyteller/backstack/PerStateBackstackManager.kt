@@ -45,31 +45,21 @@ internal class PerStateBackstackManager(
             is BackstackAction.Merge -> state //Todo
             is BackstackAction.Move -> state //Todo
             is BackstackAction.StoryStateChange -> {
-                state.stories[action.position]?.let { storyStep ->
-                    forwardStack.addAndNotify(
-                        BackstackAction.StoryStateChange(
-                            storyStep,
-                            action.position
-                        )
-                    )
-                }
-
+                forwardStack.keepState(state, action)
                 revertStoryState(state, action)
             }
 
             is BackstackAction.StoryTextChange -> {
-                state.stories[action.position]?.let { storyStep ->
-                    forwardStack.addAndNotify(
-                        BackstackAction.StoryStateChange(
-                            storyStep,
-                            action.position
-                        )
-                    )
-                }
-
+                forwardStack.keepState(state, action)
                 revertStoryState(state, action)
             }
-            is BackstackAction.Add -> revertAddStory(state, action)
+
+            is BackstackAction.Add -> {
+                revertAddStory(state, action)
+            }
+        }.also {
+            _canRedo.value = forwardStack.isNotEmpty()
+            _canUndo.value = backStack.isNotEmpty()
         }
     }
 
@@ -80,19 +70,29 @@ internal class PerStateBackstackManager(
             is BackstackAction.Merge -> state
             is BackstackAction.Move -> state
             is BackstackAction.StoryStateChange -> {
-                state.stories[action.position]?.let { storyStep ->
-                    backStack.addAndNotify(
-                        BackstackAction.StoryStateChange(
-                            storyStep,
-                            action.position
-                        )
-                    )
-                }
-
+                backStack.keepState(state, action)
                 revertStoryState(state, action)
             }
-            is BackstackAction.StoryTextChange -> revertStoryState(state, action)
+
+            is BackstackAction.StoryTextChange -> {
+                backStack.keepState(state, action)
+                revertStoryState(state, action)
+            }
             is BackstackAction.Add -> state
+        }.also {
+            _canRedo.value = forwardStack.isNotEmpty()
+            _canUndo.value = backStack.isNotEmpty()
+        }
+    }
+
+    private fun Stack<BackstackAction>.keepState(state: StoryState, action: SingleAction) {
+        state.stories[action.position]?.let { storyStep ->
+            add(
+                BackstackAction.StoryStateChange(
+                    storyStep,
+                    action.position
+                )
+            )
         }
     }
 
@@ -118,20 +118,17 @@ internal class PerStateBackstackManager(
                 addState(action)
             }
         }
+
+        _canRedo.value = forwardStack.isNotEmpty()
+        _canUndo.value = backStack.isNotEmpty()
     }
 
     private fun previousAction(): BackstackAction = backStack.pop()
 
     private fun nextAction(): BackstackAction = forwardStack.pop()
 
-    private fun <T> Stack<T>.addAndNotify(element: T) {
-        add(element)
-        _canUndo.value = backStack.isNotEmpty()
-        _canRedo.value = forwardStack.isNotEmpty()
-    }
-
     private fun addState(action: BackstackAction) {
-        backStack.addAndNotify(action)
+        backStack.add(action)
     }
 
     private fun revertStoryState(state: StoryState, action: SingleAction): StoryState {
@@ -157,12 +154,12 @@ internal class PerStateBackstackManager(
             } else {
                 lastEditPosition = position
                 textEditCount = 1
-                backStack.addAndNotify(action)
+                backStack.add(action)
             }
         } else {
             lastEditPosition = position
             textEditCount = 1
-            backStack.addAndNotify(action)
+            backStack.add(action)
         }
     }
 
