@@ -36,7 +36,11 @@ internal class PerStateBackstackManager(
         //Todo: Change all the -> state
         return when (val action = previousAction()) {
             is BackstackAction.BulkDelete -> revertBulkDelete(state, action)
-            is BackstackAction.Delete -> revertDelete(state, action.storyStep, action.position)
+            is BackstackAction.Delete -> {
+                forwardStack.add(action)
+                revertDelete(state, action.storyStep, action.position)
+            }
+
             is BackstackAction.Merge -> state //Todo
             is BackstackAction.Move -> state //Todo
             is BackstackAction.StoryStateChange -> {
@@ -51,7 +55,7 @@ internal class PerStateBackstackManager(
 
             is BackstackAction.Add -> {
                 forwardStack.add(action)
-                revertAddStory(state, action)
+                revertAddStory(state, action.storyStep, action.position)
             }
         }.also {
             _canRedo.value = forwardStack.isNotEmpty()
@@ -62,7 +66,10 @@ internal class PerStateBackstackManager(
     override fun nextState(state: StoryState): StoryState {
         return when (val action = nextAction()) {
             is BackstackAction.BulkDelete -> state
-            is BackstackAction.Delete -> state
+            is BackstackAction.Delete -> {
+                backStack.add(action)
+                revertAddStory(state, action.storyStep, action.position)
+            }
             is BackstackAction.Merge -> state
             is BackstackAction.Move -> state
             is BackstackAction.StoryStateChange -> {
@@ -199,10 +206,11 @@ internal class PerStateBackstackManager(
 
     private fun revertAddStory(
         storyState: StoryState,
-        addStoryUnit: BackstackAction.Add
+        storyStep: StoryStep,
+        position: Int
     ): StoryState =
         contentHandler.deleteStory(
-            Action.DeleteStory(addStoryUnit.storyStep, position = addStoryUnit.position),
+            Action.DeleteStory(storyStep, position = position),
             storyState.stories
         ) ?: storyState
 
