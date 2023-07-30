@@ -6,6 +6,9 @@ import com.github.leandroborgesferreira.storyteller.model.action.BackstackAction
 import com.github.leandroborgesferreira.storyteller.model.action.SingleAction
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
+import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +40,7 @@ internal class PerStateBackstackManager(
     override fun previousState(state: StoryState): StoryState {
         //Todo: Change all the -> state
         return when (val action = previousAction()) {
-            is BackstackAction.BulkDelete -> state
+            is BackstackAction.BulkDelete -> revertBulkDelete(state, action)
             is BackstackAction.Delete -> revertDelete(state, action)
             is BackstackAction.Merge -> state
             is BackstackAction.Move -> state
@@ -140,6 +143,18 @@ internal class PerStateBackstackManager(
         )
     }
 
+    private fun revertBulkDelete(storyState: StoryState, action: BackstackAction.BulkDelete) =
+        contentHandler.addNewContentBulk(storyState.stories,
+            action.deletedUnits,
+            addInBetween = {
+                StoryStep(type = StoryType.SPACE.type)
+            }
+        ).let { newStories ->
+            StoryState(
+                newStories,
+                lastEdit = LastEdit.Whole
+            )
+        }
 
     private fun revertAddStory(
         storyState: StoryState,
