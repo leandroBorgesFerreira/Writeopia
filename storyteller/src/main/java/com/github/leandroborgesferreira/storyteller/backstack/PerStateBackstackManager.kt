@@ -8,13 +8,8 @@ import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
-import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import java.util.Stack
 
 private const val DEFAULT_TEXT_EDIT_LIMIT = 20
@@ -41,7 +36,7 @@ internal class PerStateBackstackManager(
         //Todo: Change all the -> state
         return when (val action = previousAction()) {
             is BackstackAction.BulkDelete -> revertBulkDelete(state, action)
-            is BackstackAction.Delete -> revertDelete(state, action)
+            is BackstackAction.Delete -> revertDelete(state, action.storyStep, action.position)
             is BackstackAction.Merge -> state //Todo
             is BackstackAction.Move -> state //Todo
             is BackstackAction.StoryStateChange -> {
@@ -55,6 +50,7 @@ internal class PerStateBackstackManager(
             }
 
             is BackstackAction.Add -> {
+                forwardStack.keepState(state, action)
                 revertAddStory(state, action)
             }
         }.also {
@@ -78,7 +74,11 @@ internal class PerStateBackstackManager(
                 backStack.keepState(state, action)
                 revertStoryState(state, action)
             }
-            is BackstackAction.Add -> state
+
+            is BackstackAction.Add -> {
+                backStack.keepState(state, action)
+                revertDelete(state, action.storyStep, action.position)
+            }
         }.also {
             _canRedo.value = forwardStack.isNotEmpty()
             _canUndo.value = backStack.isNotEmpty()
@@ -87,7 +87,7 @@ internal class PerStateBackstackManager(
 
     private fun Stack<BackstackAction>.keepState(state: StoryState, action: SingleAction) {
         state.stories[action.position]?.let { storyStep ->
-            add(
+            this.add(
                 BackstackAction.StoryStateChange(
                     storyStep,
                     action.position
@@ -163,17 +163,21 @@ internal class PerStateBackstackManager(
         }
     }
 
-    private fun revertDelete(storyState: StoryState, delete: BackstackAction.Delete): StoryState {
+    private fun revertDelete(
+        storyState: StoryState,
+        storyStep: StoryStep,
+        position: Int
+    ): StoryState {
         val newStory = contentHandler.addNewContent(
             storyState.stories,
-            delete.storyStep,
-            delete.position
+            storyStep,
+            position
         )
 
         return StoryState(
             stories = newStory,
             lastEdit = LastEdit.Whole,
-            focusId = delete.storyStep.id
+            focusId = storyStep.id
         )
     }
 

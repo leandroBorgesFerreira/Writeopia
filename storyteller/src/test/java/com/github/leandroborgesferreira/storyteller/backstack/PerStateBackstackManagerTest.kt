@@ -36,16 +36,17 @@ class PerStateBackstackManagerTest {
 
     @Test
     fun `when adding and popping the stack, the manager should notify correctly`() {
-        val mockState = StoryState(emptyMap(), LastEdit.Nothing)
+        val state = buildMap {
+            repeat(3) { i ->
+                val storyStep = StoryStep(type = StoryType.MESSAGE.type)
+                val action = BackstackAction.StoryStateChange(storyStep, position = i)
 
-        repeat(3) { i ->
-            backstackManager.addAction(
-                BackstackAction.StoryStateChange(
-                    StoryStep(type = StoryType.MESSAGE.type),
-                    position = i
-                )
-            )
+                backstackManager.addAction(action)
+                this[i] = storyStep
+            }
         }
+
+        val mockState = StoryState(state, LastEdit.Nothing)
 
         assertEquals(true, backstackManager.canUndo.value)
         assertEquals(false, backstackManager.canRedo.value)
@@ -68,16 +69,17 @@ class PerStateBackstackManagerTest {
 
     @Test
     fun `when adding a new story, it should no longer be possible to mover forward`() {
-        val mockState = StoryState(emptyMap(), LastEdit.Nothing)
+        val state = buildMap {
+            repeat(3) { i ->
+                val storyStep = StoryStep(type = StoryType.MESSAGE.type)
+                val action = BackstackAction.StoryStateChange(storyStep, position = i)
 
-        repeat(3) { i ->
-            backstackManager.addAction(
-                BackstackAction.StoryStateChange(
-                    StoryStep(type = StoryType.MESSAGE.type),
-                    position = i
-                )
-            )
+                backstackManager.addAction(action)
+                this[i] = storyStep
+            }
         }
+
+        val mockState = StoryState(state, LastEdit.Nothing)
 
         assertEquals(true, backstackManager.canUndo.value)
         assertEquals(false, backstackManager.canRedo.value)
