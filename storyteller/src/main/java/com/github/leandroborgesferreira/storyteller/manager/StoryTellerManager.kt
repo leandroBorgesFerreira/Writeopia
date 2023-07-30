@@ -377,6 +377,7 @@ class StoryTellerManager(
 
     override fun undo() {
         coroutineScope.launch(dispatcher) {
+            cancelSelection()
             _currentStory.value = backStackManager.previousState(currentStory.value)
         }
     }
@@ -384,10 +385,10 @@ class StoryTellerManager(
 
     override fun redo() {
         coroutineScope.launch(dispatcher) {
+            cancelSelection()
             _currentStory.value = backStackManager.previousState(currentStory.value)
         }
     }
-
 
     fun onDelete(deleteStory: Action.DeleteStory) {
         coroutineScope.launch(dispatcher) {
@@ -414,24 +415,9 @@ class StoryTellerManager(
         }
     }
 
-    private fun redoAddText(currentStory: Map<Int, StoryStep>, addText: Action.AddText) {
-        val position = addText.position
-        val mutableSteps = currentStory.toMutableMap()
-        mutableSteps[position]?.let { editStep ->
-            val newText = "${editStep.text.toString()}${addText.text}"
-            mutableSteps[position] = editStep.copy(text = newText)
-            _currentStory.value = StoryState(
-                mutableSteps,
-                lastEdit = LastEdit.Whole,
-                focusId = editStep.id
-            )
-        }
-    }
-
     private fun cancelSelection() {
         _positionsOnEdit.value = emptySet()
     }
-
 }
 
 /**
