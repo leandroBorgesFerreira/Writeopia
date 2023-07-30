@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.model.action
 
+import com.github.leandroborgesferreira.storyteller.backstack.BackstackManager
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
 /**
@@ -10,7 +11,10 @@ sealed class BackstackAction {
     /**
      * A change in the state of the story, with the exception of a text change.
      */
-    data class StoryStateChange(val storyStep: StoryStep, val position: Int) : BackstackAction()
+    data class StoryStateChange(
+        override val storyStep: StoryStep,
+        override val position: Int
+    ) : BackstackAction(), SingleAction
 
     /**
      * A change in the text of the story. There's a separation between [StoryTextChange] and
@@ -18,7 +22,10 @@ sealed class BackstackAction {
      * performance reasons. A user wouldn't like to revert character by character so the
      * [BackstackManager] must handle merging them.
      */
-    data class StoryTextChange(val storyStep: StoryStep, val position: Int) : BackstackAction()
+    data class StoryTextChange(
+        override val storyStep: StoryStep,
+        override val position: Int
+    ) : BackstackAction(), SingleAction
 
     /**
      * A move of stories
@@ -32,12 +39,18 @@ sealed class BackstackAction {
     /**
      * Deleting a single story
      */
-    data class Delete(val storyStep: StoryStep, val position: Int) : BackstackAction()
+    data class Delete(
+        override val storyStep: StoryStep,
+        override val position: Int
+    ) : BackstackAction(), SingleAction
 
     /**
      * Adding a single story
      */
-    data class Add(val storyStep: StoryStep, val position: Int) : BackstackAction()
+    data class Add(
+        override val storyStep: StoryStep,
+        override val position: Int
+    ) : BackstackAction(), SingleAction
 
     /**
      * Deleting many stories

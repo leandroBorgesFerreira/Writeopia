@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.backstack
 
+import com.github.leandroborgesferreira.storyteller.drawer.content.CheckItemDrawer
 import com.github.leandroborgesferreira.storyteller.manager.ContentHandler
 import com.github.leandroborgesferreira.storyteller.model.action.BackstackAction
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
@@ -102,7 +103,7 @@ class PerStateBackstackManagerTest {
         val mockState = StoryState(emptyMap(), LastEdit.Nothing)
         val stringBuilder = StringBuilder()
 
-        repeat(20) { i ->
+        repeat(40) { i ->
             stringBuilder.append(i)
 
             backstackManager.addAction(
@@ -117,5 +118,18 @@ class PerStateBackstackManagerTest {
         backstackManager.previousState(mockState)
 
         assertEquals(false, backstackManager.canUndo.value)
+    }
+
+    @Test
+    fun `it should be possible to revert a check`() {
+        val story1 = StoryStep(type = StoryType.CHECK_ITEM.type, checked = false)
+        val story2 = story1.copy(checked = true)
+        val mockState1 = StoryState(mapOf(0 to story1), LastEdit.Nothing)
+        val mockState2 = StoryState(mapOf(0 to story2), LastEdit.Nothing)
+
+        backstackManager.addAction(BackstackAction.StoryStateChange(story1, 0))
+
+        val previousState = backstackManager.previousState(mockState2)
+        assertEquals(false, previousState.stories[0]!!.checked)
     }
 }

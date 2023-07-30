@@ -2,6 +2,7 @@ package com.github.leandroborgesferreira.storyteller.backstack
 
 import com.github.leandroborgesferreira.storyteller.manager.ContentHandler
 import com.github.leandroborgesferreira.storyteller.model.action.BackstackAction
+import com.github.leandroborgesferreira.storyteller.model.action.SingleAction
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,21 +36,8 @@ internal class PerStateBackstackManager(
             is BackstackAction.Delete -> state
             is BackstackAction.Merge -> state
             is BackstackAction.Move -> state
-            is BackstackAction.StoryStateChange -> state
-            is BackstackAction.StoryTextChange -> {
-                val stories = state.stories.toMutableMap()
-                val position = action.position
-                val storyStep = action.storyStep
-
-                stories[position] = storyStep.copyNewLocalId()
-
-                StoryState(
-                    stories,
-                    LastEdit.LineEdition(position, storyStep),
-                    focusId = storyStep.id
-                )
-            }
-
+            is BackstackAction.StoryStateChange -> revertStoryState(state, action)
+            is BackstackAction.StoryTextChange -> revertStoryState(state, action)
             is BackstackAction.Add -> state
         }
     }
@@ -99,6 +87,20 @@ internal class PerStateBackstackManager(
 
     private fun addState(action: BackstackAction) {
         backStack.addAndNotify(action)
+    }
+
+    private fun revertStoryState(state: StoryState, action: SingleAction): StoryState {
+        val stories = state.stories.toMutableMap()
+        val position = action.position
+        val storyStep = action.storyStep
+
+        stories[position] = storyStep.copyNewLocalId()
+
+        return StoryState(
+            stories,
+            LastEdit.LineEdition(position, storyStep),
+            focusId = storyStep.id
+        )
     }
 
     private fun addTextState(action: BackstackAction.StoryTextChange) {

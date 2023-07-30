@@ -1,6 +1,5 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import android.util.Log
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackManager
@@ -112,11 +111,6 @@ class StoryTellerManager(
             _documentEditionState.collectLatest { (storyState, documentInfo) ->
                 when (val lastEdit = storyState.lastEdit) {
                     is LastEdit.LineEdition -> {
-                        Log.d(
-                            "Manager",
-                            "Saving story step!!. Color: ${lastEdit.storyStep.decoration}"
-                        )
-
                         documentUpdate.saveStoryStep(
                             storyStep = lastEdit.storyStep.copy(
                                 localId = UUID.randomUUID().toString()
@@ -253,21 +247,21 @@ class StoryTellerManager(
     /**
      * At the moment it is only possible to check items not inside groups. Todo: Fix it!
      */
-    fun checkRequest(checkInfo: Action.Check) {
+    fun checkRequest(check: Action.Check) {
         if (isOnSelection) {
             cancelSelection()
         }
 
-        val storyUnit = checkInfo.storyStep
-        val newStep = (storyUnit as? StoryStep)?.copy(checked = checkInfo.checked) ?: return
-
+        val storyUnit = check.storyStep
+        val newStep = (storyUnit as? StoryStep)?.copy(checked = check.checked) ?: return
 
         contentHandler.changeStoryStepState(
             _currentStory.value.stories,
             newStep,
-            checkInfo.position
+            check.position
         )?.let { state ->
             _currentStory.value = state
+            backStackManager.addAction(check.toBackStack())
         }
     }
 
@@ -283,10 +277,11 @@ class StoryTellerManager(
         if (isOnSelection) {
             cancelSelection()
         }
+
         val currentStory = _currentStory.value.stories
         val newStory = _currentStory.value.stories[position]?.copy(text = text)
 
-        if (newStory != null) {
+        if (newStory != null && newStory.text != text) {
             contentHandler.changeStoryStepState(currentStory, newStory, position)
                 ?.let { newState ->
                     _currentStory.value = newState
