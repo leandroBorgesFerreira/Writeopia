@@ -1,6 +1,5 @@
 package com.github.leandroborgesferreira.storyteller.backstack
 
-import com.github.leandroborgesferreira.storyteller.drawer.content.CheckItemDrawer
 import com.github.leandroborgesferreira.storyteller.manager.ContentHandler
 import com.github.leandroborgesferreira.storyteller.model.action.BackstackAction
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
