@@ -277,14 +277,12 @@ class StoryTellerManager(
             cancelSelection()
         }
 
-        Log.d("Manager", "onTextEdit")
-
         val currentStory = _currentStory.value.stories
         val oldText = _currentStory.value.stories[position]?.text
         val newStory = _currentStory.value.stories[position]?.copy(text = text)
 
         if (newStory != null && oldText != text) {
-            Log.d("Manager", "Adding story")
+            Log.d("Manager", "Changing story")
 
             contentHandler.changeStoryStepState(currentStory, newStory, position)
                 ?.let { newState ->
@@ -386,7 +384,7 @@ class StoryTellerManager(
     override fun redo() {
         coroutineScope.launch(dispatcher) {
             cancelSelection()
-            _currentStory.value = backStackManager.previousState(currentStory.value)
+            _currentStory.value = backStackManager.nextState(currentStory.value)
         }
     }
 

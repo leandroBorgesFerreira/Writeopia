@@ -44,15 +44,56 @@ internal class PerStateBackstackManager(
             is BackstackAction.Delete -> revertDelete(state, action)
             is BackstackAction.Merge -> state //Todo
             is BackstackAction.Move -> state //Todo
-            is BackstackAction.StoryStateChange -> revertStoryState(state, action)
-            is BackstackAction.StoryTextChange -> revertStoryState(state, action)
+            is BackstackAction.StoryStateChange -> {
+                state.stories[action.position]?.let { storyStep ->
+                    forwardStack.addAndNotify(
+                        BackstackAction.StoryStateChange(
+                            storyStep,
+                            action.position
+                        )
+                    )
+                }
+
+                revertStoryState(state, action)
+            }
+
+            is BackstackAction.StoryTextChange -> {
+                state.stories[action.position]?.let { storyStep ->
+                    forwardStack.addAndNotify(
+                        BackstackAction.StoryStateChange(
+                            storyStep,
+                            action.position
+                        )
+                    )
+                }
+
+                revertStoryState(state, action)
+            }
             is BackstackAction.Add -> revertAddStory(state, action)
         }
     }
 
     override fun nextState(state: StoryState): StoryState {
-        nextAction()
-        return StoryState(stories = emptyMap(), LastEdit.Nothing)
+        return when (val action = nextAction()) {
+            is BackstackAction.BulkDelete -> state
+            is BackstackAction.Delete -> state
+            is BackstackAction.Merge -> state
+            is BackstackAction.Move -> state
+            is BackstackAction.StoryStateChange -> {
+                state.stories[action.position]?.let { storyStep ->
+                    backStack.addAndNotify(
+                        BackstackAction.StoryStateChange(
+                            storyStep,
+                            action.position
+                        )
+                    )
+                }
+
+                revertStoryState(state, action)
+            }
+            is BackstackAction.StoryTextChange -> revertStoryState(state, action)
+            is BackstackAction.Add -> state
+        }
     }
 
     internal fun peek(): BackstackAction = backStack.peek()
@@ -79,13 +120,9 @@ internal class PerStateBackstackManager(
         }
     }
 
-    private fun previousAction(): BackstackAction = backStack.pop().also { action ->
-        forwardStack.addAndNotify(action)
-    }
+    private fun previousAction(): BackstackAction = backStack.pop()
 
-    private fun nextAction(): BackstackAction = forwardStack.pop().also { action ->
-        backStack.addAndNotify(action)
-    }
+    private fun nextAction(): BackstackAction = forwardStack.pop()
 
     private fun <T> Stack<T>.addAndNotify(element: T) {
         add(element)

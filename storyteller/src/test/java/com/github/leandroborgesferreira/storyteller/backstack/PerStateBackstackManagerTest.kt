@@ -121,7 +121,7 @@ class PerStateBackstackManagerTest {
     }
 
     @Test
-    fun `it should be possible to revert a check`() {
+    fun `it should be possible to revert and redo a check`() {
         val story1 = StoryStep(type = StoryType.CHECK_ITEM.type, checked = false)
         val story2 = story1.copy(checked = true)
         val mockState1 = StoryState(mapOf(0 to story1), LastEdit.Nothing)
@@ -131,5 +131,8 @@ class PerStateBackstackManagerTest {
 
         val previousState = backstackManager.previousState(mockState2)
         assertEquals(false, previousState.stories[0]!!.checked)
+
+        val newState = backstackManager.nextState(previousState)
+        assertEquals(true, newState.stories[0]!!.checked)
     }
 }
