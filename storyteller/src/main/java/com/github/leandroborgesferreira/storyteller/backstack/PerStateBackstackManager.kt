@@ -1,12 +1,17 @@
 package com.github.leandroborgesferreira.storyteller.backstack
 
 import com.github.leandroborgesferreira.storyteller.manager.ContentHandler
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.action.BackstackAction
 import com.github.leandroborgesferreira.storyteller.model.action.SingleAction
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.util.Stack
 
 private const val DEFAULT_TEXT_EDIT_LIMIT = 20
@@ -14,7 +19,7 @@ private const val DEFAULT_TEXT_EDIT_LIMIT = 20
 internal class PerStateBackstackManager(
     //A dynamic value would be better!
     private val textEditLimit: Int = DEFAULT_TEXT_EDIT_LIMIT,
-    private val contentHandler: ContentHandler
+    private val contentHandler: ContentHandler,
 ) : BackstackManager {
 
     private var lastEditPosition: Int = -1
@@ -38,7 +43,7 @@ internal class PerStateBackstackManager(
             is BackstackAction.Move -> state
             is BackstackAction.StoryStateChange -> revertStoryState(state, action)
             is BackstackAction.StoryTextChange -> revertStoryState(state, action)
-            is BackstackAction.Add -> state
+            is BackstackAction.Add -> revertAddStory(state, action)
         }
     }
 
@@ -134,5 +139,15 @@ internal class PerStateBackstackManager(
             focusId = delete.storyStep.id
         )
     }
+
+
+    private fun revertAddStory(
+        storyState: StoryState,
+        addStoryUnit: BackstackAction.Add
+    ): StoryState =
+        contentHandler.deleteStory(
+            Action.DeleteStory(addStoryUnit.storyStep, position = addStoryUnit.position + 2),
+            storyState.stories
+        ) ?: storyState
 
 }

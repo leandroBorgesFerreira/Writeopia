@@ -47,14 +47,12 @@ class StoryTellerManager(
         ),
         stepsNormalizer = stepsNormalizer
     ),
-    private val backStackManager: BackstackManager = PerStateBackstackManager(
-        contentHandler = contentHandler
-    ),
     private val focusHandler: FocusHandler = FocusHandler(),
     private val coroutineScope: CoroutineScope = CoroutineScope(
         SupervisorJob() + Dispatchers.Main.immediate
     ),
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val backStackManager: BackstackManager = BackstackManager.create(contentHandler)
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
@@ -378,12 +376,16 @@ class StoryTellerManager(
     }
 
     override fun undo() {
-        _currentStory.value = backStackManager.previousState(currentStory.value)
+        coroutineScope.launch(dispatcher) {
+            _currentStory.value = backStackManager.previousState(currentStory.value)
+        }
     }
 
 
     override fun redo() {
-        _currentStory.value = backStackManager.previousState(currentStory.value)
+        coroutineScope.launch(dispatcher) {
+            _currentStory.value = backStackManager.previousState(currentStory.value)
+        }
     }
 
 
@@ -448,19 +450,6 @@ class StoryTellerManager(
             )
         }
     }
-
-    private fun revertAddStory(addStoryUnit: Action.AddStory) {
-        coroutineScope.launch(dispatcher) {
-            contentHandler.deleteStory(
-                Action.DeleteStory(addStoryUnit.storyStep, position = addStoryUnit.position),
-                _currentStory.value.stories
-            )?.let { newState ->
-                _currentStory.value = newState
-            }
-        }
-    }
-
-
 
     private fun cancelSelection() {
         _positionsOnEdit.value = emptySet()
