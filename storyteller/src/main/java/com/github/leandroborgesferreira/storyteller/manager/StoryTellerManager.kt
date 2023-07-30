@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
+import android.util.Log
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackManager
@@ -278,10 +279,15 @@ class StoryTellerManager(
             cancelSelection()
         }
 
+        Log.d("Manager", "onTextEdit")
+
         val currentStory = _currentStory.value.stories
+        val oldText = _currentStory.value.stories[position]?.text
         val newStory = _currentStory.value.stories[position]?.copy(text = text)
 
-        if (newStory != null && newStory.text != text) {
+        if (newStory != null && oldText != text) {
+            Log.d("Manager", "Adding story")
+
             contentHandler.changeStoryStepState(currentStory, newStory, position)
                 ?.let { newState ->
                     _currentStory.value = newState
@@ -454,19 +460,7 @@ class StoryTellerManager(
         }
     }
 
-    private fun revertDelete(deleteInfo: Action.DeleteStory): StoryState {
-        val newStory = contentHandler.addNewContent(
-            _currentStory.value.stories,
-            deleteInfo.storyStep,
-            deleteInfo.position
-        )
 
-        return StoryState(
-            stories = newStory,
-            lastEdit = LastEdit.Whole,
-            focusId = deleteInfo.storyStep.id
-        )
-    }
 
     private fun cancelSelection() {
         _positionsOnEdit.value = emptySet()

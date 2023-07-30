@@ -33,7 +33,7 @@ internal class PerStateBackstackManager(
         //Todo: Change all the -> state
         return when (val action = previousAction()) {
             is BackstackAction.BulkDelete -> state
-            is BackstackAction.Delete -> state
+            is BackstackAction.Delete -> revertDelete(state, action)
             is BackstackAction.Merge -> state
             is BackstackAction.Move -> state
             is BackstackAction.StoryStateChange -> revertStoryState(state, action)
@@ -119,6 +119,20 @@ internal class PerStateBackstackManager(
             textEditCount = 1
             backStack.addAndNotify(action)
         }
+    }
+
+    private fun revertDelete(storyState: StoryState, delete: BackstackAction.Delete): StoryState {
+        val newStory = contentHandler.addNewContent(
+            storyState.stories,
+            delete.storyStep,
+            delete.position
+        )
+
+        return StoryState(
+            stories = newStory,
+            lastEdit = LastEdit.Whole,
+            focusId = delete.storyStep.id
+        )
     }
 
 }
