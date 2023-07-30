@@ -42,8 +42,8 @@ internal class PerStateBackstackManager(
         return when (val action = previousAction()) {
             is BackstackAction.BulkDelete -> revertBulkDelete(state, action)
             is BackstackAction.Delete -> revertDelete(state, action)
-            is BackstackAction.Merge -> state
-            is BackstackAction.Move -> state
+            is BackstackAction.Merge -> state //Todo
+            is BackstackAction.Move -> state //Todo
             is BackstackAction.StoryStateChange -> revertStoryState(state, action)
             is BackstackAction.StoryTextChange -> revertStoryState(state, action)
             is BackstackAction.Add -> revertAddStory(state, action)
