@@ -50,7 +50,7 @@ internal class PerStateBackstackManager(
             }
 
             is BackstackAction.Add -> {
-                forwardStack.keepState(state, action)
+                forwardStack.add(action)
                 revertAddStory(state, action)
             }
         }.also {
@@ -76,7 +76,7 @@ internal class PerStateBackstackManager(
             }
 
             is BackstackAction.Add -> {
-                backStack.keepState(state, action)
+                backStack.add(action)
                 revertDelete(state, action.storyStep, action.position)
             }
         }.also {
@@ -85,7 +85,10 @@ internal class PerStateBackstackManager(
         }
     }
 
-    private fun Stack<BackstackAction>.keepState(state: StoryState, action: SingleAction) {
+    private fun Stack<BackstackAction>.keepState(
+        state: StoryState,
+        action: SingleAction,
+    ) {
         state.stories[action.position]?.let { storyStep ->
             this.add(
                 BackstackAction.StoryStateChange(
@@ -199,7 +202,7 @@ internal class PerStateBackstackManager(
         addStoryUnit: BackstackAction.Add
     ): StoryState =
         contentHandler.deleteStory(
-            Action.DeleteStory(addStoryUnit.storyStep, position = addStoryUnit.position + 2),
+            Action.DeleteStory(addStoryUnit.storyStep, position = addStoryUnit.position),
             storyState.stories
         ) ?: storyState
 

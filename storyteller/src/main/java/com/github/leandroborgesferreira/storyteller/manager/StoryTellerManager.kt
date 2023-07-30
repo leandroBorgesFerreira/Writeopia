@@ -329,9 +329,9 @@ class StoryTellerManager(
         coroutineScope.launch(dispatcher) {
             contentHandler.onLineBreak(_currentStory.value.stories, lineBreak)
                 ?.let { (info, newState) ->
+                    val (newPosition, newStory) = info
                     // Todo: Fix this when the inner position are completed
-                    backStackManager.addAction(lineBreak.toBackStack())
-
+                    backStackManager.addAction(BackstackAction.Add(newStory, newPosition))
                     _currentStory.value = newState
                     _scrollToPosition.value = info.first
                 }
