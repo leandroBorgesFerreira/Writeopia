@@ -414,29 +414,6 @@ class StoryTellerManager(
         }
     }
 
-    private fun revertAddText(currentStory: Map<Int, StoryStep>, addText: Action.AddText) {
-        val mutableSteps = currentStory.toMutableMap()
-        val revertStep = currentStory[addText.position]
-        val currentText = revertStep?.text
-
-        if (!currentText.isNullOrEmpty()) {
-            val newText = if (currentText.length <= addText.text.length) {
-                ""
-            } else {
-                currentText.substring(currentText.length - addText.text.length)
-            }
-
-            mutableSteps[addText.position] =
-                revertStep.copy(localId = UUID.randomUUID().toString(), text = newText)
-
-            _currentStory.value = StoryState(
-                mutableSteps,
-                lastEdit = LastEdit.Whole,
-                focusId = revertStep.id
-            )
-        }
-    }
-
     private fun redoAddText(currentStory: Map<Int, StoryStep>, addText: Action.AddText) {
         val position = addText.position
         val mutableSteps = currentStory.toMutableMap()
