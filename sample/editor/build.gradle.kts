@@ -38,6 +38,14 @@ android {
     }
 }
 
+kotlin{
+    sourceSets.all {
+        languageSettings {
+            languageVersion = "1.9"
+        }
+    }
+}
+
 dependencies {
     implementation(project(":storyteller"))
     implementation(project(":storyteller_persistence"))

@@ -39,6 +39,14 @@ android {
     }
 }
 
+kotlin{
+    sourceSets.all {
+        languageSettings {
+            languageVersion = "1.9"
+        }
+    }
+}
+
 dependencies {
     implementation(libs.appCompat)
     implementation(libs.material)

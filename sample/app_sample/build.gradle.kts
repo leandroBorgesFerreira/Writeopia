@@ -43,7 +43,7 @@ android {
 kotlin{
     sourceSets.all {
         languageSettings {
-            languageVersion = "1.8"
+            languageVersion = "1.9"
         }
     }
 }
