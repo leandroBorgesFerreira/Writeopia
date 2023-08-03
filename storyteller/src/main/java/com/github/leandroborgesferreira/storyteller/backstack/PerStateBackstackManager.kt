@@ -190,7 +190,6 @@ internal class PerStateBackstackManager(
         return StoryState(
             stories,
             LastEdit.LineEdition(position, storyStep),
-            focusId = storyStep.id
         )
     }
 
@@ -226,7 +225,6 @@ internal class PerStateBackstackManager(
         return StoryState(
             stories = newStory,
             lastEdit = LastEdit.Whole,
-            focusId = storyStep.id
         )
     }
 

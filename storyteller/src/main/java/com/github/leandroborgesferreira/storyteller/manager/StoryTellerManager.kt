@@ -247,10 +247,12 @@ class StoryTellerManager(
     /**
      * At the moment it is only possible to check items not inside groups. Todo: Fix it!
      */
-    fun checkRequest(stateChange: Action.StoryStateChange) {
+    fun changeStoryState(stateChange: Action.StoryStateChange) {
         if (isOnSelection) {
             cancelSelection()
         }
+
+        val oldStory = _currentStory.value.stories[stateChange.position] ?: return
 
         contentHandler.changeStoryStepState(
             _currentStory.value.stories,
@@ -258,7 +260,12 @@ class StoryTellerManager(
             stateChange.position
         )?.let { state ->
             _currentStory.value = state
-            backStackManager.addAction(stateChange.toBackStack())
+            backStackManager.addAction(
+                BackstackAction.StoryStateChange(
+                    storyStep = oldStory,
+                    position = stateChange.position
+                )
+            )
         }
     }
 
@@ -268,10 +275,6 @@ class StoryTellerManager(
         }
 
         _currentStory.value = contentHandler.createCheckItem(_currentStory.value.stories, position)
-    }
-
-    fun changeStoryState() {
-
     }
 
     fun onTextEdit(text: String, position: Int) {
@@ -304,22 +307,6 @@ class StoryTellerManager(
             newMap[position] = newStory
             _currentStory.value = StoryState(newMap, LastEdit.InfoEdition(position, newStory))
             backStackManager.addAction(BackstackAction.StoryStateChange(newStory, position))
-        }
-    }
-
-    fun headerColorSelection(color: Int?) {
-        if (isOnSelection) {
-            cancelSelection()
-        }
-
-        val currentStory = _currentStory.value.stories
-        val newStory =
-            _currentStory.value.stories[0]?.copy(decoration = Decoration(backgroundColor = color))
-
-        if (newStory != null) {
-            contentHandler.changeStoryStepState(currentStory, newStory, 0)?.let { newState ->
-                _currentStory.value = newState
-            }
         }
     }
 

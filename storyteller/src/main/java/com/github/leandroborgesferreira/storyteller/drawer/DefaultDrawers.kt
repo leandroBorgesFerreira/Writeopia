@@ -41,7 +41,7 @@ object DefaultDrawers {
             onLineBreak = manager::onLineBreak,
             mergeRequest = manager::mergeRequest,
             moveRequest = manager::moveRequest,
-            checkRequest = manager::checkRequest,
+            checkRequest = manager::changeStoryState,
             onDeleteRequest = manager::onDelete,
             createCheckItem = manager::createCheckItem,
             nextFocus = manager::nextFocusOrCreate,
