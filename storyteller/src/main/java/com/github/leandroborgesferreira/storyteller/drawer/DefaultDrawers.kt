@@ -59,7 +59,7 @@ object DefaultDrawers {
         onLineBreak: (Action.LineBreak) -> Unit,
         mergeRequest: (Action.Merge) -> Unit = { },
         moveRequest: (Action.Move) -> Unit = { },
-        checkRequest: (Action.Check) -> Unit = { },
+        checkRequest: (Action.StoryStateChange) -> Unit = { },
         onDeleteRequest: (Action.DeleteStory) -> Unit,
         createCheckItem: (Int) -> Unit,
         onSelected: (Boolean, Int) -> Unit,

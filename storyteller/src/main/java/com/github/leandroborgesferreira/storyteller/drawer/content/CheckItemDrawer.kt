@@ -45,7 +45,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 
 class CheckItemDrawer(
-    private val onCheckedChange: (Action.Check) -> Unit = {},
+    private val onCheckedChange: (Action.StoryStateChange) -> Unit = {},
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
     private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
     private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
@@ -114,7 +114,12 @@ class CheckItemDrawer(
                                     modifier = Modifier.padding(6.dp),
                                     checked = step.checked ?: false,
                                     onCheckedChange = { checked ->
-                                        onCheckedChange(Action.Check(step, drawInfo.position, checked))
+                                        onCheckedChange(
+                                            Action.StoryStateChange(
+                                                step.copy(checked = checked),
+                                                drawInfo.position
+                                            )
+                                        )
                                     },
                                     enabled = drawInfo.editable,
                                 )

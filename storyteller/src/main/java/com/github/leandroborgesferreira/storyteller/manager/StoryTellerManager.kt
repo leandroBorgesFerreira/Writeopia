@@ -247,21 +247,18 @@ class StoryTellerManager(
     /**
      * At the moment it is only possible to check items not inside groups. Todo: Fix it!
      */
-    fun checkRequest(check: Action.Check) {
+    fun checkRequest(stateChange: Action.StoryStateChange) {
         if (isOnSelection) {
             cancelSelection()
         }
 
-        val storyUnit = check.storyStep
-        val newStep = (storyUnit as? StoryStep)?.copy(checked = check.checked) ?: return
-
         contentHandler.changeStoryStepState(
             _currentStory.value.stories,
-            newStep,
-            check.position
+            stateChange.storyStep,
+            stateChange.position
         )?.let { state ->
             _currentStory.value = state
-            backStackManager.addAction(check.toBackStack())
+            backStackManager.addAction(stateChange.toBackStack())
         }
     }
 
@@ -271,6 +268,10 @@ class StoryTellerManager(
         }
 
         _currentStory.value = contentHandler.createCheckItem(_currentStory.value.stories, position)
+    }
+
+    fun changeStoryState() {
+
     }
 
     fun onTextEdit(text: String, position: Int) {
