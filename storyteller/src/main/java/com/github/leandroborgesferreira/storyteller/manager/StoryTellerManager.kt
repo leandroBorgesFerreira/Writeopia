@@ -240,7 +240,12 @@ class StoryTellerManager(
         val newStory = movementHandler.move(_currentStory.value.stories, move)
         _currentStory.value = StoryState(newStory, lastEdit = LastEdit.Whole)
 
-        backStackManager.addAction(move.toBackStack())
+        val backStackAction = BackstackAction.Move(
+            storyStep = move.storyStep,
+            positionFrom = move.positionFrom,
+            positionTo = move.positionTo
+        )
+        backStackManager.addAction(backStackAction)
     }
 
     /**
@@ -383,7 +388,12 @@ class StoryTellerManager(
                 _currentStory.value = newState
             }
 
-            backStackManager.addAction(deleteStory.toBackStack())
+            val backstackAction = BackstackAction.Delete(
+                storyStep = deleteStory.storyStep,
+                position = deleteStory.position
+            )
+
+            backStackManager.addAction(backstackAction)
         }
     }
 
