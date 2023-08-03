@@ -7,6 +7,8 @@ import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
 import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
+import com.github.leandroborgesferreira.storyteller.model.action.Action
+import com.github.leandroborgesferreira.storyteller.model.story.Decoration
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.utils.extensions.noContent
@@ -103,7 +105,17 @@ class NoteEditorViewModel(
 
     fun onHeaderColorSelection(color: Int?) {
         onHeaderEditionCancel()
-        storyTellerManager.headerColorSelection(color)
+        storyTellerManager.currentStory.value.stories[0]?.let { storyStep ->
+            val action = Action.StoryStateChange(
+                storyStep = storyStep.copy(
+                    decoration = Decoration(
+                        backgroundColor = color
+                    )
+                ),
+                position = 0
+            )
+            storyTellerManager.changeStoryState(action)
+        }
     }
 
     fun onHeaderEditionCancel() {

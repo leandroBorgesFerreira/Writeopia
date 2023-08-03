@@ -1,7 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.drawer
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,12 +21,8 @@ import com.github.leandroborgesferreira.storyteller.drawer.content.VideoDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.SpaceDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.TitleDrawer
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
-import com.github.leandroborgesferreira.storyteller.model.change.CheckInfo
-import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
-import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
-import com.github.leandroborgesferreira.storyteller.model.change.MergeInfo
-import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 
 object DefaultDrawers {
@@ -46,7 +41,7 @@ object DefaultDrawers {
             onLineBreak = manager::onLineBreak,
             mergeRequest = manager::mergeRequest,
             moveRequest = manager::moveRequest,
-            checkRequest = manager::checkRequest,
+            checkRequest = manager::changeStoryState,
             onDeleteRequest = manager::onDelete,
             createCheckItem = manager::createCheckItem,
             nextFocus = manager::nextFocusOrCreate,
@@ -61,11 +56,11 @@ object DefaultDrawers {
         editable: Boolean = false,
         onTextEdit: (String, Int) -> Unit,
         onTitleEdit: (String, Int) -> Unit,
-        onLineBreak: (LineBreakInfo) -> Unit,
-        mergeRequest: (MergeInfo) -> Unit = { },
-        moveRequest: (MoveInfo) -> Unit = { },
-        checkRequest: (CheckInfo) -> Unit = { },
-        onDeleteRequest: (DeleteInfo) -> Unit,
+        onLineBreak: (Action.LineBreak) -> Unit,
+        mergeRequest: (Action.Merge) -> Unit = { },
+        moveRequest: (Action.Move) -> Unit = { },
+        checkRequest: (Action.StoryStateChange) -> Unit = { },
+        onDeleteRequest: (Action.DeleteStory) -> Unit,
         createCheckItem: (Int) -> Unit,
         onSelected: (Boolean, Int) -> Unit,
         clickAtTheEnd: () -> Unit,
@@ -78,7 +73,7 @@ object DefaultDrawers {
             val textCommandHandlerMessage = TextCommandHandler(
                 mapOf(
                     "\n" to { storyStep, position ->
-                        onLineBreak(LineBreakInfo(storyStep, position))
+                        onLineBreak(Action.LineBreak(storyStep, position))
                     },
                     "-[]" to { _, position ->
                         createCheckItem(position)
@@ -89,7 +84,7 @@ object DefaultDrawers {
             val textCommandHandlerCheckItem = TextCommandHandler(
                 mapOf(
                     "\n" to { storyStep, position ->
-                        onLineBreak(LineBreakInfo(storyStep, position))
+                        onLineBreak(Action.LineBreak(storyStep, position))
                     },
                 )
             )

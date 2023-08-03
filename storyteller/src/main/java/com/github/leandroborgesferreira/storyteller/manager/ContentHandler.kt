@@ -1,7 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
-import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
@@ -13,7 +12,7 @@ import com.github.leandroborgesferreira.storyteller.utils.iterables.MapOperation
 import java.util.UUID
 
 /**
- * Class dedicated to handle adding and/or deleting new StorySteps
+ * Class dedicated to handle adding, deleting or changing StorySteps
  */
 class ContentHandler(
     private val focusableTypes: Set<String> = setOf(
@@ -26,6 +25,20 @@ class ContentHandler(
     ),
     private val stepsNormalizer: UnitsNormalizationMap
 ) {
+
+    fun changeStoryStepState(
+        currentStory: Map<Int, StoryStep>,
+        newState: StoryStep,
+        position: Int
+    ): StoryState? {
+        return if (currentStory[position] != null) {
+            val newMap = currentStory.toMutableMap()
+            newMap[position] = newState
+            StoryState(newMap, LastEdit.LineEdition(position, newState), null)
+        } else {
+            null
+        }
+    }
 
     fun createCheckItem(currentStory: Map<Int, StoryStep>, position: Int): StoryState {
         val newMap = currentStory.toMutableMap()
@@ -60,7 +73,7 @@ class ContentHandler(
 
     fun onLineBreak(
         currentStory: Map<Int, StoryStep>,
-        lineBreakInfo: LineBreakInfo
+        lineBreakInfo: Action.LineBreak
     ): Pair<Pair<Int, StoryStep>, StoryState>? {
         val storyStep = lineBreakInfo.storyStep
 
@@ -100,8 +113,8 @@ class ContentHandler(
         }
     }
 
-    fun deleteStory(deleteInfo: DeleteInfo, history: Map<Int, StoryStep>): StoryState? {
-        val step = deleteInfo.storyUnit
+    fun deleteStory(deleteInfo: Action.DeleteStory, history: Map<Int, StoryStep>): StoryState? {
+        val step = deleteInfo.storyStep
         val parentId = step.parentId
         val mutableSteps = history.toMutableMap()
 

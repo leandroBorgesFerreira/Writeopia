@@ -14,11 +14,11 @@ import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DropTarget
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
-import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
 class LargeEmptySpace(
-    private val moveRequest: (MoveInfo) -> Unit = {},
+    private val moveRequest: (Action.Move) -> Unit = {},
     private val click: () -> Unit = {}
 ) : StoryStepDrawer {
 
@@ -27,7 +27,7 @@ class LargeEmptySpace(
         DropTarget { inBound, data ->
             if (inBound && data != null) {
                 moveRequest(
-                    MoveInfo(
+                    Action.Move(
                         data.storyUnit,
                         positionFrom = data.positionFrom,
                         positionTo = drawInfo.position - 1

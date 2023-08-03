@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyErase
-import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
@@ -41,7 +41,7 @@ class MessageDrawer(
     private val containerModifier: Modifier = Modifier,
     private val innerContainerModifier: Modifier = Modifier,
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
-    private val onDeleteRequest: (DeleteInfo) -> Unit = {},
+    private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     private val customBackgroundColor: Color? = null,
@@ -86,7 +86,7 @@ class MessageDrawer(
                             .focusRequester(focusRequester)
                             .fillMaxWidth()
                             .callOnEmptyErase(inputText.selection) {
-                                onDeleteRequest(DeleteInfo(step, drawInfo.position))
+                                onDeleteRequest(Action.DeleteStory(step, drawInfo.position))
                             },
                         value = inputText,
                         onValueChange = { value ->

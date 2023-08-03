@@ -1,8 +1,9 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import com.github.leandroborgesferreira.storyteller.model.change.MergeInfo
-import com.github.leandroborgesferreira.storyteller.model.change.MoveInfo
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
+import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizationMap
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 
 /**
@@ -10,9 +11,9 @@ import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
  * Story to another position, when a Story is grouped together with another one and when a
  * Story is separated from a group.
  */
-class MovementHandler {
+class MovementHandler(private val stepsNormalizer: UnitsNormalizationMap) {
 
-    fun merge(stories: Map<Int, StoryStep>, info: MergeInfo): Map<Int, List<StoryStep>> {
+    fun merge(stories: Map<Int, StoryStep>, info: Action.Merge): Map<Int, List<StoryStep>> {
         val sender = info.sender
         val receiver = info.receiver
         val positionTo = info.positionTo
@@ -42,27 +43,31 @@ class MovementHandler {
         return mutableHistory
     }
 
-    fun move(stories: Map<Int, StoryStep>, moveInfo: MoveInfo): Map<Int, StoryStep> {
+    fun move(stories: Map<Int, StoryStep>, move: Action.Move): Map<Int, StoryStep> {
         val mutable = stories.toMutableMap()
-        if (mutable[moveInfo.positionTo]?.type != "space") throw IllegalStateException()
+        if (mutable[move.positionTo]?.type != "space") throw IllegalStateException(
+            "You can only move a story to an empty space"
+        )
 
-        return mutable[moveInfo.positionFrom]?.let { moveStory ->
-            mutable[moveInfo.positionTo] = moveStory.copy(parentId = null)
+        val movedStories = mutable[move.positionFrom]?.let { moveStory ->
+            mutable[move.positionTo] = moveStory.copy(parentId = null)
 
-            if (moveInfo.storyUnit.parentId == null) {
-                mutable.remove(moveInfo.positionFrom)
+            if (move.storyStep.parentId == null) {
+                mutable.remove(move.positionFrom)
             } else {
-                val fromGroup = mutable[moveInfo.positionFrom]
+                val fromGroup = mutable[move.positionFrom]
                 val newList = fromGroup?.steps?.filter { storyUnit ->
-                    storyUnit.localId != moveInfo.storyUnit.localId
+                    storyUnit.localId != move.storyStep.localId
                 }
 
                 if (newList != null) {
-                    mutable[moveInfo.positionFrom] = fromGroup.copy(steps = newList)
+                    mutable[move.positionFrom] = fromGroup.copy(steps = newList)
                 }
             }
 
             mutable
         } ?: stories
+
+        return stepsNormalizer(movedStories.toEditState())
     }
 }

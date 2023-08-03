@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
-import com.github.leandroborgesferreira.storyteller.model.change.DeleteInfo
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
 /**
@@ -29,7 +29,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
  */
 class CommandsDecoratorDrawer(
     private val innerStepDrawer: StoryStepDrawer,
-    private val onDelete: (DeleteInfo) -> Unit = {}
+    private val onDelete: (Action.DeleteStory) -> Unit = {}
 ) : StoryStepDrawer {
 
     @Composable
@@ -50,7 +50,7 @@ class CommandsDecoratorDrawer(
                 .buttonModifier()
                 .align(Alignment.TopStart)
         ) {
-            IconButton(onClick = { onDelete(DeleteInfo(step, position)) }) {
+            IconButton(onClick = { onDelete(Action.DeleteStory(step, position)) }) {
                 Icon(
                     imageVector = Icons.Outlined.Close,
                     contentDescription = "",

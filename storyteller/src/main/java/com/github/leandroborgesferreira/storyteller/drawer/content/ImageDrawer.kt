@@ -28,17 +28,17 @@ import com.github.leandroborgesferreira.storyteller.draganddrop.target.DropTarge
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.change.MergeInfo
 import com.github.leandroborgesferreira.storyteller.model.draganddrop.DropInfo
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 
 /**
  * Draws a image. Uses Coil to parse the image.
  */
 class ImageDrawer(
     private val containerModifier: (Boolean) -> Modifier? = { null },
-    private val mergeRequest: (MergeInfo) -> Unit = { }
+    private val mergeRequest: (Action.Merge) -> Unit = { }
 ) : StoryStepDrawer {
 
     @Composable
@@ -46,7 +46,7 @@ class ImageDrawer(
         DropTarget(modifier = Modifier.padding(horizontal = 6.dp)) { inBound, data ->
             if (inBound && data != null) {
                 mergeRequest(
-                    MergeInfo(
+                    Action.Merge(
                         receiver = step,
                         sender = data.storyUnit,
                         positionFrom = data.positionFrom,

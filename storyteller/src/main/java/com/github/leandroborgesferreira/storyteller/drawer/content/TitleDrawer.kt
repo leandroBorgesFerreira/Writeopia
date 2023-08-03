@@ -2,7 +2,6 @@ package com.github.leandroborgesferreira.storyteller.drawer.content
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
@@ -30,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.R
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
-import com.github.leandroborgesferreira.storyteller.model.change.LineBreakInfo
+import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.utils.ui.transparentTextInputColors
@@ -46,7 +45,7 @@ class TitleDrawer(
     private val containerModifier: Modifier = Modifier,
     private val innerContainerModifier: Modifier = Modifier,
     private val onTextEdit: (String, Int) -> Unit,
-    private val onLineBreak: (LineBreakInfo) -> Unit,
+    private val onLineBreak: (Action.LineBreak) -> Unit,
 ) : StoryStepDrawer {
 
     @Composable
@@ -85,7 +84,7 @@ class TitleDrawer(
                     value = inputText,
                     onValueChange = { value ->
                         if (value.text.contains("\n")) {
-                            onLineBreak(LineBreakInfo(step, drawInfo.position))
+                            onLineBreak(Action.LineBreak(step, drawInfo.position))
                         } else {
                             inputText = value
                             onTextEdit(value.text, drawInfo.position)
