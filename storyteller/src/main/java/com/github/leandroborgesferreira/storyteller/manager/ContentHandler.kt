@@ -33,7 +33,7 @@ class ContentHandler(
     ): StoryState? {
         return if (currentStory[position] != null) {
             val newMap = currentStory.toMutableMap()
-            newMap[position] = newState.copyNewLocalId()
+            newMap[position] = newState
             StoryState(newMap, LastEdit.LineEdition(position, newState), null)
         } else {
             null
