@@ -41,25 +41,25 @@ class MovementHandler {
         return mutableHistory
     }
 
-    fun move(stories: Map<Int, StoryStep>, moveInfo: Action.Move): Map<Int, StoryStep> {
+    fun move(stories: Map<Int, StoryStep>, move: Action.Move): Map<Int, StoryStep> {
         val mutable = stories.toMutableMap()
-        if (mutable[moveInfo.positionTo]?.type != "space") throw IllegalStateException(
+        if (mutable[move.positionTo]?.type != "space") throw IllegalStateException(
             "You can only move a story to an empty space"
         )
 
-        return mutable[moveInfo.positionFrom]?.let { moveStory ->
-            mutable[moveInfo.positionTo] = moveStory.copy(parentId = null)
+        return mutable[move.positionFrom]?.let { moveStory ->
+            mutable[move.positionTo] = moveStory.copy(parentId = null)
 
-            if (moveInfo.storyStep.parentId == null) {
-                mutable.remove(moveInfo.positionFrom)
+            if (move.storyStep.parentId == null) {
+                mutable.remove(move.positionFrom)
             } else {
-                val fromGroup = mutable[moveInfo.positionFrom]
+                val fromGroup = mutable[move.positionFrom]
                 val newList = fromGroup?.steps?.filter { storyUnit ->
-                    storyUnit.localId != moveInfo.storyStep.localId
+                    storyUnit.localId != move.storyStep.localId
                 }
 
                 if (newList != null) {
-                    mutable[moveInfo.positionFrom] = fromGroup.copy(steps = newList)
+                    mutable[move.positionFrom] = fromGroup.copy(steps = newList)
                 }
             }
 

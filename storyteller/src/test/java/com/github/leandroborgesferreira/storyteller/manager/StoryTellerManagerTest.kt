@@ -344,15 +344,20 @@ class StoryTellerManagerTest {
     }
 
     @Test
-    fun `it should be possible to switch images places`() = runTest {
+    fun `it should be possible to switch message places`() = runTest {
+        val simpleMessagesRepo: StoriesRepository = object : StoriesRepository {
+            override suspend fun history(): Map<Int, StoryStep> = MapStoryData.simpleMessages()
+        }
+
+
         val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-        storyManager.initDocument(Document(content = imagesInLineRepo.history()))
+        storyManager.initDocument(Document(content = simpleMessagesRepo.history()))
 
         val positionFrom = 0
         val positionTo = 3
 
         val currentStory = storyManager.currentStory.value.stories
-        val storyUnitToMove = currentStory[0]!!
+        val storyUnitToMove = currentStory[positionFrom]!!
 
         storyManager.moveRequest(Action.Move(storyUnitToMove, positionFrom, positionTo))
 
@@ -360,9 +365,35 @@ class StoryTellerManagerTest {
 
         assertEquals(
             "The first story should have been moved",
-            newStory[positionTo]!!.id,
-            storyUnitToMove.id
+            newStory[positionTo]!!.text,
+            storyUnitToMove.text
         )
+    }
+
+    @Test
+    fun `it should be possible to revert move`() = runTest {
+        val simpleMessagesRepo: StoriesRepository = object : StoriesRepository {
+            override suspend fun history(): Map<Int, StoryStep> = MapStoryData.simpleMessages()
+        }
+
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
+
+        storyManager.initDocument(Document(content = simpleMessagesRepo.history()))
+
+        val positionFrom = 2
+        val positionTo = 5
+
+        val currentStory = storyManager.currentStory.value.stories
+        val storyUnitToMove = currentStory[positionFrom]!!
+
+        storyManager.moveRequest(Action.Move(storyUnitToMove, positionFrom, positionTo))
+        storyManager.undo()
+
+        val oldIds = currentStory.mapValues { (_, storyStep) -> storyStep.text }
+        val newIds =
+            storyManager.currentStory.value.stories.mapValues { (_, storyStep) -> storyStep.text }
+
+        assertEquals(oldIds, newIds)
     }
 
     @Test

@@ -47,6 +47,7 @@ internal class PerStateBackstackManager(
             }
 
             is BackstackAction.Merge -> state //Todo
+
             is BackstackAction.Move -> {
                 forwardStack.add(action)
 
@@ -55,7 +56,6 @@ internal class PerStateBackstackManager(
                 StoryState(
                     stories = newStories,
                     lastEdit = LastEdit.Whole,
-                    focusId = action.storyStep.id
                 )
             }
 
@@ -244,7 +244,7 @@ internal class PerStateBackstackManager(
     private fun BackstackAction.Move.revertMove(): Action.Move =
         Action.Move(
             storyStep = storyStep,
-            positionFrom = positionTo,
+            positionFrom = positionTo - 1,
             positionTo = maxOf(positionFrom - 1, 0)
         )
 }

@@ -241,7 +241,6 @@ class StoryTellerManager(
         val newStory = movementHandler.move(_currentStory.value.stories, move)
         _currentStory.value = StoryState(
             stepsNormalizer(newStory.toEditState()),
-
             lastEdit = LastEdit.Whole
         )
 
@@ -381,7 +380,9 @@ class StoryTellerManager(
     override fun undo() {
         coroutineScope.launch(dispatcher) {
             cancelSelection()
-            _currentStory.value = backStackManager.previousState(currentStory.value)
+            val revertedState = backStackManager.previousState(currentStory.value)
+            val newStories = stepsNormalizer(revertedState.stories.toEditState())
+            _currentStory.value = revertedState.copy(stories = newStories)
         }
     }
 
