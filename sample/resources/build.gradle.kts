@@ -40,7 +40,7 @@ dependencies {
 kotlin{
     sourceSets.all {
         languageSettings {
-            languageVersion = "1.9"
+            languageVersion = "2.0"
         }
     }
 }
