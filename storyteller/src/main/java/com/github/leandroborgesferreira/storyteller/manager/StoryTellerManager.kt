@@ -37,7 +37,7 @@ class StoryTellerManager(
         StepsMapNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
         },
-    private val movementHandler: MovementHandler = MovementHandler(),
+    private val movementHandler: MovementHandler = MovementHandler(stepsNormalizer),
     private val contentHandler: ContentHandler = ContentHandler(
         focusableTypes = setOf(
             StoryType.CHECK_ITEM.type,
@@ -239,10 +239,7 @@ class StoryTellerManager(
         }
 
         val newStory = movementHandler.move(_currentStory.value.stories, move)
-        _currentStory.value = StoryState(
-            stepsNormalizer(newStory.toEditState()),
-            lastEdit = LastEdit.Whole
-        )
+        _currentStory.value = StoryState(newStory, lastEdit = LastEdit.Whole)
 
         backStackManager.addAction(move.toBackStack())
     }
@@ -380,9 +377,8 @@ class StoryTellerManager(
     override fun undo() {
         coroutineScope.launch(dispatcher) {
             cancelSelection()
-            val revertedState = backStackManager.previousState(currentStory.value)
-            val newStories = stepsNormalizer(revertedState.stories.toEditState())
-            _currentStory.value = revertedState.copy(stories = newStories)
+
+            _currentStory.value = backStackManager.previousState(currentStory.value)
         }
     }
 

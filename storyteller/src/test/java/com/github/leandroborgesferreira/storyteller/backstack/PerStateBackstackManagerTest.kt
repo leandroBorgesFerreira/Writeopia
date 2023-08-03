@@ -1,23 +1,28 @@
 package com.github.leandroborgesferreira.storyteller.backstack
 
 import com.github.leandroborgesferreira.storyteller.manager.ContentHandler
+import com.github.leandroborgesferreira.storyteller.manager.MovementHandler
 import com.github.leandroborgesferreira.storyteller.model.action.BackstackAction
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizationMap
 import org.junit.Assert.*
 import org.junit.Test
 
 class PerStateBackstackManagerTest {
 
+    private val stepsNormalizer: UnitsNormalizationMap = { storyMap ->
+        storyMap.mapValues { (_, storyList) -> storyList[0] }
+    }
+
     private val backstackManager =
         PerStateBackstackManager(
             contentHandler = ContentHandler(
-                stepsNormalizer = { storyMap ->
-                    storyMap.mapValues { (_, storyList) -> storyList[0] }
-                }
+                stepsNormalizer = stepsNormalizer
             ),
+            movementHandler = MovementHandler(stepsNormalizer)
         )
 
     @Test

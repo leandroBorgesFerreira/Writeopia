@@ -2,6 +2,8 @@ package com.github.leandroborgesferreira.storyteller.manager
 
 import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
+import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizationMap
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 
 /**
@@ -9,7 +11,7 @@ import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
  * Story to another position, when a Story is grouped together with another one and when a
  * Story is separated from a group.
  */
-class MovementHandler {
+class MovementHandler(private val stepsNormalizer: UnitsNormalizationMap) {
 
     fun merge(stories: Map<Int, StoryStep>, info: Action.Merge): Map<Int, List<StoryStep>> {
         val sender = info.sender
@@ -47,7 +49,7 @@ class MovementHandler {
             "You can only move a story to an empty space"
         )
 
-        return mutable[move.positionFrom]?.let { moveStory ->
+        val movedStories = mutable[move.positionFrom]?.let { moveStory ->
             mutable[move.positionTo] = moveStory.copy(parentId = null)
 
             if (move.storyStep.parentId == null) {
@@ -65,5 +67,7 @@ class MovementHandler {
 
             mutable
         } ?: stories
+
+        return stepsNormalizer(movedStories.toEditState())
     }
 }
