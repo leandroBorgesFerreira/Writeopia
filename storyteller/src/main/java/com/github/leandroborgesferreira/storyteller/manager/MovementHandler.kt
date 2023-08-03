@@ -43,7 +43,9 @@ class MovementHandler {
 
     fun move(stories: Map<Int, StoryStep>, moveInfo: Action.Move): Map<Int, StoryStep> {
         val mutable = stories.toMutableMap()
-        if (mutable[moveInfo.positionTo]?.type != "space") throw IllegalStateException()
+        if (mutable[moveInfo.positionTo]?.type != "space") throw IllegalStateException(
+            "You can only move a story to an empty space"
+        )
 
         return mutable[moveInfo.positionFrom]?.let { moveStory ->
             mutable[moveInfo.positionTo] = moveStory.copy(parentId = null)

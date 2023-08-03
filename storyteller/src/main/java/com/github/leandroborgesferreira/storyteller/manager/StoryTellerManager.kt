@@ -4,7 +4,6 @@ import android.util.Log
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackManager
-import com.github.leandroborgesferreira.storyteller.backstack.PerStateBackstackManager
 import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.action.BackstackAction
 import com.github.leandroborgesferreira.storyteller.model.document.Document
@@ -52,7 +51,10 @@ class StoryTellerManager(
         SupervisorJob() + Dispatchers.Main.immediate
     ),
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val backStackManager: BackstackManager = BackstackManager.create(contentHandler)
+    private val backStackManager: BackstackManager = BackstackManager.create(
+        contentHandler,
+        movementHandler
+    )
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
@@ -231,16 +233,19 @@ class StoryTellerManager(
         )
     }
 
-    fun moveRequest(moveInfo: Action.Move) {
+    fun moveRequest(move: Action.Move) {
         if (isOnSelection) {
             cancelSelection()
         }
 
-        val newStory = movementHandler.move(_currentStory.value.stories, moveInfo)
+        val newStory = movementHandler.move(_currentStory.value.stories, move)
         _currentStory.value = StoryState(
             stepsNormalizer(newStory.toEditState()),
+
             lastEdit = LastEdit.Whole
         )
+
+        backStackManager.addAction(move.toBackStack())
     }
 
     /**

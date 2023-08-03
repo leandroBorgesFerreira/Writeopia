@@ -1,6 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.backstack
 
 import com.github.leandroborgesferreira.storyteller.manager.ContentHandler
+import com.github.leandroborgesferreira.storyteller.manager.MovementHandler
 import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.action.BackstackAction
 import com.github.leandroborgesferreira.storyteller.model.action.SingleAction
@@ -18,6 +19,7 @@ internal class PerStateBackstackManager(
     //A dynamic value would be better!
     private val textEditLimit: Int = DEFAULT_TEXT_EDIT_LIMIT,
     private val contentHandler: ContentHandler,
+    private val movementHandler: MovementHandler = MovementHandler()
 ) : BackstackManager {
 
     private var lastEditPosition: Int = -1
@@ -38,13 +40,25 @@ internal class PerStateBackstackManager(
                 forwardStack.add(action)
                 revertBulkDelete(state, action)
             }
+
             is BackstackAction.Delete -> {
                 forwardStack.add(action)
                 revertDelete(state, action.storyStep, action.position)
             }
 
             is BackstackAction.Merge -> state //Todo
-            is BackstackAction.Move -> state //Todo
+            is BackstackAction.Move -> {
+                forwardStack.add(action)
+
+                val newStories = movementHandler.move(state.stories, action.revertMove())
+
+                StoryState(
+                    stories = newStories,
+                    lastEdit = LastEdit.Whole,
+                    focusId = action.storyStep.id
+                )
+            }
+
             is BackstackAction.StoryStateChange -> {
                 forwardStack.keepState(state, action)
                 revertStoryState(state, action)
@@ -77,10 +91,12 @@ internal class PerStateBackstackManager(
 
                 StoryState(newStories, LastEdit.Whole)
             }
+
             is BackstackAction.Delete -> {
                 backStack.add(action)
                 revertAddStory(state, action.storyStep, action.position)
             }
+
             is BackstackAction.Merge -> state
             is BackstackAction.Move -> state
             is BackstackAction.StoryStateChange -> {
@@ -102,22 +118,6 @@ internal class PerStateBackstackManager(
             _canUndo.value = backStack.isNotEmpty()
         }
     }
-
-    private fun Stack<BackstackAction>.keepState(
-        state: StoryState,
-        action: SingleAction,
-    ) {
-        state.stories[action.position]?.let { storyStep ->
-            this.add(
-                BackstackAction.StoryStateChange(
-                    storyStep,
-                    action.position
-                )
-            )
-        }
-    }
-
-    internal fun peek(): BackstackAction = backStack.peek()
 
     override fun addAction(action: BackstackAction) {
         forwardStack.clear()
@@ -142,6 +142,22 @@ internal class PerStateBackstackManager(
 
         _canRedo.value = forwardStack.isNotEmpty()
         _canUndo.value = backStack.isNotEmpty()
+    }
+
+    internal fun peek(): BackstackAction = backStack.peek()
+
+    private fun Stack<BackstackAction>.keepState(
+        state: StoryState,
+        action: SingleAction,
+    ) {
+        state.stories[action.position]?.let { storyStep ->
+            this.add(
+                BackstackAction.StoryStateChange(
+                    storyStep,
+                    action.position
+                )
+            )
+        }
     }
 
     private fun previousAction(): BackstackAction = backStack.pop()
@@ -225,4 +241,10 @@ internal class PerStateBackstackManager(
             storyState.stories
         ) ?: storyState
 
+    private fun BackstackAction.Move.revertMove(): Action.Move =
+        Action.Move(
+            storyStep = storyStep,
+            positionFrom = positionTo,
+            positionTo = maxOf(positionFrom - 1, 0)
+        )
 }

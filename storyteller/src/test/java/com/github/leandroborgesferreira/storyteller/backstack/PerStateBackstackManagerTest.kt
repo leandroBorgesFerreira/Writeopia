@@ -17,7 +17,7 @@ class PerStateBackstackManagerTest {
                 stepsNormalizer = { storyMap ->
                     storyMap.mapValues { (_, storyList) -> storyList[0] }
                 }
-            )
+            ),
         )
 
     @Test
@@ -135,5 +135,10 @@ class PerStateBackstackManagerTest {
 
         val newState = backstackManager.nextState(previousState)
         assertEquals(true, newState.stories[0]!!.checked)
+    }
+
+    @Test
+    fun `it should be possible to revert a move action`() {
+        //Todo: Create the test!
     }
 }
