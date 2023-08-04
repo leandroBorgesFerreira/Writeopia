@@ -1,4 +1,4 @@
-package br.com.leandroferreira.app_sample.di
+package com.github.leandroborgesferreira.storytellerapp.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

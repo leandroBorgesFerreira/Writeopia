@@ -1,10 +1,10 @@
-package br.com.leandroferreira.app_sample
+package com.github.leandroborgesferreira.storytellerapp
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.junit4.createComposeRule
-import br.com.leandroferreira.app_sample.navigation.NavigationGraph
-import br.com.leandroferreira.app_sample.robots.DocumentEditRobot
-import br.com.leandroferreira.app_sample.robots.DocumentsMenuRobot
+import com.github.leandroborgesferreira.storytellerapp.navigation.NavigationGraph
+import com.github.leandroborgesferreira.storytellerapp.robots.DocumentEditRobot
+import com.github.leandroborgesferreira.storytellerapp.robots.DocumentsMenuRobot
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import org.junit.Rule
 import org.junit.Test

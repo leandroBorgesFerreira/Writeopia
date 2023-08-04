@@ -1,4 +1,4 @@
-package br.com.leandroferreira.app_sample.theme
+package com.github.leandroborgesferreira.storytellerapp.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

@@ -14,7 +14,7 @@
         android:theme="@style/Theme.StoryTeller"
         tools:targetApi="33">
         <activity
-            android:name=".navigation.NavigationActivity"
+            android:name="com.github.leandroborgesferreira.storytellerapp.navigation.NavigationActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>

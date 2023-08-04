@@ -1,4 +1,4 @@
-package br.com.leandroferreira.app_sample.navigation
+package com.github.leandroborgesferreira.storytellerapp.navigation
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -14,8 +14,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import br.com.leandroferreira.app_sample.di.NotesInjection
-import br.com.leandroferreira.app_sample.theme.ApplicationComposeTheme
+import com.github.leandroborgesferreira.storytellerapp.di.NotesInjection
+import com.github.leandroborgesferreira.storytellerapp.theme.ApplicationComposeTheme
 import br.com.leandroferreira.editor.NoteEditorScreen
 import br.com.leandroferreira.note_menu.ui.screen.menu.ChooseNoteScreen
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase

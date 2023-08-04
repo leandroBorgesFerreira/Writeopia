@@ -1,4 +1,4 @@
-package br.com.leandroferreira.app_sample.robots
+package com.github.leandroborgesferreira.storytellerapp.robots
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeTestRule

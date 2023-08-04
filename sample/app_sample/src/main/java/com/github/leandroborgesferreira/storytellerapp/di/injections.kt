@@ -1,4 +1,4 @@
-package br.com.leandroferreira.app_sample.di
+package com.github.leandroborgesferreira.storytellerapp.di
 
 import android.content.SharedPreferences
 import androidx.compose.runtime.Composable
