@@ -14,12 +14,12 @@ import com.github.leandroborgesferreira.storyteller.drawer.content.CheckItemDraw
 import com.github.leandroborgesferreira.storyteller.drawer.content.HeaderDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.ImageGroupDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.ImageDrawer
-import com.github.leandroborgesferreira.storyteller.drawer.content.ImageDrawer.Companion.defaultModifier
 import com.github.leandroborgesferreira.storyteller.drawer.content.LargeEmptySpace
 import com.github.leandroborgesferreira.storyteller.drawer.content.MessageDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.VideoDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.SpaceDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.TitleDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.content.defaultImageShape
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.command.CommandFactory
@@ -98,12 +98,12 @@ object DefaultDrawers {
             }
 
             val imageDrawer = ImageDrawer(
-                containerModifier = { inBound -> Modifier.defaultModifier(inBound) },
+                containerModifier = Modifier::defaultImageShape,
                 mergeRequest = mergeRequest
             )
 
             val imageDrawerInGroup = ImageDrawer(
-                containerModifier = { inBound -> Modifier.defaultModifier(inBound) },
+                containerModifier = Modifier::defaultImageShape,
                 mergeRequest = mergeRequest
             )
 

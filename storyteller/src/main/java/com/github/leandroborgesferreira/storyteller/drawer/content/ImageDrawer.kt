@@ -55,7 +55,7 @@ class ImageDrawer(
                 )
             }
 
-            val imageModifier = containerModifier(inBound) ?: Modifier.defaultModifier(inBound)
+            val imageModifier = containerModifier(inBound) ?: Modifier.defaultImageShape(inBound)
             val focusRequester = remember { FocusRequester() }
 
             Column(
@@ -97,11 +97,9 @@ class ImageDrawer(
             }
         }
     }
-
-    companion object {
-        fun Modifier.defaultModifier(inBound: Boolean) =
-            clip(shape = RoundedCornerShape(size = 12.dp))
-                .background(if (inBound) Color.LightGray else Color.DarkGray)
-                .border(width = 1.dp, if (inBound) Color.LightGray else Color.DarkGray)
-    }
 }
+
+fun Modifier.defaultImageShape(inBound: Boolean) =
+    clip(shape = RoundedCornerShape(size = 12.dp))
+        .background(if (inBound) Color.LightGray else Color.DarkGray)
+        .border(width = 1.dp, if (inBound) Color.LightGray else Color.DarkGray)
