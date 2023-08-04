@@ -1,16 +1,23 @@
 package com.github.leandroborgesferreira.storyteller.text.edition
 
+import com.github.leandroborgesferreira.storyteller.model.command.Command
+import com.github.leandroborgesferreira.storyteller.model.command.WhereToFind
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 
-class TextCommandHandler(private val commandsMap: Map<String, (StoryStep, Int) -> Unit>) {
+class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) -> Unit>) {
 
     fun handleCommand(text: String, step: StoryStep, position: Int): Boolean {
         //Todo(Leandro): Using a reverse index would improve the speed a lot.
-        val commandKey: String = commandsMap.keys
-            .firstOrNull(text::contains)
+        val command: Command = commandsMap.keys
+            .firstOrNull { command ->
+                when (command.whereToFind) {
+                    WhereToFind.START -> text.startsWith(command.commandText)
+                    WhereToFind.ANYWHERE -> text.contains(command.commandText)
+                }
+            }
             ?: return false
 
-        commandsMap[commandKey]!!.invoke(step.copy(text = text), position)
+        commandsMap[command]!!.invoke(step.copy(text = text), position)
 
         return true
     }

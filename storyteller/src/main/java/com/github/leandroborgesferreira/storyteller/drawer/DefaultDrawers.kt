@@ -22,6 +22,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.content.SpaceDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.TitleDrawer
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.model.action.Action
+import com.github.leandroborgesferreira.storyteller.model.command.CommandFactory
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 
@@ -72,10 +73,10 @@ object DefaultDrawers {
         buildMap {
             val textCommandHandlerMessage = TextCommandHandler(
                 mapOf(
-                    "\n" to { storyStep, position ->
+                    CommandFactory.lineBreak() to { storyStep, position ->
                         onLineBreak(Action.LineBreak(storyStep, position))
                     },
-                    "-[]" to { _, position ->
+                    CommandFactory.checkItem() to { _, position ->
                         createCheckItem(position)
                     }
                 )
@@ -83,7 +84,7 @@ object DefaultDrawers {
 
             val textCommandHandlerCheckItem = TextCommandHandler(
                 mapOf(
-                    "\n" to { storyStep, position ->
+                    CommandFactory.lineBreak() to { storyStep, position ->
                         onLineBreak(Action.LineBreak(storyStep, position))
                     },
                 )
