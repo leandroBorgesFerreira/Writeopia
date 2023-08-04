@@ -16,8 +16,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.github.leandroborgesferreira.storytellerapp.di.NotesInjection
 import com.github.leandroborgesferreira.storytellerapp.theme.ApplicationComposeTheme
-import br.com.leandroferreira.editor.NoteEditorScreen
-import br.com.leandroferreira.note_menu.ui.screen.menu.ChooseNoteScreen
+import com.github.leandroborgesferreira.storytellerapp.editor.NoteEditorScreen
+import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu.ChooseNoteScreen
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.video.VideoFrameConfig
 

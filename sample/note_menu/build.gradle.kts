@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "br.com.leandroferreira.note_menu"
+    namespace = "com.github.leandroborgesferreira.storytellerapp.note_menu"
     compileSdk = 34
 
     defaultConfig {

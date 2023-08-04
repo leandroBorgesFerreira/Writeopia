@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.github.leandroborgesferreira.storyteller.common_ui"
+    namespace = "com.github.leandroborgesferreira.storytellerapp.common_ui"
     compileSdk = 33
 
     defaultConfig {

@@ -4,7 +4,7 @@ plugins {
     id("com.google.devtools.ksp")
 }
 android {
-    namespace = "br.com.leandroferreira.app_sample"
+    namespace = "com.github.leandroborgesferreira.storytellerapp"
     compileSdk = 34
 
     defaultConfig {
