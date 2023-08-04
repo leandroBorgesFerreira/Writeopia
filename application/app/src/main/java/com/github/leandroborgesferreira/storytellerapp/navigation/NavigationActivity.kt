@@ -39,7 +39,7 @@ fun NavigationGraph(
     navController: NavHostController = rememberNavController(),
     database: StoryTellerDatabase = StoryTellerDatabase.database(context),
     sharedPreferences: SharedPreferences = context.getSharedPreferences(
-        "br.com.leandroferreira.storyteller.preferences",
+        "com.github.leandroborgesferreira.storytellerapp.preferences",
         Context.MODE_PRIVATE
     ),
     notesInjection: NotesInjection =  NotesInjection(database, sharedPreferences)

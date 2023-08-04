@@ -9,13 +9,13 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/sample" />
-            <option value="$PROJECT_DIR$/sample/app_sample" />
-            <option value="$PROJECT_DIR$/sample/common_ui" />
-            <option value="$PROJECT_DIR$/sample/editor" />
-            <option value="$PROJECT_DIR$/sample/note_menu" />
-            <option value="$PROJECT_DIR$/sample/resources" />
-            <option value="$PROJECT_DIR$/sample/utils" />
+            <option value="$PROJECT_DIR$/application" />
+            <option value="$PROJECT_DIR$/application/app" />
+            <option value="$PROJECT_DIR$/application/common_ui" />
+            <option value="$PROJECT_DIR$/application/editor" />
+            <option value="$PROJECT_DIR$/application/note_menu" />
+            <option value="$PROJECT_DIR$/application/resources" />
+            <option value="$PROJECT_DIR$/application/utils" />
             <option value="$PROJECT_DIR$/storyteller" />
             <option value="$PROJECT_DIR$/storyteller_persistence" />
           </set>

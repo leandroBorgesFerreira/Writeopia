@@ -1,17 +1,20 @@
 plugins {
-    id("com.android.library")
+    id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
 }
-
 android {
-    namespace = "com.github.leandroborgesferreira.storytellerapp.editor"
+    namespace = "com.github.leandroborgesferreira.storytellerapp"
     compileSdk = 34
 
     defaultConfig {
+        applicationId = "com.github.leandroborgesferreira.storytellerapp"
         minSdk = 24
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -20,8 +23,7 @@ android {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
-            )
-        }
+            )        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -47,24 +49,35 @@ kotlin{
 }
 
 dependencies {
+
     implementation(project(":storyteller"))
     implementation(project(":storyteller_persistence"))
-    implementation(project(":sample:resources"))
-    implementation(project(":sample:utils"))
-    implementation(project(":sample:common_ui"))
 
+    implementation(project(":application:note_menu"))
+    implementation(project(":application:utils"))
+    implementation(project(":application:resources"))
+    implementation(project(":application:editor"))
+
+
+    implementation(libs.androidx.ktx)
     implementation(libs.appCompat)
     implementation(libs.material)
+
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    implementation(libs.room.paging)
+    ksp(libs.room.compiler)
+
+    implementation(libs.coil.compose)
+    implementation(libs.coil.video)
 
     implementation(libs.viewmodel.compose)
     implementation(libs.runtime.compose)
     implementation(libs.navigation.compose)
 
-    implementation("androidx.activity:activity-compose")
     implementation(libs.androidx.material.icons.extended)
 
-    implementation(libs.accompanist.systemuicontroller)
-
+    implementation("androidx.activity:activity-compose")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material3:material3-window-size-class")
 
@@ -77,4 +90,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+//    androidTestImplementation(libs.androidx.ui.test.junit4)
+//    debugImplementation(libs.androidx.ui.test.manifest)
+
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.4.3")
 }

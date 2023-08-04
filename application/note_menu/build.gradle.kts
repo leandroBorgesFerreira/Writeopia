@@ -1,20 +1,17 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
 }
+
 android {
-    namespace = "com.github.leandroborgesferreira.storytellerapp"
+    namespace = "com.github.leandroborgesferreira.storytellerapp.note_menu"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "br.com.leandroferreira.app_sample"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -23,7 +20,8 @@ android {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
-            )        }
+            )
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -49,32 +47,18 @@ kotlin{
 }
 
 dependencies {
-
     implementation(project(":storyteller"))
     implementation(project(":storyteller_persistence"))
-
-    implementation(project(":sample:note_menu"))
-    implementation(project(":sample:utils"))
-    implementation(project(":sample:resources"))
-    implementation(project(":sample:editor"))
+    implementation(project(":application:resources"))
+    implementation(project(":application:utils"))
+    implementation(project(":application:common_ui"))
 
 
-    implementation(libs.androidx.ktx)
     implementation(libs.appCompat)
     implementation(libs.material)
 
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    implementation(libs.room.paging)
-    ksp(libs.room.compiler)
-
-    implementation(libs.coil.compose)
-    implementation(libs.coil.video)
-
     implementation(libs.viewmodel.compose)
     implementation(libs.runtime.compose)
-    implementation(libs.navigation.compose)
-
     implementation(libs.androidx.material.icons.extended)
 
     implementation("androidx.activity:activity-compose")
@@ -90,9 +74,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-//    androidTestImplementation(libs.androidx.ui.test.junit4)
-//    debugImplementation(libs.androidx.ui.test.manifest)
-
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.4.3")
 }

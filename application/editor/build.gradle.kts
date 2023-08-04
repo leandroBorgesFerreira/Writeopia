@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.github.leandroborgesferreira.storytellerapp.note_menu"
+    namespace = "com.github.leandroborgesferreira.storytellerapp.editor"
     compileSdk = 34
 
     defaultConfig {
@@ -49,19 +49,22 @@ kotlin{
 dependencies {
     implementation(project(":storyteller"))
     implementation(project(":storyteller_persistence"))
-    implementation(project(":sample:resources"))
-    implementation(project(":sample:utils"))
-    implementation(project(":sample:common_ui"))
-
+    implementation(project(":application:resources"))
+    implementation(project(":application:utils"))
+    implementation(project(":application:common_ui"))
 
     implementation(libs.appCompat)
     implementation(libs.material)
 
     implementation(libs.viewmodel.compose)
     implementation(libs.runtime.compose)
-    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.navigation.compose)
 
     implementation("androidx.activity:activity-compose")
+    implementation(libs.androidx.material.icons.extended)
+
+    implementation(libs.accompanist.systemuicontroller)
+
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material3:material3-window-size-class")
 
