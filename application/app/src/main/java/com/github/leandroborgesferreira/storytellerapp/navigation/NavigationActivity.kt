@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storytellerapp.navigation
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -20,6 +21,11 @@ import com.github.leandroborgesferreira.storytellerapp.editor.NoteEditorScreen
 import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu.ChooseNoteScreen
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.video.VideoFrameConfig
+import com.github.leandroborgesferreira.storytellerapp.auth.login.LoginScreenBinding
+import com.github.leandroborgesferreira.storytellerapp.auth.login.LoginViewModel
+import com.github.leandroborgesferreira.storytellerapp.auth.menu.AuthMenuScreen
+import com.github.leandroborgesferreira.storytellerapp.auth.register.RegisterScreenBinding
+import com.github.leandroborgesferreira.storytellerapp.auth.register.RegisterViewModel
 
 class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +34,7 @@ class NavigationActivity : AppCompatActivity() {
         VideoFrameConfig.configCoilForVideoFrame(this)
 
         setContent {
-            NavigationGraph()
+            NavigationGraph(application = application)
         }
     }
 }
@@ -42,11 +48,30 @@ fun NavigationGraph(
         "com.github.leandroborgesferreira.storytellerapp.preferences",
         Context.MODE_PRIVATE
     ),
-    notesInjection: NotesInjection =  NotesInjection(database, sharedPreferences)
+    notesInjection: NotesInjection = NotesInjection(database, sharedPreferences),
+    application: Application
 ) {
 
     ApplicationComposeTheme {
-        NavHost(navController = navController, startDestination = Destinations.CHOOSE_NOTE.id) {
+        NavHost(navController = navController, startDestination = Destinations.AUTH_MENU.id) {
+            composable(Destinations.AUTH_MENU.id) {
+                AuthMenuScreen(
+                    navigateToLogin = navController::navigateAuthLogin,
+                    navigateToRegister = navController::navigateAuthRegister,
+                    navigateToApp = navController::navigateToMainMenu,
+                )
+            }
+
+            composable(Destinations.AUTH_REGISTER.id) {
+                val registerViewModel = RegisterViewModel(application)
+                RegisterScreenBinding(registerViewModel)
+            }
+
+            composable(Destinations.AUTH_LOGIN.id) {
+                val loginViewModel = LoginViewModel(application)
+                LoginScreenBinding(loginViewModel)
+            }
+
             composable(Destinations.CHOOSE_NOTE.id) {
                 val chooseNoteViewModel = notesInjection.provideChooseNoteViewModel()
 
@@ -108,9 +133,25 @@ private fun NavController.navigateToNote(id: String, title: String) {
     )
 }
 
+private fun NavController.navigateToMainMenu() {
+    navigate(Destinations.CHOOSE_NOTE.id)
+}
+
 private fun NavController.navigateToNewNote() {
     navigate(
         Destinations.NOTE_DETAILS.id
+    )
+}
+
+private fun NavController.navigateAuthRegister() {
+    navigate(
+        Destinations.AUTH_REGISTER.id
+    )
+}
+
+private fun NavController.navigateAuthLogin() {
+    navigate(
+        Destinations.AUTH_LOGIN.id
     )
 }
 
@@ -123,5 +164,8 @@ private fun NavController.navigateToNoteMenu() {
 enum class Destinations(val id: String) {
     NOTE_DETAILS("note_details"),
     CHOOSE_NOTE("choose_note"),
+    AUTH_REGISTER("auth_register"),
+    AUTH_MENU("auth_menu"),
+    AUTH_LOGIN("auth_login"),
 }
 
