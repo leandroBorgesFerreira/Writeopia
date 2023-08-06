@@ -1,6 +1,5 @@
 package com.github.leandroborgesferreira.storytellerapp.navigation
 
-import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -15,17 +14,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.github.leandroborgesferreira.storytellerapp.di.NotesInjection
-import com.github.leandroborgesferreira.storytellerapp.theme.ApplicationComposeTheme
-import com.github.leandroborgesferreira.storytellerapp.editor.NoteEditorScreen
-import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu.ChooseNoteScreen
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.video.VideoFrameConfig
+import com.github.leandroborgesferreira.storytellerapp.auth.di.AuthInjections
 import com.github.leandroborgesferreira.storytellerapp.auth.login.LoginScreenBinding
-import com.github.leandroborgesferreira.storytellerapp.auth.login.LoginViewModel
 import com.github.leandroborgesferreira.storytellerapp.auth.menu.AuthMenuScreen
 import com.github.leandroborgesferreira.storytellerapp.auth.register.RegisterScreenBinding
-import com.github.leandroborgesferreira.storytellerapp.auth.register.RegisterViewModel
+import com.github.leandroborgesferreira.storytellerapp.di.NotesInjection
+import com.github.leandroborgesferreira.storytellerapp.editor.NoteEditorScreen
+import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu.ChooseNoteScreen
+import com.github.leandroborgesferreira.storytellerapp.theme.ApplicationComposeTheme
 
 class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +32,7 @@ class NavigationActivity : AppCompatActivity() {
         VideoFrameConfig.configCoilForVideoFrame(this)
 
         setContent {
-            NavigationGraph(application = application)
+            NavigationGraph(activity = this)
         }
     }
 }
@@ -42,6 +40,7 @@ class NavigationActivity : AppCompatActivity() {
 @Composable
 fun NavigationGraph(
     context: Context = LocalContext.current,
+    activity: NavigationActivity,
     navController: NavHostController = rememberNavController(),
     database: StoryTellerDatabase = StoryTellerDatabase.database(context),
     sharedPreferences: SharedPreferences = context.getSharedPreferences(
@@ -49,7 +48,7 @@ fun NavigationGraph(
         Context.MODE_PRIVATE
     ),
     notesInjection: NotesInjection = NotesInjection(database, sharedPreferences),
-    application: Application
+    authInjections: AuthInjections = AuthInjections(activity)
 ) {
 
     ApplicationComposeTheme {
@@ -63,12 +62,12 @@ fun NavigationGraph(
             }
 
             composable(Destinations.AUTH_REGISTER.id) {
-                val registerViewModel = RegisterViewModel(application)
+                val registerViewModel = authInjections.provideRegisterViewModel()
                 RegisterScreenBinding(registerViewModel)
             }
 
             composable(Destinations.AUTH_LOGIN.id) {
-                val loginViewModel = LoginViewModel(application)
+                val loginViewModel = authInjections.provideLoginViewModel()
                 LoginScreenBinding(loginViewModel)
             }
 

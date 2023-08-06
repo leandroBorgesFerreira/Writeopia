@@ -1,8 +1,8 @@
 package com.github.leandroborgesferreira.storytellerapp.auth.register
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import com.github.leandroborgesferreira.storytellerapp.navigation.NavigationActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 private const val TAG = "RegisterViewModel"
 
-class RegisterViewModel(application: Application) : AndroidViewModel(application) {
+class RegisterViewModel(private val activity: NavigationActivity) : ViewModel() {
 
     private lateinit var auth: FirebaseAuth
 
@@ -42,7 +42,7 @@ class RegisterViewModel(application: Application) : AndroidViewModel(application
 
     fun onRegister() {
         auth.createUserWithEmailAndPassword(email.value, password.value)
-            .addOnCompleteListener(getApplication()) { task ->
+            .addOnCompleteListener(activity) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser

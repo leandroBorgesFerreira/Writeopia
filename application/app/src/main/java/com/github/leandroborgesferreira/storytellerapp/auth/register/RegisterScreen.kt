@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -17,6 +18,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -84,7 +87,8 @@ fun RegisterScreen(
                 singleLine = true,
                 placeholder = {
                     Text(text = "Email")
-                }
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -96,7 +100,9 @@ fun RegisterScreen(
                 singleLine = true,
                 placeholder = {
                     Text(text = "Password")
-                }
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                visualTransformation = PasswordVisualTransformation(),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -106,7 +112,8 @@ fun RegisterScreen(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.primary)
                     .fillMaxWidth(),
-                onClick = onRegister) {
+                onClick = onRegister
+            ) {
                 Text(text = "Register", color = MaterialTheme.colorScheme.onPrimary)
             }
         }
