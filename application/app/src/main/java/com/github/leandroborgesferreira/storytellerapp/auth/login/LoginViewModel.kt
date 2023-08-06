@@ -50,6 +50,7 @@ class LoginViewModel(private val activity: NavigationActivity) : ViewModel() {
                     _loginState.value = ResultData.Complete(Unit)
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
+
                     Log.d(TAG, "sign in:success. User: ${user?.email}")
                 } else {
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
