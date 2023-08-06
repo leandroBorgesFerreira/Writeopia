@@ -40,6 +40,7 @@ fun ChooseNoteScreen(
     chooseNoteViewModel: ChooseNoteViewModel,
     navigateToNote: (String, String) -> Unit,
     newNote: () -> Unit,
+    logout: () -> Unit,
 ) {
     LaunchedEffect(key1 = "refresh", block = {
         chooseNoteViewModel.requestDocuments(false)
@@ -75,6 +76,7 @@ fun ChooseNoteScreen(
                     navigateToNote = navigateToNote,
                     selectionListener = chooseNoteViewModel::selectionListener,
                     paddingValues = paddingValues,
+                    logout = logout
                 )
             }
 
@@ -144,6 +146,7 @@ private fun Content(
     chooseNoteViewModel: ChooseNoteViewModel,
     navigateToNote: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
+    logout: () -> Unit,
     paddingValues: PaddingValues,
 ) {
     Box(
@@ -154,7 +157,8 @@ private fun Content(
         Notes(
             chooseNoteViewModel = chooseNoteViewModel,
             navigateToNote = navigateToNote,
-            selectionListener = selectionListener
+            selectionListener = selectionListener,
+            logOut = logout
         )
     }
 }

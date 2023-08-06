@@ -24,6 +24,8 @@ import com.github.leandroborgesferreira.storytellerapp.di.NotesInjection
 import com.github.leandroborgesferreira.storytellerapp.editor.NoteEditorScreen
 import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu.ChooseNoteScreen
 import com.github.leandroborgesferreira.storytellerapp.theme.ApplicationComposeTheme
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,12 +65,12 @@ fun NavigationGraph(
 
             composable(Destinations.AUTH_REGISTER.id) {
                 val registerViewModel = authInjections.provideRegisterViewModel()
-                RegisterScreenBinding(registerViewModel)
+                RegisterScreenBinding(registerViewModel, navController::navigateToMainMenu)
             }
 
             composable(Destinations.AUTH_LOGIN.id) {
                 val loginViewModel = authInjections.provideLoginViewModel()
-                LoginScreenBinding(loginViewModel)
+                LoginScreenBinding(loginViewModel, navController::navigateToMainMenu)
             }
 
             composable(Destinations.CHOOSE_NOTE.id) {
@@ -78,6 +80,10 @@ fun NavigationGraph(
                     chooseNoteViewModel = chooseNoteViewModel,
                     navigateToNote = navController::navigateToNote,
                     newNote = navController::navigateToNewNote,
+                    logout = {
+                        Firebase.auth.signOut()
+                        navController.navigateToAuthMenu()
+                    }
                 )
             }
 
@@ -124,40 +130,6 @@ fun NavigationGraph(
             }
         }
     }
-}
-
-private fun NavController.navigateToNote(id: String, title: String) {
-    navigate(
-        "${Destinations.NOTE_DETAILS.id}/$id/$title"
-    )
-}
-
-private fun NavController.navigateToMainMenu() {
-    navigate(Destinations.CHOOSE_NOTE.id)
-}
-
-private fun NavController.navigateToNewNote() {
-    navigate(
-        Destinations.NOTE_DETAILS.id
-    )
-}
-
-private fun NavController.navigateAuthRegister() {
-    navigate(
-        Destinations.AUTH_REGISTER.id
-    )
-}
-
-private fun NavController.navigateAuthLogin() {
-    navigate(
-        Destinations.AUTH_LOGIN.id
-    )
-}
-
-private fun NavController.navigateToNoteMenu() {
-    navigate(
-        Destinations.CHOOSE_NOTE.id
-    )
 }
 
 enum class Destinations(val id: String) {

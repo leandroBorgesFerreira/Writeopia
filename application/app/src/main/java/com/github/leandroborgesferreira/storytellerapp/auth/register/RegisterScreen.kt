@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -23,11 +24,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun RegisterScreenBinding(registerViewModel: RegisterViewModel) {
+fun RegisterScreenBinding(registerViewModel: RegisterViewModel, onRegisterSuccess: () -> Unit) {
     LaunchedEffect(key1 = "registerViewModel", block = {
         registerViewModel.init()
     })
@@ -36,10 +38,12 @@ fun RegisterScreenBinding(registerViewModel: RegisterViewModel) {
         nameState = registerViewModel.name,
         emailState = registerViewModel.email,
         passwordState = registerViewModel.password,
+        registerState = registerViewModel.register,
         nameChanged = registerViewModel::nameChanged,
         emailChanged = registerViewModel::emailChanged,
         passwordChanged = registerViewModel::passwordChanged,
-        onRegister = registerViewModel::onRegister
+        onRegisterRequest = registerViewModel::onRegister,
+        onRegisterSuccess = onRegisterSuccess,
     )
 }
 
@@ -48,10 +52,12 @@ fun RegisterScreen(
     nameState: StateFlow<String>,
     emailState: StateFlow<String>,
     passwordState: StateFlow<String>,
+    registerState: StateFlow<ResultData<Unit>>,
     nameChanged: (String) -> Unit,
     emailChanged: (String) -> Unit,
     passwordChanged: (String) -> Unit,
-    onRegister: () -> Unit
+    onRegisterRequest: () -> Unit,
+    onRegisterSuccess: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -61,60 +67,75 @@ fun RegisterScreen(
         val name by nameState.collectAsStateWithLifecycle()
         val email by emailState.collectAsStateWithLifecycle()
         val password by passwordState.collectAsStateWithLifecycle()
+        val register by registerState.collectAsStateWithLifecycle()
 
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 50.dp)
-                .align(Alignment.Center),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = name,
-                onValueChange = nameChanged,
-                singleLine = true,
-                placeholder = {
-                    Text(text = "Name")
+        when (register) {
+            is ResultData.Complete -> {
+                LaunchedEffect(key1 = "navigation") {
+                    onRegisterSuccess()
                 }
-            )
+            }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            is ResultData.Idle, is ResultData.Error -> {
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 50.dp)
+                        .align(Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = name,
+                        onValueChange = nameChanged,
+                        singleLine = true,
+                        placeholder = {
+                            Text(text = "Name")
+                        }
+                    )
 
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = email,
-                onValueChange = emailChanged,
-                singleLine = true,
-                placeholder = {
-                    Text(text = "Email")
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            )
+                    Spacer(modifier = Modifier.height(8.dp))
 
-            Spacer(modifier = Modifier.height(8.dp))
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = email,
+                        onValueChange = emailChanged,
+                        singleLine = true,
+                        placeholder = {
+                            Text(text = "Email")
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                    )
 
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = password,
-                onValueChange = passwordChanged,
-                singleLine = true,
-                placeholder = {
-                    Text(text = "Password")
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                visualTransformation = PasswordVisualTransformation(),
-            )
+                    Spacer(modifier = Modifier.height(8.dp))
 
-            Spacer(modifier = Modifier.height(8.dp))
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = password,
+                        onValueChange = passwordChanged,
+                        singleLine = true,
+                        placeholder = {
+                            Text(text = "Password")
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                        visualTransformation = PasswordVisualTransformation(),
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
 
 
-            TextButton(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.primary)
-                    .fillMaxWidth(),
-                onClick = onRegister
-            ) {
-                Text(text = "Register", color = MaterialTheme.colorScheme.onPrimary)
+                    TextButton(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.primary)
+                            .fillMaxWidth(),
+                        onClick = onRegisterRequest
+                    ) {
+                        Text(text = "Register", color = MaterialTheme.colorScheme.onPrimary)
+                    }
+                }
+            }
+
+            is ResultData.Loading -> {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }
     }
@@ -127,9 +148,11 @@ fun AuthScreenPreview() {
         nameState = MutableStateFlow(""),
         emailState = MutableStateFlow(""),
         passwordState = MutableStateFlow(""),
+        registerState = MutableStateFlow(ResultData.Idle()),
         nameChanged = {},
         emailChanged = {},
         passwordChanged = {},
-        onRegister = {}
+        onRegisterRequest = {},
+        onRegisterSuccess = {},
     )
 }

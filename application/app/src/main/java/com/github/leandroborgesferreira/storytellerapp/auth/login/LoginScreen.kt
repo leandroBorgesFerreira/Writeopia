@@ -8,28 +8,38 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun LoginScreenBinding(loginViewModel: LoginViewModel) {
+fun LoginScreenBinding(loginViewModel: LoginViewModel, onLoginSuccess: () -> Unit) {
+    loginViewModel.init()
+
     LoginScreen(
         emailState = loginViewModel.email,
         passwordState = loginViewModel.password,
+        loginState = loginViewModel.loginState,
         emailChanged = loginViewModel::emailChanged,
         passwordChanged = loginViewModel::passwordChanged,
-        onLogin = {}
+        onLoginRequest = loginViewModel::onLoginRequest,
+        onLoginSuccess = onLoginSuccess,
     )
 }
 
@@ -37,54 +47,73 @@ fun LoginScreenBinding(loginViewModel: LoginViewModel) {
 fun LoginScreen(
     emailState: StateFlow<String>,
     passwordState: StateFlow<String>,
+    loginState: StateFlow<ResultData<Unit>>,
     emailChanged: (String) -> Unit,
     passwordChanged: (String) -> Unit,
-    onLogin: () -> Unit
+    onLoginRequest: () -> Unit,
+    onLoginSuccess: () -> Unit,
 ) {
+    val email by emailState.collectAsStateWithLifecycle()
+    val password by passwordState.collectAsStateWithLifecycle()
+    val login by loginState.collectAsStateWithLifecycle()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        val email by emailState.collectAsStateWithLifecycle()
-        val password by passwordState.collectAsStateWithLifecycle()
-
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 50.dp)
-                .align(Alignment.Center),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = email,
-                onValueChange = emailChanged,
-                placeholder = {
-                    Text(text = "Email")
+        when (login) {
+            is ResultData.Complete -> {
+                LaunchedEffect(key1 = "navigation") {
+                    onLoginSuccess()
                 }
-            )
+            }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            is ResultData.Idle, is ResultData.Error -> {
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 50.dp)
+                        .align(Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = email,
+                        onValueChange = emailChanged,
+                        placeholder = {
+                            Text(text = "Email")
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                    )
 
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = password,
-                onValueChange = passwordChanged,
-                placeholder = {
-                    Text(text = "Password")
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = password,
+                        onValueChange = passwordChanged,
+                        placeholder = {
+                            Text(text = "Password")
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                        visualTransformation = PasswordVisualTransformation(),
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    TextButton(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.primary)
+                            .fillMaxWidth(),
+                        onClick = onLoginRequest
+                    ) {
+                        Text(text = "Enter", color = MaterialTheme.colorScheme.onPrimary)
+                    }
                 }
-            )
+            }
+            is ResultData.Loading -> {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-
-            TextButton(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.primary)
-                    .fillMaxWidth(),
-                onClick = onLogin
-            ) {
-                Text(text = "Register", color = MaterialTheme.colorScheme.onPrimary)
             }
         }
     }
@@ -96,8 +125,10 @@ fun LoginScreenPreview() {
     LoginScreen(
         emailState = MutableStateFlow(""),
         passwordState = MutableStateFlow(""),
+        loginState = MutableStateFlow(ResultData.Idle()),
         emailChanged = { },
         passwordChanged = { },
-        onLogin = { },
+        onLoginRequest = { },
+        onLoginSuccess = {},
     )
 }

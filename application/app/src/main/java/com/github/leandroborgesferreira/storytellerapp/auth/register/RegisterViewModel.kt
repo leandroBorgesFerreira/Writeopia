@@ -3,6 +3,7 @@ package com.github.leandroborgesferreira.storytellerapp.auth.register
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.github.leandroborgesferreira.storytellerapp.navigation.NavigationActivity
+import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 private const val TAG = "RegisterViewModel"
 
+/* The NavigationActivity won't leak because it is the single activity of the whole project */
 class RegisterViewModel(private val activity: NavigationActivity) : ViewModel() {
 
     private lateinit var auth: FirebaseAuth
@@ -28,6 +30,9 @@ class RegisterViewModel(private val activity: NavigationActivity) : ViewModel() 
     private val _password = MutableStateFlow("")
     val password = _password.asStateFlow()
 
+    private val _register = MutableStateFlow<ResultData<Unit>>(ResultData.Idle())
+    val register = _register.asStateFlow()
+
     fun nameChanged(name: String) {
         _name.value = name
     }
@@ -41,15 +46,17 @@ class RegisterViewModel(private val activity: NavigationActivity) : ViewModel() 
     }
 
     fun onRegister() {
+        _register.value = ResultData.Loading()
+
         auth.createUserWithEmailAndPassword(email.value, password.value)
             .addOnCompleteListener(activity) { task ->
                 if (task.isSuccessful) {
+                    _register.value = ResultData.Complete(Unit)
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
                     Log.d(TAG, "createUserWithEmail:success. User: ${user?.email}")
                 } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                    _register.value = ResultData.Idle()
                 }
             }
     }

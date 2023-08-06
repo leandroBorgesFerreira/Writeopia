@@ -14,5 +14,5 @@ class AuthInjections(private val navigationActivity: NavigationActivity) {
 
     @Composable
     internal fun provideLoginViewModel(): LoginViewModel =
-        viewModel(initializer = { LoginViewModel() })
+        viewModel(initializer = { LoginViewModel(navigationActivity) })
 }

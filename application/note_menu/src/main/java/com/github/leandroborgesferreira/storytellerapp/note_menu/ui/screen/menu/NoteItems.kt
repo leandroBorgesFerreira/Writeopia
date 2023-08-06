@@ -49,6 +49,7 @@ internal fun Notes(
     chooseNoteViewModel: ChooseNoteViewModel,
     navigateToNote: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
+    logOut: () -> Unit,
 ) {
     when (val documents =
         chooseNoteViewModel.documentsState.collectAsStateWithLifecycle().value) {
@@ -57,7 +58,7 @@ internal fun Notes(
                 val data = documents.data
 
                 if (data.isEmpty()) {
-                    MockDataScreen(chooseNoteViewModel)
+                    MockDataScreen(chooseNoteViewModel, logOut)
                 } else {
                     val arrangement by chooseNoteViewModel.notesArrangement
                         .collectAsStateWithLifecycle()
@@ -181,7 +182,10 @@ private fun DocumentItem(
 }
 
 @Composable
-private fun MockDataScreen(chooseNoteViewModel: ChooseNoteViewModel) {
+private fun MockDataScreen(
+    chooseNoteViewModel: ChooseNoteViewModel,
+    logOut: () -> Unit
+) {
     val context = LocalContext.current
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -193,10 +197,13 @@ private fun MockDataScreen(chooseNoteViewModel: ChooseNoteViewModel) {
                 modifier = Modifier.padding(8.dp),
                 text = stringResource(R.string.you_dont_have_notes)
             )
-            Button(onClick = {
-                chooseNoteViewModel.addMockData(context)
-            }) {
+
+            Button(onClick = { chooseNoteViewModel.addMockData(context) }) {
                 Text(text = stringResource(R.string.add_sample_notes))
+            }
+
+            Button(onClick = logOut) {
+                Text(text = stringResource(R.string.logout))
             }
         }
     }

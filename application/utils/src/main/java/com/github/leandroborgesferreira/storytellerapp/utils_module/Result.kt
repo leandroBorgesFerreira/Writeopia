@@ -1,7 +1,6 @@
 package com.github.leandroborgesferreira.storytellerapp.utils_module
 
 sealed class ResultData<T> {
-
     class Idle<T>: ResultData<T>()
     class Loading<T> : ResultData<T>()
     class Complete<T>(val data: T): ResultData<T>()
