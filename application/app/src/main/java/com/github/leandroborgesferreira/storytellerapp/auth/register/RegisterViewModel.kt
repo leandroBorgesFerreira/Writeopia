@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import com.github.leandroborgesferreira.storytellerapp.navigation.NavigationActivity
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -51,10 +53,13 @@ class RegisterViewModel(private val activity: NavigationActivity) : ViewModel() 
         auth.createUserWithEmailAndPassword(email.value, password.value)
             .addOnCompleteListener(activity) { task ->
                 if (task.isSuccessful) {
-                    _register.value = ResultData.Complete(Unit)
-                    // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
-                    Log.d(TAG, "createUserWithEmail:success. User: ${user?.email}")
+                    task.result.user?.updateProfile(
+                        userProfileChangeRequest {
+                            displayName = name.value
+                        }
+                    )?.addOnCompleteListener {
+                        _register.value = ResultData.Complete(Unit)
+                    }
                 } else {
                     _register.value = ResultData.Idle()
                 }

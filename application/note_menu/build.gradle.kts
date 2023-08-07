@@ -53,7 +53,6 @@ dependencies {
     implementation(project(":application:utils"))
     implementation(project(":application:common_ui"))
 
-
     implementation(libs.appCompat)
     implementation(libs.material)
 

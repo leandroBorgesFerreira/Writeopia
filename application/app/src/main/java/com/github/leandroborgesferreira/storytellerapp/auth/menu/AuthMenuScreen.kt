@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -47,15 +48,17 @@ fun AuthMenuScreen(
     ) {
 
         Image(
-            modifier = Modifier.height(250.dp),
+            modifier = Modifier.height(150.dp),
             painter = painterResource(id = R.drawable.ic_launcher_foreground),
             contentDescription = "",
             contentScale = ContentScale.FillHeight,
         )
 
         Image(
+            modifier = Modifier.height(15.dp),
             painter = painterResource(id = R.drawable.image_storyteller_logo),
-            contentDescription = ""
+            contentDescription = "",
+            contentScale = ContentScale.FillHeight,
         )
 
         Spacer(modifier = Modifier.weight(1F))

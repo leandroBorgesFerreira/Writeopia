@@ -65,10 +65,10 @@ class NoteEditorViewModel(
         storyTellerManager.newStory(documentId, title)
 
         viewModelScope.launch {
-            val document = storyTellerManager.currentDocument.stateIn(this).value
-
-            documentRepository.saveDocument(document)
-            storyTellerManager.saveOnStoryChanges(documentRepository)
+            storyTellerManager.currentDocument.value?.let { document ->
+                documentRepository.saveDocument(document)
+                storyTellerManager.saveOnStoryChanges(documentRepository)
+            }
         }
     }
 
@@ -87,9 +87,9 @@ class NoteEditorViewModel(
 
     fun removeNoteIfEmpty(onComplete: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            val document = storyTellerManager.currentDocument.stateIn(this).value
+            val document = storyTellerManager.currentDocument.value
 
-            if (story.value.stories.noContent()) {
+            if (document != null && story.value.stories.noContent()) {
                 documentRepository.deleteDocument(document)
 
                 withContext(Dispatchers.Main) {

@@ -22,10 +22,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
@@ -69,7 +71,7 @@ class StoryTellerManager(
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
 
-    val currentDocument: Flow<Document> = combine(_documentInfo, _currentStory) { info, state ->
+    val currentDocument: StateFlow<Document?> = combine(_documentInfo, _currentStory) { info, state ->
         val titleFromContent = state.stories.values.firstOrNull { storyStep ->
             //Todo: Change the type of change to allow different types. The client code should decide what is a title
             //It is also interesting to inv
@@ -83,7 +85,7 @@ class StoryTellerManager(
             createdAt = info.createdAt,
             lastUpdatedAt = info.lastUpdatedAt,
         )
-    }
+    }.stateIn(coroutineScope, SharingStarted.Lazily, null)
 
     private val _documentEditionState: Flow<Pair<StoryState, DocumentInfo>> =
         combine(currentStory, _documentInfo) { storyState, documentInfo ->
