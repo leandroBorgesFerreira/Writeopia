@@ -53,13 +53,20 @@ fun NavigationGraph(
     authInjections: AuthInjections = AuthInjections(activity)
 ) {
 
+    val currentUser = Firebase.auth.currentUser
+
+    val startDestination = if (currentUser != null) {
+        Destinations.CHOOSE_NOTE.id
+    } else {
+        Destinations.AUTH_MENU.id
+    }
+
     ApplicationComposeTheme {
-        NavHost(navController = navController, startDestination = Destinations.AUTH_MENU.id) {
+        NavHost(navController = navController, startDestination = startDestination) {
             composable(Destinations.AUTH_MENU.id) {
                 AuthMenuScreen(
                     navigateToLogin = navController::navigateAuthLogin,
                     navigateToRegister = navController::navigateAuthRegister,
-                    navigateToApp = navController::navigateToMainMenu,
                 )
             }
 

@@ -29,16 +29,7 @@ import com.google.firebase.ktx.Firebase
 fun AuthMenuScreen(
     navigateToLogin: () -> Unit,
     navigateToRegister: () -> Unit,
-    navigateToApp: () -> Unit
 ) {
-
-    LaunchedEffect(key1 = "currentUser") {
-        val currentUser = Firebase.auth.currentUser
-
-        if (currentUser != null) {
-            navigateToApp()
-        }
-    }
 
     Column(
         modifier = Modifier
@@ -91,6 +82,5 @@ fun AuthMenuScreenPreview() {
     AuthMenuScreen(
         navigateToLogin = {},
         navigateToRegister = {},
-        navigateToApp = {}
     )
 }

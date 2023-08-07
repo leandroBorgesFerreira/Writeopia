@@ -1,18 +1,14 @@
 package com.github.leandroborgesferreira.storytellerapp.auth.register
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.github.leandroborgesferreira.storytellerapp.navigation.NavigationActivity
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-
-private const val TAG = "RegisterViewModel"
 
 /* The NavigationActivity won't leak because it is the single activity of the whole project */
 class RegisterViewModel(private val activity: NavigationActivity) : ViewModel() {
