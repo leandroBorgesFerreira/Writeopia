@@ -7,7 +7,6 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -17,9 +16,6 @@ import androidx.navigation.navArgument
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.video.VideoFrameConfig
 import com.github.leandroborgesferreira.storytellerapp.auth.di.AuthInjections
-import com.github.leandroborgesferreira.storytellerapp.auth.login.LoginScreenBinding
-import com.github.leandroborgesferreira.storytellerapp.auth.menu.AuthMenuScreen
-import com.github.leandroborgesferreira.storytellerapp.auth.register.RegisterScreenBinding
 import com.github.leandroborgesferreira.storytellerapp.di.NotesInjection
 import com.github.leandroborgesferreira.storytellerapp.editor.NoteEditorScreen
 import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu.ChooseNoteScreen
@@ -58,27 +54,12 @@ fun NavigationGraph(
     val startDestination = if (currentUser != null) {
         Destinations.CHOOSE_NOTE.id
     } else {
-        Destinations.AUTH_MENU.id
+        Destinations.AUTH_MENU_INNER_NAVIGATION.id
     }
 
     ApplicationComposeTheme {
         NavHost(navController = navController, startDestination = startDestination) {
-            composable(Destinations.AUTH_MENU.id) {
-                AuthMenuScreen(
-                    navigateToLogin = navController::navigateAuthLogin,
-                    navigateToRegister = navController::navigateAuthRegister,
-                )
-            }
-
-            composable(Destinations.AUTH_REGISTER.id) {
-                val registerViewModel = authInjections.provideRegisterViewModel()
-                RegisterScreenBinding(registerViewModel, navController::navigateToMainMenu)
-            }
-
-            composable(Destinations.AUTH_LOGIN.id) {
-                val loginViewModel = authInjections.provideLoginViewModel()
-                LoginScreenBinding(loginViewModel, navController::navigateToMainMenu)
-            }
+            authNavigation(navController, authInjections)
 
             composable(Destinations.CHOOSE_NOTE.id) {
                 val chooseNoteViewModel = notesInjection.provideChooseNoteViewModel()
@@ -143,6 +124,7 @@ enum class Destinations(val id: String) {
     NOTE_DETAILS("note_details"),
     CHOOSE_NOTE("choose_note"),
     AUTH_REGISTER("auth_register"),
+    AUTH_MENU_INNER_NAVIGATION("auth_menu_inner_navigation"),
     AUTH_MENU("auth_menu"),
     AUTH_LOGIN("auth_login"),
 }
