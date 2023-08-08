@@ -27,12 +27,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.leandroborgesferreira.storytellerapp.utils.findActivity
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -43,6 +45,8 @@ fun RegisterScreenBinding(registerViewModel: RegisterViewModel, onRegisterSucces
         registerViewModel.init()
     })
 
+    val activity = LocalContext.current.findActivity()
+
     RegisterScreen(
         nameState = registerViewModel.name,
         emailState = registerViewModel.email,
@@ -51,7 +55,9 @@ fun RegisterScreenBinding(registerViewModel: RegisterViewModel, onRegisterSucces
         nameChanged = registerViewModel::nameChanged,
         emailChanged = registerViewModel::emailChanged,
         passwordChanged = registerViewModel::passwordChanged,
-        onRegisterRequest = registerViewModel::onRegister,
+        onRegisterRequest = {
+            registerViewModel.onRegister(activity)
+        } ,
         onRegisterSuccess = onRegisterSuccess,
     )
 }

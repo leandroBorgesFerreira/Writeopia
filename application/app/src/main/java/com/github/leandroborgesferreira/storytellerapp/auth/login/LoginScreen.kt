@@ -27,12 +27,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.leandroborgesferreira.storytellerapp.utils.findActivity
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,13 +43,17 @@ import kotlinx.coroutines.flow.StateFlow
 fun LoginScreenBinding(loginViewModel: LoginViewModel, onLoginSuccess: () -> Unit) {
     loginViewModel.init()
 
+    val activity = LocalContext.current.findActivity()
+
     LoginScreen(
         emailState = loginViewModel.email,
         passwordState = loginViewModel.password,
         loginState = loginViewModel.loginState,
         emailChanged = loginViewModel::emailChanged,
         passwordChanged = loginViewModel::passwordChanged,
-        onLoginRequest = loginViewModel::onLoginRequest,
+        onLoginRequest = {
+            loginViewModel.onLoginRequest(activity)
+        } ,
         onLoginSuccess = onLoginSuccess,
     )
 }

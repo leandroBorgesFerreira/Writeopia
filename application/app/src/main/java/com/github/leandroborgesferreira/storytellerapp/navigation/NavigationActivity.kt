@@ -30,7 +30,7 @@ class NavigationActivity : AppCompatActivity() {
         VideoFrameConfig.configCoilForVideoFrame(this)
 
         setContent {
-            NavigationGraph(activity = this)
+            NavigationGraph()
         }
     }
 }
@@ -38,7 +38,6 @@ class NavigationActivity : AppCompatActivity() {
 @Composable
 fun NavigationGraph(
     context: Context = LocalContext.current,
-    activity: NavigationActivity,
     navController: NavHostController = rememberNavController(),
     database: StoryTellerDatabase = StoryTellerDatabase.database(context),
     sharedPreferences: SharedPreferences = context.getSharedPreferences(
@@ -46,7 +45,7 @@ fun NavigationGraph(
         Context.MODE_PRIVATE
     ),
     notesInjection: NotesInjection = NotesInjection(database, sharedPreferences),
-    authInjections: AuthInjections = AuthInjections(activity)
+    authInjections: AuthInjections = AuthInjections()
 ) {
 
     val currentUser = Firebase.auth.currentUser

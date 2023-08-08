@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storytellerapp.auth.login
 
+import android.app.Activity
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -15,7 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 private const val TAG = "LoginViewModel"
 
 /* The NavigationActivity won't leak because it is the single activity of the whole project*/
-class LoginViewModel(private val activity: NavigationActivity) : ViewModel() {
+class LoginViewModel : ViewModel() {
 
     private lateinit var auth: FirebaseAuth
 
@@ -41,7 +42,7 @@ class LoginViewModel(private val activity: NavigationActivity) : ViewModel() {
         _password.value = name
     }
 
-    fun onLoginRequest() {
+    fun onLoginRequest(activity: Activity) {
         _loginState.value = ResultData.Loading()
 
         auth.signInWithEmailAndPassword(email.value, password.value)

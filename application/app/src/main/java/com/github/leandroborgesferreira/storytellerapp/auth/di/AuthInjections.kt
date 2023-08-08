@@ -6,13 +6,13 @@ import com.github.leandroborgesferreira.storytellerapp.auth.login.LoginViewModel
 import com.github.leandroborgesferreira.storytellerapp.auth.register.RegisterViewModel
 import com.github.leandroborgesferreira.storytellerapp.navigation.NavigationActivity
 
-class AuthInjections(private val navigationActivity: NavigationActivity) {
+class AuthInjections {
 
     @Composable
     internal fun provideRegisterViewModel(): RegisterViewModel =
-        viewModel(initializer = { RegisterViewModel(navigationActivity) })
+        viewModel(initializer = { RegisterViewModel() })
 
     @Composable
     internal fun provideLoginViewModel(): LoginViewModel =
-        viewModel(initializer = { LoginViewModel(navigationActivity) })
+        viewModel(initializer = { LoginViewModel() })
 }

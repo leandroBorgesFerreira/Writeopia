@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storytellerapp.auth.register
 
+import android.app.Activity
 import androidx.lifecycle.ViewModel
 import com.github.leandroborgesferreira.storytellerapp.navigation.NavigationActivity
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 /* The NavigationActivity won't leak because it is the single activity of the whole project */
-class RegisterViewModel(private val activity: NavigationActivity) : ViewModel() {
+class RegisterViewModel : ViewModel() {
 
     private lateinit var auth: FirebaseAuth
 
@@ -43,7 +44,7 @@ class RegisterViewModel(private val activity: NavigationActivity) : ViewModel() 
         _password.value = name
     }
 
-    fun onRegister() {
+    fun onRegister(activity: Activity) {
         _register.value = ResultData.Loading()
 
         auth.createUserWithEmailAndPassword(email.value, password.value)
