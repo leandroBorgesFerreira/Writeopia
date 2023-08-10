@@ -6,7 +6,6 @@ composeBom = "2023.06.01"
 coreKotlin = "2.11.1"
 desugar_jdk_libs = "2.0.3"
 espressoCore = "3.5.1"
-firebaseBom = "32.2.2"
 junit = "1.1.5"
 junitVersion = "4.13.2"
 kotlinxCoroutinesTest = "1.7.2"
@@ -36,7 +35,6 @@ appCompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVersion" }
 coil-video = { module = "io.coil-kt:coil-video", version.ref = "coilVersion" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 junit = { module = "junit:junit", version.ref = "junitVersion" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }

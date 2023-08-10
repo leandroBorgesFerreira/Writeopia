@@ -9,28 +9,61 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.leandroborgesferreira.storytellerapp.R
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 
 @Composable
 fun AuthMenuScreen(
     navigateToLogin: () -> Unit,
     navigateToRegister: () -> Unit,
+    navigateToApp: () -> Unit,
+    authMenuViewModel: AuthMenuViewModel = viewModel(initializer = { AuthMenuViewModel() })
 ) {
+    authMenuViewModel.checkLoggedIn()
 
+    when (val isConnected = authMenuViewModel.isConnected.collectAsStateWithLifecycle().value) {
+        is ResultData.Complete -> {
+            if (isConnected.data) {
+                SideEffect(navigateToApp)
+            } else {
+                AuthMenuContentScreen(navigateToLogin, navigateToRegister)
+            }
+        }
+        is ResultData.Error -> {
+            AuthMenuContentScreen(navigateToLogin, navigateToRegister)
+        }
+        is ResultData.Idle, is ResultData.Loading -> {
+            LoadingScreen()
+        }
+    }
+}
+
+@Composable
+private fun LoadingScreen() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+    }
+}
+
+@Composable
+private fun AuthMenuContentScreen(
+    navigateToLogin: () -> Unit,
+    navigateToRegister: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -78,8 +111,8 @@ fun AuthMenuScreen(
 
 @Preview
 @Composable
-fun AuthMenuScreenPreview() {
-    AuthMenuScreen(
+fun AuthMenuContentScreenPreview() {
+    AuthMenuContentScreen(
         navigateToLogin = {},
         navigateToRegister = {},
     )

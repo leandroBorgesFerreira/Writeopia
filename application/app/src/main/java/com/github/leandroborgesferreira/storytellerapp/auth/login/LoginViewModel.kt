@@ -1,28 +1,19 @@
 package com.github.leandroborgesferreira.storytellerapp.auth.login
 
-import android.app.Activity
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
-import com.github.leandroborgesferreira.storytellerapp.navigation.NavigationActivity
+import androidx.lifecycle.viewModelScope
+import com.amplifyframework.auth.AuthException
+import com.amplifyframework.kotlin.core.Amplify
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 private const val TAG = "LoginViewModel"
 
 /* The NavigationActivity won't leak because it is the single activity of the whole project*/
 class LoginViewModel : ViewModel() {
-
-    private lateinit var auth: FirebaseAuth
-
-    fun init() {
-        auth = Firebase.auth
-    }
 
     private val _email = MutableStateFlow("")
     val email = _email.asStateFlow()
@@ -30,7 +21,7 @@ class LoginViewModel : ViewModel() {
     private val _password = MutableStateFlow("")
     val password = _password.asStateFlow()
 
-    private val _loginState: MutableStateFlow<ResultData<Unit>> =
+    private val _loginState: MutableStateFlow<ResultData<Boolean>> =
         MutableStateFlow(ResultData.Idle())
     val loginState = _loginState.asStateFlow()
 
@@ -42,21 +33,24 @@ class LoginViewModel : ViewModel() {
         _password.value = name
     }
 
-    fun onLoginRequest(activity: Activity) {
+    fun onLoginRequest() {
         _loginState.value = ResultData.Loading()
 
-        auth.signInWithEmailAndPassword(email.value, password.value)
-            .addOnCompleteListener(activity) { task ->
-                if (task.isSuccessful) {
-                    _loginState.value = ResultData.Complete(Unit)
-                    // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
+        viewModelScope.launch {
+            try {
+                val result = Amplify.Auth.signIn(_email.value, _password.value)
 
-                    Log.d(TAG, "sign in:success. User: ${user?.email}")
+                if (result.isSignedIn) {
+                    Log.i("AuthQuickstart", "Sign in succeeded")
                 } else {
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    _loginState.value = ResultData.Idle()
+                    Log.e("AuthQuickstart", "Sign in not complete")
                 }
+
+                _loginState.value = ResultData.Complete(result.isSignedIn)
+            } catch (error: AuthException) {
+                Log.e("AuthQuickstart", "Sign in failed", error)
+                _loginState.value = ResultData.Error(error)
             }
+        }
     }
 }

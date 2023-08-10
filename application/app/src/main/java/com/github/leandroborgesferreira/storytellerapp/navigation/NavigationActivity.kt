@@ -20,8 +20,6 @@ import com.github.leandroborgesferreira.storytellerapp.di.NotesInjection
 import com.github.leandroborgesferreira.storytellerapp.editor.NoteEditorScreen
 import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu.ChooseNoteScreen
 import com.github.leandroborgesferreira.storytellerapp.theme.ApplicationComposeTheme
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,13 +46,7 @@ fun NavigationGraph(
     authInjections: AuthInjections = AuthInjections()
 ) {
 
-    val currentUser = Firebase.auth.currentUser
-
-    val startDestination = if (currentUser != null) {
-        Destinations.CHOOSE_NOTE.id
-    } else {
-        Destinations.AUTH_MENU_INNER_NAVIGATION.id
-    }
+    val startDestination = Destinations.AUTH_MENU_INNER_NAVIGATION.id
 
     ApplicationComposeTheme {
         NavHost(navController = navController, startDestination = startDestination) {
@@ -68,7 +60,7 @@ fun NavigationGraph(
                     navigateToNote = navController::navigateToNote,
                     newNote = navController::navigateToNewNote,
                     logout = {
-                        Firebase.auth.signOut()
+//                        Firebase.auth.signOut()
                         navController.navigateToAuthMenu()
                     }
                 )

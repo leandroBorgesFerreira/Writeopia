@@ -21,6 +21,7 @@ internal fun NavGraphBuilder.authNavigation(
             AuthMenuScreen(
                 navigateToLogin = navController::navigateAuthLogin,
                 navigateToRegister = navController::navigateAuthRegister,
+                navigateToApp = navController::navigateToMainMenu
             )
         }
 

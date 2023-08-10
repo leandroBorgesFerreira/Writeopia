@@ -15,15 +15,6 @@
     "categories": {
       "auth": {
         "storytellerappb5ca5b12": {}
-      },
-      "function": {
-        "storytellerappb5ca5b12CustomMessage": {
-          "REDIRECTURL": "",
-          "EMAILSUBJECT": "",
-          "EMAILMESSAGE": "",
-          "deploymentBucketName": "amplify-storytellerapp-dev-135050-deployment",
-          "s3Key": "amplify-builds/storytellerappb5ca5b12CustomMessage-674e546434785635776b-build.zip"
-        }
       }
     }
   }

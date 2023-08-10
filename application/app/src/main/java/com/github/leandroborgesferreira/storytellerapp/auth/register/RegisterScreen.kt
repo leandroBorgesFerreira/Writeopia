@@ -3,6 +3,7 @@ package com.github.leandroborgesferreira.storytellerapp.auth.register
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,26 +28,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.leandroborgesferreira.storytellerapp.utils.findActivity
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun RegisterScreenBinding(registerViewModel: RegisterViewModel, onRegisterSuccess: () -> Unit) {
-    LaunchedEffect(key1 = "registerViewModel", block = {
-        registerViewModel.init()
-    })
-
-    val activity = LocalContext.current.findActivity()
-
     RegisterScreen(
         nameState = registerViewModel.name,
         emailState = registerViewModel.email,
@@ -55,9 +48,7 @@ fun RegisterScreenBinding(registerViewModel: RegisterViewModel, onRegisterSucces
         nameChanged = registerViewModel::nameChanged,
         emailChanged = registerViewModel::emailChanged,
         passwordChanged = registerViewModel::passwordChanged,
-        onRegisterRequest = {
-            registerViewModel.onRegister(activity)
-        } ,
+        onRegisterRequest = registerViewModel::onRegister,
         onRegisterSuccess = onRegisterSuccess,
     )
 }
@@ -67,7 +58,7 @@ fun RegisterScreen(
     nameState: StateFlow<String>,
     emailState: StateFlow<String>,
     passwordState: StateFlow<String>,
-    registerState: StateFlow<ResultData<Unit>>,
+    registerState: StateFlow<ResultData<Boolean>>,
     nameChanged: (String) -> Unit,
     emailChanged: (String) -> Unit,
     passwordChanged: (String) -> Unit,
@@ -79,103 +70,137 @@ fun RegisterScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        val name by nameState.collectAsStateWithLifecycle()
-        val email by emailState.collectAsStateWithLifecycle()
-        val password by passwordState.collectAsStateWithLifecycle()
-        val register by registerState.collectAsStateWithLifecycle()
-        var showPassword by remember { mutableStateOf(false) }
+        val register = registerState.collectAsStateWithLifecycle().value
 
         when (register) {
             is ResultData.Complete -> {
-                LaunchedEffect(key1 = "navigation") {
-                    onRegisterSuccess()
+                if (register.data) {
+                    LaunchedEffect(key1 = "navigation") {
+                        onRegisterSuccess()
+                    }
+                } else {
+                    RegisterContent(
+                        nameState,
+                        emailState,
+                        passwordState,
+                        nameChanged,
+                        emailChanged,
+                        passwordChanged,
+                        onRegisterRequest
+                    )
                 }
             }
 
             is ResultData.Idle, is ResultData.Error -> {
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = 50.dp)
-                        .align(Alignment.Center),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    TextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = name,
-                        onValueChange = nameChanged,
-                        singleLine = true,
-                        placeholder = {
-                            Text(text = "Name")
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    TextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = email,
-                        onValueChange = emailChanged,
-                        singleLine = true,
-                        placeholder = {
-                            Text(text = "Email")
-                        },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    TextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = password,
-                        onValueChange = passwordChanged,
-                        singleLine = true,
-                        placeholder = {
-                            Text(text = "Password")
-                        },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                        visualTransformation = if (showPassword) {
-                            VisualTransformation.None
-                        } else {
-                            PasswordVisualTransformation()
-                        },
-                        trailingIcon = {
-                            if (showPassword) {
-                                Icon(
-                                    modifier = Modifier.clickable {
-                                        showPassword = !showPassword
-                                    },
-                                    imageVector = Icons.Default.VisibilityOff,
-                                    contentDescription = ""
-                                )
-                            } else {
-                                Icon(
-                                    modifier = Modifier.clickable {
-                                        showPassword = !showPassword
-                                    },
-                                    imageVector = Icons.Default.Visibility,
-                                    contentDescription = ""
-                                )
-                            }
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-
-                    TextButton(
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.primary)
-                            .fillMaxWidth(),
-                        onClick = onRegisterRequest
-                    ) {
-                        Text(text = "Register", color = MaterialTheme.colorScheme.onPrimary)
-                    }
-                }
+                RegisterContent(
+                    nameState,
+                    emailState,
+                    passwordState,
+                    nameChanged,
+                    emailChanged,
+                    passwordChanged,
+                    onRegisterRequest
+                )
             }
 
             is ResultData.Loading -> {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
+        }
+    }
+}
+
+@Composable
+private fun BoxScope.RegisterContent(
+    nameState: StateFlow<String>,
+    emailState: StateFlow<String>,
+    passwordState: StateFlow<String>,
+    nameChanged: (String) -> Unit,
+    emailChanged: (String) -> Unit,
+    passwordChanged: (String) -> Unit,
+    onRegisterRequest: () -> Unit,
+) {
+    val name by nameState.collectAsStateWithLifecycle()
+    val email by emailState.collectAsStateWithLifecycle()
+    val password by passwordState.collectAsStateWithLifecycle()
+    var showPassword by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 50.dp)
+            .align(Alignment.Center),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = name,
+            onValueChange = nameChanged,
+            singleLine = true,
+            placeholder = {
+                Text(text = "Name")
+            }
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = email,
+            onValueChange = emailChanged,
+            singleLine = true,
+            placeholder = {
+                Text(text = "Email")
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = password,
+            onValueChange = passwordChanged,
+            singleLine = true,
+            placeholder = {
+                Text(text = "Password")
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            visualTransformation = if (showPassword) {
+                VisualTransformation.None
+            } else {
+                PasswordVisualTransformation()
+            },
+            trailingIcon = {
+                if (showPassword) {
+                    Icon(
+                        modifier = Modifier.clickable {
+                            showPassword = !showPassword
+                        },
+                        imageVector = Icons.Default.VisibilityOff,
+                        contentDescription = ""
+                    )
+                } else {
+                    Icon(
+                        modifier = Modifier.clickable {
+                            showPassword = !showPassword
+                        },
+                        imageVector = Icons.Default.Visibility,
+                        contentDescription = ""
+                    )
+                }
+            }
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+
+        TextButton(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.primary)
+                .fillMaxWidth(),
+            onClick = onRegisterRequest
+        ) {
+            Text(text = "Register", color = MaterialTheme.colorScheme.onPrimary)
         }
     }
 }
