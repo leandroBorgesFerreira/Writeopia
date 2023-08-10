@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,8 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.github.leandroborgesferreira.storytellerapp.R
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
+import com.github.leandroborgesferreira.storytellerapp.appresourcers.R
 
 @Composable
 fun AuthMenuScreen(
@@ -33,7 +34,9 @@ fun AuthMenuScreen(
     navigateToApp: () -> Unit,
     authMenuViewModel: AuthMenuViewModel = viewModel(initializer = { AuthMenuViewModel() })
 ) {
-    authMenuViewModel.checkLoggedIn()
+    LaunchedEffect(key1 = true, block = {
+        authMenuViewModel.checkLoggedIn()
+    })
 
     when (val isConnected = authMenuViewModel.isConnected.collectAsStateWithLifecycle().value) {
         is ResultData.Complete -> {

@@ -1,21 +1,18 @@
+@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
-    kotlin("plugin.serialization") version "1.9.0"
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinAndroid)
 }
+
 android {
-    namespace = "com.github.leandroborgesferreira.storytellerapp"
+    namespace = "com.github.leandroborgesferreira.storytellerapp.auth"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.github.leandroborgesferreira.storytellerapp"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -24,7 +21,8 @@ android {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
-            )        }
+            )
+        }
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
@@ -52,42 +50,23 @@ kotlin{
 
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
-    implementation(libs.aws.amplifyframework.cognito)
-    implementation(libs.aws.amplifyframework.core.kotlin)
 
-    implementation(project(":storyteller"))
-    implementation(project(":storyteller_persistence"))
-
-    implementation(project(":application:note_menu"))
     implementation(project(":application:utils"))
     implementation(project(":application:resources"))
-    implementation(project(":application:editor"))
-    implementation(project(":application:auth"))
-
 
     implementation(libs.androidx.ktx)
     implementation(libs.appCompat)
     implementation(libs.material)
 
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    implementation(libs.room.paging)
-    ksp(libs.room.compiler)
-
-    implementation(libs.kotlinx.serialization.json)
-
-    implementation(libs.coil.compose)
-    implementation(libs.coil.video)
+    implementation(libs.aws.amplifyframework.cognito)
+    implementation(libs.aws.amplifyframework.core.kotlin)
 
     implementation(libs.viewmodel.compose)
     implementation(libs.runtime.compose)
     implementation(libs.navigation.compose)
-
-    implementation(libs.androidx.material.icons.extended)
-
     implementation("androidx.activity:activity-compose")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material3:material3-window-size-class")
+    implementation(libs.androidx.material.icons.extended)
 
     // Compose - Preview
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -96,11 +75,8 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
 
     testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-//    androidTestImplementation(libs.androidx.ui.test.junit4)
-//    debugImplementation(libs.androidx.ui.test.manifest)
 
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.4.3")
 }

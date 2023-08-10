@@ -39,21 +39,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun RegisterScreenBinding(registerViewModel: RegisterViewModel, onRegisterSuccess: () -> Unit) {
-    RegisterScreen(
-        nameState = registerViewModel.name,
-        emailState = registerViewModel.email,
-        passwordState = registerViewModel.password,
-        registerState = registerViewModel.register,
-        nameChanged = registerViewModel::nameChanged,
-        emailChanged = registerViewModel::emailChanged,
-        passwordChanged = registerViewModel::passwordChanged,
-        onRegisterRequest = registerViewModel::onRegister,
-        onRegisterSuccess = onRegisterSuccess,
-    )
-}
-
-@Composable
 fun RegisterScreen(
     nameState: StateFlow<String>,
     emailState: StateFlow<String>,
