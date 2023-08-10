@@ -52,7 +52,6 @@ kotlin{
 
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
-    implementation(libs.aws.amplifyframework.cognito)
     implementation(libs.aws.amplifyframework.core.kotlin)
 
     implementation(project(":storyteller"))

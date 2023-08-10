@@ -3,7 +3,6 @@ package com.github.leandroborgesferreira.storytellerapp.navigation
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
@@ -17,10 +16,13 @@ import androidx.navigation.navArgument
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.video.VideoFrameConfig
 import com.github.leandroborgesferreira.storytellerapp.auth.di.AuthInjections
+import com.github.leandroborgesferreira.storytellerapp.auth.navigation.authNavigation
+import com.github.leandroborgesferreira.storytellerapp.auth.navigation.navigateToAuthMenu
 import com.github.leandroborgesferreira.storytellerapp.di.NotesInjection
 import com.github.leandroborgesferreira.storytellerapp.editor.NoteEditorScreen
 import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu.ChooseNoteScreen
 import com.github.leandroborgesferreira.storytellerapp.theme.ApplicationComposeTheme
+import com.github.leandroborgesferreira.storytellerapp.utils_module.Destinations
 
 class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,10 +53,9 @@ fun NavigationGraph(
 
     ApplicationComposeTheme {
         NavHost(navController = navController, startDestination = startDestination) {
-            authNavigation(navController, authInjections)
+            authNavigation(navController, authInjections, navController::navigateToMainMenu)
 
             composable(Destinations.CHOOSE_NOTE.id) {
-                Log.d("NavHost", "Destinations.CHOOSE_NOTE.id")
                 val chooseNoteViewModel = notesInjection.provideChooseNoteViewModel()
 
                 ChooseNoteScreen(
@@ -62,6 +63,7 @@ fun NavigationGraph(
                     navigateToNote = navController::navigateToNote,
                     newNote = navController::navigateToNewNote,
                     logout = {
+//                        Firebase.auth.signOut()
                         navController.navigateToAuthMenu()
                     }
                 )
@@ -111,13 +113,3 @@ fun NavigationGraph(
         }
     }
 }
-
-enum class Destinations(val id: String) {
-    NOTE_DETAILS("note_details"),
-    CHOOSE_NOTE("choose_note"),
-    AUTH_REGISTER("auth_register"),
-    AUTH_MENU_INNER_NAVIGATION("auth_menu_inner_navigation"),
-    AUTH_MENU("auth_menu"),
-    AUTH_LOGIN("auth_login"),
-}
-

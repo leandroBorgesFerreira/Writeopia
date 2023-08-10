@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storytellerapp.navigation
+package com.github.leandroborgesferreira.storytellerapp.auth.navigation
 
 import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
@@ -12,10 +12,12 @@ import com.github.leandroborgesferreira.storytellerapp.auth.login.LoginScreenBin
 import com.github.leandroborgesferreira.storytellerapp.auth.menu.AuthMenuScreen
 import com.github.leandroborgesferreira.storytellerapp.auth.menu.AuthMenuViewModel
 import com.github.leandroborgesferreira.storytellerapp.auth.register.RegisterScreen
+import com.github.leandroborgesferreira.storytellerapp.utils_module.Destinations
 
-internal fun NavGraphBuilder.authNavigation(
+fun NavGraphBuilder.authNavigation(
     navController: NavController,
-    authInjections: AuthInjections
+    authInjections: AuthInjections,
+    toAppNavigation: () -> Unit
 ) {
     navigation(
         startDestination = Destinations.AUTH_MENU.id,
@@ -33,7 +35,7 @@ internal fun NavGraphBuilder.authNavigation(
             AuthMenuScreen(
                 navigateToLogin = navController::navigateAuthLogin,
                 navigateToRegister = navController::navigateAuthRegister,
-                navigateToApp = navController::navigateToMainMenu,
+                navigateToApp = toAppNavigation,
                 isConnectedState = authMenuViewModel.isConnected
             )
         }
@@ -50,13 +52,13 @@ internal fun NavGraphBuilder.authNavigation(
                 emailChanged = registerViewModel::emailChanged,
                 passwordChanged = registerViewModel::passwordChanged,
                 onRegisterRequest = registerViewModel::onRegister,
-                onRegisterSuccess = navController::navigateToMainMenu,
+                onRegisterSuccess = toAppNavigation,
             )
         }
 
         composable(Destinations.AUTH_LOGIN.id) {
             val loginViewModel = authInjections.provideLoginViewModel()
-            LoginScreenBinding(loginViewModel, navController::navigateToMainMenu)
+            LoginScreenBinding(loginViewModel, toAppNavigation)
         }
     }
 }
@@ -69,6 +71,6 @@ internal fun NavController.navigateAuthLogin() {
     navigate(Destinations.AUTH_LOGIN.id)
 }
 
-internal fun NavController.navigateToAuthMenu() {
+fun NavController.navigateToAuthMenu() {
     navigate(Destinations.AUTH_MENU.id)
 }

@@ -53,6 +53,9 @@ dependencies {
     implementation(project(":application:utils"))
     implementation(project(":application:common_ui"))
 
+    implementation(libs.aws.amplifyframework.cognito)
+    implementation(libs.aws.amplifyframework.core.kotlin)
+
     implementation(libs.appCompat)
     implementation(libs.material)
 
