@@ -27,6 +27,7 @@ android {
             )        }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -50,6 +51,9 @@ kotlin{
 }
 
 dependencies {
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+    implementation(libs.aws.amplifyframework.cognito)
+    implementation(libs.aws.amplifyframework.core.kotlin)
 
     implementation(project(":storyteller"))
     implementation(project(":storyteller_persistence"))

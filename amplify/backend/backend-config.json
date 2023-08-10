@@ -1,1 +1,89 @@
-{}
+{
+  "auth": {
+    "storytellerappb5ca5b12": {
+      "customAuth": false,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "storytellerappb5ca5b12CustomMessage",
+          "triggerProvider": "Cognito"
+        }
+      ],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito"
+    }
+  },
+  "function": {
+    "storytellerappb5ca5b12CustomMessage": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_storytellerappb5ca5b12CustomMessage_EMAILMESSAGE": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "storytellerappb5ca5b12CustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_storytellerappb5ca5b12CustomMessage_EMAILSUBJECT": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "storytellerappb5ca5b12CustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_storytellerappb5ca5b12CustomMessage_REDIRECTURL": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "storytellerappb5ca5b12CustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_storytellerappb5ca5b12CustomMessage_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "storytellerappb5ca5b12CustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_storytellerappb5ca5b12CustomMessage_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "storytellerappb5ca5b12CustomMessage"
+        }
+      ]
+    }
+  }
+}

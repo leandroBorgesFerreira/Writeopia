@@ -9,7 +9,22 @@
       "UnauthRoleName": "amplify-storytellerapp-dev-135050-unauthRole",
       "StackName": "amplify-storytellerapp-dev-135050",
       "StackId": "arn:aws:cloudformation:us-east-1:352180533495:stack/amplify-storytellerapp-dev-135050/2866e4f0-3774-11ee-b18b-0e62bb700e73",
-      "AmplifyAppId": "d3a15vy0j5atls"
+      "AmplifyAppId": "d3a15vy0j5atls",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-storytellerapp-dev-135050-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "storytellerappb5ca5b12": {}
+      },
+      "function": {
+        "storytellerappb5ca5b12CustomMessage": {
+          "REDIRECTURL": "",
+          "EMAILSUBJECT": "",
+          "EMAILMESSAGE": "",
+          "deploymentBucketName": "amplify-storytellerapp-dev-135050-deployment",
+          "s3Key": "amplify-builds/storytellerappb5ca5b12CustomMessage-674e546434785635776b-build.zip"
+        }
+      }
     }
   }
 }
