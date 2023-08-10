@@ -40,11 +40,18 @@ fun ChooseNoteScreen(
     chooseNoteViewModel: ChooseNoteViewModel,
     navigateToNote: (String, String) -> Unit,
     newNote: () -> Unit,
-    logout: () -> Unit,
+    onLogout: () -> Unit,
 ) {
     LaunchedEffect(key1 = "refresh", block = {
         chooseNoteViewModel.requestDocuments(false)
     })
+
+    val isLogged by chooseNoteViewModel.isLogged.collectAsStateWithLifecycle()
+    if (!isLogged) {
+        LaunchedEffect(key1 = true) {
+            onLogout()
+        }
+    }
 
     val hasSelectedNotes by chooseNoteViewModel.hasSelectedNotes.collectAsStateWithLifecycle()
     val editState by chooseNoteViewModel.editState.collectAsStateWithLifecycle()
@@ -76,7 +83,7 @@ fun ChooseNoteScreen(
                     navigateToNote = navigateToNote,
                     selectionListener = chooseNoteViewModel::selectionListener,
                     paddingValues = paddingValues,
-                    logout = logout
+                    logout = chooseNoteViewModel::logout
                 )
             }
 

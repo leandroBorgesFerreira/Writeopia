@@ -62,8 +62,7 @@ fun NavigationGraph(
                     chooseNoteViewModel = chooseNoteViewModel,
                     navigateToNote = navController::navigateToNote,
                     newNote = navController::navigateToNewNote,
-                    logout = {
-//                        Firebase.auth.signOut()
+                    onLogout = {
                         navController.navigateToAuthMenu()
                     }
                 )

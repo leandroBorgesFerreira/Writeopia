@@ -51,9 +51,6 @@ kotlin{
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
-    implementation(libs.aws.amplifyframework.core.kotlin)
-
     implementation(project(":storyteller"))
     implementation(project(":storyteller_persistence"))
 
@@ -63,6 +60,10 @@ dependencies {
     implementation(project(":application:editor"))
     implementation(project(":application:auth"))
 
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    implementation(libs.aws.amplifyframework.cognito)
+    implementation(libs.aws.amplifyframework.core.kotlin)
 
     implementation(libs.androidx.ktx)
     implementation(libs.appCompat)
