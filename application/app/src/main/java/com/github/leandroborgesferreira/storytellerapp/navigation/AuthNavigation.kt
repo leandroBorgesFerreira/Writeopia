@@ -1,5 +1,8 @@
 package com.github.leandroborgesferreira.storytellerapp.navigation
 
+import android.util.Log
+import androidx.compose.runtime.LaunchedEffect
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -7,6 +10,7 @@ import androidx.navigation.navigation
 import com.github.leandroborgesferreira.storytellerapp.auth.di.AuthInjections
 import com.github.leandroborgesferreira.storytellerapp.auth.login.LoginScreenBinding
 import com.github.leandroborgesferreira.storytellerapp.auth.menu.AuthMenuScreen
+import com.github.leandroborgesferreira.storytellerapp.auth.menu.AuthMenuViewModel
 import com.github.leandroborgesferreira.storytellerapp.auth.register.RegisterScreen
 
 internal fun NavGraphBuilder.authNavigation(
@@ -18,10 +22,19 @@ internal fun NavGraphBuilder.authNavigation(
         route = Destinations.AUTH_MENU_INNER_NAVIGATION.id
     ) {
         composable(Destinations.AUTH_MENU.id) {
+            Log.d("NavGraphBuilder", "Destinations.AUTH_MENU.id")
+            val authMenuViewModel: AuthMenuViewModel =
+                viewModel(initializer = { AuthMenuViewModel() })
+
+            LaunchedEffect(key1 = true, block = {
+                authMenuViewModel.checkLoggedIn()
+            })
+
             AuthMenuScreen(
                 navigateToLogin = navController::navigateAuthLogin,
                 navigateToRegister = navController::navigateAuthRegister,
-                navigateToApp = navController::navigateToMainMenu
+                navigateToApp = navController::navigateToMainMenu,
+                isConnectedState = authMenuViewModel.isConnected
             )
         }
 

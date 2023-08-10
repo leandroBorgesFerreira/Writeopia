@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storytellerapp.auth.menu
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -26,19 +27,19 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import com.github.leandroborgesferreira.storytellerapp.appresourcers.R
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun AuthMenuScreen(
     navigateToLogin: () -> Unit,
     navigateToRegister: () -> Unit,
     navigateToApp: () -> Unit,
-    authMenuViewModel: AuthMenuViewModel = viewModel(initializer = { AuthMenuViewModel() })
+    isConnectedState: StateFlow<ResultData<Boolean>>
 ) {
-    LaunchedEffect(key1 = true, block = {
-        authMenuViewModel.checkLoggedIn()
-    })
+    Log.d("AuthMenuScreen", "AuthMenuScreen Composing...")
 
-    when (val isConnected = authMenuViewModel.isConnected.collectAsStateWithLifecycle().value) {
+    when (val isConnected = isConnectedState.collectAsStateWithLifecycle().value) {
         is ResultData.Complete -> {
             if (isConnected.data) {
                 SideEffect(navigateToApp)

@@ -3,6 +3,7 @@ package com.github.leandroborgesferreira.storytellerapp.navigation
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
@@ -53,6 +54,7 @@ fun NavigationGraph(
             authNavigation(navController, authInjections)
 
             composable(Destinations.CHOOSE_NOTE.id) {
+                Log.d("NavHost", "Destinations.CHOOSE_NOTE.id")
                 val chooseNoteViewModel = notesInjection.provideChooseNoteViewModel()
 
                 ChooseNoteScreen(
@@ -60,7 +62,6 @@ fun NavigationGraph(
                     navigateToNote = navController::navigateToNote,
                     newNote = navController::navigateToNewNote,
                     logout = {
-//                        Firebase.auth.signOut()
                         navController.navigateToAuthMenu()
                     }
                 )
