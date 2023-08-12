@@ -6,6 +6,7 @@ espressoCore = "3.5.1"
 junit = "1.1.5"
 junitVersion = "4.13.2"
 kotlinxCoroutinesTest = "1.7.2"
+kotlinxSerializationJson = "1.5.1"
 ktx = "1.10.1"
 appCompat = "1.6.1"
 material = "1.9.0"
@@ -30,6 +31,7 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVersion"
 coil-video = { module = "io.coil-kt:coil-video", version.ref = "coilVersion" }
 junit = { module = "junit:junit", version.ref = "junitVersion" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
