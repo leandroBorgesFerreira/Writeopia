@@ -147,7 +147,6 @@ private fun FloatingActionButton(newNoteClick: () -> Unit) {
     )
 }
 
-
 @Composable
 private fun Content(
     chooseNoteViewModel: ChooseNoteViewModel,

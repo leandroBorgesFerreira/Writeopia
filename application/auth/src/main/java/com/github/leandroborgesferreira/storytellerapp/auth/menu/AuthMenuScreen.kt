@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -24,10 +23,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import com.github.leandroborgesferreira.storytellerapp.appresourcers.R
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -70,47 +67,66 @@ private fun AuthMenuContentScreen(
     navigateToLogin: () -> Unit,
     navigateToRegister: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(50.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
+    Box(modifier = Modifier.fillMaxSize()) {
         Image(
-            modifier = Modifier.height(150.dp),
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+            modifier = Modifier.fillMaxWidth(),
+            painter = painterResource(id = R.drawable.top_background_auth),
             contentDescription = "",
-            contentScale = ContentScale.FillHeight,
+            contentScale = ContentScale.FillWidth,
         )
 
         Image(
-            modifier = Modifier.height(15.dp),
-            painter = painterResource(id = R.drawable.image_storyteller_logo),
+            modifier = Modifier.align(Alignment.BottomEnd),
+            painter = painterResource(id = R.drawable.bottom_end_corner_auth_background),
             contentDescription = "",
-            contentScale = ContentScale.FillHeight,
         )
 
-        Spacer(modifier = Modifier.weight(1F))
-
-        TextButton(
+        Column(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.primary)
                 .fillMaxWidth(),
-            onClick = navigateToLogin
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Sign in", color = MaterialTheme.colorScheme.onPrimary)
-        }
+            Image(
+                modifier = Modifier
+                    .height(200.dp)
+                    .padding(vertical = 25.dp),
+                painter = painterResource(id = R.drawable.ic_auth_menu_logo),
+                contentDescription = "",
+                contentScale = ContentScale.FillHeight,
+            )
 
-        Spacer(modifier = Modifier.height(10.dp))
+            Image(
+                modifier = Modifier.height(17.dp),
+                painter = painterResource(id = R.drawable.image_storyteller_logo),
+                contentDescription = "",
+                contentScale = ContentScale.FillHeight,
+            )
 
-        TextButton(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.primary)
-                .fillMaxWidth(),
-            onClick = navigateToRegister
-        ) {
-            Text(text = "Sign up with email", color = MaterialTheme.colorScheme.onPrimary)
+            Spacer(modifier = Modifier.weight(1F))
+
+            TextButton(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+                    .background(MaterialTheme.colorScheme.primary)
+                    .fillMaxWidth(),
+                onClick = navigateToLogin
+            ) {
+                Text(text = "Sign in", color = MaterialTheme.colorScheme.onPrimary)
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            TextButton(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+                    .background(MaterialTheme.colorScheme.primary)
+                    .fillMaxWidth(),
+                onClick = navigateToRegister
+            ) {
+                Text(text = "Sign up with email", color = MaterialTheme.colorScheme.onPrimary)
+            }
+
+            Spacer(modifier = Modifier.height(50.dp))
         }
     }
 }

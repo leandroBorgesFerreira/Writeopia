@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amplifyframework.auth.AuthException
+import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
 import com.amplifyframework.kotlin.core.Amplify
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,9 +40,12 @@ class LoginViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val result = Amplify.Auth.signIn(_email.value, _password.value)
-
                 if (result.isSignedIn) {
-                    Log.i("AuthQuickstart", "Sign in succeeded")
+                    val session = Amplify.Auth.fetchAuthSession() as AWSCognitoAuthSession
+                    Log.i(
+                        "AuthQuickstart",
+                        "Sign in succeeded. Token: ${session.userPoolTokensResult.value?.idToken}"
+                    )
                 } else {
                     Log.e("AuthQuickstart", "Sign in not complete")
                 }
