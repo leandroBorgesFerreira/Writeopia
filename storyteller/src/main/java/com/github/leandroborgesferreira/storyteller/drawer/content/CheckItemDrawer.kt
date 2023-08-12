@@ -32,6 +32,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTarget
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTargetWithDragItem
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
@@ -57,6 +58,8 @@ class CheckItemDrawer(
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
+        val fontSize = 16.sp
+
         val dropInfo = DropInfo(step, drawInfo.position)
         val focusRequester = remember { FocusRequester() }
         var hasFocus by remember { mutableStateOf(false) }
@@ -95,10 +98,14 @@ class CheckItemDrawer(
                             val textStyle = if (step.checked == true) {
                                 TextStyle(
                                     textDecoration = TextDecoration.LineThrough,
-                                    color = MaterialTheme.colorScheme.onBackground
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    fontSize = fontSize
                                 )
                             } else {
-                                TextStyle(color = MaterialTheme.colorScheme.onBackground)
+                                TextStyle(
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    fontSize = fontSize
+                                )
                             }
 
                             LaunchedEffect(drawInfo.focusId) {

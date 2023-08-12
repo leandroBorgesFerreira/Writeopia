@@ -24,6 +24,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyErase
@@ -50,6 +51,7 @@ class MessageDrawer(
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
+        val fontSize = 16.sp
         val focusRequester = remember { FocusRequester() }
 
         Box(modifier = Modifier.padding(horizontal = 6.dp)) {
@@ -106,7 +108,10 @@ class MessageDrawer(
                         keyboardOptions = KeyboardOptions(
                             capitalization = KeyboardCapitalization.Sentences
                         ),
-                        textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground),
+                        textStyle = TextStyle(
+                            color = MaterialTheme.colorScheme.onBackground,
+                            fontSize = fontSize
+                        ),
                         cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
                     )
                 } else {
