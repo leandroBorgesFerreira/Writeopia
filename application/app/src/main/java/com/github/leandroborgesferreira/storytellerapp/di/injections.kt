@@ -11,13 +11,12 @@ import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepositoryImpl
+import com.github.leandroborgesferreira.storyteller.persistence.tracker.OnUpdateDocumentTracker
 
 class NotesInjection(
     private val database: StoryTellerDatabase,
     private val sharedPreferences: SharedPreferences
 ) {
-
-    private fun provideStoryTellerManager() = StoryTellerManager()
 
     private fun provideDocumentRepository(): DocumentRepository =
         DocumentRepositoryImpl(
@@ -35,6 +34,10 @@ class NotesInjection(
     ): NotesUseCase {
         return NotesUseCase(documentRepository, notesConfigurationRepository)
     }
+
+    private fun provideStoryTellerManager() = StoryTellerManager(
+        documentTracker = OnUpdateDocumentTracker(provideDocumentRepository())
+    )
 
     @Composable
     internal fun provideChooseNoteViewModel(

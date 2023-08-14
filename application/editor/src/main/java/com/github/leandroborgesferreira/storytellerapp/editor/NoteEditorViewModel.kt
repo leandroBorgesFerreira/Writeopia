@@ -67,7 +67,7 @@ class NoteEditorViewModel(
         viewModelScope.launch {
             storyTellerManager.currentDocument.stateIn(this).value?.let { document ->
                 documentRepository.saveDocument(document)
-                storyTellerManager.saveOnStoryChanges(documentRepository)
+                storyTellerManager.saveOnStoryChanges()
             }
         }
     }
@@ -80,7 +80,7 @@ class NoteEditorViewModel(
 
             if (document != null) {
                 storyTellerManager.initDocument(document)
-                storyTellerManager.saveOnStoryChanges(documentRepository)
+                storyTellerManager.saveOnStoryChanges()
             }
         }
     }
@@ -120,6 +120,11 @@ class NoteEditorViewModel(
 
     fun onHeaderEditionCancel() {
         _editHeader.value = false
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        storyTellerManager.onClear()
     }
 }
 

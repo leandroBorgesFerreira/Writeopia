@@ -1,31 +1,46 @@
 {
   "auth": {
-    "storytellerappb5ca5b12": {
+    "storytellerapp8180fe64": {
       "customAuth": false,
       "dependsOn": [],
-      "frontendAuthConfig": {
-        "mfaConfiguration": "OFF",
-        "mfaTypes": [
-          "SMS"
-        ],
-        "passwordProtectionSettings": {
-          "passwordPolicyCharacters": [],
-          "passwordPolicyMinLength": 8
-        },
-        "signupAttributes": [
-          "EMAIL"
-        ],
-        "socialProviders": [],
-        "usernameAttributes": [
-          "EMAIL"
-        ],
-        "verificationMechanisms": [
-          "EMAIL"
-        ]
-      },
       "providerPlugin": "awscloudformation",
-      "service": "Cognito"
+      "service": "Cognito",
+      "serviceType": "imported"
     }
   },
-  "function": {}
+  "function": {},
+  "parameters": {
+    "AMPLIFY_auth_storytellerapp8180fe64_nativeClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "storytellerapp8180fe64"
+        }
+      ]
+    },
+    "AMPLIFY_auth_storytellerapp8180fe64_userPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "storytellerapp8180fe64"
+        }
+      ]
+    },
+    "AMPLIFY_auth_storytellerapp8180fe64_userPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "storytellerapp8180fe64"
+        }
+      ]
+    },
+    "AMPLIFY_auth_storytellerapp8180fe64_webClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "storytellerapp8180fe64"
+        }
+      ]
+    }
+  }
 }
