@@ -10,6 +10,6 @@ object DocumentFilterObject: DocumentFilter {
         removeTypes: Set<Int>
     ): DocumentContent =
         documentContent.values.filter { storyStep ->
-            removeTypes.contains(storyStep.type.number)
+            !removeTypes.contains(storyStep.type.number)
         }.associateWithPosition()
 }
