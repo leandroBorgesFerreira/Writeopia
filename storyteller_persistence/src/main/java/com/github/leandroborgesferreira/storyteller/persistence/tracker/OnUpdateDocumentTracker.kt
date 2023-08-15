@@ -1,17 +1,22 @@
 package com.github.leandroborgesferreira.storyteller.persistence.tracker
 
+import com.github.leandroborgesferreira.storyteller.filter.DocumentFilter
+import com.github.leandroborgesferreira.storyteller.filter.DocumentFilterObject
 import com.github.leandroborgesferreira.storyteller.manager.DocumentTracker
 import com.github.leandroborgesferreira.storyteller.manager.DocumentUpdate
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.document.DocumentInfo
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import java.util.UUID
 
-class OnUpdateDocumentTracker(private val documentUpdate: DocumentUpdate) : DocumentTracker {
+class OnUpdateDocumentTracker(
+    private val documentUpdate: DocumentUpdate,
+    private val documentFilter: DocumentFilter = DocumentFilterObject
+) : DocumentTracker {
 
     override suspend fun saveOnStoryChanges(
         documentEditionFlow: Flow<Pair<StoryState, DocumentInfo>>
@@ -35,13 +40,13 @@ class OnUpdateDocumentTracker(private val documentUpdate: DocumentUpdate) : Docu
                     val titleFromContent = stories.values.firstOrNull { storyStep ->
                         //Todo: Change the type of change to allow different types. The client code should decide what is a title
                         //It is also interesting to inv
-                        storyStep.type == StoryType.TITLE.type
+                        storyStep.type == StoryTypes.TITLE.type
                     }?.text
 
                     val document = Document(
                         id = documentInfo.id,
                         title = titleFromContent ?: documentInfo.title,
-                        content = storyState.stories,
+                        content = documentFilter.removeMetaData(storyState.stories),
                         createdAt = documentInfo.createdAt,
                         lastUpdatedAt = documentInfo.lastUpdatedAt,
                     )
@@ -54,7 +59,7 @@ class OnUpdateDocumentTracker(private val documentUpdate: DocumentUpdate) : Docu
                     val titleFromContent = stories.values.firstOrNull { storyStep ->
                         //Todo: Change the type of change to allow different types. The client code should decide what is a title
                         //It is also interesting to inv
-                        storyStep.type == StoryType.TITLE.type
+                        storyStep.type == StoryTypes.TITLE.type
                     }?.text
 
                     documentUpdate.saveDocumentMetadata(

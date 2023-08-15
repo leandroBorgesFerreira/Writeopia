@@ -1,7 +1,8 @@
 package com.github.leandroborgesferreira.storyteller.normalization.merge
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.normalization.merge.steps.StepToStepMerger
 import com.github.leandroborgesferreira.storyteller.utils.MapStoryData
 import com.github.leandroborgesferreira.storyteller.utils.extensions.associateWithPosition
@@ -16,7 +17,12 @@ class MergeNormalizationTest {
     @Test
     fun `it should be possible to merge a group of images`() {
         val mergeNormalization = MergeNormalization.build {
-            addMerger(StepsMergerCoordinator(typeOfStep = "image", typeOfGroup = "group_image"))
+            addMerger(
+                StepsMergerCoordinator(
+                    typeOfStep = StoryTypes.IMAGE.type,
+                    typeOfGroup = StoryTypes.GROUP_IMAGE.type
+                )
+            )
         }
 
         val mergedStep = mergeNormalization.mergeSteps(MapStoryData.imageSimpleGroup())
@@ -28,7 +34,12 @@ class MergeNormalizationTest {
     @Test
     fun `it should be possible to merge a group of images with messages in the list`() {
         val mergeNormalization = MergeNormalization.build {
-            addMerger(StepsMergerCoordinator(typeOfStep = "image", typeOfGroup = "group_image"))
+            addMerger(
+                StepsMergerCoordinator(
+                    typeOfStep = StoryTypes.IMAGE.type,
+                    typeOfGroup = StoryTypes.GROUP_IMAGE.type
+                )
+            )
         }
 
         val mergedStep = mergeNormalization.mergeSteps(MapStoryData.stepsList())
@@ -37,7 +48,7 @@ class MergeNormalizationTest {
         assertTrue(mergedStep[0]?.isGroup ?: false)
         assertTrue(mergedStep[1] is StoryStep)
         assertTrue(mergedStep[2] is StoryStep)
-        assertEquals("group_image", mergedStep[0]!!.type)
+        assertEquals("group_image", mergedStep[0]!!.type.name)
     }
 
     @Test
@@ -46,7 +57,7 @@ class MergeNormalizationTest {
             addMerger(
                 StepsMergerCoordinator(
                     stepMerger = StepToStepMerger(),
-                    typeOfStep = "message"
+                    typeOfStep = StoryTypes.MESSAGE.type
                 )
             )
         }
@@ -55,10 +66,13 @@ class MergeNormalizationTest {
             mergeNormalization.mergeSteps(MapStoryData.twoGroupsImageList())
 
         assertEquals("2 image groups should have been merged into one", 1, mergedStep.size)
-        assertTrue("the first story unit should still be a GroupStep", mergedStep[0]?.isGroup ?: false)
+        assertTrue(
+            "the first story unit should still be a GroupStep",
+            mergedStep[0]?.isGroup ?: false
+        )
         assertEquals(
             "the first story unit should still be a GroupImage",
-            StoryType.GROUP_IMAGE.type,
+            StoryTypes.GROUP_IMAGE.type,
             mergedStep[0]!!.type
         )
     }
@@ -66,13 +80,18 @@ class MergeNormalizationTest {
     @Test
     fun `it should skip messages without mergers`() {
         val mergeNormalization = MergeNormalization.build {
-            addMerger(StepsMergerCoordinator(typeOfStep = "image", typeOfGroup = "group_image"))
+            addMerger(
+                StepsMergerCoordinator(
+                    typeOfStep = StoryTypes.IMAGE.type,
+                    typeOfGroup = StoryTypes.GROUP_IMAGE.type
+                )
+            )
         }
 
         val last = listOf(
             StoryStep(
                 localId = "6",
-                type = "unknown",
+                type = StoryType("unknown",-1),
             )
         )
 
@@ -86,22 +105,27 @@ class MergeNormalizationTest {
     @Ignore("Evaluate if the image should actually go to beginning of the group")
     fun `the image always goes to the beginning of a group message`() {
         val mergeNormalization = MergeNormalization.build {
-            addMerger(StepsMergerCoordinator(typeOfStep = "image", typeOfGroup = "group_image"))
+            addMerger(
+                StepsMergerCoordinator(
+                    typeOfStep = StoryTypes.IMAGE.type,
+                    typeOfGroup = StoryTypes.GROUP_IMAGE.type
+                )
+            )
         }
 
         val last = StoryStep(
             localId = "6",
-            type = "image",
+            type = StoryTypes.IMAGE.type,
         )
 
         val story = listOf(
             StoryStep(
                 localId = "1",
-                type = "group_image",
+                type = StoryTypes.GROUP_IMAGE.type,
                 steps = listOf(
                     StoryStep(
                         localId = "2",
-                        type = "image",
+                        type = StoryTypes.IMAGE.type,
                     ),
                     last
                 )

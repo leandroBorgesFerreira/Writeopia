@@ -2,7 +2,7 @@ package com.github.leandroborgesferreira.storyteller.manager
 
 import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.normalization.addinbetween.AddSteps
 import com.github.leandroborgesferreira.storyteller.utils.MapStoryData
 import com.github.leandroborgesferreira.storyteller.utils.StoryStepFactory
@@ -16,21 +16,21 @@ class ContentHandlerTest {
         val input = AddSteps.spaces(skipFirst = true).insert(MapStoryData.imageStepsList())
 
         val contentHandler =
-            ContentHandler(focusableTypes = setOf(StoryType.MESSAGE.type)) { _ -> mapOf() }
+            ContentHandler(focusableTypes = setOf(StoryTypes.MESSAGE.type.number)) { _ -> mapOf() }
 
-        val storyStep = StoryStep(type = StoryType.MESSAGE.type)
+        val storyStep = StoryStep(type = StoryTypes.MESSAGE.type)
         val newStory = contentHandler.addNewContent(input, storyStep, 2)
 
         val expected = mapOf(
-            0 to StoryStep(type = StoryType.IMAGE.type),
+            0 to StoryStep(type = StoryTypes.IMAGE.type),
             1 to StoryStepFactory.space(),
             2 to storyStep,
             3 to StoryStepFactory.space(),
-            4 to StoryStep(type = StoryType.IMAGE.type),
+            4 to StoryStep(type = StoryTypes.IMAGE.type),
             5 to StoryStepFactory.space(),
-            6 to StoryStep(type = StoryType.IMAGE.type),
+            6 to StoryStep(type = StoryTypes.IMAGE.type),
             7 to StoryStepFactory.space(),
-            8 to StoryStep(type = StoryType.LARGE_SPACE.type),
+            8 to StoryStep(type = StoryTypes.LARGE_SPACE.type),
         ).mapValues { (_, storyStep) ->
             storyStep.type
         }
@@ -41,7 +41,7 @@ class ContentHandlerTest {
     @Test
     fun `when a line break happens, the text should be divided correctly`() {
         val contentHandler = ContentHandler { _ -> mapOf() }
-        val storyStep = StoryStep(type = "message", text = "line1\nline2")
+        val storyStep = StoryStep(type = StoryTypes.MESSAGE.type, text = "line1\nline2")
 
         val (_, newState) = contentHandler.onLineBreak(
             mapOf(0 to storyStep),

@@ -1,6 +1,5 @@
 package com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +20,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,8 +31,6 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.amplifyframework.auth.cognito.result.AWSCognitoAuthSignOutResult
-import com.amplifyframework.kotlin.core.Amplify
 import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.dto.DocumentUi
 import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.ChooseNoteViewModel
 import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.NotesArrangement
@@ -43,7 +41,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.CheckItemPreviewDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.HeaderPreviewDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.TextPreviewDrawer
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 
 
@@ -96,10 +94,14 @@ internal fun Notes(
         }
 
         is ResultData.Error -> {
+            LaunchedEffect(key1 = true) {
+                documents.exception.printStackTrace()
+            }
+
             Box(modifier = Modifier.fillMaxSize()) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
-                    text = ""// stringResource(R.string.error_loading_notes)
+                    text = "Error!!"// stringResource(R.string.error_loading_notes)
                 )
             }
         }
@@ -153,7 +155,7 @@ private fun DocumentItem(
     documentUi: DocumentUi,
     documentClick: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
-    drawers: Map<String, StoryStepDrawer>
+    drawers: Map<Int, StoryStepDrawer>
 ) {
     SwipeBox(
         modifier = Modifier
@@ -173,7 +175,7 @@ private fun DocumentItem(
         Column {
 
             documentUi.preview.forEachIndexed { i, storyStep ->
-                drawers[storyStep.type]?.Step(
+                drawers[storyStep.type.number]?.Step(
                     step = storyStep,
                     drawInfo = DrawInfo(editable = false, position = i)
                 )
@@ -213,13 +215,13 @@ private fun MockDataScreen(
 }
 
 @Composable
-private fun previewDrawers(): Map<String, StoryStepDrawer> =
+private fun previewDrawers(): Map<Int, StoryStepDrawer> =
     mapOf(
-        StoryType.TITLE.type to HeaderPreviewDrawer(
+        StoryTypes.TITLE.type.number to HeaderPreviewDrawer(
             style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold,
             )
         ),
-        StoryType.MESSAGE.type to TextPreviewDrawer(),
-        StoryType.CHECK_ITEM.type to CheckItemPreviewDrawer()
+        StoryTypes.MESSAGE.type.number to TextPreviewDrawer(),
+        StoryTypes.CHECK_ITEM.type.number to CheckItemPreviewDrawer()
     )

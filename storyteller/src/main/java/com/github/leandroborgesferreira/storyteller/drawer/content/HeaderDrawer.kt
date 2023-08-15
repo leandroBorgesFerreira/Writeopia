@@ -17,7 +17,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.Decoration
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 
 class HeaderDrawer(
     private val modifier: Modifier = Modifier,
@@ -52,7 +52,7 @@ class HeaderDrawer(
 @Composable
 fun HeaderDrawerStepPreview() {
     val step = StoryStep(
-        type = StoryType.TITLE.type,
+        type = StoryTypes.TITLE.type,
         decoration = Decoration(backgroundColor = Color.Blue.toArgb()),
         text = "Document Title",
     )
@@ -73,7 +73,7 @@ fun HeaderDrawerStepPreview() {
 @Composable
 fun HeaderDrawerStepPreviewNoColor() {
     val step = StoryStep(
-        type = StoryType.TITLE.type,
+        type = StoryTypes.TITLE.type,
         decoration = Decoration(),
         text = "Document Title",
     )

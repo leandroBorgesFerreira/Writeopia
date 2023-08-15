@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.parse
 
+import com.github.leandroborgesferreira.storyteller.preview.PreviewParser
 import com.github.leandroborgesferreira.storyteller.utils.MapStoryData
 import org.junit.Assert.*
 import org.junit.Test

@@ -1,7 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.normalization.addinbetween
 
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.utils.extensions.associateWithPosition
 import java.util.Stack
 import java.util.UUID
@@ -80,10 +80,10 @@ class AddSteps(
         fun spaces(skipFirst: Boolean): AddSteps =
             AddSteps(
                 addInBetween = {
-                    StoryStep(type = StoryType.SPACE.type)
+                    StoryStep(type = StoryTypes.SPACE.type)
                 },
                 addAtLast = {
-                    StoryStep(type = StoryType.LARGE_SPACE.type)
+                    StoryStep(type = StoryTypes.LARGE_SPACE.type)
                 },
                 skipFirst = skipFirst
             )

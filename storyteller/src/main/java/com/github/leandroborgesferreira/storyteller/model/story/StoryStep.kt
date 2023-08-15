@@ -10,7 +10,7 @@ import java.util.UUID
 data class StoryStep(
     val id: String = UUID.randomUUID().toString(),
     val localId: String = UUID.randomUUID().toString(),
-    val type: String,
+    val type: StoryType,
     val parentId: String? = null,
     val url: String? = null,
     val path: String? = null,

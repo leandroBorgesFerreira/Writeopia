@@ -13,7 +13,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.DrawStory
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
 import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizationMap
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
@@ -43,9 +43,9 @@ class StoryTellerManager(
     private val movementHandler: MovementHandler = MovementHandler(stepsNormalizer),
     private val contentHandler: ContentHandler = ContentHandler(
         focusableTypes = setOf(
-            StoryType.CHECK_ITEM.type,
-            StoryType.MESSAGE.type,
-            StoryType.MESSAGE_BOX.type,
+            StoryTypes.CHECK_ITEM.type.number,
+            StoryTypes.MESSAGE.type.number,
+            StoryTypes.MESSAGE_BOX.type.number,
         ),
         stepsNormalizer = stepsNormalizer
     ),
@@ -79,7 +79,7 @@ class StoryTellerManager(
         val titleFromContent = state.stories.values.firstOrNull { storyStep ->
             //Todo: Change the type of change to allow different types. The client code should decide what is a title
             //It is also interesting to inv
-            storyStep.type == StoryType.TITLE.type
+            storyStep.type == StoryTypes.TITLE.type
         }?.text
 
         Document(
@@ -130,7 +130,7 @@ class StoryTellerManager(
     fun newStory(documentId: String = UUID.randomUUID().toString(), title: String = "") {
         val firstMessage = StoryStep(
             localId = UUID.randomUUID().toString(),
-            type = StoryType.TITLE.type
+            type = StoryTypes.TITLE.type
         )
         val stories: Map<Int, StoryStep> = mapOf(0 to firstMessage)
         val normalized = stepsNormalizer(stories.toEditState())
@@ -302,18 +302,18 @@ class StoryTellerManager(
         val stories = _currentStory.value.stories
         val lastContentStory = stories[stories.size - 3]
 
-        if (lastContentStory?.type == StoryType.MESSAGE.type) {
+        if (lastContentStory?.type == StoryTypes.MESSAGE.type) {
             val newState = _currentStory.value.copy(focusId = lastContentStory.id)
             _currentStory.value = newState
         } else {
             var acc = stories.size - 1
-            val newLastMessage = StoryStep(type = StoryType.MESSAGE.type)
+            val newLastMessage = StoryStep(type = StoryTypes.MESSAGE.type)
 
             //Todo: It should be possible to customize which steps are add
             val newStories = stories + mapOf(
                 acc++ to newLastMessage,
-                acc++ to StoryStep(type = StoryType.SPACE.type),
-                acc to StoryStep(type = StoryType.LARGE_SPACE.type),
+                acc++ to StoryStep(type = StoryTypes.SPACE.type),
+                acc to StoryStep(type = StoryTypes.LARGE_SPACE.type),
             )
 
             _currentStory.value = StoryState(newStories, LastEdit.Whole, newLastMessage.id)

@@ -45,7 +45,7 @@ class MovementHandler(private val stepsNormalizer: UnitsNormalizationMap) {
 
     fun move(stories: Map<Int, StoryStep>, move: Action.Move): Map<Int, StoryStep> {
         val mutable = stories.toMutableMap()
-        if (mutable[move.positionTo]?.type != "space") throw IllegalStateException(
+        if (mutable[move.positionTo]?.type?.name != "space") throw IllegalStateException(
             "You can only move a story to an empty space"
         )
 

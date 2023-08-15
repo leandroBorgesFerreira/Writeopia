@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 
 class CheckItemPreviewDrawer(
     private val modifier: Modifier = Modifier.padding(vertical = 2.dp, horizontal = 10.dp)
@@ -82,7 +82,7 @@ private fun CheckItemPreviewDrawerPreview() {
     Box(modifier = Modifier.background(Color.Cyan)) {
         CheckItemPreviewDrawer().Step(
             step = StoryStep(
-                type = StoryType.CHECK_ITEM.type,
+                type = StoryTypes.CHECK_ITEM.type,
                 text = "Check item"
             ), drawInfo = DrawInfo()
         )

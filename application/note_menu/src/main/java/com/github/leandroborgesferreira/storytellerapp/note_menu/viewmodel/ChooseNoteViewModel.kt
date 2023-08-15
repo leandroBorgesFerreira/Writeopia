@@ -13,7 +13,7 @@ import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.dto.Document
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import com.github.leandroborgesferreira.storytellerapp.utils_module.map
 import com.github.leandroborgesferreira.storyteller.model.document.Document
-import com.github.leandroborgesferreira.storyteller.parse.PreviewParser
+import com.github.leandroborgesferreira.storyteller.preview.PreviewParser
 import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
