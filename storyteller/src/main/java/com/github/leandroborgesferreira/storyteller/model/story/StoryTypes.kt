@@ -20,6 +20,6 @@ enum class StoryTypes(val type: StoryType) {
 
     companion object {
         fun fromName(stringValue: String): StoryTypes =
-            StoryTypes.values().first { it.name == stringValue }
+            StoryTypes.values().first { it.type.name == stringValue }
     }
 }

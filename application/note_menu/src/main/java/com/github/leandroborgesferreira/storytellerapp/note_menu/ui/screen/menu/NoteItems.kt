@@ -20,6 +20,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -93,10 +94,14 @@ internal fun Notes(
         }
 
         is ResultData.Error -> {
+            LaunchedEffect(key1 = true) {
+                documents.exception.printStackTrace()
+            }
+
             Box(modifier = Modifier.fillMaxSize()) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
-                    text = ""// stringResource(R.string.error_loading_notes)
+                    text = "Error!!"// stringResource(R.string.error_loading_notes)
                 )
             }
         }
