@@ -11,10 +11,10 @@ object FindStory {
     fun previousFocus(
         storyList: List<StoryStep>,
         localPosition: Int,
-        focusableTypes: Set<String>
+        focusableTypes: Set<Int>
     ): StoryStep? {
         for (i in (localPosition - 1) downTo 0) {
-            if (focusableTypes.contains(storyList[i].type)) {
+            if (focusableTypes.contains(storyList[i].type.number)) {
                 return storyList[i]
             }
         }

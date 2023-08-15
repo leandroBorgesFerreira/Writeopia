@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 
 class HeaderPreviewDrawer(
     private val modifier: Modifier = Modifier,
@@ -58,7 +58,7 @@ class HeaderPreviewDrawer(
 @Composable
 fun HeaderPreviewDrawerPreview() {
     HeaderPreviewDrawer().Step(
-        step = StoryStep(type = StoryType.TITLE.type, text = "Some title"),
+        step = StoryStep(type = StoryTypes.TITLE.type, text = "Some title"),
         drawInfo = DrawInfo()
     )
 }

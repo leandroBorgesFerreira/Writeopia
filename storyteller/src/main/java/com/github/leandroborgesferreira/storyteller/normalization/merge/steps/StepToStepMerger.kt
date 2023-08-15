@@ -1,6 +1,8 @@
 package com.github.leandroborgesferreira.storyteller.normalization.merge.steps
 
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.normalization.merge.StepMerger
 
 /**
@@ -13,8 +15,9 @@ import com.github.leandroborgesferreira.storyteller.normalization.merge.StepMerg
  */
 open class StepToStepMerger : StepMerger {
 
-    override fun merge(step1: StoryStep, step2: StoryStep, type: String): StoryStep =
-        if (step1.type == "message" && step2.type == "message") {
+    override fun merge(step1: StoryStep, step2: StoryStep, type: StoryType): StoryStep {
+        val messageNumber = StoryTypes.MESSAGE.type.number
+        return if (step1.type.number == messageNumber && step2.type.number == messageNumber) {
             step1.copy(
                 text = "${step1.text}\n\n${step2.text}",
             )
@@ -23,4 +26,5 @@ open class StepToStepMerger : StepMerger {
                 "At the moment StepToStepMerger can only be used to merge messages"
             )
         }
+    }
 }

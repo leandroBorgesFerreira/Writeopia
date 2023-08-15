@@ -8,7 +8,7 @@ import com.github.leandroborgesferreira.storyteller.model.action.SingleAction
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.Stack
@@ -232,7 +232,7 @@ internal class PerStateBackstackManager(
         contentHandler.addNewContentBulk(storyState.stories,
             action.deletedUnits,
             addInBetween = {
-                StoryStep(type = StoryType.SPACE.type)
+                StoryStep(type = StoryTypes.SPACE.type)
             }
         ).let { newStories ->
             StoryState(

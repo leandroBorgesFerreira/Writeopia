@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.leandroborgesferreira.storyteller.model.document.Document
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.persistence.dao.DocumentDao
 import com.github.leandroborgesferreira.storyteller.persistence.dao.StoryUnitDao
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
@@ -21,7 +22,6 @@ import org.junit.runner.RunWith
 import java.util.Date
 import java.util.UUID
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 class DocumentRepositoryTest {
 
@@ -143,22 +143,22 @@ class DocumentRepositoryTest {
 fun simpleImage(): Map<Int, StoryStep> = mapOf(
     0 to StoryStep(
         localId = "1",
-        type = "image",
+        type = StoryTypes.IMAGE.type,
     )
 )
 
 fun imageStepsList(): Map<Int, StoryStep> = mapOf(
     0 to StoryStep(
         localId = "1",
-        type = "image",
+        type = StoryTypes.IMAGE.type,
     ),
     1 to StoryStep(
         localId = "2",
-        type = "image",
+        type = StoryTypes.IMAGE.type,
     ),
     2 to StoryStep(
         localId = "3",
-        type = "image",
+        type = StoryTypes.IMAGE.type,
     ),
 )
 
@@ -169,21 +169,21 @@ fun imageGroup() : Map<Int, StoryStep>{
         0 to StoryStep(
             id = groupId,
             localId = "1",
-            type = "group_image",
+            type = StoryTypes.GROUP_IMAGE.type,
             steps = listOf(
                 StoryStep(
                     localId = "2",
-                    type = "image",
+                    type = StoryTypes.IMAGE.type,
                     parentId = groupId,
                 ),
                 StoryStep(
                     localId = "3",
-                    type = "image",
+                    type = StoryTypes.IMAGE.type,
                     parentId = groupId,
                 ),
                 StoryStep(
                     localId = "4",
-                    type = "image",
+                    type = StoryTypes.IMAGE.type,
                     parentId = groupId,
                 )
             )
