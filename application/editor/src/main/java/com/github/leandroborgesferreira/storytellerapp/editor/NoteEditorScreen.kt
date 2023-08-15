@@ -107,7 +107,8 @@ fun NoteEditorScreen(
                 navigationClick = {
                     systemUiController.setStatusBarColor(color = systemBarDefaultColor)
                     noteEditorViewModel.removeNoteIfEmpty(onComplete = navigateBack)
-                }
+                },
+                shareDocument = noteEditorViewModel::shareDocumentInJson
             )
         },
     ) { paddingValues ->
@@ -152,7 +153,7 @@ fun NoteEditorScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBar(title: String = "", navigationClick: () -> Unit = {}) {
+private fun TopBar(title: String = "", navigationClick: () -> Unit = {}, shareDocument: () -> Unit) {
     TopAppBar(
         modifier = Modifier.height(44.dp),
         title = {
@@ -193,7 +194,7 @@ private fun TopBar(title: String = "", navigationClick: () -> Unit = {}) {
             Icon(
                 modifier = Modifier
                     .clip(CircleShape)
-                    .clickable {  }
+                    .clickable(onClick = shareDocument)
                     .padding(9.dp),
                 imageVector = Icons.Default.MoreVert,
                 contentDescription = "",
@@ -210,7 +211,7 @@ private fun TopBar(title: String = "", navigationClick: () -> Unit = {}) {
 @Composable
 private fun TopBar_Preview() {
     Box(modifier = Modifier.background(Color.LightGray)) {
-        TopBar(title = "Title")
+        TopBar(title = "Title", shareDocument = {})
     }
 }
 

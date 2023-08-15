@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storytellerapp.di
 
+import android.app.Application
 import android.content.SharedPreferences
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -15,7 +16,8 @@ import com.github.leandroborgesferreira.storyteller.persistence.tracker.OnUpdate
 
 class NotesInjection(
     private val database: StoryTellerDatabase,
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences,
+    private val application: Application
 ) {
 
     private fun provideDocumentRepository(): DocumentRepository =
@@ -53,7 +55,7 @@ class NotesInjection(
         storyTellerManager: StoryTellerManager = provideStoryTellerManager()
     ): NoteEditorViewModel {
         return viewModel(initializer = {
-            NoteEditorViewModel(storyTellerManager, documentRepository)
+            NoteEditorViewModel(storyTellerManager, documentRepository, application = application)
         })
     }
 }

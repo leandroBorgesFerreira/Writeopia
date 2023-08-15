@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storytellerapp.navigation
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -31,21 +32,21 @@ class NavigationActivity : AppCompatActivity() {
         VideoFrameConfig.configCoilForVideoFrame(this)
 
         setContent {
-            NavigationGraph()
+            NavigationGraph(application = application)
         }
     }
 }
 
 @Composable
 fun NavigationGraph(
-    context: Context = LocalContext.current,
+    application: Application,
     navController: NavHostController = rememberNavController(),
-    database: StoryTellerDatabase = StoryTellerDatabase.database(context),
-    sharedPreferences: SharedPreferences = context.getSharedPreferences(
+    database: StoryTellerDatabase = StoryTellerDatabase.database(application),
+    sharedPreferences: SharedPreferences = application.getSharedPreferences(
         "com.github.leandroborgesferreira.storytellerapp.preferences",
         Context.MODE_PRIVATE
     ),
-    notesInjection: NotesInjection = NotesInjection(database, sharedPreferences),
+    notesInjection: NotesInjection = NotesInjection(database, sharedPreferences, application),
     authInjections: AuthInjections = AuthInjections()
 ) {
 
