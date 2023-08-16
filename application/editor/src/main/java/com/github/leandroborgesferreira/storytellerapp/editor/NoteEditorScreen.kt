@@ -2,6 +2,7 @@ package com.github.leandroborgesferreira.storytellerapp.editor
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -108,7 +110,7 @@ fun NoteEditorScreen(
                     systemUiController.setStatusBarColor(color = systemBarDefaultColor)
                     noteEditorViewModel.removeNoteIfEmpty(onComplete = navigateBack)
                 },
-                shareDocument = noteEditorViewModel::shareDocumentInJson
+                shareDocument = noteEditorViewModel::onMoreOptionsClick
             )
         },
     ) { paddingValues ->
@@ -146,14 +148,55 @@ fun NoteEditorScreen(
                 outsideClick = noteEditorViewModel::onHeaderEditionCancel,
                 visibilityState = headerEdition
             )
+
+            val showGlobalMenu by noteEditorViewModel.showGlobalMenu.collectAsStateWithLifecycle()
+
+            AnimatedVisibility(
+                visible = showGlobalMenu,
+                enter = slideInVertically(
+                    initialOffsetY = { fullHeight -> fullHeight }
+                ),
+                exit = slideOutVertically(
+                    targetOffsetY = { fullHeight -> fullHeight }
+                )
+            ) {
+                NoteGlobalActionsMenu(noteEditorViewModel::shareDocumentInJson)
+            }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun NoteGlobalActionsMenu(onShare: () -> Unit = {}) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+    ) {
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onShare)
+                .background(MaterialTheme.colorScheme.primary)
+                .padding(8.dp),
+            text = "Export as Json",
+            color = MaterialTheme.colorScheme.onBackground
+        )
     }
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBar(title: String = "", navigationClick: () -> Unit = {}, shareDocument: () -> Unit) {
+private fun TopBar(
+    title: String = "",
+    navigationClick: () -> Unit = {},
+    shareDocument: () -> Unit
+) {
     TopAppBar(
         modifier = Modifier.height(44.dp),
         title = {

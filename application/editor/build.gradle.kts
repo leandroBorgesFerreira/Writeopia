@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
-    kotlin("plugin.serialization") version "1.9.0"
+    alias(libs.plugins.kotlinSerialization)
 }
 
 android {
@@ -17,7 +17,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -42,7 +42,7 @@ android {
 kotlin{
     sourceSets.all {
         languageSettings {
-            languageVersion = "2.0"
+            languageVersion = "1.9"
         }
     }
 }
@@ -50,6 +50,7 @@ kotlin{
 dependencies {
     implementation(project(":storyteller"))
     implementation(project(":storyteller_persistence"))
+    implementation(project(":storyteller_network"))
     implementation(project(":application:resources"))
     implementation(project(":application:utils"))
     implementation(project(":application:common_ui"))

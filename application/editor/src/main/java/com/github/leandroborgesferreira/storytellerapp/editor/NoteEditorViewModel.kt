@@ -16,8 +16,10 @@ import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.Decoration
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
+import com.github.leandroborgesferreira.storyteller.network.data.StoryStepApi
 import com.github.leandroborgesferreira.storyteller.utils.extensions.noContent
 import com.github.leandroborgesferreira.storytellerapp.editor.model.EditState
+import com.github.leandroborgesferreira.storytellerapp.utils_module.toApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -46,6 +48,9 @@ class NoteEditorViewModel(
 
     private val _editModeState = MutableStateFlow(true)
     val editModeState: StateFlow<Boolean> = _editModeState
+
+    private val _showGlobalMenu = MutableStateFlow(false)
+    val showGlobalMenu = _showGlobalMenu.asStateFlow()
 
     private val _editHeader = MutableStateFlow(false)
     val editHeader = _editHeader.asStateFlow()
@@ -137,6 +142,10 @@ class NoteEditorViewModel(
         _editHeader.value = false
     }
 
+    fun onMoreOptionsClick() {
+        _showGlobalMenu.value = !_showGlobalMenu.value
+    }
+
     @OptIn(ExperimentalSerializationApi::class)
     fun shareDocumentInJson() {
         val json = Json {
@@ -158,9 +167,13 @@ class NoteEditorViewModel(
             true
         }
 
+        val apiDocument = documentFilter.removeMetaData(document).mapValues { (_, story) ->
+            story.toApi()
+        }
+
         if (fileCreated) {
             json.encodeToStream(
-                documentFilter.removeMetaData(document),
+                apiDocument,
                 FileOutputStream(documentFile)
             )
 

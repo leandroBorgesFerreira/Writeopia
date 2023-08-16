@@ -1,12 +1,12 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 android {
-    namespace = "com.github.leandroborgesferreira.storytellerapp.common_ui"
-    compileSdk = 33
+    namespace = "com.github.leandroborgesferreira.storyteller.network"
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
@@ -31,12 +31,6 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
 }
 
 kotlin{
@@ -48,23 +42,11 @@ kotlin{
 }
 
 dependencies {
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.androidx.ktx)
     implementation(libs.appCompat)
     implementation(libs.material)
-
-    implementation(libs.viewmodel.compose)
-    implementation(libs.runtime.compose)
-    implementation(libs.androidx.material.icons.extended)
-
-    implementation("androidx.activity:activity-compose")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material3:material3-window-size-class")
-
-    // Compose - Preview
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-
-    implementation(platform(libs.androidx.compose.bom))
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

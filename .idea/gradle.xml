@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/application/resources" />
             <option value="$PROJECT_DIR$/application/utils" />
             <option value="$PROJECT_DIR$/storyteller" />
+            <option value="$PROJECT_DIR$/storyteller_network" />
             <option value="$PROJECT_DIR$/storyteller_persistence" />
           </set>
         </option>

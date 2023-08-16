@@ -5,7 +5,10 @@ import com.github.leandroborgesferreira.storyteller.utils.alias.DocumentContent
 
 interface DocumentFilter {
 
-    fun removeMetaData(documentContent: DocumentContent, removeTypes: Set<Int> = removeTypes()): DocumentContent
+    fun removeMetaData(
+        documentContent: DocumentContent,
+        removeTypes: Set<Int> = removeTypes()
+    ): DocumentContent
 }
 
 private fun removeTypes(): Set<Int> =

@@ -39,7 +39,7 @@ fun AuthMenuScreen(
     when (val isConnected = isConnectedState.collectAsStateWithLifecycle().value) {
         is ResultData.Complete -> {
             if (isConnected.data) {
-                LaunchedEffect(true) {
+                LaunchedEffect("navigateUp") {
                     navigateToApp()
                 }
             } else {

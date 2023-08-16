@@ -8,6 +8,7 @@ plugins {
     id("org.jetbrains.dokka") version "1.8.10"
     id("io.github.leandroborgesferreira.dag-command") version "1.6.0" apply true
     id("com.google.gms.google-services") version "4.3.15" apply false
+    kotlin("plugin.serialization") version "1.9.0"
 }
 apply(from = "${rootDir}/scripts/publish-root.gradle")
 

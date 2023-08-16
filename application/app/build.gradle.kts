@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
-    kotlin("plugin.serialization") version "1.9.0"
+    alias(libs.plugins.kotlinSerialization)
 }
 android {
     namespace = "com.github.leandroborgesferreira.storytellerapp"
@@ -20,7 +20,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -45,7 +45,7 @@ android {
 kotlin{
     sourceSets.all {
         languageSettings {
-            languageVersion = "2.0"
+            languageVersion = "1.9"
         }
     }
 }
@@ -53,6 +53,7 @@ kotlin{
 dependencies {
     implementation(project(":storyteller"))
     implementation(project(":storyteller_persistence"))
+    implementation(project(":storyteller_network"))
 
     implementation(project(":application:note_menu"))
     implementation(project(":application:utils"))
