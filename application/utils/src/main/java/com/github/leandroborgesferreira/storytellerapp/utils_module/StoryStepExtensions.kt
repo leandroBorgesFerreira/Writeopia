@@ -10,7 +10,6 @@ import com.github.leandroborgesferreira.storyteller.network.data.StoryTypeApi
 fun StoryStep.toApi(): StoryStepApi =
     StoryStepApi(
         id = this.id,
-        localId = this.localId,
         type = this.type.toApi(),
         parentId = this.parentId,
         url = this.url,

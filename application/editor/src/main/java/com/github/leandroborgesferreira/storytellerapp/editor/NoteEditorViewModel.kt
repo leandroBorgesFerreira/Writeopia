@@ -1,6 +1,7 @@
 package com.github.leandroborgesferreira.storytellerapp.editor
 
 import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.content.FileProvider
@@ -30,6 +31,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToStream
 import java.io.File
@@ -146,52 +148,33 @@ class NoteEditorViewModel(
         _showGlobalMenu.value = !_showGlobalMenu.value
     }
 
-    @OptIn(ExperimentalSerializationApi::class)
-    fun shareDocumentInJson() {
+    fun shareDocumentInJson(context: Context) {
         val json = Json {
             prettyPrint = true
         }
-
-        val application = getApplication<Application>()
 
         val documentId = UUID.randomUUID().toString().substring(0..6)
         val document = storyTellerManager.currentStory.value.stories
         val documentTitle = (document[0]?.text ?: "storyteller_document_$documentId")
             .replace(" ", "_")
 
-        val documentFile = File(application.getExternalFilesDir(null), "$documentTitle.txt")
-
-        val fileCreated = if (!documentFile.exists()) {
-            documentFile.createNewFile()
-        } else {
-            true
-        }
-
         val apiDocument = documentFilter.removeMetaData(document).mapValues { (_, story) ->
             story.toApi()
         }
 
-        if (fileCreated) {
-            json.encodeToStream(
-                apiDocument,
-                FileOutputStream(documentFile)
-            )
+        val jsonDocument = json.encodeToString(apiDocument)
 
-            val uri = FileProvider.getUriForFile(
-                application,
-                "com.github.leandroborgesferreira.storytellerapp",
-                documentFile
-            )
-
-            val intent = Intent(Intent.ACTION_SEND).apply {
-                type = "application/json"
-                putExtra(Intent.EXTRA_STREAM, uri)
-            }
-
-            application.startActivity(Intent.createChooser(intent, "Export Document"))
-        } else {
-            Log.d("NoteEditorViewModel", "Could not create file to share")
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            putExtra(Intent.EXTRA_TEXT, jsonDocument)
+            putExtra(Intent.EXTRA_TITLE, documentTitle)
+            action = Intent.ACTION_SEND
+            type = "application/json"
         }
+
+        context.startActivity(
+            Intent.createChooser(intent, "Export Document")
+        )
     }
 
     override fun onCleared() {

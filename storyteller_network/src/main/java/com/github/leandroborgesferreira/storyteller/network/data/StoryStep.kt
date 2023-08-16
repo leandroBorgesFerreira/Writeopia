@@ -5,7 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class StoryStepApi(
     val id: String,
-    val localId: String,
     val type: StoryTypeApi,
     val parentId: String?,
     val url: String?,

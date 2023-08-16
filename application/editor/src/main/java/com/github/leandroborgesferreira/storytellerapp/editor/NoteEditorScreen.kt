@@ -48,6 +48,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -151,6 +152,8 @@ fun NoteEditorScreen(
 
             val showGlobalMenu by noteEditorViewModel.showGlobalMenu.collectAsStateWithLifecycle()
 
+            val context = LocalContext.current
+
             AnimatedVisibility(
                 visible = showGlobalMenu,
                 enter = slideInVertically(
@@ -160,7 +163,9 @@ fun NoteEditorScreen(
                     targetOffsetY = { fullHeight -> fullHeight }
                 )
             ) {
-                NoteGlobalActionsMenu(noteEditorViewModel::shareDocumentInJson)
+                NoteGlobalActionsMenu {
+                    noteEditorViewModel.shareDocumentInJson(context)
+                }
             }
         }
     }
