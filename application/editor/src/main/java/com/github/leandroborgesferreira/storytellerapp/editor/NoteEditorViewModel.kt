@@ -18,7 +18,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.serialization.request.wrapInRequest
 import com.github.leandroborgesferreira.storyteller.utils.extensions.noContent
 import com.github.leandroborgesferreira.storytellerapp.editor.model.EditState
-import com.github.leandroborgesferreira.storytellerapp.utils_module.toApi
+import com.github.leandroborgesferreira.storyteller.serialization.extensions.toApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

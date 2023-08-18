@@ -13,5 +13,7 @@ plugins {
 //}
 
 dependencies {
+    implementation(project(":storyteller_models"))
+
     implementation(libs.kotlinx.serialization.json)
 }

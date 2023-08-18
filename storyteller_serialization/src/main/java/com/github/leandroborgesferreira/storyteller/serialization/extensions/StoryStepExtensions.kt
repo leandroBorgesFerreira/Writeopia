@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storytellerapp.utils_module
+package com.github.leandroborgesferreira.storyteller.serialization.extensions
 
 import com.github.leandroborgesferreira.storyteller.models.story.Decoration
 import com.github.leandroborgesferreira.storyteller.models.story.StoryStep

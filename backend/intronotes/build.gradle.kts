@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "com.github.leandroborgesferreira.storyteller.intronotes"
-version = "0.0.20-SNAPSHOT"
+version = "0.0.21-SNAPSHOT"
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
