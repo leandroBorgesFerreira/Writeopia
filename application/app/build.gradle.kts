@@ -53,7 +53,7 @@ kotlin{
 dependencies {
     implementation(project(":storyteller"))
     implementation(project(":storyteller_persistence"))
-    implementation(project(":storyteller_network"))
+    implementation(project(":storyteller_serialization"))
 
     implementation(project(":application:note_menu"))
     implementation(project(":application:utils"))

@@ -4,7 +4,6 @@ import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
-import com.github.leandroborgesferreira.storyteller.intronotes.model.StoryStep
 import com.github.leandroborgesferreira.storyteller.intronotes.persistence.entity.StoryStepEntity
 import com.github.leandroborgesferreira.storyteller.intronotes.persistence.repository.saveNotes
 import kotlinx.serialization.json.Json

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.github.leandroborgesferreira.storyteller.network"
+    namespace = "com.github.leandroborgesferreira.storyteller.serialization"
     compileSdk = 34
 
     defaultConfig {

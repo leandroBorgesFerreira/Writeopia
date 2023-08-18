@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storyteller.network.data
+package com.github.leandroborgesferreira.storyteller.serialization.data
 
 import kotlinx.serialization.Serializable
 

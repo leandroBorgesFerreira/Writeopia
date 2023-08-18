@@ -3,9 +3,9 @@ package com.github.leandroborgesferreira.storytellerapp.utils_module
 import com.github.leandroborgesferreira.storyteller.model.story.Decoration
 import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryType
-import com.github.leandroborgesferreira.storyteller.network.data.DecorationApi
-import com.github.leandroborgesferreira.storyteller.network.data.StoryStepApi
-import com.github.leandroborgesferreira.storyteller.network.data.StoryTypeApi
+import com.github.leandroborgesferreira.storyteller.serialization.data.DecorationApi
+import com.github.leandroborgesferreira.storyteller.serialization.data.StoryStepApi
+import com.github.leandroborgesferreira.storyteller.serialization.data.StoryTypeApi
 
 fun StoryStep.toApi(position: Int): StoryStepApi =
     StoryStepApi(

@@ -1,6 +1,5 @@
 package com.github.leandroborgesferreira.storyteller.intronotes.data
 
-import com.github.leandroborgesferreira.storyteller.intronotes.model.StoryStep
 import com.github.leandroborgesferreira.storyteller.intronotes.model.StoryTypes
 import java.util.UUID
 
