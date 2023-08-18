@@ -6,6 +6,8 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.github.leandroborgesferreira.storyteller.intronotes.persistence.entity.StoryStepEntity
 import com.github.leandroborgesferreira.storyteller.intronotes.persistence.repository.saveNotes
+import com.github.leandroborgesferreira.storyteller.serialization.data.StoryStepApi
+import com.github.leandroborgesferreira.storyteller.serialization.request.Request
 import kotlinx.serialization.json.Json
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -20,9 +22,9 @@ class WriteIntroNotes : RequestHandler<APIGatewayProxyRequestEvent, APIGatewayPr
             val body = input.body
 
             logger.log("Received: $body")
-            val storyStep = Json.decodeFromString<List<StoryStep>>(input.body)
+            val storyStep = Json.decodeFromString<Request<List<StoryStepApi>>>(input.body)
 
-            storyStep.toEntityList().let(::saveNotes)
+            storyStep.data.toEntityList().let(::saveNotes)
 
             APIGatewayProxyResponseEvent()
                 .withStatusCode(200)
@@ -35,7 +37,7 @@ class WriteIntroNotes : RequestHandler<APIGatewayProxyRequestEvent, APIGatewayPr
                 .withBody("An error occurred. Received request: $input. Error: ${e.message}")
         }
 
-    private fun List<StoryStep>.toEntityList(): List<StoryStepEntity> =
+    private fun List<StoryStepApi>.toEntityList(): List<StoryStepEntity> =
         this.map { storyStep ->
             StoryStepEntity(
                 id = storyStep.id,

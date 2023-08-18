@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "com.github.leandroborgesferreira.storyteller.intronotes"
-version = "0.0.19-SNAPSHOT"
+version = "0.0.20-SNAPSHOT"
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
@@ -24,6 +24,7 @@ dependencies {
 
     implementation(platform("software.amazon.awssdk:bom:2.20.56"))
     implementation("software.amazon.awssdk:dynamodb-enhanced")
+    implementation(project(":storyteller_models"))
 
 }
 

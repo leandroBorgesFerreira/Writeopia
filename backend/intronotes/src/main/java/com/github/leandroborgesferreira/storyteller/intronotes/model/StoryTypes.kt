@@ -1,5 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.intronotes.model
 
+import com.github.leandroborgesferreira.storyteller.models.story.StoryType
+
 enum class StoryTypes(val type: StoryType) {
     MESSAGE(StoryType("message", 0)),
     MESSAGE_BOX(StoryType("message_box", 1)),

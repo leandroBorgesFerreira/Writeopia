@@ -15,6 +15,7 @@ import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.models.story.Decoration
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
+import com.github.leandroborgesferreira.storyteller.serialization.request.wrapInRequest
 import com.github.leandroborgesferreira.storyteller.utils.extensions.noContent
 import com.github.leandroborgesferreira.storytellerapp.editor.model.EditState
 import com.github.leandroborgesferreira.storytellerapp.utils_module.toApi
@@ -153,7 +154,7 @@ class NoteEditorViewModel(
 
         val apiDocument = documentFilter.removeMetaData(document).map { (position, story) ->
             story.toApi(position)
-        }
+        }.wrapInRequest()
 
         val jsonDocument = json.encodeToString(apiDocument)
 
