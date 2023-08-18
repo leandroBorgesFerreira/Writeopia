@@ -1,7 +1,7 @@
 package com.github.leandroborgesferreira.storytellerapp.note_menu.data
 
 import android.content.Context
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import java.util.UUID
 

@@ -55,6 +55,7 @@ kotlin{
 
 dependencies {
     implementation(project(":storyteller"))
+    implementation(project(":storyteller_models"))
 
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)

@@ -1,7 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
 import com.github.leandroborgesferreira.storyteller.model.action.Action
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.normalization.addinbetween.AddSteps
 import com.github.leandroborgesferreira.storyteller.utils.MapStoryData
@@ -18,7 +18,8 @@ class ContentHandlerTest {
         val contentHandler =
             ContentHandler(focusableTypes = setOf(StoryTypes.MESSAGE.type.number)) { _ -> mapOf() }
 
-        val storyStep = StoryStep(type = StoryTypes.MESSAGE.type)
+        val storyStep =
+            StoryStep(type = StoryTypes.MESSAGE.type)
         val newStory = contentHandler.addNewContent(input, storyStep, 2)
 
         val expected = mapOf(
@@ -41,7 +42,10 @@ class ContentHandlerTest {
     @Test
     fun `when a line break happens, the text should be divided correctly`() {
         val contentHandler = ContentHandler { _ -> mapOf() }
-        val storyStep = StoryStep(type = StoryTypes.MESSAGE.type, text = "line1\nline2")
+        val storyStep = StoryStep(
+            type = StoryTypes.MESSAGE.type,
+            text = "line1\nline2"
+        )
 
         val (_, newState) = contentHandler.onLineBreak(
             mapOf(0 to storyStep),

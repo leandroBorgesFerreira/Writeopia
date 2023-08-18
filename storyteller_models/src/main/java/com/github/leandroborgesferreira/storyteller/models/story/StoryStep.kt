@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storyteller.model.story
+package com.github.leandroborgesferreira.storyteller.models.story
 
 import java.util.UUID
 

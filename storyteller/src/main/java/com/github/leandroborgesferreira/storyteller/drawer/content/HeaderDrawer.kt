@@ -15,8 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
-import com.github.leandroborgesferreira.storyteller.model.story.Decoration
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.Decoration
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 
 class HeaderDrawer(
@@ -53,7 +53,9 @@ class HeaderDrawer(
 fun HeaderDrawerStepPreview() {
     val step = StoryStep(
         type = StoryTypes.TITLE.type,
-        decoration = Decoration(backgroundColor = Color.Blue.toArgb()),
+        decoration = Decoration(
+            backgroundColor = Color.Blue.toArgb()
+        ),
         text = "Document Title",
     )
 

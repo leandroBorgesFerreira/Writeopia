@@ -1,6 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.persistence.utils
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 
 fun imageGroup() =

@@ -12,7 +12,7 @@ import com.github.leandroborgesferreira.storyteller.draganddrop.target.DropTarge
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.action.Action
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 
 /**
  * Draws a white space. This Drawer is very important for accepting drop os other Composables for

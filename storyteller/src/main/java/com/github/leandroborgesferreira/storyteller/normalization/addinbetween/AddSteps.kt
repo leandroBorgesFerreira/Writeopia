@@ -1,6 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.normalization.addinbetween
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.utils.extensions.associateWithPosition
 import java.util.Stack

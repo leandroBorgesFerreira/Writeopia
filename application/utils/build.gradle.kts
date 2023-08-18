@@ -35,6 +35,7 @@ android {
 dependencies {
     implementation(project(":storyteller"))
     implementation(project(":storyteller_serialization"))
+    implementation(project(":storyteller_models"))
 }
 
 kotlin{

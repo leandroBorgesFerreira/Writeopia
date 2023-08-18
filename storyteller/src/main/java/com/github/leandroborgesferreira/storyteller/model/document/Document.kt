@@ -1,6 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.model.document
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import java.util.Date
 import java.util.UUID
 

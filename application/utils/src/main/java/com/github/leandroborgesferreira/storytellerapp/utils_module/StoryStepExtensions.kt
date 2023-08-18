@@ -1,8 +1,8 @@
 package com.github.leandroborgesferreira.storytellerapp.utils_module
 
-import com.github.leandroborgesferreira.storyteller.model.story.Decoration
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.models.story.Decoration
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryType
 import com.github.leandroborgesferreira.storyteller.serialization.data.DecorationApi
 import com.github.leandroborgesferreira.storyteller.serialization.data.StoryStepApi
 import com.github.leandroborgesferreira.storyteller.serialization.data.StoryTypeApi

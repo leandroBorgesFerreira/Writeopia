@@ -1,6 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.model.action
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 
 /*
  * Todo: TextEdit should exist?

@@ -1,7 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
 import com.github.leandroborgesferreira.storyteller.model.document.Document
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 
 interface DocumentUpdate {
     suspend fun saveDocument(document: Document)

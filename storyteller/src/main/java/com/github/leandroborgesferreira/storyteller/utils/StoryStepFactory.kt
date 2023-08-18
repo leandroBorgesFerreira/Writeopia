@@ -1,7 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.utils
 
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import java.util.UUID
 
 object StoryStepFactory {

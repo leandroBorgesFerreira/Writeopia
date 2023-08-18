@@ -49,6 +49,7 @@ kotlin{
 
 dependencies {
     implementation(project(":storyteller"))
+    implementation(project(":storyteller_models"))
     implementation(project(":storyteller_persistence"))
     implementation(project(":storyteller_serialization"))
     implementation(project(":application:resources"))

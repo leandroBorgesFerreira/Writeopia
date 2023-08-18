@@ -12,7 +12,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.DrawStory
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
 import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizationMap
@@ -307,7 +307,8 @@ class StoryTellerManager(
             _currentStory.value = newState
         } else {
             var acc = stories.size - 1
-            val newLastMessage = StoryStep(type = StoryTypes.MESSAGE.type)
+            val newLastMessage =
+                StoryStep(type = StoryTypes.MESSAGE.type)
 
             //Todo: It should be possible to customize which steps are add
             val newStories = stories + mapOf(

@@ -1,8 +1,8 @@
 package com.github.leandroborgesferreira.storyteller.normalization.merge
 
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryType
 import com.github.leandroborgesferreira.storyteller.normalization.merge.steps.StepToStepMerger
 import com.github.leandroborgesferreira.storyteller.utils.MapStoryData
 import com.github.leandroborgesferreira.storyteller.utils.extensions.associateWithPosition
@@ -91,7 +91,10 @@ class MergeNormalizationTest {
         val last = listOf(
             StoryStep(
                 localId = "6",
-                type = StoryType("unknown",-1),
+                type = StoryType(
+                    "unknown",
+                    -1
+                ),
             )
         )
 

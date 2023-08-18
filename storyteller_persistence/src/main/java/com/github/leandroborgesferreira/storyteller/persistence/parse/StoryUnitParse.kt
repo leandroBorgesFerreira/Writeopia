@@ -1,9 +1,9 @@
 package com.github.leandroborgesferreira.storyteller.persistence.parse
 
-import com.github.leandroborgesferreira.storyteller.model.story.Decoration
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
+import com.github.leandroborgesferreira.storyteller.models.story.Decoration
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryType
 import com.github.leandroborgesferreira.storyteller.persistence.entity.story.StoryStepEntity
 
 fun Map<Int, StoryStep>.toEntity(documentId: String): List<StoryStepEntity> =
@@ -34,7 +34,9 @@ fun StoryStepEntity.toModel(
         title = title,
         checked = checked,
         steps = steps.map { storyUnitEntity -> storyUnitEntity.toModel() },
-        decoration = Decoration(backgroundColor = backgroundColor)
+        decoration = Decoration(
+            backgroundColor = backgroundColor
+        )
     )
 
 fun StoryStep.toEntity(position: Int, documentId: String): StoryStepEntity =

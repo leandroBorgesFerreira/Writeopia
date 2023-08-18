@@ -1,6 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.normalization.builder
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.normalization.addinbetween.AddSteps
 import com.github.leandroborgesferreira.storyteller.normalization.merge.MergeLogic

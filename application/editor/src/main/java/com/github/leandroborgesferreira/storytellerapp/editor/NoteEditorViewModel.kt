@@ -12,7 +12,7 @@ import com.github.leandroborgesferreira.storyteller.filter.DocumentFilterObject
 import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.model.action.Action
-import com.github.leandroborgesferreira.storyteller.model.story.Decoration
+import com.github.leandroborgesferreira.storyteller.models.story.Decoration
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.utils.extensions.noContent
