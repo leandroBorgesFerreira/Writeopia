@@ -4,13 +4,13 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
 }
 
-//kotlin{
-//    sourceSets.all {
-//        languageSettings {
-//            languageVersion = "1.9"
-//        }
-//    }
-//}
+kotlin{
+    sourceSets.all {
+        languageSettings {
+            languageVersion = "1.9"
+        }
+    }
+}
 
 dependencies {
     implementation(project(":storyteller_models"))

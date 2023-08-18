@@ -7,7 +7,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.github.leandroborgesferreira.storyteller.intronotes.persistence.entity.StoryStepEntity
 import com.github.leandroborgesferreira.storyteller.intronotes.persistence.repository.saveNotes
 import com.github.leandroborgesferreira.storyteller.serialization.data.StoryStepApi
-import com.github.leandroborgesferreira.storyteller.serialization.request.Request
+import com.github.leandroborgesferreira.storyteller.serialization.request.StoryTellerRequest
 import kotlinx.serialization.json.Json
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -22,7 +22,7 @@ class WriteIntroNotes : RequestHandler<APIGatewayProxyRequestEvent, APIGatewayPr
             val body = input.body
 
             logger.log("Received: $body")
-            val storyStep = Json.decodeFromString<Request<List<StoryStepApi>>>(input.body)
+            val storyStep = Json.decodeFromString<StoryTellerRequest<List<StoryStepApi>>>(input.body)
 
             storyStep.data.toEntityList().let(::saveNotes)
 

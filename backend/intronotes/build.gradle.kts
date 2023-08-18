@@ -16,7 +16,7 @@ group = "com.github.leandroborgesferreira.storyteller.intronotes"
 version = "0.0.21-SNAPSHOT"
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation(libs.kotlinx.serialization.json)
     implementation(project(":storyteller_serialization"))
 
     implementation("com.amazonaws:aws-lambda-java-core:1.2.2")

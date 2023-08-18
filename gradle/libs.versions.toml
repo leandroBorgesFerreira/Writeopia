@@ -3,13 +3,13 @@ accompanistSystemuicontroller = "0.30.1"
 amplify = "2.11.1"
 coilVersion = "2.3.0"
 composeBom = "2023.06.01"
-coreKotlin = "2.11.1"
 desugar_jdk_libs = "2.0.3"
 espressoCore = "3.5.1"
 junit = "1.1.5"
 junitVersion = "4.13.2"
 kotlinxCoroutinesTest = "1.7.2"
 kotlinxSerializationJson = "1.5.1"
+ktorClient = "2.3.3"
 ktx = "1.10.1"
 appCompat = "1.6.1"
 material = "1.9.0"
@@ -17,11 +17,9 @@ materialIconsExtended = "1.4.3"
 room = "2.5.2"
 compose = "2.6.1"
 navigation-compose = "2.6.0"
-junit4-compose = "1.4.3"
 agp = "8.2.0-alpha15"
 kotlin = "1.9.0"
 compose-compiler = "1.5.1"
-org-jetbrains-kotlin-jvm = "1.9.0"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
@@ -37,8 +35,12 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVersion"
 coil-video = { module = "io.coil-kt:coil-video", version.ref = "coilVersion" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 junit = { module = "junit:junit", version.ref = "junitVersion" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesTest" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorClient" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorClient" }
+ktor-client-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorClient" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
@@ -53,4 +55,4 @@ navigation-compose = { group = "androidx.navigation", name = "navigation-compose
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization",  version.ref = "kotlin" }
-org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
+org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
