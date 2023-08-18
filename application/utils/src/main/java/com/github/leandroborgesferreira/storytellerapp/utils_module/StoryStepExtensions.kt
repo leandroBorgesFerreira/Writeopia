@@ -7,7 +7,7 @@ import com.github.leandroborgesferreira.storyteller.network.data.DecorationApi
 import com.github.leandroborgesferreira.storyteller.network.data.StoryStepApi
 import com.github.leandroborgesferreira.storyteller.network.data.StoryTypeApi
 
-fun StoryStep.toApi(): StoryStepApi =
+fun StoryStep.toApi(position: Int): StoryStepApi =
     StoryStepApi(
         id = this.id,
         type = this.type.toApi(),
@@ -17,8 +17,9 @@ fun StoryStep.toApi(): StoryStepApi =
         text = this.text,
         title = this.title,
         checked = this.checked,
-        steps = this.steps.map { storyStep -> storyStep.toApi() },
+        steps = this.steps.map { storyStep -> storyStep.toApi(position) },
         decoration = this.decoration.toApi(),
+        position = position
     )
 
 fun StoryType.toApi(): StoryTypeApi =

@@ -3,8 +3,6 @@ package com.github.leandroborgesferreira.storytellerapp.editor
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import androidx.core.content.FileProvider
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
@@ -17,7 +15,6 @@ import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.Decoration
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
-import com.github.leandroborgesferreira.storyteller.network.data.StoryStepApi
 import com.github.leandroborgesferreira.storyteller.utils.extensions.noContent
 import com.github.leandroborgesferreira.storytellerapp.editor.model.EditState
 import com.github.leandroborgesferreira.storytellerapp.utils_module.toApi
@@ -30,12 +27,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.encodeToStream
-import java.io.File
-import java.io.FileOutputStream
 import java.util.UUID
 
 
@@ -158,8 +151,8 @@ class NoteEditorViewModel(
         val documentTitle = (document[0]?.text ?: "storyteller_document_$documentId")
             .replace(" ", "_")
 
-        val apiDocument = documentFilter.removeMetaData(document).mapValues { (_, story) ->
-            story.toApi()
+        val apiDocument = documentFilter.removeMetaData(document).map { (position, story) ->
+            story.toApi(position)
         }
 
         val jsonDocument = json.encodeToString(apiDocument)

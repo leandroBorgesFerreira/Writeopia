@@ -13,5 +13,6 @@ data class StoryStepApi(
     val title: String?,
     val checked: Boolean?,
     val steps: List<StoryStepApi>,
-    val decoration: DecorationApi
+    val decoration: DecorationApi,
+    val position: Int,
 )
