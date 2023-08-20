@@ -11,6 +11,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
+import java.time.Instant
 import java.util.UUID
 
 class OnUpdateDocumentTracker(
@@ -29,7 +30,23 @@ class OnUpdateDocumentTracker(
                             localId = UUID.randomUUID().toString()
                         ),
                         position = lastEdit.position,
-                        documentId = documentInfo.id
+                        documentId = documentInfo.id,
+                    )
+
+                    val stories = storyState.stories
+                    val titleFromContent = stories.values.firstOrNull { storyStep ->
+                        //Todo: Change the type of change to allow different types. The client code should decide what is a title
+                        //It is also interesting to inv
+                        storyStep.type == StoryTypes.TITLE.type
+                    }?.text
+
+                    documentUpdate.saveDocumentMetadata(
+                        Document(
+                            id = documentInfo.id,
+                            title = titleFromContent ?: documentInfo.title,
+                            createdAt = documentInfo.createdAt,
+                            lastUpdatedAt = Instant.now(),
+                        )
                     )
                 }
 
@@ -48,7 +65,7 @@ class OnUpdateDocumentTracker(
                         title = titleFromContent ?: documentInfo.title,
                         content = documentFilter.removeMetaData(storyState.stories),
                         createdAt = documentInfo.createdAt,
-                        lastUpdatedAt = documentInfo.lastUpdatedAt,
+                        lastUpdatedAt = Instant.now(),
                     )
 
                     documentUpdate.saveDocument(document)
@@ -67,7 +84,7 @@ class OnUpdateDocumentTracker(
                             id = documentInfo.id,
                             title = titleFromContent ?: documentInfo.title,
                             createdAt = documentInfo.createdAt,
-                            lastUpdatedAt = documentInfo.lastUpdatedAt,
+                            lastUpdatedAt = Instant.now(),
                         )
                     )
 
