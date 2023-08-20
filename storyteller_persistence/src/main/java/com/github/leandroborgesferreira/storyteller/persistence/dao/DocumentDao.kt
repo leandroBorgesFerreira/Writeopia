@@ -48,7 +48,7 @@ interface DocumentDao {
                 "JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
                 "WHERE $DOCUMENT_ENTITY.id IN (:documentIds) " +
                 "ORDER BY " +
-                "CASE WHEN :orderBy = \'$TITLE\' THEN $DOCUMENT_ENTITY.title END ASC, " +
+                "CASE WHEN :orderBy = \'$TITLE\' THEN $DOCUMENT_ENTITY.title END COLLATE NOCASE ASC, " +
                 "CASE WHEN :orderBy = \'$CREATED_AT\' THEN $DOCUMENT_ENTITY.created_at END DESC, " +
                 "CASE WHEN :orderBy = \'$LAST_UPDATED_AT\' THEN $DOCUMENT_ENTITY.last_updated_at END DESC, " +
                 "$STORY_UNIT_ENTITY.position"
@@ -62,7 +62,7 @@ interface DocumentDao {
         "SELECT * FROM $DOCUMENT_ENTITY " +
                 "JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
                 "ORDER BY " +
-                "CASE WHEN :orderBy = \'$TITLE\' THEN $DOCUMENT_ENTITY.title END ASC, " +
+                "CASE WHEN :orderBy = \'$TITLE\' THEN $DOCUMENT_ENTITY.title END COLLATE NOCASE ASC, " +
                 "CASE WHEN :orderBy = \'$CREATED_AT\' THEN $DOCUMENT_ENTITY.created_at END DESC, " +
                 "CASE WHEN :orderBy = \'$LAST_UPDATED_AT\' THEN $DOCUMENT_ENTITY.last_updated_at END DESC, " +
                 "$STORY_UNIT_ENTITY.position"
