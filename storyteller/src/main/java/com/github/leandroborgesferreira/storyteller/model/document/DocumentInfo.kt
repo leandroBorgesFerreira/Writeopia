@@ -1,6 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.model.document
 
-import java.util.Date
+import java.time.Instant
 import java.util.UUID
 
 /**
@@ -9,8 +9,8 @@ import java.util.UUID
 data class DocumentInfo(
     val id: String = UUID.randomUUID().toString(),
     val title: String = "",
-    val createdAt: Date = Date(),
-    val lastUpdatedAt: Date = Date(),
+    val createdAt: Instant = Instant.now(),
+    val lastUpdatedAt: Instant = Instant.now(),
 )
 
 fun Document.info(): DocumentInfo = DocumentInfo(

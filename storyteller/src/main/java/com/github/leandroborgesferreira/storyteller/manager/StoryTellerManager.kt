@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import java.util.Date
+import java.time.Instant
 import java.util.UUID
 
 /**
@@ -138,8 +138,8 @@ class StoryTellerManager(
         _documentInfo.value = DocumentInfo(
             id = documentId,
             title = title,
-            createdAt = Date(),
-            lastUpdatedAt = Date()
+            createdAt = Instant.now(),
+            lastUpdatedAt = Instant.now()
         )
 
         _currentStory.value = StoryState(

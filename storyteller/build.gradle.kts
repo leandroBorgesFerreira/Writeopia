@@ -32,6 +32,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -64,6 +65,8 @@ dependencies {
     implementation(libs.coil.video)
 
     implementation(libs.androidx.ktx)
+
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material3:material3-window-size-class")

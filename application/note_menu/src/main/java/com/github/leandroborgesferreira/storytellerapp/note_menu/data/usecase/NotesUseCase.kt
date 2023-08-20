@@ -5,7 +5,7 @@ import com.github.leandroborgesferreira.storytellerapp.note_menu.data.supermarke
 import com.github.leandroborgesferreira.storytellerapp.note_menu.data.travelHistory
 import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
 import com.github.leandroborgesferreira.storyteller.model.document.Document
-import java.util.Date
+import java.time.Instant
 import java.util.UUID
 
 /**
@@ -45,8 +45,8 @@ class NotesUseCase(
                 id = UUID.randomUUID().toString(),
                 title = "Travel Note",
                 content = travelHistory(context),
-                createdAt = Date(),
-                lastUpdatedAt = Date()
+                createdAt = Instant.now(),
+                lastUpdatedAt = Instant.now()
             )
         )
 
@@ -55,8 +55,8 @@ class NotesUseCase(
                 id = UUID.randomUUID().toString(),
                 title = "Supermarket List",
                 content = supermarketList(),
-                createdAt = Date(),
-                lastUpdatedAt = Date()
+                createdAt = Instant.now(),
+                lastUpdatedAt = Instant.now()
             )
         )
     }

@@ -18,7 +18,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.Date
+import java.time.Instant
 import java.util.UUID
 
 @RunWith(AndroidJUnit4::class)
@@ -55,8 +55,8 @@ class DocumentRepositoryTest {
             id = id,
             title = "Document1",
             content = emptyMap(),
-            createdAt = Date(),
-            lastUpdatedAt = Date()
+            createdAt = Instant.now(),
+            lastUpdatedAt = Instant.now()
         )
 
         val loadedDocument = documentDao.run {
@@ -74,8 +74,8 @@ class DocumentRepositoryTest {
             id = id,
             title = "Document1",
             content = emptyMap(),
-            createdAt = Date(),
-            lastUpdatedAt = Date()
+            createdAt = Instant.now(),
+            lastUpdatedAt = Instant.now()
         )
 
         documentRepository.saveDocument(document)
@@ -91,8 +91,8 @@ class DocumentRepositoryTest {
             id = id,
             title = "Document1",
             content = simpleImage(),
-            createdAt = Date(),
-            lastUpdatedAt = Date()
+            createdAt = Instant.now(),
+            lastUpdatedAt = Instant.now()
         )
 
         documentRepository.saveDocument(document)
@@ -108,8 +108,8 @@ class DocumentRepositoryTest {
             id = id,
             title = "Document1",
             content = imageStepsList(),
-            createdAt = Date(),
-            lastUpdatedAt = Date()
+            createdAt = Instant.now(),
+            lastUpdatedAt = Instant.now()
         )
 
         documentRepository.saveDocument(document)
@@ -128,8 +128,8 @@ class DocumentRepositoryTest {
             id = id,
             title = "Document1",
             content = imageGroup(),
-            createdAt = Date(),
-            lastUpdatedAt = Date()
+            createdAt = Instant.now(),
+            lastUpdatedAt = Instant.now()
         )
 
         documentRepository.saveDocument(document)
