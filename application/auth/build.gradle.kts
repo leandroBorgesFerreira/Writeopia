@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -54,12 +55,22 @@ dependencies {
     implementation(project(":application:utils"))
     implementation(project(":application:resources"))
 
+    implementation(project(":storyteller"))
+    implementation(project(":storyteller_models"))
+    implementation(project(":storyteller_persistence"))
+    implementation(project(":storyteller_serialization"))
+    implementation(project(":storyteller_network"))
+
     implementation(libs.androidx.ktx)
     implementation(libs.appCompat)
     implementation(libs.material)
 
     implementation(libs.aws.amplifyframework.cognito)
     implementation(libs.aws.amplifyframework.core.kotlin)
+
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
     implementation(libs.viewmodel.compose)
     implementation(libs.runtime.compose)

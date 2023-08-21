@@ -7,16 +7,16 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.github.leandroborgesferreira.storyteller.network.injector.ApiInjector
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.video.VideoFrameConfig
-import com.github.leandroborgesferreira.storytellerapp.auth.di.AuthInjections
+import com.github.leandroborgesferreira.storytellerapp.auth.di.AuthInjection
 import com.github.leandroborgesferreira.storytellerapp.auth.navigation.authNavigation
 import com.github.leandroborgesferreira.storytellerapp.auth.navigation.navigateToAuthMenu
 import com.github.leandroborgesferreira.storytellerapp.di.NotesInjection
@@ -46,15 +46,16 @@ fun NavigationGraph(
         "com.github.leandroborgesferreira.storytellerapp.preferences",
         Context.MODE_PRIVATE
     ),
-    notesInjection: NotesInjection = NotesInjection(database, sharedPreferences, application),
-    authInjections: AuthInjections = AuthInjections()
 ) {
 
-    val startDestination = Destinations.AUTH_MENU_INNER_NAVIGATION.id
+    val notesInjection = NotesInjection(database, sharedPreferences, application)
+    val authInjection = AuthInjection(database, apiInjector = ApiInjector())
+
+    val startDestination = Destinations.CHOOSE_NOTE.id
 
     ApplicationComposeTheme {
         NavHost(navController = navController, startDestination = startDestination) {
-            authNavigation(navController, authInjections, navController::navigateToMainMenu)
+            authNavigation(navController, authInjection, navController::navigateToMainMenu)
 
             composable(Destinations.CHOOSE_NOTE.id) {
                 val chooseNoteViewModel = notesInjection.provideChooseNoteViewModel()

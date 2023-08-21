@@ -7,13 +7,14 @@ import com.amplifyframework.auth.AuthException
 import com.amplifyframework.auth.AuthUserAttributeKey
 import com.amplifyframework.auth.options.AuthSignUpOptions
 import com.amplifyframework.kotlin.core.Amplify
+import com.github.leandroborgesferreira.storytellerapp.auth.intronotes.IntroNotesUseCase
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /* The NavigationActivity won't leak because it is the single activity of the whole project */
-class RegisterViewModel : ViewModel() {
+class RegisterViewModel(private val introNotesUseCase: IntroNotesUseCase) : ViewModel() {
 
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
@@ -49,9 +50,15 @@ class RegisterViewModel : ViewModel() {
 
             try {
                 val result = Amplify.Auth.signUp(_email.value, _password.value, options)
-                Log.i("AuthQuickStart", "Result: $result")
-                _register.value = ResultData.Complete(result.isSignUpComplete)
-            } catch (error: AuthException) {
+
+                if (result.isSignUpComplete) {
+                    introNotesUseCase.addIntroNotes()
+                    Log.i("AuthQuickStart", "Result: $result")
+                    _register.value = ResultData.Complete(true)
+                } else {
+                    _register.value = ResultData.Complete(false)
+                }
+            } catch (error: Exception) {
                 Log.e("AuthQuickStart", "Sign up failed", error)
                 _register.value = ResultData.Error(error)
             }

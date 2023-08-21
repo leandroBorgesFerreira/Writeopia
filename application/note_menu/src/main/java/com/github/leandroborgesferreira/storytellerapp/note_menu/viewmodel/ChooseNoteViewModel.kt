@@ -12,7 +12,7 @@ import com.github.leandroborgesferreira.storytellerapp.note_menu.extensions.toUi
 import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.dto.DocumentUi
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import com.github.leandroborgesferreira.storytellerapp.utils_module.map
-import com.github.leandroborgesferreira.storyteller.model.document.Document
+import com.github.leandroborgesferreira.storyteller.models.document.Document
 import com.github.leandroborgesferreira.storyteller.preview.PreviewParser
 import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 class ChooseNoteViewModel(
     private val notesUseCase: NotesUseCase,
     private val notesConfig: NotesConfigurationRepository,
-    private val previewParser: PreviewParser = PreviewParser()
+    private val previewParser: PreviewParser = PreviewParser(),
 ) : ViewModel() {
 
     private val _selectedNotes = MutableStateFlow(setOf<String>())
@@ -87,6 +87,8 @@ class ChooseNoteViewModel(
     fun addMockData(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
             notesUseCase.mockData(context)
+
+
 
             val data = notesUseCase.loadDocuments()
             _documentsState.value = ResultData.Complete(data)

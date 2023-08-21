@@ -3,7 +3,8 @@ package com.github.leandroborgesferreira.storyteller.intronotes
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
-import com.github.leandroborgesferreira.storyteller.intronotes.data.supermarketList
+import com.github.leandroborgesferreira.storyteller.intronotes.data.introNotes
+import com.github.leandroborgesferreira.storyteller.serialization.json.storyTellerJson
 import com.github.leandroborgesferreira.storyteller.serialization.request.wrapInRequest
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -19,4 +20,4 @@ class ReadIntroNotes : RequestHandler<Unit, APIGatewayProxyResponseEvent> {
     }
 }
 
-fun handleRequest(): String = Json.encodeToString(supermarketList().wrapInRequest())
+private fun handleRequest(): String = storyTellerJson.encodeToString(introNotes().wrapInRequest())

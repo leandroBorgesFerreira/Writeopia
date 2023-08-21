@@ -5,7 +5,7 @@ import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackManager
 import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.action.BackstackAction
-import com.github.leandroborgesferreira.storyteller.model.document.Document
+import com.github.leandroborgesferreira.storyteller.models.document.Document
 import com.github.leandroborgesferreira.storyteller.model.document.DocumentInfo
 import com.github.leandroborgesferreira.storyteller.model.document.info
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState

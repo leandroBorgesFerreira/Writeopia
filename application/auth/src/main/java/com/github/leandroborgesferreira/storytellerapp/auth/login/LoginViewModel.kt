@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.amplifyframework.auth.AuthException
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
 import com.amplifyframework.kotlin.core.Amplify
+import com.github.leandroborgesferreira.storytellerapp.auth.intronotes.IntroNotesUseCase
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 private const val TAG = "LoginViewModel"
 
 /* The NavigationActivity won't leak because it is the single activity of the whole project*/
-class LoginViewModel : ViewModel() {
+class LoginViewModel(private val introNotesUseCase: IntroNotesUseCase) : ViewModel() {
 
     private val _email = MutableStateFlow("")
     val email = _email.asStateFlow()
@@ -46,12 +47,14 @@ class LoginViewModel : ViewModel() {
                         "AuthQuickstart",
                         "Sign in succeeded. Token: ${session.userPoolTokensResult.value?.idToken}"
                     )
+
+                    introNotesUseCase.addIntroNotes()
                 } else {
                     Log.e("AuthQuickstart", "Sign in not complete")
                 }
 
                 _loginState.value = ResultData.Complete(result.isSignedIn)
-            } catch (error: AuthException) {
+            } catch (error: Exception) {
                 Log.e("AuthQuickstart", "Sign in failed", error)
                 _loginState.value = ResultData.Error(error)
             }

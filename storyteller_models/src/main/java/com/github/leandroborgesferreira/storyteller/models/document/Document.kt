@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storyteller.model.document
+package com.github.leandroborgesferreira.storyteller.models.document
 
 import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import java.time.Instant

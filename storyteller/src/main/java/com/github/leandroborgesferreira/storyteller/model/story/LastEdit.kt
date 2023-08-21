@@ -1,6 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.model.story
 
-import com.github.leandroborgesferreira.storyteller.model.document.Document
+import com.github.leandroborgesferreira.storyteller.models.document.Document
 import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 
 /**

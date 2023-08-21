@@ -4,7 +4,7 @@ import com.github.leandroborgesferreira.storyteller.filter.DocumentFilter
 import com.github.leandroborgesferreira.storyteller.filter.DocumentFilterObject
 import com.github.leandroborgesferreira.storyteller.manager.DocumentTracker
 import com.github.leandroborgesferreira.storyteller.manager.DocumentUpdate
-import com.github.leandroborgesferreira.storyteller.model.document.Document
+import com.github.leandroborgesferreira.storyteller.models.document.Document
 import com.github.leandroborgesferreira.storyteller.model.document.DocumentInfo
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState

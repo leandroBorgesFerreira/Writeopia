@@ -19,6 +19,7 @@ import com.github.leandroborgesferreira.storyteller.serialization.request.wrapIn
 import com.github.leandroborgesferreira.storyteller.utils.extensions.noContent
 import com.github.leandroborgesferreira.storytellerapp.editor.model.EditState
 import com.github.leandroborgesferreira.storyteller.serialization.extensions.toApi
+import com.github.leandroborgesferreira.storyteller.serialization.json.storyTellerJson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -143,9 +144,7 @@ class NoteEditorViewModel(
     }
 
     fun shareDocumentInJson(context: Context) {
-        val json = Json {
-            prettyPrint = true
-        }
+        val json = storyTellerJson
 
         val documentId = UUID.randomUUID().toString().substring(0..6)
         val document = storyTellerManager.currentStory.value.stories

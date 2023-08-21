@@ -4,7 +4,7 @@ import android.content.Context
 import com.github.leandroborgesferreira.storytellerapp.note_menu.data.supermarketList
 import com.github.leandroborgesferreira.storytellerapp.note_menu.data.travelHistory
 import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
-import com.github.leandroborgesferreira.storyteller.model.document.Document
+import com.github.leandroborgesferreira.storyteller.models.document.Document
 import java.time.Instant
 import java.util.UUID
 

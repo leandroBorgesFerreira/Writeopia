@@ -1,6 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import com.github.leandroborgesferreira.storyteller.model.document.Document
+import com.github.leandroborgesferreira.storyteller.models.document.Document
 import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 
 /**
@@ -16,8 +16,16 @@ interface DocumentRepository : DocumentUpdate {
 
     suspend fun loadDocumentsById(ids: List<String>, orderBy: String): List<Document>
 
+    /**
+     * Saves document. Both with content and meta data.
+     */
     override suspend fun saveDocument(document: Document)
 
+    /**
+     * Saves the document meta data. Use this was updating the content of the document is not
+     * necessary. This is a much lighter operation than [saveDocument], because it is not
+     * necessary to save/update all lines of content.
+     */
     override suspend fun saveDocumentMetadata(document: Document)
 
     override suspend fun saveStoryStep(storyStep: StoryStep, position: Int, documentId: String)

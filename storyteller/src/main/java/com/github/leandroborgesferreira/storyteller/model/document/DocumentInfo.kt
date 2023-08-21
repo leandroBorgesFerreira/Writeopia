@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.model.document
 
+import com.github.leandroborgesferreira.storyteller.models.document.Document
 import java.time.Instant
 import java.util.UUID
 

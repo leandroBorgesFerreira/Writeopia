@@ -7,7 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.github.leandroborgesferreira.storytellerapp.auth.di.AuthInjections
+import com.github.leandroborgesferreira.storytellerapp.auth.di.AuthInjection
 import com.github.leandroborgesferreira.storytellerapp.auth.login.LoginScreenBinding
 import com.github.leandroborgesferreira.storytellerapp.auth.menu.AuthMenuScreen
 import com.github.leandroborgesferreira.storytellerapp.auth.menu.AuthMenuViewModel
@@ -16,7 +16,7 @@ import com.github.leandroborgesferreira.storytellerapp.utils_module.Destinations
 
 fun NavGraphBuilder.authNavigation(
     navController: NavController,
-    authInjections: AuthInjections,
+    authInjection: AuthInjection,
     toAppNavigation: () -> Unit
 ) {
     navigation(
@@ -41,7 +41,7 @@ fun NavGraphBuilder.authNavigation(
         }
 
         composable(Destinations.AUTH_REGISTER.id) {
-            val registerViewModel = authInjections.provideRegisterViewModel()
+            val registerViewModel = authInjection.provideRegisterViewModel()
 
             RegisterScreen(
                 nameState = registerViewModel.name,
@@ -57,7 +57,7 @@ fun NavGraphBuilder.authNavigation(
         }
 
         composable(Destinations.AUTH_LOGIN.id) {
-            val loginViewModel = authInjections.provideLoginViewModel()
+            val loginViewModel = authInjection.provideLoginViewModel()
             LoginScreenBinding(loginViewModel, toAppNavigation)
         }
     }
