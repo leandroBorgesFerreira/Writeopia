@@ -16,9 +16,11 @@ import androidx.navigation.navArgument
 import com.github.leandroborgesferreira.storyteller.network.injector.ApiInjector
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.video.VideoFrameConfig
+import com.github.leandroborgesferreira.storytellerapp.AndroidLogger
 import com.github.leandroborgesferreira.storytellerapp.auth.di.AuthInjection
 import com.github.leandroborgesferreira.storytellerapp.auth.navigation.authNavigation
 import com.github.leandroborgesferreira.storytellerapp.auth.navigation.navigateToAuthMenu
+import com.github.leandroborgesferreira.storytellerapp.auth.token.AmplifyTokenHandler
 import com.github.leandroborgesferreira.storytellerapp.di.NotesInjection
 import com.github.leandroborgesferreira.storytellerapp.editor.NoteEditorScreen
 import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu.ChooseNoteScreen
@@ -48,8 +50,10 @@ fun NavigationGraph(
     ),
 ) {
 
+    val apiInjector =
+        ApiInjector(apiLogger = AndroidLogger, bearerTokenHandler = AmplifyTokenHandler)
     val notesInjection = NotesInjection(database, sharedPreferences, application)
-    val authInjection = AuthInjection(database, apiInjector = ApiInjector())
+    val authInjection = AuthInjection(database, apiInjector = apiInjector)
 
     val startDestination = Destinations.CHOOSE_NOTE.id
 

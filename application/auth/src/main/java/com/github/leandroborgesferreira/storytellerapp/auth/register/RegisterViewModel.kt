@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /* The NavigationActivity won't leak because it is the single activity of the whole project */
-class RegisterViewModel(private val introNotesUseCase: IntroNotesUseCase) : ViewModel() {
+internal class RegisterViewModel(private val introNotesUseCase: IntroNotesUseCase) : ViewModel() {
 
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()

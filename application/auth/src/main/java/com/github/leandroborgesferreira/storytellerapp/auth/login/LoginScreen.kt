@@ -39,7 +39,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun LoginScreenBinding(loginViewModel: LoginViewModel, onLoginSuccess: () -> Unit) {
+internal fun LoginScreenBinding(loginViewModel: LoginViewModel, onLoginSuccess: () -> Unit) {
     LoginScreen(
         emailState = loginViewModel.email,
         passwordState = loginViewModel.password,
@@ -181,7 +181,7 @@ private fun BoxScope.LoginContent(
 
 @Preview
 @Composable
-internal fun LoginScreenPreview() {
+private fun LoginScreenPreview() {
     LoginScreen(
         emailState = MutableStateFlow(""),
         passwordState = MutableStateFlow(""),

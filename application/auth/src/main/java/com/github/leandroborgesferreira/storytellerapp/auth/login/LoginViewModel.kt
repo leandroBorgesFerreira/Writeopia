@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 private const val TAG = "LoginViewModel"
 
 /* The NavigationActivity won't leak because it is the single activity of the whole project*/
-class LoginViewModel(private val introNotesUseCase: IntroNotesUseCase) : ViewModel() {
+internal class LoginViewModel(private val introNotesUseCase: IntroNotesUseCase) : ViewModel() {
 
     private val _email = MutableStateFlow("")
     val email = _email.asStateFlow()

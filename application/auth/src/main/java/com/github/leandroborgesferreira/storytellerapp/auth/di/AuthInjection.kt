@@ -32,10 +32,10 @@ class AuthInjection(
         )
 
     @Composable
-    fun provideRegisterViewModel(): RegisterViewModel =
+    internal fun provideRegisterViewModel(): RegisterViewModel =
         viewModel(initializer = { RegisterViewModel(provideIntroNotesUseCase()) })
 
     @Composable
-    fun provideLoginViewModel(): LoginViewModel =
+    internal fun provideLoginViewModel(): LoginViewModel =
         viewModel(initializer = { LoginViewModel(provideIntroNotesUseCase()) })
 }

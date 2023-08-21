@@ -1,7 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.network.oauth
 
 interface BearerTokenHandler {
-    fun getIdToken(): String
+    suspend fun getIdToken(): String
 
-    fun getRefreshToken()
+    suspend fun getRefreshToken(): String
 }

@@ -19,6 +19,8 @@ dependencies {
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.client.serialization.json)
     implementation(libs.ktor.client.auth)
+    implementation(libs.ktor.client.logging)
+
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
 }

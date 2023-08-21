@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class AuthMenuViewModel : ViewModel() {
+internal class AuthMenuViewModel : ViewModel() {
 
     private val _isConnected = MutableStateFlow<ResultData<Boolean>>(ResultData.Idle())
     val isConnected = _isConnected.asStateFlow()
