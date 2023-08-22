@@ -12,12 +12,18 @@ fun introNotes(): List<DocumentApi> = listOf(
 
 private fun connectedIntroNote(): DocumentApi =
     DocumentApi(
-        title = "You are connected",
+        title = "Connected!",
         content = listOf(
             StoryStepApi(
                 id = UUID.randomUUID().toString(),
                 type = StoryTypes.TITLE.type.toApi(),
                 position = 0,
+                text = "Connected!"
+            ),
+            StoryStepApi(
+                id = UUID.randomUUID().toString(),
+                type = StoryTypes.MESSAGE.type.toApi(),
+                position = 1,
                 text = "You successfully registered in the app, enjoy the app with your newly created account"
             )
         )
