@@ -1,6 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.intronotes.write
 
 import com.github.leandroborgesferreira.storyteller.intronotes.dynamo.introNotesTable
+import com.github.leandroborgesferreira.storyteller.intronotes.persistence.repository.IntroNotesRepository
 import com.github.leandroborgesferreira.storyteller.intronotes.utils.Samples
 import org.junit.Assert.*
 import org.junit.Test
@@ -26,18 +27,26 @@ class WriteNotesKtTest {
             )
             .build()
 
-        val input = Samples.sampleEntity()
+        val id = "fakeId"
+        val title = "fakeTitle"
+
+        val input = Samples.sampleEntity(id, title)
+        val table = introNotesTable(
+            tableName = "IntroNotesLocal",
+            dynamoClient = dynamoDbClient
+        )
 
         val result = writeIntroNotes(
             input,
             loggerFn = {},
             loggerErrorFn = {},
-            introNotesTable(
-                tableName = "IntroNotesLocal",
-                dynamoClient = dynamoDbClient
-            )
+            notesTable = table
         )
 
         assertEquals(200, result.statusCode)
+
+        val note = IntroNotesRepository.readNote(table, id, title)
+
+        assertEquals(id, note.id)
     }
 }

@@ -14,12 +14,13 @@
     },
     "categories": {
       "auth": {
-        "storytellerapp8180fe64": {
-          "userPoolId": "us-east-1_09zK2hWRU",
+        "storytellerapp5ff99358": {
+          "userPoolId": "us-east-1_CTEYAl35d",
           "userPoolName": "StoryTellerUserPool",
-          "webClientId": "7schv8ercqbdhmgtn4t5lg95q",
-          "nativeClientId": "7schv8ercqbdhmgtn4t5lg95q"
-        }
+          "webClientId": "1ggb4b1itnn2d36jsf0sa49co5",
+          "nativeClientId": "1ggb4b1itnn2d36jsf0sa49co5"
+        },
+        "storytellerapp8180fe64": {}
       }
     }
   }

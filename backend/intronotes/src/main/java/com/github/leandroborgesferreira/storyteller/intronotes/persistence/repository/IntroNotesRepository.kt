@@ -4,6 +4,7 @@ import com.github.leandroborgesferreira.storyteller.intronotes.dynamo.introNotes
 import com.github.leandroborgesferreira.storyteller.intronotes.persistence.entity.DocumentEntity
 import com.github.leandroborgesferreira.storyteller.intronotes.persistence.entity.StoryStepEntity
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable
+import software.amazon.awssdk.enhanced.dynamodb.Key
 
 internal const val INTRO_NOTES_TABLE = "IntroNotes"
 
@@ -23,4 +24,17 @@ object IntroNotesRepository {
     ) {
         notesTable.putItem(note)
     }
+
+    fun readNote(
+        notesTable: DynamoDbTable<DocumentEntity> = introNotesTable(),
+        id: String,
+    ): DocumentEntity {
+        return notesTable.getItem(Key.builder().partitionValue(id).build())
+    }
+
+//    fun readAllNotes(
+//        notesTable: DynamoDbTable<DocumentEntity> = introNotesTable()
+//    ): List<DocumentEntity> {
+//
+//    }
 }

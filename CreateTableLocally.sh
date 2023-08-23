@@ -1,5 +1,5 @@
 aws dynamodb create-table \
-    --table-name IntroNotes \
+    --table-name IntroNotesLocal \
     --attribute-definitions \
         AttributeName=id,AttributeType=S \
         AttributeName=title,AttributeType=S \
