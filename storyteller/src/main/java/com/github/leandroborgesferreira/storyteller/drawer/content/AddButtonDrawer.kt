@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 
 /**
  * A simple Add button.

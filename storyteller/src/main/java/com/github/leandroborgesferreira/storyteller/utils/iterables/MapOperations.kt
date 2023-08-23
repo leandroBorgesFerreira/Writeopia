@@ -19,8 +19,7 @@ object MapOperations {
             mutableList.add(position, value)
         }
 
-        var acc = 0
-        return mutableList.associateBy { acc++ }
+        return mutableList.associateWithPosition()
     }
 
     fun <T> addElementInPosition(

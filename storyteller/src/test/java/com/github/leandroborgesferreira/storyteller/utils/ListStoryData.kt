@@ -1,6 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.utils
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 
 object ListStoryData {
 
@@ -8,23 +9,23 @@ object ListStoryData {
         add(
             StoryStep(
                 localId = "0",
-                type = "group_image",
+                type = StoryTypes.GROUP_IMAGE.type,
                 steps = listOf(
                     StoryStep(
                         localId = "1",
-                        type = "image",
+                        type = StoryTypes.IMAGE.type,
                         parentId = "0"
                     ),
 
                     StoryStep(
                         localId = "2",
-                        type = "image",
+                        type = StoryTypes.IMAGE.type,
                         parentId = "0"
                     ),
 
                     StoryStep(
                         localId = "3",
-                        type = "image",
+                        type = StoryTypes.IMAGE.type,
                         parentId = "0"
                     )
                 )
@@ -33,7 +34,7 @@ object ListStoryData {
         add(
             StoryStep(
                 localId = "4",
-                type = "image",
+                type = StoryTypes.IMAGE.type,
             )
         )
     }
@@ -42,19 +43,19 @@ object ListStoryData {
         add(
             StoryStep(
                 localId = "1",
-                type = "space",
+                type = StoryTypes.SPACE.type,
             )
         )
         add(
             StoryStep(
                 localId = "2",
-                type = "space",
+                type = StoryTypes.SPACE.type,
             )
         )
         add(
             StoryStep(
                 localId = "2",
-                type = "space",
+                type = StoryTypes.SPACE.type,
             )
         )
     }
@@ -63,31 +64,31 @@ object ListStoryData {
         add(
             StoryStep(
                 localId = "1",
-                type = "image",
+                type = StoryTypes.IMAGE.type,
             )
         )
         add(
             StoryStep(
                 localId = "pamsdplams",
-                type = "space",
+                type = StoryTypes.SPACE.type,
             )
         )
         add(
             StoryStep(
                 localId = "3",
-                type = "image",
+                type = StoryTypes.IMAGE.type,
             )
         )
         add(
             StoryStep(
                 localId = "askndpalsd",
-                type = "space",
+                type = StoryTypes.SPACE.type,
             )
         )
         add(
             StoryStep(
                 localId = "5",
-                type = "image",
+                type = StoryTypes.IMAGE.type,
             )
         )
     }

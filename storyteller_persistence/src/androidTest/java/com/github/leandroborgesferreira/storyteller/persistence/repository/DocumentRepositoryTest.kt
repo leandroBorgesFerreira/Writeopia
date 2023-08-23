@@ -4,24 +4,23 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.github.leandroborgesferreira.storyteller.model.document.Document
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.document.Document
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.persistence.dao.DocumentDao
 import com.github.leandroborgesferreira.storyteller.persistence.dao.StoryUnitDao
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.persistence.parse.toEntity
 import com.github.leandroborgesferreira.storyteller.persistence.parse.toModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.Date
+import java.time.Instant
 import java.util.UUID
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 class DocumentRepositoryTest {
 
@@ -56,8 +55,8 @@ class DocumentRepositoryTest {
             id = id,
             title = "Document1",
             content = emptyMap(),
-            createdAt = Date(),
-            lastUpdatedAt = Date()
+            createdAt = Instant.now(),
+            lastUpdatedAt = Instant.now()
         )
 
         val loadedDocument = documentDao.run {
@@ -75,8 +74,8 @@ class DocumentRepositoryTest {
             id = id,
             title = "Document1",
             content = emptyMap(),
-            createdAt = Date(),
-            lastUpdatedAt = Date()
+            createdAt = Instant.now(),
+            lastUpdatedAt = Instant.now()
         )
 
         documentRepository.saveDocument(document)
@@ -92,8 +91,8 @@ class DocumentRepositoryTest {
             id = id,
             title = "Document1",
             content = simpleImage(),
-            createdAt = Date(),
-            lastUpdatedAt = Date()
+            createdAt = Instant.now(),
+            lastUpdatedAt = Instant.now()
         )
 
         documentRepository.saveDocument(document)
@@ -109,8 +108,8 @@ class DocumentRepositoryTest {
             id = id,
             title = "Document1",
             content = imageStepsList(),
-            createdAt = Date(),
-            lastUpdatedAt = Date()
+            createdAt = Instant.now(),
+            lastUpdatedAt = Instant.now()
         )
 
         documentRepository.saveDocument(document)
@@ -129,8 +128,8 @@ class DocumentRepositoryTest {
             id = id,
             title = "Document1",
             content = imageGroup(),
-            createdAt = Date(),
-            lastUpdatedAt = Date()
+            createdAt = Instant.now(),
+            lastUpdatedAt = Instant.now()
         )
 
         documentRepository.saveDocument(document)
@@ -143,22 +142,22 @@ class DocumentRepositoryTest {
 fun simpleImage(): Map<Int, StoryStep> = mapOf(
     0 to StoryStep(
         localId = "1",
-        type = "image",
+        type = StoryTypes.IMAGE.type,
     )
 )
 
 fun imageStepsList(): Map<Int, StoryStep> = mapOf(
     0 to StoryStep(
         localId = "1",
-        type = "image",
+        type = StoryTypes.IMAGE.type,
     ),
     1 to StoryStep(
         localId = "2",
-        type = "image",
+        type = StoryTypes.IMAGE.type,
     ),
     2 to StoryStep(
         localId = "3",
-        type = "image",
+        type = StoryTypes.IMAGE.type,
     ),
 )
 
@@ -169,21 +168,21 @@ fun imageGroup() : Map<Int, StoryStep>{
         0 to StoryStep(
             id = groupId,
             localId = "1",
-            type = "group_image",
+            type = StoryTypes.GROUP_IMAGE.type,
             steps = listOf(
                 StoryStep(
                     localId = "2",
-                    type = "image",
+                    type = StoryTypes.IMAGE.type,
                     parentId = groupId,
                 ),
                 StoryStep(
                     localId = "3",
-                    type = "image",
+                    type = StoryTypes.IMAGE.type,
                     parentId = groupId,
                 ),
                 StoryStep(
                     localId = "4",
-                    type = "image",
+                    type = StoryTypes.IMAGE.type,
                     parentId = groupId,
                 )
             )

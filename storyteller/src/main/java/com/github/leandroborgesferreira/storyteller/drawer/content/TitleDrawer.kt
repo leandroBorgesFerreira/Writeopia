@@ -30,8 +30,8 @@ import com.github.leandroborgesferreira.storyteller.R
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.action.Action
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.utils.ui.transparentTextInputColors
 
 const val TITLE_DRAWER_TEST_TAG = "TitleDrawerTextField"
@@ -120,7 +120,10 @@ fun TitleDrawerStepPreview() {
     TitleDrawer(
         onTextEdit = { _, _ -> },
         onLineBreak = {}).Step(
-        step = StoryStep(type = StoryType.TITLE.type, text = "Some title"), drawInfo = DrawInfo()
+        step = StoryStep(
+            type = StoryTypes.TITLE.type,
+            text = "Some title"
+        ), drawInfo = DrawInfo()
     )
 }
 

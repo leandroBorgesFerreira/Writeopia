@@ -1,6 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.utils.extensions
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 
 fun Map<Int, StoryStep>.toEditState(): MutableMap<Int, List<StoryStep>> =
     mapValues { (_, story) -> listOf(story) }.toMutableMap()

@@ -40,10 +40,18 @@ fun ChooseNoteScreen(
     chooseNoteViewModel: ChooseNoteViewModel,
     navigateToNote: (String, String) -> Unit,
     newNote: () -> Unit,
+    onLogout: () -> Unit,
 ) {
     LaunchedEffect(key1 = "refresh", block = {
         chooseNoteViewModel.requestDocuments(false)
     })
+
+    val isLogged by chooseNoteViewModel.isLogged.collectAsStateWithLifecycle()
+    if (!isLogged) {
+        LaunchedEffect(key1 = true) {
+            onLogout()
+        }
+    }
 
     val hasSelectedNotes by chooseNoteViewModel.hasSelectedNotes.collectAsStateWithLifecycle()
     val editState by chooseNoteViewModel.editState.collectAsStateWithLifecycle()
@@ -75,6 +83,7 @@ fun ChooseNoteScreen(
                     navigateToNote = navigateToNote,
                     selectionListener = chooseNoteViewModel::selectionListener,
                     paddingValues = paddingValues,
+                    logout = chooseNoteViewModel::logout
                 )
             }
 
@@ -138,12 +147,12 @@ private fun FloatingActionButton(newNoteClick: () -> Unit) {
     )
 }
 
-
 @Composable
 private fun Content(
     chooseNoteViewModel: ChooseNoteViewModel,
     navigateToNote: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
+    logout: () -> Unit,
     paddingValues: PaddingValues,
 ) {
     Box(
@@ -154,7 +163,8 @@ private fun Content(
         Notes(
             chooseNoteViewModel = chooseNoteViewModel,
             navigateToNote = navigateToNote,
-            selectionListener = selectionListener
+            selectionListener = selectionListener,
+            logOut = logout
         )
     }
 }

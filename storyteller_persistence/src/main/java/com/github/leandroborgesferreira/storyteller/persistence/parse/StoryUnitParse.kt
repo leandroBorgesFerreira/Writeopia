@@ -1,7 +1,9 @@
 package com.github.leandroborgesferreira.storyteller.persistence.parse
 
-import com.github.leandroborgesferreira.storyteller.model.story.Decoration
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
+import com.github.leandroborgesferreira.storyteller.models.story.Decoration
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryType
 import com.github.leandroborgesferreira.storyteller.persistence.entity.story.StoryStepEntity
 
 fun Map<Int, StoryStep>.toEntity(documentId: String): List<StoryStepEntity> =
@@ -15,11 +17,16 @@ fun Map<Int, StoryStep>.toEntity(documentId: String): List<StoryStepEntity> =
         }
     }
 
-fun StoryStepEntity.toModel(steps: List<StoryStepEntity> = emptyList()): StoryStep =
+fun StoryStepEntity.toModel(
+    steps: List<StoryStepEntity> = emptyList(),
+    nameToType: (String) -> StoryType = { typeName ->
+        StoryTypes.fromName(typeName).type
+    }
+): StoryStep =
     StoryStep(
         id = id,
         localId = localId,
-        type = type,
+        type = nameToType(type),
         parentId = parentId,
         url = url,
         path = path,
@@ -27,14 +34,16 @@ fun StoryStepEntity.toModel(steps: List<StoryStepEntity> = emptyList()): StorySt
         title = title,
         checked = checked,
         steps = steps.map { storyUnitEntity -> storyUnitEntity.toModel() },
-        decoration = Decoration(backgroundColor = backgroundColor)
+        decoration = Decoration(
+            backgroundColor = backgroundColor
+        )
     )
 
 fun StoryStep.toEntity(position: Int, documentId: String): StoryStepEntity =
     StoryStepEntity(
         id = id,
         localId = localId,
-        type = type,
+        type = type.name,
         parentId = parentId,
         url = url,
         path = path,

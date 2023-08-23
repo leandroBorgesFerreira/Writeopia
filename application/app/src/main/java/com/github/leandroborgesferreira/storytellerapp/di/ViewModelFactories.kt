@@ -9,20 +9,6 @@ import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.Choos
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepositoryImpl
 
-class NoteDetailsViewModelFactory(
-    private val storyTellerManager: StoryTellerManager,
-    private val documentRepository: DocumentRepositoryImpl
-) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(NoteEditorViewModel::class.java)) {
-            return NoteEditorViewModel(storyTellerManager, documentRepository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
-
-
 class ChooseNoteViewModelFactory(
     private val notesUseCase: NotesUseCase,
     private val notesConfig: NotesConfigurationRepository,

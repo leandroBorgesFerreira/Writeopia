@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
-    kotlin("plugin.serialization") version "1.9.0"
+    alias(libs.plugins.kotlinSerialization)
 }
 android {
     namespace = "com.github.leandroborgesferreira.storytellerapp"
@@ -20,13 +20,14 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )        }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -44,21 +45,28 @@ android {
 kotlin{
     sourceSets.all {
         languageSettings {
-            languageVersion = "2.0"
+            languageVersion = "1.9"
         }
     }
 }
 
 dependencies {
-
     implementation(project(":storyteller"))
     implementation(project(":storyteller_persistence"))
+    implementation(project(":storyteller_serialization"))
+    implementation(project(":storyteller_network"))
+    implementation(project(":storyteller_models"))
 
     implementation(project(":application:note_menu"))
     implementation(project(":application:utils"))
     implementation(project(":application:resources"))
     implementation(project(":application:editor"))
+    implementation(project(":application:auth"))
 
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    implementation(libs.aws.amplifyframework.cognito)
+    implementation(libs.aws.amplifyframework.core.kotlin)
 
     implementation(libs.androidx.ktx)
     implementation(libs.appCompat)
@@ -70,6 +78,11 @@ dependencies {
     ksp(libs.room.compiler)
 
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.client.serialization.json)
+    implementation(libs.ktor.client.logging)
 
     implementation(libs.coil.compose)
     implementation(libs.coil.video)

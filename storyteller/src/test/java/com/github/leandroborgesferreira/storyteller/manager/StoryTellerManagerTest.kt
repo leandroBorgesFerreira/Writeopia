@@ -1,9 +1,9 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
 import com.github.leandroborgesferreira.storyteller.model.action.Action
-import com.github.leandroborgesferreira.storyteller.model.document.Document
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.models.document.Document
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.repository.StoriesRepository
 import com.github.leandroborgesferreira.storyteller.utils.MainDispatcherRule
 import com.github.leandroborgesferreira.storyteller.utils.MapStoryData
@@ -53,9 +53,9 @@ class StoryTellerManagerTest {
 
         val currentStory = manager.currentStory.value.stories
         val expected = mapOf(
-            0 to StoryStep(type = StoryType.TITLE.type),
-            1 to StoryStep(type = StoryType.SPACE.type),
-            2 to StoryStep(type = StoryType.LARGE_SPACE.type),
+            0 to StoryStep(type = StoryTypes.TITLE.type),
+            1 to StoryStep(type = StoryTypes.SPACE.type),
+            2 to StoryStep(type = StoryTypes.LARGE_SPACE.type),
         ).mapValues { (_, storyStep) ->
             storyStep.type
         }
@@ -95,8 +95,12 @@ class StoryTellerManagerTest {
 
         val newStory = storyManager.currentStory.value.stories
 
-        assertEquals("the first item should be a check_item", "check_item", newStory[0]!!.type)
-        assertEquals("the second item should be a check_item", "check_item", newStory[2]!!.type)
+        assertEquals("the first item should be a check_item", "check_item", newStory[0]!!.type.name)
+        assertEquals(
+            "the second item should be a check_item",
+            "check_item",
+            newStory[2]!!.type.name
+        )
         assertEquals("the size of the story should be 5", currentStory.size + 2, newStory.size)
     }
 
@@ -288,7 +292,7 @@ class StoryTellerManagerTest {
 
         assertEquals(
             "The image should be now in the position 3, because of spaces.",
-            "group_image",
+            StoryTypes.GROUP_IMAGE.type,
             newStory[positionTo]!!.type
         )
         assertEquals(
@@ -324,7 +328,7 @@ class StoryTellerManagerTest {
 
         assertEquals(
             "The last StoryUnit should be an image.",
-            "image",
+            StoryTypes.IMAGE,
             lastContentStep.type
         )
         assertEquals(
@@ -405,7 +409,7 @@ class StoryTellerManagerTest {
         val currentStory = storyManager.currentStory.value.stories
         assertEquals(
             "initial the story unit should be a group",
-            "group_image",
+            StoryTypes.GROUP_IMAGE.type,
             currentStory[groupPosition]!!.type
         )
 
@@ -430,7 +434,7 @@ class StoryTellerManagerTest {
 
         assertEquals(
             "the group become just an image because there's only a single image",
-            "image",
+            StoryTypes.IMAGE.type,
             newStory[groupPosition]!!.type
         )
     }
@@ -449,7 +453,7 @@ class StoryTellerManagerTest {
         val stack: Stack<StoryStep> = Stack()
 
         storyManager.currentStory.value.stories.forEach { (_, storyUnit) ->
-            if (stack.isNotEmpty() && stack.peek().type == "space" && storyUnit.type == "space") {
+            if (stack.isNotEmpty() && stack.peek().type.name == "space" && storyUnit.type.name == "space") {
                 fail("Consecutive spaces happened.")
             }
 
@@ -615,8 +619,8 @@ class StoryTellerManagerTest {
         currentStory.values.zip(newStory.values).forEach { (storyUnit1, storyUnit2) ->
             if (storyUnit1.type != storyUnit2.type) fail()
 
-            if (storyUnit1.type != StoryType.SPACE.type &&
-                storyUnit1.type != StoryType.LARGE_SPACE.type
+            if (storyUnit1.type != StoryTypes.SPACE.type &&
+                storyUnit1.type != StoryTypes.LARGE_SPACE.type
             ) {
                 assertEquals(storyUnit1.id, storyUnit2.id)
             }
@@ -649,9 +653,9 @@ class StoryTellerManagerTest {
             val isEven = position % 2 == 0
 
             if (isEven) {
-                assertNotEquals("space", storyUnit.type)
+                assertNotEquals(StoryTypes.SPACE.type, storyUnit.type)
             } else {
-                assertEquals("space", storyUnit.type)
+                assertEquals(StoryTypes.SPACE.type, storyUnit.type)
             }
         }
     }
@@ -662,15 +666,15 @@ class StoryTellerManagerTest {
         storyManager.initDocument(Document(content = complexMessagesRepository.history()))
 
         val stories = storyManager.currentStory.value.stories
-        assertEquals(StoryType.LARGE_SPACE.type, stories.values.last().type)
+        assertEquals(StoryTypes.LARGE_SPACE.type, stories.values.last().type)
 
         storyManager.initDocument(Document(content = stories))
 
         val newStories = storyManager.currentStory.value.stories
         val storyList = newStories.values.toList()
 
-        assertEquals(StoryType.LARGE_SPACE.type, storyList.last().type)
-        assertNotEquals(StoryType.LARGE_SPACE.type, storyList[storyList.lastIndex - 1].type)
+        assertEquals(StoryTypes.LARGE_SPACE.type, storyList.last().type)
+        assertNotEquals(StoryTypes.LARGE_SPACE.type, storyList[storyList.lastIndex - 1].type)
     }
 
     @Test
@@ -779,7 +783,7 @@ class StoryTellerManagerTest {
         val currentStory = storyManager.currentStory.value.stories
         val lastContentStory = currentStory[currentStory.size - 3]
 
-        assertEquals(lastContentStory!!.type, StoryType.MESSAGE.type)
+        assertEquals(lastContentStory!!.type, StoryTypes.MESSAGE.type)
         assertEquals(storyManager.currentStory.value.focusId, lastContentStory.id)
     }
 }

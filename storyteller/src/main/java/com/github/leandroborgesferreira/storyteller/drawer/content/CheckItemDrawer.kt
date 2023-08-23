@@ -41,8 +41,8 @@ import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyErase
 import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.draganddrop.DropInfo
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 
 class CheckItemDrawer(
@@ -173,7 +173,10 @@ class CheckItemDrawer(
 @Composable
 fun CheckItemDrawerStepPreview() {
     CheckItemDrawer().Step(
-        step = StoryStep(type = StoryType.CHECK_ITEM.type, text = "This is a check item"),
+        step = StoryStep(
+            type = StoryTypes.CHECK_ITEM.type,
+            text = "This is a check item"
+        ),
         drawInfo = DrawInfo()
     )
 }

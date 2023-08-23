@@ -1,7 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.model.action
 
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackManager
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 
 /**
  * Back stack action, the classes of this sealed class represent that actions that the back stack

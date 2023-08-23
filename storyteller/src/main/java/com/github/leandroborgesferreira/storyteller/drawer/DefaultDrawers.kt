@@ -23,7 +23,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.content.defaultImageS
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.command.CommandFactory
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 
 object DefaultDrawers {
@@ -34,7 +34,7 @@ object DefaultDrawers {
         groupsBackgroundColor: Color = Color.Transparent,
         onHeaderClick: () -> Unit,
         defaultBorder: Shape
-    ): Map<String, StoryStepDrawer> =
+    ): Map<Int, StoryStepDrawer> =
         create(
             editable = editable,
             onTextEdit = manager::onTextEdit,
@@ -69,7 +69,7 @@ object DefaultDrawers {
         defaultBorder: Shape,
         groupsBackgroundColor: Color = Color.Transparent,
         nextFocus: (Int) -> Unit
-    ): Map<String, StoryStepDrawer> =
+    ): Map<Int, StoryStepDrawer> =
         buildMap {
             val textCommandHandlerMessage = TextCommandHandler(
                 mapOf(
@@ -147,12 +147,15 @@ object DefaultDrawers {
                 headerClick = onHeaderClick
             )
 
-            put(StoryType.MESSAGE_BOX.type, messageBoxDrawer)
-            put(StoryType.MESSAGE.type, messageDrawer)
-            put(StoryType.ADD_BUTTON.type, AddButtonDrawer())
-            put(StoryType.IMAGE.type, if (editable) commandsComposite(imageDrawer) else imageDrawer)
+            put(StoryTypes.MESSAGE_BOX.type.number, messageBoxDrawer)
+            put(StoryTypes.MESSAGE.type.number, messageDrawer)
+            put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
             put(
-                StoryType.GROUP_IMAGE.type,
+                StoryTypes.IMAGE.type.number,
+                if (editable) commandsComposite(imageDrawer) else imageDrawer
+            )
+            put(
+                StoryTypes.GROUP_IMAGE.type.number,
                 if (editable) {
                     commandsComposite(ImageGroupDrawer(commandsComposite(imageDrawerInGroup)))
                 } else {
@@ -160,13 +163,13 @@ object DefaultDrawers {
                 }
             )
             put(
-                StoryType.VIDEO.type,
+                StoryTypes.VIDEO.type.number,
                 if (editable) commandsComposite(VideoDrawer()) else VideoDrawer()
             )
 
-            put(StoryType.SPACE.type, SpaceDrawer(moveRequest))
-            put(StoryType.LARGE_SPACE.type, LargeEmptySpace(moveRequest, clickAtTheEnd))
-            put(StoryType.CHECK_ITEM.type, checkItemDrawer)
-            put(StoryType.TITLE.type, headerDrawer)
+            put(StoryTypes.SPACE.type.number, SpaceDrawer(moveRequest))
+            put(StoryTypes.LARGE_SPACE.type.number, LargeEmptySpace(moveRequest, clickAtTheEnd))
+            put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
+            put(StoryTypes.TITLE.type.number, headerDrawer)
         }
 }

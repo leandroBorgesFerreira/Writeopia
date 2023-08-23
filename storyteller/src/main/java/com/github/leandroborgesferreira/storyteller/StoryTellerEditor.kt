@@ -19,7 +19,7 @@ fun StoryTellerEditor(
     contentPadding: PaddingValues = PaddingValues(0.dp),
     editable: Boolean,
     storyState: DrawState,
-    drawers: Map<String, StoryStepDrawer>,
+    drawers: Map<Int, StoryStepDrawer>,
     listState: LazyListState = rememberLazyListState()
 ) {
     val content = storyState.stories.values.toList()
@@ -34,7 +34,7 @@ fun StoryTellerEditor(
                     content,
                     key = { index, drawStory -> drawStory.key + index },
                     itemContent = { index, drawStory ->
-                        drawers[drawStory.storyStep.type]?.run {
+                        drawers[drawStory.storyStep.type.number]?.run {
                             Step(
                                 step = drawStory.storyStep,
                                 drawInfo = DrawInfo(

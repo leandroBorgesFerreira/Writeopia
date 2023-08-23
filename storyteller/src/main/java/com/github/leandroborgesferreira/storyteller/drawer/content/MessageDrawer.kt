@@ -29,7 +29,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyErase
 import com.github.leandroborgesferreira.storyteller.model.action.Action
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 

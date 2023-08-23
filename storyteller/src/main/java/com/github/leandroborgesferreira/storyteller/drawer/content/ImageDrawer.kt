@@ -27,7 +27,7 @@ import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTarge
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DropTarget
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.draganddrop.DropInfo
 import coil.compose.AsyncImage
 import coil.request.ImageRequest

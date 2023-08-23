@@ -1,46 +1,25 @@
 package com.github.leandroborgesferreira.storyteller.persistence.utils
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-
-fun simpleImage(): Map<Int, StoryStep> = mapOf(
-    0 to StoryStep(
-        localId = "1",
-        type = "image",
-    )
-)
-
-fun imageStepsList(): Map<Int, StoryStep> = mapOf(
-    0 to StoryStep(
-        localId = "1",
-        type = "image",
-    ),
-    1 to StoryStep(
-        localId = "2",
-        type = "image",
-    ),
-    2 to StoryStep(
-        localId = "3",
-        type = "image",
-    ),
-)
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 
 fun imageGroup() =
     mapOf(
         0 to StoryStep(
             localId = "1",
-            type = "group_image",
+            type = StoryTypes.GROUP_IMAGE.type,
             steps = listOf(
                 StoryStep(
                     localId = "2",
-                    type = "image",
+                    type = StoryTypes.IMAGE.type,
                 ),
                 StoryStep(
                     localId = "3",
-                    type = "image",
+                    type = StoryTypes.IMAGE.type,
                 ),
                 StoryStep(
                     localId = "4",
-                    type = "image",
+                    type = StoryTypes.IMAGE.type,
                 )
             )
         ),

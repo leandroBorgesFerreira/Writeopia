@@ -11,13 +11,19 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/application" />
             <option value="$PROJECT_DIR$/application/app" />
+            <option value="$PROJECT_DIR$/application/auth" />
             <option value="$PROJECT_DIR$/application/common_ui" />
             <option value="$PROJECT_DIR$/application/editor" />
             <option value="$PROJECT_DIR$/application/note_menu" />
             <option value="$PROJECT_DIR$/application/resources" />
             <option value="$PROJECT_DIR$/application/utils" />
+            <option value="$PROJECT_DIR$/backend" />
+            <option value="$PROJECT_DIR$/backend/intronotes" />
             <option value="$PROJECT_DIR$/storyteller" />
+            <option value="$PROJECT_DIR$/storyteller_models" />
+            <option value="$PROJECT_DIR$/storyteller_network" />
             <option value="$PROJECT_DIR$/storyteller_persistence" />
+            <option value="$PROJECT_DIR$/storyteller_serialization" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

@@ -2,7 +2,7 @@ package com.github.leandroborgesferreira.storyteller.text.edition
 
 import com.github.leandroborgesferreira.storyteller.model.command.Command
 import com.github.leandroborgesferreira.storyteller.model.command.WhereToFind
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 
 class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) -> Unit>) {
 

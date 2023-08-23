@@ -1,6 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.repository
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 
 interface StoriesRepository {
 

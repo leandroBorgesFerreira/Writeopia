@@ -1,8 +1,8 @@
 package com.github.leandroborgesferreira.storyteller.persistence.repository
 
 import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
-import com.github.leandroborgesferreira.storyteller.model.document.Document
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.document.Document
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.persistence.dao.DocumentDao
 import com.github.leandroborgesferreira.storyteller.persistence.dao.StoryUnitDao
 import com.github.leandroborgesferreira.storyteller.persistence.entity.document.DocumentEntity

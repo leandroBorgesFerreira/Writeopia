@@ -1,0 +1,46 @@
+{
+  "auth": {
+    "storytellerapp8180fe64": {
+      "customAuth": false,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "serviceType": "imported"
+    }
+  },
+  "function": {},
+  "parameters": {
+    "AMPLIFY_auth_storytellerapp8180fe64_nativeClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "storytellerapp8180fe64"
+        }
+      ]
+    },
+    "AMPLIFY_auth_storytellerapp8180fe64_userPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "storytellerapp8180fe64"
+        }
+      ]
+    },
+    "AMPLIFY_auth_storytellerapp8180fe64_userPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "storytellerapp8180fe64"
+        }
+      ]
+    },
+    "AMPLIFY_auth_storytellerapp8180fe64_webClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "storytellerapp8180fe64"
+        }
+      ]
+    }
+  }
+}

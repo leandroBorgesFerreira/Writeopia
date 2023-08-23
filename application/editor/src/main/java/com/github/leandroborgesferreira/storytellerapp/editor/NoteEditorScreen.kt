@@ -2,6 +2,7 @@ package com.github.leandroborgesferreira.storytellerapp.editor
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,6 +31,7 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -45,9 +48,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -105,7 +110,8 @@ fun NoteEditorScreen(
                 navigationClick = {
                     systemUiController.setStatusBarColor(color = systemBarDefaultColor)
                     noteEditorViewModel.removeNoteIfEmpty(onComplete = navigateBack)
-                }
+                },
+                shareDocument = noteEditorViewModel::onMoreOptionsClick
             )
         },
     ) { paddingValues ->
@@ -143,14 +149,59 @@ fun NoteEditorScreen(
                 outsideClick = noteEditorViewModel::onHeaderEditionCancel,
                 visibilityState = headerEdition
             )
+
+            val showGlobalMenu by noteEditorViewModel.showGlobalMenu.collectAsStateWithLifecycle()
+
+            val context = LocalContext.current
+
+            AnimatedVisibility(
+                visible = showGlobalMenu,
+                enter = slideInVertically(
+                    initialOffsetY = { fullHeight -> fullHeight }
+                ),
+                exit = slideOutVertically(
+                    targetOffsetY = { fullHeight -> fullHeight }
+                )
+            ) {
+                NoteGlobalActionsMenu {
+                    noteEditorViewModel.shareDocumentInJson(context)
+                }
+            }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun NoteGlobalActionsMenu(onShare: () -> Unit = {}) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+    ) {
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onShare)
+                .background(MaterialTheme.colorScheme.primary)
+                .padding(8.dp),
+            text = "Export as Json",
+            color = MaterialTheme.colorScheme.onBackground
+        )
     }
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBar(title: String, navigationClick: () -> Unit) {
+private fun TopBar(
+    title: String = "",
+    navigationClick: () -> Unit = {},
+    shareDocument: () -> Unit
+) {
     TopAppBar(
         modifier = Modifier.height(44.dp),
         title = {
@@ -187,10 +238,29 @@ private fun TopBar(title: String, navigationClick: () -> Unit) {
                 )
             }
         },
+        actions = {
+            Icon(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .clickable(onClick = shareDocument)
+                    .padding(9.dp),
+                imageVector = Icons.Default.MoreVert,
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.onBackground
+            )
+        },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.background
         )
     )
+}
+
+@Preview
+@Composable
+private fun TopBar_Preview() {
+    Box(modifier = Modifier.background(Color.LightGray)) {
+        TopBar(title = "Title", shareDocument = {})
+    }
 }
 
 @Composable
@@ -282,3 +352,4 @@ fun BottomScreen(noteEditorViewModel: NoteEditorViewModel) {
         }
     }
 }
+

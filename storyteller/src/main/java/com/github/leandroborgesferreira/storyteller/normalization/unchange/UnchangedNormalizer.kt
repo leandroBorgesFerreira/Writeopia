@@ -1,6 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.normalization.unchange
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 
 /**
  * Doesn't change the current list. This Normalizer is intended for mocking purposes.

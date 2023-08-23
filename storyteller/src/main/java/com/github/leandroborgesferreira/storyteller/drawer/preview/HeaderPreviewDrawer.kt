@@ -1,3 +1,4 @@
+
 package com.github.leandroborgesferreira.storyteller.drawer.preview
 
 import androidx.compose.foundation.background
@@ -16,8 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 
 class HeaderPreviewDrawer(
     private val modifier: Modifier = Modifier,
@@ -32,8 +33,9 @@ class HeaderPreviewDrawer(
                 .fillMaxWidth()
                 .defaultMinSize(minHeight = 70.dp)
                 .let { modifierLet ->
-                    if (step.decoration.backgroundColor != null) {
-                        modifierLet.background(Color(step.decoration.backgroundColor))
+                    val backgroundColor = step.decoration.backgroundColor
+                    if (backgroundColor != null) {
+                        modifierLet.background(Color(backgroundColor))
                     } else {
                         modifierLet
                     }
@@ -58,7 +60,10 @@ class HeaderPreviewDrawer(
 @Composable
 fun HeaderPreviewDrawerPreview() {
     HeaderPreviewDrawer().Step(
-        step = StoryStep(type = StoryType.TITLE.type, text = "Some title"),
+        step = StoryStep(
+            type = StoryTypes.TITLE.type,
+            text = "Some title"
+        ),
         drawInfo = DrawInfo()
     )
 }

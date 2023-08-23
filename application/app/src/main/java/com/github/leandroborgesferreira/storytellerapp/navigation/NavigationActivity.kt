@@ -1,25 +1,31 @@
 package com.github.leandroborgesferreira.storytellerapp.navigation
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.github.leandroborgesferreira.storytellerapp.di.NotesInjection
-import com.github.leandroborgesferreira.storytellerapp.theme.ApplicationComposeTheme
-import com.github.leandroborgesferreira.storytellerapp.editor.NoteEditorScreen
-import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu.ChooseNoteScreen
+import com.github.leandroborgesferreira.storyteller.network.injector.ApiInjector
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.video.VideoFrameConfig
+import com.github.leandroborgesferreira.storytellerapp.AndroidLogger
+import com.github.leandroborgesferreira.storytellerapp.auth.di.AuthInjection
+import com.github.leandroborgesferreira.storytellerapp.auth.navigation.authNavigation
+import com.github.leandroborgesferreira.storytellerapp.auth.navigation.navigateToAuthMenu
+import com.github.leandroborgesferreira.storytellerapp.auth.token.AmplifyTokenHandler
+import com.github.leandroborgesferreira.storytellerapp.di.NotesInjection
+import com.github.leandroborgesferreira.storytellerapp.editor.NoteEditorScreen
+import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu.ChooseNoteScreen
+import com.github.leandroborgesferreira.storytellerapp.theme.ApplicationComposeTheme
+import com.github.leandroborgesferreira.storytellerapp.utils_module.Destinations
 
 class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,25 +34,33 @@ class NavigationActivity : AppCompatActivity() {
         VideoFrameConfig.configCoilForVideoFrame(this)
 
         setContent {
-            NavigationGraph()
+            NavigationGraph(application = application)
         }
     }
 }
 
 @Composable
 fun NavigationGraph(
-    context: Context = LocalContext.current,
+    application: Application,
     navController: NavHostController = rememberNavController(),
-    database: StoryTellerDatabase = StoryTellerDatabase.database(context),
-    sharedPreferences: SharedPreferences = context.getSharedPreferences(
+    database: StoryTellerDatabase = StoryTellerDatabase.database(application),
+    sharedPreferences: SharedPreferences = application.getSharedPreferences(
         "com.github.leandroborgesferreira.storytellerapp.preferences",
         Context.MODE_PRIVATE
     ),
-    notesInjection: NotesInjection =  NotesInjection(database, sharedPreferences)
 ) {
 
+    val apiInjector =
+        ApiInjector(apiLogger = AndroidLogger, bearerTokenHandler = AmplifyTokenHandler)
+    val notesInjection = NotesInjection(database, sharedPreferences, application)
+    val authInjection = AuthInjection(database, apiInjector = apiInjector)
+
+    val startDestination = Destinations.CHOOSE_NOTE.id
+
     ApplicationComposeTheme {
-        NavHost(navController = navController, startDestination = Destinations.CHOOSE_NOTE.id) {
+        NavHost(navController = navController, startDestination = startDestination) {
+            authNavigation(navController, authInjection, navController::navigateToMainMenu)
+
             composable(Destinations.CHOOSE_NOTE.id) {
                 val chooseNoteViewModel = notesInjection.provideChooseNoteViewModel()
 
@@ -54,6 +68,9 @@ fun NavigationGraph(
                     chooseNoteViewModel = chooseNoteViewModel,
                     navigateToNote = navController::navigateToNote,
                     newNote = navController::navigateToNewNote,
+                    onLogout = {
+                        navController.navigateToAuthMenu()
+                    }
                 )
             }
 
@@ -101,27 +118,3 @@ fun NavigationGraph(
         }
     }
 }
-
-private fun NavController.navigateToNote(id: String, title: String) {
-    navigate(
-        "${Destinations.NOTE_DETAILS.id}/$id/$title"
-    )
-}
-
-private fun NavController.navigateToNewNote() {
-    navigate(
-        Destinations.NOTE_DETAILS.id
-    )
-}
-
-private fun NavController.navigateToNoteMenu() {
-    navigate(
-        Destinations.CHOOSE_NOTE.id
-    )
-}
-
-enum class Destinations(val id: String) {
-    NOTE_DETAILS("note_details"),
-    CHOOSE_NOTE("choose_note"),
-}
-

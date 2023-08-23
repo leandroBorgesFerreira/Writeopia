@@ -3,8 +3,9 @@ package com.github.leandroborgesferreira.storyteller.manager
 import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryType
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.utils.StoryStepFactory
 import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizationMap
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
@@ -15,13 +16,13 @@ import java.util.UUID
  * Class dedicated to handle adding, deleting or changing StorySteps
  */
 class ContentHandler(
-    private val focusableTypes: Set<String> = setOf(
-        StoryType.TITLE.type,
-        StoryType.MESSAGE.type,
-        StoryType.CHECK_ITEM.type
+    private val focusableTypes: Set<Int> = setOf(
+        StoryTypes.TITLE.type.number,
+        StoryTypes.MESSAGE.type.number,
+        StoryTypes.CHECK_ITEM.type.number
     ),
-    private val nonDuplicatableTypes: Map<String, String> = mapOf(
-        StoryType.TITLE.type to StoryType.MESSAGE.type
+    private val nonDuplicatableTypes: Map<StoryType, StoryType> = mapOf(
+        StoryTypes.TITLE.type to StoryTypes.MESSAGE.type
     ),
     private val stepsNormalizer: UnitsNormalizationMap
 ) {
@@ -45,7 +46,7 @@ class ContentHandler(
         val newCheck = StoryStep(
             id = UUID.randomUUID().toString(),
             localId = UUID.randomUUID().toString(),
-            type = StoryType.CHECK_ITEM.type,
+            type = StoryTypes.CHECK_ITEM.type,
         )
         newMap[position] = newCheck
 
@@ -89,7 +90,7 @@ class ContentHandler(
             val addPosition = lineBreakInfo.position + 2
 
             //Todo: Cover this in unit tests!
-            if (currentStory[addPosition]?.type == StoryType.SPACE.type) {
+            if (currentStory[addPosition]?.type == StoryTypes.SPACE.type) {
                 throw IllegalStateException(
                     "it should not be possible to add content in the place of a space"
                 )
@@ -165,5 +166,5 @@ class ContentHandler(
     }
 
     //Uses the preset conversion (example: Title becomes Message) of simply duplicate the type
-    private fun getStoryType(type: String) = nonDuplicatableTypes[type] ?: type
+    private fun getStoryType(type: StoryType) = nonDuplicatableTypes[type] ?: type
 }

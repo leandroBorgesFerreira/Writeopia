@@ -1,6 +1,7 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 android {
@@ -16,7 +17,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -41,17 +42,21 @@ android {
 kotlin{
     sourceSets.all {
         languageSettings {
-            languageVersion = "2.0"
+            languageVersion = "1.9"
         }
     }
 }
 
 dependencies {
     implementation(project(":storyteller"))
+    implementation(project(":storyteller_models"))
     implementation(project(":storyteller_persistence"))
+    implementation(project(":storyteller_serialization"))
     implementation(project(":application:resources"))
     implementation(project(":application:utils"))
     implementation(project(":application:common_ui"))
+
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.appCompat)
     implementation(libs.material)

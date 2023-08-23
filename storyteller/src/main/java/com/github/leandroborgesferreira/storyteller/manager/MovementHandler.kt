@@ -1,8 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
 import com.github.leandroborgesferreira.storyteller.model.action.Action
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizationMap
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
 
@@ -45,7 +44,7 @@ class MovementHandler(private val stepsNormalizer: UnitsNormalizationMap) {
 
     fun move(stories: Map<Int, StoryStep>, move: Action.Move): Map<Int, StoryStep> {
         val mutable = stories.toMutableMap()
-        if (mutable[move.positionTo]?.type != "space") throw IllegalStateException(
+        if (mutable[move.positionTo]?.type?.name != "space") throw IllegalStateException(
             "You can only move a story to an empty space"
         )
 

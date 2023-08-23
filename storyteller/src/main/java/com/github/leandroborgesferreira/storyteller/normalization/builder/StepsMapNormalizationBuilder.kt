@@ -1,6 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.normalization.builder
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.normalization.addinbetween.AddSteps
 import com.github.leandroborgesferreira.storyteller.normalization.merge.MergeLogic
 import com.github.leandroborgesferreira.storyteller.normalization.merge.MergeNormalization
@@ -39,18 +40,23 @@ class StepsMapNormalizationBuilder {
      */
     fun defaultNormalizers() {
         val mergeNormalization = MergeNormalization.build {
-            addMerger(StepsMergerCoordinator(typeOfStep = "image", typeOfGroup = "group_image"))
+            addMerger(
+                StepsMergerCoordinator(
+                    typeOfStep = StoryTypes.IMAGE.type,
+                    typeOfGroup = StoryTypes.GROUP_IMAGE.type
+                )
+            )
             addMerger(
                 StepsMergerCoordinator(
                     stepMerger = StepToStepMerger(),
-                    typeOfStep = "message",
+                    typeOfStep = StoryTypes.MESSAGE.type,
                     typeOfGroup = null,
                     mergeLogic = MergeLogic::create
                 )
             )
         }
 
-        this.mergeNormalization  = mergeNormalization::mergeSteps
+        this.mergeNormalization = mergeNormalization::mergeSteps
         normalizations.add(AddSteps.spaces(skipFirst = true)::insert)
     }
 

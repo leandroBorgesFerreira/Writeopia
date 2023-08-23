@@ -1,6 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.normalization.merge.steps
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryType
 import com.github.leandroborgesferreira.storyteller.normalization.merge.StepMerger
 import java.util.UUID
 
@@ -12,7 +13,7 @@ import java.util.UUID
  */
 open class StepToGroupMerger : StepMerger {
 
-    override fun merge(step1: StoryStep, step2: StoryStep, type: String): StoryStep =
+    override fun merge(step1: StoryStep, step2: StoryStep, type: StoryType): StoryStep =
         when {
             !step1.isGroup && !step2.isGroup -> {
                 val groupId = UUID.randomUUID().toString()

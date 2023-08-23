@@ -1,0 +1,26 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-storytellerapp-dev-135050-authRole",
+      "UnauthRoleArn": "arn:aws:iam::352180533495:role/amplify-storytellerapp-dev-135050-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::352180533495:role/amplify-storytellerapp-dev-135050-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-storytellerapp-dev-135050-deployment",
+      "UnauthRoleName": "amplify-storytellerapp-dev-135050-unauthRole",
+      "StackName": "amplify-storytellerapp-dev-135050",
+      "StackId": "arn:aws:cloudformation:us-east-1:352180533495:stack/amplify-storytellerapp-dev-135050/2866e4f0-3774-11ee-b18b-0e62bb700e73",
+      "AmplifyAppId": "d3a15vy0j5atls",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-storytellerapp-dev-135050-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "storytellerapp8180fe64": {
+          "userPoolId": "us-east-1_09zK2hWRU",
+          "userPoolName": "StoryTellerUserPool",
+          "webClientId": "7schv8ercqbdhmgtn4t5lg95q",
+          "nativeClientId": "7schv8ercqbdhmgtn4t5lg95q"
+        }
+      }
+    }
+  }
+}

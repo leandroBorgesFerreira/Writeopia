@@ -1,18 +1,19 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
-import android.util.Log
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackManager
 import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.action.BackstackAction
-import com.github.leandroborgesferreira.storyteller.model.document.Document
+import com.github.leandroborgesferreira.storyteller.models.document.Document
+import com.github.leandroborgesferreira.storyteller.model.document.DocumentInfo
+import com.github.leandroborgesferreira.storyteller.model.document.info
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.DrawStory
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
 import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizationMap
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
@@ -20,16 +21,20 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import java.util.Date
+import java.time.Instant
 import java.util.UUID
 
+/**
+ * This is the entry class of the framework. It follows the Controller pattern, redirecting all the
+ * call to another class responsible for the part of the SDK requested. 
+ */
 class StoryTellerManager(
     private val stepsNormalizer: UnitsNormalizationMap =
         StepsMapNormalizationBuilder.reduceNormalizations {
@@ -38,9 +43,9 @@ class StoryTellerManager(
     private val movementHandler: MovementHandler = MovementHandler(stepsNormalizer),
     private val contentHandler: ContentHandler = ContentHandler(
         focusableTypes = setOf(
-            StoryType.CHECK_ITEM.type,
-            StoryType.MESSAGE.type,
-            StoryType.MESSAGE_BOX.type,
+            StoryTypes.CHECK_ITEM.type.number,
+            StoryTypes.MESSAGE.type.number,
+            StoryTypes.MESSAGE_BOX.type.number,
         ),
         stepsNormalizer = stepsNormalizer
     ),
@@ -52,7 +57,8 @@ class StoryTellerManager(
     private val backStackManager: BackstackManager = BackstackManager.create(
         contentHandler,
         movementHandler
-    )
+    ),
+    private val documentTracker: DocumentTracker? = null
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
@@ -69,11 +75,11 @@ class StoryTellerManager(
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
 
-    val currentDocument: Flow<Document> = combine(_documentInfo, _currentStory) { info, state ->
+    val currentDocument: Flow<Document?> = combine(_documentInfo, _currentStory) { info, state ->
         val titleFromContent = state.stories.values.firstOrNull { storyStep ->
             //Todo: Change the type of change to allow different types. The client code should decide what is a title
             //It is also interesting to inv
-            storyStep.type == StoryType.TITLE.type
+            storyStep.type == StoryTypes.TITLE.type
         }?.text
 
         Document(
@@ -105,65 +111,16 @@ class StoryTellerManager(
 
 
     //Todo: Evaluate if this should be extract to a specific class
-    fun saveOnStoryChanges(documentUpdate: DocumentUpdate) {
+    fun saveOnStoryChanges() {
         coroutineScope.launch(dispatcher) {
-            _documentEditionState.collectLatest { (storyState, documentInfo) ->
-                when (val lastEdit = storyState.lastEdit) {
-                    is LastEdit.LineEdition -> {
-                        documentUpdate.saveStoryStep(
-                            storyStep = lastEdit.storyStep.copy(
-                                localId = UUID.randomUUID().toString()
-                            ),
-                            position = lastEdit.position,
-                            documentId = documentInfo.id
-                        )
-                    }
-
-                    LastEdit.Nothing -> {}
-
-                    LastEdit.Whole -> {
-                        val stories = storyState.stories
-                        val titleFromContent = stories.values.firstOrNull { storyStep ->
-                            //Todo: Change the type of change to allow different types. The client code should decide what is a title
-                            //It is also interesting to inv
-                            storyStep.type == StoryType.TITLE.type
-                        }?.text
-
-                        val document = Document(
-                            id = documentInfo.id,
-                            title = titleFromContent ?: documentInfo.title,
-                            content = storyState.stories,
-                            createdAt = documentInfo.createdAt,
-                            lastUpdatedAt = documentInfo.lastUpdatedAt,
-                        )
-
-                        documentUpdate.saveDocument(document)
-                    }
-
-                    is LastEdit.InfoEdition -> {
-                        val stories = storyState.stories
-                        val titleFromContent = stories.values.firstOrNull { storyStep ->
-                            //Todo: Change the type of change to allow different types. The client code should decide what is a title
-                            //It is also interesting to inv
-                            storyStep.type == StoryType.TITLE.type
-                        }?.text
-
-                        documentUpdate.saveDocumentMetadata(
-                            Document(
-                                id = documentInfo.id,
-                                title = titleFromContent ?: documentInfo.title,
-                                createdAt = documentInfo.createdAt,
-                                lastUpdatedAt = documentInfo.lastUpdatedAt,
-                            )
-                        )
-
-                        documentUpdate.saveStoryStep(
-                            storyStep = lastEdit.storyStep,
-                            position = lastEdit.position,
-                            documentId = documentInfo.id
-                        )
-                    }
-                }
+            if (documentTracker != null) {
+                documentTracker.saveOnStoryChanges(_documentEditionState)
+            } else {
+                throw IllegalStateException(
+                    "saveOnStoryChanges called without providing a DocumentTracker for " +
+                            "StoryTellerManager. Did you forget to add it in the constructor of " +
+                            "StoryTellerManager?"
+                )
             }
         }
     }
@@ -173,7 +130,7 @@ class StoryTellerManager(
     fun newStory(documentId: String = UUID.randomUUID().toString(), title: String = "") {
         val firstMessage = StoryStep(
             localId = UUID.randomUUID().toString(),
-            type = StoryType.TITLE.type
+            type = StoryTypes.TITLE.type
         )
         val stories: Map<Int, StoryStep> = mapOf(0 to firstMessage)
         val normalized = stepsNormalizer(stories.toEditState())
@@ -181,8 +138,8 @@ class StoryTellerManager(
         _documentInfo.value = DocumentInfo(
             id = documentId,
             title = title,
-            createdAt = Date(),
-            lastUpdatedAt = Date()
+            createdAt = Instant.now(),
+            lastUpdatedAt = Instant.now()
         )
 
         _currentStory.value = StoryState(
@@ -290,8 +247,6 @@ class StoryTellerManager(
         val newStory = _currentStory.value.stories[position]?.copy(text = text)
 
         if (newStory != null && oldText != text) {
-            Log.d("Manager", "Changing story. Old text: $oldText, new text: $text")
-
             contentHandler.changeStoryStepState(currentStory, newStory, position)
                 ?.let { newState ->
                     _currentStory.value = newState
@@ -347,18 +302,19 @@ class StoryTellerManager(
         val stories = _currentStory.value.stories
         val lastContentStory = stories[stories.size - 3]
 
-        if (lastContentStory?.type == StoryType.MESSAGE.type) {
+        if (lastContentStory?.type == StoryTypes.MESSAGE.type) {
             val newState = _currentStory.value.copy(focusId = lastContentStory.id)
             _currentStory.value = newState
         } else {
             var acc = stories.size - 1
-            val newLastMessage = StoryStep(type = StoryType.MESSAGE.type)
+            val newLastMessage =
+                StoryStep(type = StoryTypes.MESSAGE.type)
 
             //Todo: It should be possible to customize which steps are add
             val newStories = stories + mapOf(
                 acc++ to newLastMessage,
-                acc++ to StoryStep(type = StoryType.SPACE.type),
-                acc to StoryStep(type = StoryType.LARGE_SPACE.type),
+                acc++ to StoryStep(type = StoryTypes.SPACE.type),
+                acc to StoryStep(type = StoryTypes.LARGE_SPACE.type),
             )
 
             _currentStory.value = StoryState(newStories, LastEdit.Whole, newLastMessage.id)
@@ -414,21 +370,8 @@ class StoryTellerManager(
     private fun cancelSelection() {
         _positionsOnEdit.value = emptySet()
     }
+
+    fun onClear() {
+        coroutineScope.cancel()
+    }
 }
-
-/**
- * Dto class to keep information about the document
- */
-data class DocumentInfo(
-    val id: String = UUID.randomUUID().toString(),
-    val title: String = "",
-    val createdAt: Date = Date(),
-    val lastUpdatedAt: Date = Date(),
-)
-
-fun Document.info(): DocumentInfo = DocumentInfo(
-    id = this.id,
-    title = this.title,
-    createdAt = this.createdAt,
-    lastUpdatedAt = this.lastUpdatedAt,
-)

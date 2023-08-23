@@ -1,8 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.normalization.builder
 
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.utils.MapStoryData
-import junit.framework.TestCase
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
@@ -18,7 +17,7 @@ class StepsMapNormalizationBuilderTest {
 
         assertEquals(
             "The first non space StoryUnit should be a GroupStep",
-            "group_image",
+            StoryTypes.GROUP_IMAGE.type,
             normalized[0]!!.type
         )
 
@@ -29,7 +28,7 @@ class StepsMapNormalizationBuilderTest {
         )
         assertEquals(
             "The images in the same position should be merged into GroupImage",
-            "group_image",
+            StoryTypes.GROUP_IMAGE.type,
             normalized[4]?.type
         )
         assertEquals(
@@ -39,7 +38,7 @@ class StepsMapNormalizationBuilderTest {
         )
         assertEquals(
             "The last message should stay as it was",
-            "message",
+            StoryTypes.MESSAGE.type,
             normalized[normalized.size - 3]?.type
         )
 

@@ -4,8 +4,8 @@ import android.content.Context
 import com.github.leandroborgesferreira.storytellerapp.note_menu.data.supermarketList
 import com.github.leandroborgesferreira.storytellerapp.note_menu.data.travelHistory
 import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
-import com.github.leandroborgesferreira.storyteller.model.document.Document
-import java.util.Date
+import com.github.leandroborgesferreira.storyteller.models.document.Document
+import java.time.Instant
 import java.util.UUID
 
 /**
@@ -28,7 +28,7 @@ class NotesUseCase(
             documents.map { document ->
                 document.copy(
                     id = UUID.randomUUID().toString(),
-                    content = document.content?.mapValues { (_, storyStep) ->
+                    content = document.content.mapValues { (_, storyStep) ->
                         storyStep.copy(id = UUID.randomUUID().toString())
                     })
             }
@@ -45,8 +45,8 @@ class NotesUseCase(
                 id = UUID.randomUUID().toString(),
                 title = "Travel Note",
                 content = travelHistory(context),
-                createdAt = Date(),
-                lastUpdatedAt = Date()
+                createdAt = Instant.now(),
+                lastUpdatedAt = Instant.now()
             )
         )
 
@@ -55,8 +55,8 @@ class NotesUseCase(
                 id = UUID.randomUUID().toString(),
                 title = "Supermarket List",
                 content = supermarketList(),
-                createdAt = Date(),
-                lastUpdatedAt = Date()
+                createdAt = Instant.now(),
+                lastUpdatedAt = Instant.now()
             )
         )
     }

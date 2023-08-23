@@ -20,6 +20,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +41,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.CheckItemPreviewDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.HeaderPreviewDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.TextPreviewDrawer
-import com.github.leandroborgesferreira.storyteller.model.story.StoryType
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 
 
@@ -49,6 +50,7 @@ internal fun Notes(
     chooseNoteViewModel: ChooseNoteViewModel,
     navigateToNote: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
+    logOut: () -> Unit,
 ) {
     when (val documents =
         chooseNoteViewModel.documentsState.collectAsStateWithLifecycle().value) {
@@ -57,7 +59,7 @@ internal fun Notes(
                 val data = documents.data
 
                 if (data.isEmpty()) {
-                    MockDataScreen(chooseNoteViewModel)
+                    MockDataScreen(chooseNoteViewModel, logOut)
                 } else {
                     val arrangement by chooseNoteViewModel.notesArrangement
                         .collectAsStateWithLifecycle()
@@ -92,10 +94,14 @@ internal fun Notes(
         }
 
         is ResultData.Error -> {
+            LaunchedEffect(key1 = true) {
+                documents.exception.printStackTrace()
+            }
+
             Box(modifier = Modifier.fillMaxSize()) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
-                    text = ""// stringResource(R.string.error_loading_notes)
+                    text = "Error!!"// stringResource(R.string.error_loading_notes)
                 )
             }
         }
@@ -149,7 +155,7 @@ private fun DocumentItem(
     documentUi: DocumentUi,
     documentClick: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
-    drawers: Map<String, StoryStepDrawer>
+    drawers: Map<Int, StoryStepDrawer>
 ) {
     SwipeBox(
         modifier = Modifier
@@ -169,7 +175,7 @@ private fun DocumentItem(
         Column {
 
             documentUi.preview.forEachIndexed { i, storyStep ->
-                drawers[storyStep.type]?.Step(
+                drawers[storyStep.type.number]?.Step(
                     step = storyStep,
                     drawInfo = DrawInfo(editable = false, position = i)
                 )
@@ -181,7 +187,10 @@ private fun DocumentItem(
 }
 
 @Composable
-private fun MockDataScreen(chooseNoteViewModel: ChooseNoteViewModel) {
+private fun MockDataScreen(
+    chooseNoteViewModel: ChooseNoteViewModel,
+    logOut: () -> Unit
+) {
     val context = LocalContext.current
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -193,23 +202,26 @@ private fun MockDataScreen(chooseNoteViewModel: ChooseNoteViewModel) {
                 modifier = Modifier.padding(8.dp),
                 text = stringResource(R.string.you_dont_have_notes)
             )
-            Button(onClick = {
-                chooseNoteViewModel.addMockData(context)
-            }) {
+
+            Button(onClick = { chooseNoteViewModel.addMockData(context) }) {
                 Text(text = stringResource(R.string.add_sample_notes))
+            }
+
+            Button(onClick = logOut) {
+                Text(text = stringResource(R.string.logout))
             }
         }
     }
 }
 
 @Composable
-private fun previewDrawers(): Map<String, StoryStepDrawer> =
+private fun previewDrawers(): Map<Int, StoryStepDrawer> =
     mapOf(
-        StoryType.TITLE.type to HeaderPreviewDrawer(
+        StoryTypes.TITLE.type.number to HeaderPreviewDrawer(
             style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold,
             )
         ),
-        StoryType.MESSAGE.type to TextPreviewDrawer(),
-        StoryType.CHECK_ITEM.type to CheckItemPreviewDrawer()
+        StoryTypes.MESSAGE.type.number to TextPreviewDrawer(),
+        StoryTypes.CHECK_ITEM.type.number to CheckItemPreviewDrawer()
     )

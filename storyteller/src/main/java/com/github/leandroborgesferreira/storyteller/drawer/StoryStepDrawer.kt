@@ -1,7 +1,7 @@
 package com.github.leandroborgesferreira.storyteller.drawer
 
 import androidx.compose.runtime.Composable
-import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 
 /**
  * [StoryStepDrawer] is the interface for drawing StoryUnits in the screen. It you would like
@@ -10,8 +10,5 @@ import com.github.leandroborgesferreira.storyteller.model.story.StoryStep
  */
 fun interface StoryStepDrawer {
     @Composable
-    fun Step(
-        step: StoryStep,
-        drawInfo: DrawInfo
-    )
+    fun Step(step: StoryStep, drawInfo: DrawInfo)
 }

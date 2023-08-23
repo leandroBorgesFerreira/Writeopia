@@ -1,6 +1,6 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinAndroid)
 }
 
 android {
@@ -16,7 +16,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -24,6 +24,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -41,18 +42,24 @@ android {
 kotlin{
     sourceSets.all {
         languageSettings {
-            languageVersion = "2.0"
+            languageVersion = "1.9"
         }
     }
 }
 
 dependencies {
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+
     implementation(project(":storyteller"))
+    implementation(project(":storyteller_models"))
     implementation(project(":storyteller_persistence"))
     implementation(project(":application:resources"))
     implementation(project(":application:utils"))
     implementation(project(":application:common_ui"))
 
+
+    implementation(libs.aws.amplifyframework.cognito)
+    implementation(libs.aws.amplifyframework.core.kotlin)
 
     implementation(libs.appCompat)
     implementation(libs.material)

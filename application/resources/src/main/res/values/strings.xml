@@ -20,4 +20,5 @@
     <string name="copy_note">Copy note</string>
     <string name="favorite">Favorite</string>
     <string name="delete">Delete</string>
+    <string name="logout">Logout</string>
 </resources>

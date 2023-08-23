@@ -1,0 +1,15 @@
+{
+  "authSelections": "userPoolOnly",
+  "resourceName": "storytellerapp8180fe64",
+  "serviceType": "imported",
+  "region": "us-east-1",
+  "authProvidersUserPool": [],
+  "requiredAttributes": [],
+  "passwordPolicyMinLength": 8,
+  "passwordPolicyCharacters": [
+    "Requires Lowercase",
+    "Requires Symbols"
+  ],
+  "mfaConfiguration": "OFF",
+  "mfaTypes": []
+}
