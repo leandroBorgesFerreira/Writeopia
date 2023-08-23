@@ -19,5 +19,6 @@ class WriteIntroNotes : RequestHandler<APIGatewayProxyRequestEvent, APIGatewayPr
         writeIntroNotes(
             input.body,
             loggerFn = { logger.debug(it) },
-            loggerErrorFn = { logger.error(it) })
+            loggerErrorFn = { logger.error(it) }
+        )
 }

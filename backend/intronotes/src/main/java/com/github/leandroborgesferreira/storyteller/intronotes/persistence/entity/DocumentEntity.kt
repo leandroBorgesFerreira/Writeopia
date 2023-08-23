@@ -10,11 +10,11 @@ data class DocumentEntity(
     @get:DynamoDbAttribute("id")
     var id: String? = null,
     @get:DynamoDbAttribute("title")
-    val title: String? = "",
+    var title: String? = null,
     @get:DynamoDbAttribute("content")
-    val content: List<StoryStepEntity>? = emptyList(),
+    var content: List<StoryStepEntity>? = null,
     @get:DynamoDbAttribute("createdAt")
-    val createdAt: Long? = null,
+    var createdAt: Long? = null,
     @get:DynamoDbAttribute("lastUpdatedAt")
-    val lastUpdatedAt: Long? = null,
+    var lastUpdatedAt: Long? = null,
 )

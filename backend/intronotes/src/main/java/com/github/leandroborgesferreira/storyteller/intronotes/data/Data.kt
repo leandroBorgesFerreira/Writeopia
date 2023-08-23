@@ -12,6 +12,7 @@ fun introNotes(): List<DocumentApi> = listOf(
 
 private fun connectedIntroNote(): DocumentApi =
     DocumentApi(
+        id = UUID.randomUUID().toString(),
         title = "Connected!",
         content = listOf(
             StoryStepApi(

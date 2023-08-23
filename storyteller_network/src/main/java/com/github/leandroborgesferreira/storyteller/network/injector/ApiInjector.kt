@@ -59,5 +59,5 @@ internal object ApiInjectorDefaults {
             }
         }
 
-    fun baseUrl(): String = "https://7787c3dvlj.execute-api.us-east-1.amazonaws.com/prod"
+    fun baseUrl(): String = "https://d8dbeudrae.execute-api.us-east-1.amazonaws.com/prod"
 }
