@@ -10,14 +10,11 @@ import kotlinx.serialization.json.Json
 internal fun readNotes(
     json: Json = storyTellerJson,
     introNotesRepository: IntroNotesRepository
-): String {
-
-    val introNotes = listOf(
-        introNotesRepository.readNote("87eb231f-c263-4562-9d86-ce980bf954a7")
-    ).map { documentEntity ->
-        documentEntity.toAPi()
-    }
-
-    return json.encodeToString(introNotes.wrapInRequest())
-}
+): String =
+    listOf(introNotesRepository.readNote("87eb231f-c263-4562-9d86-ce980bf954a7"))
+        .map { documentEntity ->
+            documentEntity.toAPi()
+        }.let { introNotes ->
+            json.encodeToString(introNotes.wrapInRequest())
+        }
 
