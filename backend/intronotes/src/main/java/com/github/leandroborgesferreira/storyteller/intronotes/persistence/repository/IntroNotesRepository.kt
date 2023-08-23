@@ -26,8 +26,8 @@ object IntroNotesRepository {
     }
 
     fun readNote(
-        notesTable: DynamoDbTable<DocumentEntity> = introNotesTable(),
         id: String,
+        notesTable: DynamoDbTable<DocumentEntity> = introNotesTable(),
     ): DocumentEntity {
         return notesTable.getItem(Key.builder().partitionValue(id).build())
     }

@@ -16,7 +16,6 @@ class WriteNotesKtTest {
 
     @Test
     fun `it should be possible to save not correctly`() {
-
         val dynamoDbClient = DynamoDbClient.builder()
             .region(Region.US_EAST_1)
             .endpointOverride(URI.create("http://localhost:8000"))
@@ -45,7 +44,7 @@ class WriteNotesKtTest {
 
         assertEquals(200, result.statusCode)
 
-        val note = IntroNotesRepository.readNote(table, id, title)
+        val note = IntroNotesRepository.readNote(id, table)
 
         assertEquals(id, note.id)
     }
