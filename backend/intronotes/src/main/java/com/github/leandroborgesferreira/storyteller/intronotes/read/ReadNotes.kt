@@ -12,6 +12,6 @@ internal fun readNotes(
     introNotesRepository: IntroNotesRepository
 ): String {
     val introNotes = introNotes()
-    return json.encodeToString(introNotes().wrapInRequest())
+    return json.encodeToString(introNotes.wrapInRequest())
 }
 
