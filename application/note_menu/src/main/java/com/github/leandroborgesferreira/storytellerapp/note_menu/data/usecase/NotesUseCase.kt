@@ -28,7 +28,7 @@ class NotesUseCase(
             documents.map { document ->
                 document.copy(
                     id = UUID.randomUUID().toString(),
-                    content = document.content?.mapValues { (_, storyStep) ->
+                    content = document.content.mapValues { (_, storyStep) ->
                         storyStep.copy(id = UUID.randomUUID().toString())
                     })
             }

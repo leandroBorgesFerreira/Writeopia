@@ -7,9 +7,9 @@ import java.util.UUID
 
 @Serializable
 data class DocumentApi(
-    val id: String = UUID.randomUUID().toString(),
+    val id: String = "",
     val title: String = "",
-    val content: List<StoryStepApi>? = emptyList(),
+    val content: List<StoryStepApi> = emptyList(),
     @Contextual val createdAt: Instant = Instant.now(),
     @Contextual val lastUpdatedAt: Instant = Instant.now(),
 )

@@ -54,11 +54,20 @@ fun Decoration.toApi(): DecorationApi = DecorationApi(this.backgroundColor)
 
 fun DecorationApi.toModel(): Decoration = Decoration(this.backgroundColor)
 
+fun Document.toApi(): DocumentApi =
+    DocumentApi(
+        id = id,
+        title = title,
+        content = content.map { (position, story) -> story.toApi(position) },
+        createdAt = createdAt,
+        lastUpdatedAt = lastUpdatedAt,
+    )
+
 fun DocumentApi.toModel(): Document =
     Document(
         id = id,
         title = title,
-        content = content?.associateBy { it.position }?.mapValues { (_, story) -> story.toModel() },
+        content = content.associateBy { it.position }.mapValues { (_, story) -> story.toModel() },
         createdAt = createdAt,
         lastUpdatedAt = lastUpdatedAt,
     )

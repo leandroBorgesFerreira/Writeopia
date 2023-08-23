@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "com.github.leandroborgesferreira.storyteller.intronotes"
-version = "0.0.25-SNAPSHOT"
+version = "0.0.29-SNAPSHOT"
 
 dependencies {
     implementation(libs.kotlinx.serialization.json)
@@ -26,6 +26,9 @@ dependencies {
     implementation("software.amazon.awssdk:dynamodb-enhanced")
     implementation(project(":storyteller_models"))
 
+    testImplementation(libs.junit)
+    testImplementation("com.amazonaws:DynamoDBLocal:2.0.0")
+    testImplementation("io.github.ganadist.sqlite4java:libsqlite4java-osx-arm64:1.0.392")
 }
 
 tasks.withType<KotlinCompile> {

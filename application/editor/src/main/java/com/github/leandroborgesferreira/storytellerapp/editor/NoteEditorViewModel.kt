@@ -12,14 +12,15 @@ import com.github.leandroborgesferreira.storyteller.filter.DocumentFilterObject
 import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.model.action.Action
-import com.github.leandroborgesferreira.storyteller.models.story.Decoration
 import com.github.leandroborgesferreira.storyteller.model.story.DrawState
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
+import com.github.leandroborgesferreira.storyteller.models.document.Document
+import com.github.leandroborgesferreira.storyteller.models.story.Decoration
+import com.github.leandroborgesferreira.storyteller.serialization.extensions.toApi
+import com.github.leandroborgesferreira.storyteller.serialization.json.storyTellerJson
 import com.github.leandroborgesferreira.storyteller.serialization.request.wrapInRequest
 import com.github.leandroborgesferreira.storyteller.utils.extensions.noContent
 import com.github.leandroborgesferreira.storytellerapp.editor.model.EditState
-import com.github.leandroborgesferreira.storyteller.serialization.extensions.toApi
-import com.github.leandroborgesferreira.storyteller.serialization.json.storyTellerJson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -30,8 +31,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import java.util.UUID
 
 
 class NoteEditorViewModel(
@@ -146,28 +145,33 @@ class NoteEditorViewModel(
     fun shareDocumentInJson(context: Context) {
         val json = storyTellerJson
 
-        val documentId = UUID.randomUUID().toString().substring(0..6)
-        val document = storyTellerManager.currentStory.value.stories
-        val documentTitle = (document[0]?.text ?: "storyteller_document_$documentId")
-            .replace(" ", "_")
+        viewModelScope.launch {
+            val document: Document = storyTellerManager.currentDocument
+                .stateIn(viewModelScope)
+                .value ?: return@launch
 
-        val apiDocument = documentFilter.removeMetaData(document).map { (position, story) ->
-            story.toApi(position)
-        }.wrapInRequest()
+            val documentTitle = document.title.replace(" ", "_")
 
-        val jsonDocument = json.encodeToString(apiDocument)
+            val apiContent = documentFilter.removeMetaData(document.content)
+                .map { (position, story) ->
+                    story.toApi(position)
+                }
 
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            putExtra(Intent.EXTRA_TEXT, jsonDocument)
-            putExtra(Intent.EXTRA_TITLE, documentTitle)
-            action = Intent.ACTION_SEND
-            type = "application/json"
+            val request = document.toApi().copy(content = apiContent).wrapInRequest()
+            val jsonDocument = json.encodeToString(request)
+
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                putExtra(Intent.EXTRA_TEXT, jsonDocument)
+                putExtra(Intent.EXTRA_TITLE, documentTitle)
+                action = Intent.ACTION_SEND
+                type = "application/json"
+            }
+
+            context.startActivity(
+                Intent.createChooser(intent, "Export Document")
+            )
         }
-
-        context.startActivity(
-            Intent.createChooser(intent, "Export Document")
-        )
     }
 
     override fun onCleared() {
