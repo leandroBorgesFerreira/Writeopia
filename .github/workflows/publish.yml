@@ -12,7 +12,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
       - name: Configure Java 17
-        uses: ./github/workflow-templates/setup-reusable.yml
+        uses: ./github/workflow_templates/setup-reusable.yml
       - name: Release build
         run: ./gradlew assembleRelease --scan
       - name: Publish to MavenCentral

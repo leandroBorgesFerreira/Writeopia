@@ -22,7 +22,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
       - name: Configure Java 17
-        uses: ./github/workflow-templates/setup-reusable.yml
+        uses: ./github/workflow_templates/setup-reusable.yml
       - name: Build android 
         run: ./gradlew backend:intronotes:assemble backend:intronotes:test
   backend_build_and_test:
@@ -32,6 +32,6 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
       - name: Configure Java 17
-        uses: ./github/workflow-templates/setup-reusable.yml
+        uses: ./github/workflow_templates/setup-reusable.yml
       - name: Build backend
         run: ./gradlew assembleDebug testDebug
