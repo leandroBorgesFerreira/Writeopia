@@ -19,7 +19,9 @@ jobs:
     env:
       isCI: "true"
     steps:
-      - name: Checkout and Configure Java 17
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Configure Java 17
         uses: ./github/workflow-templates/setup-reusable.yml
       - name: Build android 
         run: ./gradlew backend:intronotes:assemble backend:intronotes:test
@@ -27,7 +29,9 @@ jobs:
     name: Backend - build and test
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout and Configure Java 17
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Configure Java 17
         uses: ./github/workflow-templates/setup-reusable.yml
       - name: Build backend
         run: ./gradlew assembleDebug testDebug
