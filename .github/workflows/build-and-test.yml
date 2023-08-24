@@ -21,8 +21,11 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v3
-      - name: Configure Java 17
-        uses: ./github/workflow_templates/setup-reusable.yml
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: adopt
+          java-version: '17'
       - name: Build android 
         run: ./gradlew backend:intronotes:assemble backend:intronotes:test
   backend_build_and_test:
@@ -31,7 +34,10 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v3
-      - name: Configure Java 17
-        uses: ./github/workflow_templates/setup-reusable.yml
+        - name: Set up JDK 17
+          uses: actions/setup-java@v3
+          with:
+            distribution: adopt
+            java-version: '17'
       - name: Build backend
         run: ./gradlew assembleDebug testDebug
