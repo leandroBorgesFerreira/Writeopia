@@ -9,7 +9,7 @@ import com.github.leandroborgesferreira.storyteller.persistence.sorting.toEntity
  * This class is responsible to keep the information of the preferences or the user about the
  * notes, like orderBy (creation, last edition, name...) and arrangement (cards, list...).
  */
-class NotesConfigurationRepository(
+internal class NotesConfigurationRepository(
     private val sharedPreferences: SharedPreferences
 ) {
 

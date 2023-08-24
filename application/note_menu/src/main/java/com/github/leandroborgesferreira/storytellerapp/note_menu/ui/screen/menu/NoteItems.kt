@@ -44,7 +44,6 @@ import com.github.leandroborgesferreira.storyteller.drawer.preview.TextPreviewDr
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 
-
 @Composable
 internal fun Notes(
     chooseNoteViewModel: ChooseNoteViewModel,

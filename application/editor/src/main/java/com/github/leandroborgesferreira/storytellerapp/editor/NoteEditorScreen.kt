@@ -71,7 +71,7 @@ const val NAVIGATE_BACK_TEST_TAG = "NoteEditorScreenNavigateBack"
 const val NOTE_EDITION_SCREEN_TITLE_TEST_TAG = "noteEditionScreenTitle"
 
 @Composable
-fun NoteEditorScreen(
+internal fun NoteEditorScreen(
     documentId: String?,
     title: String?,
     noteEditorViewModel: NoteEditorViewModel,
@@ -264,7 +264,7 @@ private fun TopBar_Preview() {
 }
 
 @Composable
-fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
+private fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
     val storyState by noteEditorViewModel.toDraw.collectAsStateWithLifecycle()
     val editable by noteEditorViewModel.editModeState.collectAsStateWithLifecycle()
     val listState: LazyListState = rememberLazyListState()
@@ -300,7 +300,7 @@ fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun BottomScreen(noteEditorViewModel: NoteEditorViewModel) {
+private fun BottomScreen(noteEditorViewModel: NoteEditorViewModel) {
     val editState by noteEditorViewModel.isEditState.collectAsStateWithLifecycle()
 
     val topCorner = CornerSize(10.dp)

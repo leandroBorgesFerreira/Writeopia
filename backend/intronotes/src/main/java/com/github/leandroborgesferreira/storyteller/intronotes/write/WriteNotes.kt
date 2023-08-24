@@ -4,7 +4,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.github.leandroborgesferreira.storyteller.intronotes.dynamo.introNotesTable
 import com.github.leandroborgesferreira.storyteller.intronotes.input.ParseInput
 import com.github.leandroborgesferreira.storyteller.intronotes.persistence.entity.DocumentEntity
-import com.github.leandroborgesferreira.storyteller.intronotes.persistence.repository.IntroNotesRepository
+import com.github.leandroborgesferreira.storyteller.intronotes.persistence.repository.DynamoIntroNotesRepository
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable
 
 fun writeIntroNotes(
@@ -16,7 +16,7 @@ fun writeIntroNotes(
     try {
         loggerFn("Received: $stringBody")
         val documentEntity = ParseInput.parse(stringBody)
-        IntroNotesRepository.saveNote(documentEntity, notesTable)
+        DynamoIntroNotesRepository.saveNote(documentEntity, notesTable)
 
         APIGatewayProxyResponseEvent()
             .withStatusCode(200)

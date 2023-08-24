@@ -36,7 +36,7 @@ const val DOCUMENT_ITEM_TEST_TAG = "DocumentItem_"
 const val ADD_NOTE_TEST_TAG = "addNote"
 
 @Composable
-fun ChooseNoteScreen(
+internal fun ChooseNoteScreen(
     chooseNoteViewModel: ChooseNoteViewModel,
     navigateToNote: (String, String) -> Unit,
     newNote: () -> Unit,

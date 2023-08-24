@@ -1,7 +1,7 @@
-package com.github.leandroborgesferreira.storyteller.intronotes.write
+package com.github.leandroborgesferreira.storyteller.intronotes.unit
 
 import com.github.leandroborgesferreira.storyteller.intronotes.input.ParseInput
-import com.github.leandroborgesferreira.storyteller.intronotes.utils.Samples
+import com.github.leandroborgesferreira.storyteller.intronotes.unit.utils.Samples
 import org.junit.Assert.*
 import org.junit.Test
 

@@ -1,12 +1,12 @@
-package com.github.leandroborgesferreira.storyteller.intronotes.write
+package com.github.leandroborgesferreira.storyteller.intronotes.integrationTests
 
 import com.github.leandroborgesferreira.storyteller.intronotes.dynamo.introNotesTable
-import com.github.leandroborgesferreira.storyteller.intronotes.persistence.repository.IntroNotesRepository
-import com.github.leandroborgesferreira.storyteller.intronotes.utils.Samples
+import com.github.leandroborgesferreira.storyteller.intronotes.persistence.repository.DynamoIntroNotesRepository
+import com.github.leandroborgesferreira.storyteller.intronotes.unit.utils.Samples
+import com.github.leandroborgesferreira.storyteller.intronotes.write.writeIntroNotes
 import org.junit.Assert.*
 import org.junit.Test
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
-import software.amazon.awssdk.auth.credentials.ContainerCredentialsProvider
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
@@ -15,7 +15,7 @@ import java.net.URI
 class WriteNotesKtTest {
 
     @Test
-    fun `it should be possible to save not correctly`() {
+    fun `it should be possible to save note correctly`() {
         val dynamoDbClient = DynamoDbClient.builder()
             .region(Region.US_EAST_1)
             .endpointOverride(URI.create("http://localhost:8000"))
@@ -44,7 +44,7 @@ class WriteNotesKtTest {
 
         assertEquals(200, result.statusCode)
 
-        val note = IntroNotesRepository.readNote(id, table)
+        val note = DynamoIntroNotesRepository.readNote(id, table)
 
         assertEquals(id, note.id)
     }

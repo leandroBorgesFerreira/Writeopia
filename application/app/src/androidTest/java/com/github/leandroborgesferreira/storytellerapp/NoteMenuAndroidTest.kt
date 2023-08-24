@@ -1,5 +1,7 @@
 package com.github.leandroborgesferreira.storytellerapp
 
+import android.app.Application
+import android.content.Context
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.junit4.createComposeRule
 import com.github.leandroborgesferreira.storytellerapp.navigation.NavigationGraph
@@ -18,9 +20,14 @@ class NoteMenuAndroidTest {
     fun itShouldBePossibleToAddNote() {
         composeTestRule.setContent {
             NavigationGraph(
+                application = Application(),
                 database = StoryTellerDatabase.database(
                     LocalContext.current,
                     inMemory = true
+                ),
+                sharedPreferences = LocalContext.current.getSharedPreferences(
+                    "MockShared",
+                    Context.MODE_PRIVATE
                 )
             )
         }
@@ -33,9 +40,14 @@ class NoteMenuAndroidTest {
     fun itShouldBePossibleToSaveNoteWithTitle() {
         composeTestRule.setContent {
             NavigationGraph(
+                application = Application(),
                 database = StoryTellerDatabase.database(
                     LocalContext.current,
                     inMemory = true
+                ),
+                sharedPreferences = LocalContext.current.getSharedPreferences(
+                    "MockShared",
+                    Context.MODE_PRIVATE
                 )
             )
         }

@@ -2,13 +2,12 @@ package com.github.leandroborgesferreira.storyteller.intronotes.persistence.repo
 
 import com.github.leandroborgesferreira.storyteller.intronotes.dynamo.introNotesTable
 import com.github.leandroborgesferreira.storyteller.intronotes.persistence.entity.DocumentEntity
-import com.github.leandroborgesferreira.storyteller.intronotes.persistence.entity.StoryStepEntity
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable
 import software.amazon.awssdk.enhanced.dynamodb.Key
 
 internal const val INTRO_NOTES_TABLE = "IntroNotes"
 
-object IntroNotesRepository {
+object DynamoIntroNotesRepository {
     fun saveNotes(
         notes: List<DocumentEntity>,
         notesTable: DynamoDbTable<DocumentEntity> = introNotesTable()
