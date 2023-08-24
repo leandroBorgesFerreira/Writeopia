@@ -27,7 +27,7 @@ jobs:
           distribution: adopt
           java-version: '17'
       - name: Build android 
-        run: ./gradlew backend:intronotes:assemble backend:intronotes:test
+        run: ./gradlew assembleDebug testDebug
   backend_build_and_test:
     name: Backend - build and test
     runs-on: ubuntu-22.04
@@ -42,4 +42,4 @@ jobs:
           distribution: adopt
           java-version: '17'
       - name: Build backend
-        run: ./gradlew assembleDebug testDebug
+        run: ./gradlew backend:intronotes:assemble backend:intronotes:test
