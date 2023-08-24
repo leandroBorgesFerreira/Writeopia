@@ -4,7 +4,7 @@ package com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel
  * The possible arrangement for notes. The user is able to choose between the variants of the enum
  * changing the way notes present themselves in the menu
  */
-enum class NotesArrangement(val type: String) {
+internal enum class NotesArrangement(val type: String) {
     LIST("list"), GRID("grid");
 
     companion object {

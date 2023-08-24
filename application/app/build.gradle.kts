@@ -24,7 +24,8 @@ android {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
-            )        }
+            )
+        }
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
@@ -40,9 +41,24 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
+    testOptions {
+        managedDevices {
+            devices {
+                maybeCreate<com.android.build.api.dsl.ManagedVirtualDevice>("pixel6api31")
+                    .apply {
+                        // Use device profiles you typically see in Android Studio.
+                        device = "Pixel 6"
+                        // Use only API levels 27 and higher.
+                        apiLevel = 31
+                        // To include Google services, use "google".
+                        systemImageSource = "aosp"
+                    }
+            }
+        }
+    }
 }
 
-kotlin{
+kotlin {
     sourceSets.all {
         languageSettings {
             languageVersion = "1.9"

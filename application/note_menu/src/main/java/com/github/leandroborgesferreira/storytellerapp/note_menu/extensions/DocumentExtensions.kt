@@ -4,11 +4,14 @@ import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.dto.Document
 import com.github.leandroborgesferreira.storyteller.models.document.Document
 import com.github.leandroborgesferreira.storyteller.preview.PreviewParser
 
-fun Document.toUiCard(previewParser: PreviewParser, selected: Boolean = false): DocumentUi =
+internal fun Document.toUiCard(
+    previewParser: PreviewParser,
+    selected: Boolean = false
+): DocumentUi =
     DocumentUi(
         documentId = id,
         title = title,
         lastEdit = "",
-        preview = content?.values?.let(previewParser::preview) ?: emptyList(),
+        preview = content.values.let(previewParser::preview),
         selected = selected
     )

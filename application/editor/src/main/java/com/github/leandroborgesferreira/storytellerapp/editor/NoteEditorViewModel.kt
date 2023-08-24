@@ -1,9 +1,8 @@
 package com.github.leandroborgesferreira.storytellerapp.editor
 
-import android.app.Application
 import android.content.Context
 import android.content.Intent
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackHandler
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
@@ -32,13 +31,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 
-
-class NoteEditorViewModel(
+internal class NoteEditorViewModel(
     val storyTellerManager: StoryTellerManager,
     private val documentRepository: DocumentRepository,
     private val documentFilter: DocumentFilter = DocumentFilterObject,
-    application: Application
-) : AndroidViewModel(application),
+) : ViewModel(),
     BackstackInform by storyTellerManager,
     BackstackHandler by storyTellerManager {
 

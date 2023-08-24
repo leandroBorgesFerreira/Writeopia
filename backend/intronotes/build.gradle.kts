@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.packaging.defaultExcludes
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /*
@@ -10,6 +11,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm")
     kotlin("plugin.serialization") version "1.9.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("org.graalvm.buildtools.native") version "0.9.24"
 }
 
 group = "com.github.leandroborgesferreira.storyteller.intronotes"
@@ -33,4 +35,10 @@ dependencies {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "17"
+}
+
+tasks.withType<Test> {
+    if (System.getenv("isCI") == "true") {
+        exclude("**/integrationTests/**")
+    }
 }

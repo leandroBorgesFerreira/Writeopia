@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun InputScreen(
+internal fun InputScreen(
     modifier: Modifier = Modifier,
     onBackPress: () -> Unit = {},
     onForwardPress: () -> Unit = {},
@@ -83,7 +83,7 @@ fun InputScreen(
 
 @Preview
 @Composable
-fun InputComposablePreview() {
+private fun InputComposablePreview() {
     InputScreen(
         canUndoState = MutableStateFlow(true),
         canRedoState = MutableStateFlow(true)

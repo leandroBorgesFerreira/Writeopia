@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class ChooseNoteViewModel(
+internal class ChooseNoteViewModel(
     private val notesUseCase: NotesUseCase,
     private val notesConfig: NotesConfigurationRepository,
     private val previewParser: PreviewParser = PreviewParser(),

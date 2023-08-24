@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinSerialization)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -25,6 +26,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -48,6 +50,8 @@ kotlin{
 }
 
 dependencies {
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+
     implementation(project(":storyteller"))
     implementation(project(":storyteller_models"))
     implementation(project(":storyteller_persistence"))
@@ -60,6 +64,10 @@ dependencies {
 
     implementation(libs.appCompat)
     implementation(libs.material)
+
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
     implementation(libs.viewmodel.compose)
     implementation(libs.runtime.compose)

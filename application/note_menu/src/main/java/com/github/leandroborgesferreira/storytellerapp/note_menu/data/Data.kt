@@ -5,7 +5,7 @@ import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import java.util.UUID
 
-fun supermarketList(): Map<Int, StoryStep> = mapOf(
+internal fun supermarketList(): Map<Int, StoryStep> = mapOf(
     0 to StoryStep(
         localId = UUID.randomUUID().toString(),
         type = StoryTypes.TITLE.type,
@@ -33,7 +33,7 @@ fun supermarketList(): Map<Int, StoryStep> = mapOf(
     )
 )
 
-fun travelHistory(context: Context): Map<Int, StoryStep> =
+internal fun travelHistory(context: Context): Map<Int, StoryStep> =
     mapOf(
         0 to StoryStep(
             localId = UUID.randomUUID().toString(),

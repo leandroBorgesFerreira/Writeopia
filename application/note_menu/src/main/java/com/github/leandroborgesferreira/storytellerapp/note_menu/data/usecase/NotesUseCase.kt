@@ -12,7 +12,7 @@ import java.util.UUID
  * UseCase responsible to perform CRUD operations in the Notes (Documents) of the app taking in to
  * consideration the configuration desired in the app.
  */
-class NotesUseCase(
+internal class NotesUseCase(
     private val documentRepository: DocumentRepository,
     private val notesConfig: NotesConfigurationRepository
 ) {

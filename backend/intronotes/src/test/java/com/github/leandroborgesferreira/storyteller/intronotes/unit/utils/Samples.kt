@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storyteller.intronotes.utils
+package com.github.leandroborgesferreira.storyteller.intronotes.unit.utils
 
 object Samples {
 

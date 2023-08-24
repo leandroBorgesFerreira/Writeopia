@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -57,16 +58,20 @@ dependencies {
     implementation(project(":application:utils"))
     implementation(project(":application:common_ui"))
 
-
     implementation(libs.aws.amplifyframework.cognito)
     implementation(libs.aws.amplifyframework.core.kotlin)
 
     implementation(libs.appCompat)
     implementation(libs.material)
 
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+
     implementation(libs.viewmodel.compose)
     implementation(libs.runtime.compose)
     implementation(libs.androidx.material.icons.extended)
+    implementation(libs.navigation.compose)
 
     implementation("androidx.activity:activity-compose")
     implementation("androidx.compose.material3:material3")
