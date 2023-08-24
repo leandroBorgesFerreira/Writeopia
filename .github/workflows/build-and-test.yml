@@ -14,7 +14,6 @@ concurrency:
 
 jobs:
   android_build_and_test:
-    uses:
     runs-on: ubuntu-22.04
     steps:
       - name: Check out code
