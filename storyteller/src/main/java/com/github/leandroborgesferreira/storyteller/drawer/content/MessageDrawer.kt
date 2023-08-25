@@ -46,12 +46,12 @@ class MessageDrawer(
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     private val customBackgroundColor: Color? = null,
-    private val clickable: Boolean = true
+    private val clickable: Boolean = true,
+    private val textStyle: @Composable () -> TextStyle = { defaultTextStyle() }
 ) : StoryStepDrawer {
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
-        val fontSize = 16.sp
         val focusRequester = remember { FocusRequester() }
 
         Box(modifier = Modifier.padding(horizontal = 6.dp)) {
@@ -101,17 +101,13 @@ class MessageDrawer(
                                 value
                             }
 
-                            if (!commandHandler.handleCommand(text, step, drawInfo.position)) {
-                                onTextEdit(value.text, drawInfo.position)
-                            }
+                            onTextEdit(value.text, drawInfo.position)
+                            commandHandler.handleCommand(text, step, drawInfo.position)
                         },
                         keyboardOptions = KeyboardOptions(
                             capitalization = KeyboardCapitalization.Sentences
                         ),
-                        textStyle = TextStyle(
-                            color = MaterialTheme.colorScheme.onBackground,
-                            fontSize = fontSize
-                        ),
+                        textStyle = textStyle(),
                         cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
                     )
                 } else {
@@ -124,3 +120,11 @@ class MessageDrawer(
         }
     }
 }
+
+
+@Composable
+private fun defaultTextStyle() =
+    TextStyle(
+        color = MaterialTheme.colorScheme.onBackground,
+        fontSize = 16.sp
+    )

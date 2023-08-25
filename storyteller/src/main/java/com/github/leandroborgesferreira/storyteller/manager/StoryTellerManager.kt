@@ -5,6 +5,7 @@ import com.github.leandroborgesferreira.storyteller.backstack.BackstackInform
 import com.github.leandroborgesferreira.storyteller.backstack.BackstackManager
 import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.action.BackstackAction
+import com.github.leandroborgesferreira.storyteller.model.command.CommandInfo
 import com.github.leandroborgesferreira.storyteller.models.document.Document
 import com.github.leandroborgesferreira.storyteller.model.document.DocumentInfo
 import com.github.leandroborgesferreira.storyteller.model.document.info
@@ -14,6 +15,7 @@ import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
+import com.github.leandroborgesferreira.storyteller.models.story.StoryType
 import com.github.leandroborgesferreira.storyteller.normalization.builder.StepsMapNormalizationBuilder
 import com.github.leandroborgesferreira.storyteller.utils.alias.UnitsNormalizationMap
 import com.github.leandroborgesferreira.storyteller.utils.extensions.toEditState
@@ -33,7 +35,7 @@ import java.util.UUID
 
 /**
  * This is the entry class of the framework. It follows the Controller pattern, redirecting all the
- * call to another class responsible for the part of the SDK requested. 
+ * call to another class responsible for the part of the SDK requested.
  */
 class StoryTellerManager(
     private val stepsNormalizer: UnitsNormalizationMap =
@@ -42,11 +44,6 @@ class StoryTellerManager(
         },
     private val movementHandler: MovementHandler = MovementHandler(stepsNormalizer),
     private val contentHandler: ContentHandler = ContentHandler(
-        focusableTypes = setOf(
-            StoryTypes.CHECK_ITEM.type.number,
-            StoryTypes.MESSAGE.type.number,
-            StoryTypes.MESSAGE_BOX.type.number,
-        ),
         stepsNormalizer = stepsNormalizer
     ),
     private val focusHandler: FocusHandler = FocusHandler(),
@@ -229,12 +226,17 @@ class StoryTellerManager(
         }
     }
 
-    fun createCheckItem(position: Int) {
+    fun changeStoryType(position: Int, storyType: StoryType, commandInfo: CommandInfo) {
         if (isOnSelection) {
             cancelSelection()
         }
 
-        _currentStory.value = contentHandler.createCheckItem(_currentStory.value.stories, position)
+        _currentStory.value = contentHandler.changeStoryType(
+            _currentStory.value.stories,
+            storyType,
+            position,
+            commandInfo
+        )
     }
 
     fun onTextEdit(text: String, position: Int) {

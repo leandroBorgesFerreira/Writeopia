@@ -2,12 +2,17 @@ package com.github.leandroborgesferreira.storyteller.drawer
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.github.leandroborgesferreira.storyteller.drawer.commands.CommandsDecoratorDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.AddButtonDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.CheckItemDrawer
@@ -22,8 +27,13 @@ import com.github.leandroborgesferreira.storyteller.drawer.content.TitleDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.defaultImageShape
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.model.action.Action
+import com.github.leandroborgesferreira.storyteller.model.command.Command
 import com.github.leandroborgesferreira.storyteller.model.command.CommandFactory
+import com.github.leandroborgesferreira.storyteller.model.command.CommandInfo
+import com.github.leandroborgesferreira.storyteller.model.command.CommandTrigger
+import com.github.leandroborgesferreira.storyteller.model.command.WhereToFind
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
+import com.github.leandroborgesferreira.storyteller.models.story.StoryType
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 
 object DefaultDrawers {
@@ -44,7 +54,7 @@ object DefaultDrawers {
             moveRequest = manager::moveRequest,
             checkRequest = manager::changeStoryState,
             onDeleteRequest = manager::onDelete,
-            createCheckItem = manager::createCheckItem,
+            changeStoryType = manager::changeStoryType,
             nextFocus = manager::nextFocusOrCreate,
             clickAtTheEnd = manager::clickAtTheEnd,
             onHeaderClick = onHeaderClick,
@@ -62,7 +72,7 @@ object DefaultDrawers {
         moveRequest: (Action.Move) -> Unit = { },
         checkRequest: (Action.StoryStateChange) -> Unit = { },
         onDeleteRequest: (Action.DeleteStory) -> Unit,
-        createCheckItem: (Int) -> Unit,
+        changeStoryType: (Int, StoryType, CommandInfo) -> Unit,
         onSelected: (Boolean, Int) -> Unit,
         clickAtTheEnd: () -> Unit,
         onHeaderClick: () -> Unit,
@@ -77,7 +87,54 @@ object DefaultDrawers {
                         onLineBreak(Action.LineBreak(storyStep, position))
                     },
                     CommandFactory.checkItem() to { _, position ->
-                        createCheckItem(position)
+                        changeStoryType(
+                            position,
+                            StoryTypes.CHECK_ITEM.type,
+                            CommandInfo(
+                                CommandFactory.checkItem(),
+                                CommandTrigger.WRITTEN
+                            )
+                        )
+                    },
+                    CommandFactory.h1() to { _, position ->
+                        changeStoryType(
+                            position,
+                            StoryTypes.H1.type,
+                            CommandInfo(
+                                CommandFactory.h1(),
+                                CommandTrigger.WRITTEN
+                            )
+                        )
+                    },
+                    CommandFactory.h2() to { _, position ->
+                        changeStoryType(
+                            position,
+                            StoryTypes.H2.type,
+                            CommandInfo(
+                                CommandFactory.h2(),
+                                CommandTrigger.WRITTEN
+                            )
+                        )
+                    },
+                    CommandFactory.h3() to { _, position ->
+                        changeStoryType(
+                            position,
+                            StoryTypes.H3.type,
+                            CommandInfo(
+                                CommandFactory.h3(),
+                                CommandTrigger.WRITTEN
+                            )
+                        )
+                    },
+                    CommandFactory.h4() to { _, position ->
+                        changeStoryType(
+                            position,
+                            StoryTypes.H4.type,
+                            CommandInfo(
+                                CommandFactory.h4(),
+                                CommandTrigger.WRITTEN
+                            )
+                        )
                     }
                 )
             )
@@ -128,6 +185,29 @@ object DefaultDrawers {
                 onSelected = onSelected,
             )
 
+            val createHDrawer = { fontSize: TextUnit ->
+                MessageDrawer(
+                    containerModifier = Modifier,
+                    innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
+                    onTextEdit = onTextEdit,
+                    onDeleteRequest = onDeleteRequest,
+                    commandHandler = textCommandHandlerMessage,
+                    onSelected = onSelected,
+                    textStyle = {
+                        TextStyle(
+                            color = MaterialTheme.colorScheme.onBackground,
+                            fontSize = fontSize,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                )
+            }
+
+            val h1MessageDrawer = createHDrawer(28.sp)
+            val h2MessageDrawer = createHDrawer(24.sp)
+            val h3MessageDrawer = createHDrawer(20.sp)
+            val h4MessageDrawer = createHDrawer(18.sp)
+
             val checkItemDrawer = CheckItemDrawer(
                 onCheckedChange = checkRequest,
                 onTextEdit = onTextEdit,
@@ -171,5 +251,9 @@ object DefaultDrawers {
             put(StoryTypes.LARGE_SPACE.type.number, LargeEmptySpace(moveRequest, clickAtTheEnd))
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
             put(StoryTypes.TITLE.type.number, headerDrawer)
+            put(StoryTypes.H1.type.number, h1MessageDrawer)
+            put(StoryTypes.H2.type.number, h2MessageDrawer)
+            put(StoryTypes.H3.type.number, h3MessageDrawer)
+            put(StoryTypes.H4.type.number, h4MessageDrawer)
         }
 }

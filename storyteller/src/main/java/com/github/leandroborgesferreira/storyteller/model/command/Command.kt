@@ -10,4 +10,9 @@ object CommandFactory {
     fun lineBreak() = Command("\n", WhereToFind.ANYWHERE)
 
     fun checkItem() = Command("-[]", WhereToFind.START)
+
+    fun h1() = Command("# ", WhereToFind.START)
+    fun h2() = Command("## ", WhereToFind.START)
+    fun h3() = Command("### ", WhereToFind.START)
+    fun h4() = Command("#### ", WhereToFind.START)
 }
