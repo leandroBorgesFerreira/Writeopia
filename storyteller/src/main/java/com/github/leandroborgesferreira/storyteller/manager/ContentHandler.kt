@@ -1,6 +1,8 @@
 package com.github.leandroborgesferreira.storyteller.manager
 
 import com.github.leandroborgesferreira.storyteller.model.action.Action
+import com.github.leandroborgesferreira.storyteller.model.command.CommandInfo
+import com.github.leandroborgesferreira.storyteller.model.command.CommandTrigger
 import com.github.leandroborgesferreira.storyteller.model.story.LastEdit
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
@@ -19,12 +21,14 @@ class ContentHandler(
     private val focusableTypes: Set<Int> = setOf(
         StoryTypes.TITLE.type.number,
         StoryTypes.MESSAGE.type.number,
+        StoryTypes.H1.type.number,
+        StoryTypes.H2.type.number,
+        StoryTypes.H3.type.number,
+        StoryTypes.H4.type.number,
         StoryTypes.CHECK_ITEM.type.number
     ),
-    private val nonDuplicatableTypes: Map<StoryType, StoryType> = mapOf(
-        StoryTypes.TITLE.type to StoryTypes.MESSAGE.type
-    ),
-    private val stepsNormalizer: UnitsNormalizationMap
+    private val stepsNormalizer: UnitsNormalizationMap,
+    private val lineBreakMap: (StoryType) -> StoryType = ::defaultLineBreakMap
 ) {
 
     fun changeStoryStepState(
@@ -41,16 +45,38 @@ class ContentHandler(
         }
     }
 
-    fun createCheckItem(currentStory: Map<Int, StoryStep>, position: Int): StoryState {
+    fun changeStoryType(
+        currentStory: Map<Int, StoryStep>,
+        type: StoryType,
+        position: Int,
+        commandInfo: CommandInfo
+    ): StoryState {
         val newMap = currentStory.toMutableMap()
-        val newCheck = StoryStep(
-            id = UUID.randomUUID().toString(),
-            localId = UUID.randomUUID().toString(),
-            type = StoryTypes.CHECK_ITEM.type,
-        )
-        newMap[position] = newCheck
+        val storyStep = newMap[position]
+        val commandTrigger = commandInfo.commandTrigger
+        val commandText = commandInfo.command.commandText
 
-        return StoryState(newMap, LastEdit.Whole, newCheck.id)
+        if (storyStep != null) {
+            val storyText = storyStep.text
+            val newText = if (
+                commandTrigger == CommandTrigger.WRITTEN &&
+                storyText?.startsWith(commandText) == true
+            ) {
+                storyText.subSequence(commandText.length, storyText.length).toString()
+            } else {
+                storyStep.text
+            }
+
+            val newCheck = storyStep.copy(
+                localId = UUID.randomUUID().toString(),
+                type = type,
+                text = newText
+            )
+
+            newMap[position] = newCheck
+        }
+
+        return StoryState(newMap, LastEdit.Whole, storyStep?.id)
     }
 
     //Todo: Add unit test
@@ -83,7 +109,7 @@ class ContentHandler(
             val secondText = list.elementAtOrNull(1) ?: ""
             val secondMessage = StoryStep(
                 localId = UUID.randomUUID().toString(),
-                type = getStoryType(storyStep.type),
+                type = lineBreakMap(storyStep.type),
                 text = secondText,
             )
 
@@ -123,7 +149,7 @@ class ContentHandler(
             mutableSteps.remove(deleteInfo.position)
             val previousFocus =
                 FindStory.previousFocus(
-                    history.values.toList(),
+                    mutableSteps.values.toList(),
                     deleteInfo.position,
                     focusableTypes
                 )
@@ -164,7 +190,14 @@ class ContentHandler(
 
         return mutable to deleted
     }
-
-    //Uses the preset conversion (example: Title becomes Message) of simply duplicate the type
-    private fun getStoryType(type: StoryType) = nonDuplicatableTypes[type] ?: type
 }
+
+private fun defaultLineBreakMap(storyType: StoryType): StoryType =
+    when(storyType) {
+        StoryTypes.H1.type,
+        StoryTypes.H2.type,
+        StoryTypes.H3.type,
+        StoryTypes.H4.type,
+        StoryTypes.TITLE.type -> StoryTypes.MESSAGE.type
+        else -> storyType
+    }

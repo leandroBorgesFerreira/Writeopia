@@ -43,7 +43,11 @@ enum class StoryTypes(val type: StoryType) {
             10
         )
     ),
-    TITLE(StoryType("title", 11));
+    TITLE(StoryType("title", 11)),
+    H1(StoryType("h1", 12)),
+    H2(StoryType("h2", 13)),
+    H3(StoryType("h3", 14)),
+    H4(StoryType("h4", 15));
 
     companion object {
         fun fromName(stringValue: String): StoryTypes =
