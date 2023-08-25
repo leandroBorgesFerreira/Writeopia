@@ -28,8 +28,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.dto.DocumentUi
 import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.ChooseNoteViewModel
@@ -214,13 +216,35 @@ private fun MockDataScreen(
 }
 
 @Composable
-private fun previewDrawers(): Map<Int, StoryStepDrawer> =
-    mapOf(
+private fun previewDrawers(): Map<Int, StoryStepDrawer> {
+    val h1TextStyle = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp
+    )
+    val h2TextStyle = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 22.sp
+    )
+    val h3TextStyle = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp
+    )
+    val h4TextStyle = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp
+    )
+
+    return mapOf(
         StoryTypes.TITLE.type.number to HeaderPreviewDrawer(
             style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold,
             )
         ),
+        StoryTypes.CHECK_ITEM.type.number to CheckItemPreviewDrawer(),
         StoryTypes.MESSAGE.type.number to TextPreviewDrawer(),
-        StoryTypes.CHECK_ITEM.type.number to CheckItemPreviewDrawer()
+        StoryTypes.H1.type.number to TextPreviewDrawer(style = h1TextStyle),
+        StoryTypes.H2.type.number to TextPreviewDrawer(style = h2TextStyle),
+        StoryTypes.H3.type.number to TextPreviewDrawer(style = h3TextStyle),
+        StoryTypes.H4.type.number to TextPreviewDrawer(style = h4TextStyle),
     )
+}
