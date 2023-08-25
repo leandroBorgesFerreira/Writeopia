@@ -42,7 +42,9 @@ class NavigationActivity : AppCompatActivity() {
 fun NavigationGraph(
     application: Application,
     navController: NavHostController = rememberNavController(),
-    database: StoryTellerDatabase = StoryTellerDatabase.database(application),
+    database: StoryTellerDatabase = StoryTellerDatabase.database(application, builder = {
+        this.createFromAsset("StoryTellerDatabase.db")
+    }),
     sharedPreferences: SharedPreferences = application.getSharedPreferences(
         "com.github.leandroborgesferreira.storytellerapp.preferences",
         Context.MODE_PRIVATE

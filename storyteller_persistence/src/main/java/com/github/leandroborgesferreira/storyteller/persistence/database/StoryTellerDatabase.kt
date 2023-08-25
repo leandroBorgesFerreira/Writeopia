@@ -34,13 +34,16 @@ abstract class StoryTellerDatabase : RoomDatabase() {
         fun database(
             context: Context,
             databaseName: String = DATABASE_NAME,
-            inMemory: Boolean = false
-        ): StoryTellerDatabase = instance ?: createDatabase(context, databaseName, inMemory)
+            inMemory: Boolean = false,
+            builder: Builder<StoryTellerDatabase>.() -> Builder<StoryTellerDatabase> = { this }
+        ): StoryTellerDatabase =
+            instance ?: createDatabase(context, databaseName, inMemory, builder)
 
         private fun createDatabase(
             context: Context,
             databaseName: String,
-            inMemory: Boolean = false
+            inMemory: Boolean = false,
+            builder: Builder<StoryTellerDatabase>.() -> Builder<StoryTellerDatabase> = { this }
         ): StoryTellerDatabase =
             if (inMemory) {
                 Room.inMemoryDatabaseBuilder(
@@ -52,7 +55,7 @@ abstract class StoryTellerDatabase : RoomDatabase() {
                     context.applicationContext,
                     StoryTellerDatabase::class.java,
                     databaseName
-                )
+                ).let(builder)
                     .fallbackToDestructiveMigration()
                     .build()
                     .also { database ->
