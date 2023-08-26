@@ -174,7 +174,6 @@ private fun DocumentItem(
         defaultColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
         Column {
-
             documentUi.preview.forEachIndexed { i, storyStep ->
                 drawers[storyStep.type.number]?.Step(
                     step = storyStep,

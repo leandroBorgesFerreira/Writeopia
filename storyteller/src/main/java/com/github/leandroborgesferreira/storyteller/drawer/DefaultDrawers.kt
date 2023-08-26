@@ -177,7 +177,7 @@ object DefaultDrawers {
             )
 
             val messageDrawer = MessageDrawer(
-                containerModifier = Modifier,
+                containerModifier = Modifier.padding(6.dp),
                 innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
                 onTextEdit = onTextEdit,
                 onDeleteRequest = onDeleteRequest,
@@ -187,7 +187,7 @@ object DefaultDrawers {
 
             val createHDrawer = { fontSize: TextUnit ->
                 MessageDrawer(
-                    containerModifier = Modifier,
+                    containerModifier = Modifier.padding(6.dp),
                     innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
                     onTextEdit = onTextEdit,
                     onDeleteRequest = onDeleteRequest,
