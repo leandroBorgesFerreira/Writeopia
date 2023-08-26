@@ -27,11 +27,9 @@ import com.github.leandroborgesferreira.storyteller.drawer.content.TitleDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.defaultImageShape
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.model.action.Action
-import com.github.leandroborgesferreira.storyteller.model.command.Command
 import com.github.leandroborgesferreira.storyteller.model.command.CommandFactory
 import com.github.leandroborgesferreira.storyteller.model.command.CommandInfo
 import com.github.leandroborgesferreira.storyteller.model.command.CommandTrigger
-import com.github.leandroborgesferreira.storyteller.model.command.WhereToFind
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.models.story.StoryType
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
@@ -165,11 +163,11 @@ object DefaultDrawers {
             )
 
             val messageBoxDrawer = MessageDrawer(
-                containerModifier = Modifier
-                    .padding(horizontal = 8.dp)
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
                     .clip(shape = defaultBorder)
                     .background(groupsBackgroundColor),
-                innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
+                textModifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
                 onTextEdit = onTextEdit,
                 onDeleteRequest = onDeleteRequest,
                 commandHandler = textCommandHandlerMessage,
@@ -177,8 +175,8 @@ object DefaultDrawers {
             )
 
             val messageDrawer = MessageDrawer(
-                containerModifier = Modifier.padding(6.dp),
-                innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
+                modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
+                textModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
                 onTextEdit = onTextEdit,
                 onDeleteRequest = onDeleteRequest,
                 commandHandler = textCommandHandlerMessage,
@@ -187,8 +185,8 @@ object DefaultDrawers {
 
             val createHDrawer = { fontSize: TextUnit ->
                 MessageDrawer(
-                    containerModifier = Modifier.padding(6.dp),
-                    innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
+                    modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
+                    textModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
                     onTextEdit = onTextEdit,
                     onDeleteRequest = onDeleteRequest,
                     commandHandler = textCommandHandlerMessage,

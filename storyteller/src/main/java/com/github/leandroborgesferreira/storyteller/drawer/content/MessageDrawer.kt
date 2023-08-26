@@ -32,7 +32,6 @@ import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyE
 import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.models.story.StoryType
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 
@@ -42,8 +41,8 @@ import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
  * TextField.
  */
 class MessageDrawer(
-    private val containerModifier: Modifier = Modifier,
-    private val innerContainerModifier: Modifier = Modifier,
+    private val modifier: Modifier = Modifier,
+    private val textModifier: Modifier = Modifier,
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
     private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
@@ -57,9 +56,9 @@ class MessageDrawer(
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         val focusRequester = remember { FocusRequester() }
 
-        Box(modifier = Modifier.padding(horizontal = 6.dp)) {
+        Box(modifier = modifier) {
             SwipeBox(
-                modifier = containerModifier
+                modifier = Modifier
                     .apply {
                         if (clickable) {
                             clickable {
@@ -87,7 +86,7 @@ class MessageDrawer(
                     }
 
                     BasicTextField(
-                        modifier = innerContainerModifier
+                        modifier = textModifier
                             .focusRequester(focusRequester)
                             .fillMaxWidth()
                             .callOnEmptyErase(inputText.selection) {
