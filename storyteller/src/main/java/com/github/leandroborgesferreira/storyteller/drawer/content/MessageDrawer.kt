@@ -23,13 +23,16 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyErase
 import com.github.leandroborgesferreira.storyteller.model.action.Action
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
+import com.github.leandroborgesferreira.storyteller.models.story.StoryType
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 
@@ -93,7 +96,7 @@ class MessageDrawer(
                         value = inputText,
                         onValueChange = { value ->
                             val text = value.text
-                            
+
                             inputText = if (text.contains("\n")) {
                                 val newText = text.split("\n", limit = 2)[0]
                                 TextFieldValue(newText, TextRange(newText.length))
@@ -128,3 +131,12 @@ private fun defaultTextStyle() =
         color = MaterialTheme.colorScheme.onBackground,
         fontSize = 16.sp
     )
+
+@Preview
+@Composable
+private fun MessageDrawerPreview() {
+    MessageDrawer().Step(
+        step = StoryStep(text = "Some text", type = StoryTypes.MESSAGE.type),
+        drawInfo = DrawInfo()
+    )
+}
