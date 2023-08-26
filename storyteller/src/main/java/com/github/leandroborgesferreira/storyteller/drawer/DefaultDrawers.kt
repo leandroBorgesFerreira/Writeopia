@@ -20,7 +20,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.content.HeaderDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.ImageGroupDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.ImageDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.LargeEmptySpace
-import com.github.leandroborgesferreira.storyteller.drawer.content.MessageDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.content.SwipeMessageDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.VideoDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.SpaceDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.TitleDrawer
@@ -162,7 +162,7 @@ object DefaultDrawers {
                 mergeRequest = mergeRequest
             )
 
-            val messageBoxDrawer = MessageDrawer(
+            val messageBoxDrawer = SwipeMessageDrawer(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .clip(shape = defaultBorder)
@@ -174,7 +174,7 @@ object DefaultDrawers {
                 onSelected = onSelected,
             )
 
-            val messageDrawer = MessageDrawer(
+            val swipeMessageDrawer = SwipeMessageDrawer(
                 modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
                 textModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
                 onTextEdit = onTextEdit,
@@ -184,7 +184,7 @@ object DefaultDrawers {
             )
 
             val createHDrawer = { fontSize: TextUnit ->
-                MessageDrawer(
+                SwipeMessageDrawer(
                     modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
                     textModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
                     onTextEdit = onTextEdit,
@@ -226,7 +226,7 @@ object DefaultDrawers {
             )
 
             put(StoryTypes.MESSAGE_BOX.type.number, messageBoxDrawer)
-            put(StoryTypes.MESSAGE.type.number, messageDrawer)
+            put(StoryTypes.MESSAGE.type.number, swipeMessageDrawer)
             put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
             put(
                 StoryTypes.IMAGE.type.number,
