@@ -25,7 +25,8 @@ class ContentHandler(
         StoryTypes.H2.type.number,
         StoryTypes.H3.type.number,
         StoryTypes.H4.type.number,
-        StoryTypes.CHECK_ITEM.type.number
+        StoryTypes.CHECK_ITEM.type.number,
+        StoryTypes.UNORDERED_LIST_ITEM.type.number,
     ),
     private val stepsNormalizer: UnitsNormalizationMap,
     private val lineBreakMap: (StoryType) -> StoryType = ::defaultLineBreakMap

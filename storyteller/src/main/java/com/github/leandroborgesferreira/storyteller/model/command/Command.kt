@@ -11,6 +11,8 @@ object CommandFactory {
 
     fun checkItem() = Command("-[]", WhereToFind.START)
 
+    fun unor() = Command("- ", WhereToFind.START)
+
     fun h1() = Command("# ", WhereToFind.START)
     fun h2() = Command("## ", WhereToFind.START)
     fun h3() = Command("### ", WhereToFind.START)

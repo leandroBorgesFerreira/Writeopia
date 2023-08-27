@@ -20,18 +20,17 @@ import com.github.leandroborgesferreira.storyteller.drawer.content.HeaderDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.ImageGroupDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.ImageDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.LargeEmptySpace
-import com.github.leandroborgesferreira.storyteller.drawer.content.MessageDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.content.SwipeMessageDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.VideoDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.SpaceDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.TitleDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.content.UnOrderedListItemDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.defaultImageShape
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.model.action.Action
-import com.github.leandroborgesferreira.storyteller.model.command.Command
 import com.github.leandroborgesferreira.storyteller.model.command.CommandFactory
 import com.github.leandroborgesferreira.storyteller.model.command.CommandInfo
 import com.github.leandroborgesferreira.storyteller.model.command.CommandTrigger
-import com.github.leandroborgesferreira.storyteller.model.command.WhereToFind
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.models.story.StoryType
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
@@ -92,6 +91,15 @@ object DefaultDrawers {
                             StoryTypes.CHECK_ITEM.type,
                             CommandInfo(
                                 CommandFactory.checkItem(),
+                                CommandTrigger.WRITTEN
+                            )
+                        )
+                    }, CommandFactory.unor() to { _, position ->
+                        changeStoryType(
+                            position,
+                            StoryTypes.UNORDERED_LIST_ITEM.type,
+                            CommandInfo(
+                                CommandFactory.unor(),
                                 CommandTrigger.WRITTEN
                             )
                         )
@@ -164,21 +172,21 @@ object DefaultDrawers {
                 mergeRequest = mergeRequest
             )
 
-            val messageBoxDrawer = MessageDrawer(
-                containerModifier = Modifier
-                    .padding(horizontal = 8.dp)
+            val messageBoxDrawer = SwipeMessageDrawer(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
                     .clip(shape = defaultBorder)
                     .background(groupsBackgroundColor),
-                innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
+                textModifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
                 onTextEdit = onTextEdit,
                 onDeleteRequest = onDeleteRequest,
                 commandHandler = textCommandHandlerMessage,
                 onSelected = onSelected,
             )
 
-            val messageDrawer = MessageDrawer(
-                containerModifier = Modifier.padding(6.dp),
-                innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
+            val swipeMessageDrawer = SwipeMessageDrawer(
+                modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
+                textModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
                 onTextEdit = onTextEdit,
                 onDeleteRequest = onDeleteRequest,
                 commandHandler = textCommandHandlerMessage,
@@ -186,9 +194,9 @@ object DefaultDrawers {
             )
 
             val createHDrawer = { fontSize: TextUnit ->
-                MessageDrawer(
-                    containerModifier = Modifier.padding(6.dp),
-                    innerContainerModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
+                SwipeMessageDrawer(
+                    modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
+                    textModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
                     onTextEdit = onTextEdit,
                     onDeleteRequest = onDeleteRequest,
                     commandHandler = textCommandHandlerMessage,
@@ -216,6 +224,16 @@ object DefaultDrawers {
                 onSelected = onSelected,
             )
 
+            val unOrderedListItemDrawer =
+                UnOrderedListItemDrawer(
+                    modifier = Modifier.padding(start = 12.dp),
+                    messageModifier = Modifier.padding(start = 8.dp),
+                    onTextEdit = onTextEdit,
+                    onDeleteRequest = onDeleteRequest,
+                    commandHandler = textCommandHandlerCheckItem,
+                    onSelected = onSelected,
+                )
+
             val headerDrawer = HeaderDrawer(
                 titleDrawer = {
                     TitleDrawer(
@@ -228,7 +246,7 @@ object DefaultDrawers {
             )
 
             put(StoryTypes.MESSAGE_BOX.type.number, messageBoxDrawer)
-            put(StoryTypes.MESSAGE.type.number, messageDrawer)
+            put(StoryTypes.MESSAGE.type.number, swipeMessageDrawer)
             put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
             put(
                 StoryTypes.IMAGE.type.number,
@@ -250,6 +268,7 @@ object DefaultDrawers {
             put(StoryTypes.SPACE.type.number, SpaceDrawer(moveRequest))
             put(StoryTypes.LARGE_SPACE.type.number, LargeEmptySpace(moveRequest, clickAtTheEnd))
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
+            put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
             put(StoryTypes.TITLE.type.number, headerDrawer)
             put(StoryTypes.H1.type.number, h1MessageDrawer)
             put(StoryTypes.H2.type.number, h2MessageDrawer)
