@@ -16,6 +16,7 @@ import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 class UnOrderedListItemPreviewDrawer(
     private val modifier: Modifier = Modifier.padding(vertical = 5.dp, horizontal = 16.dp),
     private val textModifier: Modifier = Modifier,
+    private val startText: String = "-",
     private val textStyle: @Composable () -> TextStyle = {
         LocalTextStyle.current
     },
@@ -23,7 +24,7 @@ class UnOrderedListItemPreviewDrawer(
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "-", style = textStyle())
+            Text(text = startText, style = textStyle())
             TextPreviewDrawer(modifier = textModifier, style = textStyle()).Step(
                 step = step,
                 drawInfo = drawInfo

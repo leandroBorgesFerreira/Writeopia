@@ -24,12 +24,13 @@ import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 class UnOrderedListItemDrawer(
     private val modifier: Modifier = Modifier,
     private val messageModifier: Modifier = Modifier,
-    private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
-    private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
-    private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
-    private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
+    private val startText: String = "-",
     private val customBackgroundColor: Color? = null,
     private val clickable: Boolean = true,
+    private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
+    private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
+    private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
+    private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
 ) : StoryStepDrawer {
 
     @Composable
@@ -60,7 +61,8 @@ class UnOrderedListItemDrawer(
                     commandHandler = commandHandler,
                     onDeleteRequest = onDeleteRequest,
                     onTextEdit = onTextEdit
-                )
+                ),
+                startText = startText
             ).Step(step = step, drawInfo = drawInfo)
         }
     }
