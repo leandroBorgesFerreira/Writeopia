@@ -63,105 +63,102 @@ class CheckItemDrawer(
         val dropInfo = DropInfo(step, drawInfo.position)
         val focusRequester = remember { FocusRequester() }
         var hasFocus by remember { mutableStateOf(false) }
+        SwipeBox(
+            modifier = Modifier
+                .padding(horizontal = 12.dp)
+                .apply {
+                    if (clickable) {
+                        clickable {
+                            focusRequester.requestFocus()
+                        }
+                    }
+                },
+            defaultColor = customBackgroundColor ?: MaterialTheme.colorScheme.background,
+            activeColor = MaterialTheme.colorScheme.primary,
+            state = drawInfo.selectMode,
+            swipeListener = { isSelected ->
+                onSelected(isSelected, drawInfo.position)
+            }
+        ) {
+            DragTargetWithDragItem(dataToDrop = dropInfo) {
+                DragTarget(dataToDrop = dropInfo) {
+                    Row(
+                        modifier = Modifier
+                            .padding(horizontal = 2.dp)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        var inputText by remember {
+                            val text = step.text ?: ""
+                            mutableStateOf(TextFieldValue(text, TextRange(text.length)))
+                        }
 
-        Box(modifier = Modifier.padding(horizontal = 6.dp)) {
-            SwipeBox(
-                modifier = Modifier
-                    .padding(horizontal = 6.dp)
-                    .apply {
-                        if (clickable) {
-                            clickable {
+                        val textStyle = if (step.checked == true) {
+                            TextStyle(
+                                textDecoration = TextDecoration.LineThrough,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                fontSize = fontSize
+                            )
+                        } else {
+                            TextStyle(
+                                color = MaterialTheme.colorScheme.onBackground,
+                                fontSize = fontSize
+                            )
+                        }
+
+                        LaunchedEffect(drawInfo.focusId) {
+                            if (drawInfo.focusId == step.id) {
                                 focusRequester.requestFocus()
                             }
                         }
-                    },
-                defaultColor = customBackgroundColor ?: MaterialTheme.colorScheme.background,
-                activeColor = MaterialTheme.colorScheme.primary,
-                state = drawInfo.selectMode,
-                swipeListener = { isSelected ->
-                    onSelected(isSelected, drawInfo.position)
-                }
-            ) {
-                DragTargetWithDragItem(dataToDrop = dropInfo) {
-                    DragTarget(dataToDrop = dropInfo) {
-                        Row(
-                            modifier = Modifier
-                                .padding(horizontal = 2.dp)
-                                .fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
+
+                        CompositionLocalProvider(
+                            LocalMinimumInteractiveComponentEnforcement provides false
                         ) {
-                            var inputText by remember {
-                                val text = step.text ?: ""
-                                mutableStateOf(TextFieldValue(text, TextRange(text.length)))
-                            }
-
-                            val textStyle = if (step.checked == true) {
-                                TextStyle(
-                                    textDecoration = TextDecoration.LineThrough,
-                                    color = MaterialTheme.colorScheme.onBackground,
-                                    fontSize = fontSize
-                                )
-                            } else {
-                                TextStyle(
-                                    color = MaterialTheme.colorScheme.onBackground,
-                                    fontSize = fontSize
-                                )
-                            }
-
-                            LaunchedEffect(drawInfo.focusId) {
-                                if (drawInfo.focusId == step.id) {
-                                    focusRequester.requestFocus()
-                                }
-                            }
-
-                            CompositionLocalProvider(
-                                LocalMinimumInteractiveComponentEnforcement provides false
-                            ) {
-                                Checkbox(
-                                    modifier = Modifier.padding(6.dp),
-                                    checked = step.checked ?: false,
-                                    onCheckedChange = { checked ->
-                                        onCheckedChange(
-                                            Action.StoryStateChange(
-                                                step.copy(checked = checked),
-                                                drawInfo.position
-                                            )
-                                        )
-                                    },
-                                    enabled = drawInfo.editable,
-                                )
-                            }
-
-                            BasicTextField(
-                                modifier = Modifier
-                                    .weight(1F)
-                                    .focusRequester(focusRequester)
-                                    .onFocusChanged { focusState ->
-                                        hasFocus = focusState.hasFocus
-                                    }
-                                    .callOnEmptyErase(inputText.selection) {
-                                        onDeleteRequest(Action.DeleteStory(step, drawInfo.position))
-                                    },
-                                value = inputText,
-                                onValueChange = { value: TextFieldValue ->
-                                    if (!commandHandler.handleCommand(
-                                            value.text,
-                                            step,
+                            Checkbox(
+                                modifier = Modifier.padding(6.dp),
+                                checked = step.checked ?: false,
+                                onCheckedChange = { checked ->
+                                    onCheckedChange(
+                                        Action.StoryStateChange(
+                                            step.copy(checked = checked),
                                             drawInfo.position
                                         )
-                                    ) {
-                                        inputText = value
-                                        onTextEdit(value.text, drawInfo.position)
-                                    }
+                                    )
                                 },
-                                textStyle = textStyle,
                                 enabled = drawInfo.editable,
-                                keyboardOptions = KeyboardOptions(
-                                    capitalization = KeyboardCapitalization.Sentences
-                                ),
-                                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
                             )
                         }
+
+                        BasicTextField(
+                            modifier = Modifier
+                                .weight(1F)
+                                .focusRequester(focusRequester)
+                                .onFocusChanged { focusState ->
+                                    hasFocus = focusState.hasFocus
+                                }
+                                .callOnEmptyErase(inputText.selection) {
+                                    onDeleteRequest(Action.DeleteStory(step, drawInfo.position))
+                                },
+                            value = inputText,
+                            onValueChange = { value: TextFieldValue ->
+                                if (!commandHandler.handleCommand(
+                                        value.text,
+                                        step,
+                                        drawInfo.position
+                                    )
+                                ) {
+                                    inputText = value
+                                    onTextEdit(value.text, drawInfo.position)
+                                }
+                            },
+                            textStyle = textStyle,
+                            enabled = drawInfo.editable,
+                            keyboardOptions = KeyboardOptions(
+                                capitalization = KeyboardCapitalization.Sentences
+                            ),
+                            cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
+                        )
                     }
                 }
             }

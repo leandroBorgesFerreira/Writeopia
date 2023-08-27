@@ -49,26 +49,23 @@ class SwipeMessageDrawer(
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         val focusRequester = remember { FocusRequester() }
-
-        Box(modifier = modifier) {
-            SwipeBox(
-                modifier = Modifier
-                    .apply {
-                        if (clickable) {
-                            clickable {
-                                focusRequester.requestFocus()
-                            }
+        SwipeBox(
+            modifier = modifier
+                .apply {
+                    if (clickable) {
+                        clickable {
+                            focusRequester.requestFocus()
                         }
-                    },
-                defaultColor = customBackgroundColor ?: MaterialTheme.colorScheme.background,
-                activeColor = MaterialTheme.colorScheme.primary,
-                state = drawInfo.selectMode,
-                swipeListener = { isSelected ->
-                    onSelected(isSelected, drawInfo.position)
-                }
-            ) {
-                messageDrawer(focusRequester).Step(step = step, drawInfo = drawInfo)
+                    }
+                },
+            defaultColor = customBackgroundColor ?: MaterialTheme.colorScheme.background,
+            activeColor = MaterialTheme.colorScheme.primary,
+            state = drawInfo.selectMode,
+            swipeListener = { isSelected ->
+                onSelected(isSelected, drawInfo.position)
             }
+        ) {
+            messageDrawer(focusRequester).Step(step = step, drawInfo = drawInfo)
         }
     }
 }
