@@ -32,11 +32,11 @@ import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHand
 class MessageDrawer(
     private val modifier: Modifier = Modifier,
     private val textModifier: Modifier = Modifier,
+    private val textStyle: @Composable () -> TextStyle = { defaultTextStyle() },
+    private val focusRequester: FocusRequester,
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
     private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
-    private val textStyle: @Composable () -> TextStyle = { defaultTextStyle() },
-    private val focusRequester: FocusRequester,
 ) : StoryStepDrawer {
 
     @Composable

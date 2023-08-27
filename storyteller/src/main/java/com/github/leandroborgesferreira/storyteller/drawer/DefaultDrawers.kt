@@ -24,6 +24,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.content.SwipeMessageD
 import com.github.leandroborgesferreira.storyteller.drawer.content.VideoDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.SpaceDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.TitleDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.content.UnOrderedListItemDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.defaultImageShape
 import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
 import com.github.leandroborgesferreira.storyteller.model.action.Action
@@ -90,6 +91,15 @@ object DefaultDrawers {
                             StoryTypes.CHECK_ITEM.type,
                             CommandInfo(
                                 CommandFactory.checkItem(),
+                                CommandTrigger.WRITTEN
+                            )
+                        )
+                    }, CommandFactory.unor() to { _, position ->
+                        changeStoryType(
+                            position,
+                            StoryTypes.UNORDERED_LIST_ITEM.type,
+                            CommandInfo(
+                                CommandFactory.unor(),
                                 CommandTrigger.WRITTEN
                             )
                         )
@@ -214,6 +224,16 @@ object DefaultDrawers {
                 onSelected = onSelected,
             )
 
+            val unOrderedListItemDrawer =
+                UnOrderedListItemDrawer(
+                    modifier = Modifier.padding(start = 12.dp),
+                    messageModifier = Modifier.padding(start = 8.dp),
+                    onTextEdit = onTextEdit,
+                    onDeleteRequest = onDeleteRequest,
+                    commandHandler = textCommandHandlerCheckItem,
+                    onSelected = onSelected,
+                )
+
             val headerDrawer = HeaderDrawer(
                 titleDrawer = {
                     TitleDrawer(
@@ -248,6 +268,7 @@ object DefaultDrawers {
             put(StoryTypes.SPACE.type.number, SpaceDrawer(moveRequest))
             put(StoryTypes.LARGE_SPACE.type.number, LargeEmptySpace(moveRequest, clickAtTheEnd))
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
+            put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
             put(StoryTypes.TITLE.type.number, headerDrawer)
             put(StoryTypes.H1.type.number, h1MessageDrawer)
             put(StoryTypes.H2.type.number, h2MessageDrawer)

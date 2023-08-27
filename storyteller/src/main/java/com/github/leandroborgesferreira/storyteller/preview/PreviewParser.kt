@@ -24,4 +24,5 @@ private fun defaultTypes() = setOf(
     StoryTypes.H3.type.number,
     StoryTypes.H4.type.number,
     StoryTypes.CHECK_ITEM.type.number,
+    StoryTypes.UNORDERED_LIST_ITEM.type.number,
 )

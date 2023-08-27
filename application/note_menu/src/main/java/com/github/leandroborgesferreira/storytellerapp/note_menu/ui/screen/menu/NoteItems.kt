@@ -43,6 +43,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.CheckItemPreviewDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.HeaderPreviewDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.preview.TextPreviewDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.preview.UnOrderedListItemPreviewDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 
@@ -241,6 +242,7 @@ private fun previewDrawers(): Map<Int, StoryStepDrawer> {
         ),
         StoryTypes.CHECK_ITEM.type.number to CheckItemPreviewDrawer(),
         StoryTypes.MESSAGE.type.number to TextPreviewDrawer(),
+        StoryTypes.UNORDERED_LIST_ITEM.type.number to UnOrderedListItemPreviewDrawer(),
         StoryTypes.H1.type.number to TextPreviewDrawer(style = h1TextStyle),
         StoryTypes.H2.type.number to TextPreviewDrawer(style = h2TextStyle),
         StoryTypes.H3.type.number to TextPreviewDrawer(style = h3TextStyle),

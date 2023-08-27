@@ -33,10 +33,6 @@ class CheckItemPreviewDrawer(
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
-        MaterialTheme.typography.bodyMedium.copy(
-            fontSize = 15.sp
-        )
-
         val textStyle = if (step.checked == true) {
             MaterialTheme.typography.bodyMedium.copy(
                 textDecoration = TextDecoration.LineThrough,
@@ -52,7 +48,6 @@ class CheckItemPreviewDrawer(
             modifier = modifier,
             verticalAlignment = Alignment.CenterVertically
         ) {
-
             CompositionLocalProvider(
                 LocalMinimumInteractiveComponentEnforcement provides false
             ) {

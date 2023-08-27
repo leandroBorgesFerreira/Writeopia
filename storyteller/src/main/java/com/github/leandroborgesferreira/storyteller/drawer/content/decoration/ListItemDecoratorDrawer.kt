@@ -34,9 +34,6 @@ class ListItemDecoratorDrawer(
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
             Text(text = startText, style = textStyle())
-
-            Spacer(modifier = Modifier.width(6.dp))
-
             stepDrawer.Step(step = step, drawInfo = drawInfo)
         }
     }
