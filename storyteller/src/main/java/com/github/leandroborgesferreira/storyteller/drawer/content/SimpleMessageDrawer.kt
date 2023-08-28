@@ -29,7 +29,10 @@ import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 
-class MessageDrawer(
+/**
+ * Simple message drawer mostly intended to be used as a component for more complex drawers.
+ */
+class SimpleMessageDrawer(
     private val modifier: Modifier = Modifier,
     private val textModifier: Modifier = Modifier,
     private val textStyle: @Composable () -> TextStyle = { defaultTextStyle() },

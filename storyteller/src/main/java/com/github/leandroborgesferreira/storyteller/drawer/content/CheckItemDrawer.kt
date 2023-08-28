@@ -45,6 +45,9 @@ import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 
+/**
+ * Check item drawer. Draws a check box followed by a text.
+ */
 class CheckItemDrawer(
     private val onCheckedChange: (Action.StoryStateChange) -> Unit = {},
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
@@ -80,12 +83,12 @@ class CheckItemDrawer(
                 onSelected(isSelected, drawInfo.position)
             }
         ) {
+            /* Two DragTragets are being used to allow users to drag both from the icon or the content  */
             DragTargetWithDragItem(dataToDrop = dropInfo) {
-                DragTarget(dataToDrop = dropInfo) {
+                DragTarget(modifier = Modifier.fillMaxWidth(), dataToDrop = dropInfo) {
                     Row(
                         modifier = Modifier
-                            .padding(horizontal = 2.dp)
-                            .fillMaxWidth(),
+                            .padding(horizontal = 2.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         var inputText by remember {
@@ -132,7 +135,6 @@ class CheckItemDrawer(
 
                         BasicTextField(
                             modifier = Modifier
-                                .weight(1F)
                                 .focusRequester(focusRequester)
                                 .onFocusChanged { focusState ->
                                     hasFocus = focusState.hasFocus
