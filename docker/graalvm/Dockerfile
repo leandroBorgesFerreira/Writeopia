@@ -4,7 +4,7 @@ FROM arm64v8/amazonlinux:2
 WORKDIR /app
 
 RUN yum -y update \
-    && yum install -y tar unzip gzip git
+    && yum install -y tar unzip gzip git gcc gcc-c++ gcc-gfortran
 
 ENV GRAALVM_FILE graalvm-community-openjdk-17.0.8+7.1
 RUN curl -4 -L https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-17.0.8/graalvm-community-jdk-17.0.8_linux-aarch64_bin.tar.gz --output graalvm-community-jdk-17.0.8_linux-aarch64_bin.tar.gz 
