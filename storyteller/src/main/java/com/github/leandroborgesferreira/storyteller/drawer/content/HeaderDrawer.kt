@@ -19,10 +19,13 @@ import com.github.leandroborgesferreira.storyteller.models.story.Decoration
 import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 
+/**
+ * The header for the Document. It applies some stylish to the title of the document.
+ */
 class HeaderDrawer(
     private val modifier: Modifier = Modifier,
-    private val titleDrawer: BoxScope.() -> TitleDrawer,
     private val headerClick: () -> Unit,
+    private val drawer: BoxScope.() -> StoryStepDrawer,
 ) : StoryStepDrawer {
 
     @Composable
@@ -43,7 +46,7 @@ class HeaderDrawer(
                 }
                 .fillMaxWidth()
         ) {
-            titleDrawer().Step(step = step, drawInfo = drawInfo)
+            drawer().Step(step = step, drawInfo = drawInfo)
         }
     }
 }
@@ -60,7 +63,7 @@ fun HeaderDrawerStepPreview() {
     )
 
     HeaderDrawer(
-        titleDrawer = {
+        drawer = {
             TitleDrawer(
                 containerModifier = Modifier.align(Alignment.BottomStart),
                 onTextEdit = { _, _ -> },
@@ -81,7 +84,7 @@ fun HeaderDrawerStepPreviewNoColor() {
     )
 
     HeaderDrawer(
-        titleDrawer = {
+        drawer = {
             TitleDrawer(
                 containerModifier = Modifier.align(Alignment.BottomStart),
                 onTextEdit = { _, _ -> },

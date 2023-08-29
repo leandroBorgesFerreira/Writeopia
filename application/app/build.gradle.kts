@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.ManagedVirtualDevice
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -52,7 +54,7 @@ android {
     testOptions {
         managedDevices {
             devices {
-                maybeCreate<com.android.build.api.dsl.ManagedVirtualDevice>("pixel6api31")
+                maybeCreate<ManagedVirtualDevice>("pixel6api31")
                     .apply {
                         // Use device profiles you typically see in Android Studio.
                         device = "Pixel 6"

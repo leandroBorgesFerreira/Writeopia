@@ -1,7 +1,6 @@
 package com.github.leandroborgesferreira.storyteller.drawer.content
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -11,9 +10,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTargetWithDragItem
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.action.Action
+import com.github.leandroborgesferreira.storyteller.model.draganddrop.DropInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
@@ -34,8 +35,8 @@ class SwipeMessageDrawer(
     private val customBackgroundColor: Color? = null,
     private val clickable: Boolean = true,
     private val textStyle: @Composable () -> TextStyle = { defaultTextStyle() },
-    private val messageDrawer: @Composable (FocusRequester) -> MessageDrawer = {
-        MessageDrawer(
+    private val simpleMessageDrawer: @Composable (FocusRequester) -> SimpleMessageDrawer = {
+        SimpleMessageDrawer(
             textModifier = textModifier,
             onTextEdit = onTextEdit,
             onDeleteRequest = onDeleteRequest,
@@ -49,6 +50,8 @@ class SwipeMessageDrawer(
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         val focusRequester = remember { FocusRequester() }
+        val dropInfo = DropInfo(step, drawInfo.position)
+
         SwipeBox(
             modifier = modifier
                 .apply {
@@ -65,7 +68,7 @@ class SwipeMessageDrawer(
                 onSelected(isSelected, drawInfo.position)
             }
         ) {
-            messageDrawer(focusRequester).Step(step = step, drawInfo = drawInfo)
+            simpleMessageDrawer(focusRequester).Step(step = step, drawInfo = drawInfo)
         }
     }
 }

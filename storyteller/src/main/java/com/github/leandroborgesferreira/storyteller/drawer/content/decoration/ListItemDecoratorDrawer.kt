@@ -2,8 +2,6 @@ package com.github.leandroborgesferreira.storyteller.drawer.content.decoration
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,10 +12,9 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
-import com.github.leandroborgesferreira.storyteller.drawer.content.MessageDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.content.SimpleMessageDrawer
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 
@@ -46,7 +43,7 @@ private fun ListItemDecoratorDrawerPreview() {
 
     ListItemDecoratorDrawer(
         modifier = Modifier.background(Color.Cyan),
-        stepDrawer = MessageDrawer(
+        stepDrawer = SimpleMessageDrawer(
             focusRequester = focusRequester
         )
     ).Step(

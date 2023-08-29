@@ -55,7 +55,7 @@ class UnOrderedListItemDrawer(
         ) {
             ListItemDecoratorDrawer(
                 modifier = modifier,
-                stepDrawer = MessageDrawer(
+                stepDrawer = SimpleMessageDrawer(
                     messageModifier,
                     focusRequester = focusRequester,
                     commandHandler = commandHandler,

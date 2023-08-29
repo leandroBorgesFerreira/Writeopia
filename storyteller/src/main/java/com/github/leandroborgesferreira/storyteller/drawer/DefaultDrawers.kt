@@ -17,7 +17,7 @@ import com.github.leandroborgesferreira.storyteller.drawer.commands.CommandsDeco
 import com.github.leandroborgesferreira.storyteller.drawer.content.AddButtonDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.CheckItemDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.HeaderDrawer
-import com.github.leandroborgesferreira.storyteller.drawer.content.ImageGroupDrawer
+import com.github.leandroborgesferreira.storyteller.drawer.content.RowGroupDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.ImageDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.content.LargeEmptySpace
 import com.github.leandroborgesferreira.storyteller.drawer.content.SwipeMessageDrawer
@@ -235,7 +235,7 @@ object DefaultDrawers {
                 )
 
             val headerDrawer = HeaderDrawer(
-                titleDrawer = {
+                drawer = {
                     TitleDrawer(
                         containerModifier = Modifier.align(Alignment.BottomStart),
                         onTextEdit = onTitleEdit,
@@ -255,9 +255,9 @@ object DefaultDrawers {
             put(
                 StoryTypes.GROUP_IMAGE.type.number,
                 if (editable) {
-                    commandsComposite(ImageGroupDrawer(commandsComposite(imageDrawerInGroup)))
+                    commandsComposite(RowGroupDrawer(commandsComposite(imageDrawerInGroup)))
                 } else {
-                    ImageGroupDrawer(imageDrawerInGroup)
+                    RowGroupDrawer(imageDrawerInGroup)
                 }
             )
             put(

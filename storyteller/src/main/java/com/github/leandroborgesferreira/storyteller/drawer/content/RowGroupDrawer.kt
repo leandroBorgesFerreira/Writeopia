@@ -15,8 +15,8 @@ import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 /**
  * Draws a scrollable list of images accordingly with the imageStepDrawer provided.
  */
-class ImageGroupDrawer(
-    private val imageStepDrawer: StoryStepDrawer,
+class RowGroupDrawer(
+    private val stepDrawer: StoryStepDrawer,
     private val modifier: Modifier = Modifier
 ) : StoryStepDrawer {
 
@@ -33,7 +33,7 @@ class ImageGroupDrawer(
 
         LazyRow(modifier = modifier.focusRequester(focusRequester)) {
             items(steps) { storyStep ->
-                imageStepDrawer.Step(storyStep, drawInfo = drawInfo.copy(focusId = null))
+                stepDrawer.Step(storyStep, drawInfo = drawInfo.copy(focusId = null))
             }
         }
     }
