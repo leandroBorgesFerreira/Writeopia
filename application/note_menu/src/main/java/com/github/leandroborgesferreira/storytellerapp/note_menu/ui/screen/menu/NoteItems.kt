@@ -234,6 +234,8 @@ private fun previewDrawers(): Map<Int, StoryStepDrawer> {
         fontSize = 18.sp
     )
 
+    val unOrderedListItemPreviewDrawer = UnOrderedListItemPreviewDrawer()
+
     return mapOf(
         StoryTypes.TITLE.type.number to HeaderPreviewDrawer(
             style = MaterialTheme.typography.titleLarge.copy(
@@ -242,7 +244,7 @@ private fun previewDrawers(): Map<Int, StoryStepDrawer> {
         ),
         StoryTypes.CHECK_ITEM.type.number to CheckItemPreviewDrawer(),
         StoryTypes.MESSAGE.type.number to TextPreviewDrawer(),
-        StoryTypes.UNORDERED_LIST_ITEM.type.number to UnOrderedListItemPreviewDrawer(),
+        StoryTypes.UNORDERED_LIST_ITEM.type.number to unOrderedListItemPreviewDrawer,
         StoryTypes.H1.type.number to TextPreviewDrawer(style = h1TextStyle),
         StoryTypes.H2.type.number to TextPreviewDrawer(style = h2TextStyle),
         StoryTypes.H3.type.number to TextPreviewDrawer(style = h3TextStyle),

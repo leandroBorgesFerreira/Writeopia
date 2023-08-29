@@ -1,9 +1,15 @@
 package com.github.leandroborgesferreira.storyteller.drawer.content
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
@@ -35,9 +41,10 @@ class SwipeMessageDrawer(
     private val customBackgroundColor: Color? = null,
     private val clickable: Boolean = true,
     private val textStyle: @Composable () -> TextStyle = { defaultTextStyle() },
-    private val simpleMessageDrawer: @Composable (FocusRequester) -> SimpleMessageDrawer = {
+    private val simpleMessageDrawer: @Composable RowScope.(FocusRequester) -> SimpleMessageDrawer = {
         SimpleMessageDrawer(
-            textModifier = textModifier,
+            modifier = Modifier.weight(1F),
+            textModifier = textModifier.fillMaxWidth(),
             onTextEdit = onTextEdit,
             onDeleteRequest = onDeleteRequest,
             commandHandler = commandHandler,
@@ -51,16 +58,10 @@ class SwipeMessageDrawer(
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         val focusRequester = remember { FocusRequester() }
         val dropInfo = DropInfo(step, drawInfo.position)
+        var showDragIcon by remember { mutableStateOf(false) }
 
         SwipeBox(
-            modifier = modifier
-                .apply {
-                    if (clickable) {
-                        clickable {
-                            focusRequester.requestFocus()
-                        }
-                    }
-                },
+            modifier = modifier.fillMaxWidth(),
             defaultColor = customBackgroundColor ?: MaterialTheme.colorScheme.background,
             activeColor = MaterialTheme.colorScheme.primary,
             state = drawInfo.selectMode,
@@ -68,7 +69,26 @@ class SwipeMessageDrawer(
                 onSelected(isSelected, drawInfo.position)
             }
         ) {
-            simpleMessageDrawer(focusRequester).Step(step = step, drawInfo = drawInfo)
+            DragTargetWithDragItem(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .apply {
+                        if (clickable) {
+                            clickable {
+                                focusRequester.requestFocus()
+                            }
+                        }
+                    },
+                dataToDrop = dropInfo,
+                showIcon = showDragIcon,
+                position = drawInfo.position
+            ) {
+                simpleMessageDrawer(focusRequester).apply {
+                    onFocusChanged = { focusState ->
+                        showDragIcon = focusState.hasFocus
+                    }
+                }.Step(step = step, drawInfo = drawInfo)
+            }
         }
     }
 }

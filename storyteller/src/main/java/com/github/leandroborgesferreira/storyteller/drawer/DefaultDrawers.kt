@@ -217,6 +217,7 @@ object DefaultDrawers {
             val h4MessageDrawer = createHDrawer(18.sp)
 
             val checkItemDrawer = CheckItemDrawer(
+                modifier = Modifier.padding(start = 18.dp, end = 12.dp),
                 onCheckedChange = checkRequest,
                 onTextEdit = onTextEdit,
                 onDeleteRequest = onDeleteRequest,
@@ -226,7 +227,7 @@ object DefaultDrawers {
 
             val unOrderedListItemDrawer =
                 UnOrderedListItemDrawer(
-                    modifier = Modifier.padding(start = 12.dp),
+                    modifier = Modifier.padding(start = 18.dp, end = 12.dp),
                     messageModifier = Modifier.padding(start = 8.dp),
                     onTextEdit = onTextEdit,
                     onDeleteRequest = onDeleteRequest,

@@ -2,7 +2,10 @@ package com.github.leandroborgesferreira.storyteller.draganddrop.target
 
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -30,47 +33,56 @@ import com.github.leandroborgesferreira.storyteller.model.draganddrop.DropInfo
 fun DragTargetWithDragItem(
     modifier: Modifier = Modifier,
     dataToDrop: DropInfo,
-    content: @Composable () -> Unit
+    showIcon: Boolean = true,
+    position: Int,
+    content: @Composable RowScope.() -> Unit
 ) {
     var currentPosition by remember { mutableStateOf(Offset.Zero) }
     val currentState = LocalDragTargetInfo.current
     val haptic = LocalHapticFeedback.current
 
-    Row(modifier = modifier
-        .onGloballyPositioned { layoutCoordinates ->
-            // Todo: Offset.Zero Is wrong!
-            currentPosition = layoutCoordinates.localToWindow(Offset.Zero)
-        },
+    Row(
+        modifier = modifier
+            .onGloballyPositioned { layoutCoordinates ->
+                // Todo: Offset.Zero Is wrong!
+                currentPosition = layoutCoordinates.localToWindow(Offset.Zero)
+            },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Spacer(modifier = Modifier.width(10.dp))
-
-        Icon(
-            modifier = Modifier
-                .size(25.dp)
-                .pointerInput(Unit) {
-                    detectDragGestures(onDragStart = { offset ->
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-
-                        currentState.dataToDrop = dataToDrop
-                        currentState.isDragging = true
-                        currentState.dragPosition = currentPosition + offset
-                        currentState.draggableComposable = content
-                    }, onDrag = { change, dragAmount ->
-                        change.consume()
-                        currentState.dragOffset += Offset(dragAmount.x, dragAmount.y)
-                    }, onDragEnd = {
-                        currentState.isDragging = false
-                        currentState.dragOffset = Offset.Zero
-                    }, onDragCancel = {
-                        currentState.dragOffset = Offset.Zero
-                        currentState.isDragging = false
-                    })
-                },
-            imageVector = Icons.Default.DragIndicator,
-            contentDescription = stringResource(R.string.drag_icon)
-        )
-
         content()
+
+        val iconWidth = 24.dp
+
+        if (showIcon ||
+            currentState.isDragging && position == currentState.dataToDrop?.positionFrom
+        ) {
+            Icon(
+                modifier = Modifier
+                    .width(iconWidth)
+                    .pointerInput(Unit) {
+                        detectDragGestures(onDragStart = { offset ->
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+
+                            currentState.dataToDrop = dataToDrop
+                            currentState.isDragging = true
+                            currentState.dragPosition = currentPosition + offset
+                            currentState.draggableComposable = { content() }
+                        }, onDrag = { change, dragAmount ->
+                            change.consume()
+                            currentState.dragOffset += Offset(dragAmount.x, dragAmount.y)
+                        }, onDragEnd = {
+                            currentState.isDragging = false
+                            currentState.dragOffset = Offset.Zero
+                        }, onDragCancel = {
+                            currentState.dragOffset = Offset.Zero
+                            currentState.isDragging = false
+                        })
+                    },
+                imageVector = Icons.Default.DragIndicator,
+                contentDescription = stringResource(R.string.drag_icon)
+            )
+        } else {
+            Spacer(modifier = Modifier.width(iconWidth))
+        }
     }
 }
