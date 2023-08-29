@@ -20,12 +20,17 @@ class UnOrderedListItemPreviewDrawer(
     private val textStyle: @Composable () -> TextStyle = {
         LocalTextStyle.current
     },
+    private val maxLines: Int = 1
 ) : StoryStepDrawer {
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-            Text(text = startText, style = textStyle())
-            TextPreviewDrawer(modifier = textModifier, style = textStyle()).Step(
+            Text(modifier = Modifier.padding(end = 6.dp), text = startText, style = textStyle())
+            TextPreviewDrawer(
+                modifier = textModifier,
+                style = textStyle(),
+                maxLines = maxLines
+            ).Step(
                 step = step,
                 drawInfo = drawInfo
             )

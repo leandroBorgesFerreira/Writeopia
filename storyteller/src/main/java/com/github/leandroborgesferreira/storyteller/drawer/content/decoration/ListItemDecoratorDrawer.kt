@@ -30,7 +30,7 @@ class ListItemDecoratorDrawer(
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-            Text(text = startText, style = textStyle())
+
             stepDrawer.Step(step = step, drawInfo = drawInfo)
         }
     }

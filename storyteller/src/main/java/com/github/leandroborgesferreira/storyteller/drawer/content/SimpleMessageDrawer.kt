@@ -15,17 +15,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.drawer.modifier.callOnEmptyErase
 import com.github.leandroborgesferreira.storyteller.model.action.Action
+import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 
@@ -40,6 +44,7 @@ class SimpleMessageDrawer(
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
     private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
+    var onFocusChanged: (FocusState) -> Unit = {}
 ) : StoryStepDrawer {
 
     @Composable
@@ -60,10 +65,10 @@ class SimpleMessageDrawer(
                 BasicTextField(
                     modifier = textModifier
                         .focusRequester(focusRequester)
-                        .fillMaxWidth()
                         .callOnEmptyErase(inputText.selection) {
                             onDeleteRequest(Action.DeleteStory(step, drawInfo.position))
-                        },
+                        }
+                        .onFocusChanged(onFocusChanged),
                     value = inputText,
                     onValueChange = { value ->
                         val text = value.text
@@ -93,3 +98,13 @@ class SimpleMessageDrawer(
         }
     }
 }
+
+@Preview
+@Composable
+fun SimpleMessageDrawerPreview() {
+    SimpleMessageDrawer(focusRequester = FocusRequester()).Step(
+        step = StoryStep(text = "Some text", type = StoryTypes.MESSAGE.type),
+        drawInfo = DrawInfo()
+    )
+}
+

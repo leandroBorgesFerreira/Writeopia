@@ -14,7 +14,8 @@ import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 
 class TextPreviewDrawer(
     private val modifier: Modifier = Modifier.padding(vertical = 5.dp, horizontal = 16.dp),
-    private val style: TextStyle? = null
+    private val style: TextStyle? = null,
+    private val maxLines: Int = Int.MAX_VALUE
 ) : StoryStepDrawer {
 
     @Composable
@@ -26,6 +27,7 @@ class TextPreviewDrawer(
                 fontSize = 15.sp
             ),
             color = MaterialTheme.colorScheme.onBackground,
+            maxLines = maxLines
         )
     }
 }
