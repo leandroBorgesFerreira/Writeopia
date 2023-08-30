@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -39,14 +40,22 @@ internal class NoteEditorViewModel(
     BackstackInform by storyTellerManager,
     BackstackHandler by storyTellerManager {
 
-    private val _editModeState = MutableStateFlow(true)
-    val editModeState: StateFlow<Boolean> = _editModeState
+    private val _isEditableState = MutableStateFlow(true)
+
+    /**
+     * This property defines if the document should be edited (you can write in it, for example)
+     */
+    val isEditable: StateFlow<Boolean> = _isEditableState
 
     private val _showGlobalMenu = MutableStateFlow(false)
     val showGlobalMenu = _showGlobalMenu.asStateFlow()
 
     private val _editHeader = MutableStateFlow(false)
     val editHeader = _editHeader.asStateFlow()
+
+    private val hasBackAction = combine(showGlobalMenu, editHeader) { globalMenu, headerEdit ->
+        globalMenu || headerEdit
+    }
 
     val isEditState: StateFlow<EditState> = storyTellerManager.onEditPositions.map { set ->
         when {
@@ -66,6 +75,22 @@ internal class NoteEditorViewModel(
 
     fun deleteSelection() {
         storyTellerManager.deleteSelection()
+    }
+
+    fun handleBackAction(navigateBack: () -> Unit) {
+        when {
+            showGlobalMenu.value -> {
+                _showGlobalMenu.value = false
+            }
+
+            editHeader.value -> {
+                _editHeader.value = false
+            }
+
+            else -> {
+                removeNoteIfEmpty(navigateBack)
+            }
+        }
     }
 
     fun onHeaderClick() {
@@ -98,20 +123,16 @@ internal class NoteEditorViewModel(
         }
     }
 
-    fun removeNoteIfEmpty(onComplete: () -> Unit) {
+    private fun removeNoteIfEmpty(onComplete: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val document = storyTellerManager.currentDocument.stateIn(this).value
 
             if (document != null && story.value.stories.noContent()) {
                 documentRepository.deleteDocument(document)
+            }
 
-                withContext(Dispatchers.Main) {
-                    onComplete()
-                }
-            } else {
-                withContext(Dispatchers.Main) {
-                    onComplete()
-                }
+            withContext(Dispatchers.Main) {
+                onComplete()
             }
         }
     }

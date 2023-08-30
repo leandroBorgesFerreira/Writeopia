@@ -88,7 +88,7 @@ internal fun NoteEditorScreen(
     }
 
     BackHandler {
-        noteEditorViewModel.removeNoteIfEmpty(onComplete = {
+        noteEditorViewModel.handleBackAction(navigateBack = {
             systemUiController.setStatusBarColor(color = systemBarDefaultColor)
             navigateBack()
         })
@@ -109,7 +109,7 @@ internal fun NoteEditorScreen(
                 title = title?.takeIf { it.isNotBlank() } ?: stringResource(id = R.string.note),
                 navigationClick = {
                     systemUiController.setStatusBarColor(color = systemBarDefaultColor)
-                    noteEditorViewModel.removeNoteIfEmpty(onComplete = navigateBack)
+                    noteEditorViewModel.handleBackAction(navigateBack = navigateBack)
                 },
                 shareDocument = noteEditorViewModel::onMoreOptionsClick
             )
@@ -266,7 +266,7 @@ private fun TopBar_Preview() {
 @Composable
 private fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
     val storyState by noteEditorViewModel.toDraw.collectAsStateWithLifecycle()
-    val editable by noteEditorViewModel.editModeState.collectAsStateWithLifecycle()
+    val editable by noteEditorViewModel.isEditable.collectAsStateWithLifecycle()
     val listState: LazyListState = rememberLazyListState()
     val position by noteEditorViewModel.scrollToPosition.collectAsStateWithLifecycle()
 
