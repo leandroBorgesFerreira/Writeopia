@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -52,18 +51,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.leandroborgesferreira.storytellerapp.editor.configuration.ui.HeaderEdition
-import com.github.leandroborgesferreira.storytellerapp.editor.input.InputScreen
-import com.github.leandroborgesferreira.storytellerapp.editor.model.EditState
-import com.github.leandroborgesferreira.storytellerapp.appresourcers.R
 import com.github.leandroborgesferreira.storyteller.StoryTellerEditor
 import com.github.leandroborgesferreira.storyteller.drawer.DefaultDrawers
 import com.github.leandroborgesferreira.storyteller.uicomponents.EditionScreen
+import com.github.leandroborgesferreira.storytellerapp.appresourcers.R
+import com.github.leandroborgesferreira.storytellerapp.editor.configuration.ui.HeaderEdition
+import com.github.leandroborgesferreira.storytellerapp.editor.configuration.ui.NoteGlobalActionsMenu
+import com.github.leandroborgesferreira.storytellerapp.editor.input.InputScreen
+import com.github.leandroborgesferreira.storytellerapp.editor.model.EditState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.flow.collectLatest
 import java.util.UUID
@@ -169,40 +168,6 @@ internal fun NoteEditorScreen(
                 }
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun NoteGlobalActionsMenu(onShare: () -> Unit = {}) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(horizontal = 16.dp)
-    ) {
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = stringResource(id = R.string.export),
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            modifier = Modifier
-                .clickable(onClick = onShare)
-                .clip(RoundedCornerShape(6.dp))
-                .background(MaterialTheme.colorScheme.secondary)
-                .padding(8.dp),
-            text = stringResource(id = R.string.export_json),
-            color = MaterialTheme.colorScheme.onPrimary,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.Bold
-            )
-        )
     }
 }
 

@@ -64,7 +64,7 @@ fun BoxScope.HeaderEdition(
                         bottomCorner
                     )
                 )
-                .background(MaterialTheme.colorScheme.surface)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(vertical = 16.dp)
         ) {
             Text(
