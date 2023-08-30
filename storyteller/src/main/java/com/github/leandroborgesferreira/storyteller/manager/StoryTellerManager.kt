@@ -191,7 +191,7 @@ class StoryTellerManager(
         }
 
         val newStory = movementHandler.move(_currentStory.value.stories, move)
-        _currentStory.value = StoryState(newStory, lastEdit = LastEdit.Whole)
+        _currentStory.value = StoryState(newStory, lastEdit = LastEdit.Whole, move.storyStep.id)
 
         val backStackAction = BackstackAction.Move(
             storyStep = move.storyStep,
