@@ -1,12 +1,11 @@
 package com.github.leandroborgesferreira.storyteller.draganddrop.target
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DragIndicator
@@ -53,36 +52,44 @@ fun DragTargetWithDragItem(
 
         val iconWidth = 24.dp
 
-        if (showIcon ||
-            currentState.isDragging && position == currentState.dataToDrop?.positionFrom
-        ) {
-            Icon(
-                modifier = Modifier
-                    .width(iconWidth)
-                    .pointerInput(Unit) {
-                        detectDragGestures(onDragStart = { offset ->
-                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+        val showDragIcon = showIcon ||
+                currentState.isDragging && position == currentState.dataToDrop?.positionFrom
 
-                            currentState.dataToDrop = dataToDrop
-                            currentState.isDragging = true
-                            currentState.dragPosition = currentPosition + offset
-                            currentState.draggableComposable = { content() }
-                        }, onDrag = { change, dragAmount ->
-                            change.consume()
-                            currentState.dragOffset += Offset(dragAmount.x, dragAmount.y)
-                        }, onDragEnd = {
-                            currentState.isDragging = false
-                            currentState.dragOffset = Offset.Zero
-                        }, onDragCancel = {
-                            currentState.dragOffset = Offset.Zero
-                            currentState.isDragging = false
-                        })
-                    },
-                imageVector = Icons.Default.DragIndicator,
-                contentDescription = stringResource(R.string.drag_icon)
-            )
-        } else {
-            Spacer(modifier = Modifier.width(iconWidth))
+        Crossfade(
+            targetState = showDragIcon,
+            label = "iconCrossFade",
+            animationSpec = tween(durationMillis = 200)
+        ) { show ->
+            if (show) {
+                Icon(
+                    modifier = Modifier
+                        .width(iconWidth)
+                        .pointerInput(Unit) {
+                            detectDragGestures(onDragStart = { offset ->
+                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+
+                                currentState.dataToDrop = dataToDrop
+                                currentState.isDragging = true
+                                currentState.dragPosition = currentPosition + offset
+                                currentState.draggableComposable = { content() }
+                            }, onDrag = { change, dragAmount ->
+                                change.consume()
+                                currentState.dragOffset += Offset(dragAmount.x, dragAmount.y)
+                            }, onDragEnd = {
+                                currentState.isDragging = false
+                                currentState.dragOffset = Offset.Zero
+                            }, onDragCancel = {
+                                currentState.dragOffset = Offset.Zero
+                                currentState.isDragging = false
+                            })
+                        },
+                    imageVector = Icons.Default.DragIndicator,
+                    contentDescription = stringResource(R.string.drag_icon)
+                )
+            } else {
+                Spacer(modifier = Modifier.width(iconWidth))
+            }
         }
+
     }
 }
