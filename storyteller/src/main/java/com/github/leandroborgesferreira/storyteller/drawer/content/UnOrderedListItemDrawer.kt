@@ -78,7 +78,8 @@ class UnOrderedListItemDrawer(
                     },
                 dataToDrop = dropInfo,
                 showIcon = showDragIcon,
-                position = drawInfo.position
+                position = drawInfo.position,
+                emptySpaceClick = focusRequester::requestFocus
             ) {
                 Text(modifier = Modifier.padding(horizontal = 8.dp), text = startText, style = textStyle())
 

@@ -107,7 +107,8 @@ class CheckItemDrawer(
             DragTargetWithDragItem(
                 dataToDrop = dropInfo,
                 showIcon = showDragIcon,
-                position = drawInfo.position
+                position = drawInfo.position,
+                emptySpaceClick = focusRequester::requestFocus
             ) {
                 CompositionLocalProvider(
                     LocalMinimumInteractiveComponentEnforcement provides false

@@ -81,7 +81,8 @@ class SwipeMessageDrawer(
                     },
                 dataToDrop = dropInfo,
                 showIcon = showDragIcon,
-                position = drawInfo.position
+                position = drawInfo.position,
+                emptySpaceClick = focusRequester::requestFocus
             ) {
                 simpleMessageDrawer(focusRequester).apply {
                     onFocusChanged = { focusState ->

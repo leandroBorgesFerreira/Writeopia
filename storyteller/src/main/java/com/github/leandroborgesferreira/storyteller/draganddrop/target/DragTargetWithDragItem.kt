@@ -2,6 +2,7 @@ package com.github.leandroborgesferreira.storyteller.draganddrop.target
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -34,6 +35,7 @@ fun DragTargetWithDragItem(
     dataToDrop: DropInfo,
     showIcon: Boolean = true,
     position: Int,
+    emptySpaceClick: () -> Unit,
     content: @Composable RowScope.() -> Unit
 ) {
     var currentPosition by remember { mutableStateOf(Offset.Zero) }
@@ -50,7 +52,7 @@ fun DragTargetWithDragItem(
     ) {
         content()
 
-        val iconWidth = 24.dp
+        val iconWidth = 28.dp
 
         val showDragIcon = showIcon ||
                 currentState.isDragging && position == currentState.dataToDrop?.positionFrom
@@ -87,7 +89,7 @@ fun DragTargetWithDragItem(
                     contentDescription = stringResource(R.string.drag_icon)
                 )
             } else {
-                Spacer(modifier = Modifier.width(iconWidth))
+                Spacer(modifier = Modifier.width(iconWidth).clickable(onClick = emptySpaceClick))
             }
         }
 
