@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import com.github.leandroborgesferreira.storytellerapp.account.ui.AccountMenuScreen
 import com.github.leandroborgesferreira.storytellerapp.utils_module.Destinations
 
-fun NavGraphBuilder.accountMenuNavigation() {
+fun NavGraphBuilder.accountMenuNavigation(navigateToAuthMenu: () -> Unit) {
     composable(
         Destinations.ACCOUNT.id,
         enterTransition = {
@@ -21,6 +21,8 @@ fun NavGraphBuilder.accountMenuNavigation() {
             )
         }
     ) {
-        AccountMenuScreen()
+        AccountMenuScreen(
+            onLogoutSuccess = navigateToAuthMenu
+        )
     }
 }

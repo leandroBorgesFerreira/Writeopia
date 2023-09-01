@@ -51,16 +51,16 @@ internal fun Notes(
     chooseNoteViewModel: ChooseNoteViewModel,
     navigateToNote: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
-    logOut: () -> Unit,
 ) {
     when (val documents =
-        chooseNoteViewModel.documentsState.collectAsStateWithLifecycle().value) {
+        chooseNoteViewModel.documentsState.collectAsStateWithLifecycle().value
+    ) {
         is ResultData.Complete -> {
             Column(modifier = Modifier.fillMaxWidth()) {
                 val data = documents.data
 
                 if (data.isEmpty()) {
-                    MockDataScreen(chooseNoteViewModel, logOut)
+                    MockDataScreen(chooseNoteViewModel)
                 } else {
                     val arrangement by chooseNoteViewModel.notesArrangement
                         .collectAsStateWithLifecycle()
@@ -128,7 +128,7 @@ private fun LazyGridNotes(
         content = {
             items(
                 documents,
-//                key = { document -> document.hashCode() } //Todo: This breaks the swipe to edit
+//                key = { document -> document.hashCode() } //Todo: This breaks the swipe to edit - Fix it
             ) { document ->
                 DocumentItem(document, onDocumentClick, selectionListener, previewDrawers())
             }
@@ -193,7 +193,6 @@ private fun DocumentItem(
 @Composable
 private fun MockDataScreen(
     chooseNoteViewModel: ChooseNoteViewModel,
-    logOut: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -209,10 +208,6 @@ private fun MockDataScreen(
 
             Button(onClick = { chooseNoteViewModel.addMockData(context) }) {
                 Text(text = stringResource(R.string.add_sample_notes))
-            }
-
-            Button(onClick = logOut) {
-                Text(text = stringResource(R.string.logout))
             }
         }
     }

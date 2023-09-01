@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.github.leandroborgesferreira.storyteller.network.injector.ApiInjector
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
@@ -58,7 +57,7 @@ fun NavigationGraph(
     val notesMenuInjection = NotesMenuInjection(database, sharedPreferences)
     val authInjection = AuthInjection(database, apiInjector = apiInjector)
 
-    val startDestination = Destinations.CHOOSE_NOTE.id
+    val startDestination = Destinations.AUTH_MENU_INNER_NAVIGATION.id
 
     ApplicationComposeTheme {
         NavHost(navController = navController, startDestination = startDestination) {
@@ -67,7 +66,6 @@ fun NavigationGraph(
             notesMenuNavigation(
                 notesMenuInjection = notesMenuInjection,
                 navigateToNote = navController::navigateToNote,
-                navigateToAuthMenu = navController::navigateToAuthMenu,
                 navigateToAccount = navController::navigateToAccount,
                 navigateToNewNote = navController::navigateToNewNote
             )
@@ -77,7 +75,7 @@ fun NavigationGraph(
                 navigateToNoteMenu = navController::navigateToNoteMenu
             )
 
-            accountMenuNavigation()
+            accountMenuNavigation(navController::navigateToAuthMenu)
         }
     }
 }

@@ -57,6 +57,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    implementation(libs.aws.amplifyframework.cognito)
+    implementation(libs.aws.amplifyframework.core.kotlin)
+
     implementation(libs.viewmodel.compose)
     implementation(libs.runtime.compose)
     implementation(libs.androidx.material.icons.extended)

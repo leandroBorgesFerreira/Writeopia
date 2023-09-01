@@ -24,7 +24,6 @@ fun NavGraphBuilder.authNavigation(
         route = Destinations.AUTH_MENU_INNER_NAVIGATION.id
     ) {
         composable(Destinations.AUTH_MENU.id) {
-            Log.d("NavGraphBuilder", "Destinations.AUTH_MENU.id")
             val authMenuViewModel: AuthMenuViewModel =
                 viewModel(initializer = { AuthMenuViewModel() })
 

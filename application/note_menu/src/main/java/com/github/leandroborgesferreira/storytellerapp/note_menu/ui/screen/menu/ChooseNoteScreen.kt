@@ -1,7 +1,6 @@
 package com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -13,12 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.PermIdentity
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -29,12 +25,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.RenderVectorGroup
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
@@ -47,11 +41,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.amplifyframework.kotlin.auth.Auth
+import com.github.leandroborgesferreira.storytellerapp.appresourcers.R
 import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.configuration.ConfigurationsMenu
 import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.configuration.NotesSelectionMenu
 import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.ChooseNoteViewModel
-import com.github.leandroborgesferreira.storytellerapp.appresourcers.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -64,19 +57,11 @@ internal fun ChooseNoteScreen(
     navigateToNote: (String, String) -> Unit,
     navigateToAccount: () -> Unit,
     newNote: () -> Unit,
-    onLogout: () -> Unit,
 ) {
     LaunchedEffect(key1 = "refresh", block = {
         chooseNoteViewModel.requestDocuments(false)
         chooseNoteViewModel.requestUserAttributes()
     })
-
-    val isLogged by chooseNoteViewModel.isLogged.collectAsStateWithLifecycle()
-    if (!isLogged) {
-        LaunchedEffect(key1 = true) {
-            onLogout()
-        }
-    }
 
     val hasSelectedNotes by chooseNoteViewModel.hasSelectedNotes.collectAsStateWithLifecycle()
     val editState by chooseNoteViewModel.editState.collectAsStateWithLifecycle()
@@ -112,7 +97,6 @@ internal fun ChooseNoteScreen(
                     navigateToNote = navigateToNote,
                     selectionListener = chooseNoteViewModel::selectionListener,
                     paddingValues = paddingValues,
-                    logout = chooseNoteViewModel::logout
                 )
             }
 
@@ -226,7 +210,6 @@ private fun Content(
     chooseNoteViewModel: ChooseNoteViewModel,
     navigateToNote: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
-    logout: () -> Unit,
     paddingValues: PaddingValues,
 ) {
     Box(
@@ -238,7 +221,6 @@ private fun Content(
             chooseNoteViewModel = chooseNoteViewModel,
             navigateToNote = navigateToNote,
             selectionListener = selectionListener,
-            logOut = logout
         )
     }
 }
