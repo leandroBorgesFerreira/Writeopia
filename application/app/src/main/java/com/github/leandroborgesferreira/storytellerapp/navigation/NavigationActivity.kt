@@ -57,7 +57,7 @@ fun NavigationGraph(
     val notesMenuInjection = NotesMenuInjection(database, sharedPreferences)
     val authInjection = AuthInjection(database, apiInjector = apiInjector)
 
-    val startDestination = Destinations.AUTH_MENU_INNER_NAVIGATION.id
+    val startDestination = Destinations.CHOOSE_NOTE.id
 
     ApplicationComposeTheme {
         NavHost(navController = navController, startDestination = startDestination) {
