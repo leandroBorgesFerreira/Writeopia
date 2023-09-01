@@ -74,10 +74,12 @@ internal class ChooseNoteViewModel(
     }
 
     fun selectionListener(id: String, selected: Boolean) {
-        val selectedIds = _selectedNotes.value
-        val newIds = if (selected) selectedIds + id else selectedIds - id
+        viewModelScope.launch(Dispatchers.IO) {
+            val selectedIds = _selectedNotes.value
+            val newIds = if (selected) selectedIds + id else selectedIds - id
 
-        _selectedNotes.value = newIds
+            _selectedNotes.value = newIds
+        }
     }
 
     fun clearSelection() {
@@ -87,7 +89,6 @@ internal class ChooseNoteViewModel(
     fun addMockData(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
             notesUseCase.mockData(context)
-
 
 
             val data = notesUseCase.loadDocuments()
@@ -139,12 +140,13 @@ internal class ChooseNoteViewModel(
 
     fun logout() {
         viewModelScope.launch {
-            when(val signOutResult = Amplify.Auth.signOut()) {
+            when (val signOutResult = Amplify.Auth.signOut()) {
                 is AWSCognitoAuthSignOutResult.CompleteSignOut -> {
                     // Sign Out completed fully and without errors.
                     Log.e("AuthQuickStart", "Logout!")
                     _isLogged.value = false
                 }
+
                 is AWSCognitoAuthSignOutResult.PartialSignOut -> {
                     // Sign Out completed with some errors. User is signed out of the device.
                     signOutResult.hostedUIError?.let {
@@ -161,6 +163,7 @@ internal class ChooseNoteViewModel(
                         // Optional: Use escape hatch to retry revocation of it.refreshToken.
                     }
                 }
+
                 is AWSCognitoAuthSignOutResult.FailedSignOut -> {
                     // Sign Out failed with an exception, leaving the user signed in.
                     Log.e("AuthQuickStart", "Sign out Failed", signOutResult.exception)

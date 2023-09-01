@@ -46,7 +46,7 @@ tasks.withType<Test> {
 graalvmNative {
     binaries {
         named("main") {
-//            runtimeArgs.add("--initialize-at-run-time=org.slf4j.LoggerFactory")
+//            runtimeArgs.add("--initialize-at-run-time=org.slf4j")
             mainClass.set("com.github.leandroborgesferreira.storyteller.intronotes.MainKt")
         }
     }

@@ -1,5 +1,7 @@
 package com.github.leandroborgesferreira.storytellerapp.note_menu.navigation
 
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import com.github.leandroborgesferreira.storytellerapp.note_menu.di.NotesMenuInjection
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -12,7 +14,19 @@ fun NavGraphBuilder.notesMenuNavigation(
     navigateToNewNote: () -> Unit,
     navigateToAuthMenu: () -> Unit,
 ) {
-    composable(Destinations.CHOOSE_NOTE.id) {
+    composable(
+        Destinations.CHOOSE_NOTE.id,
+        enterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { intSize -> -intSize }
+            )
+        },
+        exitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { intSize -> -intSize }
+            )
+        }
+    ) {
         val chooseNoteViewModel = notesMenuInjection.provideChooseNoteViewModel()
 
         ChooseNoteScreen(

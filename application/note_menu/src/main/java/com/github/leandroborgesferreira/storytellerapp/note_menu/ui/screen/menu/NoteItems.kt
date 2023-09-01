@@ -1,6 +1,5 @@
 package com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -116,7 +115,6 @@ internal fun Notes(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun LazyGridNotes(
     documents: List<DocumentUi>,
@@ -128,7 +126,10 @@ private fun LazyGridNotes(
         columns = StaggeredGridCells.Adaptive(minSize = 150.dp),
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         content = {
-            items(documents, key = { document -> document.hashCode() }) { document ->
+            items(
+                documents,
+//                key = { document -> document.hashCode() } //Todo: This breaks the swipe to edit
+            ) { document ->
                 DocumentItem(document, onDocumentClick, selectionListener, previewDrawers())
             }
         }
@@ -170,7 +171,9 @@ private fun DocumentItem(
                 testTag = "$DOCUMENT_ITEM_TEST_TAG${documentUi.title}"
             },
         state = documentUi.selected,
-        swipeListener = { state -> selectionListener(documentUi.documentId, state) },
+        swipeListener = {
+            state -> selectionListener(documentUi.documentId, state)
+        },
         cornersShape = MaterialTheme.shapes.large,
         defaultColor = MaterialTheme.colorScheme.surfaceVariant
     ) {

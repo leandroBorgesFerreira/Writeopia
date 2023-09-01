@@ -1,6 +1,5 @@
 package com.github.leandroborgesferreira.storytellerapp.note_menu.data
 
-import android.content.Context
 import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 import java.util.UUID
@@ -33,7 +32,7 @@ internal fun supermarketList(): Map<Int, StoryStep> = mapOf(
     )
 )
 
-internal fun travelHistory(context: Context): Map<Int, StoryStep> =
+internal fun travelHistory(): Map<Int, StoryStep> =
     mapOf(
         0 to StoryStep(
             localId = UUID.randomUUID().toString(),

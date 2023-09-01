@@ -10,6 +10,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/application" />
+            <option value="$PROJECT_DIR$/application/account" />
             <option value="$PROJECT_DIR$/application/app" />
             <option value="$PROJECT_DIR$/application/auth" />
             <option value="$PROJECT_DIR$/application/common_ui" />

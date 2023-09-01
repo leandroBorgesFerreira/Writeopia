@@ -6,7 +6,7 @@ import com.github.leandroborgesferreira.storyteller.model.action.BackstackAction
 import com.github.leandroborgesferreira.storyteller.model.story.StoryState
 
 /**
- * Manager for
+ * Manager for backstack
  */
 interface BackstackManager : BackstackInform {
 

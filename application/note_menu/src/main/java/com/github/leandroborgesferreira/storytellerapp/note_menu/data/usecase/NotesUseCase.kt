@@ -44,7 +44,7 @@ internal class NotesUseCase(
             Document(
                 id = UUID.randomUUID().toString(),
                 title = "Travel Note",
-                content = travelHistory(context),
+                content = travelHistory(),
                 createdAt = Instant.now(),
                 lastUpdatedAt = Instant.now()
             )

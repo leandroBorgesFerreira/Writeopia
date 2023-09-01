@@ -164,7 +164,7 @@ class StoryTellerManager(
     fun initDocument(document: Document) {
         if (isInitialized()) return
 
-        val stories = document.content ?: emptyMap()
+        val stories = document.content
         _currentStory.value =
             StoryState(stepsNormalizer(stories.toEditState()), LastEdit.Nothing, null)
         val normalized = stepsNormalizer(stories.toEditState())

@@ -1,5 +1,7 @@
 package com.github.leandroborgesferreira.storytellerapp.editor.navigation
 
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -15,18 +17,16 @@ fun NavGraphBuilder.editorNavigation(
     composable(
         route = "${Destinations.NOTE_DETAILS.id}/{noteId}/{noteTitle}",
         arguments = listOf(navArgument("noteId") { type = NavType.StringType }),
-//                enterTransition = {
-//                    slideInHorizontally(
-//                        animationSpec = slideInHorizontallyAnimationSpec,
-//                        initialOffsetX = { intSize -> intSize }
-//                    )
-//                },
-//                exitTransition = {
-//                    slideOutHorizontally(
-//                        animationSpec = slideInHorizontallyAnimationSpec,
-//                        targetOffsetX = { intSize -> intSize }
-//                    )
-//                }
+        enterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { intSize -> intSize }
+            )
+        },
+        exitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { intSize -> intSize }
+            )
+        }
     ) { backStackEntry ->
         val noteId = backStackEntry.arguments?.getString("noteId")
         val noteTitle = backStackEntry.arguments?.getString("noteTitle")
