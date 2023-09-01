@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.amplifyframework.auth.AuthException
+import com.amplifyframework.auth.AuthUserAttributeKey
 import com.amplifyframework.auth.cognito.result.AWSCognitoAuthSignOutResult
 import com.amplifyframework.kotlin.core.Amplify
 import com.github.leandroborgesferreira.storytellerapp.note_menu.data.usecase.NotesConfigurationRepository
@@ -42,6 +44,9 @@ internal class ChooseNoteViewModel(
     private val _documentsState: MutableStateFlow<ResultData<List<Document>>> =
         MutableStateFlow(ResultData.Idle())
 
+    private val _userName = MutableStateFlow("")
+    val userName = _userName.asStateFlow()
+
     val documentsState: StateFlow<ResultData<List<DocumentUi>>> =
         combine(_selectedNotes, _documentsState) { selectedNoteIds, resultData ->
             resultData.map { documentList ->
@@ -62,6 +67,17 @@ internal class ChooseNoteViewModel(
             viewModelScope.launch(Dispatchers.IO) {
                 refreshNotes()
             }
+        }
+    }
+
+    suspend fun requestUserAttributes() {
+        try {
+            _userName.value = Amplify.Auth
+                .fetchUserAttributes()
+                .find { userAttribute -> userAttribute.key == AuthUserAttributeKey.name() }
+                ?.value ?: ""
+        } catch (error: AuthException) {
+            Log.d("ChooseNoteViewModel", "Error fetching user attributes. Error: $error")
         }
     }
 

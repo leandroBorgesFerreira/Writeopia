@@ -88,6 +88,7 @@ dependencies {
     implementation(project(":application:resources"))
     implementation(project(":application:editor"))
     implementation(project(":application:auth"))
+    implementation(project(":application:account"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 

@@ -15,7 +15,7 @@ fun NavGraphBuilder.editorNavigation(
     navigateToNoteMenu: () -> Unit
 ) {
     composable(
-        route = "${Destinations.NOTE_DETAILS.id}/{noteId}/{noteTitle}",
+        route = "${Destinations.EDITOR.id}/{noteId}/{noteTitle}",
         arguments = listOf(navArgument("noteId") { type = NavType.StringType }),
         enterTransition = {
             slideInHorizontally(
@@ -45,7 +45,7 @@ fun NavGraphBuilder.editorNavigation(
         }
     }
 
-    composable(route = Destinations.NOTE_DETAILS.id) {
+    composable(route = Destinations.EDITOR.id) {
         NoteEditorScreen(
             documentId = null,
             title = null,

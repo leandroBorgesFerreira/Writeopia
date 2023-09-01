@@ -57,6 +57,7 @@ dependencies {
     implementation(project(":application:resources"))
     implementation(project(":application:utils"))
     implementation(project(":application:common_ui"))
+    implementation(project(":application:account"))
 
     implementation(libs.aws.amplifyframework.cognito)
     implementation(libs.aws.amplifyframework.core.kotlin)
@@ -72,6 +73,8 @@ dependencies {
     implementation(libs.runtime.compose)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.navigation.compose)
+
+    implementation(libs.coil.compose)
 
     implementation("androidx.activity:activity-compose")
     implementation("androidx.compose.material3:material3")

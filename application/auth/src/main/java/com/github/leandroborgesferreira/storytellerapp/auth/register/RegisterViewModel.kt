@@ -46,6 +46,7 @@ internal class RegisterViewModel(private val introNotesUseCase: IntroNotesUseCas
         viewModelScope.launch {
             val options = AuthSignUpOptions.builder()
                 .userAttribute(AuthUserAttributeKey.email(), _email.value)
+                .userAttribute(AuthUserAttributeKey.name(), _name.value)
                 .build()
 
             try {

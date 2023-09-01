@@ -15,6 +15,7 @@ import com.github.leandroborgesferreira.storyteller.network.injector.ApiInjector
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.video.VideoFrameConfig
 import com.github.leandroborgesferreira.storytellerapp.AndroidLogger
+import com.github.leandroborgesferreira.storytellerapp.account.navigation.accountMenuNavigation
 import com.github.leandroborgesferreira.storytellerapp.auth.di.AuthInjection
 import com.github.leandroborgesferreira.storytellerapp.auth.navigation.authNavigation
 import com.github.leandroborgesferreira.storytellerapp.auth.navigation.navigateToAuthMenu
@@ -67,6 +68,7 @@ fun NavigationGraph(
                 notesMenuInjection = notesMenuInjection,
                 navigateToNote = navController::navigateToNote,
                 navigateToAuthMenu = navController::navigateToAuthMenu,
+                navigateToAccount = navController::navigateToAccount,
                 navigateToNewNote = navController::navigateToNewNote
             )
 
@@ -74,6 +76,8 @@ fun NavigationGraph(
                 editorInjector = editorInjector,
                 navigateToNoteMenu = navController::navigateToNoteMenu
             )
+
+            accountMenuNavigation()
         }
     }
 }

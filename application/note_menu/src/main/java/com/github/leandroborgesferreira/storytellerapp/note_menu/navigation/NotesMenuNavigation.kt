@@ -13,18 +13,15 @@ fun NavGraphBuilder.notesMenuNavigation(
     navigateToNote: (String, String) -> Unit,
     navigateToNewNote: () -> Unit,
     navigateToAuthMenu: () -> Unit,
+    navigateToAccount: () -> Unit,
 ) {
     composable(
         Destinations.CHOOSE_NOTE.id,
         enterTransition = {
-            slideInHorizontally(
-                initialOffsetX = { intSize -> -intSize }
-            )
+            slideInHorizontally(initialOffsetX = { intSize -> -intSize })
         },
         exitTransition = {
-            slideOutHorizontally(
-                targetOffsetX = { intSize -> -intSize }
-            )
+            slideOutHorizontally(targetOffsetX = { intSize -> -intSize })
         }
     ) {
         val chooseNoteViewModel = notesMenuInjection.provideChooseNoteViewModel()
@@ -32,8 +29,9 @@ fun NavGraphBuilder.notesMenuNavigation(
         ChooseNoteScreen(
             chooseNoteViewModel = chooseNoteViewModel,
             navigateToNote = navigateToNote,
+            navigateToAccount = navigateToAccount,
             newNote = navigateToNewNote,
-            onLogout = navigateToAuthMenu
+            onLogout = navigateToAuthMenu,
         )
     }
 }
