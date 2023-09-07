@@ -83,11 +83,11 @@ dependencies {
     implementation(project(":storyteller_network"))
     implementation(project(":storyteller_models"))
 
-    implementation(project(":application:note_menu"))
+    implementation(project(":application:features:note_menu"))
     implementation(project(":application:utils"))
     implementation(project(":application:resources"))
-    implementation(project(":application:editor"))
-    implementation(project(":application:auth"))
+    implementation(project(":application:features:editor"))
+    implementation(project(":application:features:auth"))
     implementation(project(":application:account"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)

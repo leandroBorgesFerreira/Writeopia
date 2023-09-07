@@ -1,6 +1,5 @@
 package com.github.leandroborgesferreira.storytellerapp.auth.navigation
 
-import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
