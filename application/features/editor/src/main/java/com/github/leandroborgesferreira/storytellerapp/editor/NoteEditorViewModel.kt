@@ -170,7 +170,7 @@ internal class NoteEditorViewModel(
 
             val documentTitle = document.title.replace(" ", "_")
 
-            val apiContent = documentFilter.removeMetaData(document.content)
+            val apiContent = documentFilter.removeTypesFromDocument(document.content)
                 .map { (position, story) ->
                     story.toApi(position)
                 }
