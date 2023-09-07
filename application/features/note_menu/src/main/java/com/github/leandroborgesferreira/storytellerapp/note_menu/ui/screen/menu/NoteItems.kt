@@ -215,22 +215,30 @@ private fun MockDataScreen(
 
 @Composable
 private fun previewDrawers(): Map<Int, StoryStepDrawer> {
-    val h1TextStyle = TextStyle(
-        fontWeight = FontWeight.Bold,
-        fontSize = 24.sp
-    )
-    val h2TextStyle = TextStyle(
-        fontWeight = FontWeight.Bold,
-        fontSize = 22.sp
-    )
-    val h3TextStyle = TextStyle(
-        fontWeight = FontWeight.Bold,
-        fontSize = 20.sp
-    )
-    val h4TextStyle = TextStyle(
-        fontWeight = FontWeight.Bold,
-        fontSize = 18.sp
-    )
+    val h1TextStyle = @Composable {
+        TextStyle(
+            fontWeight = FontWeight.Bold,
+            fontSize = 24.sp
+        )
+    }
+    val h2TextStyle = @Composable {
+        TextStyle(
+            fontWeight = FontWeight.Bold,
+            fontSize = 22.sp
+        )
+    }
+    val h3TextStyle = @Composable {
+        TextStyle(
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
+        )
+    }
+    val h4TextStyle = @Composable {
+        TextStyle(
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp
+        )
+    }
 
     val unOrderedListItemPreviewDrawer = UnOrderedListItemPreviewDrawer()
 
