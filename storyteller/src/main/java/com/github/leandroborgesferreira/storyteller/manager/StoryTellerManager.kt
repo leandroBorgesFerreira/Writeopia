@@ -108,6 +108,10 @@ class StoryTellerManager(
 
 
     //Todo: Evaluate if this should be extract to a specific class
+    /**
+     * Saves the document automatically as it is changed. It uses the [DocumentTracker] passed
+     * in the constructor of [StoryTellerManager]
+     */
     fun saveOnStoryChanges() {
         coroutineScope.launch(dispatcher) {
             if (documentTracker != null) {
@@ -124,6 +128,12 @@ class StoryTellerManager(
 
     fun isInitialized(): Boolean = _currentStory.value.stories.isNotEmpty()
 
+    /**
+     * Creates a new story. Use this when you wouldn't like to load a documented previously saved.
+     *
+     * @param documentId the id of the document that will be created
+     * @param title the title of the document
+     */
     fun newStory(documentId: String = UUID.randomUUID().toString(), title: String = "") {
         val firstMessage = StoryStep(
             localId = UUID.randomUUID().toString(),
@@ -146,7 +156,29 @@ class StoryTellerManager(
         )
     }
 
-    //Todo: Add unit test fot this!!
+    /**
+     * Initializes a document passed as a parameter. This method should be used when you would like
+     * to load a document from a database and start editing it, instead of creating something new.
+     *
+     * @param document [Document]
+     */
+    fun initDocument(document: Document) {
+        if (isInitialized()) return
+
+        val stories = document.content
+        _currentStory.value =
+            StoryState(stepsNormalizer(stories.toEditState()), LastEdit.Nothing, null)
+        val normalized = stepsNormalizer(stories.toEditState())
+
+        _currentStory.value = StoryState(normalized, LastEdit.Nothing)
+        _documentInfo.value = document.info()
+    }
+
+    /**
+     * Moves the focus to the next available [StoryStep] if it can't find a step to focus, it
+     * creates a new [StoryStep] at the end of the document.
+     */
+    //Todo: Add unit tests
     fun nextFocusOrCreate(position: Int) {
         coroutineScope.launch(dispatcher) {
             val storyMap = _currentStory.value.stories
@@ -161,18 +193,9 @@ class StoryTellerManager(
         }
     }
 
-    fun initDocument(document: Document) {
-        if (isInitialized()) return
-
-        val stories = document.content
-        _currentStory.value =
-            StoryState(stepsNormalizer(stories.toEditState()), LastEdit.Nothing, null)
-        val normalized = stepsNormalizer(stories.toEditState())
-
-        _currentStory.value = StoryState(normalized, LastEdit.Nothing)
-        _documentInfo.value = document.info()
-    }
-
+    /**
+     * Merges two [StoryStep] into a group. This can be used to 
+     */
     fun mergeRequest(info: Action.Merge) {
         if (isOnSelection) {
             cancelSelection()
