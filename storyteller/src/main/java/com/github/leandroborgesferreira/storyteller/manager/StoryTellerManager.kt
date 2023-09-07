@@ -177,6 +177,8 @@ class StoryTellerManager(
     /**
      * Moves the focus to the next available [StoryStep] if it can't find a step to focus, it
      * creates a new [StoryStep] at the end of the document.
+     *
+     * @param position Int
      */
     //Todo: Add unit tests
     fun nextFocusOrCreate(position: Int) {
@@ -194,7 +196,10 @@ class StoryTellerManager(
     }
 
     /**
-     * Merges two [StoryStep] into a group. This can be used to 
+     * Merges two [StoryStep] into a group. This can be used to merge two images into a message
+     * group or any other kind of group.
+     *
+     * @param info [Action.Merge]
      */
     fun mergeRequest(info: Action.Merge) {
         if (isOnSelection) {
@@ -208,6 +213,11 @@ class StoryTellerManager(
         )
     }
 
+    /**
+     * A request to move a content to a position.
+     *
+     * @param move [Action.Move]
+     */
     fun moveRequest(move: Action.Move) {
         if (isOnSelection) {
             cancelSelection()
@@ -226,6 +236,8 @@ class StoryTellerManager(
 
     /**
      * At the moment it is only possible to check items not inside groups. Todo: Fix it!
+     *
+     * @param stateChange [Action.StoryStateChange]
      */
     fun changeStoryState(stateChange: Action.StoryStateChange) {
         if (isOnSelection) {
@@ -249,6 +261,15 @@ class StoryTellerManager(
         }
     }
 
+    /**
+     * Changes the story type. The type of a messages changes without changing the content of it.
+     * Commands normally change the type of a message. From a message to a unordered list item, for
+     * example.
+     *
+     * @param position Int
+     * @param storyType [StoryStep]
+     * @param commandInfo [CommandInfo]
+     */
     fun changeStoryType(position: Int, storyType: StoryType, commandInfo: CommandInfo) {
         if (isOnSelection) {
             cancelSelection()
@@ -262,6 +283,12 @@ class StoryTellerManager(
         )
     }
 
+    /**
+     * An text edition of a [StoryStep]
+     *
+     * @param text String
+     * @param position Int
+     */
     fun onTextEdit(text: String, position: Int) {
         if (isOnSelection) {
             cancelSelection()
@@ -280,6 +307,12 @@ class StoryTellerManager(
         }
     }
 
+    /**
+     * An edition in title. Title edition also changes the meta data of a document.
+     *
+     * @param text String
+     * @param position Int
+     */
     fun onTitleEdit(text: String, position: Int) {
         if (isOnSelection) {
             cancelSelection()
@@ -293,6 +326,12 @@ class StoryTellerManager(
         }
     }
 
+    /**
+     * Creates a line break. When a line break happens, the line it divided into two [StoryStep]s
+     * of the same, if possible, or the next line will be a Message.
+     *
+     * @param lineBreak [Action.LineBreak]
+     */
     fun onLineBreak(lineBreak: Action.LineBreak) {
         if (isOnSelection) {
             cancelSelection()
@@ -310,6 +349,10 @@ class StoryTellerManager(
         }
     }
 
+    /**
+     * Add a [StoryStep] of a position into the selection list. Selected content can be used to
+     * perform bulk actions, like bulk edition and bulk deletion.
+     */
     fun onSelected(isSelected: Boolean, position: Int) {
         coroutineScope.launch(dispatcher) {
             if (_currentStory.value.stories[position] != null) {
@@ -323,6 +366,10 @@ class StoryTellerManager(
         }
     }
 
+    /**
+     * A click at the end of the document. The focus should be moved to the first [StoryStep] that
+     * can receive the focus, from last to first.
+     */
     fun clickAtTheEnd() {
         val stories = _currentStory.value.stories
         val lastContentStory = stories[stories.size - 3]
@@ -346,6 +393,9 @@ class StoryTellerManager(
         }
     }
 
+    /**
+     * Undo the last action.
+     */
     override fun undo() {
         coroutineScope.launch(dispatcher) {
             cancelSelection()
@@ -355,6 +405,9 @@ class StoryTellerManager(
     }
 
 
+    /**
+     * Redo the last undone action.
+     */
     override fun redo() {
         coroutineScope.launch(dispatcher) {
             cancelSelection()
@@ -362,6 +415,11 @@ class StoryTellerManager(
         }
     }
 
+    /**
+     * Deletes a [StoryStep]
+     *
+     * @param deleteStory [Action.DeleteStory]
+     */
     fun onDelete(deleteStory: Action.DeleteStory) {
         coroutineScope.launch(dispatcher) {
             contentHandler.deleteStory(deleteStory, _currentStory.value.stories)?.let { newState ->
@@ -377,6 +435,9 @@ class StoryTellerManager(
         }
     }
 
+    /**
+     * Deletes the whole selection. All [StoryStep] in the selection will be deleted.
+     */
     fun deleteSelection() {
         coroutineScope.launch(dispatcher) {
             val (newStories, deletedStories) = contentHandler.bulkDeletion(
@@ -392,10 +453,16 @@ class StoryTellerManager(
         }
     }
 
+    /**
+     * Cancels the current selection.
+     */
     private fun cancelSelection() {
         _positionsOnEdit.value = emptySet()
     }
 
+    /**
+     * Clears the [StoryTellerManager]. Use this in the onCleared of your ViewModel.
+     */
     fun onClear() {
         coroutineScope.cancel()
     }
