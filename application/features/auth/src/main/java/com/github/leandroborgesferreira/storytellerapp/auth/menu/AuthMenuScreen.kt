@@ -1,6 +1,5 @@
 package com.github.leandroborgesferreira.storytellerapp.auth.menu
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -12,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -29,13 +29,11 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun AuthMenuScreen(
+    isConnectedState: StateFlow<ResultData<Boolean>>,
     navigateToLogin: () -> Unit,
     navigateToRegister: () -> Unit,
-    navigateToApp: () -> Unit,
-    isConnectedState: StateFlow<ResultData<Boolean>>
+    navigateToApp: () -> Unit
 ) {
-    Log.d("AuthMenuScreen", "AuthMenuScreen Composing...")
-
     when (val isConnected = isConnectedState.collectAsStateWithLifecycle().value) {
         is ResultData.Complete -> {
             if (isConnected.data) {
@@ -43,11 +41,11 @@ fun AuthMenuScreen(
                     navigateToApp()
                 }
             } else {
-                AuthMenuContentScreen(navigateToLogin, navigateToRegister)
+                AuthMenuContentScreen(navigateToLogin, navigateToRegister, navigateToApp)
             }
         }
         is ResultData.Error -> {
-            AuthMenuContentScreen(navigateToLogin, navigateToRegister)
+            AuthMenuContentScreen(navigateToLogin, navigateToRegister, navigateToApp)
         }
         is ResultData.Idle, is ResultData.Loading -> {
             LoadingScreen()
@@ -66,6 +64,7 @@ private fun LoadingScreen() {
 private fun AuthMenuContentScreen(
     navigateToLogin: () -> Unit,
     navigateToRegister: () -> Unit,
+    navigateToApp: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -82,8 +81,7 @@ private fun AuthMenuContentScreen(
         )
 
         Column(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
@@ -126,6 +124,18 @@ private fun AuthMenuContentScreen(
                 Text(text = "Sign up with email", color = MaterialTheme.colorScheme.onPrimary)
             }
 
+            Spacer(modifier = Modifier.height(10.dp))
+
+            TextButton(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+                    .background(MaterialTheme.colorScheme.primary)
+                    .fillMaxWidth(),
+                onClick = navigateToApp
+            ) {
+                Text(text = "Enter without register", color = MaterialTheme.colorScheme.onPrimary)
+            }
+
             Spacer(modifier = Modifier.height(50.dp))
         }
     }
@@ -134,8 +144,11 @@ private fun AuthMenuContentScreen(
 @Preview
 @Composable
 fun AuthMenuContentScreenPreview() {
-    AuthMenuContentScreen(
-        navigateToLogin = {},
-        navigateToRegister = {},
-    )
+    Surface {
+        AuthMenuContentScreen(
+            navigateToLogin = {},
+            navigateToRegister = {},
+            navigateToApp = {}
+        )
+    }
 }
