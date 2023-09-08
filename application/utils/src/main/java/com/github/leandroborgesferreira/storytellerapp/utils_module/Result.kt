@@ -14,3 +14,6 @@ fun <T, R> ResultData<T>.map(fn: (T) -> R): ResultData<R> =
         is ResultData.Idle -> ResultData.Idle()
         is ResultData.Loading -> ResultData.Loading()
     }
+
+fun ResultData<Boolean>.isSuccess(): Boolean =
+    this is ResultData.Complete && data

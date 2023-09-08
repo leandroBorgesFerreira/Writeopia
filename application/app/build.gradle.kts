@@ -83,16 +83,16 @@ dependencies {
     implementation(project(":storyteller_network"))
     implementation(project(":storyteller_models"))
 
-    implementation(project(":application:features:note_menu"))
     implementation(project(":application:utils"))
+    implementation(project(":application:auth_core"))
     implementation(project(":application:resources"))
+    implementation(project(":application:features:note_menu"))
     implementation(project(":application:features:editor"))
     implementation(project(":application:features:auth"))
     implementation(project(":application:features:account"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
-    implementation(libs.aws.amplifyframework.cognito)
     implementation(libs.aws.amplifyframework.core.kotlin)
 
     implementation(libs.androidx.ktx)

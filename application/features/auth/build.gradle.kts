@@ -54,6 +54,7 @@ dependencies {
 
     implementation(project(":application:utils"))
     implementation(project(":application:resources"))
+    implementation(project(":application:auth_core"))
 
     implementation(project(":storyteller"))
     implementation(project(":storyteller_models"))
@@ -65,7 +66,6 @@ dependencies {
     implementation(libs.appCompat)
     implementation(libs.material)
 
-    implementation(libs.aws.amplifyframework.cognito)
     implementation(libs.aws.amplifyframework.core.kotlin)
 
     implementation(libs.room.runtime)

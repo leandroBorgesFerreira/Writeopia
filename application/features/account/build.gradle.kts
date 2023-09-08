@@ -49,6 +49,7 @@ kotlin{
 
 dependencies {
     implementation(project(":application:utils"))
+    implementation(project(":application:auth_core"))
 
     implementation(libs.androidx.ktx)
     implementation(libs.appCompat)
@@ -57,7 +58,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(libs.aws.amplifyframework.cognito)
     implementation(libs.aws.amplifyframework.core.kotlin)
 
     implementation(libs.viewmodel.compose)

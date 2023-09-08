@@ -18,7 +18,7 @@ import com.github.leandroborgesferreira.storytellerapp.account.navigation.accoun
 import com.github.leandroborgesferreira.storytellerapp.auth.di.AuthInjection
 import com.github.leandroborgesferreira.storytellerapp.auth.navigation.authNavigation
 import com.github.leandroborgesferreira.storytellerapp.auth.navigation.navigateToAuthMenu
-import com.github.leandroborgesferreira.storytellerapp.auth.token.AmplifyTokenHandler
+import com.github.leandroborgesferreira.storytellerapp.auth.core.token.AmplifyTokenHandler
 import com.github.leandroborgesferreira.storytellerapp.note_menu.di.NotesMenuInjection
 import com.github.leandroborgesferreira.storytellerapp.editor.di.EditorInjector
 import com.github.leandroborgesferreira.storytellerapp.editor.navigation.editorNavigation
@@ -55,7 +55,7 @@ fun NavigationGraph(
         ApiInjector(apiLogger = AndroidLogger, bearerTokenHandler = AmplifyTokenHandler)
     val editorInjector = EditorInjector(database)
     val notesMenuInjection = NotesMenuInjection(database, sharedPreferences)
-    val authInjection = AuthInjection(database, apiInjector = apiInjector)
+    val authInjection = AuthInjection(sharedPreferences, database, apiInjector)
 
     val startDestination = Destinations.AUTH_MENU_INNER_NAVIGATION.id
 
@@ -75,7 +75,10 @@ fun NavigationGraph(
                 navigateToNoteMenu = navController::navigateToNoteMenu
             )
 
-            accountMenuNavigation(navController::navigateToAuthMenu)
+            accountMenuNavigation(
+                accountManager = authInjection.provideAccountManager(),
+                navController::navigateToAuthMenu
+            )
         }
     }
 }

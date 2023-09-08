@@ -20,7 +20,7 @@ import com.github.leandroborgesferreira.storytellerapp.account.viewmodel.Account
 @Composable
 //Todo: Move AccountMenuViewModel constructor to injector!
 fun AccountMenuScreen(
-    accountMenuViewModel: AccountMenuViewModel = AccountMenuViewModel(),
+    accountMenuViewModel: AccountMenuViewModel,
     onLogoutSuccess: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize()) {

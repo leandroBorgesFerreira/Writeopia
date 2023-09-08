@@ -59,7 +59,6 @@ dependencies {
     implementation(project(":application:common_ui"))
     implementation(project(":application:features:account"))
 
-    implementation(libs.aws.amplifyframework.cognito)
     implementation(libs.aws.amplifyframework.core.kotlin)
 
     implementation(libs.appCompat)

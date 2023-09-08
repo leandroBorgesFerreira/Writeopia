@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/application" />
             <option value="$PROJECT_DIR$/application/app" />
+            <option value="$PROJECT_DIR$/application/auth_core" />
             <option value="$PROJECT_DIR$/application/common_ui" />
             <option value="$PROJECT_DIR$/application/features" />
             <option value="$PROJECT_DIR$/application/features/account" />
