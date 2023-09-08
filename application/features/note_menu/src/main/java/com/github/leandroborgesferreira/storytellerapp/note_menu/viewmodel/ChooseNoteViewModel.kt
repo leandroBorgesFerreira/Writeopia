@@ -5,17 +5,18 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amplifyframework.auth.AuthException
-import com.amplifyframework.auth.AuthUserAttributeKey
-import com.amplifyframework.kotlin.core.Amplify
+import com.github.leandroborgesferreira.storyteller.models.document.Document
+import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
+import com.github.leandroborgesferreira.storyteller.preview.PreviewParser
+import com.github.leandroborgesferreira.storytellerapp.auth.core.AuthManager
+import com.github.leandroborgesferreira.storytellerapp.auth.core.data.User
 import com.github.leandroborgesferreira.storytellerapp.note_menu.data.usecase.NotesConfigurationRepository
 import com.github.leandroborgesferreira.storytellerapp.note_menu.data.usecase.NotesUseCase
 import com.github.leandroborgesferreira.storytellerapp.note_menu.extensions.toUiCard
 import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.dto.DocumentUi
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
+import com.github.leandroborgesferreira.storytellerapp.utils_module.toBoolean
 import com.github.leandroborgesferreira.storytellerapp.utils_module.map
-import com.github.leandroborgesferreira.storyteller.models.document.Document
-import com.github.leandroborgesferreira.storyteller.preview.PreviewParser
-import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -29,6 +30,7 @@ import kotlinx.coroutines.launch
 internal class ChooseNoteViewModel(
     private val notesUseCase: NotesUseCase,
     private val notesConfig: NotesConfigurationRepository,
+    private val authManager: AuthManager,
     private val previewParser: PreviewParser = PreviewParser(),
 ) : ViewModel() {
 
@@ -40,8 +42,12 @@ internal class ChooseNoteViewModel(
     private val _documentsState: MutableStateFlow<ResultData<List<Document>>> =
         MutableStateFlow(ResultData.Idle())
 
-    private val _userName = MutableStateFlow("")
-    val userName = _userName.asStateFlow()
+    private val _user: MutableStateFlow<UserState<User>> = MutableStateFlow(UserState.Idle())
+    val userName: StateFlow<UserState<String>> = _user.map { userState ->
+        userState.map { user ->
+            user.name
+        }
+    }.stateIn(viewModelScope, SharingStarted.Lazily, UserState.Idle())
 
     val documentsState: StateFlow<ResultData<List<DocumentUi>>> =
         combine(_selectedNotes, _documentsState) { selectedNoteIds, resultData ->
@@ -68,10 +74,17 @@ internal class ChooseNoteViewModel(
 
     suspend fun requestUserAttributes() {
         try {
-            _userName.value = Amplify.Auth
-                .fetchUserAttributes()
-                .find { userAttribute -> userAttribute.key == AuthUserAttributeKey.name() }
-                ?.value ?: ""
+            _user.value = if (authManager.isLoggedIn().toBoolean()) {
+                val user = authManager.getUser()
+
+                if (user != null) {
+                    UserState.ConnectedUser(user)
+                } else {
+                    UserState.UserNotReturned()
+                }
+            } else {
+                UserState.DisconnectedUser()
+            }
         } catch (error: AuthException) {
             Log.d("ChooseNoteViewModel", "Error fetching user attributes. Error: $error")
         }
@@ -131,7 +144,6 @@ internal class ChooseNoteViewModel(
             clearSelection()
             refreshNotes()
         }
-
     }
 
     fun deleteSelectedNotes() {
@@ -162,3 +174,20 @@ internal class ChooseNoteViewModel(
         }
     }
 }
+
+sealed interface UserState<T> {
+    class Idle<T> : UserState<T>
+    class Loading<T> : UserState<T>
+    class ConnectedUser<T>(val data: T) : UserState<T>
+    class UserNotReturned<T> : UserState<T>
+    class DisconnectedUser<T> : UserState<T>
+}
+
+fun <T, R> UserState<T>.map(fn: (T) -> R): UserState<R> =
+    when (this) {
+        is UserState.ConnectedUser -> UserState.ConnectedUser(fn(this.data))
+        is UserState.Idle -> UserState.Idle()
+        is UserState.Loading -> UserState.Loading()
+        is UserState.DisconnectedUser -> UserState.DisconnectedUser()
+        is UserState.UserNotReturned -> UserState.UserNotReturned()
+    }

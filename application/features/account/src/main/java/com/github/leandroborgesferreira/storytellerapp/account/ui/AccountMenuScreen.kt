@@ -12,28 +12,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.leandroborgesferreira.storytellerapp.account.viewmodel.AccountMenuViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
+import com.github.leandroborgesferreira.storytellerapp.utils_module.toBoolean
+import kotlinx.coroutines.flow.StateFlow
 
-@Preview
 @Composable
 //Todo: Move AccountMenuViewModel constructor to injector!
 fun AccountMenuScreen(
-    accountMenuViewModel: AccountMenuViewModel,
-    onLogoutSuccess: () -> Unit
+    isLoggedInState: StateFlow<ResultData<Boolean>>,
+    onLogout: () -> Unit,
+    goToRegister: () -> Unit
 ) {
+
+    val isLoggedIn = isLoggedInState.collectAsStateWithLifecycle().value.toBoolean()
+
     Column(modifier = Modifier.fillMaxSize()) {
         Text(
             modifier = Modifier
                 .padding(16.dp)
                 .clickable {
-                    accountMenuViewModel.logout(onLogoutSuccess)
+                    if (isLoggedIn) {
+                        onLogout()
+                    } else {
+                        goToRegister()
+                    }
                 }
                 .clip(RoundedCornerShape(6.dp))
                 .background(MaterialTheme.colorScheme.secondary)
                 .padding(8.dp),
-            text = "Logout",
+            text = if (isLoggedIn) "Logout" else "Register",
             color = MaterialTheme.colorScheme.onPrimary,
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontWeight = FontWeight.Bold

@@ -57,6 +57,7 @@ dependencies {
     implementation(project(":application:resources"))
     implementation(project(":application:utils"))
     implementation(project(":application:common_ui"))
+    implementation(project(":application:auth_core"))
     implementation(project(":application:features:account"))
 
     implementation(libs.aws.amplifyframework.core.kotlin)

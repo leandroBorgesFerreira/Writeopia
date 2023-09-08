@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepositoryImpl
+import com.github.leandroborgesferreira.storytellerapp.auth.core.AuthManager
 import com.github.leandroborgesferreira.storytellerapp.note_menu.data.usecase.NotesConfigurationRepository
 import com.github.leandroborgesferreira.storytellerapp.note_menu.data.usecase.NotesUseCase
 import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.ChooseNoteViewModel
@@ -13,6 +14,7 @@ import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.Choos
 class NotesMenuInjection(
     private val database: StoryTellerDatabase,
     private val sharedPreferences: SharedPreferences,
+    private val authManager: AuthManager,
 ) {
 
     private fun provideDocumentRepository(): DocumentRepository =
@@ -37,6 +39,12 @@ class NotesMenuInjection(
         notesUseCase: NotesUseCase = provideNotesUseCase(),
         notesConfig: NotesConfigurationRepository = provideNotesConfigurationRepository()
     ): ChooseNoteViewModel {
-        return viewModel(factory = ChooseNoteViewModelFactory(notesUseCase, notesConfig))
+        return viewModel(
+            factory = ChooseNoteViewModelFactory(
+                notesUseCase,
+                notesConfig,
+                authManager
+            )
+        )
     }
 }

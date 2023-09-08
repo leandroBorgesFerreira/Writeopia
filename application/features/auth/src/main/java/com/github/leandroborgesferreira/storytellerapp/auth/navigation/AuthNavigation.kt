@@ -1,7 +1,6 @@
 package com.github.leandroborgesferreira.storytellerapp.auth.navigation
 
 import androidx.compose.runtime.LaunchedEffect
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -23,8 +22,7 @@ fun NavGraphBuilder.authNavigation(
         route = Destinations.AUTH_MENU_INNER_NAVIGATION.id
     ) {
         composable(Destinations.AUTH_MENU.id) {
-            val authMenuViewModel: AuthMenuViewModel =
-                viewModel(initializer = { AuthMenuViewModel() })
+            val authMenuViewModel: AuthMenuViewModel = authInjection.provideAuthMenuViewModel()
 
             LaunchedEffect(key1 = true, block = {
                 authMenuViewModel.checkLoggedIn()

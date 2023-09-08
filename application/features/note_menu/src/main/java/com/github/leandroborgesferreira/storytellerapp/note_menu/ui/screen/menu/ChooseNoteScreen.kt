@@ -45,6 +45,7 @@ import com.github.leandroborgesferreira.storytellerapp.appresourcers.R
 import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.configuration.ConfigurationsMenu
 import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.configuration.NotesSelectionMenu
 import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.ChooseNoteViewModel
+import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.UserState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -123,11 +124,17 @@ internal fun ChooseNoteScreen(
 @Preview(backgroundColor = 0xFF000000)
 @Composable
 private fun TopBar(
-    titleState: StateFlow<String> = MutableStateFlow("Title"),
+    titleState: StateFlow<UserState<String>> = MutableStateFlow(UserState.ConnectedUser("Title")),
     accountClick: () -> Unit = {},
     menuClick: () -> Unit = {}
 ) {
-    val title by titleState.collectAsStateWithLifecycle()
+    //Todo: Fix this!!
+    val titleTemp = titleState.collectAsStateWithLifecycle().value
+    val title = if (titleTemp is UserState.ConnectedUser) {
+        titleTemp.data
+    } else {
+        ""
+    }
 
     TopAppBar(
         title = {

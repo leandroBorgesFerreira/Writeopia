@@ -8,9 +8,10 @@ import com.github.leandroborgesferreira.storyteller.network.injector.ApiInjector
 import com.github.leandroborgesferreira.storyteller.network.notes.NotesApi
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepositoryImpl
-import com.github.leandroborgesferreira.storytellerapp.auth.core.AccountManager
+import com.github.leandroborgesferreira.storytellerapp.auth.core.AuthManager
 import com.github.leandroborgesferreira.storytellerapp.auth.intronotes.IntroNotesUseCase
 import com.github.leandroborgesferreira.storytellerapp.auth.login.LoginViewModel
+import com.github.leandroborgesferreira.storytellerapp.auth.menu.AuthMenuViewModel
 import com.github.leandroborgesferreira.storytellerapp.auth.register.RegisterViewModel
 
 class AuthInjection(
@@ -19,7 +20,7 @@ class AuthInjection(
     private val apiInjector: ApiInjector
 ) {
 
-    fun provideAccountManager(): AccountManager = AccountManager(sharedPreferences)
+    fun provideAccountManager(): AuthManager = AuthManager(sharedPreferences)
 
     private fun provideDocumentRepository(): DocumentRepository =
         DocumentRepositoryImpl(
@@ -39,12 +40,18 @@ class AuthInjection(
     @Composable
     internal fun provideRegisterViewModel(
         introNotesUseCase: IntroNotesUseCase = provideIntroNotesUseCase(),
-        accountManager: AccountManager = provideAccountManager()
-    ): RegisterViewModel = viewModel { RegisterViewModel(introNotesUseCase, accountManager) }
+        authManager: AuthManager = provideAccountManager()
+    ): RegisterViewModel = viewModel { RegisterViewModel(introNotesUseCase, authManager) }
 
     @Composable
     internal fun provideLoginViewModel(
         introNotesUseCase: IntroNotesUseCase = provideIntroNotesUseCase(),
-        accountManager: AccountManager = provideAccountManager()
-    ): LoginViewModel = viewModel { LoginViewModel(introNotesUseCase, accountManager) }
+        authManager: AuthManager = provideAccountManager()
+    ): LoginViewModel = viewModel { LoginViewModel(introNotesUseCase, authManager) }
+
+    @Composable
+    internal fun provideAuthMenuViewModel(
+        authManager: AuthManager = provideAccountManager()
+    ): AuthMenuViewModel = viewModel { AuthMenuViewModel(authManager) }
+
 }

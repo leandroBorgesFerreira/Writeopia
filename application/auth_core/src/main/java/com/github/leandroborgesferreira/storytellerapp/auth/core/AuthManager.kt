@@ -2,13 +2,14 @@ package com.github.leandroborgesferreira.storytellerapp.auth.core
 
 import android.content.SharedPreferences
 import android.util.Log
+import com.amplifyframework.auth.AuthException
 import com.amplifyframework.auth.AuthUserAttributeKey
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
 import com.amplifyframework.auth.cognito.result.AWSCognitoAuthSignOutResult
 import com.amplifyframework.auth.options.AuthSignUpOptions
 import com.amplifyframework.kotlin.core.Amplify
+import com.github.leandroborgesferreira.storytellerapp.auth.core.data.User
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
-import kotlinx.coroutines.launch
 
 private const val ANONYMOUS_USER_KEY = "ANONYMOUS_USER_KEY"
 
@@ -16,13 +17,45 @@ private const val ANONYMOUS_USER_KEY = "ANONYMOUS_USER_KEY"
  * This class encapsulates the logic of auth so the framework doesn't get exposed to the app, making
  * changes easier (like changing Amplify to Firebase)
  */
-class AccountManager(private val sharedPreferences: SharedPreferences) {
+class AuthManager(private val sharedPreferences: SharedPreferences) {
 
     fun setUsageAsAnonymous(isAnonymous: Boolean) {
         sharedPreferences.edit().run {
             this.putBoolean(ANONYMOUS_USER_KEY, isAnonymous)
         }
     }
+
+    suspend fun getUser(): User? =
+        try {
+            val userAttributes = Amplify.Auth.fetchUserAttributes()
+
+            val user = User(
+                name = userAttributes
+                    .find { userAttribute -> userAttribute.key == AuthUserAttributeKey.name() }
+                    ?.value ?: "",
+                email = userAttributes
+                    .find { userAttribute -> userAttribute.key == AuthUserAttributeKey.email() }
+                    ?.value ?: "",
+            )
+
+            userAttributes
+                .find { userAttribute -> userAttribute.key == AuthUserAttributeKey.name() }
+                ?.value ?: ""
+
+            user
+        } catch (e: Exception) {
+            null
+        }
+
+    suspend fun isLoggedIn(): ResultData<Boolean> =
+        try {
+            val session = Amplify.Auth.fetchAuthSession()
+            Log.i("AmplifyQuickstart", "Auth session = $session")
+            ResultData.Complete(session.isSignedIn)
+        } catch (error: AuthException) {
+            Log.e("AmplifyQuickstart", "Failed to fetch auth session", error)
+            ResultData.Error(error)
+        }
 
     suspend fun signUp(email: String, password: String, name: String): ResultData<Boolean> {
         val options = AuthSignUpOptions.builder()
@@ -50,6 +83,7 @@ class AccountManager(private val sharedPreferences: SharedPreferences) {
             val result = Amplify.Auth.signIn(email, password)
             if (result.isSignedIn) {
                 val session = Amplify.Auth.fetchAuthSession() as AWSCognitoAuthSession
+                setUsageAsAnonymous(false)
                 Log.i(
                     "AuthQuickstart",
                     "Sign in succeeded. Token: ${session.userPoolTokensResult.value?.idToken}"

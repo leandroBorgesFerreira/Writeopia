@@ -2,10 +2,10 @@ package com.github.leandroborgesferreira.storytellerapp.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.leandroborgesferreira.storytellerapp.auth.core.AccountManager
+import com.github.leandroborgesferreira.storytellerapp.auth.core.AuthManager
 import com.github.leandroborgesferreira.storytellerapp.auth.intronotes.IntroNotesUseCase
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
-import com.github.leandroborgesferreira.storytellerapp.utils_module.isSuccess
+import com.github.leandroborgesferreira.storytellerapp.utils_module.toBoolean
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 /* The NavigationActivity won't leak because it is the single activity of the whole project*/
 internal class LoginViewModel(
     private val introNotesUseCase: IntroNotesUseCase,
-    private val accountManager: AccountManager
+    private val authManager: AuthManager
 ) : ViewModel() {
 
     private val _email = MutableStateFlow("")
@@ -38,9 +38,9 @@ internal class LoginViewModel(
         _loginState.value = ResultData.Loading()
 
         viewModelScope.launch {
-            val result = accountManager.signIn(_email.value, _password.value)
+            val result = authManager.signIn(_email.value, _password.value)
 
-            if (result.isSuccess()) {
+            if (result.toBoolean()) {
                 introNotesUseCase.addIntroNotes()
             }
 
