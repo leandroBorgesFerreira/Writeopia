@@ -28,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -37,6 +38,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import com.github.leandroborgesferreira.storytellerapp.appresourcers.R
 
 @Composable
 internal fun LoginScreenBinding(loginViewModel: LoginViewModel, onLoginSuccess: () -> Unit) {
@@ -125,7 +127,7 @@ private fun BoxScope.LoginContent(
             value = email,
             onValueChange = emailChanged,
             placeholder = {
-                Text(text = "Email")
+                Text(text = stringResource(id = R.string.email))
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         )
@@ -137,7 +139,7 @@ private fun BoxScope.LoginContent(
             value = password,
             onValueChange = passwordChanged,
             placeholder = {
-                Text(text = "Password")
+                Text(text = stringResource(id = R.string.password))
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             visualTransformation = if (showPassword) {
@@ -152,7 +154,9 @@ private fun BoxScope.LoginContent(
                             showPassword = !showPassword
                         },
                         imageVector = Icons.Default.VisibilityOff,
-                        contentDescription = ""
+                        contentDescription = stringResource(
+                            R.string.content_description_visibility_off
+                        )
                     )
                 } else {
                     Icon(
@@ -160,7 +164,9 @@ private fun BoxScope.LoginContent(
                             showPassword = !showPassword
                         },
                         imageVector = Icons.Default.Visibility,
-                        contentDescription = ""
+                        contentDescription = stringResource(
+                            R.string.content_description_visibility_on
+                        )
                     )
                 }
             }
@@ -174,7 +180,10 @@ private fun BoxScope.LoginContent(
                 .fillMaxWidth(),
             onClick = onLoginRequest
         ) {
-            Text(text = "Enter", color = MaterialTheme.colorScheme.onPrimary)
+            Text(
+                text = stringResource(id = R.string.enter),
+                color = MaterialTheme.colorScheme.onPrimary
+            )
         }
     }
 }

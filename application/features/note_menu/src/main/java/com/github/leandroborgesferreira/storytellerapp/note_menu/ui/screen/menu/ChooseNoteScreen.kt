@@ -46,6 +46,7 @@ import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.confi
 import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.configuration.NotesSelectionMenu
 import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.ChooseNoteViewModel
 import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.UserState
+import com.valentinilk.shimmer.shimmer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -128,13 +129,7 @@ private fun TopBar(
     accountClick: () -> Unit = {},
     menuClick: () -> Unit = {}
 ) {
-    //Todo: Fix this!!
-    val titleTemp = titleState.collectAsStateWithLifecycle().value
-    val title = if (titleTemp is UserState.ConnectedUser) {
-        titleTemp.data
-    } else {
-        ""
-    }
+    val title = titleState.collectAsStateWithLifecycle().value
 
     TopAppBar(
         title = {
@@ -176,7 +171,14 @@ private fun TopBar(
                 Spacer(modifier = Modifier.width(12.dp))
 
                 Text(
-                    text = title,
+                    modifier = Modifier.let { modifierLet ->
+                        if (title is UserState.Loading) {
+                            modifierLet.shimmer()
+                        } else {
+                            modifierLet
+                        }
+                    },
+                    text = getUserName(title),
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
@@ -194,6 +196,16 @@ private fun TopBar(
         }
     )
 }
+
+@Composable
+private fun getUserName(userNameState: UserState<String>): String =
+    when (userNameState) {
+        is UserState.ConnectedUser -> stringResource(id = R.string.name_space, userNameState.data)
+        is UserState.DisconnectedUser -> stringResource(id = R.string.offline_workspace)
+        is UserState.Idle -> ""
+        is UserState.Loading -> ""
+        is UserState.UserNotReturned -> stringResource(id = R.string.disconnected)
+    }
 
 @Composable
 private fun FloatingActionButton(newNoteClick: () -> Unit) {

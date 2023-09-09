@@ -1,8 +1,9 @@
 [versions]
-accompanistSystemuicontroller = "0.30.1"
+accompanist = "0.32.0"
 amplify = "2.11.1"
 coilVersion = "2.3.0"
-composeBom = "2023.08.00"
+composeBom = "2023.09.00"
+composeShimmer = "1.0.5"
 desugar_jdk_libs = "2.0.3"
 espressoCore = "3.5.1"
 junit = "1.1.5"
@@ -13,16 +14,16 @@ ktorClient = "2.3.3"
 ktx = "1.10.1"
 appCompat = "1.6.1"
 material = "1.9.0"
-materialIconsExtended = "1.5.0"
+materialIconsExtended = "1.5.1"
 room = "2.5.2"
 compose = "2.6.1"
 navigation-compose = "2.7.1"
-agp = "8.2.0-beta01"
+agp = "8.2.0-beta03"
 kotlin = "1.9.0"
 compose-compiler = "1.5.1"
 
 [libraries]
-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 aws-amplifyframework-core-kotlin = { module = "com.amplifyframework:core-kotlin", version.ref = "amplify" }
 aws-amplifyframework-cognito = { module = "com.amplifyframework:aws-auth-cognito", version.ref = "amplify" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
@@ -33,6 +34,7 @@ androidx-material-icons-extended = { module = "androidx.compose.material:materia
 appCompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appCompat" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVersion" }
 coil-video = { module = "io.coil-kt:coil-video", version.ref = "coilVersion" }
+compose-shimmer = { module = "com.valentinilk.shimmer:compose-shimmer", version.ref = "composeShimmer" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 junit = { module = "junit:junit", version.ref = "junitVersion" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesTest" }

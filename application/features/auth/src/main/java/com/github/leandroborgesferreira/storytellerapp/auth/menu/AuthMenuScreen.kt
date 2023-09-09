@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -44,9 +45,11 @@ fun AuthMenuScreen(
                 AuthMenuContentScreen(navigateToLogin, navigateToRegister, navigateToApp)
             }
         }
+
         is ResultData.Error -> {
             AuthMenuContentScreen(navigateToLogin, navigateToRegister, navigateToApp)
         }
+
         is ResultData.Idle, is ResultData.Loading -> {
             LoadingScreen()
         }
@@ -109,7 +112,10 @@ private fun AuthMenuContentScreen(
                     .fillMaxWidth(),
                 onClick = navigateToLogin
             ) {
-                Text(text = "Sign in", color = MaterialTheme.colorScheme.onPrimary)
+                Text(
+                    text = stringResource(id = R.string.sign_up),
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
             }
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -121,7 +127,10 @@ private fun AuthMenuContentScreen(
                     .fillMaxWidth(),
                 onClick = navigateToRegister
             ) {
-                Text(text = "Sign up with email", color = MaterialTheme.colorScheme.onPrimary)
+                Text(
+                    text = stringResource(id = R.string.sign_in_with_email),
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
             }
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -133,7 +142,10 @@ private fun AuthMenuContentScreen(
                     .fillMaxWidth(),
                 onClick = navigateToApp
             ) {
-                Text(text = "Enter without register", color = MaterialTheme.colorScheme.onPrimary)
+                Text(
+                    text = stringResource(id = R.string.enter_without_register),
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
             }
 
             Spacer(modifier = Modifier.height(50.dp))
