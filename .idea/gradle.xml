@@ -10,12 +10,14 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/application" />
-            <option value="$PROJECT_DIR$/application/account" />
             <option value="$PROJECT_DIR$/application/app" />
-            <option value="$PROJECT_DIR$/application/auth" />
+            <option value="$PROJECT_DIR$/application/auth_core" />
             <option value="$PROJECT_DIR$/application/common_ui" />
-            <option value="$PROJECT_DIR$/application/editor" />
-            <option value="$PROJECT_DIR$/application/note_menu" />
+            <option value="$PROJECT_DIR$/application/features" />
+            <option value="$PROJECT_DIR$/application/features/account" />
+            <option value="$PROJECT_DIR$/application/features/auth" />
+            <option value="$PROJECT_DIR$/application/features/editor" />
+            <option value="$PROJECT_DIR$/application/features/note_menu" />
             <option value="$PROJECT_DIR$/application/resources" />
             <option value="$PROJECT_DIR$/application/utils" />
             <option value="$PROJECT_DIR$/backend" />

@@ -17,6 +17,11 @@ import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 
+/**
+ * Draws an large empty space. This can be used to add a spacial action to the end of an document
+ * and hide this behaviour from the user. Indeed use is to move the focus to the available text
+ * drawer when clicked.
+ */
 class LargeEmptySpace(
     private val moveRequest: (Action.Move) -> Unit = {},
     private val click: () -> Unit = {}

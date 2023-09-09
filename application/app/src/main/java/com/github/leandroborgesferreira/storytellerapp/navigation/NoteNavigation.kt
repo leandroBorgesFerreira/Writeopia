@@ -4,9 +4,13 @@ import androidx.navigation.NavController
 import com.github.leandroborgesferreira.storytellerapp.utils_module.Destinations
 
 internal fun NavController.navigateToNewNote() {
-    navigate(Destinations.NOTE_DETAILS.id)
+    navigate(Destinations.EDITOR.id)
 }
 
 internal fun NavController.navigateToNote(id: String, title: String) {
-    navigate("${Destinations.NOTE_DETAILS.id}/$id/$title")
+    navigate("${Destinations.EDITOR.id}/$id/$title")
+}
+
+internal fun NavController.navigateToAccount() {
+    navigate(Destinations.ACCOUNT.id)
 }

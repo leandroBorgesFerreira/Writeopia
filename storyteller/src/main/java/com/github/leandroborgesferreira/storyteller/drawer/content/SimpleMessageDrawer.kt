@@ -35,9 +35,13 @@ import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHand
 
 /**
  * Simple message drawer mostly intended to be used as a component for more complex drawers.
+ * This class contains the logic of the basic message of the SDK. As many other drawers need some
+ * text in it this Drawer can be used instead of duplicating this text logic.
+ *
  */
 class SimpleMessageDrawer(
     private val modifier: Modifier = Modifier,
+    // Todo: Use a local composition or custom theme instead of a second modifier.
     private val textModifier: Modifier = Modifier,
     private val textStyle: @Composable () -> TextStyle = { defaultTextStyle() },
     private val focusRequester: FocusRequester,

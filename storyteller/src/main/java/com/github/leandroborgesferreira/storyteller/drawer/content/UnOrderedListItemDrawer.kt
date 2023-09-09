@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import com.github.leandroborgesferreira.storyteller.draganddrop.target.DragTargetWithDragItem
 import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
 import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
-import com.github.leandroborgesferreira.storyteller.drawer.content.decoration.ListItemDecoratorDrawer
 import com.github.leandroborgesferreira.storyteller.model.action.Action
 import com.github.leandroborgesferreira.storyteller.model.draganddrop.DropInfo
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
@@ -29,6 +28,10 @@ import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.text.edition.TextCommandHandler
 import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
 
+/**
+ * Drawer for a unordered list. This type of item it just a normal message with some decoration
+ * at the start of Composable to show that this is part of a list.
+ */
 class UnOrderedListItemDrawer(
     private val modifier: Modifier = Modifier,
     private val messageModifier: Modifier = Modifier,

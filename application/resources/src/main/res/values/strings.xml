@@ -23,4 +23,16 @@
     <string name="logout">Logout</string>
     <string name="export_json">Export as Json</string>
     <string name="export">Export</string>
+    <string name="name_space">%s Workspace</string>
+    <string name="offline_workspace">Offline Workspace</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="enter">Enter</string>
+    <string name="content_description_visibility_on">Visible</string>
+    <string name="content_description_visibility_off">Not Visible</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_in_with_email">Sign in with email</string>
+    <string name="enter_without_register">Enter without register</string>
+    <string name="register">Register</string>
 </resources>

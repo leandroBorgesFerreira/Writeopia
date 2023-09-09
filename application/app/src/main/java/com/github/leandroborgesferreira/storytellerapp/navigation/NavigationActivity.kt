@@ -9,16 +9,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.github.leandroborgesferreira.storyteller.network.injector.ApiInjector
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storyteller.video.VideoFrameConfig
 import com.github.leandroborgesferreira.storytellerapp.AndroidLogger
+import com.github.leandroborgesferreira.storytellerapp.account.navigation.accountMenuNavigation
+import com.github.leandroborgesferreira.storytellerapp.account.viewmodel.AccountMenuViewModel
 import com.github.leandroborgesferreira.storytellerapp.auth.di.AuthInjection
 import com.github.leandroborgesferreira.storytellerapp.auth.navigation.authNavigation
 import com.github.leandroborgesferreira.storytellerapp.auth.navigation.navigateToAuthMenu
-import com.github.leandroborgesferreira.storytellerapp.auth.token.AmplifyTokenHandler
+import com.github.leandroborgesferreira.storytellerapp.auth.core.token.AmplifyTokenHandler
 import com.github.leandroborgesferreira.storytellerapp.note_menu.di.NotesMenuInjection
 import com.github.leandroborgesferreira.storytellerapp.editor.di.EditorInjector
 import com.github.leandroborgesferreira.storytellerapp.editor.navigation.editorNavigation
@@ -49,15 +50,15 @@ fun NavigationGraph(
         "com.github.leandroborgesferreira.storytellerapp.preferences",
         Context.MODE_PRIVATE
     ),
+    startDestination: String = Destinations.AUTH_MENU_INNER_NAVIGATION.id
 ) {
 
     val apiInjector =
         ApiInjector(apiLogger = AndroidLogger, bearerTokenHandler = AmplifyTokenHandler)
+    val authInjection = AuthInjection(sharedPreferences, database, apiInjector)
     val editorInjector = EditorInjector(database)
-    val notesMenuInjection = NotesMenuInjection(database, sharedPreferences)
-    val authInjection = AuthInjection(database, apiInjector = apiInjector)
-
-    val startDestination = Destinations.CHOOSE_NOTE.id
+    val notesMenuInjection =
+        NotesMenuInjection(database, sharedPreferences, authInjection.provideAccountManager())
 
     ApplicationComposeTheme {
         NavHost(navController = navController, startDestination = startDestination) {
@@ -66,13 +67,18 @@ fun NavigationGraph(
             notesMenuNavigation(
                 notesMenuInjection = notesMenuInjection,
                 navigateToNote = navController::navigateToNote,
-                navigateToAuthMenu = navController::navigateToAuthMenu,
+                navigateToAccount = navController::navigateToAccount,
                 navigateToNewNote = navController::navigateToNewNote
             )
 
             editorNavigation(
                 editorInjector = editorInjector,
                 navigateToNoteMenu = navController::navigateToNoteMenu
+            )
+
+            accountMenuNavigation(
+                accountMenuViewModel = AccountMenuViewModel(authInjection.provideAccountManager()),
+                navController::navigateToAuthMenu
             )
         }
     }

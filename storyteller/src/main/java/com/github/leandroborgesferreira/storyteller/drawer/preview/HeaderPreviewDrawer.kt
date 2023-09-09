@@ -20,6 +20,9 @@ import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 
+/**
+ * The drawer to the header of a document in the preview of a note.
+ */
 class HeaderPreviewDrawer(
     private val modifier: Modifier = Modifier,
     private val style: TextStyle? = null

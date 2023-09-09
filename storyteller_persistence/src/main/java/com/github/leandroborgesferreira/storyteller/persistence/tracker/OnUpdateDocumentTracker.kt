@@ -63,7 +63,7 @@ class OnUpdateDocumentTracker(
                     val document = Document(
                         id = documentInfo.id,
                         title = titleFromContent ?: documentInfo.title,
-                        content = documentFilter.removeMetaData(storyState.stories),
+                        content = documentFilter.removeTypesFromDocument(storyState.stories),
                         createdAt = documentInfo.createdAt,
                         lastUpdatedAt = Instant.now(),
                     )

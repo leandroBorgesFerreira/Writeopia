@@ -3,8 +3,8 @@ package com.github.leandroborgesferreira.storytellerapp.application
 import android.app.Application
 import android.util.Log
 import com.amplifyframework.AmplifyException
-import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
 import com.amplifyframework.kotlin.core.Amplify
+import com.github.leandroborgesferreira.storytellerapp.auth.core.AuthInitializer
 
 class StoryTellerApplication: Application() {
 
@@ -12,7 +12,7 @@ class StoryTellerApplication: Application() {
         super.onCreate()
 
         try {
-            Amplify.addPlugin(AWSCognitoAuthPlugin())
+            AuthInitializer.initializeAwsAuth()
             Amplify.configure(applicationContext)
             Log.i("StoryTellerApplication", "Initialized Amplify")
         } catch (error: AmplifyException) {

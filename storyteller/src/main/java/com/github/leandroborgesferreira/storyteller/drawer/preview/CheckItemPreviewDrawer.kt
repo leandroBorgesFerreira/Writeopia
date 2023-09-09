@@ -26,6 +26,9 @@ import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
 import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
 import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
 
+/**
+ * The drawer to a check item in the preview of a note.
+ */
 class CheckItemPreviewDrawer(
     private val modifier: Modifier = Modifier.padding(vertical = 2.dp, horizontal = 10.dp)
 ) : StoryStepDrawer {

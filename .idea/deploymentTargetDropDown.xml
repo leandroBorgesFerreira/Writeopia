@@ -8,6 +8,22 @@
       <entry key="Personal.StoryTeller.sample.app">
         <State />
       </entry>
+      <entry key="Tests in 'com.github.leandroborgesferreira.storytellerapp'">
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="$USER_HOME$/.android/avd/Pixel_7_API_33.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2023-09-09T09:09:03.708752Z" />
+        </State>
+      </entry>
       <entry key="app_sample">
         <State>
           <targetSelectedWithDropDown>
@@ -32,12 +48,12 @@
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/Pixel_6a_API_33.avd" />
+                  <value value="$USER_HOME$/.android/avd/Pixel_7_API_33.avd" />
                 </Key>
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2023-08-25T18:55:05.618974Z" />
+          <timeTargetWasSelectedWithDropDown value="2023-09-09T09:07:35.186139Z" />
         </State>
       </entry>
       <entry key="sample.app_sample">
