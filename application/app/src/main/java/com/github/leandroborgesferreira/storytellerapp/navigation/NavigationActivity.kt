@@ -50,6 +50,7 @@ fun NavigationGraph(
         "com.github.leandroborgesferreira.storytellerapp.preferences",
         Context.MODE_PRIVATE
     ),
+    startDestination: String = Destinations.AUTH_MENU_INNER_NAVIGATION.id
 ) {
 
     val apiInjector =
@@ -58,8 +59,6 @@ fun NavigationGraph(
     val editorInjector = EditorInjector(database)
     val notesMenuInjection =
         NotesMenuInjection(database, sharedPreferences, authInjection.provideAccountManager())
-
-    val startDestination = Destinations.AUTH_MENU_INNER_NAVIGATION.id
 
     ApplicationComposeTheme {
         NavHost(navController = navController, startDestination = startDestination) {

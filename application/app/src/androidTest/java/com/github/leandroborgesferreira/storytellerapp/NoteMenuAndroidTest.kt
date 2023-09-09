@@ -8,6 +8,7 @@ import com.github.leandroborgesferreira.storytellerapp.navigation.NavigationGrap
 import com.github.leandroborgesferreira.storytellerapp.robots.DocumentEditRobot
 import com.github.leandroborgesferreira.storytellerapp.robots.DocumentsMenuRobot
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
+import com.github.leandroborgesferreira.storytellerapp.utils_module.Destinations
 import org.junit.Rule
 import org.junit.Test
 
@@ -18,19 +19,7 @@ class NoteMenuAndroidTest {
 
     @Test
     fun itShouldBePossibleToAddNote() {
-        composeTestRule.setContent {
-            NavigationGraph(
-                application = Application(),
-                database = StoryTellerDatabase.database(
-                    LocalContext.current,
-                    inMemory = true
-                ),
-                sharedPreferences = LocalContext.current.getSharedPreferences(
-                    "MockShared",
-                    Context.MODE_PRIVATE
-                )
-            )
-        }
+        startContent()
 
         DocumentsMenuRobot(composeTestRule).goToAddNote()
         DocumentEditRobot(composeTestRule).verifyItIsInEdition()
@@ -38,19 +27,7 @@ class NoteMenuAndroidTest {
 
     @Test
     fun itShouldBePossibleToSaveNoteWithTitle() {
-        composeTestRule.setContent {
-            NavigationGraph(
-                application = Application(),
-                database = StoryTellerDatabase.database(
-                    LocalContext.current,
-                    inMemory = true
-                ),
-                sharedPreferences = LocalContext.current.getSharedPreferences(
-                    "MockShared",
-                    Context.MODE_PRIVATE
-                )
-            )
-        }
+        startContent()
 
         val noteTitle = "Note1"
 
@@ -64,5 +41,22 @@ class NoteMenuAndroidTest {
         }
 
         documentsMenuRobot.assertNoteWithTitle(noteTitle)
+    }
+
+    private fun startContent() {
+        composeTestRule.setContent {
+            NavigationGraph(
+                application = Application(),
+                database = StoryTellerDatabase.database(
+                    LocalContext.current,
+                    inMemory = true
+                ),
+                sharedPreferences = LocalContext.current.getSharedPreferences(
+                    "MockShared",
+                    Context.MODE_PRIVATE
+                ),
+                startDestination = Destinations.CHOOSE_NOTE.id
+            )
+        }
     }
 }
