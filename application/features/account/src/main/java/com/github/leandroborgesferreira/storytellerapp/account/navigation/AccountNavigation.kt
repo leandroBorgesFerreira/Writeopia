@@ -31,6 +31,7 @@ fun NavGraphBuilder.accountMenuNavigation(
         }
 
         AccountMenuScreen(
+            accountMenuViewModel = accountMenuViewModel,
             isLoggedInState = accountMenuViewModel.isLoggedIn,
             onLogout = navigateToAuthMenu,
             goToRegister = navigateToAuthMenu

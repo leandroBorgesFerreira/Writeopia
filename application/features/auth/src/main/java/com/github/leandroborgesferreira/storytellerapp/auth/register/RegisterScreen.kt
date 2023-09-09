@@ -57,9 +57,7 @@ fun RegisterScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        val register = registerState.collectAsStateWithLifecycle().value
-
-        when (register) {
+        when (val register = registerState.collectAsStateWithLifecycle().value) {
             is ResultData.Complete -> {
                 if (register.data) {
                     LaunchedEffect(key1 = "navigation") {
@@ -187,7 +185,10 @@ private fun BoxScope.RegisterContent(
                 .fillMaxWidth(),
             onClick = onRegisterRequest
         ) {
-            Text(text = stringResource(id = R.string.register), color = MaterialTheme.colorScheme.onPrimary)
+            Text(
+                text = stringResource(id = R.string.register),
+                color = MaterialTheme.colorScheme.onPrimary
+            )
         }
     }
 }

@@ -14,13 +14,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.leandroborgesferreira.storytellerapp.account.viewmodel.AccountMenuViewModel
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import com.github.leandroborgesferreira.storytellerapp.utils_module.toBoolean
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-//Todo: Move AccountMenuViewModel constructor to injector!
 fun AccountMenuScreen(
+    accountMenuViewModel: AccountMenuViewModel,
     isLoggedInState: StateFlow<ResultData<Boolean>>,
     onLogout: () -> Unit,
     goToRegister: () -> Unit
@@ -34,7 +35,7 @@ fun AccountMenuScreen(
                 .padding(16.dp)
                 .clickable {
                     if (isLoggedIn) {
-                        onLogout()
+                        accountMenuViewModel.logout(onLogout)
                     } else {
                         goToRegister()
                     }
