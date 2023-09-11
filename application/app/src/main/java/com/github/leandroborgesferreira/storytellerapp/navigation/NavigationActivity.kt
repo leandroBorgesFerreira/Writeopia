@@ -12,18 +12,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.github.leandroborgesferreira.storyteller.network.injector.ApiInjector
 import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
-import com.github.leandroborgesferreira.storyteller.video.VideoFrameConfig
 import com.github.leandroborgesferreira.storytellerapp.AndroidLogger
 import com.github.leandroborgesferreira.storytellerapp.account.navigation.accountMenuNavigation
 import com.github.leandroborgesferreira.storytellerapp.account.viewmodel.AccountMenuViewModel
 import com.github.leandroborgesferreira.storytellerapp.auth.core.di.AuthCoreInjection
+import com.github.leandroborgesferreira.storytellerapp.auth.core.token.AmplifyTokenHandler
 import com.github.leandroborgesferreira.storytellerapp.auth.di.AuthInjection
 import com.github.leandroborgesferreira.storytellerapp.auth.navigation.authNavigation
 import com.github.leandroborgesferreira.storytellerapp.auth.navigation.navigateToAuthMenu
-import com.github.leandroborgesferreira.storytellerapp.auth.core.token.AmplifyTokenHandler
-import com.github.leandroborgesferreira.storytellerapp.note_menu.di.NotesMenuInjection
 import com.github.leandroborgesferreira.storytellerapp.editor.di.EditorInjector
 import com.github.leandroborgesferreira.storytellerapp.editor.navigation.editorNavigation
+import com.github.leandroborgesferreira.storytellerapp.note_menu.di.NotesMenuInjection
 import com.github.leandroborgesferreira.storytellerapp.note_menu.navigation.notesMenuNavigation
 import com.github.leandroborgesferreira.storytellerapp.theme.ApplicationComposeTheme
 import com.github.leandroborgesferreira.storytellerapp.utils_module.Destinations
@@ -31,8 +30,6 @@ import com.github.leandroborgesferreira.storytellerapp.utils_module.Destinations
 class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        VideoFrameConfig.configCoilForVideoFrame(this)
 
         setContent {
             NavigationGraph(application = application)

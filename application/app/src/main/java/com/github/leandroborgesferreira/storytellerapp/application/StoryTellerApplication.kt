@@ -4,12 +4,14 @@ import android.app.Application
 import android.util.Log
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.kotlin.core.Amplify
+import com.github.leandroborgesferreira.storyteller.video.VideoFrameConfig
 import com.github.leandroborgesferreira.storytellerapp.auth.core.AuthInitializer
 
 class StoryTellerApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
+        VideoFrameConfig.configCoilForVideoFrame(this)
 
         try {
             AuthInitializer.initializeAwsAuth()
