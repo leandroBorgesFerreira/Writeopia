@@ -10,7 +10,7 @@ import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
  */
 interface DocumentRepository : DocumentUpdate {
 
-    suspend fun loadDocuments(orderBy: String): List<Document>
+    suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document>
 
     suspend fun loadDocumentById(id: String): Document?
 

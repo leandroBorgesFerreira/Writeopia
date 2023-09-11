@@ -34,6 +34,8 @@ internal class ChooseNoteViewModel(
     private val previewParser: PreviewParser = PreviewParser(),
 ) : ViewModel() {
 
+    private var localUserId: String? = null
+
     private val _selectedNotes = MutableStateFlow(setOf<String>())
     val hasSelectedNotes = _selectedNotes.map { selectedIds ->
         selectedIds.isNotEmpty()
@@ -63,6 +65,11 @@ internal class ChooseNoteViewModel(
 
     private val _editState = MutableStateFlow(false)
     val editState = _editState.asStateFlow()
+
+    private suspend fun getUserId(): String =
+        localUserId ?: authManager.getUser().id.also { id ->
+            localUserId = id
+        }
 
     fun requestDocuments(force: Boolean) {
         if (documentsState.value !is ResultData.Complete || force) {
@@ -116,7 +123,7 @@ internal class ChooseNoteViewModel(
             notesUseCase.mockData()
 
 
-            val data = notesUseCase.loadDocuments()
+            val data = notesUseCase.loadDocumentsForUser(getUserId())
             _documentsState.value = ResultData.Complete(data)
         }
     }
@@ -166,7 +173,7 @@ internal class ChooseNoteViewModel(
         _documentsState.value = ResultData.Loading()
 
         try {
-            val data = notesUseCase.loadDocuments()
+            val data = notesUseCase.loadDocumentsForUser(getUserId())
             _notesArrangement.value = NotesArrangement.fromString(notesConfig.arrangementPref())
             _documentsState.value = ResultData.Complete(data)
         } catch (e: Exception) {

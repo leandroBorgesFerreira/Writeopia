@@ -17,9 +17,9 @@ internal class NotesUseCase(
     private val notesConfig: NotesConfigurationRepository
 ) {
 
-    suspend fun loadDocuments(): List<Document> =
+    suspend fun loadDocumentsForUser(userId: String): List<Document> =
         notesConfig.getOrderPreference()
-            ?.let { orderBy -> documentRepository.loadDocuments(orderBy) }!!
+            ?.let { orderBy -> documentRepository.loadDocumentsForUser(orderBy, userId) }!!
 
     suspend fun duplicateDocuments(ids: List<String>) {
         notesConfig.getOrderPreference()?.let { orderBy ->
