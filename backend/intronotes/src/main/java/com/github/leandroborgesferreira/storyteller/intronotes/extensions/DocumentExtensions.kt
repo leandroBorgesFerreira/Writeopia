@@ -47,5 +47,6 @@ internal fun DocumentEntity.toAPi(): DocumentApi =
             )
         } ?: emptyList(),
         createdAt = this.createdAt?.let(Instant::ofEpochMilli) ?: Instant.now(),
-        lastUpdatedAt = this.lastUpdatedAt?.let(Instant::ofEpochMilli) ?: Instant.now()
+        lastUpdatedAt = this.lastUpdatedAt?.let(Instant::ofEpochMilli) ?: Instant.now(),
+        userId = ""
     )

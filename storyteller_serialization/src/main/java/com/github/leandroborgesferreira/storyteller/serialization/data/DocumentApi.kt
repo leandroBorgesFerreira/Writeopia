@@ -3,7 +3,6 @@ package com.github.leandroborgesferreira.storyteller.serialization.data
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.Instant
-import java.util.UUID
 
 @Serializable
 data class DocumentApi(
