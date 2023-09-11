@@ -118,7 +118,6 @@ class StoryTellerManager(
         get() = _positionsOnEdit.value.isNotEmpty()
 
 
-    //Todo: Evaluate if this should be extract to a specific class
     /**
      * Saves the document automatically as it is changed. It uses the [DocumentTracker] passed
      * in the constructor of [StoryTellerManager]

@@ -71,4 +71,7 @@ interface DocumentDao {
                 "$STORY_UNIT_ENTITY.position"
     )
     suspend fun loadDocumentWithContent(orderBy: String): Map<DocumentEntity, List<StoryStepEntity>>?
+
+    @Query("UPDATE $DOCUMENT_ENTITY set user_id = :newUserId WHERE user_id = :oldUserId")
+    suspend fun moveDocumentsToNewUser(oldUserId: String, newUserId: String)
 }

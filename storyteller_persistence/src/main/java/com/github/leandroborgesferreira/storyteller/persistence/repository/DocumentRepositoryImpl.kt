@@ -86,4 +86,8 @@ class DocumentRepositoryImpl(
     override suspend fun deleteByUserId(userId: String) {
         documentDao.deleteDocumentsByUserId(userId)
     }
+
+    override suspend fun moveDocumentsToNewUser(oldUserId: String, newUserId: String) {
+        documentDao.moveDocumentsToNewUser(oldUserId, newUserId)
+    }
 }
