@@ -26,6 +26,7 @@ https://github.com/leandroBorgesFerreira/StoryTeller/assets/10619102/cd68d513-77
 ## Quick start
 Add the project in your gradle file:
 ```
+implementation("com.github.leandroborgesferreira:storyteller-models:[version]")
 implementation("com.github.leandroborgesferreira:storyteller:[version]")
 implementation("com.github.leandroborgesferreira:storyteller-persistence:[version]")
 ```
