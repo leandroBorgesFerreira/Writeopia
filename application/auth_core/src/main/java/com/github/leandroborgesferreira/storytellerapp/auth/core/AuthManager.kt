@@ -25,17 +25,20 @@ class AuthManager(private val sharedPreferences: SharedPreferences) {
         }
     }
 
-    suspend fun getUser(): User? =
+    suspend fun getUser(): User =
         try {
             val userAttributes = Amplify.Auth.fetchUserAttributes()
 
+            val email = userAttributes
+                .find { userAttribute -> userAttribute.key == AuthUserAttributeKey.email() }
+                ?.value
+
             val user = User(
+                id = email ?: "",
                 name = userAttributes
                     .find { userAttribute -> userAttribute.key == AuthUserAttributeKey.name() }
                     ?.value ?: "",
-                email = userAttributes
-                    .find { userAttribute -> userAttribute.key == AuthUserAttributeKey.email() }
-                    ?.value ?: "",
+                email = email ?: "",
             )
 
             userAttributes
@@ -44,7 +47,7 @@ class AuthManager(private val sharedPreferences: SharedPreferences) {
 
             user
         } catch (e: Exception) {
-            null
+            User.disconnectedUser()
         }
 
     suspend fun isLoggedIn(): ResultData<Boolean> =

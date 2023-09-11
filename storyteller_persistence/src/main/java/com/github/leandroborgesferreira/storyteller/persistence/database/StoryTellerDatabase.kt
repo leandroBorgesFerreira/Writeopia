@@ -19,7 +19,7 @@ private const val DATABASE_NAME = "StoryTellerDatabase"
         DocumentEntity::class,
         StoryStepEntity::class,
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(IdListConverter::class, InstantConverter::class)

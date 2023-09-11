@@ -58,6 +58,7 @@ dependencies {
     implementation(project(":storyteller_serialization"))
     implementation(project(":application:resources"))
     implementation(project(":application:utils"))
+    implementation(project(":application:auth_core"))
     implementation(project(":application:common_ui"))
 
     implementation(libs.kotlinx.serialization.json)

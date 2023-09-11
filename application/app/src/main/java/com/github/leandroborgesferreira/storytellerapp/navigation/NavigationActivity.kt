@@ -16,6 +16,7 @@ import com.github.leandroborgesferreira.storyteller.video.VideoFrameConfig
 import com.github.leandroborgesferreira.storytellerapp.AndroidLogger
 import com.github.leandroborgesferreira.storytellerapp.account.navigation.accountMenuNavigation
 import com.github.leandroborgesferreira.storytellerapp.account.viewmodel.AccountMenuViewModel
+import com.github.leandroborgesferreira.storytellerapp.auth.core.di.AuthCoreInjection
 import com.github.leandroborgesferreira.storytellerapp.auth.di.AuthInjection
 import com.github.leandroborgesferreira.storytellerapp.auth.navigation.authNavigation
 import com.github.leandroborgesferreira.storytellerapp.auth.navigation.navigateToAuthMenu
@@ -55,10 +56,11 @@ fun NavigationGraph(
 
     val apiInjector =
         ApiInjector(apiLogger = AndroidLogger, bearerTokenHandler = AmplifyTokenHandler)
-    val authInjection = AuthInjection(sharedPreferences, database, apiInjector)
-    val editorInjector = EditorInjector(database)
+    val authCoreInjection = AuthCoreInjection(sharedPreferences)
+    val authInjection = AuthInjection(authCoreInjection, database, apiInjector)
+    val editorInjector = EditorInjector(database, authCoreInjection)
     val notesMenuInjection =
-        NotesMenuInjection(database, sharedPreferences, authInjection.provideAccountManager())
+        NotesMenuInjection(database, sharedPreferences, authCoreInjection.provideAccountManager())
 
     ApplicationComposeTheme {
         NavHost(navController = navController, startDestination = startDestination) {
@@ -77,7 +79,10 @@ fun NavigationGraph(
             )
 
             accountMenuNavigation(
-                accountMenuViewModel = AccountMenuViewModel(authInjection.provideAccountManager()),
+                accountMenuViewModel = AccountMenuViewModel(
+                    authCoreInjection.provideAccountManager(),
+                    authCoreInjection.provideAuthRepository()
+                ),
                 navController::navigateToAuthMenu
             )
         }

@@ -15,5 +15,6 @@ interface DocumentTracker {
      */
     suspend fun saveOnStoryChanges(
         documentEditionFlow: Flow<Pair<StoryState, DocumentInfo>>,
+        userId: String
     )
 }

@@ -1,10 +1,10 @@
 package com.github.leandroborgesferreira.storytellerapp.note_menu.data.usecase
 
-import android.content.Context
 import com.github.leandroborgesferreira.storytellerapp.note_menu.data.supermarketList
 import com.github.leandroborgesferreira.storytellerapp.note_menu.data.travelHistory
 import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
 import com.github.leandroborgesferreira.storyteller.models.document.Document
+import com.github.leandroborgesferreira.storytellerapp.auth.core.data.DISCONNECTED_USER_ID
 import java.time.Instant
 import java.util.UUID
 
@@ -17,9 +17,9 @@ internal class NotesUseCase(
     private val notesConfig: NotesConfigurationRepository
 ) {
 
-    suspend fun loadDocuments(): List<Document> =
+    suspend fun loadDocumentsForUser(userId: String): List<Document> =
         notesConfig.getOrderPreference()
-            ?.let { orderBy -> documentRepository.loadDocuments(orderBy) }!!
+            ?.let { orderBy -> documentRepository.loadDocumentsForUser(orderBy, userId) }!!
 
     suspend fun duplicateDocuments(ids: List<String>) {
         notesConfig.getOrderPreference()?.let { orderBy ->
@@ -39,14 +39,15 @@ internal class NotesUseCase(
         }
     }
 
-    suspend fun mockData(context: Context) {
+    suspend fun mockData() {
         documentRepository.saveDocument(
             Document(
                 id = UUID.randomUUID().toString(),
                 title = "Travel Note",
                 content = travelHistory(),
                 createdAt = Instant.now(),
-                lastUpdatedAt = Instant.now()
+                lastUpdatedAt = Instant.now(),
+                userId = DISCONNECTED_USER_ID
             )
         )
 
@@ -56,7 +57,8 @@ internal class NotesUseCase(
                 title = "Supermarket List",
                 content = supermarketList(),
                 createdAt = Instant.now(),
-                lastUpdatedAt = Instant.now()
+                lastUpdatedAt = Instant.now(),
+                userId = DISCONNECTED_USER_ID
             )
         )
     }

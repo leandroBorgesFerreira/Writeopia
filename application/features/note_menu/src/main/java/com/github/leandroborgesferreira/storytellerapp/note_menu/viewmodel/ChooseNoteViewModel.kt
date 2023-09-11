@@ -1,6 +1,5 @@
 package com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +8,7 @@ import com.github.leandroborgesferreira.storyteller.models.document.Document
 import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
 import com.github.leandroborgesferreira.storyteller.preview.PreviewParser
 import com.github.leandroborgesferreira.storytellerapp.auth.core.AuthManager
+import com.github.leandroborgesferreira.storytellerapp.auth.core.data.DISCONNECTED_USER_ID
 import com.github.leandroborgesferreira.storytellerapp.auth.core.data.User
 import com.github.leandroborgesferreira.storytellerapp.note_menu.data.usecase.NotesConfigurationRepository
 import com.github.leandroborgesferreira.storytellerapp.note_menu.data.usecase.NotesUseCase
@@ -33,6 +33,8 @@ internal class ChooseNoteViewModel(
     private val authManager: AuthManager,
     private val previewParser: PreviewParser = PreviewParser(),
 ) : ViewModel() {
+
+    private var localUserId: String? = null
 
     private val _selectedNotes = MutableStateFlow(setOf<String>())
     val hasSelectedNotes = _selectedNotes.map { selectedIds ->
@@ -64,6 +66,11 @@ internal class ChooseNoteViewModel(
     private val _editState = MutableStateFlow(false)
     val editState = _editState.asStateFlow()
 
+    private suspend fun getUserId(): String =
+        localUserId ?: authManager.getUser().id.also { id ->
+            localUserId = id
+        }
+
     fun requestDocuments(force: Boolean) {
         if (documentsState.value !is ResultData.Complete || force) {
             viewModelScope.launch(Dispatchers.IO) {
@@ -72,18 +79,18 @@ internal class ChooseNoteViewModel(
         }
     }
 
-    suspend fun requestUserAttributes() {
+    suspend fun requestUser() {
         try {
             _user.value = if (authManager.isLoggedIn().toBoolean()) {
                 val user = authManager.getUser()
 
-                if (user != null) {
+                if (user.id != DISCONNECTED_USER_ID) {
                     UserState.ConnectedUser(user)
                 } else {
                     UserState.UserNotReturned()
                 }
             } else {
-                UserState.DisconnectedUser()
+                UserState.DisconnectedUser(User.disconnectedUser())
             }
         } catch (error: AuthException) {
             Log.d("ChooseNoteViewModel", "Error fetching user attributes. Error: $error")
@@ -111,12 +118,12 @@ internal class ChooseNoteViewModel(
         _selectedNotes.value = emptySet()
     }
 
-    fun addMockData(context: Context) {
+    fun addMockData() {
         viewModelScope.launch(Dispatchers.IO) {
-            notesUseCase.mockData(context)
+            notesUseCase.mockData()
 
 
-            val data = notesUseCase.loadDocuments()
+            val data = notesUseCase.loadDocumentsForUser(getUserId())
             _documentsState.value = ResultData.Complete(data)
         }
     }
@@ -166,7 +173,7 @@ internal class ChooseNoteViewModel(
         _documentsState.value = ResultData.Loading()
 
         try {
-            val data = notesUseCase.loadDocuments()
+            val data = notesUseCase.loadDocumentsForUser(getUserId())
             _notesArrangement.value = NotesArrangement.fromString(notesConfig.arrangementPref())
             _documentsState.value = ResultData.Complete(data)
         } catch (e: Exception) {
@@ -180,7 +187,7 @@ sealed interface UserState<T> {
     class Loading<T> : UserState<T>
     class ConnectedUser<T>(val data: T) : UserState<T>
     class UserNotReturned<T> : UserState<T>
-    class DisconnectedUser<T> : UserState<T>
+    class DisconnectedUser<T>(val data: T) : UserState<T>
 }
 
 fun <T, R> UserState<T>.map(fn: (T) -> R): UserState<R> =
@@ -188,6 +195,6 @@ fun <T, R> UserState<T>.map(fn: (T) -> R): UserState<R> =
         is UserState.ConnectedUser -> UserState.ConnectedUser(fn(this.data))
         is UserState.Idle -> UserState.Idle()
         is UserState.Loading -> UserState.Loading()
-        is UserState.DisconnectedUser -> UserState.DisconnectedUser()
+        is UserState.DisconnectedUser -> UserState.DisconnectedUser(fn(this.data))
         is UserState.UserNotReturned -> UserState.UserNotReturned()
     }

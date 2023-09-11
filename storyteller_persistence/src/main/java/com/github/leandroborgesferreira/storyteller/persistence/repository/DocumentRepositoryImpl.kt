@@ -15,8 +15,8 @@ class DocumentRepositoryImpl(
     private val storyUnitDao: StoryUnitDao
 ) : DocumentRepository {
 
-    override suspend fun loadDocuments(orderBy: String): List<Document> =
-        documentDao.loadDocumentWithContent(orderBy)
+    override suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document> =
+        documentDao.loadDocumentsWithContentForUser(orderBy, userId)
             ?.map { (documentEntity, storyEntity) ->
                 val content = loadInnerSteps(storyEntity)
                 documentEntity.toModel(content)
@@ -25,7 +25,7 @@ class DocumentRepositoryImpl(
     override suspend fun loadDocumentById(id: String): Document? {
         val documentEntity = documentDao.loadDocumentById(id)
         val content = loadInnerSteps(storyUnitDao.loadDocumentContent(id))
-        return documentEntity.toModel(content)
+        return documentEntity?.toModel(content)
     }
 
     override suspend fun loadDocumentsById(ids: List<String>, orderBy: String): List<Document> =
@@ -39,7 +39,7 @@ class DocumentRepositoryImpl(
     override suspend fun saveDocument(document: Document) {
         saveDocumentMetadata(document)
 
-        document.content?.toEntity(document.id)?.let { data ->
+        document.content.toEntity(document.id).let { data ->
             storyUnitDao.deleteDocumentContent(documentId = document.id)
             storyUnitDao.insertStoryUnits(*data.toTypedArray())
         }
@@ -54,7 +54,8 @@ class DocumentRepositoryImpl(
     }
 
     override suspend fun deleteDocumentById(ids: Set<String>) {
-        documentDao.deleteDocuments(*ids.map(DocumentEntity::createById).toTypedArray())
+        // The user ID is not relevant in the way to delete documents
+        documentDao.deleteDocuments(*ids.map { DocumentEntity.createById(it, "") }.toTypedArray())
     }
 
     override suspend fun saveStoryStep(storyStep: StoryStep, position: Int, documentId: String) {
@@ -81,4 +82,12 @@ class DocumentRepositoryImpl(
                     entity.toModel()
                 }
             }
+
+    override suspend fun deleteByUserId(userId: String) {
+        documentDao.deleteDocumentsByUserId(userId)
+    }
+
+    override suspend fun moveDocumentsToNewUser(oldUserId: String, newUserId: String) {
+        documentDao.moveDocumentsToNewUser(oldUserId, newUserId)
+    }
 }

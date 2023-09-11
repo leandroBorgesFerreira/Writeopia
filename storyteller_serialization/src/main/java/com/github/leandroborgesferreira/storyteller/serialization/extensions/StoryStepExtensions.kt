@@ -61,6 +61,7 @@ fun Document.toApi(): DocumentApi =
         content = content.map { (position, story) -> story.toApi(position) },
         createdAt = createdAt,
         lastUpdatedAt = lastUpdatedAt,
+        userId = userId,
     )
 
 fun DocumentApi.toModel(): Document =
@@ -70,4 +71,5 @@ fun DocumentApi.toModel(): Document =
         content = content.associateBy { it.position }.mapValues { (_, story) -> story.toModel() },
         createdAt = createdAt,
         lastUpdatedAt = lastUpdatedAt,
+        userId = userId,
     )

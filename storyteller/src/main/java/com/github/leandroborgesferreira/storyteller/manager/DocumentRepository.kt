@@ -10,7 +10,7 @@ import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
  */
 interface DocumentRepository : DocumentUpdate {
 
-    suspend fun loadDocuments(orderBy: String): List<Document>
+    suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document>
 
     suspend fun loadDocumentById(id: String): Document?
 
@@ -33,4 +33,16 @@ interface DocumentRepository : DocumentUpdate {
     suspend fun deleteDocument(document: Document)
 
     suspend fun deleteDocumentById(ids: Set<String>)
+
+    /**
+     * Deleted all the documents of a User
+     */
+    suspend fun deleteByUserId(userId: String)
+
+    /**
+     * Moves all tickets from one user to another. Use this we would like to pass all the data of
+     * documents to another user. When the offline user becomes a new online user, all documents
+     * should be moved to the new online user.
+     */
+    suspend fun moveDocumentsToNewUser(oldUserId: String, newUserId: String)
 }

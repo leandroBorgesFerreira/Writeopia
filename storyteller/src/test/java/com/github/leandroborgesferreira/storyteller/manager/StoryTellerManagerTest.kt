@@ -47,7 +47,7 @@ class StoryTellerManagerTest {
 
     @Test
     fun `a new story should start correctly`() {
-        val manager = StoryTellerManager(dispatcher = Dispatchers.Main)
+        val manager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
 
         manager.newStory()
 
@@ -68,10 +68,10 @@ class StoryTellerManagerTest {
 
     @Test
     fun `one space has to be added between steps`() = runTest {
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
         val oldSize = messagesRepo.history().size
 
-        storyManager.initDocument(Document(content = messagesRepo.history()))
+        storyManager.initDocument(Document(content = messagesRepo.history(), userId = ""))
 
         val newStory = storyManager.currentStory.value.stories
 
@@ -83,9 +83,10 @@ class StoryTellerManagerTest {
         val input = MapStoryData.singleCheckItem()
         val checkItem = input[0]
 
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main).apply {
-            initDocument(Document(content = input))
-        }
+        val storyManager =
+            StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" }).apply {
+                initDocument(Document(content = input, userId = ""))
+            }
 
         val currentStory = storyManager.currentStory.value.stories
 
@@ -106,8 +107,8 @@ class StoryTellerManagerTest {
 
     @Test
     fun `merge request should work`() = runTest {
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-        storyManager.initDocument(Document(content = imagesInLineRepo.history()))
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
+        storyManager.initDocument(Document(content = imagesInLineRepo.history(), userId = ""))
 
         val currentStory = storyManager.currentStory.value.stories
         val initialSize = currentStory.size
@@ -144,8 +145,8 @@ class StoryTellerManagerTest {
 
     @Test
     fun `merge request should work2`() = runTest {
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-        storyManager.initDocument(Document(content = imagesInLineRepo.history()))
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
+        storyManager.initDocument(Document(content = imagesInLineRepo.history(), userId = ""))
 
         val currentStory = storyManager.currentStory.value.stories
         val initialSize = currentStory.size
@@ -175,8 +176,8 @@ class StoryTellerManagerTest {
 
     @Test
     fun `multiple merge requests should work`() = runTest {
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-        storyManager.initDocument(Document(content = imagesInLineRepo.history()))
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
+        storyManager.initDocument(Document(content = imagesInLineRepo.history(), userId = ""))
 
         val currentStory = storyManager.currentStory.value.stories
         val initialSize = currentStory.size
@@ -240,8 +241,8 @@ class StoryTellerManagerTest {
 
     @Test
     fun `it should be possible to merge an image inside a message group`() = runTest {
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-        storyManager.initDocument(Document(content = imageGroupRepo.history()))
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
+        storyManager.initDocument(Document(content = imageGroupRepo.history(), userId = ""))
 
         val currentStory = storyManager.currentStory.value.stories
         val initialSize = currentStory.size
@@ -271,8 +272,8 @@ class StoryTellerManagerTest {
 
     @Test
     fun `it should be possible to merge an image outside a message group`() = runTest {
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-        storyManager.initDocument(Document(content = imageGroupRepo.history()))
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
+        storyManager.initDocument(Document(content = imageGroupRepo.history(), userId = ""))
         val positionTo = 2
         val positionFrom = 0
 
@@ -305,8 +306,8 @@ class StoryTellerManagerTest {
     @Test
     @Ignore
     fun `when moving outside of a group, the parent Id should be null now`() = runTest {
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-        storyManager.initDocument(Document(content = imageGroupRepo.history()))
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
+        storyManager.initDocument(Document(content = imageGroupRepo.history(), userId = ""))
 
         val currentStory = storyManager.currentStory.value.stories
 
@@ -328,7 +329,7 @@ class StoryTellerManagerTest {
 
         assertEquals(
             "The last StoryUnit should be an image.",
-            StoryTypes.IMAGE,
+            StoryTypes.IMAGE.type,
             lastContentStep.type
         )
         assertEquals(
@@ -354,8 +355,8 @@ class StoryTellerManagerTest {
         }
 
 
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-        storyManager.initDocument(Document(content = simpleMessagesRepo.history()))
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
+        storyManager.initDocument(Document(content = simpleMessagesRepo.history(), userId = ""))
 
         val positionFrom = 0
         val positionTo = 3
@@ -380,9 +381,9 @@ class StoryTellerManagerTest {
             override suspend fun history(): Map<Int, StoryStep> = MapStoryData.simpleMessages()
         }
 
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
 
-        storyManager.initDocument(Document(content = simpleMessagesRepo.history()))
+        storyManager.initDocument(Document(content = simpleMessagesRepo.history(), userId = ""))
 
         val positionFrom = 2
         val positionTo = 5
@@ -402,8 +403,8 @@ class StoryTellerManagerTest {
 
     @Test
     fun `deleting and leave a single element in a group destroys the group`() = runTest {
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-        storyManager.initDocument(Document(content = imageGroupRepo.history()))
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
+        storyManager.initDocument(Document(content = imageGroupRepo.history(), userId = ""))
         val groupPosition = 0
 
         val currentStory = storyManager.currentStory.value.stories
@@ -441,8 +442,8 @@ class StoryTellerManagerTest {
 
     @Test
     fun `when deleting a message it should not leave consecutive spaces`() = runTest {
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-        storyManager.initDocument(Document(content = messagesRepo.history()))
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
+        storyManager.initDocument(Document(content = messagesRepo.history(), userId = ""))
 
         storyManager.onDelete(
             Action.DeleteStory(
@@ -464,8 +465,8 @@ class StoryTellerManagerTest {
     @Test
     fun `when a line break happens, a new story unit with the same type should be created - simple`() =
         runTest {
-            val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-            storyManager.initDocument(Document(content = singleMessageRepo.history()))
+            val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
+            storyManager.initDocument(Document(content = singleMessageRepo.history(), userId = ""))
 
             val stories = storyManager.currentStory.value.stories
             val initialSize = stories.size
@@ -483,8 +484,8 @@ class StoryTellerManagerTest {
     @Test
     fun `when a line break happens, a new story unit with the same type should be created - complex`() =
         runTest {
-            val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-            storyManager.initDocument(Document(content = messagesRepo.history()))
+            val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
+            storyManager.initDocument(Document(content = messagesRepo.history(), userId = ""))
 
             val stories = storyManager.currentStory.value.stories
             val initialSize = stories.size
@@ -511,8 +512,8 @@ class StoryTellerManagerTest {
          * 2 - Move one image away.
          * - Check that the correct image was moved correctly
          */
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-        storyManager.initDocument(Document(content = complexMessagesRepository.history()))
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
+        storyManager.initDocument(Document(content = complexMessagesRepository.history(), userId = ""))
 
         val stories = storyManager.currentStory.value.stories
 
@@ -579,10 +580,10 @@ class StoryTellerManagerTest {
 
     @Test
     fun `it should be possible to add content and undo it - 1 unit`() {
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
         val input = MapStoryData.singleCheckItem()
 
-        storyManager.initDocument(Document(content = input))
+        storyManager.initDocument(Document(content = input, userId = ""))
         val currentStory = storyManager.currentStory.value.stories
 
         storyManager.onLineBreak(Action.LineBreak(input[0]!!, 0))
@@ -594,10 +595,10 @@ class StoryTellerManagerTest {
 
     @Test
     fun `it should be possible to add content and undo it - many units`() = runTest {
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
         val input = MapStoryData.singleCheckItem()
 
-        storyManager.initDocument(Document(content = input))
+        storyManager.initDocument(Document(content = input, userId = ""))
         val currentStory = storyManager.currentStory.value.stories
 
         storyManager.onLineBreak(Action.LineBreak(input[0]!!, 0))
@@ -629,11 +630,11 @@ class StoryTellerManagerTest {
 
     @Test
     fun `spaces should be correct in the story`() {
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
         val input = MapStoryData.singleCheckItem()
 
         storyManager.run {
-            initDocument(Document(content = input))
+            initDocument(Document(content = input, userId = ""))
 
             onLineBreak(Action.LineBreak(input[0]!!, 0))
             onLineBreak(Action.LineBreak(input[0]!!, 2))
@@ -662,13 +663,13 @@ class StoryTellerManagerTest {
 
     @Test
     fun `initializing the stories 2 times should not add the last story unit twice`() = runTest {
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-        storyManager.initDocument(Document(content = complexMessagesRepository.history()))
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
+        storyManager.initDocument(Document(content = complexMessagesRepository.history(), userId = ""))
 
         val stories = storyManager.currentStory.value.stories
         assertEquals(StoryTypes.LARGE_SPACE.type, stories.values.last().type)
 
-        storyManager.initDocument(Document(content = stories))
+        storyManager.initDocument(Document(content = stories, userId = ""))
 
         val newStories = storyManager.currentStory.value.stories
         val storyList = newStories.values.toList()
@@ -679,8 +680,8 @@ class StoryTellerManagerTest {
 
     @Test
     fun `it should be possible to select messages`() = runTest {
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-        storyManager.initDocument(Document(content = complexMessagesRepository.history()))
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
+        storyManager.initDocument(Document(content = complexMessagesRepository.history(), userId = ""))
 
         storyManager.onSelected(true, 1)
         storyManager.onSelected(true, 3)
@@ -691,8 +692,8 @@ class StoryTellerManagerTest {
 
     @Test
     fun `it should be possible to delete selected messages`() = runTest {
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-        storyManager.initDocument(Document(content = messagesRepo.history()))
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
+        storyManager.initDocument(Document(content = messagesRepo.history(), userId = ""))
 
         val selectionCount = 3
         val selections = buildList {
@@ -732,8 +733,8 @@ class StoryTellerManagerTest {
 
     @Test
     fun `it should be possible to undo bulk deletion`() = runTest {
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-        storyManager.initDocument(Document(content = messagesRepo.history()))
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
+        storyManager.initDocument(Document(content = messagesRepo.history(), userId = ""))
 
         val selectionCount = 3
         val selections = buildList {
@@ -775,8 +776,8 @@ class StoryTellerManagerTest {
 
     @Test
     fun `when clicking in the last position, a message should be added at the bottom`() = runTest {
-        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main)
-        storyManager.initDocument(Document(content = imagesInLineRepo.history()))
+        val storyManager = StoryTellerManager(dispatcher = Dispatchers.Main, userId = { "" })
+        storyManager.initDocument(Document(content = imagesInLineRepo.history(), userId = ""))
 
         storyManager.clickAtTheEnd()
 
