@@ -3,8 +3,9 @@ package com.github.leandroborgesferreira.storytellerapp.auth.menu
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.leandroborgesferreira.storytellerapp.auth.USER_OFFLINE
+import com.github.leandroborgesferreira.storytellerapp.auth.core.utils.USER_OFFLINE
 import com.github.leandroborgesferreira.storytellerapp.auth.core.AuthManager
+import com.github.leandroborgesferreira.storytellerapp.auth.core.repository.AuthRepository
 import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import com.github.leandroborgesferreira.storytellerapp.utils_module.map
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 
 internal class AuthMenuViewModel(
     private val authManager: AuthManager,
-    private val sharedPreferences: SharedPreferences,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _isConnected = MutableStateFlow<ResultData<Boolean>>(ResultData.Idle())
@@ -25,12 +26,12 @@ internal class AuthMenuViewModel(
             _isConnected.value = ResultData.Loading()
             _isConnected.value =
                 authManager.isLoggedIn().map { isConnected ->
-                    isConnected || sharedPreferences.getBoolean(USER_OFFLINE, false)
+                    isConnected || authRepository.isUserOfflineByChoice()
                 }
         }
     }
 
     fun saveUserChoiceOffline() {
-        sharedPreferences.edit().putBoolean(USER_OFFLINE, true).apply()
+        authRepository.saveUserChoiceOffline()
     }
 }

@@ -10,6 +10,7 @@ import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTe
 import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepositoryImpl
 import com.github.leandroborgesferreira.storytellerapp.auth.core.AuthManager
 import com.github.leandroborgesferreira.storytellerapp.auth.core.di.AuthCoreInjection
+import com.github.leandroborgesferreira.storytellerapp.auth.core.repository.AuthRepository
 import com.github.leandroborgesferreira.storytellerapp.auth.intronotes.IntroNotesUseCase
 import com.github.leandroborgesferreira.storytellerapp.auth.login.LoginViewModel
 import com.github.leandroborgesferreira.storytellerapp.auth.menu.AuthMenuViewModel
@@ -19,7 +20,6 @@ class AuthInjection(
     private val authCoreInjection: AuthCoreInjection,
     private val database: StoryTellerDatabase,
     private val apiInjector: ApiInjector,
-    private val sharedPreferences: SharedPreferences
 ) {
 
     private fun provideDocumentRepository(): DocumentRepository =
@@ -51,7 +51,8 @@ class AuthInjection(
 
     @Composable
     internal fun provideAuthMenuViewModel(
-        authManager: AuthManager = authCoreInjection.provideAccountManager()
-    ): AuthMenuViewModel = viewModel { AuthMenuViewModel(authManager, sharedPreferences) }
+        authManager: AuthManager = authCoreInjection.provideAccountManager(),
+        authRepository: AuthRepository = authCoreInjection.provideAuthRepository(),
+    ): AuthMenuViewModel = viewModel { AuthMenuViewModel(authManager, authRepository) }
 
 }

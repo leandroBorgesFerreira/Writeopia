@@ -57,7 +57,7 @@ fun NavigationGraph(
     val apiInjector =
         ApiInjector(apiLogger = AndroidLogger, bearerTokenHandler = AmplifyTokenHandler)
     val authCoreInjection = AuthCoreInjection(sharedPreferences)
-    val authInjection = AuthInjection(authCoreInjection, database, apiInjector, sharedPreferences)
+    val authInjection = AuthInjection(authCoreInjection, database, apiInjector)
     val editorInjector = EditorInjector(database, authCoreInjection)
     val notesMenuInjection =
         NotesMenuInjection(database, sharedPreferences, authCoreInjection.provideAccountManager())
@@ -80,7 +80,8 @@ fun NavigationGraph(
 
             accountMenuNavigation(
                 accountMenuViewModel = AccountMenuViewModel(
-                    authCoreInjection.provideAccountManager()
+                    authCoreInjection.provideAccountManager(),
+                    authCoreInjection.provideAuthRepository()
                 ),
                 navController::navigateToAuthMenu
             )
