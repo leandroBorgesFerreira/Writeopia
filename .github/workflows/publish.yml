@@ -17,7 +17,7 @@ jobs:
           distribution: adopt
           java-version: '17'
       - name: Release build
-        run: ./gradlew assembleRelease --scan
+        run: ./gradlew assemble --scan
       - name: Publish to MavenCentral
         run: ./gradlew publishReleasePublicationToSonatypeRepository --max-workers 1 --scan
         env:

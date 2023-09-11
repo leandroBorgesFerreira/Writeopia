@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storytellerapp.auth.register
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -61,6 +62,7 @@ fun RegisterScreen(
             is ResultData.Complete -> {
                 if (register.data) {
                     LaunchedEffect(key1 = "navigation") {
+                        Log.d("RegisterScreen", "onRegisterSuccess()")
                         onRegisterSuccess()
                     }
                 } else {

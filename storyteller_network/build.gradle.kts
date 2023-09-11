@@ -4,6 +4,15 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.jvm)
 }
 
+
+rootProject.extra.apply {
+    set("PUBLISH_GROUP_ID", "com.github.leandroborgesferreira")
+    set("PUBLISH_ARTIFACT_ID", "storyteller-network")
+    set("PUBLISH_VERSION", libs.versions.storyteller.get())
+}
+
+apply(from = "${rootDir}/scripts/publish-module.gradle")
+
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
