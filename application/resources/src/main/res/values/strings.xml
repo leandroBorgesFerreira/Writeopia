@@ -31,8 +31,8 @@
     <string name="enter">Enter</string>
     <string name="content_description_visibility_on">Visible</string>
     <string name="content_description_visibility_off">Not Visible</string>
-    <string name="sign_up">Sign up</string>
-    <string name="sign_in_with_email">Sign in with email</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up_with_email">Sign up with email</string>
     <string name="enter_without_register">Enter without register</string>
     <string name="register">Register</string>
 </resources>

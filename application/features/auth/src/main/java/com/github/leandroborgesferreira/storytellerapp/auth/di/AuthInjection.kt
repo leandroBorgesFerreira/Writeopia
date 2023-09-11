@@ -1,5 +1,6 @@
 package com.github.leandroborgesferreira.storytellerapp.auth.di
 
+import android.content.SharedPreferences
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
@@ -17,7 +18,8 @@ import com.github.leandroborgesferreira.storytellerapp.auth.register.RegisterVie
 class AuthInjection(
     private val authCoreInjection: AuthCoreInjection,
     private val database: StoryTellerDatabase,
-    private val apiInjector: ApiInjector
+    private val apiInjector: ApiInjector,
+    private val sharedPreferences: SharedPreferences
 ) {
 
     private fun provideDocumentRepository(): DocumentRepository =
@@ -50,6 +52,6 @@ class AuthInjection(
     @Composable
     internal fun provideAuthMenuViewModel(
         authManager: AuthManager = authCoreInjection.provideAccountManager()
-    ): AuthMenuViewModel = viewModel { AuthMenuViewModel(authManager) }
+    ): AuthMenuViewModel = viewModel { AuthMenuViewModel(authManager, sharedPreferences) }
 
 }

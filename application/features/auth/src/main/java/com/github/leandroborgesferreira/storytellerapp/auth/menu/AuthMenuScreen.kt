@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun AuthMenuScreen(
     isConnectedState: StateFlow<ResultData<Boolean>>,
+    saveUserChoiceOffline: () -> Unit,
     navigateToLogin: () -> Unit,
     navigateToRegister: () -> Unit,
     navigateToApp: () -> Unit
@@ -42,12 +43,22 @@ fun AuthMenuScreen(
                     navigateToApp()
                 }
             } else {
-                AuthMenuContentScreen(navigateToLogin, navigateToRegister, navigateToApp)
+                AuthMenuContentScreen(
+                    navigateToLogin,
+                    navigateToRegister,
+                    navigateToApp,
+                    saveUserChoiceOffline
+                )
             }
         }
 
         is ResultData.Error -> {
-            AuthMenuContentScreen(navigateToLogin, navigateToRegister, navigateToApp)
+            AuthMenuContentScreen(
+                navigateToLogin,
+                navigateToRegister,
+                navigateToApp,
+                saveUserChoiceOffline
+            )
         }
 
         is ResultData.Idle, is ResultData.Loading -> {
@@ -67,6 +78,7 @@ private fun LoadingScreen() {
 private fun AuthMenuContentScreen(
     navigateToLogin: () -> Unit,
     navigateToRegister: () -> Unit,
+    saveUserChoiceOffline: () -> Unit,
     navigateToApp: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -113,7 +125,7 @@ private fun AuthMenuContentScreen(
                 onClick = navigateToLogin
             ) {
                 Text(
-                    text = stringResource(id = R.string.sign_up),
+                    text = stringResource(id = R.string.sign_in),
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
@@ -128,7 +140,7 @@ private fun AuthMenuContentScreen(
                 onClick = navigateToRegister
             ) {
                 Text(
-                    text = stringResource(id = R.string.sign_in_with_email),
+                    text = stringResource(id = R.string.sign_up_with_email),
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
@@ -140,7 +152,10 @@ private fun AuthMenuContentScreen(
                     .padding(horizontal = 24.dp)
                     .background(MaterialTheme.colorScheme.primary)
                     .fillMaxWidth(),
-                onClick = navigateToApp
+                onClick = {
+                    saveUserChoiceOffline()
+                    navigateToApp()
+                }
             ) {
                 Text(
                     text = stringResource(id = R.string.enter_without_register),
@@ -160,7 +175,8 @@ fun AuthMenuContentScreenPreview() {
         AuthMenuContentScreen(
             navigateToLogin = {},
             navigateToRegister = {},
-            navigateToApp = {}
+            navigateToApp = {},
+            saveUserChoiceOffline = {}
         )
     }
 }

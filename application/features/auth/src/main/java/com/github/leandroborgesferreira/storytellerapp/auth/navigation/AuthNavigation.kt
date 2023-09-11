@@ -17,6 +17,8 @@ fun NavGraphBuilder.authNavigation(
     authInjection: AuthInjection,
     toAppNavigation: () -> Unit
 ) {
+
+
     navigation(
         startDestination = Destinations.AUTH_MENU.id,
         route = Destinations.AUTH_MENU_INNER_NAVIGATION.id
@@ -29,10 +31,11 @@ fun NavGraphBuilder.authNavigation(
             })
 
             AuthMenuScreen(
+                isConnectedState = authMenuViewModel.isConnected,
                 navigateToLogin = navController::navigateAuthLogin,
+                saveUserChoiceOffline = authMenuViewModel::saveUserChoiceOffline,
                 navigateToRegister = navController::navigateAuthRegister,
-                navigateToApp = toAppNavigation,
-                isConnectedState = authMenuViewModel.isConnected
+                navigateToApp = toAppNavigation
             )
         }
 
