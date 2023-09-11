@@ -33,4 +33,9 @@ interface DocumentRepository : DocumentUpdate {
     suspend fun deleteDocument(document: Document)
 
     suspend fun deleteDocumentById(ids: Set<String>)
+
+    /**
+     * Deleted all the documents of a User
+     */
+    suspend fun deleteByUserId(userId: String)
 }

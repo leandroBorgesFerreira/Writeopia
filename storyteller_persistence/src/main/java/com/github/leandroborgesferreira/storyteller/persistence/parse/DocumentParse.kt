@@ -10,6 +10,7 @@ fun DocumentEntity.toModel(content: Map<Int, StoryStep> = emptyMap()) = Document
     content = content,
     createdAt = createdAt,
     lastUpdatedAt = lastUpdatedAt,
+    userId = userId
 )
 
 fun Document.toEntity() = DocumentEntity(
@@ -17,4 +18,5 @@ fun Document.toEntity() = DocumentEntity(
     title = title,
     createdAt = createdAt,
     lastUpdatedAt = lastUpdatedAt,
+    userId = userId,
 )

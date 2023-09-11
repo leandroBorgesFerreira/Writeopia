@@ -62,7 +62,7 @@ internal fun ChooseNoteScreen(
 ) {
     LaunchedEffect(key1 = "refresh", block = {
         chooseNoteViewModel.requestDocuments(false)
-        chooseNoteViewModel.requestUserAttributes()
+        chooseNoteViewModel.requestUser()
     })
 
     val hasSelectedNotes by chooseNoteViewModel.hasSelectedNotes.collectAsStateWithLifecycle()

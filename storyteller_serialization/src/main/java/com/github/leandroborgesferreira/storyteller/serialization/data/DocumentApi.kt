@@ -12,4 +12,5 @@ data class DocumentApi(
     val content: List<StoryStepApi> = emptyList(),
     @Contextual val createdAt: Instant = Instant.now(),
     @Contextual val lastUpdatedAt: Instant = Instant.now(),
+    val userId: String,
 )

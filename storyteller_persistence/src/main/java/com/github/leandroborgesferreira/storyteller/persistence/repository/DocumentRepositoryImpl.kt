@@ -54,7 +54,8 @@ class DocumentRepositoryImpl(
     }
 
     override suspend fun deleteDocumentById(ids: Set<String>) {
-        documentDao.deleteDocuments(*ids.map(DocumentEntity::createById).toTypedArray())
+        // The user ID is not relevant in the way to delete documents
+        documentDao.deleteDocuments(*ids.map { DocumentEntity.createById(it, "") }.toTypedArray())
     }
 
     override suspend fun saveStoryStep(storyStep: StoryStep, position: Int, documentId: String) {
@@ -81,4 +82,8 @@ class DocumentRepositoryImpl(
                     entity.toModel()
                 }
             }
+
+    override suspend fun deleteByUserId(userId: String) {
+        documentDao.deleteDocumentsByUserId(userId)
+    }
 }

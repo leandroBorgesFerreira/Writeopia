@@ -22,6 +22,9 @@ interface DocumentDao {
     @Delete
     suspend fun deleteDocuments(vararg documents: DocumentEntity)
 
+    @Query("DELETE FROM $DOCUMENT_ENTITY WHERE user_id = :userId")
+    suspend fun deleteDocumentsByUserId(userId: String)
+
     @Query("SELECT * FROM $DOCUMENT_ENTITY")
     suspend fun loadAllDocuments(): List<DocumentEntity>
 

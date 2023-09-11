@@ -23,7 +23,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -194,8 +193,6 @@ private fun DocumentItem(
 private fun MockDataScreen(
     chooseNoteViewModel: ChooseNoteViewModel,
 ) {
-    val context = LocalContext.current
-
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.align(Alignment.Center),
@@ -206,7 +203,7 @@ private fun MockDataScreen(
                 text = stringResource(R.string.you_dont_have_notes)
             )
 
-            Button(onClick = { chooseNoteViewModel.addMockData(context) }) {
+            Button(onClick = { chooseNoteViewModel.addMockData() }) {
                 Text(text = stringResource(R.string.add_sample_notes))
             }
         }

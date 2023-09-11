@@ -55,8 +55,11 @@ class StoryTellerManager(
         contentHandler,
         movementHandler
     ),
-    private val documentTracker: DocumentTracker? = null
+    private val documentTracker: DocumentTracker? = null,
+    private val userId: suspend () -> String
 ) : BackstackHandler, BackstackInform by backStackManager {
+
+    private var localUserId: String? = null
 
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
     val scrollToPosition: StateFlow<Int?> = _scrollToPosition.asStateFlow()
@@ -85,6 +88,9 @@ class StoryTellerManager(
             content = state.stories,
             createdAt = info.createdAt,
             lastUpdatedAt = info.lastUpdatedAt,
+            userId = localUserId ?: userId.invoke().also { id ->
+                localUserId = id
+            }
         )
     }
 
@@ -103,6 +109,11 @@ class StoryTellerManager(
         DrawState(toDrawStories, focus)
     }
 
+    private suspend fun getUserId(): String =
+        localUserId ?: userId.invoke().also { id ->
+            localUserId = id
+        }
+
     private val isOnSelection: Boolean
         get() = _positionsOnEdit.value.isNotEmpty()
 
@@ -115,7 +126,7 @@ class StoryTellerManager(
     fun saveOnStoryChanges() {
         coroutineScope.launch(dispatcher) {
             if (documentTracker != null) {
-                documentTracker.saveOnStoryChanges(_documentEditionState)
+                documentTracker.saveOnStoryChanges(_documentEditionState, getUserId())
             } else {
                 throw IllegalStateException(
                     "saveOnStoryChanges called without providing a DocumentTracker for " +

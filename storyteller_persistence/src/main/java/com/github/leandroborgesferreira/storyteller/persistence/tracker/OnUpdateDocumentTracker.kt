@@ -20,7 +20,8 @@ class OnUpdateDocumentTracker(
 ) : DocumentTracker {
 
     override suspend fun saveOnStoryChanges(
-        documentEditionFlow: Flow<Pair<StoryState, DocumentInfo>>
+        documentEditionFlow: Flow<Pair<StoryState, DocumentInfo>>,
+        userId: String
     ) {
         documentEditionFlow.collectLatest { (storyState, documentInfo) ->
             when (val lastEdit = storyState.lastEdit) {
@@ -46,6 +47,7 @@ class OnUpdateDocumentTracker(
                             title = titleFromContent ?: documentInfo.title,
                             createdAt = documentInfo.createdAt,
                             lastUpdatedAt = Instant.now(),
+                            userId = userId
                         )
                     )
                 }
@@ -66,6 +68,7 @@ class OnUpdateDocumentTracker(
                         content = documentFilter.removeTypesFromDocument(storyState.stories),
                         createdAt = documentInfo.createdAt,
                         lastUpdatedAt = Instant.now(),
+                        userId = userId
                     )
 
                     documentUpdate.saveDocument(document)
@@ -85,6 +88,7 @@ class OnUpdateDocumentTracker(
                             title = titleFromContent ?: documentInfo.title,
                             createdAt = documentInfo.createdAt,
                             lastUpdatedAt = Instant.now(),
+                            userId = userId
                         )
                     )
 

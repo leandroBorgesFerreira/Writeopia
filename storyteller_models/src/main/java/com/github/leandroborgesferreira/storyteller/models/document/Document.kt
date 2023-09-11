@@ -10,4 +10,5 @@ data class Document(
     val content: Map<Int, StoryStep> = emptyMap(),
     val createdAt: Instant = Instant.now(),
     val lastUpdatedAt: Instant = Instant.now(),
+    val userId: String,
 )
