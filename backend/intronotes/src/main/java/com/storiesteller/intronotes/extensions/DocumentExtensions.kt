@@ -36,7 +36,7 @@ internal fun DocumentEntity.toAPi(): DocumentApi =
         content = content?.map { storyStepEntity ->
             StoryStepApi(
                 id = storyStepEntity.id!!,
-                type = com.storiesteller.intronotes.model.StoryTypes.fromName(storyStepEntity.type!!).type.toApi(),
+                type = StoryTypes.fromName(storyStepEntity.type!!).type.toApi(),
                 parentId = storyStepEntity.parentId,
                 url = storyStepEntity.url,
                 path = storyStepEntity.path,
@@ -48,5 +48,5 @@ internal fun DocumentEntity.toAPi(): DocumentApi =
         } ?: emptyList(),
         createdAt = this.createdAt?.let(Instant::ofEpochMilli) ?: Instant.now(),
         lastUpdatedAt = this.lastUpdatedAt?.let(Instant::ofEpochMilli) ?: Instant.now(),
-        userId = ""
+        userId = this.userId ?: ""
     )

@@ -2,6 +2,7 @@ package com.storiesteller.intronotes.integrationTests
 
 import com.storiesteller.intronotes.dynamo.introNotesTable
 import com.storiesteller.intronotes.persistence.repository.DynamoIntroNotesRepository
+import com.storiesteller.intronotes.persistence.repository.INTRO_NOTES_TABLE
 import com.storiesteller.intronotes.unit.utils.Samples
 import com.storiesteller.intronotes.write.writeIntroNotes
 import org.junit.Assert.*
@@ -10,6 +11,12 @@ import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
+import software.amazon.awssdk.services.dynamodb.model.AttributeDefinition
+import software.amazon.awssdk.services.dynamodb.model.CreateTableRequest
+import software.amazon.awssdk.services.dynamodb.model.KeySchemaElement
+import software.amazon.awssdk.services.dynamodb.model.KeyType
+import software.amazon.awssdk.services.dynamodb.model.ProvisionedThroughput
+import software.amazon.awssdk.services.dynamodb.model.ScalarAttributeType
 import java.net.URI
 
 class WriteNotesKtTest {
@@ -31,7 +38,7 @@ class WriteNotesKtTest {
 
         val input = Samples.sampleEntity(id, title)
         val table = introNotesTable(
-            tableName = "IntroNotesLocal",
+            tableName = INTRO_NOTES_TABLE,
             dynamoClient = dynamoDbClient
         )
 
@@ -43,7 +50,6 @@ class WriteNotesKtTest {
         )
 
         assertEquals(200, result.statusCode)
-
         val note = DynamoIntroNotesRepository.readNote(id, table)
 
         assertEquals(id, note.id)
