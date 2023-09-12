@@ -1,16 +1,16 @@
-package com.storiesteller.sdkapp.auth.navigation
+package com.github.leandroborgesferreira.storytellerapp.auth.navigation
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.storiesteller.sdkapp.auth.di.AuthInjection
-import com.storiesteller.sdkapp.auth.login.LoginScreenBinding
-import com.storiesteller.sdkapp.auth.menu.AuthMenuScreen
-import com.storiesteller.sdkapp.auth.menu.AuthMenuViewModel
-import com.storiesteller.sdkapp.auth.register.RegisterScreen
-import com.storiesteller.sdkapp.utils_module.Destinations
+import com.github.leandroborgesferreira.storytellerapp.auth.di.AuthInjection
+import com.github.leandroborgesferreira.storytellerapp.auth.login.LoginScreenBinding
+import com.github.leandroborgesferreira.storytellerapp.auth.menu.AuthMenuScreen
+import com.github.leandroborgesferreira.storytellerapp.auth.menu.AuthMenuViewModel
+import com.github.leandroborgesferreira.storytellerapp.auth.register.RegisterScreen
+import com.github.leandroborgesferreira.storytellerapp.utils_module.Destinations
 
 fun NavGraphBuilder.authNavigation(
     navController: NavController,

@@ -1,4 +1,4 @@
-package com.storiesteller.sdkapp.auth.intronotes
+package com.github.leandroborgesferreira.storytellerapp.auth.intronotes
 
 import com.storiesteller.sdk.manager.DocumentRepository
 import com.storiesteller.sdk.network.notes.NotesApi

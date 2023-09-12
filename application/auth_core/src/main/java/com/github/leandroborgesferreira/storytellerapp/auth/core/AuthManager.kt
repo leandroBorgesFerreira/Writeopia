@@ -1,4 +1,4 @@
-package com.storiesteller.sdkapp.auth.core
+package com.github.leandroborgesferreira.storytellerapp.auth.core
 
 import android.content.SharedPreferences
 import android.util.Log
@@ -9,7 +9,7 @@ import com.amplifyframework.auth.cognito.result.AWSCognitoAuthSignOutResult
 import com.amplifyframework.auth.options.AuthSignUpOptions
 import com.amplifyframework.kotlin.core.Amplify
 import com.github.leandroborgesferreira.storytellerapp.auth.core.data.User
-import com.storiesteller.sdkapp.utils_module.ResultData
+import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 
 private const val ANONYMOUS_USER_KEY = "ANONYMOUS_USER_KEY"
 

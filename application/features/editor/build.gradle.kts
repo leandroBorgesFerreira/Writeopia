@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.storiesteller.sdkapp.editor"
+    namespace = "com.storiesteller.editor"
     compileSdk = 34
 
     defaultConfig {

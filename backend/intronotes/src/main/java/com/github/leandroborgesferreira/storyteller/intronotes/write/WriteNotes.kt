@@ -1,10 +1,10 @@
-package com.storiesteller.sdk.intronotes.write
+package com.github.leandroborgesferreira.storyteller.intronotes.write
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
-import com.storiesteller.sdk.intronotes.dynamo.introNotesTable
-import com.storiesteller.sdk.intronotes.input.ParseInput
-import com.storiesteller.sdk.intronotes.persistence.entity.DocumentEntity
-import com.storiesteller.sdk.intronotes.persistence.repository.DynamoIntroNotesRepository
+import com.github.leandroborgesferreira.storyteller.intronotes.dynamo.introNotesTable
+import com.github.leandroborgesferreira.storyteller.intronotes.input.ParseInput
+import com.github.leandroborgesferreira.storyteller.intronotes.persistence.entity.DocumentEntity
+import com.github.leandroborgesferreira.storyteller.intronotes.persistence.repository.DynamoIntroNotesRepository
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable
 
 fun writeIntroNotes(

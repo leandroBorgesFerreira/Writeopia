@@ -1,4 +1,4 @@
-package com.storiesteller.sdk.intronotes.persistence.entity
+package com.github.leandroborgesferreira.storyteller.intronotes.persistence.entity
 
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean

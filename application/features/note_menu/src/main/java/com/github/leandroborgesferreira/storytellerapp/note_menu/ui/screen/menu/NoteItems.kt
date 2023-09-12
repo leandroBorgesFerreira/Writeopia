@@ -1,4 +1,4 @@
-package com.storiesteller.sdkapp.note_menu.ui.screen.menu
+package com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,11 +31,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.storiesteller.sdkapp.note_menu.ui.dto.DocumentUi
-import com.storiesteller.sdkapp.note_menu.viewmodel.ChooseNoteViewModel
-import com.storiesteller.sdkapp.note_menu.viewmodel.NotesArrangement
-import com.storiesteller.sdkapp.appresourcers.R
-import com.storiesteller.sdkapp.utils_module.ResultData
+import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.dto.DocumentUi
+import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.ChooseNoteViewModel
+import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.NotesArrangement
+import com.storiesteller.appresourcers.R
+import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import com.storiesteller.sdk.drawer.DrawInfo
 import com.storiesteller.sdk.drawer.StoryStepDrawer
 import com.storiesteller.sdk.drawer.preview.CheckItemPreviewDrawer

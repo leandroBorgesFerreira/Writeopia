@@ -1,8 +1,8 @@
-package com.storiesteller.sdk.intronotes.extensions
+package com.github.leandroborgesferreira.storyteller.intronotes.extensions
 
-import com.storiesteller.sdk.intronotes.model.StoryTypes
-import com.storiesteller.sdk.intronotes.persistence.entity.DocumentEntity
-import com.storiesteller.sdk.intronotes.persistence.entity.StoryStepEntity
+import com.github.leandroborgesferreira.storyteller.intronotes.model.StoryTypes
+import com.github.leandroborgesferreira.storyteller.intronotes.persistence.entity.DocumentEntity
+import com.github.leandroborgesferreira.storyteller.intronotes.persistence.entity.StoryStepEntity
 import com.storiesteller.sdk.serialization.data.DocumentApi
 import com.storiesteller.sdk.serialization.data.StoryStepApi
 import com.storiesteller.sdk.serialization.extensions.toApi

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.storiesteller.sdkapp.common_ui"
+    namespace = "com.storiesteller.common_ui"
     compileSdk = 33
 
     defaultConfig {

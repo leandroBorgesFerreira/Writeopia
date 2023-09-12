@@ -1,4 +1,4 @@
-package com.storiesteller.sdkapp.auth.core.token
+package com.github.leandroborgesferreira.storytellerapp.auth.core.token
 
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
 import com.amplifyframework.kotlin.core.Amplify

@@ -1,4 +1,4 @@
-package com.storiesteller.sdkapp.note_menu.ui.screen.configuration
+package com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.configuration
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,7 +17,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Dashboard
 import androidx.compose.material.icons.outlined.List
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,13 +31,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.storiesteller.sdkapp.appresourcers.R
-import com.storiesteller.sdkapp.common_ui.SlideInBox
+import com.storiesteller.appresourcers.R
+import com.github.leandroborgesferreira.storytellerapp.common_ui.SlideInBox
 import com.storiesteller.sdk.persistence.sorting.OrderBy
 
 private const val INNER_PADDING = 3
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun BoxScope.ConfigurationsMenu(
     modifier: Modifier = Modifier,

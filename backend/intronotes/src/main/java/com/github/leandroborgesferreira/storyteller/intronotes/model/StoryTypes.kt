@@ -1,4 +1,4 @@
-package com.storiesteller.sdk.intronotes.model
+package com.github.leandroborgesferreira.storyteller.intronotes.model
 
 import com.storiesteller.sdk.models.story.StoryType
 

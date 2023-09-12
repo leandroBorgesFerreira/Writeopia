@@ -1,4 +1,4 @@
-package com.storiesteller.sdkapp.editor
+package com.github.leandroborgesferreira.storytellerapp.editor
 
 import android.content.Context
 import android.content.Intent
@@ -19,7 +19,7 @@ import com.storiesteller.sdk.serialization.extensions.toApi
 import com.storiesteller.sdk.serialization.json.storyTellerJson
 import com.storiesteller.sdk.serialization.request.wrapInRequest
 import com.storiesteller.sdk.utils.extensions.noContent
-import com.storiesteller.sdkapp.editor.model.EditState
+import com.github.leandroborgesferreira.storytellerapp.editor.model.EditState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

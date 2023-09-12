@@ -1,11 +1,11 @@
-package com.storiesteller.sdkapp.account.viewmodel
+package com.github.leandroborgesferreira.storytellerapp.account.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.storiesteller.sdkapp.auth.core.AuthManager
+import com.github.leandroborgesferreira.storytellerapp.auth.core.AuthManager
 import com.github.leandroborgesferreira.storytellerapp.auth.core.repository.AuthRepository
-import com.storiesteller.sdkapp.utils_module.ResultData
-import com.storiesteller.sdkapp.utils_module.toBoolean
+import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
+import com.github.leandroborgesferreira.storytellerapp.utils_module.toBoolean
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

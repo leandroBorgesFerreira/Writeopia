@@ -1,7 +1,7 @@
-package com.storiesteller.sdkapp.note_menu.data.usecase
+package com.github.leandroborgesferreira.storytellerapp.note_menu.data.usecase
 
 import android.content.SharedPreferences
-import com.storiesteller.sdkapp.note_menu.viewmodel.NotesArrangement
+import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.NotesArrangement
 import com.storiesteller.sdk.persistence.sorting.OrderBy
 import com.storiesteller.sdk.persistence.sorting.toEntityField
 

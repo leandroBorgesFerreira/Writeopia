@@ -8,11 +8,11 @@ plugins {
     id("kotlin-parcelize")
 }
 android {
-    namespace = "com.storiesteller.sdkapp"
+    namespace = "com.storiesteller"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.storiesteller.sdkapp"
+        applicationId = "com.storiesteller"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

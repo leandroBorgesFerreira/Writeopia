@@ -1,4 +1,4 @@
-package com.storiesteller.sdkapp.note_menu.viewmodel
+package com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -7,16 +7,16 @@ import com.amplifyframework.auth.AuthException
 import com.storiesteller.sdk.models.document.Document
 import com.storiesteller.sdk.persistence.sorting.OrderBy
 import com.storiesteller.sdk.preview.PreviewParser
-import com.storiesteller.sdkapp.auth.core.AuthManager
+import com.github.leandroborgesferreira.storytellerapp.auth.core.AuthManager
 import com.github.leandroborgesferreira.storytellerapp.auth.core.data.DISCONNECTED_USER_ID
 import com.github.leandroborgesferreira.storytellerapp.auth.core.data.User
-import com.storiesteller.sdkapp.note_menu.data.usecase.NotesConfigurationRepository
-import com.storiesteller.sdkapp.note_menu.data.usecase.NotesUseCase
-import com.storiesteller.sdkapp.note_menu.extensions.toUiCard
-import com.storiesteller.sdkapp.note_menu.ui.dto.DocumentUi
-import com.storiesteller.sdkapp.utils_module.ResultData
-import com.storiesteller.sdkapp.utils_module.toBoolean
-import com.storiesteller.sdkapp.utils_module.map
+import com.github.leandroborgesferreira.storytellerapp.note_menu.data.usecase.NotesConfigurationRepository
+import com.github.leandroborgesferreira.storytellerapp.note_menu.data.usecase.NotesUseCase
+import com.github.leandroborgesferreira.storytellerapp.note_menu.extensions.toUiCard
+import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.dto.DocumentUi
+import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
+import com.github.leandroborgesferreira.storytellerapp.utils_module.toBoolean
+import com.github.leandroborgesferreira.storytellerapp.utils_module.map
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

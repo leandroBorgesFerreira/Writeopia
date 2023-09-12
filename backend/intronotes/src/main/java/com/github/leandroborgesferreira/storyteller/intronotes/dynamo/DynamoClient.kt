@@ -1,7 +1,7 @@
-package com.storiesteller.sdk.intronotes.dynamo
+package com.github.leandroborgesferreira.storyteller.intronotes.dynamo
 
-import com.storiesteller.sdk.intronotes.persistence.entity.DocumentEntity
-import com.storiesteller.sdk.intronotes.persistence.repository.INTRO_NOTES_TABLE
+import com.github.leandroborgesferreira.storyteller.intronotes.persistence.entity.DocumentEntity
+import com.github.leandroborgesferreira.storyteller.intronotes.persistence.repository.INTRO_NOTES_TABLE
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema

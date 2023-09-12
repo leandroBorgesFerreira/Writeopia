@@ -1,11 +1,11 @@
-package com.storiesteller.sdkapp.auth.menu
+package com.github.leandroborgesferreira.storytellerapp.auth.menu
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.storiesteller.sdkapp.auth.core.AuthManager
+import com.github.leandroborgesferreira.storytellerapp.auth.core.AuthManager
 import com.github.leandroborgesferreira.storytellerapp.auth.core.repository.AuthRepository
-import com.storiesteller.sdkapp.utils_module.ResultData
-import com.storiesteller.sdkapp.utils_module.map
+import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
+import com.github.leandroborgesferreira.storytellerapp.utils_module.map
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

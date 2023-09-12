@@ -1,4 +1,4 @@
-package com.storiesteller.sdkapp.note_menu.ui.screen.menu
+package com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -41,11 +41,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.storiesteller.sdkapp.appresourcers.R
-import com.storiesteller.sdkapp.note_menu.ui.screen.configuration.ConfigurationsMenu
-import com.storiesteller.sdkapp.note_menu.ui.screen.configuration.NotesSelectionMenu
-import com.storiesteller.sdkapp.note_menu.viewmodel.ChooseNoteViewModel
-import com.storiesteller.sdkapp.note_menu.viewmodel.UserState
+import com.storiesteller.appresourcers.R
+import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.configuration.ConfigurationsMenu
+import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.configuration.NotesSelectionMenu
+import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.ChooseNoteViewModel
+import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.UserState
 import com.valentinilk.shimmer.shimmer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

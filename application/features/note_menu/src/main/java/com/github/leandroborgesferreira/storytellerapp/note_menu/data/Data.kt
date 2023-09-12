@@ -1,4 +1,4 @@
-package com.storiesteller.sdkapp.note_menu.data
+package com.github.leandroborgesferreira.storytellerapp.note_menu.data
 
 import com.storiesteller.sdk.models.story.StoryStep
 import com.storiesteller.sdk.model.story.StoryTypes

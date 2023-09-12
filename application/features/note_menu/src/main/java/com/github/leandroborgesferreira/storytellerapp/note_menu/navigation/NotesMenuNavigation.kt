@@ -1,4 +1,4 @@
-package com.storiesteller.sdkapp.note_menu.navigation
+package com.github.leandroborgesferreira.storytellerapp.note_menu.navigation
 
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInHorizontally
@@ -6,8 +6,8 @@ import androidx.compose.animation.slideOutHorizontally
 import com.github.leandroborgesferreira.storytellerapp.note_menu.di.NotesMenuInjection
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.storiesteller.sdkapp.note_menu.ui.screen.menu.ChooseNoteScreen
-import com.storiesteller.sdkapp.utils_module.Destinations
+import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu.ChooseNoteScreen
+import com.github.leandroborgesferreira.storytellerapp.utils_module.Destinations
 
 fun NavGraphBuilder.notesMenuNavigation(
     notesMenuInjection: NotesMenuInjection,

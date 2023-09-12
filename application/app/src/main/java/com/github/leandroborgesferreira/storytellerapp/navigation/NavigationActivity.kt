@@ -13,19 +13,19 @@ import androidx.navigation.compose.rememberNavController
 import com.storiesteller.sdk.network.injector.ApiInjector
 import com.storiesteller.sdk.persistence.database.StoryTellerDatabase
 import com.github.leandroborgesferreira.storytellerapp.AndroidLogger
-import com.storiesteller.sdkapp.account.navigation.accountMenuNavigation
-import com.storiesteller.sdkapp.account.viewmodel.AccountMenuViewModel
+import com.github.leandroborgesferreira.storytellerapp.account.navigation.accountMenuNavigation
+import com.github.leandroborgesferreira.storytellerapp.account.viewmodel.AccountMenuViewModel
 import com.github.leandroborgesferreira.storytellerapp.auth.core.di.AuthCoreInjection
-import com.storiesteller.sdkapp.auth.core.token.AmplifyTokenHandler
-import com.storiesteller.sdkapp.auth.di.AuthInjection
-import com.storiesteller.sdkapp.auth.navigation.authNavigation
-import com.storiesteller.sdkapp.auth.navigation.navigateToAuthMenu
-import com.storiesteller.sdkapp.editor.di.EditorInjector
-import com.storiesteller.sdkapp.editor.navigation.editorNavigation
+import com.github.leandroborgesferreira.storytellerapp.auth.core.token.AmplifyTokenHandler
+import com.github.leandroborgesferreira.storytellerapp.auth.di.AuthInjection
+import com.github.leandroborgesferreira.storytellerapp.auth.navigation.authNavigation
+import com.github.leandroborgesferreira.storytellerapp.auth.navigation.navigateToAuthMenu
+import com.github.leandroborgesferreira.storytellerapp.editor.di.EditorInjector
+import com.github.leandroborgesferreira.storytellerapp.editor.navigation.editorNavigation
 import com.github.leandroborgesferreira.storytellerapp.note_menu.di.NotesMenuInjection
-import com.storiesteller.sdkapp.note_menu.navigation.notesMenuNavigation
+import com.github.leandroborgesferreira.storytellerapp.note_menu.navigation.notesMenuNavigation
 import com.github.leandroborgesferreira.storytellerapp.theme.ApplicationComposeTheme
-import com.storiesteller.sdkapp.utils_module.Destinations
+import com.github.leandroborgesferreira.storytellerapp.utils_module.Destinations
 
 class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +45,7 @@ fun NavigationGraph(
         this.createFromAsset("StoryTellerDatabase.db")
     }),
     sharedPreferences: SharedPreferences = application.getSharedPreferences(
-        "com.storiesteller.sdkapp.preferences",
+        "com.storiesteller.preferences",
         Context.MODE_PRIVATE
     ),
     startDestination: String = Destinations.AUTH_MENU_INNER_NAVIGATION.id

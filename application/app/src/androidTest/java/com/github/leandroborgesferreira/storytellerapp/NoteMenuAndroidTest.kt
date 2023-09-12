@@ -8,7 +8,7 @@ import com.github.leandroborgesferreira.storytellerapp.navigation.NavigationGrap
 import com.github.leandroborgesferreira.storytellerapp.robots.DocumentEditRobot
 import com.github.leandroborgesferreira.storytellerapp.robots.DocumentsMenuRobot
 import com.storiesteller.sdk.persistence.database.StoryTellerDatabase
-import com.storiesteller.sdkapp.utils_module.Destinations
+import com.github.leandroborgesferreira.storytellerapp.utils_module.Destinations
 import org.junit.Rule
 import org.junit.Test
 

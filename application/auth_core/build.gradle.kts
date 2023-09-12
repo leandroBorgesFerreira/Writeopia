@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.storiesteller.sdkapp.auth.core"
+    namespace = "com.storiesteller.auth.core"
     compileSdk = 34
 
     defaultConfig {

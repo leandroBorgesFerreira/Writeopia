@@ -1,9 +1,9 @@
-package com.storiesteller.sdk.intronotes.integrationTests
+package com.github.leandroborgesferreira.storyteller.intronotes.integrationTests
 
-import com.storiesteller.sdk.intronotes.dynamo.introNotesTable
-import com.storiesteller.sdk.intronotes.persistence.repository.DynamoIntroNotesRepository
-import com.storiesteller.sdk.intronotes.unit.utils.Samples
-import com.storiesteller.sdk.intronotes.write.writeIntroNotes
+import com.github.leandroborgesferreira.storyteller.intronotes.dynamo.introNotesTable
+import com.github.leandroborgesferreira.storyteller.intronotes.persistence.repository.DynamoIntroNotesRepository
+import com.github.leandroborgesferreira.storyteller.intronotes.unit.utils.Samples
+import com.github.leandroborgesferreira.storyteller.intronotes.write.writeIntroNotes
 import org.junit.Assert.*
 import org.junit.Test
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.storiesteller.sdkapp.appresourcers"
+    namespace = "com.storiesteller.appresourcers"
     compileSdk = 34
 
     defaultConfig {

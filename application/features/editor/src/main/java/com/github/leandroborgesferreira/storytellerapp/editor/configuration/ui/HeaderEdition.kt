@@ -1,4 +1,4 @@
-package com.storiesteller.sdkapp.editor.configuration.ui
+package com.github.leandroborgesferreira.storytellerapp.editor.configuration.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -32,7 +32,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.storiesteller.sdkapp.common_ui.SlideInBox
+import com.github.leandroborgesferreira.storytellerapp.common_ui.SlideInBox
 
 // This screen could live in a module for extra Composables
 @Composable

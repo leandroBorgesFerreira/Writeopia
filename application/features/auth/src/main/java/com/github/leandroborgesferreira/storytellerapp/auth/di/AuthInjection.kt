@@ -1,4 +1,4 @@
-package com.storiesteller.sdkapp.auth.di
+package com.github.leandroborgesferreira.storytellerapp.auth.di
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -7,13 +7,13 @@ import com.storiesteller.sdk.network.injector.ApiInjector
 import com.storiesteller.sdk.network.notes.NotesApi
 import com.storiesteller.sdk.persistence.database.StoryTellerDatabase
 import com.storiesteller.sdk.persistence.repository.DocumentRepositoryImpl
-import com.storiesteller.sdkapp.auth.core.AuthManager
+import com.github.leandroborgesferreira.storytellerapp.auth.core.AuthManager
 import com.github.leandroborgesferreira.storytellerapp.auth.core.di.AuthCoreInjection
 import com.github.leandroborgesferreira.storytellerapp.auth.core.repository.AuthRepository
-import com.storiesteller.sdkapp.auth.intronotes.IntroNotesUseCase
-import com.storiesteller.sdkapp.auth.login.LoginViewModel
-import com.storiesteller.sdkapp.auth.menu.AuthMenuViewModel
-import com.storiesteller.sdkapp.auth.register.RegisterViewModel
+import com.github.leandroborgesferreira.storytellerapp.auth.intronotes.IntroNotesUseCase
+import com.github.leandroborgesferreira.storytellerapp.auth.login.LoginViewModel
+import com.github.leandroborgesferreira.storytellerapp.auth.menu.AuthMenuViewModel
+import com.github.leandroborgesferreira.storytellerapp.auth.register.RegisterViewModel
 
 class AuthInjection(
     private val authCoreInjection: AuthCoreInjection,

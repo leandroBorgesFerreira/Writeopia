@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.storiesteller.sdkapp.note_menu"
+    namespace = "com.storiesteller.note_menu"
     compileSdk = 34
 
     defaultConfig {

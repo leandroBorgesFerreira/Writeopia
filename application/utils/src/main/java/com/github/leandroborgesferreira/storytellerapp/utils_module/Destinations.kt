@@ -1,4 +1,4 @@
-package com.storiesteller.sdkapp.utils_module
+package com.github.leandroborgesferreira.storytellerapp.utils_module
 
 enum class Destinations(val id: String) {
     EDITOR("note_details"),

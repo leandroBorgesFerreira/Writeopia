@@ -1,15 +1,14 @@
-package com.storiesteller.sdkapp.editor
+package com.github.leandroborgesferreira.storytellerapp.editor
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.animateScrollBy
@@ -58,14 +57,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.storiesteller.sdk.StoryTellerEditor
 import com.storiesteller.sdk.drawer.DefaultDrawers
 import com.storiesteller.sdk.uicomponents.EditionScreen
-import com.storiesteller.sdkapp.appresourcers.R
-import com.storiesteller.sdkapp.editor.configuration.ui.HeaderEdition
-import com.storiesteller.sdkapp.editor.configuration.ui.NoteGlobalActionsMenu
-import com.storiesteller.sdkapp.editor.input.InputScreen
-import com.storiesteller.sdkapp.editor.model.EditState
+import com.github.leandroborgesferreira.storytellerapp.editor.configuration.ui.HeaderEdition
+import com.github.leandroborgesferreira.storytellerapp.editor.configuration.ui.NoteGlobalActionsMenu
+import com.github.leandroborgesferreira.storytellerapp.editor.input.InputScreen
+import com.github.leandroborgesferreira.storytellerapp.editor.model.EditState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.flow.collectLatest
 import java.util.UUID
+import com.storiesteller.appresourcers.R
 
 const val NAVIGATE_BACK_TEST_TAG = "NoteEditorScreenNavigateBack"
 const val NOTE_EDITION_SCREEN_TITLE_TEST_TAG = "noteEditionScreenTitle"
@@ -275,7 +274,6 @@ private fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
     )
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun BottomScreen(noteEditorViewModel: NoteEditorViewModel) {
     val editState by noteEditorViewModel.isEditState.collectAsStateWithLifecycle()
@@ -299,10 +297,10 @@ private fun BottomScreen(noteEditorViewModel: NoteEditorViewModel) {
         targetState = editState,
         label = "bottomSheetAnimation",
         transitionSpec = {
-            slideInVertically(
+            (slideInVertically(
                 animationSpec = tween(durationMillis = 130),
                 initialOffsetY = { fullHeight -> fullHeight }
-            ) + fadeIn() with slideOutVertically(
+            ) + fadeIn()) togetherWith slideOutVertically(
                 animationSpec = tween(durationMillis = 130),
                 targetOffsetY = { fullHeight -> fullHeight }
             ) + fadeOut()

@@ -1,4 +1,4 @@
-package com.storiesteller.sdkapp.auth.login
+package com.github.leandroborgesferreira.storytellerapp.auth.login
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,10 +35,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.storiesteller.sdkapp.utils_module.ResultData
+import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import com.storiesteller.sdkapp.appresourcers.R
+import com.storiesteller.appresourcers.R
 
 @Composable
 internal fun LoginScreenBinding(loginViewModel: LoginViewModel, onLoginSuccess: () -> Unit) {

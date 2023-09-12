@@ -5,7 +5,7 @@ import android.util.Log
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.kotlin.core.Amplify
 import com.storiesteller.sdk.video.VideoFrameConfig
-import com.storiesteller.sdkapp.auth.core.AuthInitializer
+import com.github.leandroborgesferreira.storytellerapp.auth.core.AuthInitializer
 
 class StoryTellerApplication: Application() {
 
