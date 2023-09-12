@@ -25,7 +25,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.storiesteller.R
+import com.storiesteller.sdk.R
 import com.storiesteller.sdk.model.draganddrop.DropInfo
 
 //Todo: Review this name

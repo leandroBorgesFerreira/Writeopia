@@ -12,7 +12,7 @@ rootProject.extra.apply {
 apply(from = "${rootDir}/scripts/publish-module.gradle")
 
 android {
-    namespace = "com.storiesteller"
+    namespace = "com.storiesteller.sdk"
     compileSdk = 34
 
     defaultConfig {

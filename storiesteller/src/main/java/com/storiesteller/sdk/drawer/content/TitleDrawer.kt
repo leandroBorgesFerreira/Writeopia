@@ -26,7 +26,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.storiesteller.R
+import com.storiesteller.sdk.R
 import com.storiesteller.sdk.drawer.DrawInfo
 import com.storiesteller.sdk.drawer.StoryStepDrawer
 import com.storiesteller.sdk.model.action.Action
