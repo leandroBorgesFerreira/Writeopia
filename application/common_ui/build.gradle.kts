@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.storiesteller.common_ui"
+    namespace = "io.storiesteller.common_ui"
     compileSdk = 33
 
     defaultConfig {
