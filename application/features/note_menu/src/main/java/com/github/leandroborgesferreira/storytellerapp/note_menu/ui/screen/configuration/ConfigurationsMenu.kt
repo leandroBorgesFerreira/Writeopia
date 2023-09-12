@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.configuration
+package com.storiesteller.sdkapp.note_menu.ui.screen.configuration
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,9 +32,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.github.leandroborgesferreira.storytellerapp.appresourcers.R
-import com.github.leandroborgesferreira.storytellerapp.common_ui.SlideInBox
-import com.github.leandroborgesferreira.storyteller.persistence.sorting.OrderBy
+import com.storiesteller.sdkapp.appresourcers.R
+import com.storiesteller.sdkapp.common_ui.SlideInBox
+import com.storiesteller.sdk.persistence.sorting.OrderBy
 
 private const val INNER_PADDING = 3
 

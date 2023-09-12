@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel
+package com.storiesteller.sdkapp.note_menu.viewmodel
 
 /**
  * The possible arrangement for notes. The user is able to choose between the variants of the enum

@@ -1,10 +1,10 @@
-package com.github.leandroborgesferreira.storyteller.intronotes.input
+package com.storiesteller.sdk.intronotes.input
 
-import com.github.leandroborgesferreira.storyteller.intronotes.extensions.toEntity
-import com.github.leandroborgesferreira.storyteller.intronotes.persistence.entity.DocumentEntity
-import com.github.leandroborgesferreira.storyteller.serialization.data.DocumentApi
-import com.github.leandroborgesferreira.storyteller.serialization.json.storyTellerJson
-import com.github.leandroborgesferreira.storyteller.serialization.request.StoryTellerRequest
+import com.storiesteller.sdk.intronotes.extensions.toEntity
+import com.storiesteller.sdk.intronotes.persistence.entity.DocumentEntity
+import com.storiesteller.sdk.serialization.data.DocumentApi
+import com.storiesteller.sdk.serialization.json.storyTellerJson
+import com.storiesteller.sdk.serialization.request.StoryTellerRequest
 
 object ParseInput {
 

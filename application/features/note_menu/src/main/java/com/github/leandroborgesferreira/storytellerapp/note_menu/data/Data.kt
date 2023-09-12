@@ -1,7 +1,7 @@
-package com.github.leandroborgesferreira.storytellerapp.note_menu.data
+package com.storiesteller.sdkapp.note_menu.data
 
-import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
-import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
+import com.storiesteller.sdk.models.story.StoryStep
+import com.storiesteller.sdk.model.story.StoryTypes
 import java.util.UUID
 
 internal fun supermarketList(): Map<Int, StoryStep> = mapOf(

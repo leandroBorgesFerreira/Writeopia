@@ -13,11 +13,11 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "StoryTeller"
-include ':storyteller'
-include ':storyteller_persistence'
-include ':storyteller_serialization'
-include ':storyteller_models'
-include ':storyteller_network'
+include ':storiesteller'
+include ':storiesteller_persistence'
+include ':storiesteller_serialization'
+include ':storiesteller_models'
+include ':storiesteller_network'
 include ':application:app'
 include ':application:resources'
 include ':application:utils'

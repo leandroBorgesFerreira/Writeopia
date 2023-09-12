@@ -1,9 +1,9 @@
-package com.github.leandroborgesferreira.storytellerapp.note_menu.data.usecase
+package com.storiesteller.sdkapp.note_menu.data.usecase
 
-import com.github.leandroborgesferreira.storytellerapp.note_menu.data.supermarketList
-import com.github.leandroborgesferreira.storytellerapp.note_menu.data.travelHistory
-import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
-import com.github.leandroborgesferreira.storyteller.models.document.Document
+import com.storiesteller.sdkapp.note_menu.data.supermarketList
+import com.storiesteller.sdkapp.note_menu.data.travelHistory
+import com.storiesteller.sdk.manager.DocumentRepository
+import com.storiesteller.sdk.models.document.Document
 import com.github.leandroborgesferreira.storytellerapp.auth.core.data.DISCONNECTED_USER_ID
 import java.time.Instant
 import java.util.UUID

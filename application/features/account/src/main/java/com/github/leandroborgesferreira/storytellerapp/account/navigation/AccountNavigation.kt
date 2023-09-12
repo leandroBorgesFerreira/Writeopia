@@ -1,13 +1,13 @@
-package com.github.leandroborgesferreira.storytellerapp.account.navigation
+package com.storiesteller.sdkapp.account.navigation
 
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.github.leandroborgesferreira.storytellerapp.account.ui.AccountMenuScreen
-import com.github.leandroborgesferreira.storytellerapp.account.viewmodel.AccountMenuViewModel
-import com.github.leandroborgesferreira.storytellerapp.utils_module.Destinations
+import com.storiesteller.sdkapp.account.ui.AccountMenuScreen
+import com.storiesteller.sdkapp.account.viewmodel.AccountMenuViewModel
+import com.storiesteller.sdkapp.utils_module.Destinations
 
 fun NavGraphBuilder.accountMenuNavigation(
     accountMenuViewModel: AccountMenuViewModel,

@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storytellerapp.common_ui
+package com.storiesteller.sdkapp.common_ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope

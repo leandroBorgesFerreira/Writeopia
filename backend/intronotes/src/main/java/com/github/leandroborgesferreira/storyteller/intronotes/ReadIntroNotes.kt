@@ -1,11 +1,11 @@
-package com.github.leandroborgesferreira.storyteller.intronotes
+package com.storiesteller.sdk.intronotes
 
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
-import com.github.leandroborgesferreira.storyteller.intronotes.persistence.repository.DynamoIntroNotesRepository
-import com.github.leandroborgesferreira.storyteller.intronotes.read.readNotes
-import com.github.leandroborgesferreira.storyteller.serialization.json.storyTellerJson
+import com.storiesteller.sdk.intronotes.persistence.repository.DynamoIntroNotesRepository
+import com.storiesteller.sdk.intronotes.read.readNotes
+import com.storiesteller.sdk.serialization.json.storyTellerJson
 
 class ReadIntroNotes : RequestHandler<Unit, APIGatewayProxyResponseEvent> {
     override fun handleRequest(input: Unit, context: Context): APIGatewayProxyResponseEvent {

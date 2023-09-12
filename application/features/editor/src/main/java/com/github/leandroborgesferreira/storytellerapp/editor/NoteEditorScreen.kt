@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storytellerapp.editor
+package com.storiesteller.sdkapp.editor
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
@@ -55,14 +55,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.leandroborgesferreira.storyteller.StoryTellerEditor
-import com.github.leandroborgesferreira.storyteller.drawer.DefaultDrawers
-import com.github.leandroborgesferreira.storyteller.uicomponents.EditionScreen
-import com.github.leandroborgesferreira.storytellerapp.appresourcers.R
-import com.github.leandroborgesferreira.storytellerapp.editor.configuration.ui.HeaderEdition
-import com.github.leandroborgesferreira.storytellerapp.editor.configuration.ui.NoteGlobalActionsMenu
-import com.github.leandroborgesferreira.storytellerapp.editor.input.InputScreen
-import com.github.leandroborgesferreira.storytellerapp.editor.model.EditState
+import com.storiesteller.sdk.StoryTellerEditor
+import com.storiesteller.sdk.drawer.DefaultDrawers
+import com.storiesteller.sdk.uicomponents.EditionScreen
+import com.storiesteller.sdkapp.appresourcers.R
+import com.storiesteller.sdkapp.editor.configuration.ui.HeaderEdition
+import com.storiesteller.sdkapp.editor.configuration.ui.NoteGlobalActionsMenu
+import com.storiesteller.sdkapp.editor.input.InputScreen
+import com.storiesteller.sdkapp.editor.model.EditState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.flow.collectLatest
 import java.util.UUID

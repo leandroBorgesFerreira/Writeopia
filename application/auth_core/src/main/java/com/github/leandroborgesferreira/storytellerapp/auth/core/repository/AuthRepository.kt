@@ -1,7 +1,7 @@
 package com.github.leandroborgesferreira.storytellerapp.auth.core.repository
 
 import android.content.SharedPreferences
-import com.github.leandroborgesferreira.storytellerapp.auth.core.utils.USER_OFFLINE
+import com.storiesteller.sdkapp.auth.core.utils.USER_OFFLINE
 
 class AuthRepository(private val sharedPreferences: SharedPreferences) {
 

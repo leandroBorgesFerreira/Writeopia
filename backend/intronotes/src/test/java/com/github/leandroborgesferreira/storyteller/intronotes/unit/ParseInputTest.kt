@@ -1,7 +1,7 @@
-package com.github.leandroborgesferreira.storyteller.intronotes.unit
+package com.storiesteller.sdk.intronotes.unit
 
-import com.github.leandroborgesferreira.storyteller.intronotes.input.ParseInput
-import com.github.leandroborgesferreira.storyteller.intronotes.unit.utils.Samples
+import com.storiesteller.sdk.intronotes.input.ParseInput
+import com.storiesteller.sdk.intronotes.unit.utils.Samples
 import org.junit.Assert.*
 import org.junit.Test
 

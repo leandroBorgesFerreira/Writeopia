@@ -1,6 +1,6 @@
-package com.github.leandroborgesferreira.storytellerapp.note_menu.ui.dto
+package com.storiesteller.sdkapp.note_menu.ui.dto
 
-import com.github.leandroborgesferreira.storyteller.models.story.StoryStep
+import com.storiesteller.sdk.models.story.StoryStep
 
 internal data class DocumentUi(
     val documentId: String,

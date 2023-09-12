@@ -1,11 +1,11 @@
-package com.github.leandroborgesferreira.storytellerapp.note_menu.di
+package com.storiesteller.sdkapp.note_menu.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.github.leandroborgesferreira.storytellerapp.auth.core.AuthManager
-import com.github.leandroborgesferreira.storytellerapp.note_menu.data.usecase.NotesConfigurationRepository
-import com.github.leandroborgesferreira.storytellerapp.note_menu.data.usecase.NotesUseCase
-import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.ChooseNoteViewModel
+import com.storiesteller.sdkapp.auth.core.AuthManager
+import com.storiesteller.sdkapp.note_menu.data.usecase.NotesConfigurationRepository
+import com.storiesteller.sdkapp.note_menu.data.usecase.NotesUseCase
+import com.storiesteller.sdkapp.note_menu.viewmodel.ChooseNoteViewModel
 
 internal class ChooseNoteViewModelFactory(
     private val notesUseCase: NotesUseCase,

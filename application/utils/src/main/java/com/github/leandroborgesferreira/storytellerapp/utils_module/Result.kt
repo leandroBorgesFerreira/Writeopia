@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storytellerapp.utils_module
+package com.storiesteller.sdkapp.utils_module
 
 sealed interface ResultData<T> {
     class Idle<T>: ResultData<T>

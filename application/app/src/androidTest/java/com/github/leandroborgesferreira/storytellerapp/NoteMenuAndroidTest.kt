@@ -7,8 +7,8 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import com.github.leandroborgesferreira.storytellerapp.navigation.NavigationGraph
 import com.github.leandroborgesferreira.storytellerapp.robots.DocumentEditRobot
 import com.github.leandroborgesferreira.storytellerapp.robots.DocumentsMenuRobot
-import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
-import com.github.leandroborgesferreira.storytellerapp.utils_module.Destinations
+import com.storiesteller.sdk.persistence.database.StoryTellerDatabase
+import com.storiesteller.sdkapp.utils_module.Destinations
 import org.junit.Rule
 import org.junit.Test
 

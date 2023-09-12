@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.menu
+package com.storiesteller.sdkapp.note_menu.ui.screen.menu
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,19 +31,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.dto.DocumentUi
-import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.ChooseNoteViewModel
-import com.github.leandroborgesferreira.storytellerapp.note_menu.viewmodel.NotesArrangement
-import com.github.leandroborgesferreira.storytellerapp.appresourcers.R
-import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
-import com.github.leandroborgesferreira.storyteller.drawer.DrawInfo
-import com.github.leandroborgesferreira.storyteller.drawer.StoryStepDrawer
-import com.github.leandroborgesferreira.storyteller.drawer.preview.CheckItemPreviewDrawer
-import com.github.leandroborgesferreira.storyteller.drawer.preview.HeaderPreviewDrawer
-import com.github.leandroborgesferreira.storyteller.drawer.preview.TextPreviewDrawer
-import com.github.leandroborgesferreira.storyteller.drawer.preview.UnOrderedListItemPreviewDrawer
-import com.github.leandroborgesferreira.storyteller.model.story.StoryTypes
-import com.github.leandroborgesferreira.storyteller.uicomponents.SwipeBox
+import com.storiesteller.sdkapp.note_menu.ui.dto.DocumentUi
+import com.storiesteller.sdkapp.note_menu.viewmodel.ChooseNoteViewModel
+import com.storiesteller.sdkapp.note_menu.viewmodel.NotesArrangement
+import com.storiesteller.sdkapp.appresourcers.R
+import com.storiesteller.sdkapp.utils_module.ResultData
+import com.storiesteller.sdk.drawer.DrawInfo
+import com.storiesteller.sdk.drawer.StoryStepDrawer
+import com.storiesteller.sdk.drawer.preview.CheckItemPreviewDrawer
+import com.storiesteller.sdk.drawer.preview.HeaderPreviewDrawer
+import com.storiesteller.sdk.drawer.preview.TextPreviewDrawer
+import com.storiesteller.sdk.drawer.preview.UnOrderedListItemPreviewDrawer
+import com.storiesteller.sdk.model.story.StoryTypes
+import com.storiesteller.sdk.uicomponents.SwipeBox
 
 @Composable
 internal fun Notes(

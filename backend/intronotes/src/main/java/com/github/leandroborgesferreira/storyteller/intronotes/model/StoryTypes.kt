@@ -1,6 +1,6 @@
-package com.github.leandroborgesferreira.storyteller.intronotes.model
+package com.storiesteller.sdk.intronotes.model
 
-import com.github.leandroborgesferreira.storyteller.models.story.StoryType
+import com.storiesteller.sdk.models.story.StoryType
 
 enum class StoryTypes(val type: StoryType) {
     MESSAGE(StoryType("message", 0)),

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.github.leandroborgesferreira.storytellerapp.account"
+    namespace = "com.storiesteller.sdkapp.account"
     compileSdk = 34
 
     defaultConfig {

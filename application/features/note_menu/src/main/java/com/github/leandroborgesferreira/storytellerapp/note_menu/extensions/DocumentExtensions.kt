@@ -1,8 +1,8 @@
-package com.github.leandroborgesferreira.storytellerapp.note_menu.extensions
+package com.storiesteller.sdkapp.note_menu.extensions
 
-import com.github.leandroborgesferreira.storytellerapp.note_menu.ui.dto.DocumentUi
-import com.github.leandroborgesferreira.storyteller.models.document.Document
-import com.github.leandroborgesferreira.storyteller.preview.PreviewParser
+import com.storiesteller.sdkapp.note_menu.ui.dto.DocumentUi
+import com.storiesteller.sdk.models.document.Document
+import com.storiesteller.sdk.preview.PreviewParser
 
 internal fun Document.toUiCard(
     previewParser: PreviewParser,

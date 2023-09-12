@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storyteller.intronotes
+package com.storiesteller.sdk.intronotes
 
 fun main() {
     println("Hi!")

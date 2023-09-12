@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.github.leandroborgesferreira.storytellerapp.utils"
+    namespace = "com.storiesteller.sdkapp.utils"
     compileSdk = 34
 
     defaultConfig {
@@ -33,9 +33,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":storyteller"))
-    implementation(project(":storyteller_serialization"))
-    implementation(project(":storyteller_models"))
+    implementation(project(":storiesteller"))
+    implementation(project(":storiesteller_serialization"))
+    implementation(project(":storiesteller_models"))
 }
 
 kotlin{

@@ -14,19 +14,19 @@ plugins {
     id("org.graalvm.buildtools.native") version "0.9.24"
 }
 
-group = "com.github.leandroborgesferreira.storyteller.intronotes"
+group = "com.storiesteller.sdk.intronotes"
 version = "0.0.33-SNAPSHOT"
 
 dependencies {
     implementation(libs.kotlinx.serialization.json)
-    implementation(project(":storyteller_serialization"))
+    implementation(project(":storiesteller_serialization"))
 
     implementation("com.amazonaws:aws-lambda-java-core:1.2.2")
     implementation("com.amazonaws:aws-lambda-java-events:3.11.2")
 
     implementation(platform("software.amazon.awssdk:bom:2.20.56"))
     implementation("software.amazon.awssdk:dynamodb-enhanced")
-    implementation(project(":storyteller_models"))
+    implementation(project(":storiesteller_models"))
 
     testImplementation(libs.junit)
     testImplementation("com.amazonaws:DynamoDBLocal:2.0.0")
@@ -47,7 +47,7 @@ graalvmNative {
     binaries {
         named("main") {
 //            runtimeArgs.add("--initialize-at-run-time=org.slf4j")
-            mainClass.set("com.github.leandroborgesferreira.storyteller.intronotes.MainKt")
+            mainClass.set("com.storiesteller.sdk.intronotes.MainKt")
         }
     }
 }

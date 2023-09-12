@@ -1,15 +1,15 @@
-package com.github.leandroborgesferreira.storytellerapp.editor.di
+package com.storiesteller.sdkapp.editor.di
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
-import com.github.leandroborgesferreira.storyteller.manager.StoryTellerManager
-import com.github.leandroborgesferreira.storyteller.persistence.database.StoryTellerDatabase
-import com.github.leandroborgesferreira.storyteller.persistence.repository.DocumentRepositoryImpl
-import com.github.leandroborgesferreira.storyteller.persistence.tracker.OnUpdateDocumentTracker
-import com.github.leandroborgesferreira.storytellerapp.auth.core.AuthManager
+import com.storiesteller.sdk.manager.DocumentRepository
+import com.storiesteller.sdk.manager.StoryTellerManager
+import com.storiesteller.sdk.persistence.database.StoryTellerDatabase
+import com.storiesteller.sdk.persistence.repository.DocumentRepositoryImpl
+import com.storiesteller.sdk.persistence.tracker.OnUpdateDocumentTracker
+import com.storiesteller.sdkapp.auth.core.AuthManager
 import com.github.leandroborgesferreira.storytellerapp.auth.core.di.AuthCoreInjection
-import com.github.leandroborgesferreira.storytellerapp.editor.NoteEditorViewModel
+import com.storiesteller.sdkapp.editor.NoteEditorViewModel
 
 class EditorInjector(
     private val database: StoryTellerDatabase,

@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storytellerapp.note_menu.ui.screen.configuration
+package com.storiesteller.sdkapp.note_menu.ui.screen.configuration
 
 import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
@@ -27,8 +27,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.github.leandroborgesferreira.storytellerapp.appresourcers.R
-import com.github.leandroborgesferreira.storytellerapp.common_ui.SlideInBox
+import com.storiesteller.sdkapp.appresourcers.R
+import com.storiesteller.sdkapp.common_ui.SlideInBox
 
 @Composable
 internal fun BoxScope.NotesSelectionMenu(

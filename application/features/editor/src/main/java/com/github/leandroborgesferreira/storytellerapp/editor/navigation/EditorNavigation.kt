@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storytellerapp.editor.navigation
+package com.storiesteller.sdkapp.editor.navigation
 
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -6,9 +6,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.github.leandroborgesferreira.storytellerapp.editor.NoteEditorScreen
-import com.github.leandroborgesferreira.storytellerapp.editor.di.EditorInjector
-import com.github.leandroborgesferreira.storytellerapp.utils_module.Destinations
+import com.storiesteller.sdkapp.editor.NoteEditorScreen
+import com.storiesteller.sdkapp.editor.di.EditorInjector
+import com.storiesteller.sdkapp.utils_module.Destinations
 
 fun NavGraphBuilder.editorNavigation(
     editorInjector: EditorInjector,

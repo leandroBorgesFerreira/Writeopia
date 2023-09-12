@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.github.leandroborgesferreira.storytellerapp.editor"
+    namespace = "com.storiesteller.sdkapp.editor"
     compileSdk = 34
 
     defaultConfig {
@@ -51,11 +51,11 @@ kotlin{
 
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+    implementation(project(":storiesteller"))
+    implementation(project(":storiesteller_models"))
+    implementation(project(":storiesteller_persistence"))
+    implementation(project(":storiesteller_serialization"))
 
-    implementation(project(":storyteller"))
-    implementation(project(":storyteller_models"))
-    implementation(project(":storyteller_persistence"))
-    implementation(project(":storyteller_serialization"))
     implementation(project(":application:resources"))
     implementation(project(":application:utils"))
     implementation(project(":application:auth_core"))

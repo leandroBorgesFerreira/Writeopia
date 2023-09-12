@@ -1,8 +1,8 @@
-package com.github.leandroborgesferreira.storytellerapp.auth.core.token
+package com.storiesteller.sdkapp.auth.core.token
 
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
 import com.amplifyframework.kotlin.core.Amplify
-import com.github.leandroborgesferreira.storyteller.network.oauth.BearerTokenHandler
+import com.storiesteller.sdk.network.oauth.BearerTokenHandler
 
 object AmplifyTokenHandler : BearerTokenHandler {
 

@@ -1,11 +1,11 @@
-package com.github.leandroborgesferreira.storyteller.intronotes.extensions
+package com.storiesteller.sdk.intronotes.extensions
 
-import com.github.leandroborgesferreira.storyteller.intronotes.model.StoryTypes
-import com.github.leandroborgesferreira.storyteller.intronotes.persistence.entity.DocumentEntity
-import com.github.leandroborgesferreira.storyteller.intronotes.persistence.entity.StoryStepEntity
-import com.github.leandroborgesferreira.storyteller.serialization.data.DocumentApi
-import com.github.leandroborgesferreira.storyteller.serialization.data.StoryStepApi
-import com.github.leandroborgesferreira.storyteller.serialization.extensions.toApi
+import com.storiesteller.sdk.intronotes.model.StoryTypes
+import com.storiesteller.sdk.intronotes.persistence.entity.DocumentEntity
+import com.storiesteller.sdk.intronotes.persistence.entity.StoryStepEntity
+import com.storiesteller.sdk.serialization.data.DocumentApi
+import com.storiesteller.sdk.serialization.data.StoryStepApi
+import com.storiesteller.sdk.serialization.extensions.toApi
 import java.time.Instant
 
 internal fun DocumentApi.toEntity(): DocumentEntity =

@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storyteller.common_ui
+package com.storiesteller.sdk.common_ui
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -20,7 +20,7 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals(
-            "com.github.leandroborgesferreira.storyteller.common_ui.test",
+            "com.storiesteller.sdk.common_ui.test",
             appContext.packageName
         )
     }

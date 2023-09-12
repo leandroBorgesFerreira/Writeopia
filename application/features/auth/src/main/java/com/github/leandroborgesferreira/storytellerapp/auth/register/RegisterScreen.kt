@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storytellerapp.auth.register
+package com.storiesteller.sdkapp.auth.register
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -36,10 +36,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.leandroborgesferreira.storytellerapp.utils_module.ResultData
+import com.storiesteller.sdkapp.utils_module.ResultData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import com.github.leandroborgesferreira.storytellerapp.appresourcers.R
+import com.storiesteller.sdkapp.appresourcers.R
 
 @Composable
 fun RegisterScreen(

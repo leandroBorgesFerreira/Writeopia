@@ -8,11 +8,11 @@ plugins {
     id("kotlin-parcelize")
 }
 android {
-    namespace = "com.github.leandroborgesferreira.storytellerapp"
+    namespace = "com.storiesteller.sdkapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.github.leandroborgesferreira.storytellerapp"
+        applicationId = "com.storiesteller.sdkapp"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -77,11 +77,11 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":storyteller"))
-    implementation(project(":storyteller_persistence"))
-    implementation(project(":storyteller_serialization"))
-    implementation(project(":storyteller_network"))
-    implementation(project(":storyteller_models"))
+    implementation(project(":storiesteller"))
+    implementation(project(":storiesteller_persistence"))
+    implementation(project(":storiesteller_serialization"))
+    implementation(project(":storiesteller_network"))
+    implementation(project(":storiesteller_models"))
 
     implementation(project(":application:utils"))
     implementation(project(":application:auth_core"))

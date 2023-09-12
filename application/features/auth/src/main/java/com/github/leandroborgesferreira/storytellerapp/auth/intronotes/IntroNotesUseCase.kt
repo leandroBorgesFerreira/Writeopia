@@ -1,7 +1,7 @@
-package com.github.leandroborgesferreira.storytellerapp.auth.intronotes
+package com.storiesteller.sdkapp.auth.intronotes
 
-import com.github.leandroborgesferreira.storyteller.manager.DocumentRepository
-import com.github.leandroborgesferreira.storyteller.network.notes.NotesApi
+import com.storiesteller.sdk.manager.DocumentRepository
+import com.storiesteller.sdk.network.notes.NotesApi
 
 internal class IntroNotesUseCase(
     private val documentRepository: DocumentRepository,

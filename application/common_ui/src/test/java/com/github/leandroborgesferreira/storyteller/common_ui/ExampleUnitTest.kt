@@ -1,4 +1,4 @@
-package com.github.leandroborgesferreira.storyteller.common_ui
+package com.storiesteller.sdk.common_ui
 
 import org.junit.Test
 
