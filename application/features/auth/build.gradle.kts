@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.github.leandroborgesferreira.storytellerapp.auth"
+    namespace = "com.storiesteller.auth"
     compileSdk = 34
 
     defaultConfig {
@@ -55,12 +55,12 @@ dependencies {
     implementation(project(":application:utils"))
     implementation(project(":application:resources"))
     implementation(project(":application:auth_core"))
+    implementation(project(":storiesteller"))
+    implementation(project(":storiesteller_models"))
+    implementation(project(":storiesteller_persistence"))
+    implementation(project(":storiesteller_serialization"))
 
-    implementation(project(":storyteller"))
-    implementation(project(":storyteller_models"))
-    implementation(project(":storyteller_persistence"))
-    implementation(project(":storyteller_serialization"))
-    implementation(project(":storyteller_network"))
+    implementation(project(":storiesteller_network"))
 
     implementation(libs.androidx.ktx)
     implementation(libs.appCompat)

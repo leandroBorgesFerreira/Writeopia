@@ -22,11 +22,11 @@
             <option value="$PROJECT_DIR$/application/utils" />
             <option value="$PROJECT_DIR$/backend" />
             <option value="$PROJECT_DIR$/backend/intronotes" />
-            <option value="$PROJECT_DIR$/storyteller" />
-            <option value="$PROJECT_DIR$/storyteller_models" />
-            <option value="$PROJECT_DIR$/storyteller_network" />
-            <option value="$PROJECT_DIR$/storyteller_persistence" />
-            <option value="$PROJECT_DIR$/storyteller_serialization" />
+            <option value="$PROJECT_DIR$/storiesteller" />
+            <option value="$PROJECT_DIR$/storiesteller_models" />
+            <option value="$PROJECT_DIR$/storiesteller_network" />
+            <option value="$PROJECT_DIR$/storiesteller_persistence" />
+            <option value="$PROJECT_DIR$/storiesteller_serialization" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
