@@ -17,10 +17,10 @@ import io.storiesteller.sdk.model.story.DrawState
 fun StoriesTellerEditor(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    editable: Boolean,
-    storyState: DrawState,
+    editable: Boolean = true,
+    listState: LazyListState = rememberLazyListState(),
     drawers: Map<Int, StoryStepDrawer>,
-    listState: LazyListState = rememberLazyListState()
+    storyState: DrawState
 ) {
     val content = storyState.stories.values.toList()
 

@@ -56,7 +56,7 @@ class StoriesTellerManager(
         movementHandler
     ),
     private val documentTracker: DocumentTracker? = null,
-    private val userId: suspend () -> String
+    private val userId: suspend () -> String = { "no_user_id_provided" }
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     private var localUserId: String? = null
@@ -99,7 +99,7 @@ class StoriesTellerManager(
             storyState to documentInfo
         }
 
-    val toDraw = combine(_positionsOnEdit, currentStory) { positions, storyState ->
+    val toDraw: Flow<DrawState> = combine(_positionsOnEdit, currentStory) { positions, storyState ->
         val focus = storyState.focusId
 
         val toDrawStories = storyState.stories.mapValues { (position, storyStep) ->

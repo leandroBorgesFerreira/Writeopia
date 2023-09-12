@@ -21,6 +21,7 @@ import io.storiesteller.sdk.serialization.request.wrapInRequest
 import io.storiesteller.sdk.utils.extensions.noContent
 import io.storiesteller.editor.model.EditState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -67,7 +68,7 @@ internal class NoteEditorViewModel(
 
     private val story: StateFlow<StoryState> = storiesTellerManager.currentStory
     val scrollToPosition = storiesTellerManager.scrollToPosition
-    val toDraw = storiesTellerManager.toDraw.stateIn(
+    val toDraw: StateFlow<DrawState> = storiesTellerManager.toDraw.stateIn(
         viewModelScope,
         started = SharingStarted.Lazily,
         initialValue = DrawState(emptyMap())

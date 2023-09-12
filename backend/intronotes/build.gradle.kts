@@ -15,7 +15,7 @@ plugins {
 }
 
 group = "io.storiesteller.sdk.intronotes"
-version = "0.0.34-SNAPSHOT"
+version = "0.0.35-SNAPSHOT"
 
 dependencies {
     implementation(libs.kotlinx.serialization.json)

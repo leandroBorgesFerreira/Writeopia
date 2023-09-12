@@ -8,12 +8,12 @@ import io.storiesteller.sdk.models.document.Document
 import io.storiesteller.sdk.persistence.sorting.OrderBy
 import io.storiesteller.sdk.preview.PreviewParser
 import io.storiesteller.auth.core.AuthManager
-import io.storiesteller.auth.core.data.DISCONNECTED_USER_ID
 import io.storiesteller.auth.core.data.User
 import io.storiesteller.note_menu.data.usecase.NotesConfigurationRepository
 import io.storiesteller.note_menu.data.usecase.NotesUseCase
 import io.storiesteller.note_menu.extensions.toUiCard
 import io.storiesteller.note_menu.ui.dto.DocumentUi
+import io.storiesteller.utils_module.DISCONNECTED_USER_ID
 import io.storiesteller.utils_module.ResultData
 import io.storiesteller.utils_module.toBoolean
 import io.storiesteller.utils_module.map

@@ -4,7 +4,7 @@ import io.storiesteller.note_menu.data.supermarketList
 import io.storiesteller.note_menu.data.travelHistory
 import io.storiesteller.sdk.manager.DocumentRepository
 import io.storiesteller.sdk.models.document.Document
-import io.storiesteller.auth.core.data.DISCONNECTED_USER_ID
+import io.storiesteller.utils_module.DISCONNECTED_USER_ID
 import java.time.Instant
 import java.util.UUID
 

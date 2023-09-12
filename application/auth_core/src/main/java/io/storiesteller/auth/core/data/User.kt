@@ -1,6 +1,6 @@
 package io.storiesteller.auth.core.data
 
-const val DISCONNECTED_USER_ID = "disconnected_user"
+import io.storiesteller.utils_module.DISCONNECTED_USER_ID
 
 data class User(
     val id: String,

@@ -3,6 +3,7 @@ package io.storiesteller.sdk.drawer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,12 +38,13 @@ import io.storiesteller.sdk.text.edition.TextCommandHandler
 
 object DefaultDrawers {
 
+    @Composable
     fun create(
-        editable: Boolean = false,
         manager: StoriesTellerManager,
+        defaultBorder: Shape = MaterialTheme.shapes.medium,
+        editable: Boolean = false,
         groupsBackgroundColor: Color = Color.Transparent,
-        onHeaderClick: () -> Unit,
-        defaultBorder: Shape
+        onHeaderClick: () -> Unit = {}
     ): Map<Int, StoryStepDrawer> =
         create(
             editable = editable,
@@ -62,6 +64,7 @@ object DefaultDrawers {
             defaultBorder = defaultBorder
         )
 
+    @Composable
     fun create(
         editable: Boolean = false,
         onTextEdit: (String, Int) -> Unit,
