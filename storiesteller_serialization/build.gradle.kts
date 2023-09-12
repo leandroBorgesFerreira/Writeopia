@@ -5,7 +5,7 @@ plugins {
 }
 
 rootProject.extra.apply {
-    set("PUBLISH_GROUP_ID", "com.storiesteller")
+    set("PUBLISH_GROUP_ID", "io.storiesteller")
     set("PUBLISH_ARTIFACT_ID", "storiesteller-serialization")
     set("PUBLISH_VERSION", libs.versions.storiesteller.get())
 }

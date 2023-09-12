@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.storiesteller.account"
+    namespace = "io.storiesteller.account"
     compileSdk = 34
 
     defaultConfig {

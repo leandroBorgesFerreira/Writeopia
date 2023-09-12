@@ -14,7 +14,7 @@ plugins {
     id("org.graalvm.buildtools.native") version "0.9.24"
 }
 
-group = "com.storiesteller.sdk.intronotes"
+group = "io.storiesteller.sdk.intronotes"
 version = "0.0.34-SNAPSHOT"
 
 dependencies {
@@ -47,7 +47,7 @@ graalvmNative {
     binaries {
         named("main") {
 //            runtimeArgs.add("--initialize-at-run-time=org.slf4j")
-            mainClass.set("com.storiesteller.sdk.intronotes.MainKt")
+            mainClass.set("io.storiesteller.sdk.intronotes.MainKt")
         }
     }
 }

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.storiesteller.appresourcers"
+    namespace = "io.storiesteller.appresourcers"
     compileSdk = 34
 
     defaultConfig {
