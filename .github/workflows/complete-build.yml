@@ -1,5 +1,4 @@
-name: Build and test
-
+name: Complete build
 on:
   push:
     branches:
