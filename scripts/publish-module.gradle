@@ -52,9 +52,9 @@ afterEvaluate { project ->
                 artifact javadocJar
 
                 pom {
-                    name = "storyteller"
+                    name = "storiesteller"
                     description = "A library to create complex text editors inside apps"
-                    url = 'https://https://github.com/leandroBorgesFerreira/StoryTeller'
+                    url = 'https://https://github.com/leandroBorgesFerreira/StoriesTeller'
                     licenses {
                         license {
                             name = 'The Apache Software License, Version 2.0'
@@ -70,9 +70,9 @@ afterEvaluate { project ->
                         }
                     }
                     scm {
-                        connection = "scm:git@github.com:leandroBorgesFerreira/StoryTeller.git"
-                        developerConnection = "scm:git:ssh://github.com/leandroBorgesFerreira/StoryTeller.git"
-                        url = "https://github.com/leandroBorgesFerreira/StoryTeller"
+                        connection = "scm:git@github.com:leandroBorgesFerreira/StoriesTeller.git"
+                        developerConnection = "scm:git:ssh://github.com/leandroBorgesFerreira/StoriesTeller.git"
+                        url = "https://github.com/leandroBorgesFerreira/StoriesTeller"
                     }
                 }
             }

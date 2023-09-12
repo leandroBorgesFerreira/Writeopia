@@ -12,7 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "StoryTeller"
+rootProject.name = "StoriesTeller"
 include ':storiesteller'
 include ':storiesteller_persistence'
 include ':storiesteller_serialization'

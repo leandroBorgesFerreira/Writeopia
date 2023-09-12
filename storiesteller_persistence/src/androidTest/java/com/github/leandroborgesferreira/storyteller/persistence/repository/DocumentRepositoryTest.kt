@@ -9,10 +9,9 @@ import com.storiesteller.sdk.models.story.StoryStep
 import com.storiesteller.sdk.model.story.StoryTypes
 import com.storiesteller.sdk.persistence.dao.DocumentDao
 import com.storiesteller.sdk.persistence.dao.StoryUnitDao
-import com.storiesteller.sdk.persistence.database.StoryTellerDatabase
+import com.storiesteller.sdk.persistence.database.StoriesTellerDatabase
 import com.storiesteller.sdk.persistence.parse.toEntity
 import com.storiesteller.sdk.persistence.parse.toModel
-import com.storiesteller.sdk.persistence.repository.DocumentRepositoryImpl
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.*
@@ -25,7 +24,7 @@ import java.util.UUID
 @RunWith(AndroidJUnit4::class)
 class DocumentRepositoryTest {
 
-    private lateinit var database: StoryTellerDatabase
+    private lateinit var database: StoriesTellerDatabase
     private lateinit var documentDao: DocumentDao
     private lateinit var storyUnitDao: StoryUnitDao
     private lateinit var documentRepository: DocumentRepositoryImpl
@@ -35,7 +34,7 @@ class DocumentRepositoryTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         database = Room.inMemoryDatabaseBuilder(
             context,
-            StoryTellerDatabase::class.java
+            StoriesTellerDatabase::class.java
         ).build()
 
         documentDao = database.documentDao()

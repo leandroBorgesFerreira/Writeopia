@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.storiesteller.sdk.manager.DocumentRepository
-import com.storiesteller.sdk.persistence.database.StoryTellerDatabase
+import com.storiesteller.sdk.persistence.database.StoriesTellerDatabase
 import com.storiesteller.sdk.persistence.repository.DocumentRepositoryImpl
 import com.storiesteller.auth.core.AuthManager
 import com.storiesteller.note_menu.data.usecase.NotesConfigurationRepository
@@ -12,7 +12,7 @@ import com.storiesteller.note_menu.data.usecase.NotesUseCase
 import com.storiesteller.note_menu.viewmodel.ChooseNoteViewModel
 
 class NotesMenuInjection(
-    private val database: StoryTellerDatabase,
+    private val database: StoriesTellerDatabase,
     private val sharedPreferences: SharedPreferences,
     private val authManager: AuthManager,
 ) {

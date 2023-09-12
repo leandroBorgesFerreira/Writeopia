@@ -54,7 +54,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.storiesteller.sdk.StoryTellerEditor
+import com.storiesteller.sdk.StoriesTellerEditor
 import com.storiesteller.sdk.drawer.DefaultDrawers
 import com.storiesteller.sdk.uicomponents.EditionScreen
 import com.storiesteller.editor.configuration.ui.HeaderEdition
@@ -257,7 +257,7 @@ private fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
 
     val clipShape = MaterialTheme.shapes.medium
 
-    StoryTellerEditor(
+    StoriesTellerEditor(
         modifier = Modifier
             .fillMaxWidth()
             .weight(1F),
@@ -266,7 +266,7 @@ private fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
         listState = listState,
         drawers = DefaultDrawers.create(
             editable,
-            noteEditorViewModel.storyTellerManager,
+            noteEditorViewModel.storiesTellerManager,
             defaultBorder = clipShape,
             onHeaderClick = noteEditorViewModel::onHeaderClick
 //            groupsBackgroundColor = MaterialTheme.colorScheme.surface

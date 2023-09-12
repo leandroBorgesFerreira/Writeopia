@@ -11,7 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.storiesteller.sdk.network.injector.ApiInjector
-import com.storiesteller.sdk.persistence.database.StoryTellerDatabase
+import com.storiesteller.sdk.persistence.database.StoriesTellerDatabase
 import com.storiesteller.AndroidLogger
 import com.storiesteller.account.navigation.accountMenuNavigation
 import com.storiesteller.account.viewmodel.AccountMenuViewModel
@@ -41,7 +41,7 @@ class NavigationActivity : AppCompatActivity() {
 fun NavigationGraph(
     application: Application,
     navController: NavHostController = rememberNavController(),
-    database: StoryTellerDatabase = StoryTellerDatabase.database(application, builder = {
+    database: StoriesTellerDatabase = StoriesTellerDatabase.database(application, builder = {
         this.createFromAsset("StoryTellerDatabase.db")
     }),
     sharedPreferences: SharedPreferences = application.getSharedPreferences(

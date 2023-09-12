@@ -26,13 +26,13 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.storiesteller.R
 import com.storiesteller.sdk.drawer.DrawInfo
 import com.storiesteller.sdk.drawer.StoryStepDrawer
 import com.storiesteller.sdk.model.action.Action
 import com.storiesteller.sdk.models.story.StoryStep
 import com.storiesteller.sdk.model.story.StoryTypes
 import com.storiesteller.sdk.utils.ui.transparentTextInputColors
-import com.storyteller.R
 
 const val TITLE_DRAWER_TEST_TAG = "TitleDrawerTextField"
 

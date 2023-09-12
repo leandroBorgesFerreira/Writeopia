@@ -14,7 +14,7 @@ import com.storiesteller.sdk.drawer.StoryStepDrawer
 import com.storiesteller.sdk.model.story.DrawState
 
 @Composable
-fun StoryTellerEditor(
+fun StoriesTellerEditor(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     editable: Boolean,

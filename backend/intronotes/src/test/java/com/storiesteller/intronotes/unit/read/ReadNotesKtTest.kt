@@ -3,7 +3,7 @@ package com.storiesteller.intronotes.unit.read
 import com.storiesteller.intronotes.extensions.toAPi
 import com.storiesteller.intronotes.persistence.entity.DocumentEntity
 import com.storiesteller.intronotes.read.readNotes
-import com.storiesteller.sdk.serialization.json.storyTellerJson
+import com.storiesteller.sdk.serialization.json.storiesTellerJson
 import com.storiesteller.sdk.serialization.request.wrapInRequest
 import kotlinx.serialization.encodeToString
 import org.junit.Assert.*
@@ -21,7 +21,7 @@ class ReadNotesKtTest {
         val documentEntity = DocumentEntity(createdAt = 0, lastUpdatedAt = 0)
         val result = readNotes { documentEntity }
 
-        val expected = storyTellerJson.encodeToString(
+        val expected = storiesTellerJson.encodeToString(
             documentEntity.toAPi()
                 .let(::listOf)
                 .wrapInRequest()

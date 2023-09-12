@@ -2,7 +2,7 @@ package com.storiesteller.sdk.network.injector
 
 import com.storiesteller.sdk.network.notes.NotesApi
 import com.storiesteller.sdk.network.oauth.BearerTokenHandler
-import com.storiesteller.sdk.serialization.json.storyTellerJson
+import com.storiesteller.sdk.serialization.json.storiesTellerJson
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
@@ -11,7 +11,6 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
@@ -32,7 +31,7 @@ class ApiInjector(
 
 internal object ApiInjectorDefaults {
     fun httpClientJson(
-        json: Json = storyTellerJson,
+        json: Json = storiesTellerJson,
         bearerTokenHandler: BearerTokenHandler,
         apiLogger: Logger
     ) =

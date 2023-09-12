@@ -12,7 +12,7 @@ import com.storiesteller.sdk.persistence.dao.StoryUnitDao
 import com.storiesteller.sdk.persistence.entity.document.DocumentEntity
 import com.storiesteller.sdk.persistence.entity.story.StoryStepEntity
 
-private const val DATABASE_NAME = "StoryTellerDatabase"
+private const val DATABASE_NAME = "StoriesTellerDatabase"
 
 @Database(
     entities = [
@@ -23,37 +23,37 @@ private const val DATABASE_NAME = "StoryTellerDatabase"
     exportSchema = false
 )
 @TypeConverters(IdListConverter::class, InstantConverter::class)
-abstract class StoryTellerDatabase : RoomDatabase() {
+abstract class StoriesTellerDatabase : RoomDatabase() {
 
     abstract fun documentDao(): DocumentDao
     abstract fun storyUnitDao(): StoryUnitDao
 
     companion object {
-        private var instance: StoryTellerDatabase? = null
+        private var instance: StoriesTellerDatabase? = null
 
         fun database(
             context: Context,
             databaseName: String = DATABASE_NAME,
             inMemory: Boolean = false,
-            builder: Builder<StoryTellerDatabase>.() -> Builder<StoryTellerDatabase> = { this }
-        ): StoryTellerDatabase =
+            builder: Builder<StoriesTellerDatabase>.() -> Builder<StoriesTellerDatabase> = { this }
+        ): StoriesTellerDatabase =
             instance ?: createDatabase(context, databaseName, inMemory, builder)
 
         private fun createDatabase(
             context: Context,
             databaseName: String,
             inMemory: Boolean = false,
-            builder: Builder<StoryTellerDatabase>.() -> Builder<StoryTellerDatabase> = { this }
-        ): StoryTellerDatabase =
+            builder: Builder<StoriesTellerDatabase>.() -> Builder<StoriesTellerDatabase> = { this }
+        ): StoriesTellerDatabase =
             if (inMemory) {
                 Room.inMemoryDatabaseBuilder(
                     context.applicationContext,
-                    StoryTellerDatabase::class.java
+                    StoriesTellerDatabase::class.java
                 ).build()
             } else {
                 Room.databaseBuilder(
                     context.applicationContext,
-                    StoryTellerDatabase::class.java,
+                    StoriesTellerDatabase::class.java,
                     databaseName
                 ).let(builder)
                     .fallbackToDestructiveMigration()

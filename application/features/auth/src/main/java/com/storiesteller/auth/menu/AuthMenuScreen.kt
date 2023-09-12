@@ -110,7 +110,7 @@ private fun AuthMenuContentScreen(
 
             Image(
                 modifier = Modifier.height(17.dp),
-                painter = painterResource(id = R.drawable.image_storyteller_logo),
+                painter = painterResource(id = R.drawable.image_storiesteller_logo),
                 contentDescription = "",
                 contentScale = ContentScale.FillHeight,
             )

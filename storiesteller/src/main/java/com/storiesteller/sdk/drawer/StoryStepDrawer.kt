@@ -5,8 +5,8 @@ import com.storiesteller.sdk.models.story.StoryStep
 
 /**
  * [StoryStepDrawer] is the interface for drawing StoryUnits in the screen. It you would like
- * to support more types of StoryUnits are more implementation of this interface
- * to [StoryTellerTimeline]
+ * to support more types of [StoryStep] are more implementation of this interface
+ * to [StoryStepDrawer]
  */
 fun interface StoryStepDrawer {
     @Composable

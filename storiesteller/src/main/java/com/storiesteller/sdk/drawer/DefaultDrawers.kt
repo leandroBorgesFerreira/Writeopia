@@ -26,7 +26,7 @@ import com.storiesteller.sdk.drawer.content.SpaceDrawer
 import com.storiesteller.sdk.drawer.content.TitleDrawer
 import com.storiesteller.sdk.drawer.content.UnOrderedListItemDrawer
 import com.storiesteller.sdk.drawer.content.defaultImageShape
-import com.storiesteller.sdk.manager.StoryTellerManager
+import com.storiesteller.sdk.manager.StoriesTellerManager
 import com.storiesteller.sdk.model.action.Action
 import com.storiesteller.sdk.model.command.CommandFactory
 import com.storiesteller.sdk.model.command.CommandInfo
@@ -39,7 +39,7 @@ object DefaultDrawers {
 
     fun create(
         editable: Boolean = false,
-        manager: StoryTellerManager,
+        manager: StoriesTellerManager,
         groupsBackgroundColor: Color = Color.Transparent,
         onHeaderClick: () -> Unit,
         defaultBorder: Shape

@@ -7,7 +7,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import com.storiesteller.navigation.NavigationGraph
 import com.storiesteller.robots.DocumentEditRobot
 import com.storiesteller.robots.DocumentsMenuRobot
-import com.storiesteller.sdk.persistence.database.StoryTellerDatabase
+import com.storiesteller.sdk.persistence.database.StoriesTellerDatabase
 import com.storiesteller.utils_module.Destinations
 import org.junit.Rule
 import org.junit.Test
@@ -47,7 +47,7 @@ class NoteMenuAndroidTest {
         composeTestRule.setContent {
             NavigationGraph(
                 application = Application(),
-                database = StoryTellerDatabase.database(
+                database = StoriesTellerDatabase.database(
                     LocalContext.current,
                     inMemory = true
                 ),

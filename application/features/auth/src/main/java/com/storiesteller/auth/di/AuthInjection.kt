@@ -5,7 +5,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.storiesteller.sdk.manager.DocumentRepository
 import com.storiesteller.sdk.network.injector.ApiInjector
 import com.storiesteller.sdk.network.notes.NotesApi
-import com.storiesteller.sdk.persistence.database.StoryTellerDatabase
+import com.storiesteller.sdk.persistence.database.StoriesTellerDatabase
 import com.storiesteller.sdk.persistence.repository.DocumentRepositoryImpl
 import com.storiesteller.auth.core.AuthManager
 import com.storiesteller.auth.core.di.AuthCoreInjection
@@ -17,7 +17,7 @@ import com.storiesteller.auth.register.RegisterViewModel
 
 class AuthInjection(
     private val authCoreInjection: AuthCoreInjection,
-    private val database: StoryTellerDatabase,
+    private val database: StoriesTellerDatabase,
     private val apiInjector: ApiInjector,
 ) {
 

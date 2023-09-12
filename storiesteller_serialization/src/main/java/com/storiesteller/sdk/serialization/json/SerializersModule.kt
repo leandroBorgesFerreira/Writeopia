@@ -5,8 +5,8 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 
-fun storyTellerSerializersModule(): SerializersModule = SerializersModule {
+fun storiesTellerSerializersModule(): SerializersModule = SerializersModule {
     contextual(InstantSerializer)
 }
 
-val storyTellerJson = Json { serializersModule = storyTellerSerializersModule() }
+val storiesTellerJson = Json { serializersModule = storiesTellerSerializersModule() }

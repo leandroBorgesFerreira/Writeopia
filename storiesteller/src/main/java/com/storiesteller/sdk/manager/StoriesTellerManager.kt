@@ -37,7 +37,7 @@ import java.util.UUID
  * This is the entry class of the framework. It follows the Controller pattern, redirecting all the
  * call to another class responsible for the part of the SDK requested.
  */
-class StoryTellerManager(
+class StoriesTellerManager(
     private val stepsNormalizer: UnitsNormalizationMap =
         StepsMapNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
@@ -120,7 +120,7 @@ class StoryTellerManager(
 
     /**
      * Saves the document automatically as it is changed. It uses the [DocumentTracker] passed
-     * in the constructor of [StoryTellerManager]
+     * in the constructor of [StoriesTellerManager]
      */
     fun saveOnStoryChanges() {
         coroutineScope.launch(dispatcher) {
@@ -129,8 +129,8 @@ class StoryTellerManager(
             } else {
                 throw IllegalStateException(
                     "saveOnStoryChanges called without providing a DocumentTracker for " +
-                            "StoryTellerManager. Did you forget to add it in the constructor of " +
-                            "StoryTellerManager?"
+                            "StoriesTellerManager. Did you forget to add it in the constructor of " +
+                            "StoriesTellerManager?"
                 )
             }
         }
@@ -471,7 +471,7 @@ class StoryTellerManager(
     }
 
     /**
-     * Clears the [StoryTellerManager]. Use this in the onCleared of your ViewModel.
+     * Clears the [StoriesTellerManager]. Use this in the onCleared of your ViewModel.
      */
     fun onClear() {
         coroutineScope.cancel()

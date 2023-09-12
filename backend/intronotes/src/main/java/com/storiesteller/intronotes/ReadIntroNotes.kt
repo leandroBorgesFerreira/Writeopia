@@ -5,12 +5,12 @@ import com.amazonaws.services.lambda.runtime.RequestHandler
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.storiesteller.intronotes.persistence.repository.DynamoIntroNotesRepository
 import com.storiesteller.intronotes.read.readNotes
-import com.storiesteller.sdk.serialization.json.storyTellerJson
+import com.storiesteller.sdk.serialization.json.storiesTellerJson
 
 class ReadIntroNotes : RequestHandler<Unit, APIGatewayProxyResponseEvent> {
     override fun handleRequest(input: Unit, context: Context): APIGatewayProxyResponseEvent {
         val response = readNotes(
-            json = storyTellerJson,
+            json = storiesTellerJson,
             provideNote = {
                 DynamoIntroNotesRepository.readNote("87eb231f-c263-4562-9d86-ce980bf954a7")
             }

@@ -7,7 +7,7 @@ import com.amplifyframework.kotlin.core.Amplify
 import com.storiesteller.sdk.video.VideoFrameConfig
 import com.storiesteller.auth.core.AuthInitializer
 
-class StoryTellerApplication: Application() {
+class StoriesTellerApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -16,9 +16,9 @@ class StoryTellerApplication: Application() {
         try {
             AuthInitializer.initializeAwsAuth()
             Amplify.configure(applicationContext)
-            Log.i("StoryTellerApplication", "Initialized Amplify")
+            Log.i("StoriesTellerApplication", "Initialized Amplify")
         } catch (error: AmplifyException) {
-            Log.e("StoryTellerApplication", "Could not initialize Amplify", error)
+            Log.e("StoriesTellerApplication", "Could not initialize Amplify", error)
         }
     }
 }

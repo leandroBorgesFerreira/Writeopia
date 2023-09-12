@@ -9,14 +9,14 @@ import com.storiesteller.sdk.backstack.BackstackInform
 import com.storiesteller.sdk.filter.DocumentFilter
 import com.storiesteller.sdk.filter.DocumentFilterObject
 import com.storiesteller.sdk.manager.DocumentRepository
-import com.storiesteller.sdk.manager.StoryTellerManager
+import com.storiesteller.sdk.manager.StoriesTellerManager
 import com.storiesteller.sdk.model.action.Action
 import com.storiesteller.sdk.model.story.DrawState
 import com.storiesteller.sdk.model.story.StoryState
 import com.storiesteller.sdk.models.document.Document
 import com.storiesteller.sdk.models.story.Decoration
 import com.storiesteller.sdk.serialization.extensions.toApi
-import com.storiesteller.sdk.serialization.json.storyTellerJson
+import com.storiesteller.sdk.serialization.json.storiesTellerJson
 import com.storiesteller.sdk.serialization.request.wrapInRequest
 import com.storiesteller.sdk.utils.extensions.noContent
 import com.storiesteller.editor.model.EditState
@@ -33,12 +33,12 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 
 internal class NoteEditorViewModel(
-    val storyTellerManager: StoryTellerManager,
+    val storiesTellerManager: StoriesTellerManager,
     private val documentRepository: DocumentRepository,
     private val documentFilter: DocumentFilter = DocumentFilterObject,
 ) : ViewModel(),
-    BackstackInform by storyTellerManager,
-    BackstackHandler by storyTellerManager {
+    BackstackInform by storiesTellerManager,
+    BackstackHandler by storiesTellerManager {
 
     private val _isEditableState = MutableStateFlow(true)
 
@@ -57,7 +57,7 @@ internal class NoteEditorViewModel(
         globalMenu || headerEdit
     }
 
-    val isEditState: StateFlow<EditState> = storyTellerManager.onEditPositions.map { set ->
+    val isEditState: StateFlow<EditState> = storiesTellerManager.onEditPositions.map { set ->
         when {
             set.isNotEmpty() -> EditState.SELECTED_TEXT
 
@@ -65,16 +65,16 @@ internal class NoteEditorViewModel(
         }
     }.stateIn(viewModelScope, started = SharingStarted.Lazily, initialValue = EditState.TEXT)
 
-    private val story: StateFlow<StoryState> = storyTellerManager.currentStory
-    val scrollToPosition = storyTellerManager.scrollToPosition
-    val toDraw = storyTellerManager.toDraw.stateIn(
+    private val story: StateFlow<StoryState> = storiesTellerManager.currentStory
+    val scrollToPosition = storiesTellerManager.scrollToPosition
+    val toDraw = storiesTellerManager.toDraw.stateIn(
         viewModelScope,
         started = SharingStarted.Lazily,
         initialValue = DrawState(emptyMap())
     )
 
     fun deleteSelection() {
-        storyTellerManager.deleteSelection()
+        storiesTellerManager.deleteSelection()
     }
 
     fun handleBackAction(navigateBack: () -> Unit) {
@@ -98,34 +98,34 @@ internal class NoteEditorViewModel(
     }
 
     fun createNewDocument(documentId: String, title: String) {
-        if (storyTellerManager.isInitialized()) return
+        if (storiesTellerManager.isInitialized()) return
 
-        storyTellerManager.newStory(documentId, title)
+        storiesTellerManager.newStory(documentId, title)
 
         viewModelScope.launch {
-            storyTellerManager.currentDocument.stateIn(this).value?.let { document ->
+            storiesTellerManager.currentDocument.stateIn(this).value?.let { document ->
                 documentRepository.saveDocument(document)
-                storyTellerManager.saveOnStoryChanges()
+                storiesTellerManager.saveOnStoryChanges()
             }
         }
     }
 
     fun requestDocumentContent(documentId: String) {
-        if (storyTellerManager.isInitialized()) return
+        if (storiesTellerManager.isInitialized()) return
 
         viewModelScope.launch(Dispatchers.IO) {
             val document = documentRepository.loadDocumentById(documentId)
 
             if (document != null) {
-                storyTellerManager.initDocument(document)
-                storyTellerManager.saveOnStoryChanges()
+                storiesTellerManager.initDocument(document)
+                storiesTellerManager.saveOnStoryChanges()
             }
         }
     }
 
     private fun removeNoteIfEmpty(onComplete: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            val document = storyTellerManager.currentDocument.stateIn(this).value
+            val document = storiesTellerManager.currentDocument.stateIn(this).value
 
             if (document != null && story.value.stories.noContent()) {
                 documentRepository.deleteDocument(document)
@@ -139,7 +139,7 @@ internal class NoteEditorViewModel(
 
     fun onHeaderColorSelection(color: Int?) {
         onHeaderEditionCancel()
-        storyTellerManager.currentStory.value.stories[0]?.let { storyStep ->
+        storiesTellerManager.currentStory.value.stories[0]?.let { storyStep ->
             val action = Action.StoryStateChange(
                 storyStep = storyStep.copy(
                     decoration = Decoration(
@@ -148,7 +148,7 @@ internal class NoteEditorViewModel(
                 ),
                 position = 0
             )
-            storyTellerManager.changeStoryState(action)
+            storiesTellerManager.changeStoryState(action)
         }
     }
 
@@ -161,10 +161,10 @@ internal class NoteEditorViewModel(
     }
 
     fun shareDocumentInJson(context: Context) {
-        val json = storyTellerJson
+        val json = storiesTellerJson
 
         viewModelScope.launch {
-            val document: Document = storyTellerManager.currentDocument
+            val document: Document = storiesTellerManager.currentDocument
                 .stateIn(viewModelScope)
                 .value ?: return@launch
 
@@ -194,7 +194,7 @@ internal class NoteEditorViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        storyTellerManager.onClear()
+        storiesTellerManager.onClear()
     }
 }
 
