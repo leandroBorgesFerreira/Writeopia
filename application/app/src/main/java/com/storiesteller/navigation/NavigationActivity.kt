@@ -42,7 +42,7 @@ fun NavigationGraph(
     application: Application,
     navController: NavHostController = rememberNavController(),
     database: StoriesTellerDatabase = StoriesTellerDatabase.database(application, builder = {
-        this.createFromAsset("StoryTellerDatabase.db")
+        this.createFromAsset("StoriesTellerDatabase.db")
     }),
     sharedPreferences: SharedPreferences = application.getSharedPreferences(
         "com.storiesteller.preferences",
