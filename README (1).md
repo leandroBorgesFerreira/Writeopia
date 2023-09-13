@@ -1,18 +1,4 @@
----
-layout:
-  title:
-    visible: false
-  description:
-    visible: true
-  tableOfContents:
-    visible: true
-  outline:
-    visible: true
-  pagination:
-    visible: true
----
-
-# Readme
+# README
 
 ![Java CI with Gradle](https://github.com/leandroBorgesFerreira/StoryTeller/workflows/Complete%20build/badge.svg) ![Maven Central](https://img.shields.io/maven-central/v/com.github.leandroborgesferreira/storyteller)
 
