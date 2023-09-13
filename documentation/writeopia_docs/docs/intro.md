@@ -1,0 +1,26 @@
+---
+sidebar_position: 0
+---
+
+# Overview
+
+StoriesTeller is a component to add rich text editors inside apps using Kotlin. This SDK aims to be a platform to create a text edition from end to end. It provides components both for the backend and mobile so developers create both the UI and data for text editors.
+
+The editor uses a simple core and each part of the editor can be configured independently like list items, headers, titles, and images.
+
+## Is this library right for me?
+
+StoriesTeller is the library for you if you're building a project using Kotlin and you plan to support text that is more complex than a simple box with text input.
+
+This library doesn't have a specific case and allows the developer to choose how many libraries to use and how much code should be inside the SDK or inside the client code. You can choose how many features of the SDK you would like to have which makes it good for both simple and complex scenarios.
+
+The default drawers for each component and the default behavior were intended for technical documentation, but the library can be extended to support different use cases and UI themes.
+
+## Architecture and Design choices
+
+I decided to create high-level building blocks loosely coupled from each other, instead of a class that solves everything. The library doesn't start as a single point of interaction and everything is hidden away from the user because that would reduce the options for usage of the library and also the ways it can be customized. This project was tailored to be very robust and versatile as your needs grow, instead of a very simple and well-defined use case.
+
+## Issues and support
+
+You can to go the [issues](https://github.com/leandroBorgesFerreira/StoriesTeller/issues) page to start a discussion, ask for help, request a feature, or offer some help. If you find this project interesting to you and would like to contribute, don't shy out! It can be an interesting place to challenge your Kotlin knowledge and/or try something new as it has code both in the front end and in the backend.
+
