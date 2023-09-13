@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "io.storiesteller.utils"
+    namespace = "io.writeopia.utils"
     compileSdk = 34
 
     defaultConfig {
@@ -33,9 +33,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":storiesteller"))
-    implementation(project(":storiesteller_serialization"))
-    implementation(project(":storiesteller_models"))
+    implementation(project(":writeopia"))
+    implementation(project(":writeopia_serialization"))
+    implementation(project(":writeopia_models"))
 }
 
 kotlin{

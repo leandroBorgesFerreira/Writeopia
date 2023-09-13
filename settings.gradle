@@ -12,12 +12,12 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "StoriesTeller"
-include ':storiesteller'
-include ':storiesteller_persistence'
-include ':storiesteller_serialization'
-include ':storiesteller_models'
-include ':storiesteller_network'
+rootProject.name = "Writeopia"
+include ':writeopia'
+include ':writeopia_persistence'
+include ':writeopia_serialization'
+include ':writeopia_models'
+include ':writeopia_network'
 include ':application:app'
 include ':application:resources'
 include ':application:utils'

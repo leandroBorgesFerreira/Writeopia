@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "io.storiesteller.account"
+    namespace = "io.writeopia.account"
     compileSdk = 34
 
     defaultConfig {

@@ -5,14 +5,14 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".application.StoriesTellerApplication"
+        android:name=".application.WriteopiaApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.StoriesTeller"
+        android:theme="@style/Theme.Writeopia"
         tools:targetApi="33">
         <activity
             android:name=".navigation.NavigationActivity"
