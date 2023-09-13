@@ -1,6 +1,4 @@
 
-# Readme
-
 ![Java CI with Gradle](https://github.com/leandroBorgesFerreira/StoryTeller/workflows/Complete%20build/badge.svg) ![Maven Central](https://img.shields.io/maven-central/v/com.github.leandroborgesferreira/storyteller)
 
 ## ![logo](https://github.com/leandroBorgesFerreira/StoryTeller/assets/10619102/bd7172de-51f0-40a2-ba29-dea50c13e7b7)
