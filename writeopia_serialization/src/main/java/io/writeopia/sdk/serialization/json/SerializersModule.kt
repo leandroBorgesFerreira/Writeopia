@@ -1,0 +1,12 @@
+package io.writeopia.sdk.serialization.json
+
+import io.writeopia.sdk.serialization.serializers.InstantSerializer
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.contextual
+
+fun writeopiaSerializersModule(): SerializersModule = SerializersModule {
+    contextual(InstantSerializer)
+}
+
+val writeopiaJson = Json { serializersModule = writeopiaSerializersModule() }

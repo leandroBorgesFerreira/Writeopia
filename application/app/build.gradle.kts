@@ -8,11 +8,11 @@ plugins {
     id("kotlin-parcelize")
 }
 android {
-    namespace = "io.storiesteller"
+    namespace = "io.writeopia"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "io.storiesteller"
+        applicationId = "io.writeopia"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -77,11 +77,11 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":storiesteller"))
-    implementation(project(":storiesteller_persistence"))
-    implementation(project(":storiesteller_serialization"))
-    implementation(project(":storiesteller_network"))
-    implementation(project(":storiesteller_models"))
+    implementation(project(":writeopia"))
+    implementation(project(":writeopia_persistence"))
+    implementation(project(":writeopia_serialization"))
+    implementation(project(":writeopia_network"))
+    implementation(project(":writeopia_models"))
 
     implementation(project(":application:utils"))
     implementation(project(":application:auth_core"))

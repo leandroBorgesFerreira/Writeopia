@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "io.storiesteller.auth"
+    namespace = "io.writeopia.auth"
     compileSdk = 34
 
     defaultConfig {
@@ -55,12 +55,12 @@ dependencies {
     implementation(project(":application:utils"))
     implementation(project(":application:resources"))
     implementation(project(":application:auth_core"))
-    implementation(project(":storiesteller"))
-    implementation(project(":storiesteller_models"))
-    implementation(project(":storiesteller_persistence"))
-    implementation(project(":storiesteller_serialization"))
+    implementation(project(":writeopia"))
+    implementation(project(":writeopia_models"))
+    implementation(project(":writeopia_persistence"))
+    implementation(project(":writeopia_serialization"))
 
-    implementation(project(":storiesteller_network"))
+    implementation(project(":writeopia_network"))
 
     implementation(libs.androidx.ktx)
     implementation(libs.appCompat)

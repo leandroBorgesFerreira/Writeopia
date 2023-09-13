@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "io.storiesteller.editor"
+    namespace = "io.writeopia.editor"
     compileSdk = 34
 
     defaultConfig {
@@ -51,10 +51,10 @@ kotlin{
 
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
-    implementation(project(":storiesteller"))
-    implementation(project(":storiesteller_models"))
-    implementation(project(":storiesteller_persistence"))
-    implementation(project(":storiesteller_serialization"))
+    implementation(project(":writeopia"))
+    implementation(project(":writeopia_models"))
+    implementation(project(":writeopia_persistence"))
+    implementation(project(":writeopia_serialization"))
 
     implementation(project(":application:resources"))
     implementation(project(":application:utils"))

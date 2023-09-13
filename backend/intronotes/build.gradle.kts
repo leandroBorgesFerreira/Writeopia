@@ -14,19 +14,19 @@ plugins {
     id("org.graalvm.buildtools.native") version "0.9.24"
 }
 
-group = "io.storiesteller.sdk.intronotes"
+group = "io.writeopia.sdk.intronotes"
 version = "0.0.35-SNAPSHOT"
 
 dependencies {
     implementation(libs.kotlinx.serialization.json)
-    implementation(project(":storiesteller_serialization"))
+    implementation(project(":writeopia_serialization"))
 
     implementation("com.amazonaws:aws-lambda-java-core:1.2.2")
     implementation("com.amazonaws:aws-lambda-java-events:3.11.2")
 
     implementation(platform("software.amazon.awssdk:bom:2.20.56"))
     implementation("software.amazon.awssdk:dynamodb-enhanced")
-    implementation(project(":storiesteller_models"))
+    implementation(project(":writeopia_models"))
 
     testImplementation(libs.junit)
     testImplementation("com.amazonaws:DynamoDBLocal:2.0.0")
@@ -47,7 +47,7 @@ graalvmNative {
     binaries {
         named("main") {
 //            runtimeArgs.add("--initialize-at-run-time=org.slf4j")
-            mainClass.set("io.storiesteller.sdk.intronotes.MainKt")
+            mainClass.set("io.writeopia.sdk.intronotes.MainKt")
         }
     }
 }

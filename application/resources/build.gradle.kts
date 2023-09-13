@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "io.storiesteller.appresourcers"
+    namespace = "io.writeopia.appresourcers"
     compileSdk = 34
 
     defaultConfig {
