@@ -76,7 +76,7 @@ const config = {
             position: 'left',
             label: 'Tutorial',
           },
-          {to: '/api_reference', label: 'API reference', position: 'left'},
+          // {to: '/api_reference', label: 'API reference', position: 'left'},
           {
             href: 'https://github.com/leandroBorgesFerreira/Writeopia',
             label: 'GitHub',
