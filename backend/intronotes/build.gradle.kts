@@ -19,7 +19,7 @@ version = "0.0.35-SNAPSHOT"
 
 dependencies {
     implementation(libs.kotlinx.serialization.json)
-    implementation(project(":writeopia_serialization"))
+    implementation(project(":plugins:writeopia_serialization"))
 
     implementation("com.amazonaws:aws-lambda-java-core:1.2.2")
     implementation("com.amazonaws:aws-lambda-java-events:3.11.2")

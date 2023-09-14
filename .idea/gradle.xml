@@ -22,11 +22,12 @@
             <option value="$PROJECT_DIR$/application/utils" />
             <option value="$PROJECT_DIR$/backend" />
             <option value="$PROJECT_DIR$/backend/intronotes" />
+            <option value="$PROJECT_DIR$/plugins" />
+            <option value="$PROJECT_DIR$/plugins/writeopia_network" />
+            <option value="$PROJECT_DIR$/plugins/writeopia_persistence" />
+            <option value="$PROJECT_DIR$/plugins/writeopia_serialization" />
             <option value="$PROJECT_DIR$/writeopia" />
             <option value="$PROJECT_DIR$/writeopia_models" />
-            <option value="$PROJECT_DIR$/writeopia_network" />
-            <option value="$PROJECT_DIR$/writeopia_persistence" />
-            <option value="$PROJECT_DIR$/writeopia_serialization" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

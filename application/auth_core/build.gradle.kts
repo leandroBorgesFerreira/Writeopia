@@ -35,7 +35,7 @@ android {
 
 dependencies {
     implementation(project(":application:utils"))
-    implementation(project(":writeopia_network"))
+    implementation(project(":plugins:writeopia_network"))
 
     implementation(libs.androidx.ktx)
     implementation(libs.appCompat)
