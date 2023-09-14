@@ -4,13 +4,13 @@ sidebar_position: 0
 
 # Overview
 
-StoriesTeller is a component to add rich text editors inside apps using Kotlin. This SDK aims to be a platform to create a text edition from end to end. It provides components both for the backend and mobile so developers create both the UI and data for text editors.
+Writeopia is a component to add rich text editors inside apps using Kotlin. This SDK aims to be a platform to create a text edition from end to end. It provides components both for the backend and mobile so developers create both the UI and data for text editors.
 
 The editor uses a simple core and each part of the editor can be configured independently like list items, headers, titles, and images.
 
 ## Is this library right for me?
 
-StoriesTeller is the library for you if you're building a project using Kotlin and you plan to support text that is more complex than a simple box with text input.
+Writeopia is the library for you if you're building a project using Kotlin and you plan to support text that is more complex than a simple box with text input.
 
 This library doesn't have a specific case and allows the developer to choose how many libraries to use and how much code should be inside the SDK or inside the client code. You can choose how many features of the SDK you would like to have which makes it good for both simple and complex scenarios.
 
@@ -22,5 +22,5 @@ I decided to create high-level building blocks loosely coupled from each other, 
 
 ## Issues and support
 
-You can to go the [issues](https://github.com/leandroBorgesFerreira/StoriesTeller/issues) page to start a discussion, ask for help, request a feature, or offer some help. If you find this project interesting to you and would like to contribute, don't shy out! It can be an interesting place to challenge your Kotlin knowledge and/or try something new as it has code both in the front end and in the backend.
+You can to go the [issues](https://github.com/leandroBorgesFerreira/Writeopia/issues) page to start a discussion, ask for help, request a feature, or offer some help. If you find this project interesting to you and would like to contribute, don't shy out! It can be an interesting place to challenge your Kotlin knowledge and/or try something new as it has code both in the front end and in the backend.
 
