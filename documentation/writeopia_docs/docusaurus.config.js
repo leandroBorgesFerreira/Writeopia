@@ -80,15 +80,15 @@ const config = {
       footer: {
         style: 'dark',
         links: [
-          {
-            title: 'Docs',
-            items: [
-              {
-                label: 'Tutorial',
-                to: 'docs/category/getting-started-with-android',
-              },
-            ],
-          },
+          // {
+          //   title: 'Docs',
+          //   items: [
+          //     {
+          //       label: 'Tutorial',
+          //       to: 'docs/category/getting-started-with-android',
+          //     },
+          //   ],
+          // },
           // {
           //   title: 'Community',
           //   items: [
