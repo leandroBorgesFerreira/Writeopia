@@ -39,7 +39,7 @@ DefaultDrawers.create(
 )
 ```
 
-Display content
+## Display content
 
 The `Composable` responsible for drawing the text editor is `StoryTellerEditor`. It needs at least a map with Drawers, the`StoriesTellerManager` and a `DrawState` to draw.
 
