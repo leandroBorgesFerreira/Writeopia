@@ -38,7 +38,7 @@ jobs:
         working-directory: ./documentation/writeopia_docs
         run: yarn install --frozen-lockfile
       - name: Build website
-        working-directory: ./documentation/writeopia_docs
+        working-directory: ./documentation/writeopia_docs      
         run: yarn build
 
       # Popular action to deploy to GitHub Pages:

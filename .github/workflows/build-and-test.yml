@@ -49,8 +49,11 @@ jobs:
         with:
           node-version: 18
           cache: yarn
+          cache-dependency-path: documentation/writeopia_docs/package-lock.json
 
       - name: Install dependencies
+        working-directory: ./documentation/writeopia_docs
         run: yarn install --frozen-lockfile
       - name: Test build website
+        working-directory: ./documentation/writeopia_docs
         run: yarn build
