@@ -57,10 +57,10 @@ dependencies {
     implementation(project(":application:auth_core"))
     implementation(project(":writeopia"))
     implementation(project(":writeopia_models"))
-    implementation(project(":writeopia_persistence"))
-    implementation(project(":writeopia_serialization"))
+    implementation(project(":plugins:writeopia_persistence"))
+    implementation(project(":plugins:writeopia_serialization"))
 
-    implementation(project(":writeopia_network"))
+    implementation(project(":plugins:writeopia_network"))
 
     implementation(libs.androidx.ktx)
     implementation(libs.appCompat)

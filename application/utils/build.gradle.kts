@@ -34,7 +34,7 @@ android {
 
 dependencies {
     implementation(project(":writeopia"))
-    implementation(project(":writeopia_serialization"))
+    implementation(project(":plugins:writeopia_serialization"))
     implementation(project(":writeopia_models"))
 }
 
