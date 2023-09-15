@@ -1,4 +1,4 @@
-package io.writeopia.sdk.persistence.database
+package io.writeopia.persistence
 
 import android.content.Context
 import androidx.room.Database
@@ -23,37 +23,37 @@ private const val DATABASE_NAME = "WriteopiaDatabase"
     exportSchema = false
 )
 @TypeConverters(IdListConverter::class, InstantConverter::class)
-abstract class WriteopiaDatabase : RoomDatabase() {
+abstract class WriteopiaApplicationDatabase : RoomDatabase() {
 
     abstract fun documentDao(): DocumentDao
     abstract fun storyUnitDao(): StoryUnitDao
 
     companion object {
-        private var instance: WriteopiaDatabase? = null
+        private var instance: WriteopiaApplicationDatabase? = null
 
         fun database(
             context: Context,
             databaseName: String = DATABASE_NAME,
             inMemory: Boolean = false,
-            builder: Builder<WriteopiaDatabase>.() -> Builder<WriteopiaDatabase> = { this }
-        ): WriteopiaDatabase =
+            builder: Builder<WriteopiaApplicationDatabase>.() -> Builder<WriteopiaApplicationDatabase> = { this }
+        ): WriteopiaApplicationDatabase =
             instance ?: createDatabase(context, databaseName, inMemory, builder)
 
         private fun createDatabase(
             context: Context,
             databaseName: String,
             inMemory: Boolean = false,
-            builder: Builder<WriteopiaDatabase>.() -> Builder<WriteopiaDatabase> = { this }
-        ): WriteopiaDatabase =
+            builder: Builder<WriteopiaApplicationDatabase>.() -> Builder<WriteopiaApplicationDatabase> = { this }
+        ): WriteopiaApplicationDatabase =
             if (inMemory) {
                 Room.inMemoryDatabaseBuilder(
                     context.applicationContext,
-                    WriteopiaDatabase::class.java
+                    WriteopiaApplicationDatabase::class.java
                 ).build()
             } else {
                 Room.databaseBuilder(
                     context.applicationContext,
-                    WriteopiaDatabase::class.java,
+                    WriteopiaApplicationDatabase::class.java,
                     databaseName
                 ).let(builder)
                     .fallbackToDestructiveMigration()

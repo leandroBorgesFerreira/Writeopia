@@ -11,7 +11,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import io.writeopia.sdk.network.injector.ApiInjector
-import io.writeopia.sdk.persistence.database.WriteopiaDatabase
 import io.writeopia.AndroidLogger
 import io.writeopia.account.navigation.accountMenuNavigation
 import io.writeopia.account.viewmodel.AccountMenuViewModel
@@ -24,6 +23,7 @@ import io.writeopia.editor.di.EditorInjector
 import io.writeopia.editor.navigation.editorNavigation
 import io.writeopia.note_menu.di.NotesMenuInjection
 import io.writeopia.note_menu.navigation.notesMenuNavigation
+import io.writeopia.persistence.WriteopiaApplicationDatabase
 import io.writeopia.theme.ApplicationComposeTheme
 import io.writeopia.utils_module.Destinations
 
@@ -41,7 +41,7 @@ class NavigationActivity : AppCompatActivity() {
 fun NavigationGraph(
     application: Application,
     navController: NavHostController = rememberNavController(),
-    database: WriteopiaDatabase = WriteopiaDatabase.database(application, builder = {
+    database: WriteopiaApplicationDatabase = WriteopiaApplicationDatabase.database(application, builder = {
         this.createFromAsset("WriteopiaDatabase.db")
     }),
     sharedPreferences: SharedPreferences = application.getSharedPreferences(

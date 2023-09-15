@@ -9,7 +9,6 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.model.story.StoryTypes
 import io.writeopia.sdk.persistence.dao.DocumentDao
 import io.writeopia.sdk.persistence.dao.StoryUnitDao
-import io.writeopia.sdk.persistence.database.WriteopiaDatabase
 import io.writeopia.sdk.persistence.parse.toEntity
 import io.writeopia.sdk.persistence.parse.toModel
 import kotlinx.coroutines.test.runTest
@@ -24,7 +23,7 @@ import java.util.UUID
 @RunWith(AndroidJUnit4::class)
 class DocumentRepositoryTest {
 
-    private lateinit var database: WriteopiaDatabase
+    private lateinit var database: DefaultWriteopiaDatabase
     private lateinit var documentDao: DocumentDao
     private lateinit var storyUnitDao: StoryUnitDao
     private lateinit var documentRepository: DocumentRepositoryImpl
@@ -34,7 +33,7 @@ class DocumentRepositoryTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         database = Room.inMemoryDatabaseBuilder(
             context,
-            WriteopiaDatabase::class.java
+            DefaultWriteopiaDatabase::class.java
         ).build()
 
         documentDao = database.documentDao()

@@ -60,6 +60,7 @@ dependencies {
     implementation(project(":application:utils"))
     implementation(project(":application:auth_core"))
     implementation(project(":application:common_ui"))
+    implementation(project(":application:persistence"))
 
     implementation(libs.kotlinx.serialization.json)
 
