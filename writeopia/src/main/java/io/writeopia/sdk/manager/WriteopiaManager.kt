@@ -271,7 +271,7 @@ class WriteopiaManager(
      * @param storyType [StoryStep]
      * @param commandInfo [CommandInfo]
      */
-    fun changeStoryType(position: Int, storyType: StoryType, commandInfo: CommandInfo) {
+    fun changeStoryType(position: Int, storyType: StoryType, commandInfo: CommandInfo?) {
         if (isOnSelection) {
             cancelSelection()
         }
