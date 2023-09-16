@@ -4,32 +4,32 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Robust and very customizable',
+    Svg: require('@site/static/img/Kodee_Assets_Digital_Kodee-naughty.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Writeopia is designed to be very customizable. You have a lot of freedown to choose how your editor will behave. 
+        Many use cases are possible. You can customize to fit what you need. 
       </>
     ),
   },
   {
     title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    Svg: require('@site/static/img/Kodee_Assets_Digital_Kodee-winter.svg').default,
     description: (
-      <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+      <>  
+        Writeopia lets you focus on what makes your app great, without spending a lot of time trying to make a great text edition experience. 
+        We already did it for you!
       </>
     ),
   },
   {
     title: 'Powered by Kotlin',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    Svg: require('@site/static/img/Kodee_Assets_Digital_Kodee-in-love.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Extend or customize your tex editor layout by reusing Kotlin. There's no need to change everything, you choose what should be persolanized
+        and what should stay the way it is. 
       </>
     ),
   },
