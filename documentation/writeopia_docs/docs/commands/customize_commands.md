@@ -1,0 +1,37 @@
+---
+sidebar_position: 1
+---
+
+# Customize Commands
+
+
+Some of the `StoryStepDrawer` of Writeopia accept a `TextCommandHandler` to handle commands from text input. 
+The default `TextCommandHandler` is already provided by `DefaultDrawers.create` and if you would like to change the default commands, changing the command handler of `DefaultDrawers.create` if the way to go. 
+
+`DefaultDrawers` accepts `TextCommandHandler` in the constructor. You can provide a command handle with different commands. 
+
+```
+val command = Command("-> ", WhereToFind.START)
+
+DefaultDrawers.create(
+    editable = true,
+    // Other configurations
+    // [...]
+    textCommandHandler = TextCommandHandler(
+        mapOf(
+            command to { _, position ->
+                writeopiaManager.changeStoryType(
+                    position,
+                    StoryType("unordered_list_item", number = 100),
+                    CommandInfo(
+                        command,
+                        CommandTrigger.WRITTEN
+                    )
+                )
+            }
+        )
+    )
+)
+```
+
+This will change the default unordered list item initial text to "-> " instead of "- ". 

@@ -84,7 +84,11 @@ class UnOrderedListItemDrawer(
                 position = drawInfo.position,
                 emptySpaceClick = focusRequester::requestFocus
             ) {
-                Text(modifier = Modifier.padding(horizontal = 8.dp), text = startText, style = textStyle())
+                Text(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    text = startText,
+                    style = textStyle()
+                )
 
                 SimpleMessageDrawer(
                     modifier = messageModifier.weight(1F),

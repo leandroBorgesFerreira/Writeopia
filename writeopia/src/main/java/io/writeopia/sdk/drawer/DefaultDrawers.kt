@@ -29,9 +29,11 @@ import io.writeopia.sdk.drawer.content.UnOrderedListItemDrawer
 import io.writeopia.sdk.drawer.content.defaultImageShape
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.action.Action
+import io.writeopia.sdk.model.command.Command
 import io.writeopia.sdk.model.command.CommandFactory
 import io.writeopia.sdk.model.command.CommandInfo
 import io.writeopia.sdk.model.command.CommandTrigger
+import io.writeopia.sdk.model.command.WhereToFind
 import io.writeopia.sdk.model.story.StoryTypes
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.text.edition.TextCommandHandler
@@ -67,20 +69,20 @@ object DefaultDrawers {
     @Composable
     fun create(
         editable: Boolean = false,
-        onTextEdit: (String, Int) -> Unit,
-        onTitleEdit: (String, Int) -> Unit,
-        onLineBreak: (Action.LineBreak) -> Unit,
-        mergeRequest: (Action.Merge) -> Unit = { },
-        moveRequest: (Action.Move) -> Unit = { },
-        checkRequest: (Action.StoryStateChange) -> Unit = { },
-        onDeleteRequest: (Action.DeleteStory) -> Unit,
-        changeStoryType: (Int, StoryType, CommandInfo?) -> Unit,
-        onSelected: (Boolean, Int) -> Unit,
-        clickAtTheEnd: () -> Unit,
-        onHeaderClick: () -> Unit,
-        defaultBorder: Shape,
+        onTextEdit: (String, Int) -> Unit = { _, _ -> },
+        onTitleEdit: (String, Int) -> Unit = { _, _ -> },
+        onLineBreak: (Action.LineBreak) -> Unit = {},
+        mergeRequest: (Action.Merge) -> Unit = {},
+        moveRequest: (Action.Move) -> Unit = {},
+        checkRequest: (Action.StoryStateChange) -> Unit = {},
+        onDeleteRequest: (Action.DeleteStory) -> Unit = {},
+        changeStoryType: (Int, StoryType, CommandInfo?) -> Unit = { _, _, _ -> },
+        onSelected: (Boolean, Int) -> Unit = { _, _ -> },
+        clickAtTheEnd: () -> Unit = {},
+        onHeaderClick: () -> Unit = {},
+        defaultBorder: Shape = MaterialTheme.shapes.medium,
         groupsBackgroundColor: Color = Color.Transparent,
-        textCommandHandlerMessage: TextCommandHandler = TextCommandHandler(
+        textCommandHandler: TextCommandHandler = TextCommandHandler(
             mapOf(
                 CommandFactory.lineBreak() to { storyStep, position ->
                     onLineBreak(Action.LineBreak(storyStep, position))
@@ -146,7 +148,7 @@ object DefaultDrawers {
                 }
             )
         ),
-        nextFocus: (Int) -> Unit
+        nextFocus: (Int) -> Unit = {}
     ): Map<Int, StoryStepDrawer> =
         buildMap {
             val commandsComposite: (StoryStepDrawer) -> StoryStepDrawer = { stepDrawer ->
@@ -174,7 +176,7 @@ object DefaultDrawers {
                 textModifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
                 onTextEdit = onTextEdit,
                 onDeleteRequest = onDeleteRequest,
-                commandHandler = textCommandHandlerMessage,
+                commandHandler = textCommandHandler,
                 onSelected = onSelected,
             )
 
@@ -183,7 +185,7 @@ object DefaultDrawers {
                 textModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
                 onTextEdit = onTextEdit,
                 onDeleteRequest = onDeleteRequest,
-                commandHandler = textCommandHandlerMessage,
+                commandHandler = textCommandHandler,
                 onSelected = onSelected,
             )
 
@@ -193,7 +195,7 @@ object DefaultDrawers {
                     textModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
                     onTextEdit = onTextEdit,
                     onDeleteRequest = onDeleteRequest,
-                    commandHandler = textCommandHandlerMessage,
+                    commandHandler = textCommandHandler,
                     onSelected = onSelected,
                     textStyle = {
                         TextStyle(
@@ -217,7 +219,7 @@ object DefaultDrawers {
                 emptyErase = { position ->
                     changeStoryType(position, StoryTypes.MESSAGE.type, null)
                 },
-                commandHandler = textCommandHandlerMessage,
+                commandHandler = textCommandHandler,
                 onSelected = onSelected,
             )
 
@@ -229,7 +231,7 @@ object DefaultDrawers {
                     emptyErase = { position ->
                         changeStoryType(position, StoryTypes.MESSAGE.type, null)
                     },
-                    commandHandler = textCommandHandlerMessage,
+                    commandHandler = textCommandHandler,
                     onSelected = onSelected,
                 )
 
