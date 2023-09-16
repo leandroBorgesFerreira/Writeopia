@@ -97,12 +97,12 @@ object DefaultDrawers {
                                 CommandTrigger.WRITTEN
                             )
                         )
-                    }, CommandFactory.unor() to { _, position ->
+                    }, CommandFactory.unOrderedList() to { _, position ->
                         changeStoryType(
                             position,
                             StoryTypes.UNORDERED_LIST_ITEM.type,
                             CommandInfo(
-                                CommandFactory.unor(),
+                                CommandFactory.unOrderedList(),
                                 CommandTrigger.WRITTEN
                             )
                         )

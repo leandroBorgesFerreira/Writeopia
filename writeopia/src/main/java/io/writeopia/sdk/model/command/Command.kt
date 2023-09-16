@@ -9,9 +9,9 @@ enum class WhereToFind {
 object CommandFactory {
     fun lineBreak() = Command("\n", WhereToFind.ANYWHERE)
 
-    fun checkItem() = Command("-[]", WhereToFind.START)
+    fun checkItem() = Command("-[] ", WhereToFind.START)
 
-    fun unor() = Command("- ", WhereToFind.START)
+    fun unOrderedList() = Command("- ", WhereToFind.START)
 
     fun h1() = Command("# ", WhereToFind.START)
     fun h2() = Command("## ", WhereToFind.START)
