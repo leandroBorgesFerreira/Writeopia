@@ -53,6 +53,7 @@ dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     implementation(project(":writeopia"))
     implementation(project(":writeopia_models"))
+    implementation(project(":plugins:writeopia_export"))
     implementation(project(":plugins:writeopia_persistence"))
     implementation(project(":plugins:writeopia_serialization"))
 
@@ -74,6 +75,10 @@ dependencies {
     implementation(libs.viewmodel.compose)
     implementation(libs.runtime.compose)
     implementation(libs.navigation.compose)
+
+    // Compose - Preview
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
 
     implementation("androidx.activity:activity-compose")
     implementation(libs.androidx.material.icons.extended)

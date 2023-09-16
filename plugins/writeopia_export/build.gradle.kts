@@ -35,6 +35,7 @@ android {
 
 dependencies {
     implementation(project(":writeopia"))
+    implementation(project(":writeopia_models"))
 
     implementation(libs.androidx.ktx)
     implementation(libs.appCompat)

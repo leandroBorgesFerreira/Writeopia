@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.writeopia.editor.model.EditState
 import io.writeopia.sdk.backstack.BackstackHandler
 import io.writeopia.sdk.backstack.BackstackInform
+import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.filter.DocumentFilter
 import io.writeopia.sdk.filter.DocumentFilterObject
 import io.writeopia.sdk.manager.DocumentRepository
@@ -15,12 +17,11 @@ import io.writeopia.sdk.model.story.DrawState
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.Decoration
+import io.writeopia.sdk.persistence.tracker.OnUpdateDocumentTracker
 import io.writeopia.sdk.serialization.extensions.toApi
 import io.writeopia.sdk.serialization.json.writeopiaJson
 import io.writeopia.sdk.serialization.request.wrapInRequest
 import io.writeopia.sdk.utils.extensions.noContent
-import io.writeopia.editor.model.EditState
-import io.writeopia.sdk.persistence.tracker.OnUpdateDocumentTracker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -32,6 +33,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 internal class NoteEditorViewModel(
     val writeopiaManager: WriteopiaManager,
@@ -162,29 +164,39 @@ internal class NoteEditorViewModel(
     }
 
     fun shareDocumentInJson(context: Context) {
-        val json = writeopiaJson
+        shareDocument(context, ::documentToJson, "application/json")
+    }
 
+    fun shareDocumentInMarkdown(context: Context) {
+        shareDocument(context, ::documentToMd, "plain/text")
+    }
+
+    private fun documentToJson(document: Document, json: Json = writeopiaJson): String {
+        val request = document.toApi().wrapInRequest()
+        return json.encodeToString(request)
+    }
+
+    private fun documentToMd(document: Document): String =
+        DocumentToMarkdown.parse(document.content)
+
+    private fun shareDocument(context: Context, infoParse: (Document) -> String, type: String) {
         viewModelScope.launch {
             val document: Document = writeopiaManager.currentDocument
                 .stateIn(viewModelScope)
                 .value ?: return@launch
 
             val documentTitle = document.title.replace(" ", "_")
+            val filteredContent = documentFilter.removeTypesFromDocument(document.content)
 
-            val apiContent = documentFilter.removeTypesFromDocument(document.content)
-                .map { (position, story) ->
-                    story.toApi(position)
-                }
-
-            val request = document.toApi().copy(content = apiContent).wrapInRequest()
-            val jsonDocument = json.encodeToString(request)
+            val newContent = document.copy(content = filteredContent)
+            val jsonDocument = infoParse(newContent)
 
             val intent = Intent(Intent.ACTION_SEND).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 putExtra(Intent.EXTRA_TEXT, jsonDocument)
                 putExtra(Intent.EXTRA_TITLE, documentTitle)
                 action = Intent.ACTION_SEND
-                type = "application/json"
+                this.type = type
             }
 
             context.startActivity(

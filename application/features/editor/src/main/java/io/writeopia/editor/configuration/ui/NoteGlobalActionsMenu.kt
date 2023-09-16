@@ -4,10 +4,12 @@ package io.writeopia.editor.configuration.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,7 +24,7 @@ import io.writeopia.appresourcers.R
 
 @Preview
 @Composable
-internal fun NoteGlobalActionsMenu(onShare: () -> Unit = {}) {
+internal fun NoteGlobalActionsMenu(onShareJson: () -> Unit = {}, onShareMd: () -> Unit = {}) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -39,17 +41,28 @@ internal fun NoteGlobalActionsMenu(onShare: () -> Unit = {}) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            modifier = Modifier
-                .clickable(onClick = onShare)
-                .clip(RoundedCornerShape(6.dp))
-                .background(MaterialTheme.colorScheme.secondary)
-                .padding(8.dp),
-            text = stringResource(id = R.string.export_json),
-            color = MaterialTheme.colorScheme.onPrimary,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.Bold
-            )
-        )
+        Row {
+            ShareButton(text = stringResource(id = R.string.export_json), onClick = onShareJson)
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            ShareButton(text = stringResource(id = R.string.export_md), onClick = onShareMd)
+        }
     }
+}
+
+@Composable
+private fun ShareButton(text: String, onClick: () -> Unit) {
+    Text(
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .clip(RoundedCornerShape(6.dp))
+            .background(MaterialTheme.colorScheme.secondary)
+            .padding(8.dp),
+        text = text,
+        color = MaterialTheme.colorScheme.onPrimary,
+        style = MaterialTheme.typography.bodyMedium.copy(
+            fontWeight = FontWeight.Bold
+        )
+    )
 }
