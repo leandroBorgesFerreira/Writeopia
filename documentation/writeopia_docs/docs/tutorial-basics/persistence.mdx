@@ -4,4 +4,92 @@ sidebar_position: 1
 
 # Persistence
 
-To do!
+The SDK has a persistence plugin. First add the plugin:
+
+```
+implementation("io.writeopia:writeopia_persistence:[version]")
+```
+
+## Configuration
+To configure the persistence, it is necessary to configure a Room database instance. It is necessary to:
+
+- Create the Room database
+- Add a repository to WriteopiaManager
+
+### Creating a Room database for Writeopia
+The persistence plugin provides some Daos and entities that can be added in a Room database. You can check more about all entities and 
+Daos in section of this documentation dedicated to persistence.
+
+You can add the Entities and Daos as the following code:
+
+```
+@Database(
+    entities = [
+        DocumentEntity::class,
+        StoryStepEntity::class,
+        // Other entities here
+    ],
+    version = 3,
+    exportSchema = false
+)
+@TypeConverters(IdListConverter::class, InstantConverter::class)
+abstract class WriteopiaApplicationDatabase : RoomDatabase() {
+
+    abstract fun documentDao(): DocumentDao
+    abstract fun storyUnitDao(): StoryUnitDao
+    //Other Daos here.
+
+    companion object {
+        private var instance: WriteopiaApplicationDatabase? = null
+
+        private fun createDatabase(context: Context, databaseName: String) =
+            Room.databaseBuilder(
+                context.applicationContext,
+                WriteopiaApplicationDatabase::class.java,
+                databaseName
+            ).build()
+                .also { database ->
+                    instance = database
+                }
+    }
+}
+``` 
+
+
+## Adding persistence
+
+`WriteopiaManager` save the state of the document as the user types. To enable this feature, first provide 
+a `DocumentTracker` to `WriteopiaManager` constructor.
+
+
+```
+private fun persistenceSample(context: Context) {
+    val database = WriteopiaApplicationDatabase.database(context)
+
+    val documentRepository = DocumentRepositoryImpl(
+        database.documentDao(),
+        database.storyUnitDao()
+    )
+
+    val documentTracker = OnUpdateDocumentTracker(documentRepository)
+}
+```
+
+Once the documentTracker is provided, you can call `WriteopiaManager.saveOnStoryChanges`. The whole should be this:
+
+```
+val database = WriteopiaApplicationDatabase.database(context)
+
+val documentRepository = DocumentRepositoryImpl(
+    database.documentDao(),
+    database.storyUnitDao()
+)
+
+val documentTracker = OnUpdateDocumentTracker(documentRepository)
+
+val writeopiaManager = WriteopiaManager(
+    userId = { "provide your user id" }
+)
+
+writeopiaManager.saveOnStoryChanges(documentTracker)
+```

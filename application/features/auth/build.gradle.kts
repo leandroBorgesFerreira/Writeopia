@@ -52,11 +52,12 @@ kotlin{
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
+    implementation(project(":writeopia"))
+    implementation(project(":writeopia_models"))
     implementation(project(":application:utils"))
     implementation(project(":application:resources"))
     implementation(project(":application:auth_core"))
-    implementation(project(":writeopia"))
-    implementation(project(":writeopia_models"))
+    implementation(project(":application:persistence"))
     implementation(project(":plugins:writeopia_persistence"))
     implementation(project(":plugins:writeopia_serialization"))
 

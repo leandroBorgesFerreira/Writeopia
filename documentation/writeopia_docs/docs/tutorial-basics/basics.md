@@ -67,5 +67,4 @@ fun storiesTellerSample() {
 
 The above code should display a simple message on the screen and you should be able to interact with the text editor.
 
-​
-
+![sample](../../static/img/basics_sample.png)

@@ -4,15 +4,15 @@ import android.content.SharedPreferences
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.sdk.manager.DocumentRepository
-import io.writeopia.sdk.persistence.database.WriteopiaDatabase
 import io.writeopia.sdk.persistence.repository.DocumentRepositoryImpl
 import io.writeopia.auth.core.AuthManager
 import io.writeopia.note_menu.data.usecase.NotesConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
+import io.writeopia.persistence.WriteopiaApplicationDatabase
 
 class NotesMenuInjection(
-    private val database: WriteopiaDatabase,
+    private val database: WriteopiaApplicationDatabase,
     private val sharedPreferences: SharedPreferences,
     private val authManager: AuthManager,
 ) {

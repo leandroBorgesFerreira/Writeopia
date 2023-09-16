@@ -84,6 +84,7 @@ dependencies {
     implementation(project(":plugins:writeopia_network"))
 
     implementation(project(":application:utils"))
+    implementation(project(":application:persistence"))
     implementation(project(":application:auth_core"))
     implementation(project(":application:resources"))
     implementation(project(":application:features:note_menu"))

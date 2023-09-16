@@ -20,6 +20,7 @@ import io.writeopia.sdk.serialization.json.writeopiaJson
 import io.writeopia.sdk.serialization.request.wrapInRequest
 import io.writeopia.sdk.utils.extensions.noContent
 import io.writeopia.editor.model.EditState
+import io.writeopia.sdk.persistence.tracker.OnUpdateDocumentTracker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -105,7 +106,7 @@ internal class NoteEditorViewModel(
         viewModelScope.launch {
             writeopiaManager.currentDocument.stateIn(this).value?.let { document ->
                 documentRepository.saveDocument(document)
-                writeopiaManager.saveOnStoryChanges()
+                writeopiaManager.saveOnStoryChanges(OnUpdateDocumentTracker(documentRepository))
             }
         }
     }
@@ -118,7 +119,7 @@ internal class NoteEditorViewModel(
 
             if (document != null) {
                 writeopiaManager.initDocument(document)
-                writeopiaManager.saveOnStoryChanges()
+                writeopiaManager.saveOnStoryChanges(OnUpdateDocumentTracker(documentRepository))
             }
         }
     }

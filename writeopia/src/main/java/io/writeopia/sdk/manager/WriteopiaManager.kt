@@ -55,7 +55,6 @@ class WriteopiaManager(
         contentHandler,
         movementHandler
     ),
-    private val documentTracker: DocumentTracker? = null,
     private val userId: suspend () -> String = { "no_user_id_provided" }
 ) : BackstackHandler, BackstackInform by backStackManager {
 
@@ -122,17 +121,9 @@ class WriteopiaManager(
      * Saves the document automatically as it is changed. It uses the [DocumentTracker] passed
      * in the constructor of [WriteopiaManager]
      */
-    fun saveOnStoryChanges() {
+    fun saveOnStoryChanges(documentTracker: DocumentTracker) {
         coroutineScope.launch(dispatcher) {
-            if (documentTracker != null) {
-                documentTracker.saveOnStoryChanges(_documentEditionState, getUserId())
-            } else {
-                throw IllegalStateException(
-                    "saveOnStoryChanges called without providing a DocumentTracker for " +
-                            "WriteopiaManager. Did you forget to add it in the constructor of " +
-                            "WriteopiaManager?"
-                )
-            }
+            documentTracker.saveOnStoryChanges(_documentEditionState, getUserId())
         }
     }
 
