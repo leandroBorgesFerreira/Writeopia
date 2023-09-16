@@ -72,7 +72,7 @@ class ContentHandlerTest {
 
         val storyStep = StoryStep(
             type = StoryTypes.MESSAGE.type,
-            text = "-[]$text"
+            text = "-[] $text"
         )
 
         val position = 1
