@@ -50,12 +50,12 @@ class ContentHandler(
         currentStory: Map<Int, StoryStep>,
         type: StoryType,
         position: Int,
-        commandInfo: CommandInfo
+        commandInfo: CommandInfo?
     ): StoryState {
         val newMap = currentStory.toMutableMap()
         val storyStep = newMap[position]
-        val commandTrigger = commandInfo.commandTrigger
-        val commandText = commandInfo.command.commandText
+        val commandTrigger = commandInfo?.commandTrigger
+        val commandText = commandInfo?.command?.commandText ?: ""
 
         if (storyStep != null) {
             val storyText = storyStep.text

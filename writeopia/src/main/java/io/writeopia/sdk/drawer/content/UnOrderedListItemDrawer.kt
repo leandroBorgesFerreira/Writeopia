@@ -43,7 +43,7 @@ class UnOrderedListItemDrawer(
     },
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
-    private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
+    private val emptyErase: (Int) -> Unit = {},
     private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
 ) : StoryStepDrawer {
 
@@ -84,14 +84,18 @@ class UnOrderedListItemDrawer(
                 position = drawInfo.position,
                 emptySpaceClick = focusRequester::requestFocus
             ) {
-                Text(modifier = Modifier.padding(horizontal = 8.dp), text = startText, style = textStyle())
+                Text(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    text = startText,
+                    style = textStyle()
+                )
 
                 SimpleMessageDrawer(
                     modifier = messageModifier.weight(1F),
                     textModifier = Modifier.fillMaxWidth(),
                     focusRequester = focusRequester,
                     commandHandler = commandHandler,
-                    onDeleteRequest = onDeleteRequest,
+                    emptyErase = emptyErase,
                     onTextEdit = onTextEdit,
                     onFocusChanged = { focusState ->
                         showDragIcon = focusState.hasFocus

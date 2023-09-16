@@ -29,9 +29,11 @@ import io.writeopia.sdk.drawer.content.UnOrderedListItemDrawer
 import io.writeopia.sdk.drawer.content.defaultImageShape
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.action.Action
+import io.writeopia.sdk.model.command.Command
 import io.writeopia.sdk.model.command.CommandFactory
 import io.writeopia.sdk.model.command.CommandInfo
 import io.writeopia.sdk.model.command.CommandTrigger
+import io.writeopia.sdk.model.command.WhereToFind
 import io.writeopia.sdk.model.story.StoryTypes
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.text.edition.TextCommandHandler
@@ -67,97 +69,88 @@ object DefaultDrawers {
     @Composable
     fun create(
         editable: Boolean = false,
-        onTextEdit: (String, Int) -> Unit,
-        onTitleEdit: (String, Int) -> Unit,
-        onLineBreak: (Action.LineBreak) -> Unit,
-        mergeRequest: (Action.Merge) -> Unit = { },
-        moveRequest: (Action.Move) -> Unit = { },
-        checkRequest: (Action.StoryStateChange) -> Unit = { },
-        onDeleteRequest: (Action.DeleteStory) -> Unit,
-        changeStoryType: (Int, StoryType, CommandInfo) -> Unit,
-        onSelected: (Boolean, Int) -> Unit,
-        clickAtTheEnd: () -> Unit,
-        onHeaderClick: () -> Unit,
-        defaultBorder: Shape,
+        onTextEdit: (String, Int) -> Unit = { _, _ -> },
+        onTitleEdit: (String, Int) -> Unit = { _, _ -> },
+        onLineBreak: (Action.LineBreak) -> Unit = {},
+        mergeRequest: (Action.Merge) -> Unit = {},
+        moveRequest: (Action.Move) -> Unit = {},
+        checkRequest: (Action.StoryStateChange) -> Unit = {},
+        onDeleteRequest: (Action.DeleteStory) -> Unit = {},
+        changeStoryType: (Int, StoryType, CommandInfo?) -> Unit = { _, _, _ -> },
+        onSelected: (Boolean, Int) -> Unit = { _, _ -> },
+        clickAtTheEnd: () -> Unit = {},
+        onHeaderClick: () -> Unit = {},
+        defaultBorder: Shape = MaterialTheme.shapes.medium,
         groupsBackgroundColor: Color = Color.Transparent,
-        nextFocus: (Int) -> Unit
+        textCommandHandler: TextCommandHandler = TextCommandHandler(
+            mapOf(
+                CommandFactory.lineBreak() to { storyStep, position ->
+                    onLineBreak(Action.LineBreak(storyStep, position))
+                },
+                CommandFactory.checkItem() to { _, position ->
+                    changeStoryType(
+                        position,
+                        StoryTypes.CHECK_ITEM.type,
+                        CommandInfo(
+                            CommandFactory.checkItem(),
+                            CommandTrigger.WRITTEN
+                        )
+                    )
+                }, CommandFactory.unOrderedList() to { _, position ->
+                    changeStoryType(
+                        position,
+                        StoryTypes.UNORDERED_LIST_ITEM.type,
+                        CommandInfo(
+                            CommandFactory.unOrderedList(),
+                            CommandTrigger.WRITTEN
+                        )
+                    )
+                },
+                CommandFactory.h1() to { _, position ->
+                    changeStoryType(
+                        position,
+                        StoryTypes.H1.type,
+                        CommandInfo(
+                            CommandFactory.h1(),
+                            CommandTrigger.WRITTEN
+                        )
+                    )
+                },
+                CommandFactory.h2() to { _, position ->
+                    changeStoryType(
+                        position,
+                        StoryTypes.H2.type,
+                        CommandInfo(
+                            CommandFactory.h2(),
+                            CommandTrigger.WRITTEN
+                        )
+                    )
+                },
+                CommandFactory.h3() to { _, position ->
+                    changeStoryType(
+                        position,
+                        StoryTypes.H3.type,
+                        CommandInfo(
+                            CommandFactory.h3(),
+                            CommandTrigger.WRITTEN
+                        )
+                    )
+                },
+                CommandFactory.h4() to { _, position ->
+                    changeStoryType(
+                        position,
+                        StoryTypes.H4.type,
+                        CommandInfo(
+                            CommandFactory.h4(),
+                            CommandTrigger.WRITTEN
+                        )
+                    )
+                }
+            )
+        ),
+        nextFocus: (Int) -> Unit = {}
     ): Map<Int, StoryStepDrawer> =
         buildMap {
-            val textCommandHandlerMessage = TextCommandHandler(
-                mapOf(
-                    CommandFactory.lineBreak() to { storyStep, position ->
-                        onLineBreak(Action.LineBreak(storyStep, position))
-                    },
-                    CommandFactory.checkItem() to { _, position ->
-                        changeStoryType(
-                            position,
-                            StoryTypes.CHECK_ITEM.type,
-                            CommandInfo(
-                                CommandFactory.checkItem(),
-                                CommandTrigger.WRITTEN
-                            )
-                        )
-                    }, CommandFactory.unor() to { _, position ->
-                        changeStoryType(
-                            position,
-                            StoryTypes.UNORDERED_LIST_ITEM.type,
-                            CommandInfo(
-                                CommandFactory.unor(),
-                                CommandTrigger.WRITTEN
-                            )
-                        )
-                    },
-                    CommandFactory.h1() to { _, position ->
-                        changeStoryType(
-                            position,
-                            StoryTypes.H1.type,
-                            CommandInfo(
-                                CommandFactory.h1(),
-                                CommandTrigger.WRITTEN
-                            )
-                        )
-                    },
-                    CommandFactory.h2() to { _, position ->
-                        changeStoryType(
-                            position,
-                            StoryTypes.H2.type,
-                            CommandInfo(
-                                CommandFactory.h2(),
-                                CommandTrigger.WRITTEN
-                            )
-                        )
-                    },
-                    CommandFactory.h3() to { _, position ->
-                        changeStoryType(
-                            position,
-                            StoryTypes.H3.type,
-                            CommandInfo(
-                                CommandFactory.h3(),
-                                CommandTrigger.WRITTEN
-                            )
-                        )
-                    },
-                    CommandFactory.h4() to { _, position ->
-                        changeStoryType(
-                            position,
-                            StoryTypes.H4.type,
-                            CommandInfo(
-                                CommandFactory.h4(),
-                                CommandTrigger.WRITTEN
-                            )
-                        )
-                    }
-                )
-            )
-
-            val textCommandHandlerCheckItem = TextCommandHandler(
-                mapOf(
-                    CommandFactory.lineBreak() to { storyStep, position ->
-                        onLineBreak(Action.LineBreak(storyStep, position))
-                    },
-                )
-            )
-
             val commandsComposite: (StoryStepDrawer) -> StoryStepDrawer = { stepDrawer ->
                 CommandsDecoratorDrawer(
                     stepDrawer,
@@ -183,7 +176,7 @@ object DefaultDrawers {
                 textModifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
                 onTextEdit = onTextEdit,
                 onDeleteRequest = onDeleteRequest,
-                commandHandler = textCommandHandlerMessage,
+                commandHandler = textCommandHandler,
                 onSelected = onSelected,
             )
 
@@ -192,7 +185,7 @@ object DefaultDrawers {
                 textModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
                 onTextEdit = onTextEdit,
                 onDeleteRequest = onDeleteRequest,
-                commandHandler = textCommandHandlerMessage,
+                commandHandler = textCommandHandler,
                 onSelected = onSelected,
             )
 
@@ -202,7 +195,7 @@ object DefaultDrawers {
                     textModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
                     onTextEdit = onTextEdit,
                     onDeleteRequest = onDeleteRequest,
-                    commandHandler = textCommandHandlerMessage,
+                    commandHandler = textCommandHandler,
                     onSelected = onSelected,
                     textStyle = {
                         TextStyle(
@@ -223,8 +216,10 @@ object DefaultDrawers {
                 modifier = Modifier.padding(start = 18.dp, end = 12.dp),
                 onCheckedChange = checkRequest,
                 onTextEdit = onTextEdit,
-                onDeleteRequest = onDeleteRequest,
-                commandHandler = textCommandHandlerCheckItem,
+                emptyErase = { position ->
+                    changeStoryType(position, StoryTypes.MESSAGE.type, null)
+                },
+                commandHandler = textCommandHandler,
                 onSelected = onSelected,
             )
 
@@ -233,8 +228,10 @@ object DefaultDrawers {
                     modifier = Modifier.padding(start = 18.dp, end = 12.dp),
                     messageModifier = Modifier.padding(start = 8.dp),
                     onTextEdit = onTextEdit,
-                    onDeleteRequest = onDeleteRequest,
-                    commandHandler = textCommandHandlerCheckItem,
+                    emptyErase = { position ->
+                        changeStoryType(position, StoryTypes.MESSAGE.type, null)
+                    },
+                    commandHandler = textCommandHandler,
                     onSelected = onSelected,
                 )
 
@@ -268,7 +265,6 @@ object DefaultDrawers {
                 StoryTypes.VIDEO.type.number,
                 if (editable) commandsComposite(VideoDrawer()) else VideoDrawer()
             )
-
             put(StoryTypes.SPACE.type.number, SpaceDrawer(moveRequest))
             put(StoryTypes.LARGE_SPACE.type.number, LargeEmptySpace(moveRequest, clickAtTheEnd))
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)

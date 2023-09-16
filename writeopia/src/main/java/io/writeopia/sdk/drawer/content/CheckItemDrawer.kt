@@ -47,7 +47,7 @@ class CheckItemDrawer(
     private val modifier: Modifier = Modifier,
     private val onCheckedChange: (Action.StoryStateChange) -> Unit = {},
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
-    private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
+    private val emptyErase: (Int) -> Unit = {},
     private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     private val customBackgroundColor: Color? = null,
@@ -136,7 +136,7 @@ class CheckItemDrawer(
                             hasFocus = focusState.hasFocus
                         }
                         .callOnEmptyErase(inputText.selection) {
-                            onDeleteRequest(Action.DeleteStory(step, drawInfo.position))
+                            emptyErase(drawInfo.position)
                         }
                         .onFocusChanged { focusState ->
                             showDragIcon = focusState.hasFocus

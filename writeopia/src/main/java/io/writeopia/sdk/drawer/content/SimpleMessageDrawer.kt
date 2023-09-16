@@ -45,6 +45,7 @@ class SimpleMessageDrawer(
     private val textStyle: @Composable () -> TextStyle = { defaultTextStyle() },
     private val focusRequester: FocusRequester,
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
+    private val emptyErase: ((Int) -> Unit)? = null,
     private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     var onFocusChanged: (FocusState) -> Unit = {}
@@ -69,7 +70,12 @@ class SimpleMessageDrawer(
                     modifier = textModifier
                         .focusRequester(focusRequester)
                         .callOnEmptyErase(inputText.selection) {
-                            onDeleteRequest(Action.DeleteStory(step, drawInfo.position))
+                            emptyErase?.invoke(drawInfo.position) ?: onDeleteRequest(
+                                Action.DeleteStory(
+                                    step,
+                                    drawInfo.position
+                                )
+                            )
                         }
                         .onFocusChanged(onFocusChanged),
                     value = inputText,

@@ -4,12 +4,13 @@ sidebar_position: 0
 
 # Basics
 
+![Maven Central](https://img.shields.io/maven-central/v/com.github.leandroborgesferreira/storyteller)
+
 Add the project in your gradle file:
 
 ```other
 implementation("com.github.leandroborgesferreira:storyteller-models:[version]")
 implementation("com.github.leandroborgesferreira:storyteller:[version]")
-implementation("com.github.leandroborgesferreira:storyteller-persistence:[version]")
 ```
 
 Check releases for [latest](https://github.com/leandroBorgesFerreira/StoriesTeller/releases) version.
