@@ -11,7 +11,10 @@ implementation("io.writeopia:writeopia_persistence:[version]")
 ```
 
 ## Configuration
-To configure the persistence, it is necessary to configure a Room database instance. 
+To configure the persistence, it is necessary to configure a Room database instance. It is necessary to:
+
+- Create the Room database
+- Add a repository to WriteopiaManager
 
 ### Creating a Room database for Writeopia
 The persistence plugin provides some Daos and entities that can be added in a Room database. You can check more about all entities and 
@@ -52,19 +55,41 @@ abstract class WriteopiaApplicationDatabase : RoomDatabase() {
 }
 ``` 
 
-`WriteopiaManager` save the state of the document as the user typed. To enable this feature first provide 
+
+## Adding persistence
+
+`WriteopiaManager` save the state of the document as the user types. To enable this feature, first provide 
 a `DocumentTracker` to `WriteopiaManager` constructor.
 
+
 ```
-private fun persistenceSample(database: WriteopiaDatabase) {
+private fun persistenceSample(context: Context) {
+    val database = WriteopiaApplicationDatabase.database(context)
+
     val documentRepository = DocumentRepositoryImpl(
         database.documentDao(),
         database.storyUnitDao()
     )
 
-    WriteopiaManager(
-        documentTracker = OnUpdateDocumentTracker(documentRepository),
-        userId = { "provide your user id" }
-    )
+    val documentTracker = OnUpdateDocumentTracker(documentRepository)
 }
+```
+
+Once the documentTracker is provided, you can call `WriteopiaManager.saveOnStoryChanges`. The whole should be this:
+
+```
+val database = WriteopiaApplicationDatabase.database(context)
+
+val documentRepository = DocumentRepositoryImpl(
+    database.documentDao(),
+    database.storyUnitDao()
+)
+
+val documentTracker = OnUpdateDocumentTracker(documentRepository)
+
+val writeopiaManager = WriteopiaManager(
+    userId = { "provide your user id" }
+)
+
+writeopiaManager.saveOnStoryChanges(documentTracker)
 ```
