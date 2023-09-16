@@ -60,7 +60,7 @@ const config = {
         title: 'Writeopia',
         logo: {
           alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          src: 'img/base_icon_transparent.svg',
         },
         items: [
           {
