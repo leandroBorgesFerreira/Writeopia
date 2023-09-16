@@ -65,6 +65,8 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.flow.collectLatest
 import java.util.UUID
 import io.writeopia.appresourcers.R
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 const val NAVIGATE_BACK_TEST_TAG = "NoteEditorScreenNavigateBack"
 const val NOTE_EDITION_SCREEN_TITLE_TEST_TAG = "noteEditionScreenTitle"
@@ -123,7 +125,14 @@ internal fun NoteEditorScreen(
             Column(modifier = Modifier.fillMaxSize()) {
                 TextEditor(noteEditorViewModel)
 
-                BottomScreen(noteEditorViewModel)
+                BottomScreen(
+                    noteEditorViewModel.isEditState,
+                    noteEditorViewModel::undo,
+                    noteEditorViewModel::redo,
+                    noteEditorViewModel.canUndo,
+                    noteEditorViewModel.canRedo,
+                    noteEditorViewModel::deleteSelection
+                )
             }
 
             val colors = listOf(
@@ -162,9 +171,10 @@ internal fun NoteEditorScreen(
                     targetOffsetY = { fullHeight -> fullHeight }
                 )
             ) {
-                NoteGlobalActionsMenu {
-                    noteEditorViewModel.shareDocumentInJson(context)
-                }
+                NoteGlobalActionsMenu(
+                    onShareJson = { noteEditorViewModel.shareDocumentInJson(context) },
+                    onShareMd = { noteEditorViewModel.shareDocumentInMarkdown(context) }
+                )
             }
         }
     }
@@ -274,8 +284,15 @@ private fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
 }
 
 @Composable
-private fun BottomScreen(noteEditorViewModel: NoteEditorViewModel) {
-    val editState by noteEditorViewModel.isEditState.collectAsStateWithLifecycle()
+private fun BottomScreen(
+    editState: StateFlow<EditState>,
+    unDo: () -> Unit = {},
+    reDo: () -> Unit = {},
+    canUndo: StateFlow<Boolean>,
+    canRedo: StateFlow<Boolean>,
+    deleteSelection: () -> Unit = {}
+) {
+    val edit by editState.collectAsStateWithLifecycle()
 
     val topCorner = CornerSize(10.dp)
     val bottomCorner = CornerSize(0.dp)
@@ -293,7 +310,7 @@ private fun BottomScreen(noteEditorViewModel: NoteEditorViewModel) {
         .background(MaterialTheme.colorScheme.primary)
 
     AnimatedContent(
-        targetState = editState,
+        targetState = edit,
         label = "bottomSheetAnimation",
         transitionSpec = {
             (slideInVertically(
@@ -310,20 +327,39 @@ private fun BottomScreen(noteEditorViewModel: NoteEditorViewModel) {
             EditState.TEXT -> {
                 InputScreen(
                     modifier = containerModifier,
-                    onBackPress = noteEditorViewModel::undo,
-                    onForwardPress = noteEditorViewModel::redo,
-                    canUndoState = noteEditorViewModel.canUndo,
-                    canRedoState = noteEditorViewModel.canRedo
+                    onBackPress = unDo,
+                    onForwardPress = reDo,
+                    canUndoState = canUndo,
+                    canRedoState = canRedo,
                 )
             }
 
             EditState.SELECTED_TEXT -> {
                 EditionScreen(
                     modifier = containerModifier,
-                    onDelete = noteEditorViewModel::deleteSelection
+                    onDelete = deleteSelection
                 )
             }
         }
     }
 }
 
+@Preview
+@Composable
+private fun BottomScreenTextPreview() {
+    BottomScreen(
+        editState = MutableStateFlow(EditState.TEXT),
+        canUndo = MutableStateFlow(true),
+        canRedo = MutableStateFlow(true),
+    )
+}
+
+@Preview
+@Composable
+private fun BottomScreenSelectedPreview() {
+    BottomScreen(
+        editState = MutableStateFlow(EditState.SELECTED_TEXT),
+        canUndo = MutableStateFlow(true),
+        canRedo = MutableStateFlow(true),
+    )
+}

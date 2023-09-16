@@ -24,6 +24,7 @@
             <option value="$PROJECT_DIR$/backend" />
             <option value="$PROJECT_DIR$/backend/intronotes" />
             <option value="$PROJECT_DIR$/plugins" />
+            <option value="$PROJECT_DIR$/plugins/writeopia_export" />
             <option value="$PROJECT_DIR$/plugins/writeopia_network" />
             <option value="$PROJECT_DIR$/plugins/writeopia_persistence" />
             <option value="$PROJECT_DIR$/plugins/writeopia_serialization" />

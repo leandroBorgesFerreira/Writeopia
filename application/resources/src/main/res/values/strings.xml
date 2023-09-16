@@ -22,6 +22,7 @@
     <string name="delete">Delete</string>
     <string name="logout">Logout</string>
     <string name="export_json">Export as Json</string>
+    <string name="export_md">Export as Markdown</string>
     <string name="export">Export</string>
     <string name="name_space">%s Workspace</string>
     <string name="offline_workspace">Offline Workspace</string>
