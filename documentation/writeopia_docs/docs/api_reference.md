@@ -10,8 +10,6 @@ sidebar_position: 3
 
 ## Plugins
 - [Writeopia Network](https://javadoc.io/doc/com.github.leandroborgesferreira/storyteller-network)
-
 - [Writeopia Persistence](https://javadoc.io/doc/com.github.leandroborgesferreira/storyteller-persistence)
-
 - [Writeopia Serialization](https://javadoc.io/doc/com.github.leandroborgesferreira/storyteller-serialization)
 
