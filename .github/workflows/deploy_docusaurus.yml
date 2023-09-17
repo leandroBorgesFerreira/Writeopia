@@ -52,7 +52,7 @@ jobs:
       - name: Generate Kdocs
         run: ./gradlew dokkaHtmlMultiModule
       - name: Move Kdocs
-        run: cp -R ./build/dokka/htmlMultiModule ./documentation/writeopia_docs/build
+        run: cp -R ./build/dokka/htmlMultiModule ./documentation/writeopia_docs/build/docs
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
