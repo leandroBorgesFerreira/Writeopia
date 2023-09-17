@@ -23,3 +23,5 @@ The SDK comes with many default types that you can use.
 | "h3"           | 14       | H3 text |
 | "h4"           | 15       | H4 text |
 | "unordered_list_item" | 16     | A list item without order. Draws as a message with a dot of dash in the start of the text. |
+
+Like explained in the previous section, each type needs to be mapped to a [StoryStepDrawer](https://javadoc.io/doc/com.github.leandroborgesferreira/storyteller/latest/com/github/leandroborgesferreira/storyteller/drawer/StoryStepDrawer.html). The next section explain each default drawer that is provided by the default types.
