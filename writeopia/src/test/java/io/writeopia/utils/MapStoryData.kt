@@ -297,7 +297,7 @@ object MapStoryData {
                 localId = UUID.randomUUID().toString(),
                 type = StoryTypes.IMAGE.type,
                 url = "https://fastly.picsum.photos/id/514/1200/600.jpg?hmac=gh5_PZFkQI74GShPTCJ_XP_EgN-X1O0OUP8tDlT7WkY",
-                title = "The hotel entrance"
+                text = "The hotel entrance"
             )
         ),
         5 to listOf(
@@ -367,7 +367,7 @@ object MapStoryData {
                         localId = UUID.randomUUID().toString(),
                         type = StoryTypes.IMAGE.type,
                         url = "https://fastly.picsum.photos/id/514/1200/600.jpg?hmac=gh5_PZFkQI74GShPTCJ_XP_EgN-X1O0OUP8tDlT7WkY",
-                        title = "The hotel entrance"
+                        text = "The hotel entrance"
                     ),
             8 to
                     StoryStep(

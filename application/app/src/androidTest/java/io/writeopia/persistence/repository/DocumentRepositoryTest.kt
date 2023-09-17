@@ -1,9 +1,10 @@
-package io.writeopia.sdk.persistence.repository
+package io.writeopia.persistence.repository
 
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import io.writeopia.persistence.WriteopiaApplicationDatabase
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.model.story.StoryTypes
@@ -11,6 +12,7 @@ import io.writeopia.sdk.persistence.dao.DocumentDao
 import io.writeopia.sdk.persistence.dao.StoryUnitDao
 import io.writeopia.sdk.persistence.parse.toEntity
 import io.writeopia.sdk.persistence.parse.toModel
+import io.writeopia.sdk.persistence.repository.DocumentRepositoryImpl
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.*
@@ -23,7 +25,7 @@ import java.util.UUID
 @RunWith(AndroidJUnit4::class)
 class DocumentRepositoryTest {
 
-    private lateinit var database: DefaultWriteopiaDatabase
+    private lateinit var database: WriteopiaApplicationDatabase
     private lateinit var documentDao: DocumentDao
     private lateinit var storyUnitDao: StoryUnitDao
     private lateinit var documentRepository: DocumentRepositoryImpl
@@ -33,7 +35,7 @@ class DocumentRepositoryTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         database = Room.inMemoryDatabaseBuilder(
             context,
-            DefaultWriteopiaDatabase::class.java
+            WriteopiaApplicationDatabase::class.java
         ).build()
 
         documentDao = database.documentDao()
@@ -55,7 +57,8 @@ class DocumentRepositoryTest {
             title = "Document1",
             content = emptyMap(),
             createdAt = Instant.now(),
-            lastUpdatedAt = Instant.now()
+            lastUpdatedAt = Instant.now(),
+            userId = "userId",
         )
 
         val loadedDocument = documentDao.run {
@@ -63,7 +66,7 @@ class DocumentRepositoryTest {
             loadDocumentById(id)
         }
 
-        assertEquals(document, loadedDocument.toModel())
+        assertEquals(document, loadedDocument?.toModel())
     }
 
     @Test
@@ -74,13 +77,14 @@ class DocumentRepositoryTest {
             title = "Document1",
             content = emptyMap(),
             createdAt = Instant.now(),
-            lastUpdatedAt = Instant.now()
+            lastUpdatedAt = Instant.now(),
+            userId = "userId",
         )
 
         documentRepository.saveDocument(document)
 
         val loadedDocument = documentDao.loadDocumentById(id)
-        assertEquals(document, loadedDocument.toModel())
+        assertEquals(document, loadedDocument?.toModel())
     }
 
     @Test
@@ -91,7 +95,8 @@ class DocumentRepositoryTest {
             title = "Document1",
             content = simpleImage(),
             createdAt = Instant.now(),
-            lastUpdatedAt = Instant.now()
+            lastUpdatedAt = Instant.now(),
+            userId = "userId",
         )
 
         documentRepository.saveDocument(document)
@@ -108,7 +113,8 @@ class DocumentRepositoryTest {
             title = "Document1",
             content = imageStepsList(),
             createdAt = Instant.now(),
-            lastUpdatedAt = Instant.now()
+            lastUpdatedAt = Instant.now(),
+            userId = "userId",
         )
 
         documentRepository.saveDocument(document)
@@ -128,7 +134,8 @@ class DocumentRepositoryTest {
             title = "Document1",
             content = imageGroup(),
             createdAt = Instant.now(),
-            lastUpdatedAt = Instant.now()
+            lastUpdatedAt = Instant.now(),
+            userId = "userId",
         )
 
         documentRepository.saveDocument(document)

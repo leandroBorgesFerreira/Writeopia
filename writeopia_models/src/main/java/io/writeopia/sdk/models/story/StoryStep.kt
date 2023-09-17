@@ -15,7 +15,6 @@ data class StoryStep(
     val url: String? = null,
     val path: String? = null,
     val text: String? = null,
-    val title: String? = null,
     val checked: Boolean? = false,
     val steps: List<StoryStep> = emptyList(),
     val decoration: Decoration = Decoration()

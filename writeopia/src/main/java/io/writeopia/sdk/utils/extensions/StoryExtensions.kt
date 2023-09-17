@@ -17,7 +17,6 @@ fun Map<Int, StoryStep>.noContent(): Boolean =
             url.isNullOrBlank() &&
                     path.isNullOrBlank() &&
                     text.isNullOrBlank() &&
-                    title.isNullOrBlank() &&
                     steps.isEmpty()
         }
     }

@@ -81,7 +81,7 @@ class ImageDrawer(
                         modifier = Modifier.clip(shape = RoundedCornerShape(size = 12.dp))
                     )
                 }
-                step.title?.let { text ->
+                step.text?.let { text ->
                     Text(
                         text = text,
                         modifier = Modifier
