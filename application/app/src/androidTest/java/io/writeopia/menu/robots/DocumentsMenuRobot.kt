@@ -1,4 +1,4 @@
-package io.writeopia.robots
+package io.writeopia.menu.robots
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeTestRule

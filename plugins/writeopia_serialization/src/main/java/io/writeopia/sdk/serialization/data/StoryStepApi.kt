@@ -10,7 +10,6 @@ data class StoryStepApi(
     val url: String? = null,
     val path: String? = null,
     val text: String? = null,
-    val title: String? = null,
     val checked: Boolean? = false,
     val steps: List<StoryStepApi> = emptyList(),
     val decoration: DecorationApi = DecorationApi(),

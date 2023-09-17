@@ -84,7 +84,7 @@ internal fun travelHistory(): Map<Int, StoryStep> =
             localId = UUID.randomUUID().toString(),
             type = StoryTypes.IMAGE.type,
             url = "https://fastly.picsum.photos/id/514/1200/600.jpg?hmac=gh5_PZFkQI74GShPTCJ_XP_EgN-X1O0OUP8tDlT7WkY",
-            title = "The hotel entrance"
+            text = "The hotel entrance"
         ),
         7 to StoryStep(
             localId = UUID.randomUUID().toString(),

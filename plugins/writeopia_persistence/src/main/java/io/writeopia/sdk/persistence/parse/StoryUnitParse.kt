@@ -31,7 +31,6 @@ fun StoryStepEntity.toModel(
         url = url,
         path = path,
         text = text,
-        title = title,
         checked = checked,
         steps = steps.map { storyUnitEntity -> storyUnitEntity.toModel() },
         decoration = Decoration(
@@ -48,7 +47,6 @@ fun StoryStep.toEntity(position: Int, documentId: String): StoryStepEntity =
         url = url,
         path = path,
         text = text,
-        title = title,
         checked = checked,
         position = position,
         documentId = documentId,

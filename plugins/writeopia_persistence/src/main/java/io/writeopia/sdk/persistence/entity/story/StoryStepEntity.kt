@@ -15,7 +15,6 @@ data class StoryStepEntity(
     @ColumnInfo(name = "url") val url: String? = null,
     @ColumnInfo(name = "path") val path: String? = null,
     @ColumnInfo(name = "text") val text: String? = null,
-    @ColumnInfo(name = "title") val title: String? = null,
     @ColumnInfo(name = "checked") val checked: Boolean? = false,
     @ColumnInfo(name = "position") val position: Int,
     @ColumnInfo(name = "document_id") val documentId: String,

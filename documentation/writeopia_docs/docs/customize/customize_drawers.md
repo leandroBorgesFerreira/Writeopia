@@ -1,0 +1,35 @@
+---
+sidebar_position: 0
+---
+
+# Editing Drawers
+
+The basic unit of content of Writeopia is StoryStep. The only mandatory field of `StoryStep` is the `StoryType`. The type defines how the information should be draw in the screen. 
+
+Each type should fill data that is relevant to that type. A "message" should have text, "image" should have an `url` if it is available in the backend or a `path` if it is just a local image, a checkbox should have a `checked` value, etc.
+
+Each StoryStep is mapped to a [StoryStepDrawer](https://javadoc.io/doc/com.github.leandroborgesferreira/storyteller/latest/com/github/leandroborgesferreira/storyteller/drawer/StoryStepDrawer.html) and provided to the `WriteopiaEditor`. 
+
+```
+val mudableDrawers = DefaultDrawers.create(
+    writeopiaManager,
+).toMutableMap()
+
+// Use a number for a custom number that you would like to support.
+mudableDrawers.toMutableMap()[100] = SwipeMessageDrawer()
+// Use the existing numbers to substitute an existing drawer from `DefaultDrawers.create`
+mudableDrawers.toMutableMap()[StoryTypes.CHECK_ITEM.type.number] = SwipeMessageDrawer()
+
+WriteopiaEditor(
+    modifier = Modifier
+        .fillMaxWidth()
+        .weight(1F),
+    drawers = mudableDrawers
+)
+```
+
+:::tip
+When supporting a new type, remember to also adding a command to create this type. This is explained in the **Commands** section
+:::
+
+The next sections explain in more details about the default types and drawer provided by Writeopia.

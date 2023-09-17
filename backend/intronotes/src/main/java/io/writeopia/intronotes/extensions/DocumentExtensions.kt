@@ -20,7 +20,6 @@ internal fun DocumentApi.toEntity(): DocumentEntity =
                 url = storyStep.url,
                 path = storyStep.path,
                 text = storyStep.text,
-                title = storyStep.title,
                 checked = storyStep.checked,
                 position = storyStep.position,
             )
@@ -41,7 +40,6 @@ internal fun DocumentEntity.toAPi(): DocumentApi =
                 url = storyStepEntity.url,
                 path = storyStepEntity.path,
                 text = storyStepEntity.text,
-                title = storyStepEntity.title,
                 checked = storyStepEntity.checked,
                 position = storyStepEntity.position!!,
             )
