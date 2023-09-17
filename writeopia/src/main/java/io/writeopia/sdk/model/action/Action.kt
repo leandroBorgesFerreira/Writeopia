@@ -2,12 +2,10 @@ package io.writeopia.sdk.model.action
 
 import io.writeopia.sdk.models.story.StoryStep
 
-/*
- * Todo: TextEdit should exist?
+/**
+ * An action performed in the text editor.
  */
 sealed class Action {
-    data class TextEdit(val text: String, val position: Int) : Action()
-    data class AddStory(val storyStep: StoryStep, val position: Int) : Action()
     data class DeleteStory(val storyStep: StoryStep, val position: Int) : Action()
     data class BulkDelete(val deletedUnits: Map<Int, StoryStep>) : Action()
 
