@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # API reference
 
-You can check the generated documentation with [KDocs](https://docs.writeopia.io/htmlMultiModule)
+You can check the generated documentation with [KDocs](https://kdocs.writeopia.io/)
 
 # Javadocs
 
