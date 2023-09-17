@@ -33,5 +33,3 @@ When supporting a new type, remember to also adding a command to create this typ
 :::
 
 The next sections explain in more details about the default types and drawer provided by Writeopia.
-
-
