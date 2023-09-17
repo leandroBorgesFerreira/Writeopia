@@ -1,0 +1,8 @@
+{
+  "label": "Customize Drawing",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Customize how the text editor draws information"
+  }
+}
