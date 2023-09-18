@@ -60,6 +60,10 @@ internal class NoteEditorViewModel(
         globalMenu || headerEdit
     }
 
+
+    private val _shouldGoToNextScreen = MutableStateFlow(false)
+    val shouldGoToNextScreen = _shouldGoToNextScreen.asStateFlow()
+
     val isEditState: StateFlow<EditState> = writeopiaManager.onEditPositions.map { set ->
         when {
             set.isNotEmpty() -> EditState.SELECTED_TEXT
@@ -176,8 +180,8 @@ internal class NoteEditorViewModel(
         return json.encodeToString(request)
     }
 
-    private fun documentToMd(document: Document): String =
-        DocumentToMarkdown.parse(document.content)
+private fun documentToMd(document: Document): String =
+    DocumentToMarkdown.parse(document.content)
 
     private fun shareDocument(context: Context, infoParse: (Document) -> String, type: String) {
         viewModelScope.launch {

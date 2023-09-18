@@ -1,6 +1,6 @@
 package io.writeopia.normalization.builder
 
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.utils.MapStoryData
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
 import junit.framework.TestCase.assertEquals

@@ -17,7 +17,7 @@ import io.writeopia.sdk.drawer.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 
 /**
  * The header for the Document. It applies some stylish to the title of the document.

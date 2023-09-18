@@ -1,46 +1,22 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinAndroid)
+    id("java-library")
+    alias(libs.plugins.org.jetbrains.kotlin.jvm)
 }
 
-android {
-    namespace = "io.writeopia.sdk.export"
-    compileSdk = 34
+rootProject.extra.apply {
+    set("PUBLISH_GROUP_ID", "com.github.leandroborgesferreira")
+    set("PUBLISH_ARTIFACT_ID", "writeopia-export")
+    set("PUBLISH_VERSION", libs.versions.writeopia.get())
+}
 
-    defaultConfig {
-        minSdk = 24
+apply(from = "${rootDir}/scripts/publish-module.gradle")
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 dependencies {
-    implementation(project(":writeopia"))
     implementation(project(":writeopia_models"))
-
-    implementation(libs.androidx.ktx)
-    implementation(libs.appCompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }

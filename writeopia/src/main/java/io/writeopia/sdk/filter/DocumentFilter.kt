@@ -1,6 +1,6 @@
 package io.writeopia.sdk.filter
 
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.utils.alias.DocumentContent
 
 /**

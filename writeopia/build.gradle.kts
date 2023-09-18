@@ -4,7 +4,7 @@ plugins {
 }
 
 rootProject.extra.apply {
-    set("PUBLISH_GROUP_ID", "io.writeopia")
+    set("PUBLISH_GROUP_ID", "com.github.leandroborgesferreira")
     set("PUBLISH_ARTIFACT_ID", "writeopia-core")
     set("PUBLISH_VERSION", libs.versions.writeopia.get())
 }

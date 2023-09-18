@@ -5,7 +5,7 @@ import io.writeopia.sdk.model.command.CommandFactory
 import io.writeopia.sdk.model.command.CommandInfo
 import io.writeopia.sdk.model.command.CommandTrigger
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.normalization.addinbetween.AddSteps
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
 import io.writeopia.utils.MapStoryData

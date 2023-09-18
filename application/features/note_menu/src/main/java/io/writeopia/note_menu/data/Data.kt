@@ -1,7 +1,7 @@
 package io.writeopia.note_menu.data
 
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 import java.util.UUID
 
 internal fun supermarketList(): Map<Int, StoryStep> = mapOf(

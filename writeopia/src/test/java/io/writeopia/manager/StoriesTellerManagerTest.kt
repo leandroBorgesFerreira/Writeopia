@@ -3,7 +3,7 @@ package io.writeopia.manager
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.repository.StoriesRepository
 import io.writeopia.utils.MainDispatcherRule
 import io.writeopia.utils.MapStoryData

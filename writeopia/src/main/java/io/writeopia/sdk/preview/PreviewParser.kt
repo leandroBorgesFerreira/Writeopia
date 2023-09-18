@@ -1,7 +1,7 @@
 package io.writeopia.sdk.preview
 
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 
 class PreviewParser(
     private val acceptedTypes: Set<Int> = defaultTypes()

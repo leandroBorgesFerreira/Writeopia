@@ -1,7 +1,7 @@
 package io.writeopia.sdk.normalization.builder
 
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.normalization.addinbetween.AddSteps
 import io.writeopia.sdk.normalization.merge.MergeLogic
 import io.writeopia.sdk.normalization.merge.MergeNormalization

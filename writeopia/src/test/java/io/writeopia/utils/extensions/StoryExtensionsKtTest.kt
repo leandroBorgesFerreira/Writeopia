@@ -2,7 +2,7 @@ package io.writeopia.utils.extensions
 
 import androidx.compose.runtime.toMutableStateMap
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.utils.extensions.noContent
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue

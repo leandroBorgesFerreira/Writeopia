@@ -21,9 +21,8 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.draganddrop.target.DragTargetWithDragItem
 import io.writeopia.sdk.drawer.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
-import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draganddrop.DropInfo
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.text.edition.TextCommandHandler
 import io.writeopia.sdk.uicomponents.SwipeBox

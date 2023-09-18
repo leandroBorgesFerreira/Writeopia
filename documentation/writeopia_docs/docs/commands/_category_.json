@@ -1,6 +1,6 @@
 {
   "label": "Commands",
-  "position": 3,
+  "position": 4,
   "link": {
     "type": "generated-index",
     "description": "Learn about the supported commands are how to add your own commands to the text editor"

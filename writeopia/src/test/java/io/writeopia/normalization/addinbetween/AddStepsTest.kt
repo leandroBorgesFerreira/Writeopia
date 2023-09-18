@@ -1,6 +1,6 @@
 package io.writeopia.normalization.addinbetween
 
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.utils.ListStoryData
 import io.writeopia.utils.MapStoryData
 import io.writeopia.sdk.normalization.addinbetween.AddSteps

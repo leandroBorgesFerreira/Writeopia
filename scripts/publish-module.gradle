@@ -38,7 +38,7 @@ afterEvaluate { project ->
     publishing {
         publications {
             release(MavenPublication) {
-                groupId "io.writeopia"
+                groupId "com.github.leandroborgesferreira"
                 artifactId PUBLISH_ARTIFACT_ID
                 version PUBLISH_VERSION
 

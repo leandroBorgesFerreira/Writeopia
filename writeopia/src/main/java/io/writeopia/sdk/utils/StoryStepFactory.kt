@@ -1,6 +1,6 @@
 package io.writeopia.sdk.utils
 
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.StoryStep
 import java.util.UUID
 

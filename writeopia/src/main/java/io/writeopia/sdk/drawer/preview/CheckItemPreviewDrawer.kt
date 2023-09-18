@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import io.writeopia.sdk.drawer.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 
 /**
  * The drawer to a check item in the preview of a note.

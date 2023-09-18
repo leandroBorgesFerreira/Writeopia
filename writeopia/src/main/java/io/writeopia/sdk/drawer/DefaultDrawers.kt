@@ -29,12 +29,10 @@ import io.writeopia.sdk.drawer.content.UnOrderedListItemDrawer
 import io.writeopia.sdk.drawer.content.defaultImageShape
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.action.Action
-import io.writeopia.sdk.model.command.Command
 import io.writeopia.sdk.model.command.CommandFactory
 import io.writeopia.sdk.model.command.CommandInfo
 import io.writeopia.sdk.model.command.CommandTrigger
-import io.writeopia.sdk.model.command.WhereToFind
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.text.edition.TextCommandHandler
 

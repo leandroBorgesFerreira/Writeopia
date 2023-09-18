@@ -31,7 +31,7 @@ import io.writeopia.sdk.drawer.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.utils.ui.transparentTextInputColors
 
 const val TITLE_DRAWER_TEST_TAG = "TitleDrawerTextField"
