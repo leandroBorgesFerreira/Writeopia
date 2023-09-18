@@ -1,7 +1,7 @@
 
 [![Main merge](https://github.com/leandroBorgesFerreira/Writeopia/actions/workflows/main-merge.yml/badge.svg)](https://github.com/leandroBorgesFerreira/Writeopia/actions/workflows/main-merge.yml) ![Maven Central](https://img.shields.io/maven-central/v/com.github.leandroborgesferreira/storyteller)
 
-#Writeopia
+# Writeopia
 
 Embeded text editor for apps. 
 
