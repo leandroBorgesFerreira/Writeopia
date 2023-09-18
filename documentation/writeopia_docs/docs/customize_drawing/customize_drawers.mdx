@@ -8,7 +8,7 @@ The basic unit of content of Writeopia is StoryStep. The only mandatory field of
 
 Each type should fill data that is relevant to that type. A "message" should have text, "image" should have an `url` if it is available in the backend or a `path` if it is just a local image, a checkbox should have a `checked` value, etc.
 
-Each StoryStep is mapped to a [StoryStepDrawer](https://javadoc.io/doc/com.github.leandroborgesferreira/storyteller/latest/com/github/leandroborgesferreira/storyteller/drawer/StoryStepDrawer.html) and provided to the `WriteopiaEditor`. 
+Each StoryStep is mapped to a [StoryStepDrawer](https://kdocs.writeopia.io/writeopia/io.writeopia.sdk.drawer/-story-step-drawer/index.html) and provided to the `WriteopiaEditor`. 
 
 ```kotlin
 val mudableDrawers = DefaultDrawers.create(
