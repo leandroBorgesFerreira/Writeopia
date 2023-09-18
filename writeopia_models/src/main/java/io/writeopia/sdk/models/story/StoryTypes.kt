@@ -1,6 +1,4 @@
-package io.writeopia.sdk.model.story
-
-import io.writeopia.sdk.models.story.StoryType
+package io.writeopia.sdk.models.story
 
 /**
  * The default types of [StoryTypes]. You can add more types without extending this enum (which

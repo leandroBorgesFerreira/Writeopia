@@ -19,7 +19,7 @@ private const val DATABASE_NAME = "WriteopiaDatabase"
         DocumentEntity::class,
         StoryStepEntity::class,
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(IdListConverter::class, InstantConverter::class)

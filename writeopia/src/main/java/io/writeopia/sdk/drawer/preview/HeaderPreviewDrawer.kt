@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 
 /**
  * The drawer to the header of a document in the preview of a note.

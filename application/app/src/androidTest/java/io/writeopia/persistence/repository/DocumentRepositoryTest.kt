@@ -7,7 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.writeopia.persistence.WriteopiaApplicationDatabase
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.persistence.dao.DocumentDao
 import io.writeopia.sdk.persistence.dao.StoryUnitDao
 import io.writeopia.sdk.persistence.parse.toEntity

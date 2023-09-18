@@ -1,6 +1,6 @@
 package io.writeopia.normalization.merge
 
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.normalization.merge.steps.StepToStepMerger

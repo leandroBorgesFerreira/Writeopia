@@ -8,7 +8,7 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.model.story.LastEdit
 import io.writeopia.sdk.model.story.StoryState
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import java.time.Instant

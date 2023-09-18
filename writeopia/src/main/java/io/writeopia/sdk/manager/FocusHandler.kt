@@ -1,7 +1,7 @@
 package io.writeopia.sdk.manager
 
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 
 /**
  * This class is responsible to control the focus of the edition of story. (example: If the text

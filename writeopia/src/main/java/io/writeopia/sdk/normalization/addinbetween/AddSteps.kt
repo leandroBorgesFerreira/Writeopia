@@ -1,7 +1,7 @@
 package io.writeopia.sdk.normalization.addinbetween
 
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.utils.extensions.associateWithPosition
 import java.util.Stack
 import java.util.UUID

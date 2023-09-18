@@ -42,7 +42,7 @@ import io.writeopia.sdk.drawer.preview.CheckItemPreviewDrawer
 import io.writeopia.sdk.drawer.preview.HeaderPreviewDrawer
 import io.writeopia.sdk.drawer.preview.TextPreviewDrawer
 import io.writeopia.sdk.drawer.preview.UnOrderedListItemPreviewDrawer
-import io.writeopia.sdk.model.story.StoryTypes
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.uicomponents.SwipeBox
 
 @Composable
