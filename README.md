@@ -4,7 +4,7 @@
 ## ![logo](https://github.com/leandroBorgesFerreira/StoryTeller/assets/10619102/bd7172de-51f0-40a2-ba29-dea50c13e7b7)
 
 
-Embeded text editor for apps.
+Embeded text editor for apps. The name is changing to Writeopia
 
 ## Intro
 
