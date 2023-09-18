@@ -8,7 +8,7 @@ sidebar_position: 1
 
 The SDK has a persistence plugin. First add the plugin:
 
-```
+```kotlin
 implementation("io.writeopia:writeopia_persistence:[version]")
 ```
 
@@ -24,7 +24,7 @@ Daos in section of this documentation dedicated to persistence.
 
 You can add the Entities and Daos as the following code:
 
-```
+```kotlin
 @Database(
     entities = [
         DocumentEntity::class,
@@ -64,7 +64,7 @@ abstract class WriteopiaApplicationDatabase : RoomDatabase() {
 a `DocumentTracker` to `WriteopiaManager` constructor.
 
 
-```
+```kotlin
 private fun persistenceSample(context: Context) {
     val database = WriteopiaApplicationDatabase.database(context)
 
@@ -79,7 +79,7 @@ private fun persistenceSample(context: Context) {
 
 Once the documentTracker is provided, you can call `WriteopiaManager.saveOnStoryChanges`. The whole should be this:
 
-```
+```kotlin
 val database = WriteopiaApplicationDatabase.database(context)
 
 val documentRepository = DocumentRepositoryImpl(

@@ -8,14 +8,14 @@ import org.junit.Test
 class DocumentToMarkdownTest {
 
     @Test
-    fun `test for markdown parse for one liner`() {
+    fun `test for markdown parse for one liner - pretty print`() {
         val content = mapOf(
             0 to StoryStep(type = StoryTypes.H1.type, text = "Title!!"),
             1 to StoryStep(type = StoryTypes.MESSAGE.type, text = "some text"),
             2 to StoryStep(type = StoryTypes.H2.type, text = "Subtitle!!")
         )
 
-        val parsedContent = DocumentToMarkdown.parse(content)
+        val parsedContent = DocumentToMarkdown.parse(content, prettyPrint = true)
         val expected = buildString {
             appendLine()
             appendLine("# Title!!")
@@ -24,6 +24,24 @@ class DocumentToMarkdownTest {
             appendLine()
             appendLine("## Subtitle!!")
             appendLine()
+        }
+
+        assertEquals(expected, parsedContent)
+    }
+
+    @Test
+    fun `test for markdown parse for one liner - pretty print false`() {
+        val content = mapOf(
+            0 to StoryStep(type = StoryTypes.H1.type, text = "Title!!"),
+            1 to StoryStep(type = StoryTypes.MESSAGE.type, text = "some text"),
+            2 to StoryStep(type = StoryTypes.H2.type, text = "Subtitle!!")
+        )
+
+        val parsedContent = DocumentToMarkdown.parse(content, prettyPrint = false)
+        val expected = buildString {
+            appendLine("# Title!!")
+            appendLine("some text")
+            appendLine("## Subtitle!!")
         }
 
         assertEquals(expected, parsedContent)

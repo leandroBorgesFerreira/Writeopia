@@ -8,7 +8,7 @@ sidebar_position: 0
 
 Add the project in your gradle file:
 
-```other
+```kotlin
 implementation("com.github.leandroborgesferreira:storyteller-models:[version]")
 implementation("com.github.leandroborgesferreira:storyteller:[version]")
 ```

@@ -1,0 +1,20 @@
+---
+sidebar_position: 0
+---
+
+# Export Markdown
+
+![Maven Central](https://img.shields.io/maven-central/v/com.github.leandroborgesferreira/storyteller)
+
+Writeopia comes with a plugin to allow exporting information in some formats, like Markdown. You can add the `export` library.
+
+```kotlin
+implementation("com.github.leandroborgesferreira:storyteller-export:[version]")
+```
+
+You can export a document to markdown with the following code: 
+
+```kotlin
+private fun documentToMd(document: Document): String =
+    DocumentToMarkdown.parse(document.content)
+```

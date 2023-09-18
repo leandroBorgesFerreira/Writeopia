@@ -176,8 +176,8 @@ internal class NoteEditorViewModel(
         return json.encodeToString(request)
     }
 
-    private fun documentToMd(document: Document): String =
-        DocumentToMarkdown.parse(document.content)
+private fun documentToMd(document: Document): String =
+    DocumentToMarkdown.parse(document.content)
 
     private fun shareDocument(context: Context, infoParse: (Document) -> String, type: String) {
         viewModelScope.launch {
