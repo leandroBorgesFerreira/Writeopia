@@ -1,10 +1,9 @@
 
 [![Main merge](https://github.com/leandroBorgesFerreira/Writeopia/actions/workflows/main-merge.yml/badge.svg)](https://github.com/leandroBorgesFerreira/Writeopia/actions/workflows/main-merge.yml) ![Maven Central](https://img.shields.io/maven-central/v/com.github.leandroborgesferreira/storyteller)
 
-## ![logo](https://github.com/leandroBorgesFerreira/StoryTeller/assets/10619102/bd7172de-51f0-40a2-ba29-dea50c13e7b7)
+#Writeopia
 
-
-Embeded text editor for apps. The name is changing to Writeopia
+Embeded text editor for apps. 
 
 ## Intro
 
