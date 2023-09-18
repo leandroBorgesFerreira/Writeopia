@@ -60,6 +60,10 @@ internal class NoteEditorViewModel(
         globalMenu || headerEdit
     }
 
+
+    private val _shouldGoToNextScreen = MutableStateFlow(false)
+    val shouldGoToNextScreen = _shouldGoToNextScreen.asStateFlow()
+
     val isEditState: StateFlow<EditState> = writeopiaManager.onEditPositions.map { set ->
         when {
             set.isNotEmpty() -> EditState.SELECTED_TEXT
