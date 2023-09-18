@@ -1,7 +1,7 @@
 package io.writeopia.sdk.export
 
-import io.writeopia.sdk.model.story.StoryTypes
 import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.sdk.models.story.StoryTypes
 import org.junit.Assert.*
 import org.junit.Test
 

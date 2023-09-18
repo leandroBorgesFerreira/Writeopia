@@ -19,4 +19,6 @@ java {
 
 dependencies {
     implementation(project(":writeopia_models"))
+
+    testImplementation(libs.junit)
 }
