@@ -4,15 +4,13 @@ sidebar_position: 0
 
 # Basics
 
-![Maven Central](https://img.shields.io/maven-central/v/com.github.leandroborgesferreira/writeopia-core)
+![Maven Central](https://img.shields.io/maven-central/v/io.writeopia/writeopia-core)
 
 Add the project in your gradle file:
 
 ```kotlin
-// This will change to implementation("io.writeopia:writeopia-models:[version]") in next version
-implementation("com.github.leandroborgesferreira:writeopia-models:[version]")
-// This will change to implementation("io.writeopia:writeopia-core:[version]") in next version
-implementation("com.github.leandroborgesferreira:writeopia-core:[version]")
+implementation("io.writeopia:writeopia-models:[version]")
+implementation("io.writeopia:writeopia-core:[version]"
 ```
 
 Check releases for [latest](https://github.com/leandroBorgesFerreira/writeopia/releases) version.
