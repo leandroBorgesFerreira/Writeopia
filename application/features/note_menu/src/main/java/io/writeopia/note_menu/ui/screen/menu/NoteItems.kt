@@ -169,7 +169,7 @@ private fun DocumentItem(
             .semantics {
                 testTag = "$DOCUMENT_ITEM_TEST_TAG${documentUi.title}"
             },
-        state = documentUi.selected,
+        isOnEditState = documentUi.selected,
         swipeListener = {
             state -> selectionListener(documentUi.documentId, state)
         },

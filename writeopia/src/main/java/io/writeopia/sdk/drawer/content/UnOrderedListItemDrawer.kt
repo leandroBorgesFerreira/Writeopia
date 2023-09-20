@@ -63,7 +63,7 @@ class UnOrderedListItemDrawer(
                 },
             defaultColor = customBackgroundColor ?: MaterialTheme.colorScheme.background,
             activeColor = MaterialTheme.colorScheme.primary,
-            state = drawInfo.selectMode,
+            isOnEditState = drawInfo.selectMode,
             swipeListener = { isSelected ->
                 onSelected(isSelected, drawInfo.position)
             }

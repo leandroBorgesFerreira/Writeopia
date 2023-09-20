@@ -6,7 +6,8 @@ import io.writeopia.sdk.model.action.BackstackAction
 import io.writeopia.sdk.model.story.StoryState
 
 /**
- * Manager for backstack.
+ * Manager for backstack. Implementations of this interface are responsible to coordinate undo and
+ * redo requests.
  */
 interface BackstackManager : BackstackInform {
 

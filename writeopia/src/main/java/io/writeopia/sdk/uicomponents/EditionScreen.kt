@@ -18,9 +18,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.R
 
-@Composable
 @Preview
-// This screen could live in a module for extra Composables
+@Composable
+// This screen could live in a module for extra Composables. In the future there will be more
+// buttons here
 fun EditionScreen(
     modifier: Modifier = Modifier,
     onDelete: () -> Unit = {}
