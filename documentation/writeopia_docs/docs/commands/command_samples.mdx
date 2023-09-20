@@ -1,0 +1,34 @@
+---
+sidebar_position: 1
+---
+
+# Command Samples
+Writeopia handles many text commands that create new content from what the user types. In this section you will learn the built-in commands, to change and add more commands. 
+
+## Checkbox
+Typing the command  `-[] ` creates a checkbox in the place of current message. 
+
+![checkbox sample](../../static/img/checkbox_sample.gif)
+
+It triggers [Writeopia.changeStoryType](https://kdocs.writeopia.io/writeopia/io.writeopia.sdk.manager/-writeopia-manager/change-story-type.html) with [StoryType](https://kdocs.writeopia.io/writeopia_models/io.writeopia.sdk.models.story/-story-type/index.html) of a checkbox item. 
+
+## List item
+Typing the command  `- ` creates a list item in the place of current message. 
+
+![list item sample](../../static/img/list_item_sample.gif)
+
+It triggers [Writeopia.changeStoryType](https://kdocs.writeopia.io/writeopia/io.writeopia.sdk.manager/-writeopia-manager/change-story-type.html) with [StoryType](https://kdocs.writeopia.io/writeopia_models/io.writeopia.sdk.models.story/-story-type/index.html) of a list item. 
+
+## H1, H2, H3, H4
+Writeopia also has commands to create H1, H2, H3 and H4.
+
+| Command | Result  |
+| ------- | ------- | 
+| `#`     | H1      |
+| `##`    | H2      |
+| `###`   | H3      |
+| `####`  | H4      |
+
+H3 sample: 
+
+![checkbox sample](../../static/img/h3_sample.gif)
