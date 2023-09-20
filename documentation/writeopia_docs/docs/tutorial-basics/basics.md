@@ -21,7 +21,7 @@ Before displaying the content on the screen. It is necessary to configure `Write
 
 ## WriteopiaManager
 
-The class `WriteopiaManager` accepts many parameters, which will be covered in a different section, but you can simply call the constructor to have the default behavior:
+The class `WriteopiaManager` accepts many parameters, which will be covered in a different section, but you can simply call the constructor to have the default behaviour:
 
 ```kotlin
 @Composable
@@ -32,7 +32,7 @@ fun WriteopiaSample() {
 
 ## Drawers
 
-Each part of the text edition is drawn by the `WriteopiaDrawer`. This interface has the logic to draw one type of information from the text. There are many drawers already implemented and available in the `DefaultDrawers` factory. Provide the `WriteopiaManager` for the default behavior:
+Each part of the text edition is drawn by the `WriteopiaDrawer`. This interface has the logic to draw one type of information from the text. There are many drawers already implemented and available in the `DefaultDrawers` factory. Provide the `WriteopiaManager` for the default behaviour:
 
 ```kotlin
 DefaultDrawers.create(
