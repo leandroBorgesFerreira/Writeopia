@@ -8,6 +8,7 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.offset
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -28,18 +29,32 @@ import kotlin.math.absoluteValue
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
+/**
+ * Composable to create a swipe effect. The more far away for the original position the user is, the
+ * harder it will be to keep moving, which mimics an elastic effect. The recomended usage of this
+ * compose is to create a swipe to edit functionality.
+ *
+ * @param modifier [Modifier]
+ * @param isOnEditState Boolean
+ * @param defaultColor [Color] The color of the container in the idle state
+ * @param activeColor [Color] The color of the container in the active state
+ * @param cornersShape [Shape] The shape of the container
+ * @param swipeListener Listener of the swipe action
+ * @param content The inner Composable
+ */
 @Composable
 fun SwipeBox(
     modifier: Modifier = Modifier,
-    state: Boolean,
+    isOnEditState: Boolean,
     defaultColor: Color = MaterialTheme.colorScheme.background,
     activeColor: Color = MaterialTheme.colorScheme.primary,
     cornersShape: Shape = MaterialTheme.shapes.medium,
     swipeListener: (Boolean) -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable BoxScope.() -> Unit
 ) {
-    var isOnEditMode by remember { mutableStateOf(state) }
     val haptic = LocalHapticFeedback.current
+
+    var isOnEditMode by remember { mutableStateOf(isOnEditState) }
     var swipeOffset by remember { mutableFloatStateOf(0F) }
     var dragging by remember { mutableStateOf(false) }
 
