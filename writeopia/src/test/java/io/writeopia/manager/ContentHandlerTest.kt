@@ -1,9 +1,9 @@
 package io.writeopia.manager
 
 import io.writeopia.sdk.model.action.Action
-import io.writeopia.sdk.model.command.CommandFactory
-import io.writeopia.sdk.model.command.CommandInfo
-import io.writeopia.sdk.model.command.CommandTrigger
+import io.writeopia.sdk.models.command.CommandFactory
+import io.writeopia.sdk.models.command.CommandInfo
+import io.writeopia.sdk.models.command.CommandTrigger
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.normalization.addinbetween.AddSteps

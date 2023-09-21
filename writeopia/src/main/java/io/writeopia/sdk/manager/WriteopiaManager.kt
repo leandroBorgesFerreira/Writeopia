@@ -5,7 +5,7 @@ import io.writeopia.sdk.backstack.BackstackInform
 import io.writeopia.sdk.backstack.BackstackManager
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.action.BackstackAction
-import io.writeopia.sdk.model.command.CommandInfo
+import io.writeopia.sdk.models.command.CommandInfo
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.model.document.info
@@ -55,7 +55,7 @@ class WriteopiaManager(
         contentHandler,
         movementHandler
     ),
-    private val userId: suspend () -> String = { "no_user_id_provided" }
+    private val userId: suspend () -> String = { "no_user_id_provided" },
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     private var localUserId: String? = null

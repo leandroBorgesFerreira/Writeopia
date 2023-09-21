@@ -3,7 +3,13 @@ package io.writeopia.sdk.export
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 
+/**
+ * This class parses a document as a Map<Int, [StoryStep]> to a String following the Markdown
+ * syntax.
+ */
 object DocumentToMarkdown {
+
+    // In the future it may be necessary to add a parse to an OutputStream
 
     fun parse(
         document: Map<Int, StoryStep>,
@@ -18,7 +24,7 @@ object DocumentToMarkdown {
                         if (
                             prettyPrint &&
                             (contentAdd == ContentAdd.EMPTY_LINE_BEFORE ||
-                            contentAdd == ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER)
+                                    contentAdd == ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER)
                         ) {
                             appendLine()
                         }
@@ -28,7 +34,7 @@ object DocumentToMarkdown {
                         if (
                             prettyPrint &&
                             (contentAdd == ContentAdd.EMPTY_LINE_AFTER ||
-                            contentAdd == ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER)
+                                    contentAdd == ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER)
                         ) {
                             appendLine()
                         }

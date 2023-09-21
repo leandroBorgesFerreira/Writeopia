@@ -1,4 +1,4 @@
-package io.writeopia.sdk.model.command
+package io.writeopia.sdk.models.command
 
 /**
  * [WRITTEN] are commands what were called by an input in the keyboard line typing -[] or ###.

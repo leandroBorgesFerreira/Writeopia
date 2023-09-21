@@ -65,6 +65,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.flow.collectLatest
 import java.util.UUID
 import io.writeopia.appresourcers.R
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -107,7 +108,9 @@ internal fun NoteEditorScreen(
     Scaffold(
         topBar = {
             TopBar(
-                title = title?.takeIf { it.isNotBlank() } ?: stringResource(id = R.string.note),
+                initialTitle = title?.takeIf { it.isNotBlank() }
+                    ?: stringResource(id = R.string.note),
+                titleState = noteEditorViewModel.currentTitle,
                 navigationClick = {
                     systemUiController.setStatusBarColor(color = systemBarDefaultColor)
                     noteEditorViewModel.handleBackAction(navigateBack = navigateBack)
@@ -184,10 +187,13 @@ internal fun NoteEditorScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar(
-    title: String = "",
+    initialTitle: String,
+    titleState: Flow<String> = MutableStateFlow(""),
     navigationClick: () -> Unit = {},
     shareDocument: () -> Unit
 ) {
+    val title by titleState.collectAsStateWithLifecycle(initialTitle)
+
     TopAppBar(
         modifier = Modifier.height(44.dp),
         title = {
@@ -245,7 +251,7 @@ private fun TopBar(
 @Composable
 private fun TopBar_Preview() {
     Box(modifier = Modifier.background(Color.LightGray)) {
-        TopBar(title = "Title", shareDocument = {})
+        TopBar(initialTitle = "", titleState = MutableStateFlow("Title"), shareDocument = {})
     }
 }
 
@@ -257,7 +263,6 @@ private fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
     val position by noteEditorViewModel.scrollToPosition.collectAsStateWithLifecycle()
 
     if (position != null) {
-        //Todo: Review this. Is a LaunchedEffect the correct way to do this??
         LaunchedEffect(position, block = {
             noteEditorViewModel.scrollToPosition.collectLatest {
                 listState.animateScrollBy(70F)

@@ -1,7 +1,7 @@
 package io.writeopia.sdk.text.edition
 
-import io.writeopia.sdk.model.command.Command
-import io.writeopia.sdk.model.command.WhereToFind
+import io.writeopia.sdk.models.command.Command
+import io.writeopia.sdk.models.command.WhereToFind
 import io.writeopia.sdk.models.story.StoryStep
 
 class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) -> Unit>) {

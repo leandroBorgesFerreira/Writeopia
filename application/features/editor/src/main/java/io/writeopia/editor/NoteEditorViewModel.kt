@@ -28,6 +28,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -56,10 +58,9 @@ internal class NoteEditorViewModel(
     private val _editHeader = MutableStateFlow(false)
     val editHeader = _editHeader.asStateFlow()
 
-    private val hasBackAction = combine(showGlobalMenu, editHeader) { globalMenu, headerEdit ->
-        globalMenu || headerEdit
+    val currentTitle = writeopiaManager.currentDocument.filterNotNull().map { document ->
+        document.title
     }
-
 
     private val _shouldGoToNextScreen = MutableStateFlow(false)
     val shouldGoToNextScreen = _shouldGoToNextScreen.asStateFlow()
@@ -180,8 +181,8 @@ internal class NoteEditorViewModel(
         return json.encodeToString(request)
     }
 
-private fun documentToMd(document: Document): String =
-    DocumentToMarkdown.parse(document.content)
+    private fun documentToMd(document: Document): String =
+        DocumentToMarkdown.parse(document.content)
 
     private fun shareDocument(context: Context, infoParse: (Document) -> String, type: String) {
         viewModelScope.launch {
