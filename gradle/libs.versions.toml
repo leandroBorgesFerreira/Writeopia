@@ -8,19 +8,19 @@ desugar_jdk_libs = "2.0.3"
 espressoCore = "3.5.1"
 junit = "1.1.5"
 junitVersion = "4.13.2"
-kotlinxCoroutinesTest = "1.7.2"
+kotlinxCoroutinesTest = "1.7.3"
 kotlinxSerializationJson = "1.5.1"
 ktorClient = "2.3.3"
-ktx = "1.10.1"
+ktx = "1.12.0"
 appCompat = "1.6.1"
 material = "1.9.0"
 materialIconsExtended = "1.5.1"
 room = "2.5.2"
-compose = "2.6.1"
-navigation-compose = "2.7.1"
-agp = "8.2.0-beta03"
-kotlin = "1.9.0"
-compose-compiler = "1.5.1"
+compose = "2.6.2"
+navigation-compose = "2.7.2"
+agp = "8.2.0-beta05"
+kotlin = "1.9.10"
+compose-compiler = "1.5.3"
 writeopia = "0.4.1"
 
 [libraries]
@@ -57,6 +57,7 @@ runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-comp
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 
 [plugins]
+application = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization",  version.ref = "kotlin" }

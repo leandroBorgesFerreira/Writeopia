@@ -1,7 +1,7 @@
 import com.android.build.api.dsl.ManagedVirtualDevice
 
 plugins {
-    id("com.android.application")
+    alias(libs.plugins.application)
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     alias(libs.plugins.kotlinSerialization)
