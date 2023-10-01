@@ -2,8 +2,8 @@
 
 plugins {
     kotlin("multiplatform")
-    id("com.android.library")
     id("org.jetbrains.compose")
+    alias(libs.plugins.androidLibrary)
 }
 
 version = "1.0-SNAPSHOT"
