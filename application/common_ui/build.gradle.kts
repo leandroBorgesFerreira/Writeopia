@@ -48,24 +48,13 @@ kotlin{
 }
 
 dependencies {
-    implementation(libs.appCompat)
-    implementation(libs.material)
-
-    implementation(libs.viewmodel.compose)
     implementation(libs.runtime.compose)
     implementation(libs.androidx.material.icons.extended)
-
-    implementation("androidx.activity:activity-compose")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material3:material3-window-size-class")
 
     // Compose - Preview
     implementation("androidx.compose.ui:ui-tooling-preview")
     debugImplementation("androidx.compose.ui:ui-tooling")
 
     implementation(platform(libs.androidx.compose.bom))
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }
