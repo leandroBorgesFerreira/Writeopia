@@ -3,9 +3,6 @@ import com.android.build.api.dsl.ManagedVirtualDevice
 plugins {
     alias(libs.plugins.application)
     id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
-    alias(libs.plugins.kotlinSerialization)
-    id("kotlin-parcelize")
     id("org.jetbrains.compose")
 }
 android {
@@ -39,7 +36,6 @@ android {
         }
     }
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -93,8 +89,6 @@ dependencies {
     implementation(project(":application:features:auth"))
     implementation(project(":application:features:account"))
 
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
-
     implementation(libs.androidx.ktx)
     implementation(libs.appCompat)
 
@@ -107,7 +101,6 @@ dependencies {
 
     implementation(platform(libs.androidx.compose.bom))
 
-    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
