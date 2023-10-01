@@ -2,13 +2,10 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="DocumentRepositoryTest">
+      <entry key="NoteMenuAndroidTest">
         <State />
       </entry>
       <entry key="Personal.StoryTeller.sample.app">
-        <State />
-      </entry>
-      <entry key="Tests in 'io.writeopia'">
         <State />
       </entry>
       <entry key="app_sample">
@@ -26,6 +23,9 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2023-06-26T20:47:43.938636Z" />
         </State>
+      </entry>
+      <entry key="application.androidApp">
+        <State />
       </entry>
       <entry key="application.app">
         <State>

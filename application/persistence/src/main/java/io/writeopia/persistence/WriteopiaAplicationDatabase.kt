@@ -35,15 +35,13 @@ abstract class WriteopiaApplicationDatabase : RoomDatabase() {
             context: Context,
             databaseName: String = DATABASE_NAME,
             inMemory: Boolean = false,
-            builder: Builder<WriteopiaApplicationDatabase>.() -> Builder<WriteopiaApplicationDatabase> = { this }
         ): WriteopiaApplicationDatabase =
-            instance ?: createDatabase(context, databaseName, inMemory, builder)
+            instance ?: createDatabase(context, databaseName, inMemory)
 
         private fun createDatabase(
             context: Context,
             databaseName: String,
             inMemory: Boolean = false,
-            builder: Builder<WriteopiaApplicationDatabase>.() -> Builder<WriteopiaApplicationDatabase> = { this }
         ): WriteopiaApplicationDatabase =
             if (inMemory) {
                 Room.inMemoryDatabaseBuilder(
@@ -55,7 +53,8 @@ abstract class WriteopiaApplicationDatabase : RoomDatabase() {
                     context.applicationContext,
                     WriteopiaApplicationDatabase::class.java,
                     databaseName
-                ).let(builder)
+                )
+                    .createFromAsset("WriteopiaDatabase.db")
                     .fallbackToDestructiveMigration()
                     .build()
                     .also { database ->
