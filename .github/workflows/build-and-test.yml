@@ -10,8 +10,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  android_build_and_test:
-    name: Android - build and test
+  android_debug_build_and_test:
+    name: Android - Build and test debug
     runs-on: ubuntu-22.04
     env:
       isCI: "true"
@@ -23,8 +23,23 @@ jobs:
         with:
           distribution: adopt
           java-version: '17'
-      - name: Build android 
+      - name: Build debug android 
         run: ./gradlew assembleDebug testDebug
+  android_build:
+    name: General - Build release
+    runs-on: ubuntu-22.04
+    env:
+      isCI: "true"
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: adopt
+          java-version: '17'
+      - name: Build debug android 
+        run: ./gradlew assemble
   backend_build_and_test:
     name: Backend - build and test
     runs-on: ubuntu-22.04
