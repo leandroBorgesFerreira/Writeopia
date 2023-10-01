@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   android_debug_build_and_test:
-    name: Android - Build and test debug
+    name: Android - Test debug
     runs-on: ubuntu-22.04
     env:
       isCI: "true"
@@ -24,7 +24,7 @@ jobs:
           distribution: adopt
           java-version: '17'
       - name: Build debug android 
-        run: ./gradlew assembleDebug testDebug
+        run: ./gradlew testDebug
   android_build:
     name: General - Build release
     runs-on: ubuntu-22.04
