@@ -6,6 +6,7 @@ plugins {
     id("com.google.devtools.ksp")
     alias(libs.plugins.kotlinSerialization)
     id("kotlin-parcelize")
+    id("org.jetbrains.compose")
 }
 android {
     namespace = "io.writeopia"
@@ -138,5 +139,5 @@ dependencies {
 //    debugImplementation(libs.androidx.ui.test.manifest)
 
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.4.3")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.1")
 }
