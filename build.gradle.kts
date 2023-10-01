@@ -9,8 +9,7 @@ plugins {
     id("io.github.leandroborgesferreira.dag-command") version "1.6.0" apply true
     id("com.google.gms.google-services") version "4.3.15" apply false
     alias(libs.plugins.org.jetbrains.kotlin.jvm) apply false
-    id("org.jetbrains.compose") version "1.5.10-beta02" apply false
-//    kotlin("multiplatform") version "1.9.0" apply false
+    id("org.jetbrains.compose") version("1.5.10-beta02") apply false
 }
 apply(from = "${rootDir}/scripts/publish-root.gradle")
 
