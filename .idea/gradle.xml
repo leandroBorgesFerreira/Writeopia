@@ -19,9 +19,9 @@
             <option value="$PROJECT_DIR$/application/features/auth" />
             <option value="$PROJECT_DIR$/application/features/editor" />
             <option value="$PROJECT_DIR$/application/features/note_menu" />
+            <option value="$PROJECT_DIR$/application/notes_menu_shared" />
             <option value="$PROJECT_DIR$/application/persistence" />
             <option value="$PROJECT_DIR$/application/resources" />
-            <option value="$PROJECT_DIR$/application/shared" />
             <option value="$PROJECT_DIR$/application/utils" />
             <option value="$PROJECT_DIR$/backend" />
             <option value="$PROJECT_DIR$/backend/intronotes" />

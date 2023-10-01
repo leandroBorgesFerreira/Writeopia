@@ -14,8 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.notes_menu.SimpleCard
 
 fun main() = application {
     Window(
@@ -25,9 +24,9 @@ fun main() = application {
     ) {
         val count = remember { mutableStateOf(0) }
         MaterialTheme {
-            StoryStep(type = StoryTypes.MESSAGE.type)
-
             Column(Modifier.fillMaxSize(), Arrangement.spacedBy(5.dp)) {
+                SimpleCard()
+
                 Button(modifier = Modifier.align(Alignment.CenterHorizontally),
                     onClick = {
                         count.value++
