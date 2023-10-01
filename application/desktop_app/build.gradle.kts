@@ -1,7 +1,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    kotlin("jvm")
+    alias(libs.plugins.org.jetbrains.kotlin.jvm)
     id("org.jetbrains.compose")
 }
 
@@ -11,6 +11,10 @@ dependencies {
     // (in a separate module for demo project and in testMain).
     // With compose.desktop.common you will also lose @Preview functionality
     implementation(compose.desktop.currentOs)
+
+    implementation(project(":writeopia_models"))
+    implementation(project(":plugins:writeopia_serialization"))
+    implementation(project(":plugins:writeopia_network"))
 }
 
 compose.desktop {
@@ -19,7 +23,7 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "demo1"
+            packageName = "Writeopia"
             packageVersion = "1.0.0"
         }
     }
