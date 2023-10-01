@@ -25,6 +25,8 @@ kotlin {
                 implementation(project(":application:features:auth"))
                 implementation(project(":application:features:account"))
 
+                implementation(project(":application:notes_menu_shared"))
+
                 implementation(libs.androidx.ktx)
                 implementation(libs.appCompat)
 
