@@ -15,6 +15,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Writeopia"
+
 include(":writeopia")
 include(":writeopia_models")
 include(":plugins:writeopia_persistence")
