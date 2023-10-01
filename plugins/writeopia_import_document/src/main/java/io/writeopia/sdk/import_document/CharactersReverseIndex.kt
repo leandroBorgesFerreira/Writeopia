@@ -3,9 +3,11 @@ package io.writeopia.sdk.import_document
 import io.writeopia.sdk.models.command.Command
 import io.writeopia.sdk.models.command.CommandFactory
 
-class CharactersReverseIndexParser(commandList: List<Command> = CommandFactory.defaultCommands()) {
+class CharactersReverseIndexParser(
+    commandList: List<Command> = CommandFactory.defaultCommands().toList()
+) {
 
-    val reversedIndex: Map<Char, List<CommandIndex>>
+    private val reversedIndex: Map<Char, List<CommandIndex>>
 
     init {
         reversedIndex = createReverseIndexOfCommand(commandList)

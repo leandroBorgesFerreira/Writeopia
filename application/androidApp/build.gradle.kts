@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
     alias(libs.plugins.application)
+    id("kotlin-parcelize")
 }
 
 kotlin {
