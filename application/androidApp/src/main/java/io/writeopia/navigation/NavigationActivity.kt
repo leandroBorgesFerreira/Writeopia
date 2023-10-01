@@ -41,11 +41,7 @@ class NavigationActivity : AppCompatActivity() {
 fun NavigationGraph(
     application: Application,
     navController: NavHostController = rememberNavController(),
-    database: WriteopiaApplicationDatabase = WriteopiaApplicationDatabase.database(
-        application,
-        builder = {
-            this.createFromAsset("WriteopiaDatabase.db")
-        }),
+    database: WriteopiaApplicationDatabase = WriteopiaApplicationDatabase.database(application),
     sharedPreferences: SharedPreferences = application.getSharedPreferences(
         "io.writeopia.preferences",
         Context.MODE_PRIVATE

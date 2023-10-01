@@ -95,49 +95,22 @@ dependencies {
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
-    implementation(libs.aws.amplifyframework.core.kotlin)
-
     implementation(libs.androidx.ktx)
     implementation(libs.appCompat)
-    implementation(libs.material)
 
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    implementation(libs.room.paging)
-    ksp(libs.room.compiler)
-
-    implementation(libs.kotlinx.serialization.json)
-
-    implementation(libs.ktor.client.okhttp)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.client.serialization.json)
     implementation(libs.ktor.client.logging)
 
-    implementation(libs.coil.compose)
-    implementation(libs.coil.video)
-
-    implementation(libs.viewmodel.compose)
     implementation(libs.runtime.compose)
     implementation(libs.navigation.compose)
 
-    implementation(libs.androidx.material.icons.extended)
-
-    implementation("androidx.activity:activity-compose")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material3:material3-window-size-class")
-
-    // Compose - Preview
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    debugImplementation("androidx.compose.ui:ui-tooling")
 
     implementation(platform(libs.androidx.compose.bom))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-//    androidTestImplementation(libs.androidx.ui.test.junit4)
-//    debugImplementation(libs.androidx.ui.test.manifest)
 
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.1")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.2")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.2")
 }

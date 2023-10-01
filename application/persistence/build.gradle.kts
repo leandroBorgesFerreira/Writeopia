@@ -35,7 +35,8 @@ android {
 }
 
 dependencies {
-
+    implementation(project(":writeopia"))
+    implementation(project(":writeopia_models"))
     implementation(project(":plugins:writeopia_persistence"))
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
@@ -48,4 +49,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.2")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.2")
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 }

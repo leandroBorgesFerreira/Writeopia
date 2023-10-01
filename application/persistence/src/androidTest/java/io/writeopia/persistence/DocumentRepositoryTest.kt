@@ -1,10 +1,9 @@
-package io.writeopia.persistence.repository
+package io.writeopia.persistence
 
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import io.writeopia.persistence.WriteopiaApplicationDatabase
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
