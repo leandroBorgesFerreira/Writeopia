@@ -12,7 +12,7 @@ class WriteopiaApplication: Application() {
         VideoFrameConfig.configCoilForVideoFrame(this)
 
         try {
-            AuthInitializer.initializeAwsAuth(this)
+            AuthInitializer.initializeAwsAuth(applicationContext)
             Log.i("WriteopiaApplication", "Initialized Amplify")
         } catch (error: Exception) {
             Log.e("WriteopiaApplication", "Could not initialize Amplify", error)
