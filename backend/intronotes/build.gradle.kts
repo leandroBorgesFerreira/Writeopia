@@ -37,6 +37,11 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "17"
 }
 
+
+
+
+
+
 tasks.withType<Test> {
     if (System.getenv("isCI") == "true") {
         exclude("**/integrationTests/**")
