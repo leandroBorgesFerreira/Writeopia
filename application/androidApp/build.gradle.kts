@@ -33,10 +33,11 @@ kotlin {
 
                 implementation(libs.ktor.client.logging)
 
-                implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
-                implementation("androidx.navigation:navigation-compose:2.7.3")
+                implementation("androidx.lifecycle:lifecycle-runtime-compose")
+                implementation(libs.navigation.compose)
 
-                implementation("androidx.compose.material3:material3:1.1.2")
+                implementation("androidx.compose.material3:material3")
+                implementation(platform("androidx.compose:compose-bom:2023.09.02"))
             }
         }
     }
