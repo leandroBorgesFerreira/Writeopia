@@ -39,30 +39,6 @@ internal class NotesUseCase(
         }
     }
 
-    suspend fun mockData() {
-        documentRepository.saveDocument(
-            Document(
-                id = UUID.randomUUID().toString(),
-                title = "Travel Note",
-                content = travelHistory(),
-                createdAt = Instant.now(),
-                lastUpdatedAt = Instant.now(),
-                userId = DISCONNECTED_USER_ID
-            )
-        )
-
-        documentRepository.saveDocument(
-            Document(
-                id = UUID.randomUUID().toString(),
-                title = "Supermarket List",
-                content = supermarketList(),
-                createdAt = Instant.now(),
-                lastUpdatedAt = Instant.now(),
-                userId = DISCONNECTED_USER_ID
-            )
-        )
-    }
-
     suspend fun deleteNotes(ids: Set<String>) {
         documentRepository.deleteDocumentById(ids)
     }

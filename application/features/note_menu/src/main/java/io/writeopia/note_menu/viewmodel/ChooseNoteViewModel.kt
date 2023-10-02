@@ -118,16 +118,6 @@ internal class ChooseNoteViewModel(
         _selectedNotes.value = emptySet()
     }
 
-    fun addMockData() {
-        viewModelScope.launch(Dispatchers.IO) {
-            notesUseCase.mockData()
-
-
-            val data = notesUseCase.loadDocumentsForUser(getUserId())
-            _documentsState.value = ResultData.Complete(data)
-        }
-    }
-
     fun listArrangementSelected() {
         notesConfig.saveDocumentArrangementPref(NotesArrangement.LIST)
         _notesArrangement.value = NotesArrangement.LIST
