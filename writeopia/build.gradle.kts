@@ -13,15 +13,25 @@ plugins {
 //apply(from = "${rootDir}/scripts/publish-module.gradle")
 
 kotlin {
+    jvm {}
+
     androidTarget()
 
     sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material)
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                implementation(compose.components.resources)
+
+                implementation(project(":writeopia_models"))
+            }
+        }
+
         val androidMain by getting {
             dependencies {
-                implementation(project(":writeopia_models"))
-
-//                coreLibraryDesugaring(libs.desugar.jdk.libs)
-
                 implementation(libs.androidx.material.icons.extended)
                 // Coil
                 implementation(libs.coil.compose)
