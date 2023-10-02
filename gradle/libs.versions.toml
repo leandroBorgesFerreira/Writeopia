@@ -2,7 +2,7 @@
 accompanist = "0.32.0"
 amplify = "2.11.1"
 coilVersion = "2.3.0"
-composeBom = "2023.09.01"
+composeBom = "2023.09.02"
 composeShimmer = "1.0.5"
 desugar_jdk_libs = "2.0.3"
 espressoCore = "3.5.1"
