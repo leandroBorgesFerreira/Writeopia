@@ -60,7 +60,8 @@ class AndroidMessageDrawer(
                 }
 
                 BasicTextField(
-                    modifier = Modifier.fillMaxWidth().padding(start = 6.dp)
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(start = 6.dp)
                         .focusRequester(focusRequester)
                         .callOnEmptyErase(inputText.selection) {
                             emptyErase?.invoke(drawInfo.position) ?: onDeleteRequest(

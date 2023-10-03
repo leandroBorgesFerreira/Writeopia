@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import io.writeopia.sdk.drawer.content.DesktopMessageDrawer
 import io.writeopia.sdk.drawer.content.UnOrderedListItemDrawer
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
@@ -21,11 +22,12 @@ private fun UnOrderedListItemPreview() {
         .padding(vertical = 4.dp, horizontal = 6.dp)
         .fillMaxWidth()
 
-    val modifierMessage = Modifier
-        .background(Color.White)
-        .fillMaxWidth()
-
-    UnOrderedListItemDrawer(modifier, messageModifier = modifierMessage).Step(
+    UnOrderedListItemDrawer(
+        modifier,
+        messageDrawer = { focusRequester ->
+            DesktopMessageDrawer(focusRequester = focusRequester)
+        }
+    ).Step(
         StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type, text = "Item1"),
         DrawInfo()
     )

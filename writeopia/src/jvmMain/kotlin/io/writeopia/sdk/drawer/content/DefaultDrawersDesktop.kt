@@ -135,26 +135,30 @@ object DefaultDrawersDesktop {
         nextFocus: (Int) -> Unit = {}
     ): Map<Int, StoryStepDrawer> =
         buildMap {
-            val androidMessageDrawer: RowScope.(FocusRequester) -> SimpleMessageDrawer = { focusRequester ->
-                DesktopMessageDrawer(
-                    focusRequester = focusRequester,
-                    commandHandler = textCommandHandler,
-                )
-            }
-
             val messageBoxDrawer = SwipeMessageDrawer(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .clip(shape = defaultBorder)
                     .background(groupsBackgroundColor),
                 onSelected = onSelected,
-                simpleMessageDrawer = androidMessageDrawer
+                simpleMessageDrawer = { focusRequester ->
+                    DesktopMessageDrawer(
+                        focusRequester = focusRequester,
+                        commandHandler = textCommandHandler,
+                    )
+                }
             )
 
             val swipeMessageDrawer = SwipeMessageDrawer(
                 modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
                 onSelected = onSelected,
-                simpleMessageDrawer = androidMessageDrawer
+                simpleMessageDrawer = { focusRequester ->
+                    DesktopMessageDrawer(
+                        modifier = Modifier.weight(1F),
+                        focusRequester = focusRequester,
+                        commandHandler = textCommandHandler,
+                    )
+                }
             )
 
             val createHDrawer = { fontSize: TextUnit ->
@@ -163,7 +167,7 @@ object DefaultDrawersDesktop {
                     onSelected = onSelected,
                     simpleMessageDrawer = { focusRequester ->
                         DesktopMessageDrawer(
-                            textModifier = Modifier.weight(1F),
+                            modifier = Modifier.weight(1F),
                             textStyle = {
                                 defaultTextStyle().copy(fontSize = fontSize)
                             },
@@ -193,7 +197,12 @@ object DefaultDrawersDesktop {
                 UnOrderedListItemDrawer(
                     modifier = Modifier.padding(start = 18.dp, end = 12.dp),
                     onSelected = onSelected,
-                    messageDrawer = androidMessageDrawer,
+                    messageDrawer = { focusRequester ->
+                        DesktopMessageDrawer(
+                            focusRequester = focusRequester,
+                            commandHandler = textCommandHandler,
+                        )
+                    },
                 )
 
             val headerDrawer = HeaderDrawer(

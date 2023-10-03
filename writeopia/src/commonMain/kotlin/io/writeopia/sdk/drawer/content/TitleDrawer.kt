@@ -2,6 +2,7 @@ package io.writeopia.sdk.drawer.content
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
@@ -34,7 +35,6 @@ const val TITLE_DRAWER_TEST_TAG = "TitleDrawerTextField"
  */
 class TitleDrawer(
     private val containerModifier: Modifier = Modifier,
-    private val innerContainerModifier: Modifier = Modifier,
     private val onTextEdit: (String, Int) -> Unit,
     private val onLineBreak: (Action.LineBreak) -> Unit,
 ) : StoryStepDrawer {
@@ -67,7 +67,8 @@ class TitleDrawer(
                 }
 
                 TextField(
-                    modifier = innerContainerModifier
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .focusRequester(focusRequester)
                         .semantics {
                             testTag = TITLE_DRAWER_TEST_TAG
