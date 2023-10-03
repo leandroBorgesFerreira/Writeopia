@@ -163,6 +163,7 @@ object DefaultDrawersDesktop {
                     onSelected = onSelected,
                     simpleMessageDrawer = { focusRequester ->
                         DesktopMessageDrawer(
+                            textModifier = Modifier.weight(1F),
                             textStyle = {
                                 defaultTextStyle().copy(fontSize = fontSize)
                             },
@@ -192,7 +193,7 @@ object DefaultDrawersDesktop {
                 UnOrderedListItemDrawer(
                     modifier = Modifier.padding(start = 18.dp, end = 12.dp),
                     onSelected = onSelected,
-                    messageDrawer = androidMessageDrawer
+                    messageDrawer = androidMessageDrawer,
                 )
 
             val headerDrawer = HeaderDrawer(

@@ -1,6 +1,7 @@
 package io.writeopia.sdk.drawer.content
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -34,7 +35,6 @@ import io.writeopia.sdk.utils.ui.defaultTextStyle
 class AndroidMessageDrawer(
     private val modifier: Modifier = Modifier,
     // Todo: Use a local composition or custom theme instead of a second modifier.
-    private val textModifier: Modifier = Modifier,
     private val textStyle: @Composable () -> TextStyle = { defaultTextStyle() },
     private val focusRequester: FocusRequester,
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
@@ -60,7 +60,7 @@ class AndroidMessageDrawer(
                 }
 
                 BasicTextField(
-                    modifier = textModifier
+                    modifier = Modifier.fillMaxWidth().padding(start = 6.dp)
                         .focusRequester(focusRequester)
                         .callOnEmptyErase(inputText.selection) {
                             emptyErase?.invoke(drawInfo.position) ?: onDeleteRequest(

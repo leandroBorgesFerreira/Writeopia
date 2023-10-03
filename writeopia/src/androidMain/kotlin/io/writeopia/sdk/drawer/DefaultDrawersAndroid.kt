@@ -154,7 +154,6 @@ object DefaultDrawersAndroid {
                 mergeRequest = mergeRequest
             )
 
-
             val messageBoxDrawer = SwipeMessageDrawer(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
@@ -163,8 +162,10 @@ object DefaultDrawersAndroid {
                 onSelected = onSelected,
                 simpleMessageDrawer = { focusRequester ->
                     AndroidMessageDrawer(
+                        modifier = Modifier.weight(1F),
                         focusRequester = focusRequester,
                         commandHandler = textCommandHandler,
+                        onDeleteRequest = onDeleteRequest
                     )
                 }
             )
@@ -174,8 +175,10 @@ object DefaultDrawersAndroid {
                 onSelected = onSelected,
                 simpleMessageDrawer = { focusRequester ->
                     AndroidMessageDrawer(
+                        modifier = Modifier.weight(1F),
                         focusRequester = focusRequester,
                         commandHandler = textCommandHandler,
+                        onDeleteRequest = onDeleteRequest
                     )
                 }
             )
@@ -186,10 +189,12 @@ object DefaultDrawersAndroid {
                     onSelected = onSelected,
                     simpleMessageDrawer = { focusRequester ->
                         AndroidMessageDrawer(
+                            modifier = Modifier.weight(1F),
                             textStyle = {
                                 defaultTextStyle().copy(fontSize = fontSize)
                             },
-                            focusRequester = focusRequester
+                            focusRequester = focusRequester,
+                            onDeleteRequest = onDeleteRequest
                         )
                     }
                 )
@@ -217,8 +222,13 @@ object DefaultDrawersAndroid {
                     onSelected = onSelected,
                     messageDrawer = { focusRequester ->
                         AndroidMessageDrawer(
+                            modifier = Modifier.weight(1F),
                             focusRequester = focusRequester,
                             commandHandler = textCommandHandler,
+                            onDeleteRequest = onDeleteRequest,
+                            emptyErase = { position ->
+                                changeStoryType(position, StoryTypes.MESSAGE.type, null)
+                            },
                         )
                     }
                 )
