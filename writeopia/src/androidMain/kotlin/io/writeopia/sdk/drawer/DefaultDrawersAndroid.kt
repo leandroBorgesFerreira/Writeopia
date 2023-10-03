@@ -224,7 +224,6 @@ object DefaultDrawersAndroid {
             val unOrderedListItemDrawer =
                 UnOrderedListItemDrawer(
                     modifier = Modifier.padding(start = 18.dp, end = 12.dp),
-                    messageModifier = Modifier.padding(start = 8.dp),
                     onTextEdit = onTextEdit,
                     emptyErase = { position ->
                         changeStoryType(position, StoryTypes.MESSAGE.type, null)

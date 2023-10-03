@@ -1,6 +1,7 @@
 package io.writeopia.sdk.drawer.content
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LocalTextStyle
@@ -26,7 +27,6 @@ import io.writeopia.sdk.uicomponents.SwipeBox
  */
 class UnOrderedListItemDrawer(
     private val modifier: Modifier = Modifier,
-    private val messageModifier: Modifier = Modifier,
     private val startText: String = "-",
     private val customBackgroundColor: Color? = null,
     private val clickable: Boolean = true,
@@ -37,6 +37,16 @@ class UnOrderedListItemDrawer(
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
     private val emptyErase: (Int) -> Unit = {},
     private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
+    private val messageDrawer: @Composable RowScope.(FocusRequester) -> SimpleMessageDrawer = { focusRequester ->
+        SimpleMessageDrawer(
+            modifier = Modifier.weight(1F).padding(start = 8.dp),
+            textModifier = Modifier.fillMaxWidth(),
+            focusRequester = focusRequester,
+            commandHandler = commandHandler,
+            emptyErase = emptyErase,
+            onTextEdit = onTextEdit,
+        )
+    }
 ) : StoryStepDrawer {
 
     @Composable
@@ -82,17 +92,11 @@ class UnOrderedListItemDrawer(
                     style = textStyle()
                 )
 
-                SimpleMessageDrawer(
-                    modifier = messageModifier.weight(1F),
-                    textModifier = Modifier.fillMaxWidth(),
-                    focusRequester = focusRequester,
-                    commandHandler = commandHandler,
-                    emptyErase = emptyErase,
-                    onTextEdit = onTextEdit,
+                messageDrawer(focusRequester).apply {
                     onFocusChanged = { focusState ->
                         showDragIcon = focusState.hasFocus
                     }
-                ).Step(step = step, drawInfo = drawInfo)
+                }.Step(step = step, drawInfo = drawInfo)
             }
         }
     }

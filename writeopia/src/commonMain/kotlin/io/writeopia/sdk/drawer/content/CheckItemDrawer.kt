@@ -42,7 +42,7 @@ class CheckItemDrawer(
     private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     private val customBackgroundColor: Color? = null,
-    private val clickable: Boolean = true
+    private val clickable: Boolean = true,
 ) : StoryStepDrawer {
 
     @OptIn(ExperimentalMaterial3Api::class)
