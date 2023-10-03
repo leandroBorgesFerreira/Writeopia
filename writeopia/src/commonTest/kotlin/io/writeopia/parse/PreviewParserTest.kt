@@ -2,8 +2,8 @@ package io.writeopia.parse
 
 import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.utils.MapStoryData
-import org.junit.Assert.*
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class PreviewParserTest {
 
@@ -13,9 +13,9 @@ class PreviewParserTest {
         val result = PreviewParser().preview(input)
 
         assertEquals(
-            "The check item provided should be in the preview",
             input,
-            result
+            result,
+            "The check item provided should be in the preview"
         )
     }
 
@@ -26,9 +26,9 @@ class PreviewParserTest {
         val result = PreviewParser().preview(input, maxSize)
 
         assertEquals(
-            "The check item provided should be in the preview",
             maxSize,
-            result.size
+            result.size,
+            "The check item provided should be in the preview"
         )
     }
 }

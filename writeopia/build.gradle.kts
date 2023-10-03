@@ -31,6 +31,12 @@ kotlin {
             }
         }
 
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
+
         val androidMain by getting {
             dependencies {
                 implementation(libs.androidx.material.icons.extended)
@@ -45,8 +51,7 @@ kotlin {
 
                 implementation("androidx.compose.ui:ui-tooling-preview")
 //                debugImplementation("androidx.compose.ui:ui-tooling")
-
-//                testImplementation(libs.junit)
+                
 //                testImplementation(libs.kotlinx.coroutines.test)
 
                 implementation(platform("androidx.compose:compose-bom:2023.09.02"))

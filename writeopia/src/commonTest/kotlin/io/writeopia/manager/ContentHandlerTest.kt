@@ -1,5 +1,6 @@
 package io.writeopia.manager
 
+import io.writeopia.sdk.manager.ContentHandler
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.models.command.CommandFactory
 import io.writeopia.sdk.models.command.CommandInfo
@@ -11,8 +12,8 @@ import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
 import io.writeopia.utils.MapStoryData
 import io.writeopia.sdk.utils.StoryStepFactory
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class ContentHandlerTest {
 

@@ -1,5 +1,7 @@
 package io.writeopia.backstack
 
+import io.writeopia.sdk.backstack.PerStateBackstackManager
+import io.writeopia.sdk.manager.ContentHandler
 import io.writeopia.sdk.manager.MovementHandler
 import io.writeopia.sdk.model.action.BackstackAction
 import io.writeopia.sdk.model.story.LastEdit
@@ -7,8 +9,8 @@ import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
-import org.junit.Assert.*
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class PerStateBackstackManagerTest {
 

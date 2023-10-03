@@ -4,10 +4,10 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.utils.ListStoryData
 import io.writeopia.utils.MapStoryData
 import io.writeopia.sdk.normalization.addinbetween.AddSteps
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
-import org.junit.Assert.fail
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
+import kotlin.test.fail
 
 class AddStepsTest {
 
@@ -78,11 +78,11 @@ class AddStepsTest {
         val input = ListStoryData.spaces()
         val result = AddSteps.spaces(skipFirst = false).insert(input)
 
-        assertEquals("only 2 item should be in the result", 2, result.size)
+        assertEquals(2, result.size, "only 2 item should be in the result", )
         assertEquals(
-            "only one space should be in the result",
             StoryTypes.SPACE.type,
-            result.first().type
+            result.first().type,
+            "only one space should be in the result"
         )
     }
 

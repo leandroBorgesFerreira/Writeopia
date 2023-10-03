@@ -3,8 +3,8 @@ package io.writeopia.normalization.builder
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.utils.MapStoryData
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
-import junit.framework.TestCase.assertEquals
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class StepsMapNormalizationBuilderTest {
     @Test
@@ -17,38 +17,38 @@ class StepsMapNormalizationBuilderTest {
         val normalized = normalization(input)
 
         assertEquals(
-            "The first non space StoryUnit should be a GroupStep",
             StoryTypes.GROUP_IMAGE.type,
-            normalized[0]!!.type
+            normalized[0]!!.type,
+            "The first non space StoryUnit should be a GroupStep"
         )
 
         assertEquals(
-            "There should be an space between all the story units",
             input.size * 2 + 1,
-            normalized.size
+            normalized.size,
+            "There should be an space between all the story units"
         )
         assertEquals(
-            "The images in the same position should be merged into GroupImage",
             StoryTypes.GROUP_IMAGE.type,
-            normalized[4]?.type
+            normalized[4]?.type,
+            "The images in the same position should be merged into GroupImage"
         )
         assertEquals(
-            "The images in the same position should be merged into GroupImage",
             3,
-            normalized[4]?.steps?.size
+            normalized[4]?.steps?.size,
+            "The images in the same position should be merged into GroupImage"
         )
         assertEquals(
-            "The last message should stay as it was",
             StoryTypes.MESSAGE.type,
-            normalized[normalized.size - 3]?.type
+            normalized[normalized.size - 3]?.type,
+            "The last message should stay as it was"
         )
 
         val group = (normalized[4])
         group!!.steps.forEach { storyUnit ->
             assertEquals(
-                "The steps inside the group should reference it as the parent",
                 group.id,
-                storyUnit.parentId
+                storyUnit.parentId,
+                "The steps inside the group should reference it as the parent"
             )
         }
     }

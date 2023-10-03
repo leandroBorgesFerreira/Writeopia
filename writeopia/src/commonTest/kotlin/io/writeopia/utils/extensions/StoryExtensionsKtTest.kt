@@ -4,9 +4,9 @@ import androidx.compose.runtime.toMutableStateMap
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.utils.extensions.noContent
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class StoryExtensionsKtTest {
 

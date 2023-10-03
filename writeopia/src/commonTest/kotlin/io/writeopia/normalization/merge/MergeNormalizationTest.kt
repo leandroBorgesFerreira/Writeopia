@@ -7,12 +7,9 @@ import io.writeopia.sdk.normalization.merge.steps.StepToStepMerger
 import io.writeopia.utils.MapStoryData
 import io.writeopia.sdk.normalization.merge.MergeNormalization
 import io.writeopia.sdk.normalization.merge.StepsMergerCoordinator
-import io.writeopia.sdk.utils.extensions.associateWithPosition
-import io.writeopia.sdk.utils.extensions.toEditState
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertTrue
-import org.junit.Ignore
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class MergeNormalizationTest {
 
@@ -67,15 +64,15 @@ class MergeNormalizationTest {
         val mergedStep =
             mergeNormalization.mergeSteps(MapStoryData.twoGroupsImageList())
 
-        assertEquals("2 image groups should have been merged into one", 1, mergedStep.size)
+        assertEquals(1, mergedStep.size, "2 image groups should have been merged into one")
         assertTrue(
-            "the first story unit should still be a GroupStep",
-            mergedStep[0]?.isGroup ?: false
+            mergedStep[0]?.isGroup ?: false,
+            "the first story unit should still be a GroupStep"
         )
         assertEquals(
-            "the first story unit should still be a GroupImage",
             StoryTypes.GROUP_IMAGE.type,
-            mergedStep[0]!!.type
+            mergedStep[0]!!.type,
+            "the first story unit should still be a GroupImage"
         )
     }
 
@@ -105,40 +102,40 @@ class MergeNormalizationTest {
         val mergedStep = mergeNormalization.mergeSteps(steps + Pair(steps.size, last))
         assertEquals(last.first(), mergedStep[mergedStep.size - 1])
     }
-
-    @Test
-    @Ignore("Evaluate if the image should actually go to beginning of the group")
-    fun `the image always goes to the beginning of a group message`() {
-        val mergeNormalization = MergeNormalization.build {
-            addMerger(
-                StepsMergerCoordinator(
-                    typeOfStep = StoryTypes.IMAGE.type,
-                    typeOfGroup = StoryTypes.GROUP_IMAGE.type
-                )
-            )
-        }
-
-        val last = StoryStep(
-            localId = "6",
-            type = StoryTypes.IMAGE.type,
-        )
-
-        val story = listOf(
-            StoryStep(
-                localId = "1",
-                type = StoryTypes.GROUP_IMAGE.type,
-                steps = listOf(
-                    StoryStep(
-                        localId = "2",
-                        type = StoryTypes.IMAGE.type,
-                    ),
-                    last
-                )
-            ),
-        ).associateWithPosition()
-
-        val mergedStep = mergeNormalization.mergeSteps(story.toEditState())
-
-        assertEquals(last.localId, mergedStep[0]!!.steps.first().localId)
-    }
+//
+//    @Test
+//    @Ignore("Evaluate if the image should actually go to beginning of the group")
+//    fun `the image always goes to the beginning of a group message`() {
+//        val mergeNormalization = MergeNormalization.build {
+//            addMerger(
+//                StepsMergerCoordinator(
+//                    typeOfStep = StoryTypes.IMAGE.type,
+//                    typeOfGroup = StoryTypes.GROUP_IMAGE.type
+//                )
+//            )
+//        }
+//
+//        val last = StoryStep(
+//            localId = "6",
+//            type = StoryTypes.IMAGE.type,
+//        )
+//
+//        val story = listOf(
+//            StoryStep(
+//                localId = "1",
+//                type = StoryTypes.GROUP_IMAGE.type,
+//                steps = listOf(
+//                    StoryStep(
+//                        localId = "2",
+//                        type = StoryTypes.IMAGE.type,
+//                    ),
+//                    last
+//                )
+//            ),
+//        ).associateWithPosition()
+//
+//        val mergedStep = mergeNormalization.mergeSteps(story.toEditState())
+//
+//        assertEquals(last.localId, mergedStep[0]!!.steps.first().localId)
+//    }
 }

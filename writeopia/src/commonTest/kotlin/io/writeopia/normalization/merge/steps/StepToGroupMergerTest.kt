@@ -3,8 +3,8 @@ package io.writeopia.normalization.merge.steps
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.normalization.merge.steps.StepToGroupMerger
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import java.util.UUID
 
 class StepToGroupMergerTest {
@@ -92,9 +92,9 @@ class StepToGroupMergerTest {
 
         result.steps.forEachIndexed { i, storyUnit ->
             assertEquals(
-                "The step number $i should have the parent id: $parent1Id",
                 parent1Id,
-                storyUnit.parentId
+                storyUnit.parentId,
+                "The step number $i should have the parent id: $parent1Id"
             )
         }
     }
