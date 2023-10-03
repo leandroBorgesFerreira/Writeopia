@@ -139,7 +139,6 @@ class PerStateBackstackManagerTest {
             checked = false
         )
         val story2 = story1.copy(checked = true)
-        val mockState1 = StoryState(mapOf(0 to story1), LastEdit.Nothing)
         val mockState2 = StoryState(mapOf(0 to story2), LastEdit.Nothing)
 
         backstackManager.addAction(BackstackAction.StoryStateChange(story1, 0))
