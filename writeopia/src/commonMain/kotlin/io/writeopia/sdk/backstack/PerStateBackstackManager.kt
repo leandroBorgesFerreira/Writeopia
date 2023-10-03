@@ -264,7 +264,7 @@ internal class PerStateBackstackManager(
         ) ?: storyState
 
     private fun BackstackAction.Move.revertMove(): Action.Move =
-        io.writeopia.sdk.model.action.Action.Move(
+        Action.Move(
             storyStep = storyStep,
             positionFrom = positionTo - 1,
             positionTo = maxOf(positionFrom - 1, 0)

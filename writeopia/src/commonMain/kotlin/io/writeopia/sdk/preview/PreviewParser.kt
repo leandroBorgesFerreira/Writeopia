@@ -4,7 +4,6 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.models.story.StoryTypes
 
-
 /**
  * Parser of wanted previous. This class provides a default logic to filter the desired
  * [StoryType]. It already comes with some default types.

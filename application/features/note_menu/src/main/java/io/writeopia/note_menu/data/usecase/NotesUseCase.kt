@@ -1,11 +1,7 @@
 package io.writeopia.note_menu.data.usecase
 
-import io.writeopia.note_menu.data.supermarketList
-import io.writeopia.note_menu.data.travelHistory
 import io.writeopia.sdk.manager.DocumentRepository
 import io.writeopia.sdk.models.document.Document
-import io.writeopia.utils_module.DISCONNECTED_USER_ID
-import java.time.Instant
 import java.util.UUID
 
 /**

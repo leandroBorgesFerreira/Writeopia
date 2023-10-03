@@ -1,10 +1,10 @@
 package io.writeopia.sdk.manager
 
 import io.writeopia.sdk.model.action.Action
-import io.writeopia.sdk.models.command.CommandInfo
-import io.writeopia.sdk.models.command.CommandTrigger
 import io.writeopia.sdk.model.story.LastEdit
 import io.writeopia.sdk.model.story.StoryState
+import io.writeopia.sdk.models.command.CommandInfo
+import io.writeopia.sdk.models.command.CommandTrigger
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.models.story.StoryTypes

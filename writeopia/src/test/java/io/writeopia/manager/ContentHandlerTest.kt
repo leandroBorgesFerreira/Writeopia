@@ -11,7 +11,6 @@ import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
 import io.writeopia.utils.MapStoryData
 import io.writeopia.sdk.utils.StoryStepFactory
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
-import io.writeopia.sdk.manager.ContentHandler
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

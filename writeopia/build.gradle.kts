@@ -27,6 +27,7 @@ kotlin {
                 implementation(compose.components.resources)
 
                 implementation(project(":writeopia_models"))
+//                implementation(libs.material3.desktop)
             }
         }
 
@@ -59,7 +60,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
