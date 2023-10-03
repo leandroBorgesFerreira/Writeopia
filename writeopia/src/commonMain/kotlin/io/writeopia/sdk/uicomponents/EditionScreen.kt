@@ -13,12 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.R
 
-@Preview
 @Composable
 // This screen could live in a module for extra Composables. In the future there will be more
 // buttons here
@@ -35,7 +31,8 @@ fun EditionScreen(
                 .clip(RoundedCornerShape(8.dp))
                 .clickable(onClick = onDelete),
             imageVector = Icons.Default.DeleteOutline,
-            contentDescription = stringResource(R.string.delete),
+            contentDescription = "Delete",
+//            contentDescription = stringResource(R.string.delete),
             tint = MaterialTheme.colorScheme.onPrimary
         )
     }

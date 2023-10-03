@@ -48,6 +48,7 @@ fun WriteopiaEditor(
                         }
                     }
                 )
-            })
+            }
+        )
     }
 }

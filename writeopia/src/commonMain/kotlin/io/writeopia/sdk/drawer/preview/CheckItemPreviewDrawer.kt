@@ -1,30 +1,17 @@
 package io.writeopia.sdk.drawer.preview
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
+import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.models.story.StoryTypes
 
 /**
  * The drawer to a check item in the preview of a note.
@@ -71,18 +58,5 @@ class CheckItemPreviewDrawer(
                 color = MaterialTheme.colorScheme.onBackground,
             )
         }
-    }
-}
-
-@Preview
-@Composable
-private fun CheckItemPreviewDrawerPreview() {
-    Box(modifier = Modifier.background(Color.Cyan)) {
-        CheckItemPreviewDrawer().Step(
-            step = StoryStep(
-                type = StoryTypes.CHECK_ITEM.type,
-                text = "Check item"
-            ), drawInfo = DrawInfo()
-        )
     }
 }

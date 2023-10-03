@@ -6,7 +6,7 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.TextRange
 
 /**
- * Call the [callback] function when the a erase key was pressed and there isn't any available text.
+ * Call the [callback] function when an erase key was pressed and there isn't any available text.
  */
 internal fun Modifier.callOnEmptyErase(textRange: TextRange, callback: () -> Unit): Modifier =
     onKeyEvent { keyEvent ->

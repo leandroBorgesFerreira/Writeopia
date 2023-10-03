@@ -8,13 +8,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -26,16 +20,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.writeopia.sdk.draganddrop.target.DragTargetWithDragItem
-import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
-import io.writeopia.sdk.drawer.modifier.callOnEmptyErase
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draganddrop.DropInfo
-import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.text.edition.TextCommandHandler
 import io.writeopia.sdk.uicomponents.SwipeBox
@@ -135,9 +126,10 @@ class CheckItemDrawer(
                         .onFocusChanged { focusState ->
                             hasFocus = focusState.hasFocus
                         }
-                        .callOnEmptyErase(inputText.selection) {
-                            emptyErase(drawInfo.position)
-                        }
+                        //Todo: Fix this!!
+//                        .callOnEmptyErase(inputText.selection) {
+//                            emptyErase(drawInfo.position)
+//                        }
                         .onFocusChanged { focusState ->
                             showDragIcon = focusState.hasFocus
                         },
@@ -163,16 +155,4 @@ class CheckItemDrawer(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun CheckItemDrawerStepPreview() {
-    CheckItemDrawer().Step(
-        step = StoryStep(
-            type = StoryTypes.CHECK_ITEM.type,
-            text = "This is a check item"
-        ),
-        drawInfo = DrawInfo()
-    )
 }

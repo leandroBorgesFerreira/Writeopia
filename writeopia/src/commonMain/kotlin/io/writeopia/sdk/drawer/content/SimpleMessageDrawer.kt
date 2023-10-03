@@ -1,17 +1,13 @@
 package io.writeopia.sdk.drawer.content
 
+//import io.writeopia.sdk.drawer.modifier.callOnEmptyErase
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
@@ -22,15 +18,13 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
-import io.writeopia.sdk.drawer.modifier.callOnEmptyErase
 import io.writeopia.sdk.model.action.Action
-import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.text.edition.TextCommandHandler
+import io.writeopia.sdk.utils.ui.defaultTextStyle
 
 /**
  * Simple message drawer mostly intended to be used as a component for more complex drawers.
@@ -69,14 +63,14 @@ class SimpleMessageDrawer(
                 BasicTextField(
                     modifier = textModifier
                         .focusRequester(focusRequester)
-                        .callOnEmptyErase(inputText.selection) {
-                            emptyErase?.invoke(drawInfo.position) ?: onDeleteRequest(
-                                Action.DeleteStory(
-                                    step,
-                                    drawInfo.position
-                                )
-                            )
-                        }
+//                        .callOnEmptyErase(inputText.selection) {
+//                            emptyErase?.invoke(drawInfo.position) ?: onDeleteRequest(
+//                                Action.DeleteStory(
+//                                    step,
+//                                    drawInfo.position
+//                                )
+//                            )
+//                        }
                         .onFocusChanged(onFocusChanged),
                     value = inputText,
                     onValueChange = { value ->
@@ -108,12 +102,4 @@ class SimpleMessageDrawer(
     }
 }
 
-@Preview
-@Composable
-fun SimpleMessageDrawerPreview() {
-    SimpleMessageDrawer(focusRequester = FocusRequester()).Step(
-        step = StoryStep(text = "Some text", type = StoryTypes.MESSAGE.type),
-        drawInfo = DrawInfo()
-    )
-}
 

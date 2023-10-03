@@ -36,7 +36,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.text.edition.TextCommandHandler
 
-object DefaultDrawers {
+object DefaultDrawersAndroid {
 
     @Composable
     fun create(

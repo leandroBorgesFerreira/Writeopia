@@ -13,12 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.models.story.StoryTypes
 
 /**
  * The drawer to the header of a document in the preview of a note.
@@ -57,16 +55,4 @@ class HeaderPreviewDrawer(
         }
 
     }
-}
-
-@Preview
-@Composable
-fun HeaderPreviewDrawerPreview() {
-    HeaderPreviewDrawer().Step(
-        step = StoryStep(
-            type = StoryTypes.TITLE.type,
-            text = "Some title"
-        ),
-        drawInfo = DrawInfo()
-    )
 }

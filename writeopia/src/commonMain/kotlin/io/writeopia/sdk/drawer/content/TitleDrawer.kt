@@ -7,31 +7,22 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.R
-import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.model.action.Action
+import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.utils.ui.transparentTextInputColors
 
 const val TITLE_DRAWER_TEST_TAG = "TitleDrawerTextField"
@@ -95,7 +86,8 @@ class TitleDrawer(
                     ),
                     placeholder = {
                         Text(
-                            stringResource(R.string.title),
+                            "Title",
+//                            stringResource(R.string.title),
                             style = titleStyle,
                             color = Color.LightGray
                         )
@@ -113,17 +105,3 @@ class TitleDrawer(
         }
     }
 }
-
-@Preview
-@Composable
-fun TitleDrawerStepPreview() {
-    TitleDrawer(
-        onTextEdit = { _, _ -> },
-        onLineBreak = {}).Step(
-        step = StoryStep(
-            type = StoryTypes.TITLE.type,
-            text = "Some title"
-        ), drawInfo = DrawInfo()
-    )
-}
-

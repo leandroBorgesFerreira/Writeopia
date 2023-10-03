@@ -22,12 +22,28 @@ kotlin {
             dependencies {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
-                implementation(compose.material)
+                implementation(compose.material3)
+                implementation(compose.materialIconsExtended)
+                implementation(compose.preview)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
 
                 implementation(project(":writeopia_models"))
 //                implementation(libs.material3.desktop)
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.materialIconsExtended)
+                implementation(compose.preview)
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                implementation(compose.components.resources)
+
+                implementation(project(":writeopia_models"))
             }
         }
 
@@ -51,9 +67,7 @@ kotlin {
                 implementation("androidx.compose.material3:material3-window-size-class")
 
                 implementation("androidx.compose.ui:ui-tooling-preview")
-//                debugImplementation("androidx.compose.ui:ui-tooling")
-                
-//                testImplementation(libs.kotlinx.coroutines.test)
+                implementation(compose.preview)
 
                 implementation(platform("androidx.compose:compose-bom:2023.09.02"))
             }
@@ -82,7 +96,6 @@ android {
         }
     }
     compileOptions {
-//        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }

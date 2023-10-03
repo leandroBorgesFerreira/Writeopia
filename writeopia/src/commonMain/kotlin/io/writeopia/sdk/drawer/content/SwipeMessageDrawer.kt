@@ -4,26 +4,20 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import io.writeopia.sdk.draganddrop.target.DragTargetWithDragItem
-import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draganddrop.DropInfo
-import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.text.edition.TextCommandHandler
 import io.writeopia.sdk.uicomponents.SwipeBox
+import io.writeopia.sdk.utils.ui.defaultTextStyle
 
 /**
  * Draw a text that can be edited. The edition of the text is both reflect in this Composable and
@@ -91,21 +85,4 @@ class SwipeMessageDrawer(
             }
         }
     }
-}
-
-
-@Composable
-internal fun defaultTextStyle() =
-    TextStyle(
-        color = MaterialTheme.colorScheme.onBackground,
-        fontSize = 16.sp
-    )
-
-@Preview
-@Composable
-private fun MessageDrawerPreview() {
-    SwipeMessageDrawer().Step(
-        step = StoryStep(text = "Some text", type = StoryTypes.MESSAGE.type),
-        drawInfo = DrawInfo()
-    )
 }
