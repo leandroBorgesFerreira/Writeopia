@@ -19,7 +19,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.drawer.StoryStepDrawer
+import io.writeopia.sdk.drawer.SimpleMessageDrawer
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
@@ -30,9 +30,8 @@ import io.writeopia.sdk.utils.ui.defaultTextStyle
  * Simple message drawer mostly intended to be used as a component for more complex drawers.
  * This class contains the logic of the basic message of the SDK. As many other drawers need some
  * text in it this Drawer can be used instead of duplicating this text logic.
- *
  */
-class SimpleMessageDrawer(
+class CommonMessageDrawer(
     private val modifier: Modifier = Modifier,
     // Todo: Use a local composition or custom theme instead of a second modifier.
     private val textModifier: Modifier = Modifier,
@@ -42,8 +41,8 @@ class SimpleMessageDrawer(
     private val emptyErase: ((Int) -> Unit)? = null,
     private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
-    var onFocusChanged: (FocusState) -> Unit = {}
-) : StoryStepDrawer {
+    override var onFocusChanged: (FocusState) -> Unit = {}
+) : SimpleMessageDrawer {
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
@@ -101,5 +100,4 @@ class SimpleMessageDrawer(
         }
     }
 }
-
 

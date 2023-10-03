@@ -9,32 +9,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.writeopia.sdk.drawer.commands.CommandsDecoratorDrawer
-import io.writeopia.sdk.drawer.content.AddButtonDrawer
-import io.writeopia.sdk.drawer.content.CheckItemDrawer
-import io.writeopia.sdk.drawer.content.HeaderDrawer
-import io.writeopia.sdk.drawer.content.RowGroupDrawer
-import io.writeopia.sdk.drawer.content.ImageDrawer
-import io.writeopia.sdk.drawer.content.LargeEmptySpace
-import io.writeopia.sdk.drawer.content.SwipeMessageDrawer
-import io.writeopia.sdk.drawer.content.VideoDrawer
-import io.writeopia.sdk.drawer.content.SpaceDrawer
-import io.writeopia.sdk.drawer.content.TitleDrawer
-import io.writeopia.sdk.drawer.content.UnOrderedListItemDrawer
-import io.writeopia.sdk.drawer.content.defaultImageShape
+import io.writeopia.sdk.drawer.content.*
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.models.command.CommandFactory
 import io.writeopia.sdk.models.command.CommandInfo
 import io.writeopia.sdk.models.command.CommandTrigger
-import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.StoryType
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.text.edition.TextCommandHandler
+import io.writeopia.sdk.utils.ui.defaultTextStyle
 
 object DefaultDrawersAndroid {
 
@@ -166,40 +154,42 @@ object DefaultDrawersAndroid {
                 mergeRequest = mergeRequest
             )
 
+
             val messageBoxDrawer = SwipeMessageDrawer(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .clip(shape = defaultBorder)
                     .background(groupsBackgroundColor),
-                textModifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
-                onTextEdit = onTextEdit,
-                onDeleteRequest = onDeleteRequest,
-                commandHandler = textCommandHandler,
                 onSelected = onSelected,
+                simpleMessageDrawer = { focusRequester ->
+                    AndroidMessageDrawer(
+                        focusRequester = focusRequester,
+                        commandHandler = textCommandHandler,
+                    )
+                }
             )
 
             val swipeMessageDrawer = SwipeMessageDrawer(
                 modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
-                textModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
-                onTextEdit = onTextEdit,
-                onDeleteRequest = onDeleteRequest,
-                commandHandler = textCommandHandler,
                 onSelected = onSelected,
+                simpleMessageDrawer = { focusRequester ->
+                    AndroidMessageDrawer(
+                        focusRequester = focusRequester,
+                        commandHandler = textCommandHandler,
+                    )
+                }
             )
 
             val createHDrawer = { fontSize: TextUnit ->
                 SwipeMessageDrawer(
                     modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
-                    textModifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
-                    onTextEdit = onTextEdit,
-                    onDeleteRequest = onDeleteRequest,
-                    commandHandler = textCommandHandler,
                     onSelected = onSelected,
-                    textStyle = {
-                        TextStyle(
-                            color = MaterialTheme.colorScheme.onBackground,
-                            fontSize = fontSize,
-                            fontWeight = FontWeight.Bold
+                    simpleMessageDrawer = { focusRequester ->
+                        AndroidMessageDrawer(
+                            textStyle = {
+                                defaultTextStyle().copy(fontSize = fontSize)
+                            },
+                            focusRequester = focusRequester
                         )
                     }
                 )
@@ -224,12 +214,13 @@ object DefaultDrawersAndroid {
             val unOrderedListItemDrawer =
                 UnOrderedListItemDrawer(
                     modifier = Modifier.padding(start = 18.dp, end = 12.dp),
-                    onTextEdit = onTextEdit,
-                    emptyErase = { position ->
-                        changeStoryType(position, StoryTypes.MESSAGE.type, null)
-                    },
-                    commandHandler = textCommandHandler,
                     onSelected = onSelected,
+                    messageDrawer = { focusRequester ->
+                        AndroidMessageDrawer(
+                            focusRequester = focusRequester,
+                            commandHandler = textCommandHandler,
+                        )
+                    }
                 )
 
             val headerDrawer = HeaderDrawer(

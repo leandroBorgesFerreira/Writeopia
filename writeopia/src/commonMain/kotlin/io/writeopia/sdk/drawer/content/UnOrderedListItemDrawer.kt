@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.draganddrop.target.DragTargetWithDragItem
+import io.writeopia.sdk.drawer.SimpleMessageDrawer
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.sdk.model.draw.DrawInfo
@@ -33,20 +34,8 @@ class UnOrderedListItemDrawer(
     private val textStyle: @Composable () -> TextStyle = {
         LocalTextStyle.current
     },
-    private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
-    private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
-    private val emptyErase: (Int) -> Unit = {},
     private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
-    private val messageDrawer: @Composable RowScope.(FocusRequester) -> SimpleMessageDrawer = { focusRequester ->
-        SimpleMessageDrawer(
-            modifier = Modifier.weight(1F).padding(start = 8.dp),
-            textModifier = Modifier.fillMaxWidth(),
-            focusRequester = focusRequester,
-            commandHandler = commandHandler,
-            emptyErase = emptyErase,
-            onTextEdit = onTextEdit,
-        )
-    }
+    private val messageDrawer: @Composable RowScope.(FocusRequester) -> SimpleMessageDrawer
 ) : StoryStepDrawer {
 
     @Composable
