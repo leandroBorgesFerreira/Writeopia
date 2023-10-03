@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.drawer.DrawInfo
+import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep

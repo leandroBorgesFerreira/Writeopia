@@ -25,7 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.draganddrop.target.DragTarget
 import io.writeopia.sdk.draganddrop.target.DropTarget
-import io.writeopia.sdk.drawer.DrawInfo
+import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.model.draganddrop.DropInfo

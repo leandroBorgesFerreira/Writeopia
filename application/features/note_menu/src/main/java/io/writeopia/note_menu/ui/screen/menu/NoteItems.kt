@@ -36,7 +36,7 @@ import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.note_menu.viewmodel.NotesArrangement
 import io.writeopia.appresourcers.R
 import io.writeopia.utils_module.ResultData
-import io.writeopia.sdk.drawer.DrawInfo
+import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.preview.CheckItemPreviewDrawer
 import io.writeopia.sdk.drawer.preview.HeaderPreviewDrawer
