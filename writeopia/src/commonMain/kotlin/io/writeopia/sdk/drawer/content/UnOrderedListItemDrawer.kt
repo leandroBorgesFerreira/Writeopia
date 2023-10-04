@@ -31,9 +31,7 @@ class UnOrderedListItemDrawer(
     private val startText: String = "-",
     private val customBackgroundColor: Color? = null,
     private val clickable: Boolean = true,
-    private val textStyle: @Composable () -> TextStyle = {
-        LocalTextStyle.current
-    },
+    private val textStyle: @Composable () -> TextStyle = { LocalTextStyle.current },
     private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     private val messageDrawer: @Composable RowScope.(FocusRequester) -> SimpleMessageDrawer
 ) : StoryStepDrawer {

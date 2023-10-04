@@ -76,6 +76,7 @@ object DefaultDrawersDesktop {
                     DesktopMessageDrawer(
                         focusRequester = focusRequester,
                         commandHandler = textCommandHandler,
+                        onDeleteRequest = onDeleteRequest,
                     )
                 }
             )
@@ -88,6 +89,7 @@ object DefaultDrawersDesktop {
                         modifier = Modifier.weight(1F),
                         focusRequester = focusRequester,
                         commandHandler = textCommandHandler,
+                        onDeleteRequest = onDeleteRequest,
                     )
                 }
             )
@@ -132,6 +134,10 @@ object DefaultDrawersDesktop {
                         DesktopMessageDrawer(
                             focusRequester = focusRequester,
                             commandHandler = textCommandHandler,
+                            onDeleteRequest = onDeleteRequest,
+                            emptyErase = { position ->
+                                changeStoryType(position, StoryTypes.MESSAGE.type, null)
+                            },
                         )
                     },
                 )
