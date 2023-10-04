@@ -136,6 +136,7 @@ object DefaultDrawersDesktop {
             focusRequester = focusRequesterCheckItem,
             messageDrawer = {
                 DesktopMessageDrawer(
+                    modifier = Modifier.weight(1F),
                     focusRequester = focusRequesterCheckItem,
                     commandHandler = textCommandHandler,
                     onDeleteRequest = onDeleteRequest,
@@ -155,6 +156,7 @@ object DefaultDrawersDesktop {
                 customBackgroundColor = Color.Transparent,
                 messageDrawer = {
                     DesktopMessageDrawer(
+                        modifier = Modifier.weight(1F),
                         focusRequester = focusRequesterUnOrderedList,
                         commandHandler = textCommandHandler,
                         onDeleteRequest = onDeleteRequest,
