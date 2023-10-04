@@ -5,7 +5,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.focus.FocusRequester
 import io.writeopia.sdk.drawer.content.DesktopMessageDrawer
-import io.writeopia.sdk.drawer.content.UnOrderedListItemDrawer
+import io.writeopia.sdk.drawer.content.unOrderedListItemDrawer
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
@@ -16,7 +16,7 @@ fun UnOrderedListItemDrawerPreview() {
     Surface {
         val focusRequester = FocusRequester()
 
-        UnOrderedListItemDrawer(
+        unOrderedListItemDrawer(
             messageDrawer = {
                 DesktopMessageDrawer(focusRequester = focusRequester)
             },

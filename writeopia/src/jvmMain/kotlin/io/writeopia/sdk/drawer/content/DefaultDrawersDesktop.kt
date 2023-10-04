@@ -69,14 +69,14 @@ object DefaultDrawersDesktop {
     ): Map<Int, StoryStepDrawer> {
         val focusRequesterMessageBox = remember { FocusRequester() }
 
-        val messageBoxDrawer = SwipeMessageDrawer(
+        val messageBoxDrawer = swipeMessageDrawer(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .clip(shape = defaultBorder)
                 .background(groupsBackgroundColor),
             focusRequester = focusRequesterMessageBox,
             onSelected = onSelected,
-            simpleMessageDrawer = {
+            messageDrawer = {
                 DesktopMessageDrawer(
                     modifier = Modifier.weight(1F),
                     onTextEdit = onTextEdit,
@@ -88,12 +88,12 @@ object DefaultDrawersDesktop {
         )
 
         val focusRequesterSwipeMessage = remember { FocusRequester() }
-        val swipeMessageDrawer = SwipeMessageDrawer(
+        val swipeMessageDrawer = swipeMessageDrawer(
             modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
             onSelected = onSelected,
             focusRequester = focusRequesterSwipeMessage,
             customBackgroundColor = Color.Transparent,
-            simpleMessageDrawer = {
+            messageDrawer = {
                 DesktopMessageDrawer(
                     modifier = Modifier.weight(1F),
                     onTextEdit = onTextEdit,
@@ -106,12 +106,12 @@ object DefaultDrawersDesktop {
 
         val createHDrawer = @Composable { fontSize: TextUnit ->
             val focusRequesterH = remember { FocusRequester() }
-            SwipeMessageDrawer(
+            swipeMessageDrawer(
                 modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
                 onSelected = onSelected,
                 focusRequester = focusRequesterH,
                 customBackgroundColor = Color.Transparent,
-                simpleMessageDrawer = {
+                messageDrawer = {
                     DesktopMessageDrawer(
                         modifier = Modifier.weight(1F),
                         onTextEdit = onTextEdit,
@@ -131,7 +131,7 @@ object DefaultDrawersDesktop {
         val h4MessageDrawer = createHDrawer(18.sp)
 
         val focusRequesterCheckItem = remember { FocusRequester() }
-        val checkItemDrawer = CheckItemDrawer(
+        val checkItemDrawer = checkItemDrawer(
             modifier = Modifier.padding(start = 18.dp, end = 12.dp),
             onCheckedChange = checkRequest,
             onSelected = onSelected,
@@ -153,7 +153,7 @@ object DefaultDrawersDesktop {
 
         val focusRequesterUnOrderedList = remember { FocusRequester() }
         val unOrderedListItemDrawer =
-            UnOrderedListItemDrawer(
+            unOrderedListItemDrawer(
                 modifier = Modifier.padding(start = 18.dp, end = 12.dp),
                 onSelected = onSelected,
                 focusRequester = focusRequesterUnOrderedList,

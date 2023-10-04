@@ -10,7 +10,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.content.DesktopMessageDrawer
-import io.writeopia.sdk.drawer.content.UnOrderedListItemDrawer
+import io.writeopia.sdk.drawer.content.unOrderedListItemDrawer
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
@@ -25,7 +25,7 @@ private fun UnOrderedListItemPreview() {
 
     val focusRequester = FocusRequester()
 
-    UnOrderedListItemDrawer(
+    unOrderedListItemDrawer(
         modifier,
         focusRequester = focusRequester,
         messageDrawer = {

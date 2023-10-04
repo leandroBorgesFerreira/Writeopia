@@ -90,14 +90,14 @@ object DefaultDrawersAndroid {
         )
 
         val focusRequesterMessageBox = remember { FocusRequester() }
-        val messageBoxDrawer = SwipeMessageDrawer(
+        val messageBoxDrawer = swipeMessageDrawer(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .clip(shape = defaultBorder)
                 .background(groupsBackgroundColor),
             focusRequester = focusRequesterMessageBox,
             onSelected = onSelected,
-            simpleMessageDrawer = {
+            messageDrawer = {
                 AndroidMessageDrawer(
                     modifier = Modifier.weight(1F),
                     onTextEdit = onTextEdit,
@@ -109,11 +109,11 @@ object DefaultDrawersAndroid {
         )
 
         val focusRequesterSwipeMessage = remember { FocusRequester() }
-        val swipeMessageDrawer = SwipeMessageDrawer(
+        val swipeMessageDrawer = swipeMessageDrawer(
             modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
             onSelected = onSelected,
             focusRequester = focusRequesterSwipeMessage,
-            simpleMessageDrawer = {
+            messageDrawer = {
                 AndroidMessageDrawer(
                     modifier = Modifier.weight(1F),
                     onTextEdit = onTextEdit,
@@ -126,11 +126,11 @@ object DefaultDrawersAndroid {
 
         val createHDrawer = @Composable { fontSize: TextUnit ->
             val focusRequesterH = remember { FocusRequester() }
-            SwipeMessageDrawer(
+            swipeMessageDrawer(
                 modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
                 onSelected = onSelected,
                 focusRequester = focusRequesterH,
-                simpleMessageDrawer = {
+                messageDrawer = {
                     AndroidMessageDrawer(
                         modifier = Modifier.weight(1F),
                         onTextEdit = onTextEdit,
@@ -138,6 +138,7 @@ object DefaultDrawersAndroid {
                             defaultTextStyle(it).copy(fontSize = fontSize)
                         },
                         focusRequester = focusRequesterH,
+                        commandHandler = textCommandHandler,
                         onDeleteRequest = onDeleteRequest
                     )
                 }
@@ -150,7 +151,7 @@ object DefaultDrawersAndroid {
         val h4MessageDrawer = createHDrawer(18.sp)
 
         val focusRequesterCheckItem = remember { FocusRequester() }
-        val checkItemDrawer = CheckItemDrawer(
+        val checkItemDrawer = checkItemDrawer(
             modifier = Modifier.padding(start = 18.dp, end = 12.dp),
             onCheckedChange = checkRequest,
             focusRequester = focusRequesterCheckItem,
@@ -171,7 +172,7 @@ object DefaultDrawersAndroid {
 
         val focusRequesterUnOrderedList = remember { FocusRequester() }
         val unOrderedListItemDrawer =
-            UnOrderedListItemDrawer(
+            unOrderedListItemDrawer(
                 modifier = Modifier.padding(start = 18.dp, end = 12.dp),
                 onSelected = onSelected,
                 focusRequester = focusRequesterUnOrderedList,

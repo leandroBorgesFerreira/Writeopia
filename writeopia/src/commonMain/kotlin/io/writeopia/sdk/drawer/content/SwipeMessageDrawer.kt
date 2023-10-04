@@ -21,50 +21,12 @@ import io.writeopia.sdk.uicomponents.SwipeBox
  * also notified by onTextEdit. It is necessary to reflect here to avoid losing the focus on the
  * TextField.
  */
-class SwipeMessageDrawer(
-    private val modifier: Modifier = Modifier,
-    private val customBackgroundColor: Color? = null,
-    private val clickable: Boolean = true,
-    private val focusRequester: FocusRequester,
-    private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
-    private val simpleMessageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
-) : StoryStepDrawer {
-
-    @Composable
-    override fun Step(step: StoryStep, drawInfo: DrawInfo) {
-        val dropInfo = DropInfo(step, drawInfo.position)
-        var showDragIcon by remember { mutableStateOf(false) }
-
-        SwipeBox(
-            modifier = modifier.fillMaxWidth(),
-            defaultColor = customBackgroundColor ?: MaterialTheme.colorScheme.background,
-            activeColor = MaterialTheme.colorScheme.primary,
-            isOnEditState = drawInfo.selectMode,
-            swipeListener = { isSelected ->
-                onSelected(isSelected, drawInfo.position)
-            }
-        ) {
-            DragTargetWithDragItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .apply {
-                        if (clickable) {
-                            clickable {
-                                focusRequester.requestFocus()
-                            }
-                        }
-                    },
-                dataToDrop = dropInfo,
-                showIcon = showDragIcon,
-                position = drawInfo.position,
-                emptySpaceClick = focusRequester::requestFocus
-            ) {
-                simpleMessageDrawer().apply {
-                    onFocusChanged = { focusState ->
-                        showDragIcon = focusState.hasFocus
-                    }
-                }.Step(step = step, drawInfo = drawInfo)
-            }
-        }
-    }
-}
+fun swipeMessageDrawer(
+    modifier: Modifier = Modifier,
+    customBackgroundColor: Color? = null,
+    clickable: Boolean = true,
+    focusRequester: FocusRequester,
+    onSelected: (Boolean, Int) -> Unit = { _, _ -> },
+    messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
+): StoryStepDrawer =
+    ListItemDrawer(modifier, customBackgroundColor, clickable, onSelected, focusRequester, null, messageDrawer)
