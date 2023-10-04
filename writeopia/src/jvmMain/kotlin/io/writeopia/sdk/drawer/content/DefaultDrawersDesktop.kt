@@ -79,6 +79,7 @@ object DefaultDrawersDesktop {
             simpleMessageDrawer = {
                 DesktopMessageDrawer(
                     modifier = Modifier.weight(1F),
+                    onTextEdit = onTextEdit,
                     focusRequester = focusRequesterMessageBox,
                     commandHandler = textCommandHandler,
                     onDeleteRequest = onDeleteRequest,
@@ -95,6 +96,7 @@ object DefaultDrawersDesktop {
             simpleMessageDrawer = {
                 DesktopMessageDrawer(
                     modifier = Modifier.weight(1F),
+                    onTextEdit = onTextEdit,
                     focusRequester = focusRequesterSwipeMessage,
                     commandHandler = textCommandHandler,
                     onDeleteRequest = onDeleteRequest,
@@ -112,6 +114,7 @@ object DefaultDrawersDesktop {
                 simpleMessageDrawer = {
                     DesktopMessageDrawer(
                         modifier = Modifier.weight(1F),
+                        onTextEdit = onTextEdit,
                         textStyle = {
                             defaultTextStyle(it).copy(fontSize = fontSize)
                         },
@@ -137,6 +140,7 @@ object DefaultDrawersDesktop {
             messageDrawer = {
                 DesktopMessageDrawer(
                     modifier = Modifier.weight(1F),
+                    onTextEdit = onTextEdit,
                     focusRequester = focusRequesterCheckItem,
                     commandHandler = textCommandHandler,
                     onDeleteRequest = onDeleteRequest,
@@ -157,6 +161,7 @@ object DefaultDrawersDesktop {
                 messageDrawer = {
                     DesktopMessageDrawer(
                         modifier = Modifier.weight(1F),
+                        onTextEdit = onTextEdit,
                         focusRequester = focusRequesterUnOrderedList,
                         commandHandler = textCommandHandler,
                         onDeleteRequest = onDeleteRequest,
