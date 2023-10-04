@@ -24,6 +24,7 @@ fun swipeMessageDrawer(
 ): StoryStepDrawer =
     MessageItemDrawer(modifier, customBackgroundColor, clickable, onSelected, focusRequester, null, messageDrawer)
 
+@Composable
 fun swipeMessageDrawer(
     drawersConfig: DrawersConfig,
     messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer

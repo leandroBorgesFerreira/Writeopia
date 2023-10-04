@@ -34,7 +34,7 @@ fun checkItemDrawer(
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)? = { step, drawInfo ->
         CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
             Checkbox(
-                modifier = Modifier.padding(start = 4.dp).scale(0.66F),
+                modifier = Modifier.padding(start = 4.dp).scale(0.8F),
                 checked = step.checked ?: false,
                 onCheckedChange = { checked ->
                     onCheckedChange(
@@ -60,7 +60,11 @@ fun checkItemDrawer(
         messageDrawer
     )
 
-fun checkItemDrawer(drawersConfig: DrawersConfig, messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer): StoryStepDrawer {
+@Composable
+fun checkItemDrawer(
+    drawersConfig: DrawersConfig,
+    messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
+): StoryStepDrawer {
     val focusRequesterCheckItem = remember { FocusRequester() }
     return checkItemDrawer(
         modifier = Modifier.padding(start = 18.dp, end = 12.dp),

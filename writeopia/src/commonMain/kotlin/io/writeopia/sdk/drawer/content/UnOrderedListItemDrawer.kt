@@ -43,6 +43,7 @@ fun unOrderedListItemDrawer(
         messageDrawer
     )
 
+@Composable
 fun unOrderedListItemDrawer(
     drawersConfig: DrawersConfig,
     messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer

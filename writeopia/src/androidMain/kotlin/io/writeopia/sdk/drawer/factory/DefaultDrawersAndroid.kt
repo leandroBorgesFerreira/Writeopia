@@ -1,11 +1,11 @@
 package io.writeopia.sdk.drawer.factory
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
@@ -56,8 +56,8 @@ object DefaultDrawersAndroid {
         val messageBoxDrawer = swipeMessageDrawer(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .clip(shape = drawersConfig.defaultBorder)
-                .background(drawersConfig.groupsBackgroundColor),
+                .clip(shape = drawersConfig.defaultBorder())
+                .background(drawersConfig.groupsBackgroundColor()),
             focusRequester = focusRequesterMessageBox,
             onSelected = drawersConfig.onSelected,
             messageDrawer = {
@@ -71,98 +71,15 @@ object DefaultDrawersAndroid {
             }
         )
 
-        val focusRequesterSwipeMessage = remember { FocusRequester() }
-        val swipeMessageDrawer = swipeMessageDrawer(
-            modifier = Modifier.padding(horizontal = 12.dp),
-            onSelected = drawersConfig.onSelected,
-            focusRequester = focusRequesterSwipeMessage,
-            messageDrawer = {
-                AndroidMessageDrawer(
-                    modifier = Modifier.weight(1F),
-                    onTextEdit = drawersConfig.onTextEdit,
-                    focusRequester = focusRequesterSwipeMessage,
-                    commandHandler = drawersConfig.textCommandHandler,
-                    onDeleteRequest = drawersConfig.onDeleteRequest
-                )
-            }
-        )
-
-        val createHDrawer = @Composable { fontSize: TextUnit ->
-            val focusRequesterH = remember { FocusRequester() }
-            swipeMessageDrawer(
-                modifier = Modifier.padding(horizontal = 12.dp),
-                onSelected = drawersConfig.onSelected,
-                focusRequester = focusRequesterH,
-                messageDrawer = {
-                    AndroidMessageDrawer(
-                        modifier = Modifier.weight(1F),
-                        onTextEdit = drawersConfig.onTextEdit,
-                        textStyle = {
-                            defaultTextStyle(it).copy(fontSize = fontSize)
-                        },
-                        focusRequester = focusRequesterH,
-                        commandHandler = drawersConfig.textCommandHandler,
-                        onDeleteRequest = drawersConfig.onDeleteRequest
-                    )
-                }
-            )
+        val swipeMessageDrawer = swipeMessageDrawer(drawersConfig) {
+            androidMessageDrawer(drawersConfig, emptyErase = null)
         }
-
-        val h1MessageDrawer = createHDrawer(28.sp)
-        val h2MessageDrawer = createHDrawer(24.sp)
-        val h3MessageDrawer = createHDrawer(20.sp)
-        val h4MessageDrawer = createHDrawer(18.sp)
-
-        val focusRequesterCheckItem = remember { FocusRequester() }
-        val checkItemDrawer = checkItemDrawer(
-            modifier = Modifier.padding(start = 18.dp, end = 12.dp),
-            onCheckedChange = drawersConfig.checkRequest,
-            focusRequester = focusRequesterCheckItem,
-            onSelected = drawersConfig.onSelected,
-            messageDrawer = {
-                AndroidMessageDrawer(
-                    modifier = Modifier.weight(1F),
-                    onTextEdit = drawersConfig.onTextEdit,
-                    focusRequester = focusRequesterCheckItem,
-                    commandHandler = drawersConfig.textCommandHandler,
-                    onDeleteRequest = drawersConfig.onDeleteRequest,
-                    emptyErase = { position ->
-                        drawersConfig.changeStoryType(position, StoryTypes.MESSAGE.type, null)
-                    },
-                )
-            }
-        )
-
-        val focusRequesterUnOrderedList = remember { FocusRequester() }
-        val unOrderedListItemDrawer =
-            unOrderedListItemDrawer(
-                modifier = Modifier.padding(start = 18.dp, end = 12.dp),
-                onSelected = drawersConfig.onSelected,
-                focusRequester = focusRequesterUnOrderedList,
-                messageDrawer = {
-                    AndroidMessageDrawer(
-                        modifier = Modifier.weight(1F),
-                        onTextEdit = drawersConfig.onTextEdit,
-                        focusRequester = focusRequesterUnOrderedList,
-                        commandHandler = drawersConfig.textCommandHandler,
-                        onDeleteRequest = drawersConfig.onDeleteRequest,
-                        emptyErase = { position ->
-                            drawersConfig.changeStoryType(position, StoryTypes.MESSAGE.type, null)
-                        },
-                    )
-                }
-            )
-
-        val headerDrawer = HeaderDrawer(
-            drawer = {
-                TitleDrawer(
-                    containerModifier = Modifier.align(Alignment.BottomStart),
-                    onTextEdit = drawersConfig.onTitleEdit,
-                    onLineBreak = drawersConfig.onLineBreak,
-                )
-            },
-            headerClick = drawersConfig.onHeaderClick
-        )
+        val hxDrawers = defaultHxDrawers(drawersConfig) { fontSize ->
+            androidMessageDrawer(drawersConfig, fontSize)
+        }
+        val checkItemDrawer = checkItemDrawer(drawersConfig) { androidMessageDrawer(drawersConfig) }
+        val unOrderedListItemDrawer = unOrderedListItemDrawer(drawersConfig) { androidMessageDrawer(drawersConfig) }
+        val headerDrawer = headerDrawer(drawersConfig)
 
         return buildMap {
             put(StoryTypes.MESSAGE_BOX.type.number, messageBoxDrawer)
@@ -188,10 +105,28 @@ object DefaultDrawersAndroid {
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
             put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
             put(StoryTypes.TITLE.type.number, headerDrawer)
-            put(StoryTypes.H1.type.number, h1MessageDrawer)
-            put(StoryTypes.H2.type.number, h2MessageDrawer)
-            put(StoryTypes.H3.type.number, h3MessageDrawer)
-            put(StoryTypes.H4.type.number, h4MessageDrawer)
+            putAll(hxDrawers)
         }
+    }
+
+
+    @Composable
+    private fun RowScope.androidMessageDrawer(
+        drawersConfig: DrawersConfig,
+        fontSize: TextUnit = 16.sp,
+        emptyErase: ((Int) -> Unit)? = { position ->
+            drawersConfig.changeStoryType(position, StoryTypes.MESSAGE.type, null)
+        },
+    ): AndroidMessageDrawer {
+        val focusRequesterH = remember { FocusRequester() }
+        return AndroidMessageDrawer(
+            modifier = Modifier.weight(1F),
+            onTextEdit = drawersConfig.onTextEdit,
+            textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
+            focusRequester = focusRequesterH,
+            commandHandler = drawersConfig.textCommandHandler,
+            emptyErase = emptyErase,
+            onDeleteRequest = drawersConfig.onDeleteRequest
+        )
     }
 }
