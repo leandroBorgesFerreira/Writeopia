@@ -36,8 +36,8 @@ import java.awt.event.KeyEvent
  */
 class DesktopMessageDrawer(
     private val modifier: Modifier = Modifier,
-    private val textStyle: @Composable () -> TextStyle = { defaultTextStyle() },
-    private val focusRequester: FocusRequester,
+    private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
+    private val focusRequester: FocusRequester? = null,
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
     private val emptyErase: ((Int) -> Unit)? = null,
     private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
@@ -56,7 +56,7 @@ class DesktopMessageDrawer(
 
                 LaunchedEffect(drawInfo.focusId) {
                     if (drawInfo.focusId == step.id) {
-                        focusRequester.requestFocus()
+                        focusRequester?.requestFocus()
                     }
                 }
 
@@ -80,7 +80,13 @@ class DesktopMessageDrawer(
                                 false
                             }
                         }
-                        .focusRequester(focusRequester)
+                        .let { modifierLet ->
+                            if (focusRequester != null) {
+                                modifierLet.focusRequester(focusRequester)
+                            } else {
+                                modifierLet
+                            }
+                        }
                         .onFocusChanged(onFocusChanged),
                     value = inputText,
                     onValueChange = { value ->
@@ -99,7 +105,7 @@ class DesktopMessageDrawer(
                     keyboardOptions = KeyboardOptions(
                         capitalization = KeyboardCapitalization.Sentences
                     ),
-                    textStyle = textStyle(),
+                    textStyle = textStyle(step),
                     cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
                 )
             } else {

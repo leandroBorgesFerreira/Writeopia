@@ -111,7 +111,7 @@ object DefaultDrawersDesktop {
                     DesktopMessageDrawer(
                         modifier = Modifier.weight(1F),
                         textStyle = {
-                            defaultTextStyle().copy(fontSize = fontSize)
+                            defaultTextStyle(it).copy(fontSize = fontSize)
                         },
                         focusRequester = focusRequesterH
                     )
@@ -124,19 +124,25 @@ object DefaultDrawersDesktop {
         val h3MessageDrawer = createHDrawer(20.sp)
         val h4MessageDrawer = createHDrawer(18.sp)
 
+        val focusRequesterCheckItem = remember { FocusRequester() }
         val checkItemDrawer = CheckItemDrawer(
             modifier = Modifier.padding(start = 18.dp, end = 12.dp),
             onCheckedChange = checkRequest,
-            onTextEdit = onTextEdit,
-            emptyErase = { position ->
-                changeStoryType(position, StoryTypes.MESSAGE.type, null)
-            },
-            commandHandler = textCommandHandler,
             onSelected = onSelected,
+            focusRequester = focusRequesterCheckItem,
+            messageDrawer = {
+                DesktopMessageDrawer(
+                    focusRequester = focusRequesterCheckItem,
+                    commandHandler = textCommandHandler,
+                    onDeleteRequest = onDeleteRequest,
+                    emptyErase = { position ->
+                        changeStoryType(position, StoryTypes.MESSAGE.type, null)
+                    },
+                )
+            },
         )
 
         val focusRequesterUnOrderedList = remember { FocusRequester() }
-
         val unOrderedListItemDrawer =
             UnOrderedListItemDrawer(
                 modifier = Modifier.padding(start = 18.dp, end = 12.dp),

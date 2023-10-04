@@ -35,8 +35,8 @@ import io.writeopia.sdk.utils.ui.defaultTextStyle
 class AndroidMessageDrawer(
     private val modifier: Modifier = Modifier,
     // Todo: Use a local composition or custom theme instead of a second modifier.
-    private val textStyle: @Composable () -> TextStyle = { defaultTextStyle() },
-    private val focusRequester: FocusRequester,
+    private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
+    private val focusRequester: FocusRequester? = null,
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
     private val emptyErase: ((Int) -> Unit)? = null,
     private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
@@ -55,14 +55,20 @@ class AndroidMessageDrawer(
 
                 LaunchedEffect(drawInfo.focusId) {
                     if (drawInfo.focusId == step.id) {
-                        focusRequester.requestFocus()
+                        focusRequester?.requestFocus()
                     }
                 }
 
                 BasicTextField(
                     modifier = Modifier.fillMaxWidth()
                         .padding(start = 6.dp)
-                        .focusRequester(focusRequester)
+                        .let { modifierLet ->
+                            if (focusRequester != null) {
+                                modifierLet.focusRequester(focusRequester)
+                            } else {
+                                modifierLet
+                            }
+                        }
                         .callOnEmptyErase(inputText.selection) {
                             emptyErase?.invoke(drawInfo.position) ?: onDeleteRequest(
                                 Action.DeleteStory(
@@ -89,7 +95,7 @@ class AndroidMessageDrawer(
                     keyboardOptions = KeyboardOptions(
                         capitalization = KeyboardCapitalization.Sentences
                     ),
-                    textStyle = textStyle(),
+                    textStyle = textStyle(step),
                     cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
                 )
             } else {
