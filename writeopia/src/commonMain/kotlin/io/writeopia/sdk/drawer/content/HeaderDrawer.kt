@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.StoryStepDrawer
+import io.writeopia.sdk.drawer.factory.DrawersConfig
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 
@@ -45,3 +47,15 @@ class HeaderDrawer(
         }
     }
 }
+
+fun headerDrawer(drawersConfig: DrawersConfig): StoryStepDrawer =
+    HeaderDrawer(
+        drawer = {
+            TitleDrawer(
+                containerModifier = Modifier.align(Alignment.BottomStart),
+                onTextEdit = drawersConfig.onTitleEdit,
+                onLineBreak = drawersConfig.onLineBreak,
+            )
+        },
+        headerClick = drawersConfig.onHeaderClick
+    )

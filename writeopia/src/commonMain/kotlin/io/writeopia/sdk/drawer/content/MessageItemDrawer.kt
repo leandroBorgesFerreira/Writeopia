@@ -22,7 +22,7 @@ import io.writeopia.sdk.uicomponents.SwipeBox
  */
 class MessageItemDrawer(
     private val modifier: Modifier = Modifier,
-    private val customBackgroundColor: Color? = null,
+    private val customBackgroundColor: Color = Color.Transparent,
     private val clickable: Boolean = true,
     private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     private val focusRequester: FocusRequester? = null,
@@ -44,7 +44,7 @@ class MessageItemDrawer(
                         }
                     }
                 },
-            defaultColor = customBackgroundColor ?: MaterialTheme.colorScheme.background,
+            defaultColor = customBackgroundColor,
             activeColor = MaterialTheme.colorScheme.primary,
             isOnEditState = drawInfo.selectMode,
             swipeListener = { isSelected ->
