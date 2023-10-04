@@ -61,8 +61,8 @@ class DesktopMessageDrawer(
                 }
 
                 BasicTextField(
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(start = 6.dp)
+                    modifier = Modifier
+                        .padding(start = 16.dp)
                         .onKeyEvent { keyEvent ->
                             if (
                                 keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE &&

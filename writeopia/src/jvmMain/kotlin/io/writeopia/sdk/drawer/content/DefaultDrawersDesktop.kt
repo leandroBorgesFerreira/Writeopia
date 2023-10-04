@@ -91,6 +91,7 @@ object DefaultDrawersDesktop {
             modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
             onSelected = onSelected,
             focusRequester = focusRequesterSwipeMessage,
+            customBackgroundColor = Color.Transparent,
             simpleMessageDrawer = {
                 DesktopMessageDrawer(
                     modifier = Modifier.weight(1F),
@@ -107,13 +108,15 @@ object DefaultDrawersDesktop {
                 modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
                 onSelected = onSelected,
                 focusRequester = focusRequesterH,
+                customBackgroundColor = Color.Transparent,
                 simpleMessageDrawer = {
                     DesktopMessageDrawer(
                         modifier = Modifier.weight(1F),
                         textStyle = {
                             defaultTextStyle(it).copy(fontSize = fontSize)
                         },
-                        focusRequester = focusRequesterH
+                        focusRequester = focusRequesterH,
+                        commandHandler = textCommandHandler,
                     )
                 }
             )
@@ -129,6 +132,7 @@ object DefaultDrawersDesktop {
             modifier = Modifier.padding(start = 18.dp, end = 12.dp),
             onCheckedChange = checkRequest,
             onSelected = onSelected,
+            customBackgroundColor = Color.Transparent,
             focusRequester = focusRequesterCheckItem,
             messageDrawer = {
                 DesktopMessageDrawer(
@@ -148,6 +152,7 @@ object DefaultDrawersDesktop {
                 modifier = Modifier.padding(start = 18.dp, end = 12.dp),
                 onSelected = onSelected,
                 focusRequester = focusRequesterUnOrderedList,
+                customBackgroundColor = Color.Transparent,
                 messageDrawer = {
                     DesktopMessageDrawer(
                         focusRequester = focusRequesterUnOrderedList,
