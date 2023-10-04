@@ -49,7 +49,8 @@ object DefaultDrawersAndroid {
             onHeaderClick = onHeaderClick,
             onSelected = manager::onSelected,
             groupsBackgroundColor = groupsBackgroundColor,
-            defaultBorder = defaultBorder
+            defaultBorder = defaultBorder,
+            textCommandHandler = TextCommandHandler.defaultCommands(manager)
         )
 
     @Composable
@@ -68,182 +69,117 @@ object DefaultDrawersAndroid {
         onHeaderClick: () -> Unit = {},
         defaultBorder: Shape = MaterialTheme.shapes.medium,
         groupsBackgroundColor: Color = Color.Transparent,
-        textCommandHandler: TextCommandHandler = TextCommandHandler(
-            mapOf(
-                CommandFactory.lineBreak() to { storyStep, position ->
-                    onLineBreak(Action.LineBreak(storyStep, position))
-                },
-                CommandFactory.checkItem() to { _, position ->
-                    changeStoryType(
-                        position,
-                        StoryTypes.CHECK_ITEM.type,
-                        CommandInfo(
-                            CommandFactory.checkItem(),
-                            CommandTrigger.WRITTEN
-                        )
-                    )
-                }, CommandFactory.unOrderedList() to { _, position ->
-                    changeStoryType(
-                        position,
-                        StoryTypes.UNORDERED_LIST_ITEM.type,
-                        CommandInfo(
-                            CommandFactory.unOrderedList(),
-                            CommandTrigger.WRITTEN
-                        )
-                    )
-                },
-                CommandFactory.h1() to { _, position ->
-                    changeStoryType(
-                        position,
-                        StoryTypes.H1.type,
-                        CommandInfo(
-                            CommandFactory.h1(),
-                            CommandTrigger.WRITTEN
-                        )
-                    )
-                },
-                CommandFactory.h2() to { _, position ->
-                    changeStoryType(
-                        position,
-                        StoryTypes.H2.type,
-                        CommandInfo(
-                            CommandFactory.h2(),
-                            CommandTrigger.WRITTEN
-                        )
-                    )
-                },
-                CommandFactory.h3() to { _, position ->
-                    changeStoryType(
-                        position,
-                        StoryTypes.H3.type,
-                        CommandInfo(
-                            CommandFactory.h3(),
-                            CommandTrigger.WRITTEN
-                        )
-                    )
-                },
-                CommandFactory.h4() to { _, position ->
-                    changeStoryType(
-                        position,
-                        StoryTypes.H4.type,
-                        CommandInfo(
-                            CommandFactory.h4(),
-                            CommandTrigger.WRITTEN
-                        )
-                    )
-                }
-            )
-        ),
+        textCommandHandler: TextCommandHandler,
         nextFocus: (Int) -> Unit = {}
-    ): Map<Int, StoryStepDrawer> =
-        buildMap {
-            val commandsComposite: (StoryStepDrawer) -> StoryStepDrawer = { stepDrawer ->
-                CommandsDecoratorDrawer(
-                    stepDrawer,
-                    onDelete = onDeleteRequest,
+    ): Map<Int, StoryStepDrawer> {
+        val commandsComposite: (StoryStepDrawer) -> StoryStepDrawer = { stepDrawer ->
+            CommandsDecoratorDrawer(
+                stepDrawer,
+                onDelete = onDeleteRequest,
+            )
+        }
+
+        val imageDrawer = ImageDrawer(
+            containerModifier = Modifier::defaultImageShape,
+            mergeRequest = mergeRequest
+        )
+
+        val imageDrawerInGroup = ImageDrawer(
+            containerModifier = Modifier::defaultImageShape,
+            mergeRequest = mergeRequest
+        )
+
+        val messageBoxDrawer = SwipeMessageDrawer(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .clip(shape = defaultBorder)
+                .background(groupsBackgroundColor),
+            onSelected = onSelected,
+            simpleMessageDrawer = { focusRequester ->
+                AndroidMessageDrawer(
+                    modifier = Modifier.weight(1F),
+                    focusRequester = focusRequester,
+                    commandHandler = textCommandHandler,
+                    onDeleteRequest = onDeleteRequest
                 )
             }
+        )
 
-            val imageDrawer = ImageDrawer(
-                containerModifier = Modifier::defaultImageShape,
-                mergeRequest = mergeRequest
-            )
+        val swipeMessageDrawer = SwipeMessageDrawer(
+            modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
+            onSelected = onSelected,
+            simpleMessageDrawer = { focusRequester ->
+                AndroidMessageDrawer(
+                    modifier = Modifier.weight(1F),
+                    focusRequester = focusRequester,
+                    commandHandler = textCommandHandler,
+                    onDeleteRequest = onDeleteRequest
+                )
+            }
+        )
 
-            val imageDrawerInGroup = ImageDrawer(
-                containerModifier = Modifier::defaultImageShape,
-                mergeRequest = mergeRequest
-            )
-
-            val messageBoxDrawer = SwipeMessageDrawer(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .clip(shape = defaultBorder)
-                    .background(groupsBackgroundColor),
-                onSelected = onSelected,
-                simpleMessageDrawer = { focusRequester ->
-                    AndroidMessageDrawer(
-                        modifier = Modifier.weight(1F),
-                        focusRequester = focusRequester,
-                        commandHandler = textCommandHandler,
-                        onDeleteRequest = onDeleteRequest
-                    )
-                }
-            )
-
-            val swipeMessageDrawer = SwipeMessageDrawer(
+        val createHDrawer = { fontSize: TextUnit ->
+            SwipeMessageDrawer(
                 modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
                 onSelected = onSelected,
                 simpleMessageDrawer = { focusRequester ->
                     AndroidMessageDrawer(
                         modifier = Modifier.weight(1F),
+                        textStyle = {
+                            defaultTextStyle().copy(fontSize = fontSize)
+                        },
                         focusRequester = focusRequester,
-                        commandHandler = textCommandHandler,
                         onDeleteRequest = onDeleteRequest
                     )
                 }
             )
+        }
 
-            val createHDrawer = { fontSize: TextUnit ->
-                SwipeMessageDrawer(
-                    modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
-                    onSelected = onSelected,
-                    simpleMessageDrawer = { focusRequester ->
-                        AndroidMessageDrawer(
-                            modifier = Modifier.weight(1F),
-                            textStyle = {
-                                defaultTextStyle().copy(fontSize = fontSize)
-                            },
-                            focusRequester = focusRequester,
-                            onDeleteRequest = onDeleteRequest
-                        )
-                    }
-                )
-            }
+        val h1MessageDrawer = createHDrawer(28.sp)
+        val h2MessageDrawer = createHDrawer(24.sp)
+        val h3MessageDrawer = createHDrawer(20.sp)
+        val h4MessageDrawer = createHDrawer(18.sp)
 
-            val h1MessageDrawer = createHDrawer(28.sp)
-            val h2MessageDrawer = createHDrawer(24.sp)
-            val h3MessageDrawer = createHDrawer(20.sp)
-            val h4MessageDrawer = createHDrawer(18.sp)
+        val checkItemDrawer = CheckItemDrawer(
+            modifier = Modifier.padding(start = 18.dp, end = 12.dp),
+            onCheckedChange = checkRequest,
+            onTextEdit = onTextEdit,
+            emptyErase = { position ->
+                changeStoryType(position, StoryTypes.MESSAGE.type, null)
+            },
+            commandHandler = textCommandHandler,
+            onSelected = onSelected,
+        )
 
-            val checkItemDrawer = CheckItemDrawer(
+        val unOrderedListItemDrawer =
+            UnOrderedListItemDrawer(
                 modifier = Modifier.padding(start = 18.dp, end = 12.dp),
-                onCheckedChange = checkRequest,
-                onTextEdit = onTextEdit,
-                emptyErase = { position ->
-                    changeStoryType(position, StoryTypes.MESSAGE.type, null)
-                },
-                commandHandler = textCommandHandler,
                 onSelected = onSelected,
-            )
-
-            val unOrderedListItemDrawer =
-                UnOrderedListItemDrawer(
-                    modifier = Modifier.padding(start = 18.dp, end = 12.dp),
-                    onSelected = onSelected,
-                    messageDrawer = { focusRequester ->
-                        AndroidMessageDrawer(
-                            modifier = Modifier.weight(1F),
-                            focusRequester = focusRequester,
-                            commandHandler = textCommandHandler,
-                            onDeleteRequest = onDeleteRequest,
-                            emptyErase = { position ->
-                                changeStoryType(position, StoryTypes.MESSAGE.type, null)
-                            },
-                        )
-                    }
-                )
-
-            val headerDrawer = HeaderDrawer(
-                drawer = {
-                    TitleDrawer(
-                        containerModifier = Modifier.align(Alignment.BottomStart),
-                        onTextEdit = onTitleEdit,
-                        onLineBreak = onLineBreak,
+                messageDrawer = { focusRequester ->
+                    AndroidMessageDrawer(
+                        modifier = Modifier.weight(1F),
+                        focusRequester = focusRequester,
+                        commandHandler = textCommandHandler,
+                        onDeleteRequest = onDeleteRequest,
+                        emptyErase = { position ->
+                            changeStoryType(position, StoryTypes.MESSAGE.type, null)
+                        },
                     )
-                },
-                headerClick = onHeaderClick
+                }
             )
 
+        val headerDrawer = HeaderDrawer(
+            drawer = {
+                TitleDrawer(
+                    containerModifier = Modifier.align(Alignment.BottomStart),
+                    onTextEdit = onTitleEdit,
+                    onLineBreak = onLineBreak,
+                )
+            },
+            headerClick = onHeaderClick
+        )
+
+        return buildMap {
             put(StoryTypes.MESSAGE_BOX.type.number, messageBoxDrawer)
             put(StoryTypes.MESSAGE.type.number, swipeMessageDrawer)
             put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
@@ -273,4 +209,5 @@ object DefaultDrawersAndroid {
             put(StoryTypes.H3.type.number, h3MessageDrawer)
             put(StoryTypes.H4.type.number, h4MessageDrawer)
         }
+    }
 }

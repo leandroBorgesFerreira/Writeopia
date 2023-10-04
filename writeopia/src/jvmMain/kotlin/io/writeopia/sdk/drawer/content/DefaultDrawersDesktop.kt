@@ -1,26 +1,21 @@
 package io.writeopia.sdk.drawer.content
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.writeopia.sdk.drawer.SimpleMessageDrawer
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.action.Action
-import io.writeopia.sdk.models.command.CommandFactory
 import io.writeopia.sdk.models.command.CommandInfo
-import io.writeopia.sdk.models.command.CommandTrigger
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.text.edition.TextCommandHandler
@@ -49,7 +44,8 @@ object DefaultDrawersDesktop {
             onHeaderClick = onHeaderClick,
             onSelected = manager::onSelected,
             groupsBackgroundColor = groupsBackgroundColor,
-            defaultBorder = defaultBorder
+            defaultBorder = defaultBorder,
+            textCommandHandler = TextCommandHandler.defaultCommands(manager)
         )
 
     @Composable
@@ -66,72 +62,7 @@ object DefaultDrawersDesktop {
         onHeaderClick: () -> Unit = {},
         defaultBorder: Shape = MaterialTheme.shapes.medium,
         groupsBackgroundColor: Color = Color.Transparent,
-        textCommandHandler: TextCommandHandler = TextCommandHandler(
-            mapOf(
-                CommandFactory.lineBreak() to { storyStep, position ->
-                    onLineBreak(Action.LineBreak(storyStep, position))
-                },
-                CommandFactory.checkItem() to { _, position ->
-                    changeStoryType(
-                        position,
-                        StoryTypes.CHECK_ITEM.type,
-                        CommandInfo(
-                            CommandFactory.checkItem(),
-                            CommandTrigger.WRITTEN
-                        )
-                    )
-                }, CommandFactory.unOrderedList() to { _, position ->
-                    changeStoryType(
-                        position,
-                        StoryTypes.UNORDERED_LIST_ITEM.type,
-                        CommandInfo(
-                            CommandFactory.unOrderedList(),
-                            CommandTrigger.WRITTEN
-                        )
-                    )
-                },
-                CommandFactory.h1() to { _, position ->
-                    changeStoryType(
-                        position,
-                        StoryTypes.H1.type,
-                        CommandInfo(
-                            CommandFactory.h1(),
-                            CommandTrigger.WRITTEN
-                        )
-                    )
-                },
-                CommandFactory.h2() to { _, position ->
-                    changeStoryType(
-                        position,
-                        StoryTypes.H2.type,
-                        CommandInfo(
-                            CommandFactory.h2(),
-                            CommandTrigger.WRITTEN
-                        )
-                    )
-                },
-                CommandFactory.h3() to { _, position ->
-                    changeStoryType(
-                        position,
-                        StoryTypes.H3.type,
-                        CommandInfo(
-                            CommandFactory.h3(),
-                            CommandTrigger.WRITTEN
-                        )
-                    )
-                },
-                CommandFactory.h4() to { _, position ->
-                    changeStoryType(
-                        position,
-                        StoryTypes.H4.type,
-                        CommandInfo(
-                            CommandFactory.h4(),
-                            CommandTrigger.WRITTEN
-                        )
-                    )
-                }
-            )
-        ),
+        textCommandHandler: TextCommandHandler,
         nextFocus: (Int) -> Unit = {}
     ): Map<Int, StoryStepDrawer> =
         buildMap {
