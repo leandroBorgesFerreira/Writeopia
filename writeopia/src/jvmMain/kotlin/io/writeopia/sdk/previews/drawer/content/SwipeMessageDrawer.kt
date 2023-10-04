@@ -12,10 +12,13 @@ import io.writeopia.sdk.models.story.StoryStep
 @Preview
 @Composable
 private fun MessageDrawerPreview() {
+    val focusRequester = FocusRequester()
+
     SwipeMessageDrawer(
-        simpleMessageDrawer = { focusRequester ->
+        simpleMessageDrawer = {
             DesktopMessageDrawer(focusRequester = focusRequester)
-        }
+        },
+        focusRequester = focusRequester
     ).Step(
         step = StoryStep(text = "Some text", type = StoryTypes.MESSAGE.type),
         drawInfo = DrawInfo()

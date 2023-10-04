@@ -19,7 +19,6 @@ import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.text.edition.TextCommandHandler
 import io.writeopia.sdk.uicomponents.SwipeBox
 
 /**
@@ -33,12 +32,12 @@ class UnOrderedListItemDrawer(
     private val clickable: Boolean = true,
     private val textStyle: @Composable () -> TextStyle = { LocalTextStyle.current },
     private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
-    private val messageDrawer: @Composable RowScope.(FocusRequester) -> SimpleMessageDrawer
+    private val focusRequester: FocusRequester? = null,
+    private val messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
 ) : StoryStepDrawer {
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
-        val focusRequester = remember { FocusRequester() }
         val dropInfo = DropInfo(step, drawInfo.position)
         var showDragIcon by remember { mutableStateOf(true) }
 
@@ -47,7 +46,7 @@ class UnOrderedListItemDrawer(
                 .apply {
                     if (clickable) {
                         clickable {
-                            focusRequester.requestFocus()
+                            focusRequester?.requestFocus()
                         }
                     }
                 },
@@ -64,14 +63,16 @@ class UnOrderedListItemDrawer(
                     .apply {
                         if (clickable) {
                             clickable {
-                                focusRequester.requestFocus()
+                                focusRequester?.requestFocus()
                             }
                         }
                     },
                 dataToDrop = dropInfo,
                 showIcon = showDragIcon,
                 position = drawInfo.position,
-                emptySpaceClick = focusRequester::requestFocus
+                emptySpaceClick =  {
+                    focusRequester?.requestFocus()
+                }
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 8.dp),
@@ -79,7 +80,7 @@ class UnOrderedListItemDrawer(
                     style = textStyle()
                 )
 
-                messageDrawer(focusRequester).apply {
+                messageDrawer().apply {
                     onFocusChanged = { focusState ->
                         showDragIcon = focusState.hasFocus
                     }

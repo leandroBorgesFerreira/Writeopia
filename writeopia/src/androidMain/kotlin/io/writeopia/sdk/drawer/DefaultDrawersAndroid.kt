@@ -4,9 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.TextUnit
@@ -16,9 +18,7 @@ import io.writeopia.sdk.drawer.commands.CommandsDecoratorDrawer
 import io.writeopia.sdk.drawer.content.*
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.action.Action
-import io.writeopia.sdk.models.command.CommandFactory
 import io.writeopia.sdk.models.command.CommandInfo
-import io.writeopia.sdk.models.command.CommandTrigger
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.text.edition.TextCommandHandler
@@ -89,46 +89,52 @@ object DefaultDrawersAndroid {
             mergeRequest = mergeRequest
         )
 
+        val focusRequesterMessageBox = remember { FocusRequester() }
         val messageBoxDrawer = SwipeMessageDrawer(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .clip(shape = defaultBorder)
                 .background(groupsBackgroundColor),
+            focusRequester = focusRequesterMessageBox,
             onSelected = onSelected,
-            simpleMessageDrawer = { focusRequester ->
+            simpleMessageDrawer = {
                 AndroidMessageDrawer(
                     modifier = Modifier.weight(1F),
-                    focusRequester = focusRequester,
+                    focusRequester = focusRequesterMessageBox,
                     commandHandler = textCommandHandler,
                     onDeleteRequest = onDeleteRequest
                 )
             }
         )
 
+        val focusRequesterSwipeMessage = remember { FocusRequester() }
         val swipeMessageDrawer = SwipeMessageDrawer(
             modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
             onSelected = onSelected,
-            simpleMessageDrawer = { focusRequester ->
+            focusRequester = focusRequesterSwipeMessage,
+            simpleMessageDrawer = {
                 AndroidMessageDrawer(
                     modifier = Modifier.weight(1F),
-                    focusRequester = focusRequester,
+                    focusRequester = focusRequesterSwipeMessage,
                     commandHandler = textCommandHandler,
                     onDeleteRequest = onDeleteRequest
                 )
             }
         )
 
-        val createHDrawer = { fontSize: TextUnit ->
+        val createHDrawer = @Composable { fontSize: TextUnit ->
+            val focusRequesterH = remember { FocusRequester() }
             SwipeMessageDrawer(
                 modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
                 onSelected = onSelected,
-                simpleMessageDrawer = { focusRequester ->
+                focusRequester = focusRequesterH,
+                simpleMessageDrawer = {
                     AndroidMessageDrawer(
                         modifier = Modifier.weight(1F),
                         textStyle = {
                             defaultTextStyle().copy(fontSize = fontSize)
                         },
-                        focusRequester = focusRequester,
+                        focusRequester = focusRequesterH,
                         onDeleteRequest = onDeleteRequest
                     )
                 }
@@ -151,14 +157,16 @@ object DefaultDrawersAndroid {
             onSelected = onSelected,
         )
 
+        val focusRequesterUnOrderedList = remember { FocusRequester() }
         val unOrderedListItemDrawer =
             UnOrderedListItemDrawer(
                 modifier = Modifier.padding(start = 18.dp, end = 12.dp),
                 onSelected = onSelected,
-                messageDrawer = { focusRequester ->
+                focusRequester = focusRequesterUnOrderedList,
+                messageDrawer = {
                     AndroidMessageDrawer(
                         modifier = Modifier.weight(1F),
-                        focusRequester = focusRequester,
+                        focusRequester = focusRequesterUnOrderedList,
                         commandHandler = textCommandHandler,
                         onDeleteRequest = onDeleteRequest,
                         emptyErase = { position ->

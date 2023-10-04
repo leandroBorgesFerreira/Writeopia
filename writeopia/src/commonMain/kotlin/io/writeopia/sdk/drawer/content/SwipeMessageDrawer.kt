@@ -23,15 +23,15 @@ import io.writeopia.sdk.uicomponents.SwipeBox
  */
 class SwipeMessageDrawer(
     private val modifier: Modifier = Modifier,
-    private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     private val customBackgroundColor: Color? = null,
     private val clickable: Boolean = true,
-    private val simpleMessageDrawer: @Composable RowScope.(FocusRequester) -> SimpleMessageDrawer
+    private val focusRequester: FocusRequester,
+    private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
+    private val simpleMessageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
 ) : StoryStepDrawer {
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
-        val focusRequester = remember { FocusRequester() }
         val dropInfo = DropInfo(step, drawInfo.position)
         var showDragIcon by remember { mutableStateOf(false) }
 
@@ -59,7 +59,7 @@ class SwipeMessageDrawer(
                 position = drawInfo.position,
                 emptySpaceClick = focusRequester::requestFocus
             ) {
-                simpleMessageDrawer(focusRequester).apply {
+                simpleMessageDrawer().apply {
                     onFocusChanged = { focusState ->
                         showDragIcon = focusState.hasFocus
                     }

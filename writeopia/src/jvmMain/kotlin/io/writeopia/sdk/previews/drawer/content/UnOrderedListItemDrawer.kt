@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.content.DesktopMessageDrawer
@@ -22,9 +23,12 @@ private fun UnOrderedListItemPreview() {
         .padding(vertical = 4.dp, horizontal = 6.dp)
         .fillMaxWidth()
 
+    val focusRequester = FocusRequester()
+
     UnOrderedListItemDrawer(
         modifier,
-        messageDrawer = { focusRequester ->
+        focusRequester = focusRequester,
+        messageDrawer = {
             DesktopMessageDrawer(focusRequester = focusRequester)
         }
     ).Step(
