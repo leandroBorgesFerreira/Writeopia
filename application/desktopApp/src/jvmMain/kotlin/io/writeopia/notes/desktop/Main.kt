@@ -1,45 +1,50 @@
 package io.writeopia.notes.desktop
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import io.writeopia.notes_menu.SimpleCard
+import io.writeopia.sdk.WriteopiaEditor
+import io.writeopia.sdk.drawer.StoryStepDrawer
+import io.writeopia.sdk.drawer.content.DefaultDrawersDesktop
+import io.writeopia.sdk.manager.WriteopiaManager
+import io.writeopia.sdk.model.story.DrawState
+import kotlinx.coroutines.flow.Flow
 
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         title = "Compose for Desktop",
-        state = rememberWindowState(width = 300.dp, height = 300.dp)
+        state = rememberWindowState(width = 1100.dp, height = 800.dp)
     ) {
-        val count = remember { mutableStateOf(0) }
         MaterialTheme {
-            Column(Modifier.fillMaxSize(), Arrangement.spacedBy(5.dp)) {
-                SimpleCard()
-
-                Button(modifier = Modifier.align(Alignment.CenterHorizontally),
-                    onClick = {
-                        count.value++
-                    }) {
-                    Text(if (count.value == 0) "Hello World" else "Clicked ${count.value}!")
-                }
-                Button(modifier = Modifier.align(Alignment.CenterHorizontally),
-                    onClick = {
-                        count.value = 0
-                    }) {
-                    Text("Reset")
-                }
-            }
+            CreateTextEditor()
         }
     }
+}
+
+
+@Composable
+fun CreateTextEditor() {
+    val writeopiaManager = WriteopiaManager().apply {
+        newStory()
+    }
+
+    TextEditor(drawers = DefaultDrawersDesktop.create(writeopiaManager), drawState = writeopiaManager.toDraw)
+}
+
+@Composable
+fun TextEditor(
+    drawState: Flow<DrawState>,
+    drawers: Map<Int, StoryStepDrawer>
+) {
+    val toDraw by drawState.collectAsState(DrawState())
+
+    WriteopiaEditor(modifier = Modifier.fillMaxSize(), drawers = drawers, storyState = toDraw)
 }

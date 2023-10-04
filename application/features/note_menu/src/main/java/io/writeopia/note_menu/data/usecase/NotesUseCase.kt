@@ -1,11 +1,7 @@
 package io.writeopia.note_menu.data.usecase
 
-import io.writeopia.note_menu.data.supermarketList
-import io.writeopia.note_menu.data.travelHistory
 import io.writeopia.sdk.manager.DocumentRepository
 import io.writeopia.sdk.models.document.Document
-import io.writeopia.utils_module.DISCONNECTED_USER_ID
-import java.time.Instant
 import java.util.UUID
 
 /**
@@ -37,30 +33,6 @@ internal class NotesUseCase(
                 documentRepository.saveDocument(document)
             }
         }
-    }
-
-    suspend fun mockData() {
-        documentRepository.saveDocument(
-            Document(
-                id = UUID.randomUUID().toString(),
-                title = "Travel Note",
-                content = travelHistory(),
-                createdAt = Instant.now(),
-                lastUpdatedAt = Instant.now(),
-                userId = DISCONNECTED_USER_ID
-            )
-        )
-
-        documentRepository.saveDocument(
-            Document(
-                id = UUID.randomUUID().toString(),
-                title = "Supermarket List",
-                content = supermarketList(),
-                createdAt = Instant.now(),
-                lastUpdatedAt = Instant.now(),
-                userId = DISCONNECTED_USER_ID
-            )
-        )
     }
 
     suspend fun deleteNotes(ids: Set<String>) {

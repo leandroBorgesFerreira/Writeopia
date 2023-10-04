@@ -55,7 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.writeopia.sdk.WriteopiaEditor
-import io.writeopia.sdk.drawer.DefaultDrawers
+import io.writeopia.sdk.drawer.DefaultDrawersAndroid
 import io.writeopia.sdk.uicomponents.EditionScreen
 import io.writeopia.editor.configuration.ui.HeaderEdition
 import io.writeopia.editor.configuration.ui.NoteGlobalActionsMenu
@@ -279,7 +279,7 @@ private fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
         storyState = storyState,
         editable = editable,
         listState = listState,
-        drawers = DefaultDrawers.create(
+        drawers = DefaultDrawersAndroid.create(
             noteEditorViewModel.writeopiaManager,
             defaultBorder = clipShape,
             onHeaderClick = noteEditorViewModel::onHeaderClick

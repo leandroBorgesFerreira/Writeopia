@@ -12,9 +12,8 @@ kotlin {
             dependencies {
                 implementation(compose.desktop.currentOs)
 
-                implementation(project(":application:notes_menu_shared"))
-
                 implementation(project(":writeopia_models"))
+                implementation(project(":writeopia"))
                 implementation(project(":plugins:writeopia_serialization"))
                 implementation(project(":plugins:writeopia_network"))
             }

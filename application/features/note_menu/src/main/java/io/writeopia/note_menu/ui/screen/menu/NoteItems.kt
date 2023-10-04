@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,6 +27,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -36,7 +36,7 @@ import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.note_menu.viewmodel.NotesArrangement
 import io.writeopia.appresourcers.R
 import io.writeopia.utils_module.ResultData
-import io.writeopia.sdk.drawer.DrawInfo
+import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.preview.CheckItemPreviewDrawer
 import io.writeopia.sdk.drawer.preview.HeaderPreviewDrawer
@@ -59,7 +59,7 @@ internal fun Notes(
                 val data = documents.data
 
                 if (data.isEmpty()) {
-                    MockDataScreen(chooseNoteViewModel)
+                    NoNotesScreen()
                 } else {
                     val arrangement by chooseNoteViewModel.notesArrangement
                         .collectAsStateWithLifecycle()
@@ -189,24 +189,15 @@ private fun DocumentItem(
     }
 }
 
+@Preview
 @Composable
-private fun MockDataScreen(
-    chooseNoteViewModel: ChooseNoteViewModel,
-) {
+private fun NoNotesScreen() {
     Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.align(Alignment.Center),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                modifier = Modifier.padding(8.dp),
-                text = stringResource(R.string.you_dont_have_notes)
-            )
-
-            Button(onClick = { chooseNoteViewModel.addMockData() }) {
-                Text(text = stringResource(R.string.add_sample_notes))
-            }
-        }
+        Text(
+            modifier = Modifier.padding(8.dp).align(Alignment.Center),
+            text = stringResource(R.string.you_dont_have_notes),
+            style = MaterialTheme.typography.titleLarge
+        )
     }
 }
 
