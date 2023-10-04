@@ -33,7 +33,7 @@ class ListItemDrawer(
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         val dropInfo = DropInfo(step, drawInfo.position)
-        var showDragIcon by remember { mutableStateOf(true) }
+        var showDragIcon by remember { mutableStateOf(false) }
 
         SwipeBox(
             modifier = modifier

@@ -89,7 +89,7 @@ object DefaultDrawersDesktop {
 
         val focusRequesterSwipeMessage = remember { FocusRequester() }
         val swipeMessageDrawer = swipeMessageDrawer(
-            modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
+            modifier = Modifier.padding(horizontal = 12.dp),
             onSelected = onSelected,
             focusRequester = focusRequesterSwipeMessage,
             customBackgroundColor = Color.Transparent,
@@ -107,7 +107,7 @@ object DefaultDrawersDesktop {
         val createHDrawer = @Composable { fontSize: TextUnit ->
             val focusRequesterH = remember { FocusRequester() }
             swipeMessageDrawer(
-                modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp),
+                modifier = Modifier.padding(horizontal = 12.dp),
                 onSelected = onSelected,
                 focusRequester = focusRequesterH,
                 customBackgroundColor = Color.Transparent,
