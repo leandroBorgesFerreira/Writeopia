@@ -17,10 +17,10 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.uicomponents.SwipeBox
 
 /**
- * Drawer for a unordered list. This type of item it just a normal message with some decoration
- * at the start of Composable to show that this is part of a list.
+ * Drawer for a complex message with swipe action, drag and drop logic and a start content to add functionality
+ * like a checkbox or a different Composable.
  */
-class ListItemDrawer(
+class MessageItemDrawer(
     private val modifier: Modifier = Modifier,
     private val customBackgroundColor: Color? = null,
     private val clickable: Boolean = true,

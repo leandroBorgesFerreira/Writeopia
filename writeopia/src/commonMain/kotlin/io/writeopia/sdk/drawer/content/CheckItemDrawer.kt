@@ -48,5 +48,5 @@ fun checkItemDrawer(
     },
     messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
 ): StoryStepDrawer =
-    ListItemDrawer(modifier, customBackgroundColor, clickable, onSelected, focusRequester, startContent, messageDrawer)
+    MessageItemDrawer(modifier, customBackgroundColor, clickable, onSelected, focusRequester, startContent, messageDrawer)
 
