@@ -1,8 +1,9 @@
 package io.writeopia.sdk.model.document
 
 import io.writeopia.sdk.models.document.Document
-import java.time.Instant
-import java.util.UUID
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import java.util.*
 
 /**
  * Dto class to keep information about the document
@@ -10,9 +11,19 @@ import java.util.UUID
 data class DocumentInfo(
     val id: String = UUID.randomUUID().toString(),
     val title: String = "",
-    val createdAt: Instant = Instant.now(),
-    val lastUpdatedAt: Instant = Instant.now(),
-)
+    val createdAt: Instant,
+    val lastUpdatedAt: Instant,
+) {
+    companion object {
+        fun empty(): DocumentInfo {
+            val now = Clock.System.now()
+            return DocumentInfo(
+                createdAt = now,
+                lastUpdatedAt = now
+            )
+        }
+    }
+}
 
 fun Document.info(): DocumentInfo = DocumentInfo(
     id = this.id,

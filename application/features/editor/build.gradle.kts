@@ -64,6 +64,7 @@ dependencies {
     implementation(project(":application:persistence"))
 
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.datetime)
 
     implementation(libs.appCompat)
     implementation(libs.material)

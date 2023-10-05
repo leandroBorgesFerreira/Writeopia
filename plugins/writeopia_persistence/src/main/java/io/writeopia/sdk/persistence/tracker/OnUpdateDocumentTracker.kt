@@ -11,7 +11,7 @@ import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.story.StoryTypes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
-import java.time.Instant
+import kotlinx.datetime.Clock
 import java.util.UUID
 
 class OnUpdateDocumentTracker(
@@ -46,7 +46,7 @@ class OnUpdateDocumentTracker(
                             id = documentInfo.id,
                             title = titleFromContent ?: documentInfo.title,
                             createdAt = documentInfo.createdAt,
-                            lastUpdatedAt = Instant.now(),
+                            lastUpdatedAt = Clock.System.now(),
                             userId = userId
                         )
                     )
@@ -67,7 +67,7 @@ class OnUpdateDocumentTracker(
                         title = titleFromContent ?: documentInfo.title,
                         content = documentFilter.removeTypesFromDocument(storyState.stories),
                         createdAt = documentInfo.createdAt,
-                        lastUpdatedAt = Instant.now(),
+                        lastUpdatedAt = Clock.System.now(),
                         userId = userId
                     )
 
@@ -87,7 +87,7 @@ class OnUpdateDocumentTracker(
                             id = documentInfo.id,
                             title = titleFromContent ?: documentInfo.title,
                             createdAt = documentInfo.createdAt,
-                            lastUpdatedAt = Instant.now(),
+                            lastUpdatedAt = Clock.System.now(),
                             userId = userId
                         )
                     )

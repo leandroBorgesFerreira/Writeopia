@@ -9,6 +9,7 @@ espressoCore = "3.5.1"
 junit = "1.1.5"
 junitVersion = "4.13.2"
 kotlinxCoroutinesTest = "1.7.3"
+kotlinxDatetime = "0.4.1"
 kotlinxSerializationJson = "1.5.1"
 ktorClient = "2.3.3"
 ktx = "1.12.0"
@@ -41,6 +42,7 @@ desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref 
 junit = { module = "junit:junit", version.ref = "junitVersion" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesTest" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktorClient" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktorClient" }

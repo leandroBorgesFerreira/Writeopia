@@ -63,6 +63,8 @@ dependencies {
 
     implementation(libs.aws.amplifyframework.core.kotlin)
 
+    implementation(libs.kotlinx.datetime)
+
     implementation(libs.appCompat)
     implementation(libs.material)
 

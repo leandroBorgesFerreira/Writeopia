@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import java.time.Instant
+import kotlinx.datetime.Clock
 import java.util.UUID
 
 /**
@@ -67,7 +67,7 @@ class WriteopiaManager(
         StoryState(stories = emptyMap(), lastEdit = LastEdit.Nothing)
     )
 
-    private val _documentInfo: MutableStateFlow<DocumentInfo> = MutableStateFlow(DocumentInfo())
+    private val _documentInfo: MutableStateFlow<DocumentInfo> = MutableStateFlow(DocumentInfo.empty())
 
     private val _positionsOnEdit = MutableStateFlow(setOf<Int>())
     val onEditPositions = _positionsOnEdit.asStateFlow()
@@ -143,11 +143,13 @@ class WriteopiaManager(
         val stories: Map<Int, StoryStep> = mapOf(0 to firstMessage)
         val normalized = stepsNormalizer(stories.toEditState())
 
+        val now = Clock.System.now()
+
         _documentInfo.value = DocumentInfo(
             id = documentId,
             title = title,
-            createdAt = Instant.now(),
-            lastUpdatedAt = Instant.now()
+            createdAt = now,
+            lastUpdatedAt = now
         )
 
         _currentStory.value = StoryState(
