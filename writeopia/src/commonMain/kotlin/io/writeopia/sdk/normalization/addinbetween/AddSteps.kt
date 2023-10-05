@@ -1,10 +1,10 @@
 package io.writeopia.sdk.normalization.addinbetween
 
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.utils.extensions.associateWithPosition
 import java.util.Stack
-import java.util.UUID
 
 /**
  * This normalizer will guarantee that a new StoryUnit is added between all items of
@@ -38,24 +38,24 @@ class AddSteps(
                     if (!skipFirst) {
                         stack.add(addInBetween())
                     }
-                    stack.add(storyUnit.copy(localId = UUID.randomUUID().toString()))
+                    stack.add(storyUnit.copy(localId = GenerateId.generate()))
                 }
 
                 stack.isEmpty() && storyUnit.type == typeToAdd -> {
-                    stack.add(storyUnit.copy(localId = UUID.randomUUID().toString()))
+                    stack.add(storyUnit.copy(localId = GenerateId.generate()))
                 }
 
                 storyUnit.type != typeToAdd && stack.peek().type == typeToAdd -> {
-                    stack.add(storyUnit.copy(localId = UUID.randomUUID().toString()))
+                    stack.add(storyUnit.copy(localId = GenerateId.generate()))
                 }
 
                 storyUnit.type == typeToAdd && stack.peek()?.type != typeToAdd -> {
-                    stack.add(storyUnit.copy(localId = UUID.randomUUID().toString()))
+                    stack.add(storyUnit.copy(localId = GenerateId.generate()))
                 }
 
                 storyUnit.type != typeToAdd && stack.peek()?.type != typeToAdd -> {
                     stack.add(addInBetween())
-                    stack.add(storyUnit.copy(localId = UUID.randomUUID().toString()))
+                    stack.add(storyUnit.copy(localId = GenerateId.generate()))
                 }
 
                 storyUnit.type == typeToAdd && stack.peek()?.type == typeToAdd -> {}

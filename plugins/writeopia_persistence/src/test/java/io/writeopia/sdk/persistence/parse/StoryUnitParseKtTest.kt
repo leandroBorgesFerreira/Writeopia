@@ -1,15 +1,15 @@
 package io.writeopia.sdk.persistence.parse
 
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.persistence.utils.imageGroup
 import org.junit.Assert.*
 import org.junit.Test
-import java.util.UUID
 
 class StoryUnitParseKtTest {
 
     @Test
     fun `parsing a group of image`() {
-        val id = UUID.randomUUID().toString()
+        val id = GenerateId.generate()
         val entity = imageGroup().toEntity(id)
 
         assertEquals("group_image", entity.first().type)

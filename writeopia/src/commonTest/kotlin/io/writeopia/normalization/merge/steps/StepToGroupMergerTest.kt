@@ -1,11 +1,11 @@
 package io.writeopia.normalization.merge.steps
 
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.normalization.merge.steps.StepToGroupMerger
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import java.util.UUID
 
 class StepToGroupMergerTest {
 
@@ -35,8 +35,8 @@ class StepToGroupMergerTest {
     fun `when merging 2 groups all inner steps should have the same parent ID`() {
         val merger = StepToGroupMerger()
 
-        val parent1Id = UUID.randomUUID().toString()
-        val parent2Id = UUID.randomUUID().toString()
+        val parent1Id = GenerateId.generate()
+        val parent2Id = GenerateId.generate()
 
         val group1 =
             StoryStep(

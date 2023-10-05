@@ -1,6 +1,6 @@
 package io.writeopia.sdk.models.story
 
-import java.util.UUID
+import io.writeopia.sdk.models.id.GenerateId
 
 /**
  * The model defining the information that can be draw in the screen. This is the most basic
@@ -23,8 +23,8 @@ import java.util.UUID
  * @param decoration [Decoration] The decoration fo the StoryStep.
  */
 data class StoryStep(
-    val id: String = UUID.randomUUID().toString(),
-    val localId: String = UUID.randomUUID().toString(),
+    val id: String = GenerateId.generate(),
+    val localId: String = GenerateId.generate(),
     val type: StoryType,
     val parentId: String? = null,
     val url: String? = null,
@@ -39,5 +39,5 @@ data class StoryStep(
 
     val isGroup: Boolean = steps.isNotEmpty()
 
-    fun copyNewLocalId(): StoryStep = copy(localId = UUID.randomUUID().toString())
+    fun copyNewLocalId(localId: String = GenerateId.generate()): StoryStep = copy(localId = localId)
 }

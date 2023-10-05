@@ -5,7 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import io.writeopia.sdk.persistence.converter.InstantConverter
 import io.writeopia.sdk.persistence.converter.IdListConverter
 import io.writeopia.sdk.persistence.dao.DocumentDao
 import io.writeopia.sdk.persistence.dao.StoryUnitDao
@@ -22,7 +21,7 @@ private const val DATABASE_NAME = "WriteopiaDatabase"
     version = 4,
     exportSchema = false
 )
-@TypeConverters(IdListConverter::class, InstantConverter::class)
+@TypeConverters(IdListConverter::class)
 abstract class WriteopiaApplicationDatabase : RoomDatabase() {
 
     abstract fun documentDao(): DocumentDao

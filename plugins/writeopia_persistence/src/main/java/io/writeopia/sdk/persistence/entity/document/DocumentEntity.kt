@@ -3,7 +3,7 @@ package io.writeopia.sdk.persistence.entity.document
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.Instant
+import kotlinx.datetime.Clock
 
 internal const val DOCUMENT_ENTITY: String = "DOCUMENT_ENTITY_TABLE"
 
@@ -16,17 +16,14 @@ internal const val USER_ID: String = "user_id"
 data class DocumentEntity(
     @PrimaryKey val id: String,
     @ColumnInfo(TITLE) val title: String,
-    @ColumnInfo(CREATED_AT) val createdAt: Instant,
-    @ColumnInfo(LAST_UPDATED_AT) val lastUpdatedAt: Instant,
+    @ColumnInfo(CREATED_AT) val createdAt: Long,
+    @ColumnInfo(LAST_UPDATED_AT) val lastUpdatedAt: Long,
     @ColumnInfo(USER_ID) val userId: String,
 ) {
     companion object {
-        fun createById(id: String, userId: String): DocumentEntity = DocumentEntity(
-                id,
-            "",
-            Instant.now(),
-            Instant.now(),
-            userId
-        )
+        fun createById(id: String, userId: String): DocumentEntity {
+            val now = Clock.System.now().toEpochMilliseconds()
+            return DocumentEntity(id, "", now, now, userId)
+        }
     }
 }

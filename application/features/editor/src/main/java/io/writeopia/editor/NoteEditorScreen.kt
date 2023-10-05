@@ -65,6 +65,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.flow.collectLatest
 import java.util.UUID
 import io.writeopia.appresourcers.R
+import io.writeopia.sdk.models.id.GenerateId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -100,7 +101,7 @@ internal fun NoteEditorScreen(
         noteEditorViewModel.requestDocumentContent(documentId)
     } else {
         noteEditorViewModel.createNewDocument(
-            UUID.randomUUID().toString(),
+            GenerateId.generate(),
             stringResource(R.string.untitled)
         )
     }

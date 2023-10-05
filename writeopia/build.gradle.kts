@@ -28,6 +28,8 @@ kotlin {
                 implementation(compose.components.resources)
 
                 implementation(project(":writeopia_models"))
+
+                implementation(libs.kotlinx.datetime)
             }
         }
 

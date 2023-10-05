@@ -8,11 +8,11 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.model.story.LastEdit
 import io.writeopia.sdk.model.story.StoryState
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryTypes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
-import java.time.Instant
-import java.util.UUID
+import kotlinx.datetime.Clock
 
 class OnUpdateDocumentTracker(
     private val documentUpdate: DocumentUpdate,
@@ -28,7 +28,7 @@ class OnUpdateDocumentTracker(
                 is LastEdit.LineEdition -> {
                     documentUpdate.saveStoryStep(
                         storyStep = lastEdit.storyStep.copy(
-                            localId = UUID.randomUUID().toString()
+                            localId = GenerateId.generate()
                         ),
                         position = lastEdit.position,
                         documentId = documentInfo.id,
@@ -46,7 +46,7 @@ class OnUpdateDocumentTracker(
                             id = documentInfo.id,
                             title = titleFromContent ?: documentInfo.title,
                             createdAt = documentInfo.createdAt,
-                            lastUpdatedAt = Instant.now(),
+                            lastUpdatedAt = Clock.System.now(),
                             userId = userId
                         )
                     )
@@ -67,7 +67,7 @@ class OnUpdateDocumentTracker(
                         title = titleFromContent ?: documentInfo.title,
                         content = documentFilter.removeTypesFromDocument(storyState.stories),
                         createdAt = documentInfo.createdAt,
-                        lastUpdatedAt = Instant.now(),
+                        lastUpdatedAt = Clock.System.now(),
                         userId = userId
                     )
 
@@ -87,7 +87,7 @@ class OnUpdateDocumentTracker(
                             id = documentInfo.id,
                             title = titleFromContent ?: documentInfo.title,
                             createdAt = documentInfo.createdAt,
-                            lastUpdatedAt = Instant.now(),
+                            lastUpdatedAt = Clock.System.now(),
                             userId = userId
                         )
                     )

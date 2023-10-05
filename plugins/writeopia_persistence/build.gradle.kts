@@ -60,6 +60,8 @@ dependencies {
     implementation(project(":writeopia"))
     implementation(project(":writeopia_models"))
 
+    implementation(libs.kotlinx.datetime)
+
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)

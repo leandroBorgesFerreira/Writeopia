@@ -1,14 +1,14 @@
 package io.writeopia.sdk.models.document
 
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
-import java.time.Instant
-import java.util.UUID
+import kotlinx.datetime.Instant
 
 data class Document(
-    val id: String = UUID.randomUUID().toString(),
+    val id: String = GenerateId.generate(),
     val title: String = "",
     val content: Map<Int, StoryStep> = emptyMap(),
-    val createdAt: Instant = Instant.now(),
-    val lastUpdatedAt: Instant = Instant.now(),
+    val createdAt: Instant,
+    val lastUpdatedAt: Instant,
     val userId: String,
 )
