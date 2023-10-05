@@ -24,22 +24,6 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.materialIconsExtended)
-                implementation(compose.preview)
-                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-                implementation(compose.components.resources)
-
-                implementation(project(":writeopia_models"))
-//                implementation(libs.material3.desktop)
-            }
-        }
-
-        val jvmMain by getting {
-            dependencies {
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.materialIconsExtended)
-                implementation(compose.preview)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
 
@@ -54,22 +38,17 @@ kotlin {
             }
         }
 
+        val jvmMain by getting {
+            dependencies {
+                implementation(compose.preview)
+            }
+        }
+
         val androidMain by getting {
             dependencies {
-                implementation(libs.androidx.material.icons.extended)
                 // Coil
                 implementation(libs.coil.compose)
                 implementation(libs.coil.video)
-
-                implementation(libs.androidx.ktx)
-
-                implementation("androidx.compose.material3:material3")
-                implementation("androidx.compose.material3:material3-window-size-class")
-
-                implementation("androidx.compose.ui:ui-tooling-preview")
-                implementation(compose.preview)
-
-                implementation(platform("androidx.compose:compose-bom:2023.09.02"))
             }
         }
     }
