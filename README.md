@@ -12,7 +12,7 @@ This SDK allows you to create a text editor an use it instead of a simple `TextF
 
 You can check the documentation of the library in the link: [https://docs.writeopia.io](https://docs.writeopia.io).
 
-## Sample
+## Sample 
 
 The sample app of the project is a great way to get a simple. You can see an experience like this one:
 
