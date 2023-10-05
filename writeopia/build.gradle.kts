@@ -49,8 +49,6 @@ kotlin {
                 // Coil
                 implementation(libs.coil.compose)
                 implementation(libs.coil.video)
-
-                implementation(libs.androidx.ktx)
             }
         }
     }
