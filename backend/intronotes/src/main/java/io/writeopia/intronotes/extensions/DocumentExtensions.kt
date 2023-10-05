@@ -6,7 +6,8 @@ import io.writeopia.intronotes.persistence.entity.StoryStepEntity
 import io.writeopia.sdk.serialization.data.DocumentApi
 import io.writeopia.sdk.serialization.data.StoryStepApi
 import io.writeopia.sdk.serialization.extensions.toApi
-import java.time.Instant
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
 internal fun DocumentApi.toEntity(): DocumentEntity =
     DocumentEntity(
@@ -24,12 +25,14 @@ internal fun DocumentApi.toEntity(): DocumentEntity =
                 position = storyStep.position,
             )
         },
-        createdAt = this.createdAt.toEpochMilli(),
-        lastUpdatedAt = this.lastUpdatedAt.toEpochMilli()
+        createdAt = this.createdAt.toEpochMilliseconds(),
+        lastUpdatedAt = this.lastUpdatedAt.toEpochMilliseconds()
     )
 
-internal fun DocumentEntity.toAPi(): DocumentApi =
-    DocumentApi(
+internal fun DocumentEntity.toAPi(): DocumentApi {
+    val now = Clock.System.now()
+
+    return DocumentApi(
         id = this.id ?: "",
         title = this.title ?: "",
         content = content?.map { storyStepEntity ->
@@ -44,7 +47,8 @@ internal fun DocumentEntity.toAPi(): DocumentApi =
                 position = storyStepEntity.position!!,
             )
         } ?: emptyList(),
-        createdAt = this.createdAt?.let(Instant::ofEpochMilli) ?: Instant.now(),
-        lastUpdatedAt = this.lastUpdatedAt?.let(Instant::ofEpochMilli) ?: Instant.now(),
+        createdAt = this.createdAt?.let(Instant::fromEpochMilliseconds) ?: now,
+        lastUpdatedAt = this.lastUpdatedAt?.let(Instant::fromEpochMilliseconds) ?: now,
         userId = this.userId ?: ""
     )
+}
