@@ -4,12 +4,14 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.SimpleMessageDrawer
 import io.writeopia.sdk.drawer.StoryStepDrawer
+import io.writeopia.sdk.drawer.factory.DrawersConfig
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 
@@ -19,7 +21,7 @@ import io.writeopia.sdk.models.story.StoryStep
  */
 fun unOrderedListItemDrawer(
     modifier: Modifier = Modifier,
-    customBackgroundColor: Color? = null,
+    customBackgroundColor: Color = Color.Transparent,
     clickable: Boolean = true,
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     focusRequester: FocusRequester? = null,
@@ -31,4 +33,28 @@ fun unOrderedListItemDrawer(
     },
     messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
 ): StoryStepDrawer =
-    MessageItemDrawer(modifier, customBackgroundColor, clickable, onSelected, focusRequester, startContent, messageDrawer)
+    MessageItemDrawer(
+        modifier,
+        customBackgroundColor,
+        clickable,
+        onSelected,
+        focusRequester,
+        startContent,
+        messageDrawer
+    )
+
+@Composable
+fun unOrderedListItemDrawer(
+    drawersConfig: DrawersConfig,
+    messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
+): StoryStepDrawer {
+    val focusRequesterUnOrderedList = remember { FocusRequester() }
+
+    return unOrderedListItemDrawer(
+        modifier = Modifier.padding(start = 18.dp, end = 12.dp),
+        onSelected = drawersConfig.onSelected,
+        focusRequester = focusRequesterUnOrderedList,
+        customBackgroundColor = Color.Transparent,
+        messageDrawer = messageDrawer,
+    )
+}

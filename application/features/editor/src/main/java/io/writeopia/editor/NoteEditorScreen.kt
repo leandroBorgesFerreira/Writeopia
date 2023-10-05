@@ -55,7 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.writeopia.sdk.WriteopiaEditor
-import io.writeopia.sdk.drawer.DefaultDrawersAndroid
+import io.writeopia.sdk.drawer.factory.DefaultDrawersAndroid
 import io.writeopia.sdk.uicomponents.EditionScreen
 import io.writeopia.editor.configuration.ui.HeaderEdition
 import io.writeopia.editor.configuration.ui.NoteGlobalActionsMenu
