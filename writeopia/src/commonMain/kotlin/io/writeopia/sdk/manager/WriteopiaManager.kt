@@ -13,6 +13,7 @@ import io.writeopia.sdk.model.story.DrawState
 import io.writeopia.sdk.model.story.DrawStory
 import io.writeopia.sdk.model.story.LastEdit
 import io.writeopia.sdk.model.story.StoryState
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.StoryType
@@ -31,7 +32,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
-import java.util.UUID
 
 /**
  * This is the entry class of the framework. It follows the Controller pattern, redirecting all the
@@ -135,9 +135,9 @@ class WriteopiaManager(
      * @param documentId the id of the document that will be created
      * @param title the title of the document
      */
-    fun newStory(documentId: String = UUID.randomUUID().toString(), title: String = "") {
+    fun newStory(documentId: String = GenerateId.generate(), title: String = "") {
         val firstMessage = StoryStep(
-            localId = UUID.randomUUID().toString(),
+            localId = GenerateId.generate(),
             type = StoryTypes.TITLE.type
         )
         val stories: Map<Int, StoryStep> = mapOf(0 to firstMessage)
@@ -191,7 +191,7 @@ class WriteopiaManager(
             if (nextFocus != null) {
                 val (nextPosition, storyStep) = nextFocus
                 val mutable = storyMap.toMutableMap()
-                mutable[nextPosition] = storyStep.copy(localId = UUID.randomUUID().toString())
+                mutable[nextPosition] = storyStep.copy(localId = GenerateId.generate())
                 _currentStory.value =
                     _currentStory.value.copy(stories = mutable, focusId = storyStep.id)
             }

@@ -2,7 +2,7 @@ package io.writeopia.note_menu.data.usecase
 
 import io.writeopia.sdk.manager.DocumentRepository
 import io.writeopia.sdk.models.document.Document
-import java.util.UUID
+import io.writeopia.sdk.models.id.GenerateId
 
 /**
  * UseCase responsible to perform CRUD operations in the Notes (Documents) of the app taking in to
@@ -23,9 +23,9 @@ internal class NotesUseCase(
         }?.let { documents ->
             documents.map { document ->
                 document.copy(
-                    id = UUID.randomUUID().toString(),
+                    id = GenerateId.generate(),
                     content = document.content.mapValues { (_, storyStep) ->
-                        storyStep.copy(id = UUID.randomUUID().toString())
+                        storyStep.copy(id = GenerateId.generate())
                     })
             }
         }?.let { newDocuments ->

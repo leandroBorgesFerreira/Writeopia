@@ -8,11 +8,11 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.model.story.LastEdit
 import io.writeopia.sdk.model.story.StoryState
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryTypes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.datetime.Clock
-import java.util.UUID
 
 class OnUpdateDocumentTracker(
     private val documentUpdate: DocumentUpdate,
@@ -28,7 +28,7 @@ class OnUpdateDocumentTracker(
                 is LastEdit.LineEdition -> {
                     documentUpdate.saveStoryStep(
                         storyStep = lastEdit.storyStep.copy(
-                            localId = UUID.randomUUID().toString()
+                            localId = GenerateId.generate()
                         ),
                         position = lastEdit.position,
                         documentId = documentInfo.id,

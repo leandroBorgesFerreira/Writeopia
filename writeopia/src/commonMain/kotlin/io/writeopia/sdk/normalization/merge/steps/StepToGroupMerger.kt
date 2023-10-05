@@ -1,9 +1,9 @@
 package io.writeopia.sdk.normalization.merge.steps
 
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.normalization.merge.StepMerger
-import java.util.UUID
 
 /**
  * This [StepMerger] merges a 2 StoryStep in to a GroupStep or adds a StoryStep to an existing
@@ -16,7 +16,7 @@ open class StepToGroupMerger : StepMerger {
     override fun merge(step1: StoryStep, step2: StoryStep, type: StoryType): StoryStep =
         when {
             !step1.isGroup && !step2.isGroup -> {
-                val groupId = UUID.randomUUID().toString()
+                val groupId = GenerateId.generate()
 
                 StoryStep(
                     id = groupId,

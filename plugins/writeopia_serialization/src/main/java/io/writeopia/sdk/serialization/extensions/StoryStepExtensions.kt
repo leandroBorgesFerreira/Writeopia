@@ -1,6 +1,7 @@
 package io.writeopia.sdk.serialization.extensions
 
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
@@ -8,7 +9,6 @@ import io.writeopia.sdk.serialization.data.DecorationApi
 import io.writeopia.sdk.serialization.data.DocumentApi
 import io.writeopia.sdk.serialization.data.StoryStepApi
 import io.writeopia.sdk.serialization.data.StoryTypeApi
-import java.util.UUID
 
 fun StoryStep.toApi(position: Int): StoryStepApi =
     StoryStepApi(
@@ -27,7 +27,7 @@ fun StoryStep.toApi(position: Int): StoryStepApi =
 fun StoryStepApi.toModel(): StoryStep =
     StoryStep(
         id = id,
-        localId = UUID.randomUUID().toString(),
+        localId = GenerateId.generate(),
         type = type.toModel(),
         parentId = parentId,
         url = url,

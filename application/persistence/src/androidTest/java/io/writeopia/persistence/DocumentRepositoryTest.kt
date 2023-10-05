@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.persistence.dao.DocumentDao
@@ -19,7 +20,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.time.Instant
-import java.util.UUID
 
 @RunWith(AndroidJUnit4::class)
 class DocumentRepositoryTest {
@@ -50,7 +50,7 @@ class DocumentRepositoryTest {
 
     @Test
     fun saveAndLoadASimpleDocument() = runTest {
-        val id = UUID.randomUUID().toString()
+        val id = GenerateId.generate()
         val document = Document(
             id = id,
             title = "Document1",
@@ -70,7 +70,7 @@ class DocumentRepositoryTest {
 
     @Test
     fun saveSimpleDocumentInRepository() = runTest {
-        val id = UUID.randomUUID().toString()
+        val id = GenerateId.generate()
         val document = Document(
             id = id,
             title = "Document1",
@@ -88,7 +88,7 @@ class DocumentRepositoryTest {
 
     @Test
     fun savingAndLoadingDocumentWithOneImageInRepository() = runTest {
-        val id = UUID.randomUUID().toString()
+        val id = GenerateId.generate()
         val document = Document(
             id = id,
             title = "Document1",
@@ -106,7 +106,7 @@ class DocumentRepositoryTest {
 
     @Test
     fun savingAndLoadingDocumentWithManyImagesInRepository() = runTest {
-        val id = UUID.randomUUID().toString()
+        val id = GenerateId.generate()
         val document = Document(
             id = id,
             title = "Document1",
@@ -127,7 +127,7 @@ class DocumentRepositoryTest {
 
     @Test
     fun savingAndLoadingDocumentOneImageGroupInRepository() = runTest {
-        val id = UUID.randomUUID().toString()
+        val id = GenerateId.generate()
         val document = Document(
             id = id,
             title = "Document1",
@@ -167,7 +167,7 @@ fun imageStepsList(): Map<Int, StoryStep> = mapOf(
 )
 
 fun imageGroup() : Map<Int, StoryStep>{
-    val groupId = UUID.randomUUID().toString()
+    val groupId = GenerateId.generate()
 
     return mapOf(
         0 to StoryStep(

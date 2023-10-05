@@ -1,14 +1,14 @@
 package io.writeopia.sdk.utils
 
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.StoryStep
-import java.util.UUID
 
 object StoryStepFactory {
 
     fun space() =
         StoryStep(
-            localId = UUID.randomUUID().toString(),
+            localId = GenerateId.generate(),
             type = StoryTypes.SPACE.type,
         )
     
