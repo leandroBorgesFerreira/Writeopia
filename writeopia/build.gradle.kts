@@ -24,7 +24,6 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.materialIconsExtended)
-                implementation(compose.preview)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
 
@@ -32,15 +31,16 @@ kotlin {
             }
         }
 
-        val jvmMain by getting {
-            dependencies {
-            }
-        }
-
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(libs.kotlinx.coroutines.test)
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+                implementation(compose.preview)
             }
         }
 
