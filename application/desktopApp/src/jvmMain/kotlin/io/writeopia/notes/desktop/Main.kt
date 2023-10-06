@@ -32,7 +32,7 @@ fun main() = application {
 
 @Composable
 fun CreateTextEditor() {
-    val writeopiaManager = WriteopiaManager().apply {
+    val writeopiaManager = WriteopiaManager.defaultJvm().apply {
         newStory()
     }
 

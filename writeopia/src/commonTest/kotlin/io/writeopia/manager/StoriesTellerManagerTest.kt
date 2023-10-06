@@ -7,12 +7,10 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.repository.StoriesRepository
 import io.writeopia.utils.MapStoryData
 import io.writeopia.sdk.manager.WriteopiaManager
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
-import java.util.Stack
 import kotlin.test.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -554,10 +552,10 @@ class WriteopiaManagerTest {
             )
         )
 
-        val stack: Stack<StoryStep> = Stack()
+        val stack: MutableList<StoryStep> = mutableListOf()
 
         storyManager.currentStory.value.stories.forEach { (_, storyUnit) ->
-            if (stack.isNotEmpty() && stack.peek().type.name == "space" && storyUnit.type.name == "space") {
+            if (stack.isNotEmpty() && stack.lastOrNull()?.type?.name == "space" && storyUnit.type.name == "space") {
                 fail("Consecutive spaces happened.")
             }
 

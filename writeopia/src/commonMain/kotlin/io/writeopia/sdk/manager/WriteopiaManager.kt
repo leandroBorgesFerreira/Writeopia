@@ -23,7 +23,6 @@ import io.writeopia.sdk.utils.extensions.toEditState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
@@ -51,7 +50,7 @@ class WriteopiaManager(
     private val coroutineScope: CoroutineScope = CoroutineScope(
         SupervisorJob() + Dispatchers.Main.immediate
     ),
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val dispatcher: CoroutineDispatcher,
     private val backStackManager: BackstackManager = BackstackManager.create(
         contentHandler,
         movementHandler
