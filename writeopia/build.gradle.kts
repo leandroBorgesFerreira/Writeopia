@@ -72,7 +72,9 @@ kotlin {
 
         val iosMain by creating {
             dependsOn(commonMain)
-            dependencies {}
+            dependencies {
+                implementation(libs.kotlinx.coroutines.core)
+            }
         }
         val iosX64Main by getting {
             dependsOn(iosMain)

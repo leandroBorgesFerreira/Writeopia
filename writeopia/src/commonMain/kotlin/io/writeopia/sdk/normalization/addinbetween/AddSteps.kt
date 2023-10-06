@@ -4,7 +4,6 @@ import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.utils.extensions.associateWithPosition
-import java.util.Stack
 
 /**
  * This normalizer will guarantee that a new StoryUnit is added between all items of
@@ -21,14 +20,14 @@ class AddSteps(
         insert(unit.values).associateWithPosition()
 
     fun insert(units: Iterable<StoryStep>): List<StoryStep> {
-        val stack: Stack<StoryStep> = Stack()
+        val stack: MutableList<StoryStep> = mutableListOf()
         val typeToAdd = addInBetween().type
         val typeAtLast = addAtLast().type
 
         units.forEach { storyUnit ->
             when {
                 storyUnit.type == typeAtLast -> {
-                    if (stack.peek().type != typeToAdd) {
+                    if (stack.last().type != typeToAdd) {
                         stack.add(addInBetween())
                     }
                     stack.add(addAtLast())
@@ -45,27 +44,27 @@ class AddSteps(
                     stack.add(storyUnit.copy(localId = GenerateId.generate()))
                 }
 
-                storyUnit.type != typeToAdd && stack.peek().type == typeToAdd -> {
+                storyUnit.type != typeToAdd && stack.lastOrNull()?.type == typeToAdd -> {
                     stack.add(storyUnit.copy(localId = GenerateId.generate()))
                 }
 
-                storyUnit.type == typeToAdd && stack.peek()?.type != typeToAdd -> {
+                storyUnit.type == typeToAdd && stack.lastOrNull()?.type != typeToAdd -> {
                     stack.add(storyUnit.copy(localId = GenerateId.generate()))
                 }
 
-                storyUnit.type != typeToAdd && stack.peek()?.type != typeToAdd -> {
+                storyUnit.type != typeToAdd && stack.lastOrNull()?.type != typeToAdd -> {
                     stack.add(addInBetween())
                     stack.add(storyUnit.copy(localId = GenerateId.generate()))
                 }
 
-                storyUnit.type == typeToAdd && stack.peek()?.type == typeToAdd -> {}
+                storyUnit.type == typeToAdd && stack.lastOrNull()?.type == typeToAdd -> {}
             }
         }
 
-        val lastElement = stack.peek()
+        val lastElement = stack.lastOrNull()
 
-        if (lastElement.type != typeAtLast) {
-            if (lastElement.type != typeToAdd) {
+        if (lastElement?.type != typeAtLast) {
+            if (lastElement?.type != typeToAdd) {
                 stack.add(addInBetween())
             }
 
