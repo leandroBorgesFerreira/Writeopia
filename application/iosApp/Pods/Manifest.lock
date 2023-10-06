@@ -1,0 +1,16 @@
+PODS:
+  - writeopia (1.0)
+
+DEPENDENCIES:
+  - writeopia (from `../../writeopia`)
+
+EXTERNAL SOURCES:
+  writeopia:
+    :path: "../../writeopia"
+
+SPEC CHECKSUMS:
+  writeopia: 1cebceddb4b581072b145e4053a24a57e7b3d0a7
+
+PODFILE CHECKSUM: 0a7e7a728d7461b5ca15966f08e8401c031360aa
+
+COCOAPODS: 1.13.0

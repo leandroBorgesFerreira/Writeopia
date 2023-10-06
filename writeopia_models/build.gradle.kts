@@ -1,6 +1,7 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     kotlin("multiplatform")
+//    alias(libs.plugins.nativeCocoapods)
 }
 
 //rootProject.extra.apply {
@@ -14,9 +15,13 @@ plugins {
 kotlin {
     jvm {}
 
+    val dummy = Attribute.of("dummy", String::class.java)
+
     listOf(
         iosX64(),
-        iosArm64(),
+        iosArm64 {
+            attributes.attribute(dummy, "KT-55751")
+        },
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {

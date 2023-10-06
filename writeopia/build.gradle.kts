@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     id("org.jetbrains.compose")
     kotlin("multiplatform")
+    alias(libs.plugins.nativeCocoapods)
 }
 
 //rootProject.extra.apply {
@@ -24,6 +25,18 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
 //            baseName = "shared"
+            isStatic = true
+        }
+    }
+
+    cocoapods {
+        summary = "Common"
+        homepage = "https://github.com/leandroBorgesFerreira/Writeopia"
+        version = "1.0"
+        ios.deploymentTarget = "14.1"
+        podfile = project.file("../application/iosApp/Podfile")
+        framework {
+            baseName = "common"
             isStatic = true
         }
     }
