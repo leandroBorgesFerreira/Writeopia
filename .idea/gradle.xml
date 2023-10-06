@@ -22,6 +22,7 @@
             <option value="$PROJECT_DIR$/application/persistence" />
             <option value="$PROJECT_DIR$/application/resources" />
             <option value="$PROJECT_DIR$/application/utils" />
+            <option value="$PROJECT_DIR$/application/webApp" />
             <option value="$PROJECT_DIR$/backend" />
             <option value="$PROJECT_DIR$/backend/intronotes" />
             <option value="$PROJECT_DIR$/plugins" />

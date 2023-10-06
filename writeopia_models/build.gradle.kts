@@ -30,6 +30,10 @@ kotlin {
         }
     }
 
+    js(IR) {
+        browser()
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -49,6 +53,11 @@ kotlin {
         }
         val iosSimulatorArm64Main by getting {
             dependsOn(iosMain)
+        }
+
+        val jsMain by getting {
+            dependencies {
+            }
         }
     }
 }

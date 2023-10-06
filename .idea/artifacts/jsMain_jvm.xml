@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="jsMain-jvm">
+    <output-path>$PROJECT_DIR$/application/jsMain/build/libs</output-path>
+    <root id="archive" name="jsMain-jvm.jar" />
+  </artifact>
+</component>

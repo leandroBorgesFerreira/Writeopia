@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="webApp-js">
+    <output-path>$PROJECT_DIR$/application/webApp/build/libs</output-path>
+    <root id="archive" name="webApp-js.jar">
+      <element id="module-output" name="Writeopia.application.webApp.jsMain" />
+    </root>
+  </artifact>
+</component>

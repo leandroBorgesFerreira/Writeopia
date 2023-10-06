@@ -41,6 +41,10 @@ kotlin {
         }
     }
 
+    js(IR) {
+        browser()
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -91,6 +95,11 @@ kotlin {
                 // Coil
                 implementation(libs.coil.compose)
                 implementation(libs.coil.video)
+            }
+        }
+
+        val jsMain by getting {
+            dependencies {
             }
         }
     }
