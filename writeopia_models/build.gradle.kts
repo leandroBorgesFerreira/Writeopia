@@ -14,11 +14,36 @@ plugins {
 kotlin {
     jvm {}
 
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+//            baseName = "shared"
+            isStatic = true
+        }
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation(libs.kotlinx.datetime)
             }
+        }
+
+        val iosMain by creating {
+            dependsOn(commonMain)
+            dependencies {}
+        }
+        val iosX64Main by getting {
+            dependsOn(iosMain)
+        }
+        val iosArm64Main by getting {
+            dependsOn(iosMain)
+        }
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
         }
     }
 }
