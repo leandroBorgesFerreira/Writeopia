@@ -182,17 +182,9 @@ internal class PerStateBackstackManager(
         }
     }
 
-    private fun previousAction(): BackstackAction {
-        val last = backStack.last()
-        backStack.dropLast(1)
-        return last
-    }
+    private fun previousAction(): BackstackAction = backStack.removeLast()
 
-    private fun nextAction(): BackstackAction {
-        val last = forwardStack.last()
-        forwardStack.dropLast(1)
-        return last
-    }
+    private fun nextAction(): BackstackAction = forwardStack.removeLast()
 
     private fun addState(action: BackstackAction) {
         backStack.add(action)
