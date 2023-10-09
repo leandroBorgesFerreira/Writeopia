@@ -38,21 +38,21 @@
 /* Begin PBXFileReference section */
 		166B0EB1F137F95C131C92E2F013938E /* Pods-notesApp-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-notesApp-dummy.m"; sourceTree = "<group>"; };
 		1774F30BA6FFE523DB42A4509EBDD4EE /* Pods-notesApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-notesApp.release.xcconfig"; sourceTree = "<group>"; };
+		2208CF3DF0DCA4DAFABD8F9E69F6B67A /* compose-resources */ = {isa = PBXFileReference; includeInIndex = 1; name = "compose-resources"; path = "build/compose/ios/common/compose-resources"; sourceTree = "<group>"; };
+		249E89A617848E4AAB222C737E5B5931 /* common.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = common.framework; path = build/cocoapods/framework/common.framework; sourceTree = "<group>"; };
 		2D36C67BDEC27A27256762B2F67DAA4A /* Pods-notesApp-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-notesApp-umbrella.h"; sourceTree = "<group>"; };
+		32180523C957D40245CEDFE51BD0317E /* writeopia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = writeopia.release.xcconfig; sourceTree = "<group>"; };
 		3DD4A4500DE63158F35EB84A044AF2A4 /* Pods-notesApp-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-notesApp-resources.sh"; sourceTree = "<group>"; };
 		666CA5C3FFA4CA012E300542960EB551 /* Pods-notesApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-notesApp.debug.xcconfig"; sourceTree = "<group>"; };
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		8EE4D73E32CA7FDC3D020E453609C704 /* writeopia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = writeopia.release.xcconfig; sourceTree = "<group>"; };
-		95003D77440C863A6AB5BD9694453335 /* compose-resources */ = {isa = PBXFileReference; includeInIndex = 1; name = "compose-resources"; path = "build/compose/ios/Common/compose-resources"; sourceTree = "<group>"; };
 		9B71ED1CF76D56C30D5277E36FAD3BF8 /* Pods-notesApp-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-notesApp-Info.plist"; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A26AC36D45BD62558279CCD411CCAC6F /* Pods-notesApp.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-notesApp.modulemap"; sourceTree = "<group>"; };
-		BBC733D2C2BC0F5E57C120BB47D8A026 /* common.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = common.framework; path = build/cocoapods/framework/common.framework; sourceTree = "<group>"; };
 		C28A94709BF321F3076E9168219FAD1C /* Pods-notesApp-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-notesApp-acknowledgements.markdown"; sourceTree = "<group>"; };
 		C709923E7712D3129E4CC6555478DC4D /* Pods-notesApp */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-notesApp"; path = Pods_notesApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0491BCF57DA02AD5034702F361F95A4 /* Pods-notesApp-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-notesApp-acknowledgements.plist"; sourceTree = "<group>"; };
-		EBF606048E860EFA36296BECCC3E743C /* writeopia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = writeopia.debug.xcconfig; sourceTree = "<group>"; };
-		ED7F8250C1013495DCE4EF15D67AC0D4 /* writeopia.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = writeopia.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		D521ABC47E2770AFE9FE9D11DA5BDE53 /* writeopia.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = writeopia.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		EA3D2343D6AB40D8408FC5A820D429FE /* writeopia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = writeopia.debug.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +67,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2F1BD0AE90A3B6A35A03BEE939AD56F8 /* writeopia */ = {
+			isa = PBXGroup;
+			children = (
+				2208CF3DF0DCA4DAFABD8F9E69F6B67A /* compose-resources */,
+				BD092FC865838D088A9EBEA2E427768D /* Frameworks */,
+				E0C85544139534F8BAE037B73BC17C37 /* Pod */,
+				B05099A4FE51E80C3FAF7F0DE865A063 /* Support Files */,
+			);
+			name = writeopia;
+			path = ../../../writeopia;
+			sourceTree = "<group>";
+		};
 		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -78,17 +90,9 @@
 		6B9F6053BD4CE10E45367218274FC810 /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				C21265C33E37601D330599FE8C6F75CF /* writeopia */,
+				2F1BD0AE90A3B6A35A03BEE939AD56F8 /* writeopia */,
 			);
 			name = "Development Pods";
-			sourceTree = "<group>";
-		};
-		703CBA2084B4C91FC73E8B9D1840680A /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				BBC733D2C2BC0F5E57C120BB47D8A026 /* common.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		77300D8A9D03A6015A380915984BFE3D /* Products */ = {
@@ -99,26 +103,22 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B08A44403BF7B550D495ACF3D797384F /* Support Files */ = {
+		B05099A4FE51E80C3FAF7F0DE865A063 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				EBF606048E860EFA36296BECCC3E743C /* writeopia.debug.xcconfig */,
-				8EE4D73E32CA7FDC3D020E453609C704 /* writeopia.release.xcconfig */,
+				EA3D2343D6AB40D8408FC5A820D429FE /* writeopia.debug.xcconfig */,
+				32180523C957D40245CEDFE51BD0317E /* writeopia.release.xcconfig */,
 			);
 			name = "Support Files";
 			path = "../application/iosApp/Pods/Target Support Files/writeopia";
 			sourceTree = "<group>";
 		};
-		C21265C33E37601D330599FE8C6F75CF /* writeopia */ = {
+		BD092FC865838D088A9EBEA2E427768D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				95003D77440C863A6AB5BD9694453335 /* compose-resources */,
-				703CBA2084B4C91FC73E8B9D1840680A /* Frameworks */,
-				DD262D22784E1098DB6C5D13F022CFEC /* Pod */,
-				B08A44403BF7B550D495ACF3D797384F /* Support Files */,
+				249E89A617848E4AAB222C737E5B5931 /* common.framework */,
 			);
-			name = writeopia;
-			path = ../../../writeopia;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		CBF79A9EE93BC5F331ECA0A9A637BFAC /* Pods-notesApp */ = {
@@ -157,10 +157,10 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		DD262D22784E1098DB6C5D13F022CFEC /* Pod */ = {
+		E0C85544139534F8BAE037B73BC17C37 /* Pod */ = {
 			isa = PBXGroup;
 			children = (
-				ED7F8250C1013495DCE4EF15D67AC0D4 /* writeopia.podspec */,
+				D521ABC47E2770AFE9FE9D11DA5BDE53 /* writeopia.podspec */,
 			);
 			name = Pod;
 			sourceTree = "<group>";
@@ -280,7 +280,7 @@
 /* Begin XCBuildConfiguration section */
 		0BAA8CF6EB2AA0E7C9210A0B82A1B9D6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8EE4D73E32CA7FDC3D020E453609C704 /* writeopia.release.xcconfig */;
+			baseConfigurationReference = 32180523C957D40245CEDFE51BD0317E /* writeopia.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -298,7 +298,7 @@
 		};
 		2EFAC08B40869B23E99D2D4258F347E6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBF606048E860EFA36296BECCC3E743C /* writeopia.debug.xcconfig */;
+			baseConfigurationReference = EA3D2343D6AB40D8408FC5A820D429FE /* writeopia.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

@@ -1,27 +1,21 @@
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.compose")
 }
 
 kotlin {
-    js(IR) {
+    wasm {
+        moduleName = "webApp"
         browser()
         binaries.executable()
     }
 
     sourceSets {
-        val jsMain by getting {
-            dependencies {
-                implementation(project(":writeopia"))
-                implementation(project(":writeopia_models"))
+        val commonMain by getting {
+        }
 
-                implementation(compose.material)
-                implementation(compose.material3)
+        val wasmMain by getting {
+            dependencies {
             }
         }
     }
-}
-
-compose.experimental {
-    web.application {}
 }
