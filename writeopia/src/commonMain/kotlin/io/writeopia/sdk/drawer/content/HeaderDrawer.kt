@@ -21,7 +21,7 @@ import io.writeopia.sdk.models.story.StoryStep
  */
 class HeaderDrawer(
     private val modifier: Modifier = Modifier,
-    private val headerClick: () -> Unit,
+    private val headerClick: () -> Unit = {},
     private val drawer: BoxScope.() -> StoryStepDrawer,
 ) : StoryStepDrawer {
 

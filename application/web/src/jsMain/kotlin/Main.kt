@@ -9,9 +9,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Window
 import io.writeopia.sdk.WriteopiaEditor
+import io.writeopia.sdk.WritepiaTag
 import io.writeopia.sdk.drawer.StoryStepDrawer
+import io.writeopia.sdk.drawer.content.*
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.story.DrawState
+import io.writeopia.sdk.models.story.StoryTypes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import org.jetbrains.skiko.wasm.onWasmReady
@@ -34,7 +37,7 @@ fun CreateTextEditor() {
         newStory()
     }
 
-    TextEditor(drawers = emptyMap(), drawState = writeopiaManager.toDraw)
+    TextEditor(drawers = drawers(), drawState = writeopiaManager.toDraw)
 }
 
 @Composable
@@ -45,5 +48,21 @@ fun TextEditor(
     val toDraw by drawState.collectAsState(DrawState())
 
     WriteopiaEditor(modifier = Modifier.fillMaxSize(), drawers = drawers, storyState = toDraw)
+}
+
+@Composable
+fun drawers(): Map<Int, HeaderDrawer> {
+    return buildMap {
+        put(
+            StoryTypes.TITLE.type.number,
+            HeaderDrawer(
+                drawer = {
+                    TitleDrawer(
+                        containerModifier = Modifier.align(Alignment.BottomStart),
+                    )
+                },
+            )
+        )
+    }
 }
 

@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -12,6 +13,11 @@ import io.writeopia.sdk.draganddrop.target.DraggableScreen
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.model.story.DrawState
+
+@Composable
+fun WritepiaTag() {
+    Text("Welcome to Writeopia!")
+}
 
 @Composable
 fun WriteopiaEditor(
