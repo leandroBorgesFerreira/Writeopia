@@ -15,6 +15,7 @@ import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.factory.DefaultDrawersDesktop
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.story.DrawState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 
 fun main() = application {
@@ -32,7 +33,7 @@ fun main() = application {
 
 @Composable
 fun CreateTextEditor() {
-    val writeopiaManager = WriteopiaManager.defaultJvm().apply {
+    val writeopiaManager = WriteopiaManager(dispatcher = Dispatchers.IO).apply {
         newStory()
     }
 
