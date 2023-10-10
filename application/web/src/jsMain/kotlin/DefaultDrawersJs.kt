@@ -100,7 +100,7 @@ object DefaultDrawersJs {
         )
     }
 
-    fun headerDrawer(writeopiaManager: WriteopiaManager): StoryStepDrawer =
+    private fun headerDrawer(writeopiaManager: WriteopiaManager): StoryStepDrawer =
         HeaderDrawer(
             drawer = {
                 TitleDrawer(
