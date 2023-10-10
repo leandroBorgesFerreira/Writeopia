@@ -1,4 +1,7 @@
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import io.writeopia.sdk.models.id.GenerateId
+import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 
@@ -8,6 +11,7 @@ internal fun supermarketList(): Map<Int, StoryStep> = mapOf(
         localId = GenerateId.generate(),
         type = StoryTypes.TITLE.type,
         text = "Supermarket List",
+        decoration = Decoration(backgroundColor = Color.LightGray.toArgb())
     ),
     1 to StoryStep(
         localId = GenerateId.generate(),

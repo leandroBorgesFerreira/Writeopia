@@ -15,11 +15,6 @@ import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.model.story.DrawState
 
 @Composable
-fun WritepiaTag() {
-    Text("Welcome to Writeopia!")
-}
-
-@Composable
 fun WriteopiaEditor(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
@@ -40,18 +35,16 @@ fun WriteopiaEditor(
                     content,
                     key = { index, drawStory -> drawStory.key + index },
                     itemContent = { index, drawStory ->
-                        drawers[drawStory.storyStep.type.number]?.run {
-                            Step(
-                                step = drawStory.storyStep,
-                                drawInfo = DrawInfo(
-                                    editable = editable,
-                                    focusId = storyState.focusId,
-                                    position = index,
-                                    extraData = mapOf("listSize" to storyState.stories.size),
-                                    selectMode = drawStory.isSelected
-                                )
+                        drawers[drawStory.storyStep.type.number]?.Step(
+                            step = drawStory.storyStep,
+                            drawInfo = DrawInfo(
+                                editable = editable,
+                                focusId = storyState.focusId,
+                                position = index,
+                                extraData = mapOf("listSize" to storyState.stories.size),
+                                selectMode = drawStory.isSelected
                             )
-                        }
+                        )
                     }
                 )
             }

@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.sp
 import io.writeopia.sdk.models.story.StoryStep
 
 @Composable
-internal fun defaultTextStyle(storyStep: StoryStep) =
+fun defaultTextStyle(storyStep: StoryStep) =
     TextStyle(
         textDecoration = if (storyStep.checked == true) TextDecoration.LineThrough else null,
         color = MaterialTheme.colorScheme.onBackground,
