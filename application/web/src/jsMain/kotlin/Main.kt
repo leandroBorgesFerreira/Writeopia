@@ -1,6 +1,6 @@
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material3.Card
@@ -10,6 +10,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import io.writeopia.sdk.WriteopiaEditor
@@ -29,10 +31,24 @@ import org.jetbrains.skiko.wasm.onWasmReady
 fun main() {
     onWasmReady {
         Window("Compose Rich Editor") {
-            Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Write your text bellow", modifier = Modifier.padding(20.dp), style = MaterialTheme.typography.titleLarge)
+            Column(
+                Modifier.fillMaxSize().background(Color.Gray),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    "Write your text bellow",
+                    modifier = Modifier.padding(20.dp),
+                    style = MaterialTheme.typography.titleLarge,
+                )
 
-                Card(modifier = Modifier.padding(start = 30.dp, end = 30.dp, bottom = 30.dp)) {
+                Surface(
+                    modifier = Modifier
+                        .width(1000.dp)
+                        .fillMaxHeight()
+                        .padding(start = 30.dp, end = 30.dp, bottom = 30.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color.White)
+                ) {
                     CreateTextEditor()
                 }
             }
@@ -66,23 +82,5 @@ fun TextEditor(
     drawers: Map<Int, StoryStepDrawer>
 ) {
     val toDraw by drawState.collectAsState(DrawState())
-
-    WriteopiaEditor(modifier = Modifier.fillMaxSize(), drawers = drawers, storyState = toDraw)
+    WriteopiaEditor(modifier = Modifier, drawers = drawers, storyState = toDraw)
 }
-
-@Composable
-fun drawers(): Map<Int, HeaderDrawer> {
-    return buildMap {
-        put(
-            StoryTypes.TITLE.type.number,
-            HeaderDrawer(
-                drawer = {
-                    TitleDrawer(
-                        containerModifier = Modifier.align(Alignment.BottomStart),
-                    )
-                },
-            )
-        )
-    }
-}
-
