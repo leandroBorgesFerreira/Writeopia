@@ -1,6 +1,9 @@
 
 [![Main merge](https://github.com/leandroBorgesFerreira/Writeopia/actions/workflows/main-merge.yml/badge.svg)](https://github.com/leandroBorgesFerreira/Writeopia/actions/workflows/main-merge.yml) ![Maven Central](https://img.shields.io/maven-central/v/io.writeopia/writeopia-core)
-# Writeopia
+
+
+![Writeopia](./images/icon_with_title_big.jpg)
+
 
 Embeded text editor for apps. 
 
