@@ -35,9 +35,10 @@ fun main() {
     onWasmReady {
         Window("Compose Rich Editor") {
             Column(
-                Modifier.fillMaxSize().background(Color.Gray),
+                Modifier.fillMaxSize().background(Color.Gray).verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+
                 Text(
                     "Write your text bellow",
                     modifier = Modifier.padding(20.dp),
@@ -46,7 +47,6 @@ fun main() {
 
                 Column(
                     modifier = Modifier
-                        .verticalScroll(rememberScrollState())
                         .width(1000.dp)
                         .defaultMinSize(minHeight = 700.dp)
                         .padding(start = 30.dp, end = 30.dp, bottom = 30.dp)
