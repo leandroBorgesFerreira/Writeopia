@@ -27,18 +27,16 @@ fun WriteopiaEditorBox(
             modifier = modifier,
             content = {
                 storyState.stories.values.toList().forEachIndexed { index, drawStory ->
-                    drawers[drawStory.storyStep.type.number]?.run {
-                        Step(
-                            step = drawStory.storyStep,
-                            drawInfo = DrawInfo(
-                                editable = editable,
-                                focusId = storyState.focusId,
-                                position = index,
-                                extraData = mapOf("listSize" to storyState.stories.size),
-                                selectMode = drawStory.isSelected
-                            )
+                    drawers[drawStory.storyStep.type.number]?.Step(
+                        step = drawStory.storyStep,
+                        drawInfo = DrawInfo(
+                            editable = editable,
+                            focusId = storyState.focusId,
+                            position = index,
+                            extraData = mapOf("listSize" to storyState.stories.size),
+                            selectMode = drawStory.isSelected
                         )
-                    }
+                    )
                 }
             }
         )
