@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -16,6 +17,7 @@ import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.content.*
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.text.edition.TextCommandHandler
 
 object DefaultDrawersJs {
 
@@ -36,6 +38,7 @@ object DefaultDrawersJs {
         }
         val checkItemDrawer = checkItemDrawer(manager) { jsMessageDrawer(manager) }
         val headerDrawer = headerDrawer(manager)
+        val unOrderedListItemDrawer = unOrderedListItemDrawer(manager) { jsMessageDrawer(manager) }
 
         return buildMap {
             put(StoryTypes.MESSAGE.type.number, swipeMessageDrawer)
@@ -45,6 +48,7 @@ object DefaultDrawersJs {
                 LargeEmptySpace(manager::moveRequest, manager::clickAtTheEnd)
             )
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
+            put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
             put(StoryTypes.TITLE.type.number, headerDrawer)
             putAll(hxDrawers)
         }
@@ -61,7 +65,12 @@ object DefaultDrawersJs {
         val focusRequesterH = remember { FocusRequester() }
         return JsMessageDrawer(
             modifier = Modifier.weight(1F),
-            focusRequester = focusRequesterH
+            textStyle = TextStyle(fontSize = fontSize),
+            onTextEdit = manager::onTextEdit,
+            focusRequester = focusRequesterH,
+            emptyErase = emptyErase,
+            commandHandler = TextCommandHandler.defaultCommands(manager),
+            onDeleteRequest = manager::onDelete,
         )
     }
 
@@ -121,6 +130,22 @@ object DefaultDrawersJs {
             messageDrawer = {
                 messageDrawer()
             },
+        )
+    }
+
+    @Composable
+    fun unOrderedListItemDrawer(
+        writeopiaManager: WriteopiaManager,
+        messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
+    ): StoryStepDrawer {
+        val focusRequesterUnOrderedList = remember { FocusRequester() }
+
+        return unOrderedListItemDrawer(
+            modifier = Modifier.padding(start = 18.dp, end = 12.dp),
+            onSelected = writeopiaManager::onSelected,
+            focusRequester = focusRequesterUnOrderedList,
+            customBackgroundColor = Color.Transparent,
+            messageDrawer = messageDrawer,
         )
     }
 }

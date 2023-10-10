@@ -11,7 +11,9 @@ import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -20,6 +22,7 @@ import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.text.edition.TextCommandHandler
+import org.jetbrains.skiko.SkikoKey
 
 /**
  * Simple message drawer mostly intended to be used as a component for more complex drawers.
@@ -28,6 +31,7 @@ import io.writeopia.sdk.text.edition.TextCommandHandler
  */
 class JsMessageDrawer(
     private val modifier: Modifier = Modifier,
+    private val textStyle: TextStyle? = null,
     private val focusRequester: FocusRequester? = null,
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
     private val emptyErase: ((Int) -> Unit)? = null,
@@ -54,23 +58,23 @@ class JsMessageDrawer(
                 BasicTextField(
                     modifier = Modifier
                         .padding(start = 16.dp)
-//                        .onKeyEvent { keyEvent ->
-//                            if (
-//                                keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE &&
-//                                inputText.selection.start == 0
-//                            ) {
-//                                emptyErase?.invoke(drawInfo.position) ?: onDeleteRequest(
-//                                    Action.DeleteStory(
-//                                        step,
-//                                        drawInfo.position
-//                                    )
-//                                )
-//
-//                                true
-//                            } else {
-//                                false
-//                            }
-//                        }
+                        .onKeyEvent { keyEvent ->
+                            val key = keyEvent.nativeKeyEvent.key
+                            if (
+                                (key == SkikoKey.KEY_DELETE || key == SkikoKey.KEY_BACKSPACE) &&
+                                inputText.selection.start == 0
+                            ) {
+                                emptyErase?.invoke(drawInfo.position) ?: onDeleteRequest(
+                                    Action.DeleteStory(
+                                        step,
+                                        drawInfo.position
+                                    )
+                                )
+                                true
+                            } else {
+                                false
+                            }
+                        }
                         .let { modifierLet ->
                             if (focusRequester != null) {
                                 modifierLet.focusRequester(focusRequester)
@@ -96,7 +100,8 @@ class JsMessageDrawer(
                     keyboardOptions = KeyboardOptions(
                         capitalization = KeyboardCapitalization.Sentences
                     ),
-                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
+                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                    textStyle = textStyle ?: TextStyle.Default
                 )
             } else {
                 Text(
