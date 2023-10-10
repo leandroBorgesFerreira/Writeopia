@@ -21,7 +21,7 @@ fun DraggableScreen(
 ) {
     val state = remember { DragTargetInfo() }
     CompositionLocalProvider(LocalDragTargetInfo provides state) {
-        Box(modifier = modifier.fillMaxSize()) {
+        Box(modifier = modifier) {
             content()
 
             if (state.isDragging) {

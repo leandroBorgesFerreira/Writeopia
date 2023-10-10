@@ -65,10 +65,10 @@ object DefaultDrawersDesktop {
             put(StoryTypes.MESSAGE.type.number, swipeMessageDrawer)
             put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
             put(StoryTypes.SPACE.type.number, SpaceDrawer(drawersConfig.moveRequest))
-            put(
-                StoryTypes.LARGE_SPACE.type.number,
-                LargeEmptySpace(drawersConfig.moveRequest, drawersConfig.clickAtTheEnd)
-            )
+//            put(
+//                StoryTypes.LARGE_SPACE.type.number,
+//                LargeEmptySpace(drawersConfig.moveRequest, drawersConfig.clickAtTheEnd)
+//            )
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
             put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
             put(StoryTypes.TITLE.type.number, headerDrawer)

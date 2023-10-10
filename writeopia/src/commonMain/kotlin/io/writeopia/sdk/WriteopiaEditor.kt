@@ -15,11 +15,6 @@ import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.model.story.DrawState
 
 @Composable
-fun WritepiaTag() {
-    Text("Welcome to Writeopia!")
-}
-
-@Composable
 fun WriteopiaEditor(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),

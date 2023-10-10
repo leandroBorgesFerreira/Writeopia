@@ -2,7 +2,9 @@ package io.writeopia.notes.desktop
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -17,6 +19,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import io.writeopia.sdk.WriteopiaEditor
+import io.writeopia.sdk.WriteopiaEditorBox
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.factory.DefaultDrawersDesktop
 import io.writeopia.sdk.manager.WriteopiaManager
@@ -33,8 +36,9 @@ fun main() = application {
         MaterialTheme {
             Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
                 BoxWithConstraints {
-                    Surface (
+                    Column(
                         modifier = Modifier
+                            .verticalScroll(rememberScrollState())
                             .align(Alignment.Center)
                             .let { modifierLet ->
                                 if (maxWidth > 900.dp) {
@@ -43,8 +47,8 @@ fun main() = application {
                                     modifierLet.fillMaxWidth()
                                 }
                             }
-                            .fillMaxHeight()
-                            .padding(30.dp)
+                            .defaultMinSize(minHeight = 700.dp)
+                            .padding(start = 30.dp, end = 30.dp, top = 30.dp, bottom = 30.dp)
                             .clip(RoundedCornerShape(20.dp))
                             .background(Color.White),
                     ) {
@@ -73,5 +77,5 @@ fun TextEditor(
 ) {
     val toDraw by drawState.collectAsState(DrawState())
 
-    WriteopiaEditor(modifier = Modifier.fillMaxSize(), drawers = drawers, storyState = toDraw)
+    WriteopiaEditorBox(modifier = Modifier.fillMaxWidth(), drawers = drawers, storyState = toDraw)
 }
