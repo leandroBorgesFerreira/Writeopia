@@ -1,7 +1,7 @@
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -9,9 +9,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Window
 import io.writeopia.sdk.WriteopiaEditor
-import io.writeopia.sdk.WritepiaTag
 import io.writeopia.sdk.drawer.StoryStepDrawer
-import io.writeopia.sdk.drawer.content.*
+import io.writeopia.sdk.drawer.content.HeaderDrawer
+import io.writeopia.sdk.drawer.content.TitleDrawer
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.story.DrawState
 import io.writeopia.sdk.models.story.StoryTypes
@@ -23,7 +23,7 @@ fun main() {
     onWasmReady {
         Window("Compose Rich Editor") {
             Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("putz!!!")
+                Text("Write your text bellow", style = MaterialTheme.typography.titleLarge)
                 CreateTextEditor()
             }
         }
@@ -37,7 +37,7 @@ fun CreateTextEditor() {
         newStory()
     }
 
-    TextEditor(drawers = drawers(), drawState = writeopiaManager.toDraw)
+    TextEditor(drawers = DefaultDrawersJs.create(writeopiaManager), drawState = writeopiaManager.toDraw)
 }
 
 @Composable
