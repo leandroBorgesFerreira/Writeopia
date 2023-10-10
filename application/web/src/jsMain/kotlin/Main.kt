@@ -1,12 +1,16 @@
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import io.writeopia.sdk.WriteopiaEditor
 import io.writeopia.sdk.drawer.StoryStepDrawer
@@ -26,8 +30,11 @@ fun main() {
     onWasmReady {
         Window("Compose Rich Editor") {
             Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Write your text bellow", style = MaterialTheme.typography.titleLarge)
-                CreateTextEditor()
+                Text("Write your text bellow", modifier = Modifier.padding(20.dp), style = MaterialTheme.typography.titleLarge)
+
+                Card(modifier = Modifier.padding(start = 30.dp, end = 30.dp, bottom = 30.dp)) {
+                    CreateTextEditor()
+                }
             }
         }
     }

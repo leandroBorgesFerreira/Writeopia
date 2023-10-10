@@ -11,6 +11,7 @@ import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
@@ -55,14 +56,16 @@ class JsMessageDrawer(
                     }
                 }
 
+                val selection = inputText.selection
+
                 BasicTextField(
                     modifier = Modifier
                         .padding(start = 16.dp)
                         .onKeyEvent { keyEvent ->
                             val key = keyEvent.nativeKeyEvent.key
                             if (
-                                (key == SkikoKey.KEY_DELETE || key == SkikoKey.KEY_BACKSPACE) &&
-                                inputText.selection.start == 0
+                                (key == SkikoKey.KEY_BACKSPACE) &&
+                                selection.start == 0
                             ) {
                                 emptyErase?.invoke(drawInfo.position) ?: onDeleteRequest(
                                     Action.DeleteStory(
