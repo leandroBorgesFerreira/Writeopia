@@ -14,9 +14,12 @@ import io.writeopia.sdk.drawer.content.HeaderDrawer
 import io.writeopia.sdk.drawer.content.TitleDrawer
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.story.DrawState
+import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryTypes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import org.jetbrains.skiko.wasm.onWasmReady
 
 fun main() {
@@ -33,8 +36,18 @@ fun main() {
 
 @Composable
 fun CreateTextEditor() {
+    val now = Clock.System.now()
+
     val writeopiaManager = WriteopiaManager(dispatcher = Dispatchers.Main).apply {
-        newStory()
+        initDocument(
+            Document(
+                title = "Sample Document",
+                createdAt = now,
+                lastUpdatedAt = now,
+                userId = "",
+                content = supermarketList()
+            )
+        )
     }
 
     TextEditor(drawers = DefaultDrawersJs.create(writeopiaManager), drawState = writeopiaManager.toDraw)

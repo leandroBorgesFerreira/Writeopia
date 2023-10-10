@@ -27,7 +27,6 @@ object DefaultDrawersJs {
         groupsBackgroundColor: Color = Color.Transparent,
         onHeaderClick: () -> Unit = {}
     ): Map<Int, StoryStepDrawer> {
-        val focusRequesterMessageBox = remember { FocusRequester() }
         val focusRequesterMessageBoxSwipe = remember { FocusRequester() }
         val swipeMessageDrawer = swipeMessageDrawer(focusRequester = focusRequesterMessageBoxSwipe) {
             jsMessageDrawer(manager, emptyErase = null)
@@ -124,6 +123,4 @@ object DefaultDrawersJs {
             },
         )
     }
-
-
 }
