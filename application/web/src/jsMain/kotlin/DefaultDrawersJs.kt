@@ -33,9 +33,9 @@ object DefaultDrawersJs {
             jsMessageDrawer(manager, emptyErase = null)
         }
         val hxDrawers = defaultHxDrawers(manager) { fontSize ->
-            jsMessageDrawer(manager)
+            jsMessageDrawer(manager, fontSize = fontSize)
         }
-//        val checkItemDrawer = checkItemDrawer(drawersConfig) { desktopMessageDrawer(drawersConfig) }
+        val checkItemDrawer = checkItemDrawer(manager) { jsMessageDrawer(manager) }
         val headerDrawer = headerDrawer(manager)
 
         return buildMap {
@@ -45,7 +45,7 @@ object DefaultDrawersJs {
                 StoryTypes.LARGE_SPACE.type.number,
                 LargeEmptySpace(manager::moveRequest, manager::clickAtTheEnd)
             )
-//            put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
+            put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
             put(StoryTypes.TITLE.type.number, headerDrawer)
             putAll(hxDrawers)
         }
@@ -62,6 +62,7 @@ object DefaultDrawersJs {
         val focusRequesterH = remember { FocusRequester() }
         return JsMessageDrawer(
             modifier = Modifier.weight(1F),
+            focusRequester = focusRequesterH
         )
     }
 
@@ -105,5 +106,24 @@ object DefaultDrawersJs {
                 )
             },
         )
+
+    @Composable
+    fun checkItemDrawer(
+        writeopiaManager: WriteopiaManager,
+        messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
+    ): StoryStepDrawer {
+        val focusRequesterCheckItem = remember { FocusRequester() }
+        return checkItemDrawer(
+            modifier = Modifier.padding(start = 18.dp, end = 12.dp),
+            onCheckedChange = writeopiaManager::changeStoryState,
+            onSelected = writeopiaManager::onSelected,
+            customBackgroundColor = Color.Transparent,
+            focusRequester = focusRequesterCheckItem,
+            messageDrawer = {
+                messageDrawer()
+            },
+        )
+    }
+
 
 }
