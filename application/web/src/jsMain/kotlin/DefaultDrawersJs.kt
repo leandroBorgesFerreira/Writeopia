@@ -43,10 +43,6 @@ object DefaultDrawersJs {
         return buildMap {
             put(StoryTypes.MESSAGE.type.number, swipeMessageDrawer)
             put(StoryTypes.SPACE.type.number, SpaceDrawer(manager::moveRequest))
-            put(
-                StoryTypes.LARGE_SPACE.type.number,
-                LargeEmptySpace(manager::moveRequest, manager::clickAtTheEnd)
-            )
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
             put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
             put(StoryTypes.TITLE.type.number, headerDrawer)

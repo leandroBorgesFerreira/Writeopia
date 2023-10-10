@@ -1,6 +1,8 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material3.Card
@@ -15,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import io.writeopia.sdk.WriteopiaEditor
+import io.writeopia.sdk.WriteopiaEditorBox
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.content.HeaderDrawer
 import io.writeopia.sdk.drawer.content.TitleDrawer
@@ -41,10 +44,11 @@ fun main() {
                     style = MaterialTheme.typography.titleLarge,
                 )
 
-                Surface(
+                Column(
                     modifier = Modifier
+                        .verticalScroll(rememberScrollState())
                         .width(1000.dp)
-                        .fillMaxHeight()
+                        .defaultMinSize(minHeight = 700.dp)
                         .padding(start = 30.dp, end = 30.dp, bottom = 30.dp)
                         .clip(RoundedCornerShape(20.dp))
                         .background(Color.White)
@@ -82,5 +86,5 @@ fun TextEditor(
     drawers: Map<Int, StoryStepDrawer>
 ) {
     val toDraw by drawState.collectAsState(DrawState())
-    WriteopiaEditor(modifier = Modifier, drawers = drawers, storyState = toDraw)
+    WriteopiaEditorBox(modifier = Modifier, drawers = drawers, storyState = toDraw)
 }

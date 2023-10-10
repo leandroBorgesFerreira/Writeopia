@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.Flow
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
-        title = "Compose for Desktop",
+        title = "Writeopia for Desktop",
         state = rememberWindowState(width = 1100.dp, height = 800.dp)
     ) {
         MaterialTheme {
