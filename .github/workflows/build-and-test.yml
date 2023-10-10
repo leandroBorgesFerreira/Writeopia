@@ -39,7 +39,7 @@ jobs:
           distribution: adopt
           java-version: '17'
       - name: Build debug android 
-        run: ./gradlew assemble
+        run: ./gradlew assembleDebug
   backend_build_and_test:
     name: Backend - build and test
     runs-on: ubuntu-22.04
