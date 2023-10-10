@@ -35,8 +35,8 @@ const val TITLE_DRAWER_TEST_TAG = "TitleDrawerTextField"
  */
 class TitleDrawer(
     private val containerModifier: Modifier = Modifier,
-    private val onTextEdit: (String, Int) -> Unit,
-    private val onLineBreak: (Action.LineBreak) -> Unit,
+    private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
+    private val onLineBreak: (Action.LineBreak) -> Unit = {},
 ) : StoryStepDrawer {
 
     @Composable

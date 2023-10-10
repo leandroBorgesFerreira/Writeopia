@@ -20,17 +20,12 @@ import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.toEditState
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 
 /**
@@ -50,7 +45,7 @@ class WriteopiaManager(
     private val coroutineScope: CoroutineScope = CoroutineScope(
         SupervisorJob() + Dispatchers.Main.immediate
     ),
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val dispatcher: CoroutineDispatcher,
     private val backStackManager: BackstackManager = BackstackManager.create(
         contentHandler,
         movementHandler

@@ -11,7 +11,6 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.util.Stack
 
 private const val DEFAULT_TEXT_EDIT_LIMIT = 20
 
@@ -36,8 +35,8 @@ internal class PerStateBackstackManager(
     private var lastEditPosition: Int = -1
     private var textEditCount = 0
 
-    private val backStack: Stack<BackstackAction> = Stack()
-    private val forwardStack: Stack<BackstackAction> = Stack()
+    private val backStack: MutableList<BackstackAction> = mutableListOf()
+    private val forwardStack: MutableList<BackstackAction> = mutableListOf()
 
     private val _canUndo = MutableStateFlow(false)
     private val _canRedo = MutableStateFlow(false)
@@ -167,9 +166,9 @@ internal class PerStateBackstackManager(
         _canUndo.value = backStack.isNotEmpty()
     }
 
-    internal fun peek(): BackstackAction = backStack.peek()
+    internal fun peek(): BackstackAction = backStack.last()
 
-    private fun Stack<BackstackAction>.keepState(
+    private fun MutableList<BackstackAction>.keepState(
         state: StoryState,
         action: SingleAction,
     ) {
@@ -183,9 +182,9 @@ internal class PerStateBackstackManager(
         }
     }
 
-    private fun previousAction(): BackstackAction = backStack.pop()
+    private fun previousAction(): BackstackAction = backStack.removeLast()
 
-    private fun nextAction(): BackstackAction = forwardStack.pop()
+    private fun nextAction(): BackstackAction = forwardStack.removeLast()
 
     private fun addState(action: BackstackAction) {
         backStack.add(action)

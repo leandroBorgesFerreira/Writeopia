@@ -13,7 +13,7 @@ object MapOperations {
     ): Map<Int, T> {
         val mutableList = originalMap.values.toMutableList()
 
-        newMap.toSortedMap().forEach { (position, value) ->
+        newMap.entries.sortedBy { it.key }.forEach { (position, value) ->
             mutableList.add(position, addInBetween())
             mutableList.add(position, value)
         }

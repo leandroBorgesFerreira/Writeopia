@@ -9,6 +9,7 @@ import io.writeopia.auth.core.AuthManager
 import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.editor.NoteEditorViewModel
 import io.writeopia.persistence.WriteopiaApplicationDatabase
+import kotlinx.coroutines.Dispatchers
 
 class EditorInjector(
     private val database: WriteopiaApplicationDatabase,
@@ -25,8 +26,9 @@ class EditorInjector(
     private fun provideWriteopiaManager(
         authManager: AuthManager = authCoreInjection.provideAccountManager()
     ) = WriteopiaManager(
-            userId = { authManager.getUser().id }
-        )
+        userId = { authManager.getUser().id },
+        dispatcher = Dispatchers.IO
+    )
 
     @Composable
     internal fun provideNoteDetailsViewModel(

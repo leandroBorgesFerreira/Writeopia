@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     id("org.jetbrains.compose")
     kotlin("multiplatform")
+    alias(libs.plugins.nativeCocoapods)
 }
 
 //rootProject.extra.apply {
@@ -16,6 +17,33 @@ kotlin {
     jvm {}
 
     androidTarget()
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+//            baseName = "shared"
+            isStatic = true
+        }
+    }
+
+    cocoapods {
+        summary = "Common"
+        homepage = "https://github.com/leandroBorgesFerreira/Writeopia"
+        version = "1.0"
+        ios.deploymentTarget = "14.1"
+        podfile = project.file("../application/iosApp/Podfile")
+        framework {
+            baseName = "common"
+            isStatic = true
+        }
+    }
+
+    js(IR) {
+        browser()
+    }
 
     sourceSets {
         val commonMain by getting {
@@ -46,11 +74,32 @@ kotlin {
             }
         }
 
+        val iosMain by creating {
+            dependsOn(commonMain)
+            dependencies {
+                implementation(libs.kotlinx.coroutines.core)
+            }
+        }
+        val iosX64Main by getting {
+            dependsOn(iosMain)
+        }
+        val iosArm64Main by getting {
+            dependsOn(iosMain)
+        }
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
+        }
+
         val androidMain by getting {
             dependencies {
                 // Coil
                 implementation(libs.coil.compose)
                 implementation(libs.coil.video)
+            }
+        }
+
+        val jsMain by getting {
+            dependencies {
             }
         }
     }

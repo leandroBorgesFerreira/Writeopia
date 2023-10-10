@@ -22,5 +22,5 @@ jobs:
         with:
           distribution: adopt
           java-version: '17'
-      - name: Build android 
-        run: ./gradlew build
+      - name: Build debug and test 
+        run: ./gradlew buildDebug test
