@@ -35,6 +35,7 @@ class JsMessageDrawer(
     private val focusRequester: FocusRequester? = null,
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
     private val emptyErase: ((Int) -> Unit)? = null,
+    private val onLineBreak: (Action.LineBreak) -> Unit,
     private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     override var onFocusChanged: (FocusState) -> Unit = {}
@@ -42,30 +43,31 @@ class JsMessageDrawer(
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
-        Box(modifier = modifier) {
-            if (drawInfo.editable) {
-                var inputText by remember {
-                    val text = step.text ?: ""
-                    mutableStateOf(TextFieldValue(text, TextRange(text.length)))
+        if (drawInfo.editable) {
+            val text = step.text ?: ""
+            val inputText = TextFieldValue(text, TextRange(text.length))
+
+            LaunchedEffect(drawInfo.focusId) {
+                if (drawInfo.focusId == step.id) {
+                    focusRequester?.requestFocus()
                 }
+            }
 
-                LaunchedEffect(drawInfo.focusId) {
-                    if (drawInfo.focusId == step.id) {
-                        focusRequester?.requestFocus()
-                    }
-                }
+            val selection = inputText.selection
 
-                val selection = inputText.selection
+            BasicTextField(
+                modifier = modifier
+                    .padding(start = 16.dp)
+                    .onKeyEvent { keyEvent ->
+                        val key = keyEvent.nativeKeyEvent.key
 
-                BasicTextField(
-                    modifier = Modifier
-                        .padding(start = 16.dp)
-                        .onKeyEvent { keyEvent ->
-                            val key = keyEvent.nativeKeyEvent.key
-                            if (
-                                (key == SkikoKey.KEY_BACKSPACE) &&
-                                selection.start == 0
-                            ) {
+                        when {
+                            key == SkikoKey.KEY_ENTER -> {
+                                onLineBreak(Action.LineBreak(step, position = drawInfo.position))
+                                true
+                            }
+
+                            key == SkikoKey.KEY_BACKSPACE && selection.start == 0 -> {
                                 emptyErase?.invoke(drawInfo.position) ?: onDeleteRequest(
                                     Action.DeleteStory(
                                         step,
@@ -73,44 +75,38 @@ class JsMessageDrawer(
                                     )
                                 )
                                 true
-                            } else {
-                                false
                             }
-                        }
-                        .let { modifierLet ->
-                            if (focusRequester != null) {
-                                modifierLet.focusRequester(focusRequester)
-                            } else {
-                                modifierLet
-                            }
-                        }
-                        .onFocusChanged(onFocusChanged),
-                    value = inputText,
-                    onValueChange = { value ->
-                        val text = value.text
 
-                        inputText = if (text.contains("\n")) {
-                            val newText = text.split("\n", limit = 2)[0]
-                            TextFieldValue(newText, TextRange(newText.length))
+                            else -> false
+                        }
+                    }
+                    .let { modifierLet ->
+                        if (focusRequester != null) {
+                            modifierLet.focusRequester(focusRequester)
                         } else {
-                            value
+                            modifierLet
                         }
-
-                        onTextEdit(value.text, drawInfo.position)
-                        commandHandler.handleCommand(text, step, drawInfo.position)
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Sentences
-                    ),
-                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-                    textStyle = textStyle ?: TextStyle.Default
-                )
-            } else {
-                Text(
-                    text = step.text ?: "",
-                    modifier = Modifier.padding(vertical = 5.dp),
-                )
-            }
+                    }
+                    .onFocusChanged(onFocusChanged),
+                value = inputText,
+                onValueChange = { value ->
+                    val changedText = value.text
+                    if (!changedText.contains("\n")) {
+                        onTextEdit(changedText, drawInfo.position)
+                        commandHandler.handleCommand(changedText, step, drawInfo.position)
+                    }
+                },
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences
+                ),
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                textStyle = textStyle ?: TextStyle.Default
+            )
+        } else {
+            Text(
+                text = step.text ?: "",
+                modifier = Modifier.padding(vertical = 5.dp),
+            )
         }
     }
 }

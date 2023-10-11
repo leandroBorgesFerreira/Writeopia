@@ -63,6 +63,7 @@ object DefaultDrawersJs {
             modifier = Modifier.weight(1F),
             textStyle = TextStyle(fontSize = fontSize),
             onTextEdit = manager::onTextEdit,
+            onLineBreak = manager::onLineBreak,
             focusRequester = focusRequesterH,
             emptyErase = emptyErase,
             commandHandler = TextCommandHandler.defaultCommands(manager),

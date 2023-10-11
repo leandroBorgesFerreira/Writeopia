@@ -36,12 +36,10 @@ import io.writeopia.sdk.utils.ui.defaultTextStyle
  */
 class DesktopMessageDrawer(
     private val modifier: Modifier = Modifier,
-    private val isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
+    private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean = { _, _, _, _ -> false },
     private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
     private val focusRequester: FocusRequester? = null,
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
-    private val emptyErase: ((Int) -> Unit)? = null,
-    private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     override var onFocusChanged: (FocusState) -> Unit = {}
 ) : SimpleMessageDrawer {
@@ -61,19 +59,9 @@ class DesktopMessageDrawer(
             BasicTextField(
                 modifier = modifier
                     .padding(start = 16.dp)
+                    // Todo: extract this
                     .onKeyEvent { keyEvent ->
-                        if (isEmptyErase(keyEvent, inputText)) {
-                            emptyErase?.invoke(drawInfo.position) ?: onDeleteRequest(
-                                Action.DeleteStory(
-                                    step,
-                                    drawInfo.position
-                                )
-                            )
-
-                            true
-                        } else {
-                            false
-                        }
+                        onKeyEvent(keyEvent, inputText, step, drawInfo.position)
                     }
                     .let { modifierLet ->
                         if (focusRequester != null) {
@@ -86,8 +74,10 @@ class DesktopMessageDrawer(
                 value = inputText,
                 onValueChange = { value ->
                     val changedText = value.text
-                    onTextEdit(changedText, drawInfo.position)
-                    commandHandler.handleCommand(changedText, step, drawInfo.position)
+                    if (!changedText.contains("\n")) {
+                        onTextEdit(changedText, drawInfo.position)
+                        commandHandler.handleCommand(changedText, step, drawInfo.position)
+                    }
                 },
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences

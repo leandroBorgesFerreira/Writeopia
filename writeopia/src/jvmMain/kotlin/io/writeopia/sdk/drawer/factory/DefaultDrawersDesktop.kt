@@ -33,11 +33,12 @@ object DefaultDrawersDesktop {
         onHeaderClick: () -> Unit = {}
     ): Map<Int, StoryStepDrawer> =
         create(
+            manager,
             DrawersConfig.fromManager(manager, onHeaderClick, groupsBackgroundColor, defaultBorder)
         )
 
     @Composable
-    fun create(drawersConfig: DrawersConfig): Map<Int, StoryStepDrawer> {
+    fun create(manager: WriteopiaManager, drawersConfig: DrawersConfig): Map<Int, StoryStepDrawer> {
         val focusRequesterMessageBox = remember { FocusRequester() }
         val messageBoxDrawer = swipeMessageDrawer(
             modifier = Modifier
@@ -47,18 +48,19 @@ object DefaultDrawersDesktop {
             focusRequester = focusRequesterMessageBox,
             onSelected = drawersConfig.onSelected,
             messageDrawer = {
-                desktopMessageDrawer(drawersConfig)
+                desktopMessageDrawer(manager, drawersConfig)
             }
         )
 
         val swipeMessageDrawer = swipeMessageDrawer(drawersConfig) {
-            desktopMessageDrawer(drawersConfig, emptyErase = null)
+            desktopMessageDrawer(manager, drawersConfig, deleteOnEmptyErase = true)
         }
         val hxDrawers = defaultHxDrawers(drawersConfig) { fontSize ->
-            desktopMessageDrawer(drawersConfig, fontSize)
+            desktopMessageDrawer(manager, drawersConfig, fontSize, deleteOnEmptyErase = true)
         }
-        val checkItemDrawer = checkItemDrawer(drawersConfig) { desktopMessageDrawer(drawersConfig) }
-        val unOrderedListItemDrawer = unOrderedListItemDrawer(drawersConfig) { desktopMessageDrawer(drawersConfig) }
+        val checkItemDrawer = checkItemDrawer(drawersConfig) { desktopMessageDrawer(manager, drawersConfig) }
+        val unOrderedListItemDrawer =
+            unOrderedListItemDrawer(drawersConfig) { desktopMessageDrawer(manager, drawersConfig) }
         val headerDrawer = headerDrawer(drawersConfig)
 
         return buildMap {
@@ -75,24 +77,28 @@ object DefaultDrawersDesktop {
 
     @Composable
     private fun RowScope.desktopMessageDrawer(
+        manager: WriteopiaManager,
         drawersConfig: DrawersConfig,
         fontSize: TextUnit = 16.sp,
-        emptyErase: ((Int) -> Unit)? = { position ->
-            drawersConfig.changeStoryType(position, StoryTypes.MESSAGE.type, null)
-        },
+        deleteOnEmptyErase: Boolean = false,
     ): DesktopMessageDrawer {
         val focusRequester = remember { FocusRequester() }
         return DesktopMessageDrawer(
             modifier = Modifier.weight(1F),
-            isEmptyErase = { keyEvent, inputText ->
-                keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE && inputText.selection.start == 0
-            },
+            onKeyEvent = KeyEventListenerFactory.create(
+                manager,
+                isLineBreakKey = { keyEvent ->
+                    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_ENTER
+                },
+                isEmptyErase = { keyEvent, inputText ->
+                    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE && inputText.selection.start == 0
+                },
+                deleteOnEmptyErase = deleteOnEmptyErase
+            ),
             onTextEdit = drawersConfig.onTextEdit,
             textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
             focusRequester = focusRequester,
             commandHandler = drawersConfig.textCommandHandler,
-            emptyErase = emptyErase,
-            onDeleteRequest = drawersConfig.onDeleteRequest
         )
     }
 }
