@@ -28,9 +28,6 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
         fun defaultCommands(manager: WriteopiaManager): TextCommandHandler =
             TextCommandHandler(
                 mapOf(
-                    CommandFactory.lineBreak() to { storyStep, position ->
-                        manager.onLineBreak(Action.LineBreak(storyStep, position))
-                    },
                     CommandFactory.checkItem() to { _, position ->
                         manager.changeStoryType(
                             position,

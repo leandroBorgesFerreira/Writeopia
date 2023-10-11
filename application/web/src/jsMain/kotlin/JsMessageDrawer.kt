@@ -11,6 +11,7 @@ import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
@@ -28,89 +29,65 @@ import org.jetbrains.skiko.SkikoKey
  * Simple message drawer mostly intended to be used as a component for more complex drawers.
  * This class contains the logic of the basic message of the SDK. As many other drawers need some
  * text in it this Drawer can be used instead of duplicating this text logic.
+ *
+ * Important: This class is currently a duplication of [DesktopMessageDrawer] for JS due to compilation problems.
+ * This class may be substituted for [DesktopMessageDrawer].
  */
 class JsMessageDrawer(
     private val modifier: Modifier = Modifier,
     private val textStyle: TextStyle? = null,
     private val focusRequester: FocusRequester? = null,
+    private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean = { _, _, _, _ -> false },
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
-    private val emptyErase: ((Int) -> Unit)? = null,
-    private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     override var onFocusChanged: (FocusState) -> Unit = {}
 ) : SimpleMessageDrawer {
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
-        Box(modifier = modifier) {
-            if (drawInfo.editable) {
-                var inputText by remember {
-                    val text = step.text ?: ""
-                    mutableStateOf(TextFieldValue(text, TextRange(text.length)))
+        if (drawInfo.editable) {
+            val text = step.text ?: ""
+            val inputText = TextFieldValue(text, TextRange(text.length))
+
+            LaunchedEffect(drawInfo.focusId) {
+                if (drawInfo.focusId == step.id) {
+                    focusRequester?.requestFocus()
                 }
-
-                LaunchedEffect(drawInfo.focusId) {
-                    if (drawInfo.focusId == step.id) {
-                        focusRequester?.requestFocus()
-                    }
-                }
-
-                val selection = inputText.selection
-
-                BasicTextField(
-                    modifier = Modifier
-                        .padding(start = 16.dp)
-                        .onKeyEvent { keyEvent ->
-                            val key = keyEvent.nativeKeyEvent.key
-                            if (
-                                (key == SkikoKey.KEY_BACKSPACE) &&
-                                selection.start == 0
-                            ) {
-                                emptyErase?.invoke(drawInfo.position) ?: onDeleteRequest(
-                                    Action.DeleteStory(
-                                        step,
-                                        drawInfo.position
-                                    )
-                                )
-                                true
-                            } else {
-                                false
-                            }
-                        }
-                        .let { modifierLet ->
-                            if (focusRequester != null) {
-                                modifierLet.focusRequester(focusRequester)
-                            } else {
-                                modifierLet
-                            }
-                        }
-                        .onFocusChanged(onFocusChanged),
-                    value = inputText,
-                    onValueChange = { value ->
-                        val text = value.text
-
-                        inputText = if (text.contains("\n")) {
-                            val newText = text.split("\n", limit = 2)[0]
-                            TextFieldValue(newText, TextRange(newText.length))
-                        } else {
-                            value
-                        }
-
-                        onTextEdit(value.text, drawInfo.position)
-                        commandHandler.handleCommand(text, step, drawInfo.position)
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Sentences
-                    ),
-                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-                    textStyle = textStyle ?: TextStyle.Default
-                )
-            } else {
-                Text(
-                    text = step.text ?: "",
-                    modifier = Modifier.padding(vertical = 5.dp),
-                )
             }
+
+            BasicTextField(
+                modifier = modifier
+                    .padding(start = 16.dp)
+                    .onKeyEvent { keyEvent ->
+                        onKeyEvent(keyEvent, inputText, step, drawInfo.position)
+                    }
+                    .let { modifierLet ->
+                        if (focusRequester != null) {
+                            modifierLet.focusRequester(focusRequester)
+                        } else {
+                            modifierLet
+                        }
+                    }
+                    .onFocusChanged(onFocusChanged),
+                value = inputText,
+                onValueChange = { value ->
+                    val changedText = value.text
+                    if (!changedText.contains("\n")) {
+                        onTextEdit(changedText, drawInfo.position)
+                        commandHandler.handleCommand(changedText, step, drawInfo.position)
+                    }
+                },
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences
+                ),
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                textStyle = textStyle ?: TextStyle.Default
+            )
+        } else {
+            Text(
+                text = step.text ?: "",
+                modifier = Modifier.padding(vertical = 5.dp),
+            )
         }
     }
 }

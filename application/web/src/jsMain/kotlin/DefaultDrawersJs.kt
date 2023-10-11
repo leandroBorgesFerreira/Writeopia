@@ -15,9 +15,11 @@ import androidx.compose.ui.unit.sp
 import io.writeopia.sdk.drawer.SimpleMessageDrawer
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.content.*
+import io.writeopia.sdk.drawer.factory.KeyEventListenerFactory
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.text.edition.TextCommandHandler
+import org.jetbrains.skiko.SkikoKey
 
 object DefaultDrawersJs {
 
@@ -31,10 +33,10 @@ object DefaultDrawersJs {
     ): Map<Int, StoryStepDrawer> {
         val focusRequesterMessageBoxSwipe = remember { FocusRequester() }
         val swipeMessageDrawer = swipeMessageDrawer(focusRequester = focusRequesterMessageBoxSwipe) {
-            jsMessageDrawer(manager, emptyErase = null)
+            jsMessageDrawer(manager, deleteOnEmptyErase = true)
         }
         val hxDrawers = defaultHxDrawers(manager) { fontSize ->
-            jsMessageDrawer(manager, fontSize = fontSize)
+            jsMessageDrawer(manager, fontSize = fontSize, deleteOnEmptyErase = true)
         }
         val checkItemDrawer = checkItemDrawer(manager) { jsMessageDrawer(manager) }
         val headerDrawer = headerDrawer(manager)
@@ -54,19 +56,25 @@ object DefaultDrawersJs {
     fun RowScope.jsMessageDrawer(
         manager: WriteopiaManager,
         fontSize: TextUnit = 16.sp,
-        emptyErase: ((Int) -> Unit)? = { position ->
-            manager.changeStoryType(position, StoryTypes.MESSAGE.type, null)
-        },
+        deleteOnEmptyErase: Boolean = false
     ): JsMessageDrawer {
-        val focusRequesterH = remember { FocusRequester() }
+        val focusRequester = remember { FocusRequester() }
         return JsMessageDrawer(
             modifier = Modifier.weight(1F),
             textStyle = TextStyle(fontSize = fontSize),
+            onKeyEvent = KeyEventListenerFactory.create(
+                manager,
+                isLineBreakKey = { keyEvent ->
+                    keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER
+                },
+                isEmptyErase = { keyEvent, inputText ->
+                    keyEvent.nativeKeyEvent.key == SkikoKey.KEY_BACKSPACE && inputText.selection.start == 0
+                },
+                deleteOnEmptyErase = deleteOnEmptyErase
+            ),
             onTextEdit = manager::onTextEdit,
-            focusRequester = focusRequesterH,
-            emptyErase = emptyErase,
+            focusRequester = focusRequester,
             commandHandler = TextCommandHandler.defaultCommands(manager),
-            onDeleteRequest = manager::onDelete,
         )
     }
 
