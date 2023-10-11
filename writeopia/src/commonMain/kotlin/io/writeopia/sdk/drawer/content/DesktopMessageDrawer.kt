@@ -34,8 +34,8 @@ import io.writeopia.sdk.utils.ui.defaultTextStyle
  */
 class DesktopMessageDrawer(
     private val modifier: Modifier = Modifier,
-    private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
     private val isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
+    private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
     private val focusRequester: FocusRequester? = null,
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
     private val emptyErase: ((Int) -> Unit)? = null,
