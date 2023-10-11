@@ -11,6 +11,7 @@ import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
@@ -33,10 +34,8 @@ class JsMessageDrawer(
     private val modifier: Modifier = Modifier,
     private val textStyle: TextStyle? = null,
     private val focusRequester: FocusRequester? = null,
+    private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean = { _, _, _, _ -> false },
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
-    private val emptyErase: ((Int) -> Unit)? = null,
-    private val onLineBreak: (Action.LineBreak) -> Unit,
-    private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     override var onFocusChanged: (FocusState) -> Unit = {}
 ) : SimpleMessageDrawer {
@@ -59,26 +58,7 @@ class JsMessageDrawer(
                 modifier = modifier
                     .padding(start = 16.dp)
                     .onKeyEvent { keyEvent ->
-                        val key = keyEvent.nativeKeyEvent.key
-
-                        when {
-                            key == SkikoKey.KEY_ENTER -> {
-                                onLineBreak(Action.LineBreak(step, position = drawInfo.position))
-                                true
-                            }
-
-                            key == SkikoKey.KEY_BACKSPACE && selection.start == 0 -> {
-                                emptyErase?.invoke(drawInfo.position) ?: onDeleteRequest(
-                                    Action.DeleteStory(
-                                        step,
-                                        drawInfo.position
-                                    )
-                                )
-                                true
-                            }
-
-                            else -> false
-                        }
+                        onKeyEvent(keyEvent, inputText, step, drawInfo.position)
                     }
                     .let { modifierLet ->
                         if (focusRequester != null) {
