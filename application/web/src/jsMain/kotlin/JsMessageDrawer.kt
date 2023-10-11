@@ -29,6 +29,9 @@ import org.jetbrains.skiko.SkikoKey
  * Simple message drawer mostly intended to be used as a component for more complex drawers.
  * This class contains the logic of the basic message of the SDK. As many other drawers need some
  * text in it this Drawer can be used instead of duplicating this text logic.
+ *
+ * Important: This class is currently a duplication of [DesktopMessageDrawer] for JS due to compilation problems.
+ * This class may be substituted for [DesktopMessageDrawer].
  */
 class JsMessageDrawer(
     private val modifier: Modifier = Modifier,
@@ -51,8 +54,6 @@ class JsMessageDrawer(
                     focusRequester?.requestFocus()
                 }
             }
-
-            val selection = inputText.selection
 
             BasicTextField(
                 modifier = modifier
