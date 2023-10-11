@@ -1,5 +1,6 @@
 package io.writeopia.sdk.drawer.factory
 
+import android.view.KeyEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
@@ -61,13 +62,7 @@ object DefaultDrawersAndroid {
             focusRequester = focusRequesterMessageBox,
             onSelected = drawersConfig.onSelected,
             messageDrawer = {
-                AndroidMessageDrawer(
-                    modifier = Modifier.weight(1F),
-                    onTextEdit = drawersConfig.onTextEdit,
-                    focusRequester = focusRequesterMessageBox,
-                    commandHandler = drawersConfig.textCommandHandler,
-                    onDeleteRequest = drawersConfig.onDeleteRequest
-                )
+                androidMessageDrawer(drawersConfig, emptyErase = null)
             }
         )
 
@@ -117,13 +112,16 @@ object DefaultDrawersAndroid {
         emptyErase: ((Int) -> Unit)? = { position ->
             drawersConfig.changeStoryType(position, StoryTypes.MESSAGE.type, null)
         },
-    ): AndroidMessageDrawer {
-        val focusRequesterH = remember { FocusRequester() }
-        return AndroidMessageDrawer(
+    ): MobileMessageDrawer {
+        val focusRequester = remember { FocusRequester() }
+        return MobileMessageDrawer(
             modifier = Modifier.weight(1F),
+            isEmptyErase = { keyEvent, selection ->
+                keyEvent.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DEL && selection.selection.start == 0
+            },
             onTextEdit = drawersConfig.onTextEdit,
             textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
-            focusRequester = focusRequesterH,
+            focusRequester = focusRequester,
             commandHandler = drawersConfig.textCommandHandler,
             emptyErase = emptyErase,
             onDeleteRequest = drawersConfig.onDeleteRequest

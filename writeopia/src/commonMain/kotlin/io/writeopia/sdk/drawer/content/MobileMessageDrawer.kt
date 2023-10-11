@@ -14,13 +14,14 @@ import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.SimpleMessageDrawer
-import io.writeopia.sdk.drawer.modifier.callOnEmptyErase
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
@@ -32,9 +33,9 @@ import io.writeopia.sdk.utils.ui.defaultTextStyle
  * This class contains the logic of the basic message of the SDK. As many other drawers need some
  * text in it this Drawer can be used instead of duplicating this text logic.
  */
-class AndroidMessageDrawer(
+class MobileMessageDrawer(
     private val modifier: Modifier = Modifier,
-    // Todo: Use a local composition or custom theme instead of a second modifier.
+    private val isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
     private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
     private val focusRequester: FocusRequester? = null,
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
@@ -69,13 +70,19 @@ class AndroidMessageDrawer(
                                 modifierLet
                             }
                         }
-                        .callOnEmptyErase(inputText.selection) {
-                            emptyErase?.invoke(drawInfo.position) ?: onDeleteRequest(
-                                Action.DeleteStory(
-                                    step,
-                                    drawInfo.position
+                        .onKeyEvent { keyEvent ->
+                            if (isEmptyErase(keyEvent, inputText)) {
+                                emptyErase?.invoke(drawInfo.position) ?: onDeleteRequest(
+                                    Action.DeleteStory(
+                                        step,
+                                        drawInfo.position
+                                    )
                                 )
-                            )
+
+                                true
+                            } else {
+                                false
+                            }
                         }
                         .onFocusChanged(onFocusChanged),
                     value = inputText,
@@ -107,4 +114,3 @@ class AndroidMessageDrawer(
         }
     }
 }
-

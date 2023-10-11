@@ -31,6 +31,8 @@ import io.writeopia.sdk.utils.ui.defaultTextStyle
  * Simple message drawer mostly intended to be used as a component for more complex drawers.
  * This class contains the logic of the basic message of the SDK. As many other drawers need some
  * text in it this Drawer can be used instead of duplicating this text logic.
+ *
+ * This is the intended version to be used with desktop and webapp, instead o the mobile version.
  */
 class DesktopMessageDrawer(
     private val modifier: Modifier = Modifier,
