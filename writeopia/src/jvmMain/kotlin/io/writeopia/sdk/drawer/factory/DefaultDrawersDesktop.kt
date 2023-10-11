@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.awtEventOrNull
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
@@ -19,6 +20,7 @@ import io.writeopia.sdk.drawer.content.*
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.utils.ui.defaultTextStyle
+import java.awt.event.KeyEvent
 
 object DefaultDrawersDesktop {
 
@@ -79,12 +81,15 @@ object DefaultDrawersDesktop {
             drawersConfig.changeStoryType(position, StoryTypes.MESSAGE.type, null)
         },
     ): DesktopMessageDrawer {
-        val focusRequesterH = remember { FocusRequester() }
+        val focusRequester = remember { FocusRequester() }
         return DesktopMessageDrawer(
             modifier = Modifier.weight(1F),
+            isEmptyErase = { keyEvent, inputText ->
+                keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE && inputText.selection.start == 0
+            },
             onTextEdit = drawersConfig.onTextEdit,
             textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
-            focusRequester = focusRequesterH,
+            focusRequester = focusRequester,
             commandHandler = drawersConfig.textCommandHandler,
             emptyErase = emptyErase,
             onDeleteRequest = drawersConfig.onDeleteRequest
