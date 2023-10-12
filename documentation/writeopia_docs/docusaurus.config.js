@@ -69,6 +69,11 @@ const config = {
             position: 'left',
             label: 'Tutorial',
           },
+          {
+            href: 'https://sample.writeopia.io/',
+            label: 'Live Sample',
+            position: 'left',
+          },
           // {to: '/api_reference', label: 'API reference', position: 'left'},
           {
             href: 'https://github.com/leandroBorgesFerreira/Writeopia',
