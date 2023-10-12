@@ -61,7 +61,15 @@ object DefaultDrawersDesktop {
         val checkItemDrawer = checkItemDrawer(drawersConfig) { desktopMessageDrawer(manager, drawersConfig) }
         val unOrderedListItemDrawer =
             unOrderedListItemDrawer(drawersConfig) { desktopMessageDrawer(manager, drawersConfig) }
-        val headerDrawer = headerDrawer(drawersConfig)
+                // Todo: fix this!
+        val headerDrawer = headerDrawerDesktop(manager, headerClick = {},  onKeyEvent = KeyEventListenerFactory.create(
+            manager,
+            isLineBreakKey = { keyEvent ->
+                keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_ENTER
+            },
+            isEmptyErase = { _, _ -> false },
+            deleteOnEmptyErase = false
+        ))
 
         return buildMap {
             put(StoryTypes.MESSAGE_BOX.type.number, messageBoxDrawer)
@@ -102,3 +110,4 @@ object DefaultDrawersDesktop {
         )
     }
 }
+

@@ -108,16 +108,23 @@ object DefaultDrawersJs {
         )
     }
 
-    private fun headerDrawer(writeopiaManager: WriteopiaManager): StoryStepDrawer =
-        HeaderDrawer(
+    private fun headerDrawer(writeopiaManager: WriteopiaManager): StoryStepDrawer {
+        val keyEvent = KeyEventListenerFactory.create(
+            writeopiaManager,
+            isLineBreakKey = { keyEvent -> keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER },
+            deleteOnEmptyErase = false
+        )
+
+        return HeaderDrawer(
             drawer = {
-                TitleDrawer(
-                    containerModifier = Modifier.align(Alignment.BottomStart),
+                DesktopTitleDrawer(
+                    modifier = Modifier.align(Alignment.BottomStart),
                     onTextEdit = writeopiaManager::onTitleEdit,
-                    onLineBreak = writeopiaManager::onLineBreak,
+                    onKeyEvent = keyEvent,
                 )
             },
         )
+    }
 
     @Composable
     fun checkItemDrawer(
@@ -152,4 +159,6 @@ object DefaultDrawersJs {
             messageDrawer = messageDrawer,
         )
     }
+
+
 }

@@ -103,7 +103,10 @@ class MobileMessageDrawer(
                         capitalization = KeyboardCapitalization.Sentences
                     ),
                     textStyle = textStyle(step),
-                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
+                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                    decorationBox = {
+
+                    }
                 )
             } else {
                 Text(

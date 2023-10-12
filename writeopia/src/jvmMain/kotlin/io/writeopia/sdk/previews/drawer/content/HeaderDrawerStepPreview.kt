@@ -27,7 +27,7 @@ fun HeaderDrawerStepPreview() {
     HeaderDrawer(
         drawer = {
             TitleDrawer(
-                containerModifier = Modifier.align(Alignment.BottomStart),
+                modifier = Modifier.align(Alignment.BottomStart),
                 onTextEdit = { _, _ -> },
                 onLineBreak = {},
             )
@@ -48,7 +48,7 @@ fun HeaderDrawerStepPreviewNoColor() {
     HeaderDrawer(
         drawer = {
             TitleDrawer(
-                containerModifier = Modifier.align(Alignment.BottomStart),
+                modifier = Modifier.align(Alignment.BottomStart),
                 onTextEdit = { _, _ -> },
                 onLineBreak = {},
             )

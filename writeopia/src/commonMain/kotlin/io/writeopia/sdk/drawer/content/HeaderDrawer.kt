@@ -10,9 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.factory.DrawersConfig
+import io.writeopia.sdk.drawer.factory.KeyEventListenerFactory
+import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 
@@ -52,10 +56,26 @@ fun headerDrawer(drawersConfig: DrawersConfig): StoryStepDrawer =
     HeaderDrawer(
         drawer = {
             TitleDrawer(
-                containerModifier = Modifier.align(Alignment.BottomStart),
+                modifier = Modifier.align(Alignment.BottomStart),
                 onTextEdit = drawersConfig.onTitleEdit,
                 onLineBreak = drawersConfig.onLineBreak,
             )
         },
         headerClick = drawersConfig.onHeaderClick
+    )
+
+fun headerDrawerDesktop(
+    manager: WriteopiaManager,
+    headerClick: () -> Unit,
+    onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean
+): StoryStepDrawer =
+    HeaderDrawer(
+        drawer = {
+            DesktopTitleDrawer(
+                modifier = Modifier.align(Alignment.BottomStart),
+                onTextEdit = manager::onTitleEdit,
+                onKeyEvent = onKeyEvent
+            )
+        },
+        headerClick = headerClick
     )

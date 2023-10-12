@@ -12,7 +12,7 @@ object KeyEventListenerFactory {
     fun create(
         manager: WriteopiaManager,
         isLineBreakKey: (KeyEvent) -> Boolean,
-        isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean,
+        isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
         deleteOnEmptyErase: Boolean = false
     ): (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean {
         return { keyEvent, inputText, step, position ->

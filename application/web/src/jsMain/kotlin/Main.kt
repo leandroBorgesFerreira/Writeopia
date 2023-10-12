@@ -56,18 +56,8 @@ fun main() {
 
 @Composable
 fun CreateTextEditor() {
-    val now = Clock.System.now()
-
     val writeopiaManager = WriteopiaManager(dispatcher = Dispatchers.Main).apply {
-        initDocument(
-            Document(
-                title = "Sample Document",
-                createdAt = now,
-                lastUpdatedAt = now,
-                userId = "",
-                content = supermarketList()
-            )
-        )
+        this.newStory()
     }
 
     TextEditor(drawers = DefaultDrawersJs.create(writeopiaManager), drawState = writeopiaManager.toDraw)
