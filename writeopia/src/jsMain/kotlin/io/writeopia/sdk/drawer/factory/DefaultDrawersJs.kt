@@ -1,3 +1,5 @@
+package io.writeopia.sdk.drawer.factory
+
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -15,7 +17,6 @@ import androidx.compose.ui.unit.sp
 import io.writeopia.sdk.drawer.SimpleMessageDrawer
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.content.*
-import io.writeopia.sdk.drawer.factory.KeyEventListenerFactory
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.text.edition.TextCommandHandler

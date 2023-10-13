@@ -20,61 +20,77 @@ import io.writeopia.sdk.drawer.commands.CommandsDecoratorDrawer
 import io.writeopia.sdk.drawer.content.*
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.text.edition.TextCommandHandler
 import io.writeopia.sdk.utils.ui.defaultTextStyle
 
 object DefaultDrawersAndroid {
 
     @Composable
     fun create(
-        manager: WriteopiaManager,
-        defaultBorder: Shape = MaterialTheme.shapes.medium,
+        manager: WriteopiaManager, defaultBorder: Shape = MaterialTheme.shapes.medium,
         editable: Boolean = false,
         groupsBackgroundColor: Color = Color.Transparent,
-        onHeaderClick: () -> Unit = {}
-    ): Map<Int, StoryStepDrawer> =
-        create(DrawersConfig.fromManager(manager, onHeaderClick, groupsBackgroundColor, defaultBorder))
-
-    @Composable
-    fun create(drawersConfig: DrawersConfig): Map<Int, StoryStepDrawer> {
+        onHeaderClick: () -> Unit = {},
+        textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager)
+    ): Map<Int, StoryStepDrawer> {
         val commandsComposite: (StoryStepDrawer) -> StoryStepDrawer = { stepDrawer ->
             CommandsDecoratorDrawer(
                 stepDrawer,
-                onDelete = drawersConfig.onDeleteRequest,
+                onDelete = manager::onDelete,
             )
         }
 
         val imageDrawer = ImageDrawer(
             containerModifier = Modifier::defaultImageShape,
-            mergeRequest = drawersConfig.mergeRequest
+            mergeRequest = manager::mergeRequest
         )
 
         val imageDrawerInGroup = ImageDrawer(
             containerModifier = Modifier::defaultImageShape,
-            mergeRequest = drawersConfig.mergeRequest
+            mergeRequest = manager::mergeRequest
         )
 
         val focusRequesterMessageBox = remember { FocusRequester() }
         val messageBoxDrawer = swipeMessageDrawer(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .clip(shape = drawersConfig.defaultBorder())
-                .background(drawersConfig.groupsBackgroundColor()),
+                .clip(shape = defaultBorder)
+                .background(groupsBackgroundColor),
             focusRequester = focusRequesterMessageBox,
-            onSelected = drawersConfig.onSelected,
+            onSelected = manager::onSelected,
             messageDrawer = {
-                androidMessageDrawer(drawersConfig, emptyErase = null)
+                androidMessageDrawer(
+                    manager,
+                    emptyErase = null,
+                    textCommandHandler = textCommandHandler
+                )
             }
         )
 
-        val swipeMessageDrawer = swipeMessageDrawer(drawersConfig) {
-            androidMessageDrawer(drawersConfig, emptyErase = null)
+        val swipeMessageDrawer = swipeMessageDrawer(manager) {
+            androidMessageDrawer(
+                manager,
+                emptyErase = null,
+                textCommandHandler = textCommandHandler
+            )
         }
-        val hxDrawers = defaultHxDrawers(drawersConfig) { fontSize ->
-            androidMessageDrawer(drawersConfig, fontSize)
+        val hxDrawers = defaultHxDrawers(manager) { fontSize ->
+            androidMessageDrawer(manager, fontSize, textCommandHandler = textCommandHandler)
         }
-        val checkItemDrawer = checkItemDrawer(drawersConfig) { androidMessageDrawer(drawersConfig) }
-        val unOrderedListItemDrawer = unOrderedListItemDrawer(drawersConfig) { androidMessageDrawer(drawersConfig) }
-        val headerDrawer = headerDrawer(drawersConfig)
+        val checkItemDrawer = checkItemDrawer(manager) {
+            androidMessageDrawer(
+                manager,
+                textCommandHandler = textCommandHandler
+            )
+        }
+        val unOrderedListItemDrawer =
+            unOrderedListItemDrawer(manager) {
+                androidMessageDrawer(
+                    manager,
+                    textCommandHandler = textCommandHandler
+                )
+            }
+        val headerDrawer = headerDrawer(manager, onHeaderClick)
 
         return buildMap {
             put(StoryTypes.MESSAGE_BOX.type.number, messageBoxDrawer)
@@ -92,10 +108,10 @@ object DefaultDrawersAndroid {
                 StoryTypes.VIDEO.type.number,
                 VideoDrawer()
             )
-            put(StoryTypes.SPACE.type.number, SpaceDrawer(drawersConfig.moveRequest))
+            put(StoryTypes.SPACE.type.number, SpaceDrawer(manager::moveRequest))
             put(
                 StoryTypes.LARGE_SPACE.type.number,
-                LargeEmptySpace(drawersConfig.moveRequest, drawersConfig.clickAtTheEnd)
+                LargeEmptySpace(manager::moveRequest, manager::clickAtTheEnd)
             )
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
             put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
@@ -107,11 +123,12 @@ object DefaultDrawersAndroid {
 
     @Composable
     private fun RowScope.androidMessageDrawer(
-        drawersConfig: DrawersConfig,
+        manager: WriteopiaManager,
         fontSize: TextUnit = 16.sp,
         emptyErase: ((Int) -> Unit)? = { position ->
-            drawersConfig.changeStoryType(position, StoryTypes.MESSAGE.type, null)
+            manager.changeStoryType(position, StoryTypes.MESSAGE.type, null)
         },
+        textCommandHandler: TextCommandHandler
     ): MobileMessageDrawer {
         val focusRequester = remember { FocusRequester() }
         return MobileMessageDrawer(
@@ -119,12 +136,12 @@ object DefaultDrawersAndroid {
             isEmptyErase = { keyEvent, selection ->
                 keyEvent.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DEL && selection.selection.start == 0
             },
-            onTextEdit = drawersConfig.onTextEdit,
+            onTextEdit = manager::onTextEdit,
             textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
             focusRequester = focusRequester,
-            commandHandler = drawersConfig.textCommandHandler,
+            commandHandler = textCommandHandler,
             emptyErase = emptyErase,
-            onDeleteRequest = drawersConfig.onDeleteRequest
+            onDeleteRequest = manager::onDelete
         )
     }
 }

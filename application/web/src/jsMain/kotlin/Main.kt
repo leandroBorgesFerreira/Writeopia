@@ -16,12 +16,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import io.writeopia.sdk.WriteopiaEditorBox
 import io.writeopia.sdk.drawer.StoryStepDrawer
+import io.writeopia.sdk.drawer.factory.DefaultDrawersJs
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.story.DrawState
-import io.writeopia.sdk.models.document.Document
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.datetime.Clock
 import org.jetbrains.skiko.wasm.onWasmReady
 
 fun main() {

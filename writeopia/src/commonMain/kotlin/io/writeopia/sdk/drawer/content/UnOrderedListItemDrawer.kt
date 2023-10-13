@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.SimpleMessageDrawer
 import io.writeopia.sdk.drawer.StoryStepDrawer
-import io.writeopia.sdk.drawer.factory.DrawersConfig
+import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 
@@ -45,14 +45,14 @@ fun unOrderedListItemDrawer(
 
 @Composable
 fun unOrderedListItemDrawer(
-    drawersConfig: DrawersConfig,
+    manager: WriteopiaManager,
     messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
 ): StoryStepDrawer {
     val focusRequesterUnOrderedList = remember { FocusRequester() }
 
     return unOrderedListItemDrawer(
         modifier = Modifier.padding(start = 18.dp, end = 12.dp),
-        onSelected = drawersConfig.onSelected,
+        onSelected = manager::onSelected,
         focusRequester = focusRequesterUnOrderedList,
         customBackgroundColor = Color.Transparent,
         messageDrawer = messageDrawer,

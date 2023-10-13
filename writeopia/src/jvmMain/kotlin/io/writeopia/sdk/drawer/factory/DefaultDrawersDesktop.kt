@@ -19,6 +19,7 @@ import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.content.*
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.text.edition.TextCommandHandler
 import io.writeopia.sdk.utils.ui.defaultTextStyle
 import java.awt.event.KeyEvent
 
@@ -31,36 +32,30 @@ object DefaultDrawersDesktop {
         editable: Boolean = false,
         groupsBackgroundColor: Color = Color.Transparent,
         onHeaderClick: () -> Unit = {}
-    ): Map<Int, StoryStepDrawer> =
-        create(
-            manager,
-            DrawersConfig.fromManager(manager, onHeaderClick, groupsBackgroundColor, defaultBorder)
-        )
+    ): Map<Int, StoryStepDrawer> {
 
-    @Composable
-    fun create(manager: WriteopiaManager, drawersConfig: DrawersConfig): Map<Int, StoryStepDrawer> {
         val focusRequesterMessageBox = remember { FocusRequester() }
         val messageBoxDrawer = swipeMessageDrawer(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .clip(shape = drawersConfig.defaultBorder())
-                .background(drawersConfig.groupsBackgroundColor()),
+                .clip(shape = defaultBorder)
+                .background(groupsBackgroundColor),
             focusRequester = focusRequesterMessageBox,
-            onSelected = drawersConfig.onSelected,
+            onSelected = manager::onSelected,
             messageDrawer = {
-                desktopMessageDrawer(manager, drawersConfig)
+                desktopMessageDrawer(manager)
             }
         )
 
-        val swipeMessageDrawer = swipeMessageDrawer(drawersConfig) {
-            desktopMessageDrawer(manager, drawersConfig, deleteOnEmptyErase = true)
+        val swipeMessageDrawer = swipeMessageDrawer(manager) {
+            desktopMessageDrawer(manager, deleteOnEmptyErase = true)
         }
-        val hxDrawers = defaultHxDrawers(drawersConfig) { fontSize ->
-            desktopMessageDrawer(manager, drawersConfig, fontSize, deleteOnEmptyErase = true)
+        val hxDrawers = defaultHxDrawers(manager) { fontSize ->
+            desktopMessageDrawer(manager, fontSize, deleteOnEmptyErase = true)
         }
-        val checkItemDrawer = checkItemDrawer(drawersConfig) { desktopMessageDrawer(manager, drawersConfig) }
+        val checkItemDrawer = checkItemDrawer(manager) { desktopMessageDrawer(manager) }
         val unOrderedListItemDrawer =
-            unOrderedListItemDrawer(drawersConfig) { desktopMessageDrawer(manager, drawersConfig) }
+            unOrderedListItemDrawer(manager) { desktopMessageDrawer(manager) }
         val headerDrawer = headerDrawerDesktop(
             manager,
             headerClick = {},
@@ -78,7 +73,7 @@ object DefaultDrawersDesktop {
             put(StoryTypes.MESSAGE_BOX.type.number, messageBoxDrawer)
             put(StoryTypes.MESSAGE.type.number, swipeMessageDrawer)
             put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
-            put(StoryTypes.SPACE.type.number, SpaceDrawer(drawersConfig.moveRequest))
+            put(StoryTypes.SPACE.type.number, SpaceDrawer(manager::moveRequest))
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
             put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
             put(StoryTypes.TITLE.type.number, headerDrawer)
@@ -89,8 +84,8 @@ object DefaultDrawersDesktop {
     @Composable
     private fun RowScope.desktopMessageDrawer(
         manager: WriteopiaManager,
-        drawersConfig: DrawersConfig,
         fontSize: TextUnit = 16.sp,
+        textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager),
         deleteOnEmptyErase: Boolean = false,
     ): DesktopMessageDrawer {
         val focusRequester = remember { FocusRequester() }
@@ -106,10 +101,10 @@ object DefaultDrawersDesktop {
                 },
                 deleteOnEmptyErase = deleteOnEmptyErase
             ),
-            onTextEdit = drawersConfig.onTextEdit,
+            onTextEdit = manager::onTextEdit,
             textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
             focusRequester = focusRequester,
-            commandHandler = drawersConfig.textCommandHandler,
+            commandHandler = textCommandHandler,
         )
     }
 }
