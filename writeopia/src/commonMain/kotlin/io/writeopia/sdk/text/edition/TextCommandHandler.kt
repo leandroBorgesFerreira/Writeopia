@@ -86,6 +86,16 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                                 CommandTrigger.WRITTEN
                             )
                         )
+                    },
+                    CommandFactory.codeBlock() to { _, position ->
+                        manager.changeStoryType(
+                            position,
+                            StoryTypes.MESSAGE_BOX.type,
+                            CommandInfo(
+                                CommandFactory.codeBlock(),
+                                CommandTrigger.WRITTEN
+                            )
+                        )
                     }
                 )
             )

@@ -33,7 +33,6 @@ object DefaultDrawersDesktop {
         groupsBackgroundColor: Color = Color.Transparent,
         onHeaderClick: () -> Unit = {}
     ): Map<Int, StoryStepDrawer> {
-
         val focusRequesterMessageBox = remember { FocusRequester() }
         val messageBoxDrawer = swipeMessageDrawer(
             modifier = Modifier
@@ -43,7 +42,20 @@ object DefaultDrawersDesktop {
             focusRequester = focusRequesterMessageBox,
             onSelected = manager::onSelected,
             messageDrawer = {
-                desktopMessageDrawer(manager)
+                desktopMessageBoxDrawer(manager)
+            }
+        )
+
+        val focusRequesterCodeBlock = remember { FocusRequester() }
+        val codeBlockDrawer = swipeMessageDrawer(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .clip(shape = defaultBorder)
+                .background(Color.Gray),
+            focusRequester = focusRequesterCodeBlock,
+            onSelected = manager::onSelected,
+            messageDrawer = {
+                desktopMessageBoxDrawer(manager)
             }
         )
 
@@ -77,10 +89,12 @@ object DefaultDrawersDesktop {
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
             put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
             put(StoryTypes.TITLE.type.number, headerDrawer)
+            put(StoryTypes.CODE_BLOCK.type.number, codeBlockDrawer)
             putAll(hxDrawers)
         }
     }
 
+    //Todo: Merge this with JS.
     @Composable
     private fun RowScope.desktopMessageDrawer(
         manager: WriteopiaManager,
@@ -107,5 +121,30 @@ object DefaultDrawersDesktop {
             commandHandler = textCommandHandler,
         )
     }
-}
 
+    @Composable
+    private fun RowScope.desktopMessageBoxDrawer(
+        manager: WriteopiaManager,
+        fontSize: TextUnit = 16.sp,
+        textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager),
+        deleteOnEmptyErase: Boolean = false,
+    ): DesktopMessageDrawer {
+        val focusRequester = remember { FocusRequester() }
+        return DesktopMessageDrawer(
+            modifier = Modifier.weight(1F),
+            onKeyEvent = KeyEventListenerFactory.create(
+                manager,
+                isLineBreakKey = { false },
+                isEmptyErase = { keyEvent, inputText ->
+                    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE && inputText.selection.start == 0
+                },
+                deleteOnEmptyErase = deleteOnEmptyErase
+            ),
+            onTextEdit = manager::onTextEdit,
+            textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
+            focusRequester = focusRequester,
+            commandHandler = textCommandHandler,
+            allowLineBreaks = true
+        )
+    }
+}

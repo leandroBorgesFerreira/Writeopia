@@ -41,6 +41,7 @@ class DesktopMessageDrawer(
     private val focusRequester: FocusRequester? = null,
     private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
+    private val allowLineBreaks: Boolean = false,
     override var onFocusChanged: (FocusState) -> Unit = {}
 ) : SimpleMessageDrawer {
 
@@ -74,7 +75,7 @@ class DesktopMessageDrawer(
                 value = inputText,
                 onValueChange = { value ->
                     val changedText = value.text
-                    if (!changedText.contains("\n")) {
+                    if (allowLineBreaks || !changedText.contains("\n")) {
                         onTextEdit(changedText, drawInfo.position)
                         commandHandler.handleCommand(changedText, step, drawInfo.position)
                     }

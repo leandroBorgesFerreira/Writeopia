@@ -46,10 +46,16 @@ enum class StoryTypes(val type: StoryType) {
     H2(StoryType("h2", 13)),
     H3(StoryType("h3", 14)),
     H4(StoryType("h4", 15)),
-    UNORDERED_LIST_ITEM(StoryType("unordered_list_item", 16));
+    UNORDERED_LIST_ITEM(StoryType("unordered_list_item", 16)),
+    CODE_BLOCK(
+        StoryType(
+            "message_box",
+            1
+        )
+    ),
+    ;
 
     companion object {
-        fun fromName(stringValue: String): StoryTypes =
-            StoryTypes.values().first { it.type.name == stringValue }
+        fun fromName(stringValue: String): StoryTypes = entries.first { it.type.name == stringValue }
     }
 }
