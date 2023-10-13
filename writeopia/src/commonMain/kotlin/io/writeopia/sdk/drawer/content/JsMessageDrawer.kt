@@ -1,4 +1,5 @@
-import androidx.compose.foundation.layout.Box
+package io.writeopia.sdk.drawer.content
+
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -19,11 +20,9 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.SimpleMessageDrawer
-import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.text.edition.TextCommandHandler
-import org.jetbrains.skiko.SkikoKey
 
 /**
  * Simple message drawer mostly intended to be used as a component for more complex drawers.
