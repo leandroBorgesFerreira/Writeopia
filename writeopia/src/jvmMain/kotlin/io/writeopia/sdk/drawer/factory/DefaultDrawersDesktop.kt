@@ -110,7 +110,7 @@ object DefaultDrawersDesktop {
         return DesktopMessageDrawer(
             modifier = Modifier.weight(1F),
             onKeyEvent = KeyEventListenerFactoryDesktop.createDesktop(manager, deleteOnEmptyErase),
-            onTextEdit = manager::onTextEdit,
+            onTextEdit = manager::changeStoryState,
             textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
             focusRequester = focusRequester,
             commandHandler = textCommandHandler,
@@ -128,7 +128,7 @@ object DefaultDrawersDesktop {
         return DesktopMessageDrawer(
             modifier = Modifier.weight(1F),
             onKeyEvent = KeyEventListenerFactoryDesktop.createDesktop(manager, deleteOnEmptyErase),
-            onTextEdit = manager::onTextEdit,
+            onTextEdit = manager::changeStoryState,
             textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
             focusRequester = focusRequester,
             commandHandler = textCommandHandler,

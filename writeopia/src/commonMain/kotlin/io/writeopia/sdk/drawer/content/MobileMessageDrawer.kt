@@ -55,7 +55,7 @@ class MobileMessageDrawer(
                 }
 
                 if (drawInfo.focusId == step.id) {
-                    LaunchedEffect(drawInfo.focusId) {
+                    LaunchedEffect(step.localId) {
                         focusRequester?.requestFocus()
                     }
                 }
@@ -104,9 +104,6 @@ class MobileMessageDrawer(
                     ),
                     textStyle = textStyle(step),
                     cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-                    decorationBox = {
-
-                    }
                 )
             } else {
                 Text(

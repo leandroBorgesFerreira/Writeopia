@@ -296,11 +296,14 @@ class WriteopiaManager(
         val newStory = _currentStory.value.stories[position]?.copy(text = text)
 
         if (newStory != null && oldText != text) {
-            contentHandler.changeStoryStepState(currentStory, newStory, position)
-                ?.let { newState ->
-                    _currentStory.value = newState
-                    backStackManager.addAction(BackstackAction.StoryTextChange(newStory, position))
-                }
+            contentHandler.changeStoryStepState(
+                currentStory,
+                newStory,
+                position
+            )?.let { newState ->
+                _currentStory.value = newState
+                backStackManager.addAction(BackstackAction.StoryTextChange(newStory, position))
+            }
         }
     }
 
