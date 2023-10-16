@@ -50,7 +50,6 @@ object DefaultDrawersDesktop {
         val codeBlockDrawer = swipeMessageDrawer(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .clip(shape = defaultBorder)
                 .background(Color.Gray),
             focusRequester = focusRequesterCodeBlock,
             onSelected = manager::onSelected,

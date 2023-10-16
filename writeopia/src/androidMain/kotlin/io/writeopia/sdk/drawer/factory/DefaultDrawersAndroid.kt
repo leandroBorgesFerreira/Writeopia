@@ -62,7 +62,8 @@ object DefaultDrawersAndroid {
                 androidMessageDrawer(
                     manager,
                     emptyErase = null,
-                    textCommandHandler = textCommandHandler
+                    textCommandHandler = textCommandHandler,
+                    allowLineBreaks = true
                 )
             }
         )
@@ -71,23 +72,43 @@ object DefaultDrawersAndroid {
             androidMessageDrawer(
                 manager,
                 emptyErase = null,
-                textCommandHandler = textCommandHandler
+                textCommandHandler = textCommandHandler,
+                allowLineBreaks = false
             )
         }
+
+        val codeBlockDrawer = swipeMessageDrawer(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .background(Color.Gray),
+            focusRequester = focusRequesterMessageBox,
+            onSelected = manager::onSelected,
+            messageDrawer = {
+                androidMessageDrawer(
+                    manager,
+                    emptyErase = null,
+                    textCommandHandler = textCommandHandler,
+                    allowLineBreaks = true
+                )
+            }
+        )
+
         val hxDrawers = defaultHxDrawers(manager) { fontSize ->
-            androidMessageDrawer(manager, fontSize, textCommandHandler = textCommandHandler)
+            androidMessageDrawer(manager, fontSize, textCommandHandler = textCommandHandler, allowLineBreaks = false)
         }
         val checkItemDrawer = checkItemDrawer(manager) {
             androidMessageDrawer(
                 manager,
-                textCommandHandler = textCommandHandler
+                textCommandHandler = textCommandHandler,
+                allowLineBreaks = false
             )
         }
         val unOrderedListItemDrawer =
             unOrderedListItemDrawer(manager) {
                 androidMessageDrawer(
                     manager,
-                    textCommandHandler = textCommandHandler
+                    textCommandHandler = textCommandHandler,
+                    allowLineBreaks = false
                 )
             }
         val headerDrawer = headerDrawer(manager, onHeaderClick)
@@ -116,6 +137,7 @@ object DefaultDrawersAndroid {
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
             put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
             put(StoryTypes.TITLE.type.number, headerDrawer)
+            put(StoryTypes.CODE_BLOCK.type.number, codeBlockDrawer)
             putAll(hxDrawers)
         }
     }
@@ -128,7 +150,8 @@ object DefaultDrawersAndroid {
         emptyErase: ((Int) -> Unit)? = { position ->
             manager.changeStoryType(position, StoryTypes.TEXT.type, null)
         },
-        textCommandHandler: TextCommandHandler
+        textCommandHandler: TextCommandHandler,
+        allowLineBreaks: Boolean
     ): MobileMessageDrawer {
         val focusRequester = remember { FocusRequester() }
         return MobileMessageDrawer(
@@ -142,7 +165,8 @@ object DefaultDrawersAndroid {
             commandHandler = textCommandHandler,
             emptyErase = emptyErase,
             onDeleteRequest = manager::onDelete,
-            onLineBreak = manager::onLineBreak
+            onLineBreak = manager::onLineBreak,
+            allowLineBreaks = allowLineBreaks
         )
     }
 }

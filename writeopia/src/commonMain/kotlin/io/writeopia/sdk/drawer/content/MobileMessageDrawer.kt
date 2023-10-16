@@ -35,6 +35,7 @@ import io.writeopia.sdk.utils.ui.defaultTextStyle
  */
 class MobileMessageDrawer(
     private val modifier: Modifier = Modifier,
+    private val allowLineBreaks: Boolean,
     private val isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
     private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
     private val focusRequester: FocusRequester? = null,
@@ -89,7 +90,7 @@ class MobileMessageDrawer(
                 onValueChange = { value ->
                     val text = value.text
 
-                    inputText = if (text.contains("\n")) {
+                    inputText = if (text.contains("\n") && !allowLineBreaks) {
                         onLineBreak(Action.LineBreak(step, drawInfo.position))
 
                         val newText = text.split("\n", limit = 2)[0]
