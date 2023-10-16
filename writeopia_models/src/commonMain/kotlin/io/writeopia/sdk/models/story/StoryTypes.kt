@@ -30,7 +30,7 @@ enum class StoryTypes(val type: StoryType) {
     SPACE(StoryType("space", 7)),
     LAST_SPACE(
         StoryType(
-            "large_space",
+            "last_space",
             8
         )
     ),
