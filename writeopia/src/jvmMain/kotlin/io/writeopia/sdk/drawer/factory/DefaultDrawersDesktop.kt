@@ -1,8 +1,10 @@
 package io.writeopia.sdk.drawer.factory
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -20,6 +22,7 @@ import io.writeopia.sdk.drawer.content.*
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.text.edition.TextCommandHandler
+import io.writeopia.sdk.utils.ui.codeBlockStyle
 import io.writeopia.sdk.utils.ui.defaultTextStyle
 import java.awt.event.KeyEvent
 
@@ -46,11 +49,14 @@ object DefaultDrawersDesktop {
             }
         )
 
+        val codeBlockShape = RoundedCornerShape(4.dp)
         val focusRequesterCodeBlock = remember { FocusRequester() }
         val codeBlockDrawer = swipeMessageDrawer(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .background(Color.Gray),
+                .clip(shape = codeBlockShape)
+                .background(Color.LightGray)
+                .border(1.dp, color = Color.Gray, codeBlockShape),
             focusRequester = focusRequesterCodeBlock,
             onSelected = manager::onSelected,
             messageDrawer = {
@@ -125,7 +131,7 @@ object DefaultDrawersDesktop {
     ): DesktopMessageDrawer {
         val focusRequester = remember { FocusRequester() }
         return DesktopMessageDrawer(
-            modifier = Modifier.weight(1F),
+            modifier = Modifier.weight(1F).padding(8.dp),
             onKeyEvent = KeyEventListenerFactory.create(
                 manager,
                 isEmptyErase = { keyEvent, inputText ->
@@ -135,7 +141,7 @@ object DefaultDrawersDesktop {
                 deleteOnEmptyErase = deleteOnEmptyErase
             ),
             onTextEdit = manager::changeStoryState,
-            textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
+            textStyle = { codeBlockStyle() } ,
             focusRequester = focusRequester,
             commandHandler = textCommandHandler,
             allowLineBreaks = true
