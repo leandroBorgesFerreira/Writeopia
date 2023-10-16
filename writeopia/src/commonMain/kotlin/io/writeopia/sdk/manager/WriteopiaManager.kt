@@ -308,25 +308,6 @@ class WriteopiaManager(
     }
 
     /**
-     * An edition in title. Title edition also changes the meta data of a document.
-     *
-     * @param text String
-     * @param position Int
-     */
-    fun onTitleEdit(text: String, position: Int) {
-        if (isOnSelection) {
-            cancelSelection()
-        }
-
-        _currentStory.value.stories[position]?.copy(text = text)?.let { newStory ->
-            val newMap = _currentStory.value.stories.toMutableMap()
-            newMap[position] = newStory
-            _currentStory.value = StoryState(newMap, LastEdit.InfoEdition(position, newStory))
-            backStackManager.addAction(BackstackAction.StoryStateChange(newStory, position))
-        }
-    }
-
-    /**
      * Creates a line break. When a line break happens, the line it divided into two [StoryStep]s
      * of the same, if possible, or the next line will be a Message.
      *

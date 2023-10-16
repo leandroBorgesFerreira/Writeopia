@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.StoryStepDrawer
+import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.utils.ui.transparentTextInputColors
@@ -37,7 +38,7 @@ const val DESKTOP_TITLE_DRAWER_TEST_TAG = "DesktopTitleDrawerTextField"
  */
 class DesktopTitleDrawer(
     private val modifier: Modifier = Modifier,
-    private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
+    private val onTextEdit: (Action.StoryStateChange) -> Unit = { },
     private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean = { _, _, _, _ -> false },
 ) : StoryStepDrawer {
 
@@ -79,7 +80,7 @@ class DesktopTitleDrawer(
                 onValueChange = { value ->
                     val changedText = value.text
                     if (!changedText.contains("\n")) {
-                        onTextEdit(changedText, drawInfo.position)
+                        onTextEdit(Action.StoryStateChange(step.copy(text = changedText), drawInfo.position))
                     }
                 },
                 keyboardOptions = KeyboardOptions(

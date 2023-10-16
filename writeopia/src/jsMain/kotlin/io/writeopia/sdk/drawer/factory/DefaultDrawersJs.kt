@@ -71,7 +71,7 @@ object DefaultDrawersJs {
                 manager,
                 deleteOnEmptyErase = deleteOnEmptyErase
             ),
-            onTextEdit = manager::onTextEdit,
+            onTextEdit = manager::changeStoryState,
             focusRequester = focusRequester,
             commandHandler = TextCommandHandler.defaultCommands(manager),
         )
@@ -118,7 +118,7 @@ object DefaultDrawersJs {
             drawer = {
                 DesktopTitleDrawer(
                     modifier = Modifier.align(Alignment.BottomStart),
-                    onTextEdit = writeopiaManager::onTitleEdit,
+                    onTextEdit = writeopiaManager::changeStoryState,
                     onKeyEvent = keyEvent,
                 )
             },

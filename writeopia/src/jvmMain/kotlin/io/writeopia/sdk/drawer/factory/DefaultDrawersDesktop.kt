@@ -126,7 +126,14 @@ object DefaultDrawersDesktop {
         val focusRequester = remember { FocusRequester() }
         return DesktopMessageDrawer(
             modifier = Modifier.weight(1F),
-            onKeyEvent = KeyEventListenerFactoryDesktop.createDesktop(manager, deleteOnEmptyErase),
+            onKeyEvent = KeyEventListenerFactory.create(
+                manager,
+                isEmptyErase = { keyEvent, inputText ->
+                    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE &&
+                            inputText.selection.start == 0
+                },
+                deleteOnEmptyErase = deleteOnEmptyErase
+            ),
             onTextEdit = manager::changeStoryState,
             textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
             focusRequester = focusRequester,
