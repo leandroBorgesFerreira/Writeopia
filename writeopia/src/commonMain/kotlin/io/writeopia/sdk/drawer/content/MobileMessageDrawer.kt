@@ -42,6 +42,7 @@ class MobileMessageDrawer(
     private val emptyErase: ((Int) -> Unit)? = null,
     private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
+    private val onLineBreak: (Action.LineBreak) -> Unit = {},
     override var onFocusChanged: (FocusState) -> Unit = {}
 ) : SimpleMessageDrawer {
 
@@ -90,14 +91,16 @@ class MobileMessageDrawer(
                         val text = value.text
 
                         inputText = if (text.contains("\n")) {
+                            onLineBreak(Action.LineBreak(step, drawInfo.position))
+
                             val newText = text.split("\n", limit = 2)[0]
                             TextFieldValue(newText, TextRange(newText.length))
                         } else {
+                            onTextEdit(value.text, drawInfo.position)
+                            commandHandler.handleCommand(text, step, drawInfo.position)
+
                             value
                         }
-
-                        onTextEdit(value.text, drawInfo.position)
-                        commandHandler.handleCommand(text, step, drawInfo.position)
                     },
                     keyboardOptions = KeyboardOptions(
                         capitalization = KeyboardCapitalization.Sentences

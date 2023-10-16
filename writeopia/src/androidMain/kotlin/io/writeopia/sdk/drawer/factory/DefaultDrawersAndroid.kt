@@ -141,7 +141,8 @@ object DefaultDrawersAndroid {
             focusRequester = focusRequester,
             commandHandler = textCommandHandler,
             emptyErase = emptyErase,
-            onDeleteRequest = manager::onDelete
+            onDeleteRequest = manager::onDelete,
+            onLineBreak = manager::onLineBreak
         )
     }
 }
