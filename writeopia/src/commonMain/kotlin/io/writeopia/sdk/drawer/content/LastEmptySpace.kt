@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.draganddrop.target.DropTarget
 import io.writeopia.sdk.model.draw.DrawInfo
@@ -23,6 +24,8 @@ import io.writeopia.sdk.models.story.StoryStep
  * drawer when clicked.
  */
 class LastEmptySpace(
+    private val modifier: Modifier = Modifier,
+    private val height: Dp = 500.dp,
     private val moveRequest: (Action.Move) -> Unit = {},
     private val click: () -> Unit = {}
 ) : StoryStepDrawer {
@@ -41,10 +44,9 @@ class LastEmptySpace(
             }
 
             Box(
-                modifier = Modifier
-                    .height(500.dp)
+                modifier = modifier
+                    .height(height)
                     .fillMaxWidth()
-                    .background(Color.Transparent)
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,

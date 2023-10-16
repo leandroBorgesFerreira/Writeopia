@@ -54,8 +54,8 @@ class MobileMessageDrawer(
                     mutableStateOf(TextFieldValue(text, TextRange(text.length)))
                 }
 
-                LaunchedEffect(drawInfo.focusId) {
-                    if (drawInfo.focusId == step.id) {
+                if (drawInfo.focusId == step.id) {
+                    LaunchedEffect(drawInfo.focusId) {
                         focusRequester?.requestFocus()
                     }
                 }

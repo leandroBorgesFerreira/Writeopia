@@ -111,7 +111,7 @@ object DefaultDrawersAndroid {
             put(StoryTypes.SPACE.type.number, SpaceDrawer(manager::moveRequest))
             put(
                 StoryTypes.LAST_SPACE.type.number,
-                LastEmptySpace(manager::moveRequest, manager::clickAtTheEnd)
+                LastEmptySpace(moveRequest = manager::moveRequest, click = manager::clickAtTheEnd)
             )
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
             put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)

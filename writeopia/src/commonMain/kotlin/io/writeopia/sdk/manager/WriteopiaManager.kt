@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.datetime.Clock
+import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * This is the entry class of the framework. It follows the Controller pattern, redirecting all the
@@ -42,10 +43,8 @@ class WriteopiaManager(
         stepsNormalizer = stepsNormalizer
     ),
     private val focusHandler: FocusHandler = FocusHandler(),
-    private val coroutineScope: CoroutineScope = CoroutineScope(
-        SupervisorJob() + Dispatchers.Main.immediate
-    ),
     private val dispatcher: CoroutineDispatcher,
+    private val coroutineScope: CoroutineScope = CoroutineScope(EmptyCoroutineContext),
     private val backStackManager: BackstackManager = BackstackManager.create(
         contentHandler,
         movementHandler
@@ -370,10 +369,15 @@ class WriteopiaManager(
      */
     fun clickAtTheEnd() {
         val stories = _currentStory.value.stories
-        val lastContentStory = stories[stories.size - 3]
+        val lastPosition = stories.size - 3
+        val lastContentStory = stories[lastPosition]
 
         if (lastContentStory?.type == StoryTypes.TEXT.type) {
-            val newState = _currentStory.value.copy(focusId = lastContentStory.id)
+            val newStoriesState = stories.toMutableMap().apply {
+                this[lastPosition] = lastContentStory.copyNewLocalId()
+            }
+
+            val newState = _currentStory.value.copy(focusId = lastContentStory.id, stories = newStoriesState)
             _currentStory.value = newState
         } else {
             var acc = stories.size - 1

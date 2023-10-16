@@ -90,6 +90,10 @@ object DefaultDrawersDesktop {
             put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
             put(StoryTypes.TITLE.type.number, headerDrawer)
             put(StoryTypes.CODE_BLOCK.type.number, codeBlockDrawer)
+            put(
+                StoryTypes.LAST_SPACE.type.number,
+                LastEmptySpace(height = 30.dp, moveRequest = manager::moveRequest, click = manager::clickAtTheEnd)
+            )
             putAll(hxDrawers)
         }
     }
