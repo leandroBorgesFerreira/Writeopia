@@ -109,16 +109,7 @@ object DefaultDrawersDesktop {
         val focusRequester = remember { FocusRequester() }
         return DesktopMessageDrawer(
             modifier = Modifier.weight(1F),
-            onKeyEvent = KeyEventListenerFactory.create(
-                manager,
-                isLineBreakKey = { keyEvent ->
-                    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_ENTER
-                },
-                isEmptyErase = { keyEvent, inputText ->
-                    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE && inputText.selection.start == 0
-                },
-                deleteOnEmptyErase = deleteOnEmptyErase
-            ),
+            onKeyEvent = KeyEventListenerFactoryDesktop.createDesktop(manager, deleteOnEmptyErase),
             onTextEdit = manager::onTextEdit,
             textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
             focusRequester = focusRequester,
@@ -136,14 +127,7 @@ object DefaultDrawersDesktop {
         val focusRequester = remember { FocusRequester() }
         return DesktopMessageDrawer(
             modifier = Modifier.weight(1F),
-            onKeyEvent = KeyEventListenerFactory.create(
-                manager,
-                isLineBreakKey = { false },
-                isEmptyErase = { keyEvent, inputText ->
-                    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE && inputText.selection.start == 0
-                },
-                deleteOnEmptyErase = deleteOnEmptyErase
-            ),
+            onKeyEvent = KeyEventListenerFactoryDesktop.createDesktop(manager, deleteOnEmptyErase),
             onTextEdit = manager::onTextEdit,
             textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
             focusRequester = focusRequester,

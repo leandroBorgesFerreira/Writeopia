@@ -67,14 +67,8 @@ object DefaultDrawersJs {
         return JsMessageDrawer(
             modifier = Modifier.weight(1F),
             textStyle = TextStyle(fontSize = fontSize),
-            onKeyEvent = KeyEventListenerFactory.create(
+            onKeyEvent = KeyEventListenerFactoryWeb.createWeb(
                 manager,
-                isLineBreakKey = { keyEvent ->
-                    keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER
-                },
-                isEmptyErase = { keyEvent, inputText ->
-                    keyEvent.nativeKeyEvent.key == SkikoKey.KEY_BACKSPACE && inputText.selection.start == 0
-                },
                 deleteOnEmptyErase = deleteOnEmptyErase
             ),
             onTextEdit = manager::onTextEdit,
