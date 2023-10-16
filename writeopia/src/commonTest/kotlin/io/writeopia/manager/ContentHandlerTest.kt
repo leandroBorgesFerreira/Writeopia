@@ -23,12 +23,12 @@ class ContentHandlerTest {
 
         val contentHandler =
             ContentHandler(
-                focusableTypes = setOf(StoryTypes.MESSAGE.type.number),
+                focusableTypes = setOf(StoryTypes.TEXT.type.number),
                 stepsNormalizer = normalizer()
             )
 
         val storyStep =
-            StoryStep(type = StoryTypes.MESSAGE.type)
+            StoryStep(type = StoryTypes.TEXT.type)
         val newStory = contentHandler.addNewContent(input, storyStep, 2)
 
         val expected = mapOf(
@@ -40,7 +40,7 @@ class ContentHandlerTest {
             5 to StoryStepFactory.space(),
             6 to StoryStep(type = StoryTypes.IMAGE.type),
             7 to StoryStepFactory.space(),
-            8 to StoryStep(type = StoryTypes.LARGE_SPACE.type),
+            8 to StoryStep(type = StoryTypes.LAST_SPACE.type),
         ).mapValues { (_, storyStep) ->
             storyStep.type
         }
@@ -52,7 +52,7 @@ class ContentHandlerTest {
     fun `when a line break happens, the text should be divided correctly`() {
         val contentHandler = ContentHandler(stepsNormalizer = normalizer())
         val storyStep = StoryStep(
-            type = StoryTypes.MESSAGE.type,
+            type = StoryTypes.TEXT.type,
             text = "line1\nline2"
         )
 
@@ -71,7 +71,7 @@ class ContentHandlerTest {
         val text = "Lalala"
 
         val storyStep = StoryStep(
-            type = StoryTypes.MESSAGE.type,
+            type = StoryTypes.TEXT.type,
             text = "-[] $text"
         )
 
@@ -99,7 +99,7 @@ class ContentHandlerTest {
         val text = "Lalala"
 
         val storyStep = StoryStep(
-            type = StoryTypes.MESSAGE.type,
+            type = StoryTypes.TEXT.type,
             text = "# $text"
         )
 

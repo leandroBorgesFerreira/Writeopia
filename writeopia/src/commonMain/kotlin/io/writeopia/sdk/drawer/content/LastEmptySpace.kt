@@ -22,7 +22,7 @@ import io.writeopia.sdk.models.story.StoryStep
  * and hide this behaviour from the user. Indeed use is to move the focus to the available text
  * drawer when clicked.
  */
-class LargeEmptySpace(
+class LastEmptySpace(
     private val moveRequest: (Action.Move) -> Unit = {},
     private val click: () -> Unit = {}
 ) : StoryStepDrawer {

@@ -20,7 +20,7 @@ import io.writeopia.sdk.utils.iterables.MapOperations
 class ContentHandler(
     private val focusableTypes: Set<Int> = setOf(
         StoryTypes.TITLE.type.number,
-        StoryTypes.MESSAGE.type.number,
+        StoryTypes.TEXT.type.number,
         StoryTypes.H1.type.number,
         StoryTypes.H2.type.number,
         StoryTypes.H3.type.number,
@@ -199,6 +199,6 @@ private fun defaultLineBreakMap(storyType: StoryType): StoryType =
         StoryTypes.H2.type,
         StoryTypes.H3.type,
         StoryTypes.H4.type,
-        StoryTypes.TITLE.type -> StoryTypes.MESSAGE.type
+        StoryTypes.TITLE.type -> StoryTypes.TEXT.type
         else -> storyType
     }

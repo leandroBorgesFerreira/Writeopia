@@ -147,13 +147,13 @@ object MapStoryData {
         1 to listOf(
             StoryStep(
                 localId = "4",
-                type = StoryTypes.MESSAGE.type,
+                type = StoryTypes.TEXT.type,
             )
         ),
         2 to listOf(
             StoryStep(
                 localId = "5",
-                type = StoryTypes.MESSAGE.type,
+                type = StoryTypes.TEXT.type,
             )
         )
     )
@@ -161,7 +161,7 @@ object MapStoryData {
     fun singleMessage(): Map<Int, StoryStep> = mapOf(
         0 to StoryStep(
             localId = "0",
-            type = StoryTypes.MESSAGE.type,
+            type = StoryTypes.TEXT.type,
             text = "hi!",
         )
     )
@@ -169,25 +169,25 @@ object MapStoryData {
     fun messagesInLine(): Map<Int, StoryStep> = mapOf(
         0 to StoryStep(
             localId = "0",
-            type = StoryTypes.MESSAGE.type,
+            type = StoryTypes.TEXT.type,
             text = "hi!",
 
             ),
         1 to StoryStep(
             localId = "2",
-            type = StoryTypes.MESSAGE.type,
+            type = StoryTypes.TEXT.type,
             text = "Hey!",
 
             ),
         2 to StoryStep(
             localId = "4",
-            type = StoryTypes.MESSAGE.type,
+            type = StoryTypes.TEXT.type,
             text = "And it was super awesome!! Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
 
             ),
         3 to StoryStep(
             localId = "6",
-            type = StoryTypes.MESSAGE.type,
+            type = StoryTypes.TEXT.type,
             text = "I couldn't believe how sunny it was. Santiago is a really beautiful city. There's a lot to " +
                     "do and enjoyed the day. We went to many cozy Cafes and we enjoyed the city by foot. " +
                     "We had to buy some Syn Cards to be able to communicate in the new country. ",
@@ -195,7 +195,7 @@ object MapStoryData {
             ),
         4 to StoryStep(
             localId = "7",
-            type = StoryTypes.MESSAGE.type,
+            type = StoryTypes.TEXT.type,
             text = "I couldn't believe how sunny it was. Santiago is a really beautiful city. There's a lot to " +
                     "do and enjoyed the day. We went to many cozy Cafes and we enjoyed the city by foot. " +
                     "We had to buy some Syn Cards to be able to communicate in the new country. ",
@@ -203,7 +203,7 @@ object MapStoryData {
             ),
         5 to StoryStep(
             localId = "8",
-            type = StoryTypes.MESSAGE.type,
+            type = StoryTypes.TEXT.type,
             text = "I couldn't believe how sunny it was. Santiago is a really beautiful city. There's a lot to " +
                     "do and enjoyed the day. We went to many cozy Cafes and we enjoyed the city by foot. " +
                     "We had to buy some Syn Cards to be able to communicate in the new country. ",
@@ -214,36 +214,36 @@ object MapStoryData {
     fun simpleMessages(): Map<Int, StoryStep> = mapOf(
         0 to StoryStep(
             localId = "0",
-            type = StoryTypes.MESSAGE.type,
+            type = StoryTypes.TEXT.type,
             text = "message1",
 
             ),
         1 to StoryStep(
             localId = "2",
-            type = StoryTypes.MESSAGE.type,
+            type = StoryTypes.TEXT.type,
             text = "message2",
 
             ),
         2 to StoryStep(
             localId = "4",
-            type = StoryTypes.MESSAGE.type,
+            type = StoryTypes.TEXT.type,
             text = "message3",
 
             ),
         3 to StoryStep(
             localId = "6",
-            type = StoryTypes.MESSAGE.type,
+            type = StoryTypes.TEXT.type,
             text = "message4",
 
             ),
         4 to StoryStep(
             localId = "7",
-            type = StoryTypes.MESSAGE.type,
+            type = StoryTypes.TEXT.type,
             text = "message5",
         ),
         5 to StoryStep(
             localId = "8",
-            type = StoryTypes.MESSAGE.type,
+            type = StoryTypes.TEXT.type,
             text = "message6",
         )
     )
@@ -288,7 +288,7 @@ object MapStoryData {
         3 to listOf(
             StoryStep(
                 localId = GenerateId.generate(),
-                type = StoryTypes.MESSAGE.type,
+                type = StoryTypes.TEXT.type,
                 text = "We arrived in Santiago!! \n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
             )
         ),
@@ -310,7 +310,7 @@ object MapStoryData {
         6 to listOf(
             StoryStep(
                 localId = "6",
-                type = StoryTypes.MESSAGE.type,
+                type = StoryTypes.TEXT.type,
                 text = "I couldn't believe how sunny it was. Santiago is a really beautiful city. There's a lot to " +
                         "do and enjoyed the day. We went to many cozy Cafes and we enjoyed the city by foot. " +
                         "We had to buy some Syn Cards to be able to communicate in the new country. ",
@@ -341,7 +341,7 @@ object MapStoryData {
             3 to
                     StoryStep(
                         localId = GenerateId.generate(),
-                        type = StoryTypes.MESSAGE.type,
+                        type = StoryTypes.TEXT.type,
                         text = "We arrived in Santiago!!",
                     ),
             4 to
@@ -372,19 +372,19 @@ object MapStoryData {
             8 to
                     StoryStep(
                         localId = GenerateId.generate(),
-                        type = StoryTypes.MESSAGE_BOX.type,
+                        type = StoryTypes.TEXT_BOX.type,
                         text = "And it was super awesome!! \n\nUt enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
                     ),
             9 to
                     StoryStep(
                         localId = GenerateId.generate(),
-                        type = StoryTypes.MESSAGE_BOX.type,
+                        type = StoryTypes.TEXT_BOX.type,
                         text = "I hope to to it again some day..."
                     ),
             10 to
                     StoryStep(
                         localId = GenerateId.generate(),
-                        type = StoryTypes.MESSAGE_BOX.type,
+                        type = StoryTypes.TEXT_BOX.type,
                         text = "I couldn't believe how sunny it was. Santiago is a really beautiful city. There's a lot to " +
                                 "do and enjoyed the day. We went to many cozy Cafes and we enjoyed the city by foot. " +
                                 "We had to buy some Syn Cards to be able to communicate in the new country. ",

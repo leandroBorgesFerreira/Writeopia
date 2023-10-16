@@ -56,7 +56,7 @@ class MergeNormalizationTest {
             addMerger(
                 StepsMergerCoordinator(
                     stepMerger = StepToStepMerger(),
-                    typeOfStep = StoryTypes.MESSAGE.type
+                    typeOfStep = StoryTypes.TEXT.type
                 )
             )
         }

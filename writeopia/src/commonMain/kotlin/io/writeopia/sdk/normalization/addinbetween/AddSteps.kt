@@ -82,7 +82,7 @@ class AddSteps(
                     StoryStep(type = StoryTypes.SPACE.type)
                 },
                 addAtLast = {
-                    StoryStep(type = StoryTypes.LARGE_SPACE.type)
+                    StoryStep(type = StoryTypes.LAST_SPACE.type)
                 },
                 skipFirst = skipFirst
             )

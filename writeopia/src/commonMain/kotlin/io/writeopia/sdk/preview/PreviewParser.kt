@@ -29,7 +29,7 @@ class PreviewParser(
 
 private fun defaultTypes() = setOf(
     StoryTypes.TITLE.type.number,
-    StoryTypes.MESSAGE.type.number,
+    StoryTypes.TEXT.type.number,
     StoryTypes.H1.type.number,
     StoryTypes.H2.type.number,
     StoryTypes.H3.type.number,

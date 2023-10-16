@@ -20,7 +20,7 @@ private fun SwipeMessageDrawerPreview() {
         },
         focusRequester = focusRequester
     ).Step(
-        step = StoryStep(text = "Some text", type = StoryTypes.MESSAGE.type),
+        step = StoryStep(text = "Some text", type = StoryTypes.TEXT.type),
         drawInfo = DrawInfo()
     )
 }

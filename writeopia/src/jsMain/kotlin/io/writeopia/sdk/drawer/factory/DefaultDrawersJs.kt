@@ -44,7 +44,7 @@ object DefaultDrawersJs {
         val unOrderedListItemDrawer = unOrderedListItemDrawer(manager) { jsMessageDrawer(manager) }
 
         return buildMap {
-            put(StoryTypes.MESSAGE.type.number, swipeMessageDrawer)
+            put(StoryTypes.TEXT.type.number, swipeMessageDrawer)
             put(StoryTypes.SPACE.type.number, SpaceDrawer(manager::moveRequest))
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
             put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)

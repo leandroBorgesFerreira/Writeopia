@@ -61,6 +61,18 @@ fun main() {
                         .background(Color.White)
                 ) {
                     CreateTextEditor(writeopiaManager)
+
+                    Box(
+                        modifier = Modifier.weight(1F)
+                            .fillMaxWidth()
+                            .clickable(
+                                onClick = {
+                                    writeopiaManager.clickAtTheEnd()
+                                },
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                            )
+                    )
                 }
             }
         }

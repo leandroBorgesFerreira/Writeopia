@@ -30,7 +30,7 @@ class PerStateBackstackManagerTest {
     fun `when adding the first action, the manager should notify it is possible to revert`() {
         backstackManager.addAction(
             BackstackAction.StoryStateChange(
-                StoryStep(type = StoryTypes.MESSAGE.type),
+                StoryStep(type = StoryTypes.TEXT.type),
                 position = 0
             )
         )
@@ -44,7 +44,7 @@ class PerStateBackstackManagerTest {
         val state = buildMap {
             repeat(3) { i ->
                 val storyStep =
-                    StoryStep(type = StoryTypes.MESSAGE.type)
+                    StoryStep(type = StoryTypes.TEXT.type)
                 val action = BackstackAction.StoryStateChange(storyStep, position = i)
 
                 backstackManager.addAction(action)
@@ -78,7 +78,7 @@ class PerStateBackstackManagerTest {
         val state = buildMap {
             repeat(3) { i ->
                 val storyStep =
-                    StoryStep(type = StoryTypes.MESSAGE.type)
+                    StoryStep(type = StoryTypes.TEXT.type)
                 val action = BackstackAction.StoryStateChange(storyStep, position = i)
 
                 backstackManager.addAction(action)
@@ -98,7 +98,7 @@ class PerStateBackstackManagerTest {
 
         backstackManager.addAction(
             BackstackAction.StoryStateChange(
-                StoryStep(type = StoryTypes.MESSAGE.type),
+                StoryStep(type = StoryTypes.TEXT.type),
                 position = 3
             )
         )
@@ -118,7 +118,7 @@ class PerStateBackstackManagerTest {
             backstackManager.addAction(
                 BackstackAction.StoryTextChange(
                     StoryStep(
-                        type = StoryTypes.MESSAGE.type,
+                        type = StoryTypes.TEXT.type,
                         text = stringBuilder.toString()
                     ),
                     position = 0

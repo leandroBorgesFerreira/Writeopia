@@ -93,8 +93,8 @@ object DefaultDrawersAndroid {
         val headerDrawer = headerDrawer(manager, onHeaderClick)
 
         return buildMap {
-            put(StoryTypes.MESSAGE_BOX.type.number, messageBoxDrawer)
-            put(StoryTypes.MESSAGE.type.number, swipeMessageDrawer)
+            put(StoryTypes.TEXT_BOX.type.number, messageBoxDrawer)
+            put(StoryTypes.TEXT.type.number, swipeMessageDrawer)
             put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
             put(
                 StoryTypes.IMAGE.type.number,
@@ -110,8 +110,8 @@ object DefaultDrawersAndroid {
             )
             put(StoryTypes.SPACE.type.number, SpaceDrawer(manager::moveRequest))
             put(
-                StoryTypes.LARGE_SPACE.type.number,
-                LargeEmptySpace(manager::moveRequest, manager::clickAtTheEnd)
+                StoryTypes.LAST_SPACE.type.number,
+                LastEmptySpace(manager::moveRequest, manager::clickAtTheEnd)
             )
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
             put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
@@ -126,7 +126,7 @@ object DefaultDrawersAndroid {
         manager: WriteopiaManager,
         fontSize: TextUnit = 16.sp,
         emptyErase: ((Int) -> Unit)? = { position ->
-            manager.changeStoryType(position, StoryTypes.MESSAGE.type, null)
+            manager.changeStoryType(position, StoryTypes.TEXT.type, null)
         },
         textCommandHandler: TextCommandHandler
     ): MobileMessageDrawer {

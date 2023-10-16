@@ -372,19 +372,19 @@ class WriteopiaManager(
         val stories = _currentStory.value.stories
         val lastContentStory = stories[stories.size - 3]
 
-        if (lastContentStory?.type == StoryTypes.MESSAGE.type) {
+        if (lastContentStory?.type == StoryTypes.TEXT.type) {
             val newState = _currentStory.value.copy(focusId = lastContentStory.id)
             _currentStory.value = newState
         } else {
             var acc = stories.size - 1
             val newLastMessage =
-                StoryStep(type = StoryTypes.MESSAGE.type)
+                StoryStep(type = StoryTypes.TEXT.type)
 
             //Todo: It should be possible to customize which steps are add
             val newStories = stories + mapOf(
                 acc++ to newLastMessage,
                 acc++ to StoryStep(type = StoryTypes.SPACE.type),
-                acc to StoryStep(type = StoryTypes.LARGE_SPACE.type),
+                acc to StoryStep(type = StoryTypes.LAST_SPACE.type),
             )
 
             _currentStory.value = StoryState(newStories, LastEdit.Whole, newLastMessage.id)

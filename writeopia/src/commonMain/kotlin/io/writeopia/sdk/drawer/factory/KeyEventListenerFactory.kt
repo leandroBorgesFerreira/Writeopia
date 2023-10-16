@@ -26,7 +26,7 @@ object KeyEventListenerFactory {
                     if (deleteOnEmptyErase) {
                         manager.onDelete(Action.DeleteStory(step, position))
                     } else {
-                        manager.changeStoryType(position, StoryTypes.MESSAGE.type, null)
+                        manager.changeStoryType(position, StoryTypes.TEXT.type, null)
                     }
 
                     true

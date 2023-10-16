@@ -82,8 +82,8 @@ object DefaultDrawersDesktop {
         )
 
         return buildMap {
-            put(StoryTypes.MESSAGE_BOX.type.number, messageBoxDrawer)
-            put(StoryTypes.MESSAGE.type.number, swipeMessageDrawer)
+            put(StoryTypes.TEXT_BOX.type.number, messageBoxDrawer)
+            put(StoryTypes.TEXT.type.number, swipeMessageDrawer)
             put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
             put(StoryTypes.SPACE.type.number, SpaceDrawer(manager::moveRequest))
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)

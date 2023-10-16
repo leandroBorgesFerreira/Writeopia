@@ -14,7 +14,7 @@ class StoryExtensionsKtTest {
     fun `it should be able to recognize an empty document`() {
         val storyStepMap = buildList {
             repeat(5) {
-                add(it to StoryStep(type = StoryTypes.MESSAGE.type))
+                add(it to StoryStep(type = StoryTypes.TEXT.type))
             }
         }.toMap()
 
@@ -26,14 +26,14 @@ class StoryExtensionsKtTest {
         val storyStepMap = buildList {
             repeat(5) { index ->
                 add(index to StoryStep(
-                    type = StoryTypes.MESSAGE.type
+                    type = StoryTypes.TEXT.type
                 )
                 )
             }
         }.toMutableStateMap()
 
         storyStepMap[5] = StoryStep(
-            type = StoryTypes.MESSAGE.type,
+            type = StoryTypes.TEXT.type,
             text = "some text"
         )
 
