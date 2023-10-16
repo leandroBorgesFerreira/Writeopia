@@ -49,6 +49,10 @@ object DefaultDrawersJs {
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
             put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
             put(StoryTypes.TITLE.type.number, headerDrawer)
+            put(
+                StoryTypes.LAST_SPACE.type.number,
+                LastEmptySpace(height = 30.dp, moveRequest = manager::moveRequest, click = manager::clickAtTheEnd)
+            )
             putAll(hxDrawers)
         }
     }

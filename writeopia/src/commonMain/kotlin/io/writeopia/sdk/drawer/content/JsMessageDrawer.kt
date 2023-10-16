@@ -50,7 +50,7 @@ class JsMessageDrawer(
 
 
             if (drawInfo.focusId == step.id) {
-                LaunchedEffect(drawInfo.focusId) {
+                LaunchedEffect(step.localId) {
                     focusRequester?.requestFocus()
                 }
             }
