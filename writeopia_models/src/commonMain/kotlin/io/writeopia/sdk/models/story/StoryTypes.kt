@@ -49,7 +49,7 @@ enum class StoryTypes(val type: StoryType) {
     UNORDERED_LIST_ITEM(StoryType("unordered_list_item", 16)),
     CODE_BLOCK(
         StoryType(
-            "message_box",
+            "code_block",
             1
         )
     ),
