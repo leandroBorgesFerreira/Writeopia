@@ -7,8 +7,6 @@ enum class WhereToFind {
 }
 
 object CommandFactory {
-    fun lineBreak() = Command(0, "\n", WhereToFind.ANYWHERE)
-
     fun checkItem() = Command(1, "-[] ", WhereToFind.START)
 
     fun unOrderedList() = Command(2, "- ", WhereToFind.START)
@@ -18,6 +16,8 @@ object CommandFactory {
     fun h3() = Command(5, "### ", WhereToFind.START)
     fun h4() = Command(6, "#### ", WhereToFind.START)
 
+    fun codeBlock() = Command(7, "``` ", WhereToFind.START)
+
     fun defaultCommands(): Set<Command> =
-        setOf(lineBreak(), checkItem(), unOrderedList(), h1(), h2(), h3(), h4())
+        setOf(checkItem(), unOrderedList(), h1(), h2(), h3(), h4(), codeBlock())
 }

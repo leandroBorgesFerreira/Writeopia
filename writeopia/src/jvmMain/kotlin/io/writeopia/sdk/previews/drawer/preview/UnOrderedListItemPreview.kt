@@ -23,7 +23,7 @@ fun UnOrderedListItemDrawerPreview() {
             focusRequester = focusRequester
         ).Step(
             step = StoryStep(
-                type = StoryTypes.MESSAGE.type,
+                type = StoryTypes.TEXT.type,
                 text = "This is a text list item preview"
             ),
             drawInfo = DrawInfo()

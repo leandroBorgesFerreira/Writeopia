@@ -53,9 +53,9 @@ class HeaderDrawer(
 fun headerDrawer(manager: WriteopiaManager, headerClick: () -> Unit = {}): StoryStepDrawer =
     HeaderDrawer(
         drawer = {
-            TitleDrawer(
+            MobileTitleDrawer(
                 modifier = Modifier.align(Alignment.BottomStart),
-                onTextEdit = manager::onTitleEdit,
+                onTextEdit = manager::changeStoryState,
                 onLineBreak = manager::onLineBreak,
             )
         },
@@ -71,7 +71,7 @@ fun headerDrawerDesktop(
         drawer = {
             DesktopTitleDrawer(
                 modifier = Modifier.align(Alignment.BottomStart),
-                onTextEdit = manager::onTitleEdit,
+                onTextEdit = manager::changeStoryState,
                 onKeyEvent = onKeyEvent
             )
         },

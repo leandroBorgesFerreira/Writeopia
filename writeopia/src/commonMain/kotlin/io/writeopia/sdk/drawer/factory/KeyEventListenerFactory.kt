@@ -11,7 +11,7 @@ object KeyEventListenerFactory {
 
     fun create(
         manager: WriteopiaManager,
-        isLineBreakKey: (KeyEvent) -> Boolean,
+        isLineBreakKey: (KeyEvent) -> Boolean = { false },
         isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
         deleteOnEmptyErase: Boolean = false
     ): (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean {
@@ -26,7 +26,7 @@ object KeyEventListenerFactory {
                     if (deleteOnEmptyErase) {
                         manager.onDelete(Action.DeleteStory(step, position))
                     } else {
-                        manager.changeStoryType(position, StoryTypes.MESSAGE.type, null)
+                        manager.changeStoryType(position, StoryTypes.TEXT.type, null)
                     }
 
                     true

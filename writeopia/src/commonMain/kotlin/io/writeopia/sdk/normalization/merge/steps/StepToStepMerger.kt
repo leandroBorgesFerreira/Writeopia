@@ -16,7 +16,7 @@ import io.writeopia.sdk.normalization.merge.StepMerger
 open class StepToStepMerger : StepMerger {
 
     override fun merge(step1: StoryStep, step2: StoryStep, type: StoryType): StoryStep {
-        val messageNumber = StoryTypes.MESSAGE.type.number
+        val messageNumber = StoryTypes.TEXT.type.number
         return if (step1.type.number == messageNumber && step2.type.number == messageNumber) {
             step1.copy(
                 text = "${step1.text}\n\n${step2.text}",

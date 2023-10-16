@@ -1,7 +1,6 @@
 package io.writeopia.sdk.text.edition
 
 import io.writeopia.sdk.manager.WriteopiaManager
-import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.models.command.*
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
@@ -83,6 +82,16 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                             StoryTypes.H4.type,
                             CommandInfo(
                                 CommandFactory.h4(),
+                                CommandTrigger.WRITTEN
+                            )
+                        )
+                    },
+                    CommandFactory.codeBlock() to { _, position ->
+                        manager.changeStoryType(
+                            position,
+                            StoryTypes.TEXT_BOX.type,
+                            CommandInfo(
+                                CommandFactory.codeBlock(),
                                 CommandTrigger.WRITTEN
                             )
                         )

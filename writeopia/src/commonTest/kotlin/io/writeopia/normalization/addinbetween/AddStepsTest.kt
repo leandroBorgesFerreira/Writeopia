@@ -25,7 +25,7 @@ class AddStepsTest {
             val isLast = index == result.lastIndex
 
             when {
-                isLast -> assertEquals(StoryTypes.LARGE_SPACE.type, storyUnit.type)
+                isLast -> assertEquals(StoryTypes.LAST_SPACE.type, storyUnit.type)
                 isEven -> assertEquals("space", storyUnit.type.name)
                 !isEven -> assertNotEquals("space", storyUnit.type.name)
             }
@@ -47,7 +47,7 @@ class AddStepsTest {
             val isLast = index == resultList.lastIndex
 
             when {
-                isLast -> assertEquals(StoryTypes.LARGE_SPACE.type, storyUnit.type)
+                isLast -> assertEquals(StoryTypes.LAST_SPACE.type, storyUnit.type)
                 isEven -> assertEquals(StoryTypes.SPACE.type, storyUnit.type)
                 !isEven -> assertNotEquals(StoryTypes.SPACE.type, storyUnit.type)
             }

@@ -14,7 +14,7 @@ fun TextPreviewDrawerPreview() {
     Surface {
         TextPreviewDrawer().Step(
             step = StoryStep(
-                type = StoryTypes.MESSAGE.type,
+                type = StoryTypes.TEXT.type,
                 text = "This is a text message preview"
             ),
             drawInfo = DrawInfo()

@@ -1,4 +1,6 @@
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,8 +29,20 @@ import org.jetbrains.skiko.wasm.onWasmReady
 fun main() {
     onWasmReady {
         Window("Compose Rich Editor") {
+            val writeopiaManager = WriteopiaManager(dispatcher = Dispatchers.Main).apply {
+                newStory()
+            }
+
             Column(
-                Modifier.fillMaxSize().background(Color.Gray).verticalScroll(rememberScrollState()),
+                Modifier
+                    .clickable(
+                        onClick = writeopiaManager::clickAtTheEnd,
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() },
+                    )
+                    .fillMaxSize()
+                    .background(Color.Gray)
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
 
@@ -45,7 +60,19 @@ fun main() {
                         .clip(RoundedCornerShape(20.dp))
                         .background(Color.White)
                 ) {
-                    CreateTextEditor()
+                    CreateTextEditor(writeopiaManager)
+
+                    Box(
+                        modifier = Modifier.weight(1F)
+                            .fillMaxWidth()
+                            .clickable(
+                                onClick = {
+                                    writeopiaManager.clickAtTheEnd()
+                                },
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                            )
+                    )
                 }
             }
         }
@@ -54,11 +81,7 @@ fun main() {
 
 
 @Composable
-fun CreateTextEditor() {
-    val writeopiaManager = WriteopiaManager(dispatcher = Dispatchers.Main).apply {
-        this.newStory()
-    }
-
+fun CreateTextEditor(writeopiaManager: WriteopiaManager) {
     TextEditor(drawers = DefaultDrawersJs.create(writeopiaManager), drawState = writeopiaManager.toDraw)
 }
 

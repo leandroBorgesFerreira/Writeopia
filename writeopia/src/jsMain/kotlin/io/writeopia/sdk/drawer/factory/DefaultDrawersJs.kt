@@ -44,11 +44,15 @@ object DefaultDrawersJs {
         val unOrderedListItemDrawer = unOrderedListItemDrawer(manager) { jsMessageDrawer(manager) }
 
         return buildMap {
-            put(StoryTypes.MESSAGE.type.number, swipeMessageDrawer)
+            put(StoryTypes.TEXT.type.number, swipeMessageDrawer)
             put(StoryTypes.SPACE.type.number, SpaceDrawer(manager::moveRequest))
             put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
             put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
             put(StoryTypes.TITLE.type.number, headerDrawer)
+            put(
+                StoryTypes.LAST_SPACE.type.number,
+                LastEmptySpace(height = 30.dp, moveRequest = manager::moveRequest, click = manager::clickAtTheEnd)
+            )
             putAll(hxDrawers)
         }
     }
@@ -63,17 +67,11 @@ object DefaultDrawersJs {
         return JsMessageDrawer(
             modifier = Modifier.weight(1F),
             textStyle = TextStyle(fontSize = fontSize),
-            onKeyEvent = KeyEventListenerFactory.create(
+            onKeyEvent = KeyEventListenerFactoryWeb.createWeb(
                 manager,
-                isLineBreakKey = { keyEvent ->
-                    keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER
-                },
-                isEmptyErase = { keyEvent, inputText ->
-                    keyEvent.nativeKeyEvent.key == SkikoKey.KEY_BACKSPACE && inputText.selection.start == 0
-                },
                 deleteOnEmptyErase = deleteOnEmptyErase
             ),
-            onTextEdit = manager::onTextEdit,
+            onTextEdit = manager::changeStoryState,
             focusRequester = focusRequester,
             commandHandler = TextCommandHandler.defaultCommands(manager),
         )
@@ -120,7 +118,7 @@ object DefaultDrawersJs {
             drawer = {
                 DesktopTitleDrawer(
                     modifier = Modifier.align(Alignment.BottomStart),
-                    onTextEdit = writeopiaManager::onTitleEdit,
+                    onTextEdit = writeopiaManager::changeStoryState,
                     onKeyEvent = keyEvent,
                 )
             },

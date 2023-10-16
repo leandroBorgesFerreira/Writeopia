@@ -99,18 +99,13 @@ private fun AuthMenuContentScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                modifier = Modifier
-                    .height(200.dp)
-                    .padding(vertical = 25.dp),
-                painter = painterResource(id = R.drawable.ic_auth_menu_logo),
-                contentDescription = "",
-                contentScale = ContentScale.FillHeight,
-            )
+            Spacer(modifier = Modifier.height(50.dp))
 
             Image(
-                modifier = Modifier.height(17.dp),
-                painter = painterResource(id = R.drawable.image_writeopia_logo),
+                modifier = Modifier
+                    .height(270.dp)
+                    .padding(vertical = 25.dp),
+                painter = painterResource(id = R.drawable.ic_auth_menu_logo),
                 contentDescription = "",
                 contentScale = ContentScale.FillHeight,
             )

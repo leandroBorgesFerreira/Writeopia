@@ -237,7 +237,7 @@ private fun previewDrawers(): Map<Int, StoryStepDrawer> {
             )
         ),
         StoryTypes.CHECK_ITEM.type.number to CheckItemPreviewDrawer(),
-        StoryTypes.MESSAGE.type.number to TextPreviewDrawer(),
+        StoryTypes.TEXT.type.number to TextPreviewDrawer(),
         StoryTypes.UNORDERED_LIST_ITEM.type.number to unOrderedListItemPreviewDrawer,
         StoryTypes.H1.type.number to TextPreviewDrawer(style = h1TextStyle),
         StoryTypes.H2.type.number to TextPreviewDrawer(style = h2TextStyle),

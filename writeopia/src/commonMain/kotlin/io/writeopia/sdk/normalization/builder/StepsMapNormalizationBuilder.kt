@@ -49,7 +49,7 @@ class StepsMapNormalizationBuilder {
             addMerger(
                 StepsMergerCoordinator(
                     stepMerger = StepToStepMerger(),
-                    typeOfStep = StoryTypes.MESSAGE.type,
+                    typeOfStep = StoryTypes.TEXT.type,
                     typeOfGroup = null,
                     mergeLogic = MergeLogic::create
                 )

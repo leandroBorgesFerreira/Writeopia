@@ -5,8 +5,8 @@ package io.writeopia.sdk.models.story
  * is final), by creating new strings of types.
  */
 enum class StoryTypes(val type: StoryType) {
-    MESSAGE(StoryType("message", 0)),
-    MESSAGE_BOX(
+    TEXT(StoryType("message", 0)),
+    TEXT_BOX(
         StoryType(
             "message_box",
             1
@@ -28,9 +28,9 @@ enum class StoryTypes(val type: StoryType) {
     ),
     VIDEO(StoryType("video", 6)),
     SPACE(StoryType("space", 7)),
-    LARGE_SPACE(
+    LAST_SPACE(
         StoryType(
-            "large_space",
+            "last_space",
             8
         )
     ),
@@ -46,10 +46,16 @@ enum class StoryTypes(val type: StoryType) {
     H2(StoryType("h2", 13)),
     H3(StoryType("h3", 14)),
     H4(StoryType("h4", 15)),
-    UNORDERED_LIST_ITEM(StoryType("unordered_list_item", 16));
+    UNORDERED_LIST_ITEM(StoryType("unordered_list_item", 16)),
+    CODE_BLOCK(
+        StoryType(
+            "code_block",
+            1
+        )
+    ),
+    ;
 
     companion object {
-        fun fromName(stringValue: String): StoryTypes =
-            StoryTypes.values().first { it.type.name == stringValue }
+        fun fromName(stringValue: String): StoryTypes = entries.first { it.type.name == stringValue }
     }
 }

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.SimpleMessageDrawer
+import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.text.edition.TextCommandHandler
@@ -37,7 +38,7 @@ class JsMessageDrawer(
     private val textStyle: TextStyle? = null,
     private val focusRequester: FocusRequester? = null,
     private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean = { _, _, _, _ -> false },
-    private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
+    private val onTextEdit: (Action.StoryStateChange) -> Unit = { },
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     override var onFocusChanged: (FocusState) -> Unit = {}
 ) : SimpleMessageDrawer {
@@ -48,8 +49,9 @@ class JsMessageDrawer(
             val text = step.text ?: ""
             val inputText = TextFieldValue(text, TextRange(text.length))
 
-            LaunchedEffect(drawInfo.focusId) {
-                if (drawInfo.focusId == step.id) {
+
+            if (drawInfo.focusId == step.id) {
+                LaunchedEffect(step.localId) {
                     focusRequester?.requestFocus()
                 }
             }
@@ -72,7 +74,7 @@ class JsMessageDrawer(
                 onValueChange = { value ->
                     val changedText = value.text
                     if (!changedText.contains("\n")) {
-                        onTextEdit(changedText, drawInfo.position)
+                        onTextEdit(Action.StoryStateChange(step.copy(text = changedText), drawInfo.position))
                         commandHandler.handleCommand(changedText, step, drawInfo.position)
                     }
                 },

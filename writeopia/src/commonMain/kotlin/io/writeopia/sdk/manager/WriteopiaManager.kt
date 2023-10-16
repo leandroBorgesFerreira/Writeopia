@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.datetime.Clock
+import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * This is the entry class of the framework. It follows the Controller pattern, redirecting all the
@@ -42,10 +43,8 @@ class WriteopiaManager(
         stepsNormalizer = stepsNormalizer
     ),
     private val focusHandler: FocusHandler = FocusHandler(),
-    private val coroutineScope: CoroutineScope = CoroutineScope(
-        SupervisorJob() + Dispatchers.Main.immediate
-    ),
     private val dispatcher: CoroutineDispatcher,
+    private val coroutineScope: CoroutineScope = CoroutineScope(EmptyCoroutineContext),
     private val backStackManager: BackstackManager = BackstackManager.create(
         contentHandler,
         movementHandler
@@ -297,30 +296,14 @@ class WriteopiaManager(
         val newStory = _currentStory.value.stories[position]?.copy(text = text)
 
         if (newStory != null && oldText != text) {
-            contentHandler.changeStoryStepState(currentStory, newStory, position)
-                ?.let { newState ->
-                    _currentStory.value = newState
-                    backStackManager.addAction(BackstackAction.StoryTextChange(newStory, position))
-                }
-        }
-    }
-
-    /**
-     * An edition in title. Title edition also changes the meta data of a document.
-     *
-     * @param text String
-     * @param position Int
-     */
-    fun onTitleEdit(text: String, position: Int) {
-        if (isOnSelection) {
-            cancelSelection()
-        }
-
-        _currentStory.value.stories[position]?.copy(text = text)?.let { newStory ->
-            val newMap = _currentStory.value.stories.toMutableMap()
-            newMap[position] = newStory
-            _currentStory.value = StoryState(newMap, LastEdit.InfoEdition(position, newStory))
-            backStackManager.addAction(BackstackAction.StoryStateChange(newStory, position))
+            contentHandler.changeStoryStepState(
+                currentStory,
+                newStory,
+                position
+            )?.let { newState ->
+                _currentStory.value = newState
+                backStackManager.addAction(BackstackAction.StoryTextChange(newStory, position))
+            }
         }
     }
 
@@ -370,21 +353,26 @@ class WriteopiaManager(
      */
     fun clickAtTheEnd() {
         val stories = _currentStory.value.stories
-        val lastContentStory = stories[stories.size - 3]
+        val lastPosition = stories.size - 3
+        val lastContentStory = stories[lastPosition]
 
-        if (lastContentStory?.type == StoryTypes.MESSAGE.type) {
-            val newState = _currentStory.value.copy(focusId = lastContentStory.id)
+        if (lastContentStory?.type == StoryTypes.TEXT.type) {
+            val newStoriesState = stories.toMutableMap().apply {
+                this[lastPosition] = lastContentStory.copyNewLocalId()
+            }
+
+            val newState = _currentStory.value.copy(focusId = lastContentStory.id, stories = newStoriesState)
             _currentStory.value = newState
         } else {
             var acc = stories.size - 1
             val newLastMessage =
-                StoryStep(type = StoryTypes.MESSAGE.type)
+                StoryStep(type = StoryTypes.TEXT.type)
 
             //Todo: It should be possible to customize which steps are add
             val newStories = stories + mapOf(
                 acc++ to newLastMessage,
                 acc++ to StoryStep(type = StoryTypes.SPACE.type),
-                acc to StoryStep(type = StoryTypes.LARGE_SPACE.type),
+                acc to StoryStep(type = StoryTypes.LAST_SPACE.type),
             )
 
             _currentStory.value = StoryState(newStories, LastEdit.Whole, newLastMessage.id)

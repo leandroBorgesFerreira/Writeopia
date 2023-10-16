@@ -35,6 +35,7 @@ import io.writeopia.sdk.utils.ui.defaultTextStyle
  */
 class MobileMessageDrawer(
     private val modifier: Modifier = Modifier,
+    private val allowLineBreaks: Boolean,
     private val isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
     private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
     private val focusRequester: FocusRequester? = null,
@@ -42,78 +43,76 @@ class MobileMessageDrawer(
     private val emptyErase: ((Int) -> Unit)? = null,
     private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
+    private val onLineBreak: (Action.LineBreak) -> Unit = {},
     override var onFocusChanged: (FocusState) -> Unit = {}
 ) : SimpleMessageDrawer {
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
-        Box(modifier = modifier) {
-            if (drawInfo.editable) {
-                var inputText by remember {
-                    val text = step.text ?: ""
-                    mutableStateOf(TextFieldValue(text, TextRange(text.length)))
-                }
+        var inputText by remember {
+            val text = step.text ?: ""
+            mutableStateOf(TextFieldValue(text, TextRange(text.length)))
+        }
 
-                LaunchedEffect(drawInfo.focusId) {
-                    if (drawInfo.focusId == step.id) {
-                        focusRequester?.requestFocus()
-                    }
-                }
+        if (drawInfo.focusId == step.id) {
+            LaunchedEffect(step.localId) {
+                focusRequester?.requestFocus()
+            }
+        }
 
-                BasicTextField(
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(start = 6.dp)
-                        .let { modifierLet ->
-                            if (focusRequester != null) {
-                                modifierLet.focusRequester(focusRequester)
-                            } else {
-                                modifierLet
-                            }
-                        }
-                        .onKeyEvent { keyEvent ->
-                            if (isEmptyErase(keyEvent, inputText)) {
-                                emptyErase?.invoke(drawInfo.position) ?: onDeleteRequest(
-                                    Action.DeleteStory(
-                                        step,
-                                        drawInfo.position
-                                    )
-                                )
-
-                                true
-                            } else {
-                                false
-                            }
-                        }
-                        .onFocusChanged(onFocusChanged),
-                    value = inputText,
-                    onValueChange = { value ->
-                        val text = value.text
-
-                        inputText = if (text.contains("\n")) {
-                            val newText = text.split("\n", limit = 2)[0]
-                            TextFieldValue(newText, TextRange(newText.length))
+        if (drawInfo.editable) {
+            BasicTextField(
+                modifier = modifier.fillMaxWidth()
+                    .padding(start = 6.dp)
+                    .let { modifierLet ->
+                        if (focusRequester != null) {
+                            modifierLet.focusRequester(focusRequester)
                         } else {
-                            value
+                            modifierLet
                         }
+                    }
+                    .onKeyEvent { keyEvent ->
+                        if (isEmptyErase(keyEvent, inputText)) {
+                            emptyErase?.invoke(drawInfo.position) ?: onDeleteRequest(
+                                Action.DeleteStory(
+                                    step,
+                                    drawInfo.position
+                                )
+                            )
 
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                    .onFocusChanged(onFocusChanged),
+                value = inputText,
+                onValueChange = { value ->
+                    val text = value.text
+
+                    inputText = if (text.contains("\n") && !allowLineBreaks) {
+                        onLineBreak(Action.LineBreak(step, drawInfo.position))
+
+                        val newText = text.split("\n", limit = 2)[0]
+                        TextFieldValue(newText, TextRange(newText.length))
+                    } else {
                         onTextEdit(value.text, drawInfo.position)
                         commandHandler.handleCommand(text, step, drawInfo.position)
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Sentences
-                    ),
-                    textStyle = textStyle(step),
-                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-                    decorationBox = {
 
+                        value
                     }
-                )
-            } else {
-                Text(
-                    text = step.text ?: "",
-                    modifier = Modifier.padding(vertical = 5.dp),
-                )
-            }
+                },
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences
+                ),
+                textStyle = textStyle(step),
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+            )
+        } else {
+            Text(
+                text = step.text ?: "",
+                modifier = Modifier.padding(vertical = 5.dp),
+            )
         }
     }
 }

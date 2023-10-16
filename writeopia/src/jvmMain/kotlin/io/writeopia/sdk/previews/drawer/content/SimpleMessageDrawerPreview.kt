@@ -12,7 +12,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 @Composable
 fun DesktopMessageDrawerPreview() {
     DesktopMessageDrawer(focusRequester = FocusRequester()).Step(
-        step = StoryStep(text = "Some text", type = StoryTypes.MESSAGE.type),
+        step = StoryStep(text = "Some text", type = StoryTypes.TEXT.type),
         drawInfo = DrawInfo()
     )
 }

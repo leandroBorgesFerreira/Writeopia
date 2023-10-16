@@ -25,5 +25,5 @@ interface DocumentFilter {
 private fun removeTypesFromDocument(): Set<Int> =
     setOf(
         StoryTypes.SPACE.type.number,
-        StoryTypes.LARGE_SPACE.type.number,
+        StoryTypes.LAST_SPACE.type.number,
     )

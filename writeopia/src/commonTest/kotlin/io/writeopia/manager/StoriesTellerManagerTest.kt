@@ -49,7 +49,7 @@ class WriteopiaManagerTest {
         val expected = mapOf(
             0 to StoryStep(type = StoryTypes.TITLE.type),
             1 to StoryStep(type = StoryTypes.SPACE.type),
-            2 to StoryStep(type = StoryTypes.LARGE_SPACE.type),
+            2 to StoryStep(type = StoryTypes.LAST_SPACE.type),
         ).mapValues { (_, storyStep) ->
             storyStep.type
         }
@@ -753,7 +753,7 @@ class WriteopiaManagerTest {
             if (storyUnit1.type != storyUnit2.type) fail()
 
             if (storyUnit1.type != StoryTypes.SPACE.type &&
-                storyUnit1.type != StoryTypes.LARGE_SPACE.type
+                storyUnit1.type != StoryTypes.LAST_SPACE.type
             ) {
                 assertEquals(storyUnit1.id, storyUnit2.id)
             }
@@ -810,15 +810,15 @@ class WriteopiaManagerTest {
         )
 
         val stories = storyManager.currentStory.value.stories
-        assertEquals(StoryTypes.LARGE_SPACE.type, stories.values.last().type)
+        assertEquals(StoryTypes.LAST_SPACE.type, stories.values.last().type)
 
         storyManager.initDocument(Document(content = stories, userId = "", createdAt = now, lastUpdatedAt = now))
 
         val newStories = storyManager.currentStory.value.stories
         val storyList = newStories.values.toList()
 
-        assertEquals(StoryTypes.LARGE_SPACE.type, storyList.last().type)
-        assertNotEquals(StoryTypes.LARGE_SPACE.type, storyList[storyList.lastIndex - 1].type)
+        assertEquals(StoryTypes.LAST_SPACE.type, storyList.last().type)
+        assertNotEquals(StoryTypes.LAST_SPACE.type, storyList[storyList.lastIndex - 1].type)
     }
 
     @Test
@@ -963,7 +963,7 @@ class WriteopiaManagerTest {
         val currentStory = storyManager.currentStory.value.stories
         val lastContentStory = currentStory[currentStory.size - 3]
 
-        assertEquals(lastContentStory!!.type, StoryTypes.MESSAGE.type)
+        assertEquals(lastContentStory!!.type, StoryTypes.TEXT.type)
         assertEquals(storyManager.currentStory.value.focusId, lastContentStory.id)
     }
 }

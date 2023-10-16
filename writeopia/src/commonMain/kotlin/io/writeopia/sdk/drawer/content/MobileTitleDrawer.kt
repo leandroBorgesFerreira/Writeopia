@@ -1,7 +1,6 @@
 package io.writeopia.sdk.drawer.content
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -33,9 +32,9 @@ const val TITLE_DRAWER_TEST_TAG = "TitleDrawerTextField"
  * also notified by onTextEdit. It is necessary to reflect here to avoid losing the focus on the
  * TextField.
  */
-class TitleDrawer(
+class MobileTitleDrawer(
     private val modifier: Modifier = Modifier,
-    private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
+    private val onTextEdit: (Action.StoryStateChange) -> Unit = { },
     private val onLineBreak: (Action.LineBreak) -> Unit = {},
 ) : StoryStepDrawer {
 
@@ -78,7 +77,7 @@ class TitleDrawer(
                         onLineBreak(Action.LineBreak(step, drawInfo.position))
                     } else {
                         inputText = value
-                        onTextEdit(value.text, drawInfo.position)
+                        onTextEdit(Action.StoryStateChange(step.copy(text = value.text), drawInfo.position))
                     }
                 },
                 keyboardOptions = KeyboardOptions(
