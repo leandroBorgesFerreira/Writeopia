@@ -93,7 +93,7 @@ object DefaultDrawersAndroid {
             }
         )
 
-        val hxDrawers = defaultHxDrawers(manager) { fontSize ->
+        val hxDrawers = defaultHxDrawers(manager, modifier = Modifier.padding(horizontal = 16.dp)) { fontSize ->
             androidMessageDrawer(manager, fontSize, textCommandHandler = textCommandHandler, allowLineBreaks = false)
         }
         val checkItemDrawer = checkItemDrawer(manager) {

@@ -28,11 +28,12 @@ fun swipeMessageDrawer(
 @Composable
 fun swipeMessageDrawer(
     manager: WriteopiaManager,
+    modifier: Modifier = Modifier,
     messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
 ): StoryStepDrawer {
     val focusRequesterSwipeMessage = remember { FocusRequester() }
     return swipeMessageDrawer(
-        modifier = Modifier.padding(horizontal = 12.dp),
+        modifier = modifier,
         onSelected = manager::onSelected,
         focusRequester = focusRequesterSwipeMessage,
         customBackgroundColor = Color.Transparent,

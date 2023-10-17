@@ -2,6 +2,7 @@ package io.writeopia.sdk.drawer.factory
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,6 +27,10 @@ import io.writeopia.sdk.utils.ui.codeBlockStyle
 import io.writeopia.sdk.utils.ui.defaultTextStyle
 import java.awt.event.KeyEvent
 
+private const val LARGE_START_PADDING = 24
+private const val MEDIUM_START_PADDING = 12
+private const val SMALL_START_PADDING = 4
+
 object DefaultDrawersDesktop {
 
     @Composable
@@ -39,7 +44,7 @@ object DefaultDrawersDesktop {
         val focusRequesterMessageBox = remember { FocusRequester() }
         val messageBoxDrawer = swipeMessageDrawer(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = MEDIUM_START_PADDING.dp)
                 .clip(shape = defaultBorder)
                 .background(groupsBackgroundColor),
             focusRequester = focusRequesterMessageBox,
@@ -53,8 +58,8 @@ object DefaultDrawersDesktop {
         val focusRequesterCodeBlock = remember { FocusRequester() }
         val codeBlockDrawer = swipeMessageDrawer(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
                 .clip(shape = codeBlockShape)
+                .padding(LARGE_START_PADDING.dp)
                 .background(Color.LightGray)
                 .border(1.dp, color = Color.Gray, codeBlockShape),
             focusRequester = focusRequesterCodeBlock,
@@ -64,17 +69,26 @@ object DefaultDrawersDesktop {
             }
         )
 
-        val swipeMessageDrawer = swipeMessageDrawer(manager) {
-            desktopMessageDrawer(manager, deleteOnEmptyErase = true)
-        }
-        val hxDrawers = defaultHxDrawers(manager) { fontSize ->
-            desktopMessageDrawer(manager, fontSize, deleteOnEmptyErase = true)
-        }
-        val checkItemDrawer = checkItemDrawer(manager) { desktopMessageDrawer(manager) }
+        val swipeMessageDrawer =
+            swipeMessageDrawer(manager, modifier = Modifier.padding(start = MEDIUM_START_PADDING.dp)) {
+                desktopMessageDrawer(manager, deleteOnEmptyErase = true)
+            }
+        val hxDrawers =
+            defaultHxDrawers(manager, modifier = Modifier.padding(horizontal = SMALL_START_PADDING.dp)) { fontSize ->
+                desktopMessageDrawer(manager, fontSize = fontSize, deleteOnEmptyErase = true)
+            }
+        val checkItemDrawer = checkItemDrawer(
+            manager,
+            modifier = Modifier.padding(start = LARGE_START_PADDING.dp)
+        ) { desktopMessageDrawer(manager) }
         val unOrderedListItemDrawer =
-            unOrderedListItemDrawer(manager) { desktopMessageDrawer(manager) }
+            unOrderedListItemDrawer(
+                manager,
+                modifier = Modifier.padding(start = LARGE_START_PADDING.dp)
+            ) { desktopMessageDrawer(manager) }
         val headerDrawer = headerDrawerDesktop(
             manager,
+            innerPadding = PaddingValues(start = 16.dp),
             headerClick = {},
             onKeyEvent = KeyEventListenerFactory.create(
                 manager,
@@ -107,13 +121,14 @@ object DefaultDrawersDesktop {
     @Composable
     private fun RowScope.desktopMessageDrawer(
         manager: WriteopiaManager,
+        modifier: Modifier = Modifier,
         fontSize: TextUnit = 16.sp,
         textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager),
         deleteOnEmptyErase: Boolean = false,
     ): DesktopMessageDrawer {
         val focusRequester = remember { FocusRequester() }
         return DesktopMessageDrawer(
-            modifier = Modifier.weight(1F),
+            modifier = modifier.weight(1F),
             onKeyEvent = KeyEventListenerFactoryDesktop.createDesktop(manager, deleteOnEmptyErase),
             onTextEdit = manager::changeStoryState,
             textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
@@ -141,7 +156,7 @@ object DefaultDrawersDesktop {
                 deleteOnEmptyErase = deleteOnEmptyErase
             ),
             onTextEdit = manager::changeStoryState,
-            textStyle = { codeBlockStyle() } ,
+            textStyle = { codeBlockStyle() },
             focusRequester = focusRequester,
             commandHandler = textCommandHandler,
             allowLineBreaks = true

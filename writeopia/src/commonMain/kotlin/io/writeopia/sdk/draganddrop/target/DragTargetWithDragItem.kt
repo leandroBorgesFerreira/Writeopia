@@ -44,10 +44,7 @@ fun DragTargetWithDragItem(
             },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        content()
-
-        val iconWidth = 28.dp
-
+        val iconWidth = 16.dp
         val showDragIcon = showIcon ||
                 currentState.isDragging && position == currentState.dataToDrop?.positionFrom
 
@@ -87,5 +84,6 @@ fun DragTargetWithDragItem(
             }
         }
 
+        content()
     }
 }

@@ -1,8 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="writeopia-jvm">
     <output-path>$PROJECT_DIR$/writeopia/build/libs</output-path>
-    <root id="archive" name="writeopia-jvm.jar">
-      <element id="module-output" name="Writeopia.writeopia.jvmMain" />
-    </root>
+    <root id="archive" name="writeopia-jvm.jar" />
   </artifact>
 </component>
