@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.SimpleMessageDrawer
 import io.writeopia.sdk.drawer.StoryStepDrawer
@@ -32,6 +33,7 @@ fun checkItemDrawer(
     clickable: Boolean = true,
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     focusRequester: FocusRequester? = null,
+    dragIconWidth: Dp = 16.dp,
     onCheckedChange: (Action.StoryStateChange) -> Unit = {},
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)? = { step, drawInfo ->
         CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
@@ -59,6 +61,7 @@ fun checkItemDrawer(
         clickable,
         onSelected,
         focusRequester,
+        dragIconWidth,
         startContent,
         messageDrawer
     )

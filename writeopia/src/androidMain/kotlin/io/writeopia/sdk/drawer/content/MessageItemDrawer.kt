@@ -8,6 +8,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.draganddrop.target.DragTargetWithDragItem
 import io.writeopia.sdk.drawer.SimpleMessageDrawer
 import io.writeopia.sdk.drawer.StoryStepDrawer
@@ -20,12 +22,13 @@ import io.writeopia.sdk.uicomponents.SwipeBox
  * Drawer for a complex message with swipe action, drag and drop logic and a start content to add functionality
  * like a checkbox or a different Composable.
  */
-class MessageItemDrawer(
-    private val modifier: Modifier = Modifier,
-    private val customBackgroundColor: Color = Color.Transparent,
-    private val clickable: Boolean = true,
-    private val onSelected: (Boolean, Int) -> Unit = { _, _ -> },
-    private val focusRequester: FocusRequester? = null,
+actual class MessageItemDrawer actual constructor(
+    private val modifier: Modifier,
+    private val customBackgroundColor: Color,
+    private val clickable: Boolean,
+    private val onSelected: (Boolean, Int) -> Unit,
+    private val focusRequester: FocusRequester?,
+    private val dragIconWidth: Dp,
     private val startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
     private val messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
 ) : StoryStepDrawer {
@@ -64,6 +67,7 @@ class MessageItemDrawer(
                 dataToDrop = dropInfo,
                 showIcon = showDragIcon,
                 position = drawInfo.position,
+                dragIconWidth = dragIconWidth,
                 emptySpaceClick = {
                     focusRequester?.requestFocus()
                 }

@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.SimpleMessageDrawer
 import io.writeopia.sdk.drawer.StoryStepDrawer
@@ -27,6 +28,7 @@ fun unOrderedListItemDrawer(
     clickable: Boolean = true,
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     focusRequester: FocusRequester? = null,
+    dragIconWidth: Dp = 16.dp,
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)? = { _, _ ->
         Spacer(modifier = Modifier.width(8.dp))
         Text(
@@ -42,6 +44,7 @@ fun unOrderedListItemDrawer(
         clickable,
         onSelected,
         focusRequester,
+        dragIconWidth,
         startContent,
         messageDrawer
     )

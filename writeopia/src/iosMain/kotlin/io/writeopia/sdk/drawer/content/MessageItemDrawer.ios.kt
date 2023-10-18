@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import io.writeopia.sdk.drawer.SimpleMessageDrawer
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.model.draw.DrawInfo
@@ -20,6 +21,7 @@ actual class MessageItemDrawer actual constructor(
     clickable: Boolean,
     onSelected: (Boolean, Int) -> Unit,
     focusRequester: FocusRequester?,
+    dragIconWidth: Dp,
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
     messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
 ) : StoryStepDrawer {

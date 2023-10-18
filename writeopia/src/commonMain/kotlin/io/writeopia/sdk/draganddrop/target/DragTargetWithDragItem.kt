@@ -19,6 +19,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.draganddrop.DropInfo
 
@@ -30,6 +31,7 @@ fun DragTargetWithDragItem(
     showIcon: Boolean = true,
     position: Int,
     emptySpaceClick: () -> Unit,
+    dragIconWidth: Dp = 16.dp,
     content: @Composable RowScope.() -> Unit
 ) {
     var currentPosition by remember { mutableStateOf(Offset.Zero) }
@@ -44,7 +46,6 @@ fun DragTargetWithDragItem(
             },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        val iconWidth = 16.dp
         val showDragIcon = showIcon ||
                 currentState.isDragging && position == currentState.dataToDrop?.positionFrom
 
@@ -56,7 +57,7 @@ fun DragTargetWithDragItem(
             if (show) {
                 Icon(
                     modifier = Modifier
-                        .width(iconWidth)
+                        .width(dragIconWidth)
                         .pointerInput(Unit) {
                             detectDragGestures(onDragStart = { offset ->
                                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -80,7 +81,7 @@ fun DragTargetWithDragItem(
                     contentDescription = "Drag icon"
                 )
             } else {
-                Spacer(modifier = Modifier.width(iconWidth).clickable(onClick = emptySpaceClick))
+                Spacer(modifier = Modifier.width(dragIconWidth).clickable(onClick = emptySpaceClick))
             }
         }
 

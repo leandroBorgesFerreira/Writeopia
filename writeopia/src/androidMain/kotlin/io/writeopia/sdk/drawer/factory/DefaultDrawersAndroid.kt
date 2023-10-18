@@ -68,7 +68,11 @@ object DefaultDrawersAndroid {
             }
         )
 
-        val swipeMessageDrawer = swipeMessageDrawer(manager) {
+        val swipeMessageDrawer = swipeMessageDrawer(
+            manager,
+            modifier = Modifier.padding(start = 8.dp),
+            dragIconWidth = 24.dp
+        ) {
             androidMessageDrawer(
                 manager,
                 emptyErase = null,
@@ -93,10 +97,18 @@ object DefaultDrawersAndroid {
             }
         )
 
-        val hxDrawers = defaultHxDrawers(manager, modifier = Modifier.padding(horizontal = 16.dp)) { fontSize ->
-            androidMessageDrawer(manager, fontSize, textCommandHandler = textCommandHandler, allowLineBreaks = false)
+        val hxDrawers = defaultHxDrawers(manager, modifier = Modifier.padding(horizontal = 4.dp)) { fontSize ->
+            androidMessageDrawer(
+                manager = manager,
+                fontSize = fontSize,
+                textCommandHandler = textCommandHandler,
+                allowLineBreaks = false
+            )
         }
-        val checkItemDrawer = checkItemDrawer(manager) {
+        val checkItemDrawer = checkItemDrawer(
+            manager,
+            Modifier.padding(horizontal = 16.dp)
+        ) {
             androidMessageDrawer(
                 manager,
                 textCommandHandler = textCommandHandler,
@@ -104,7 +116,10 @@ object DefaultDrawersAndroid {
             )
         }
         val unOrderedListItemDrawer =
-            unOrderedListItemDrawer(manager) {
+            unOrderedListItemDrawer(
+                manager,
+                Modifier.padding(horizontal = 16.dp)
+            ) {
                 androidMessageDrawer(
                     manager,
                     textCommandHandler = textCommandHandler,
@@ -141,7 +156,6 @@ object DefaultDrawersAndroid {
             putAll(hxDrawers)
         }
     }
-
 
     @Composable
     private fun RowScope.androidMessageDrawer(
