@@ -25,6 +25,7 @@ You can check the documentation of the library in the link: [https://docs.writeo
 ### Web
 You can check a live sample here: https://sample.writeopia.io/
 
+### Android
 The sample app of the project is a great way to get a simple demo. You can have an experience like this one:
 
 https://github.com/leandroBorgesFerreira/Writeopia/assets/10619102/0834609a-e639-4771-b3ac-35c5320676ff
