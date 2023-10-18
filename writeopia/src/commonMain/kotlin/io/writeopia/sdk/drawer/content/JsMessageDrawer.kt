@@ -58,7 +58,6 @@ class JsMessageDrawer(
 
             BasicTextField(
                 modifier = modifier
-                    .padding(start = 16.dp)
                     .onKeyEvent { keyEvent ->
                         onKeyEvent(keyEvent, inputText, step, drawInfo.position)
                     }

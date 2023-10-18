@@ -1,6 +1,7 @@
 package io.writeopia.sdk.drawer.content
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -38,6 +39,7 @@ const val DESKTOP_TITLE_DRAWER_TEST_TAG = "DesktopTitleDrawerTextField"
  */
 class DesktopTitleDrawer(
     private val modifier: Modifier = Modifier,
+    private val innerPadding: PaddingValues? = null,
     private val onTextEdit: (Action.StoryStateChange) -> Unit = { },
     private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean = { _, _, _, _ -> false },
 ) : StoryStepDrawer {
@@ -72,6 +74,8 @@ class DesktopTitleDrawer(
                     .focusRequester(focusRequester)
                     .onKeyEvent { keyEvent ->
                         onKeyEvent(keyEvent, inputText, step, drawInfo.position)
+                    }.let { modifierLet ->
+                        innerPadding?.let(modifierLet::padding) ?: modifierLet
                     }
                     .semantics {
                         testTag = DESKTOP_TITLE_DRAWER_TEST_TAG

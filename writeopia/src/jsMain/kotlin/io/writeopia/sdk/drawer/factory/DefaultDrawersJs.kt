@@ -22,6 +22,10 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.text.edition.TextCommandHandler
 import org.jetbrains.skiko.SkikoKey
 
+private const val LARGE_START_PADDING = 26
+private const val MEDIUM_START_PADDING = 12
+private const val SMALL_START_PADDING = 4
+
 object DefaultDrawersJs {
 
     @Composable
@@ -33,12 +37,16 @@ object DefaultDrawersJs {
         onHeaderClick: () -> Unit = {}
     ): Map<Int, StoryStepDrawer> {
         val focusRequesterMessageBoxSwipe = remember { FocusRequester() }
-        val swipeMessageDrawer = swipeMessageDrawer(focusRequester = focusRequesterMessageBoxSwipe) {
+        val swipeMessageDrawer = swipeMessageDrawer(
+            modifier = Modifier.padding(start = MEDIUM_START_PADDING.dp),
+            focusRequester = focusRequesterMessageBoxSwipe
+        ) {
             jsMessageDrawer(manager, deleteOnEmptyErase = true)
         }
-        val hxDrawers = defaultHxDrawers(manager) { fontSize ->
-            jsMessageDrawer(manager, fontSize = fontSize, deleteOnEmptyErase = true)
-        }
+        val hxDrawers =
+            defaultHxDrawers(manager, modifier = Modifier.padding(horizontal = SMALL_START_PADDING.dp)) { fontSize ->
+                jsMessageDrawer(manager, fontSize = fontSize, deleteOnEmptyErase = true)
+            }
         val checkItemDrawer = checkItemDrawer(manager) { jsMessageDrawer(manager) }
         val headerDrawer = headerDrawer(manager)
         val unOrderedListItemDrawer = unOrderedListItemDrawer(manager) { jsMessageDrawer(manager) }
@@ -65,7 +73,7 @@ object DefaultDrawersJs {
     ): JsMessageDrawer {
         val focusRequester = remember { FocusRequester() }
         return JsMessageDrawer(
-            modifier = Modifier.weight(1F),
+            modifier = Modifier.weight(1F).padding(start = 8.dp),
             textStyle = TextStyle(fontSize = fontSize),
             onKeyEvent = KeyEventListenerFactoryWeb.createWeb(
                 manager,
@@ -132,7 +140,7 @@ object DefaultDrawersJs {
     ): StoryStepDrawer {
         val focusRequesterCheckItem = remember { FocusRequester() }
         return checkItemDrawer(
-            modifier = Modifier.padding(start = 18.dp, end = 12.dp),
+            modifier = Modifier.padding(start = LARGE_START_PADDING.dp, end = 12.dp),
             onCheckedChange = writeopiaManager::changeStoryState,
             onSelected = writeopiaManager::onSelected,
             customBackgroundColor = Color.Transparent,
@@ -151,7 +159,7 @@ object DefaultDrawersJs {
         val focusRequesterUnOrderedList = remember { FocusRequester() }
 
         return unOrderedListItemDrawer(
-            modifier = Modifier.padding(start = 18.dp, end = 12.dp),
+            modifier = Modifier.padding(start = LARGE_START_PADDING.dp, end = 12.dp),
             onSelected = writeopiaManager::onSelected,
             focusRequester = focusRequesterUnOrderedList,
             customBackgroundColor = Color.Transparent,

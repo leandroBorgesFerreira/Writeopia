@@ -18,12 +18,13 @@ import io.writeopia.sdk.models.story.StoryTypes
 @Composable
 fun defaultHxDrawers(
     manager: WriteopiaManager,
+    modifier: Modifier = Modifier,
     messageDrawer: @Composable RowScope.(TextUnit) -> SimpleMessageDrawer
 ): Map<Int, StoryStepDrawer> {
     val createHDrawer = @Composable { fontSize: TextUnit ->
         val focusRequesterH = remember { FocusRequester() }
         swipeMessageDrawer(
-            modifier = Modifier.padding(horizontal = 12.dp),
+            modifier = modifier,
             onSelected = manager::onSelected,
             focusRequester = focusRequesterH,
             messageDrawer = {

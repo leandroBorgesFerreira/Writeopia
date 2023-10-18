@@ -2,10 +2,7 @@ package io.writeopia.sdk.drawer.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,11 +47,15 @@ class HeaderDrawer(
     }
 }
 
-fun headerDrawer(manager: WriteopiaManager, headerClick: () -> Unit = {}): StoryStepDrawer =
+fun headerDrawer(
+    manager: WriteopiaManager,
+    headerClick: () -> Unit = {},
+    modifier: Modifier = Modifier
+): StoryStepDrawer =
     HeaderDrawer(
         drawer = {
             MobileTitleDrawer(
-                modifier = Modifier.align(Alignment.BottomStart),
+                modifier = modifier.align(Alignment.BottomStart),
                 onTextEdit = manager::changeStoryState,
                 onLineBreak = manager::onLineBreak,
             )
@@ -65,12 +66,15 @@ fun headerDrawer(manager: WriteopiaManager, headerClick: () -> Unit = {}): Story
 fun headerDrawerDesktop(
     manager: WriteopiaManager,
     headerClick: () -> Unit,
-    onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean
+    onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean,
+    modifier: Modifier = Modifier,
+    innerPadding: PaddingValues? = null
 ): StoryStepDrawer =
     HeaderDrawer(
         drawer = {
             DesktopTitleDrawer(
-                modifier = Modifier.align(Alignment.BottomStart),
+                modifier = modifier.align(Alignment.BottomStart),
+                innerPadding = innerPadding,
                 onTextEdit = manager::changeStoryState,
                 onKeyEvent = onKeyEvent
             )
