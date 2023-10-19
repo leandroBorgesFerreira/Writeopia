@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -19,6 +20,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 fun defaultHxDrawers(
     manager: WriteopiaManager,
     modifier: Modifier = Modifier,
+    dragIconWidth: Dp = 16.dp,
     messageDrawer: @Composable RowScope.(TextUnit) -> SimpleMessageDrawer
 ): Map<Int, StoryStepDrawer> {
     val createHDrawer = @Composable { fontSize: TextUnit ->
@@ -29,7 +31,8 @@ fun defaultHxDrawers(
             focusRequester = focusRequesterH,
             messageDrawer = {
                 messageDrawer(fontSize)
-            }
+            },
+            dragIconWidth = dragIconWidth
         )
     }
 

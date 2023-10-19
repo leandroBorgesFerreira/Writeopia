@@ -53,6 +53,7 @@ fun unOrderedListItemDrawer(
 fun unOrderedListItemDrawer(
     manager: WriteopiaManager,
     modifier: Modifier = Modifier,
+    dragIconWidth: Dp = 16.dp,
     messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
 ): StoryStepDrawer {
     val focusRequesterUnOrderedList = remember { FocusRequester() }
@@ -62,6 +63,7 @@ fun unOrderedListItemDrawer(
         onSelected = manager::onSelected,
         focusRequester = focusRequesterUnOrderedList,
         customBackgroundColor = Color.Transparent,
+        dragIconWidth = dragIconWidth,
         messageDrawer = messageDrawer,
     )
 }

@@ -23,6 +23,12 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.text.edition.TextCommandHandler
 import io.writeopia.sdk.utils.ui.defaultTextStyle
 
+private const val LARGE_START_PADDING = 16
+private const val MEDIUM_START_PADDING = 8
+private const val SMALL_START_PADDING = 4
+
+private const val DRAG_ICON_WIDTH = 24
+
 object DefaultDrawersAndroid {
 
     @Composable
@@ -53,10 +59,11 @@ object DefaultDrawersAndroid {
         val focusRequesterMessageBox = remember { FocusRequester() }
         val messageBoxDrawer = swipeMessageDrawer(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = LARGE_START_PADDING.dp)
                 .clip(shape = defaultBorder)
                 .background(groupsBackgroundColor),
             focusRequester = focusRequesterMessageBox,
+            dragIconWidth = DRAG_ICON_WIDTH.dp,
             onSelected = manager::onSelected,
             messageDrawer = {
                 androidMessageDrawer(
@@ -70,8 +77,8 @@ object DefaultDrawersAndroid {
 
         val swipeMessageDrawer = swipeMessageDrawer(
             manager,
-            modifier = Modifier.padding(start = 8.dp),
-            dragIconWidth = 24.dp
+            modifier = Modifier.padding(start = MEDIUM_START_PADDING.dp),
+            dragIconWidth = DRAG_ICON_WIDTH.dp
         ) {
             androidMessageDrawer(
                 manager,
@@ -83,9 +90,10 @@ object DefaultDrawersAndroid {
 
         val codeBlockDrawer = swipeMessageDrawer(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = LARGE_START_PADDING.dp)
                 .background(Color.Gray),
             focusRequester = focusRequesterMessageBox,
+            dragIconWidth = DRAG_ICON_WIDTH.dp,
             onSelected = manager::onSelected,
             messageDrawer = {
                 androidMessageDrawer(
@@ -97,17 +105,23 @@ object DefaultDrawersAndroid {
             }
         )
 
-        val hxDrawers = defaultHxDrawers(manager, modifier = Modifier.padding(horizontal = 4.dp)) { fontSize ->
-            androidMessageDrawer(
+        val hxDrawers =
+            defaultHxDrawers(
                 manager = manager,
-                fontSize = fontSize,
-                textCommandHandler = textCommandHandler,
-                allowLineBreaks = false
-            )
-        }
+                modifier = Modifier.padding(horizontal = SMALL_START_PADDING.dp),
+                dragIconWidth = DRAG_ICON_WIDTH.dp
+            ) { fontSize ->
+                androidMessageDrawer(
+                    manager = manager,
+                    fontSize = fontSize,
+                    textCommandHandler = textCommandHandler,
+                    allowLineBreaks = false
+                )
+            }
         val checkItemDrawer = checkItemDrawer(
             manager,
-            Modifier.padding(horizontal = 16.dp)
+            Modifier.padding(horizontal = LARGE_START_PADDING.dp),
+            dragIconWidth = DRAG_ICON_WIDTH.dp,
         ) {
             androidMessageDrawer(
                 manager,
@@ -118,7 +132,8 @@ object DefaultDrawersAndroid {
         val unOrderedListItemDrawer =
             unOrderedListItemDrawer(
                 manager,
-                Modifier.padding(horizontal = 16.dp)
+                Modifier.padding(horizontal = LARGE_START_PADDING.dp),
+                dragIconWidth = DRAG_ICON_WIDTH.dp,
             ) {
                 androidMessageDrawer(
                     manager,
