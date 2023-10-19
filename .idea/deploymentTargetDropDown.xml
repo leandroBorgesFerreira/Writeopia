@@ -2,48 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="NoteMenuAndroidTest">
-        <State />
-      </entry>
-      <entry key="Personal.StoryTeller.sample.app">
-        <State />
-      </entry>
-      <entry key="app_sample">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/Pixel_6a_API_33.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2023-06-26T20:47:43.938636Z" />
-        </State>
-      </entry>
       <entry key="application.androidApp">
-        <State />
-      </entry>
-      <entry key="application.app">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/Pixel_7_API_33.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2023-09-09T09:07:35.186139Z" />
-        </State>
-      </entry>
-      <entry key="sample.app_sample">
         <State />
       </entry>
     </value>
