@@ -21,11 +21,13 @@ This SDK allows you to create a text editor an use it instead of a simple `TextF
 You can check the documentation of the library in the link: [https://docs.writeopia.io](https://docs.writeopia.io).
 
 ## Sample 
-
+The sample app of the project is a great way to get a simple demo. You can have an experience like this those:
 ### Web
 You can check a live sample here: https://sample.writeopia.io/
 
 ### Android
-The sample app of the project is a great way to get a simple demo. You can have an experience like this one:
-
 https://github.com/leandroBorgesFerreira/Writeopia/assets/10619102/0834609a-e639-4771-b3ac-35c5320676ff
+
+### Desktop
+https://github.com/leandroBorgesFerreira/Writeopia/assets/10619102/3a2b59a8-5506-41d4-8095-d37d5e04ca6f
+
