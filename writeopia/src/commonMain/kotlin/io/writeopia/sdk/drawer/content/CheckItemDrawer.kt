@@ -70,6 +70,7 @@ fun checkItemDrawer(
 fun checkItemDrawer(
     manager: WriteopiaManager,
     modifier: Modifier = Modifier,
+    dragIconWidth: Dp = 16.dp,
     messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
 ): StoryStepDrawer {
     val focusRequesterCheckItem = remember { FocusRequester() }
@@ -79,6 +80,7 @@ fun checkItemDrawer(
         onSelected = manager::onSelected,
         customBackgroundColor = Color.Transparent,
         focusRequester = focusRequesterCheckItem,
+        dragIconWidth = dragIconWidth,
         messageDrawer = {
             messageDrawer()
         },
