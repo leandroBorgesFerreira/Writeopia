@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="writeopia_network-js">
+    <output-path>$PROJECT_DIR$/plugins/writeopia_network/build/libs</output-path>
+    <root id="archive" name="writeopia_network-js.jar">
+      <element id="module-output" name="Writeopia.plugins.writeopia_network.jsMain" />
+    </root>
+  </artifact>
+</component>
