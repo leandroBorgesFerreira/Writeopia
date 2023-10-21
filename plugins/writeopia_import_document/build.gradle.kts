@@ -1,24 +1,28 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    id("java-library")
-    alias(libs.plugins.org.jetbrains.kotlin.jvm)
+    kotlin("multiplatform")
 }
 
-rootProject.extra.apply {
-    set("PUBLISH_GROUP_ID", "io.writeopia")
-    set("PUBLISH_ARTIFACT_ID", "writeopia-import")
-    set("PUBLISH_VERSION", libs.versions.writeopia.get())
-}
+//rootProject.extra.apply {
+//    set("PUBLISH_GROUP_ID", "io.writeopia")
+//    set("PUBLISH_ARTIFACT_ID", "writeopia-import")
+//    set("PUBLISH_VERSION", libs.versions.writeopia.get())
+//}
+//
+//apply(from = "${rootDir}/scripts/publish-module.gradle")
 
-apply(from = "${rootDir}/scripts/publish-module.gradle")
+kotlin {
+    jvm {}
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
+    js(IR) {
+        browser()
+    }
 
-dependencies {
-    implementation(project(":writeopia_models"))
-
-    testImplementation(libs.junit)
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(project(":writeopia_models"))
+            }
+        }
+    }
 }
