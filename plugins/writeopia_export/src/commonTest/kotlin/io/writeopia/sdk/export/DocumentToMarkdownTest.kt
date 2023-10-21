@@ -2,13 +2,13 @@ package io.writeopia.sdk.export
 
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
-import org.junit.Assert.*
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class DocumentToMarkdownTest {
 
     @Test
-    fun `test for markdown parse for one liner - pretty print`() {
+    fun testMarkDownForOneLine() {
         val content = mapOf(
             0 to StoryStep(type = StoryTypes.H1.type, text = "Title!!"),
             1 to StoryStep(type = StoryTypes.TEXT.type, text = "some text"),
@@ -30,7 +30,7 @@ class DocumentToMarkdownTest {
     }
 
     @Test
-    fun `test for markdown parse for one liner - pretty print false`() {
+    fun testMarkdownForOneLinePrittyPrintFalse() {
         val content = mapOf(
             0 to StoryStep(type = StoryTypes.H1.type, text = "Title!!"),
             1 to StoryStep(type = StoryTypes.TEXT.type, text = "some text"),
