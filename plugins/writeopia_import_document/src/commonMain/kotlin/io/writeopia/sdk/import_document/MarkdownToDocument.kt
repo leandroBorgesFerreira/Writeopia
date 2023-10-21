@@ -4,18 +4,16 @@ import io.writeopia.sdk.models.command.Command
 import io.writeopia.sdk.models.command.CommandFactory
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.models.story.StoryTypes
-import java.io.InputStream
 
 public class MarkdownToDocument(
     private val charactersReverseIndexParser: CharactersReverseIndexParser
 ) {
 
-    fun parse(inputReader: InputStream) {
-        inputReader.reader().forEachLine { line ->
+//    fun parse(inputReader: InputStream) {
+//        inputReader.reader().forEachLine { line ->
 //            charactersReverseIndexParser.
-        }
-
-    }
+//        }
+//    }
 
 //    private fun typeOfLine(
 //        line: String,
