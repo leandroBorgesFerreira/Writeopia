@@ -1,4 +1,4 @@
-package io.writeopia.sdk.persistence.tracker
+package io.writeopia.sdk.persistence.core.tracker
 
 import io.writeopia.sdk.filter.DocumentFilter
 import io.writeopia.sdk.filter.DocumentFilterObject

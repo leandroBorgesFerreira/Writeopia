@@ -17,7 +17,7 @@ import io.writeopia.sdk.model.story.DrawState
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.Decoration
-import io.writeopia.sdk.persistence.tracker.OnUpdateDocumentTracker
+import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
 import io.writeopia.sdk.serialization.extensions.toApi
 import io.writeopia.sdk.serialization.json.writeopiaJson
 import io.writeopia.sdk.serialization.request.wrapInRequest
@@ -111,7 +111,11 @@ internal class NoteEditorViewModel(
         viewModelScope.launch {
             writeopiaManager.currentDocument.stateIn(this).value?.let { document ->
                 documentRepository.saveDocument(document)
-                writeopiaManager.saveOnStoryChanges(OnUpdateDocumentTracker(documentRepository))
+                writeopiaManager.saveOnStoryChanges(
+                    io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker(
+                        documentRepository
+                    )
+                )
             }
         }
     }
@@ -124,7 +128,11 @@ internal class NoteEditorViewModel(
 
             if (document != null) {
                 writeopiaManager.initDocument(document)
-                writeopiaManager.saveOnStoryChanges(OnUpdateDocumentTracker(documentRepository))
+                writeopiaManager.saveOnStoryChanges(
+                    io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker(
+                        documentRepository
+                    )
+                )
             }
         }
     }

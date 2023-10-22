@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.writeopia.appresourcers.R
 import io.writeopia.common_ui.SlideInBox
-import io.writeopia.sdk.persistence.sorting.OrderBy
+import io.writeopia.sdk.persistence.core.sorting.OrderBy
 
 private const val INNER_PADDING = 3
 
@@ -44,7 +44,7 @@ internal fun BoxScope.ConfigurationsMenu(
     outsideClick: () -> Unit,
     listOptionClick: () -> Unit,
     gridOptionClick: () -> Unit,
-    sortingSelected: (OrderBy) -> Unit,
+    sortingSelected: (io.writeopia.sdk.persistence.core.sorting.OrderBy) -> Unit,
 ) {
     SlideInBox(
         modifier = modifier.align(Alignment.BottomCenter),
@@ -133,7 +133,7 @@ private fun ArrangementSection(listOptionClick: () -> Unit, gridOptionClick: () 
 }
 
 @Composable
-private fun SortingSection(sortingSelected: (OrderBy) -> Unit) {
+private fun SortingSection(sortingSelected: (io.writeopia.sdk.persistence.core.sorting.OrderBy) -> Unit) {
     SectionText(text = stringResource(R.string.sorting))
     val optionStyle = MaterialTheme.typography.bodyMedium.copy(
         color = MaterialTheme.colorScheme.onPrimary,
@@ -149,7 +149,7 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit) {
     ) {
         Text(
             modifier = Modifier
-                .clickable { sortingSelected(OrderBy.UPDATE) }
+                .clickable { sortingSelected(io.writeopia.sdk.persistence.core.sorting.OrderBy.UPDATE) }
                 .sortingOptionModifier(),
             text = stringResource(R.string.last_updated),
             style = optionStyle,
@@ -159,7 +159,7 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit) {
 
         Text(
             modifier = Modifier
-                .clickable { sortingSelected(OrderBy.CREATE) }
+                .clickable { sortingSelected(io.writeopia.sdk.persistence.core.sorting.OrderBy.CREATE) }
                 .sortingOptionModifier(),
             text = stringResource(R.string.last_created),
             style = optionStyle,
@@ -169,7 +169,7 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit) {
 
         Text(
             modifier = Modifier
-                .clickable { sortingSelected(OrderBy.NAME) }
+                .clickable { sortingSelected(io.writeopia.sdk.persistence.core.sorting.OrderBy.NAME) }
                 .sortingOptionModifier(),
             text = stringResource(R.string.name),
             style = optionStyle,

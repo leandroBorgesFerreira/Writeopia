@@ -52,7 +52,7 @@ dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     implementation(project(":writeopia"))
     implementation(project(":writeopia_models"))
-    implementation(project(":plugins:writeopia_persistence"))
+    implementation(project(":plugins:writeopia_persistence_core"))
 
     implementation(project(":application:resources"))
     implementation(project(":application:utils"))

@@ -3,14 +3,8 @@ package io.writeopia.sdk.persistence.entity.document
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import io.writeopia.sdk.persistence.core.*
 import kotlinx.datetime.Clock
-
-internal const val DOCUMENT_ENTITY: String = "DOCUMENT_ENTITY_TABLE"
-
-internal const val TITLE: String = "title"
-internal const val CREATED_AT: String = "created_at"
-internal const val LAST_UPDATED_AT: String = "last_updated_at"
-internal const val USER_ID: String = "user_id"
 
 @Entity(tableName = DOCUMENT_ENTITY)
 data class DocumentEntity(
