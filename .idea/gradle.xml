@@ -29,7 +29,8 @@
             <option value="$PROJECT_DIR$/plugins/writeopia_export" />
             <option value="$PROJECT_DIR$/plugins/writeopia_import_document" />
             <option value="$PROJECT_DIR$/plugins/writeopia_network" />
-            <option value="$PROJECT_DIR$/plugins/writeopia_persistence" />
+            <option value="$PROJECT_DIR$/plugins/writeopia_persistence_core" />
+            <option value="$PROJECT_DIR$/plugins/writeopia_persistence_room" />
             <option value="$PROJECT_DIR$/plugins/writeopia_serialization" />
             <option value="$PROJECT_DIR$/writeopia" />
             <option value="$PROJECT_DIR$/writeopia_models" />

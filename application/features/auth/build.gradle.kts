@@ -58,7 +58,7 @@ dependencies {
     implementation(project(":application:resources"))
     implementation(project(":application:auth_core"))
     implementation(project(":application:persistence"))
-    implementation(project(":plugins:writeopia_persistence"))
+    implementation(project(":plugins:writeopia_persistence_core"))
     implementation(project(":plugins:writeopia_serialization"))
 
     implementation(project(":plugins:writeopia_network"))

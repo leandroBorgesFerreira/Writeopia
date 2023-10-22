@@ -2,8 +2,8 @@ package io.writeopia.note_menu.data.usecase
 
 import android.content.SharedPreferences
 import io.writeopia.note_menu.viewmodel.NotesArrangement
-import io.writeopia.sdk.persistence.sorting.OrderBy
-import io.writeopia.sdk.persistence.sorting.toEntityField
+import io.writeopia.sdk.persistence.core.extensions.toEntityField
+import io.writeopia.sdk.persistence.core.sorting.OrderBy
 
 /**
  * This class is responsible to keep the information of the preferences or the user about the

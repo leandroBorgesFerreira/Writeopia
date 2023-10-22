@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amplifyframework.auth.AuthException
 import io.writeopia.sdk.models.document.Document
-import io.writeopia.sdk.persistence.sorting.OrderBy
+import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.auth.core.AuthManager
 import io.writeopia.auth.core.data.User
@@ -128,7 +128,7 @@ internal class ChooseNoteViewModel(
         _notesArrangement.value = NotesArrangement.GRID
     }
 
-    fun sortingSelected(orderBy: OrderBy) {
+    fun sortingSelected(orderBy: io.writeopia.sdk.persistence.core.sorting.OrderBy) {
         viewModelScope.launch(Dispatchers.IO) {
             notesConfig.saveDocumentSortingPref(orderBy)
             refreshNotes()

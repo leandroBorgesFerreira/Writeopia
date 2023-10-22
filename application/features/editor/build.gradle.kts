@@ -54,7 +54,7 @@ dependencies {
     implementation(project(":writeopia"))
     implementation(project(":writeopia_models"))
     implementation(project(":plugins:writeopia_export"))
-    implementation(project(":plugins:writeopia_persistence"))
+    implementation(project(":plugins:writeopia_persistence_core"))
     implementation(project(":plugins:writeopia_serialization"))
 
     implementation(project(":application:resources"))

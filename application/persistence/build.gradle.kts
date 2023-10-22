@@ -38,7 +38,8 @@ android {
 dependencies {
     implementation(project(":writeopia"))
     implementation(project(":writeopia_models"))
-    implementation(project(":plugins:writeopia_persistence"))
+    implementation(project(":plugins:writeopia_persistence_room"))
+    implementation(project(":plugins:writeopia_persistence_core"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
@@ -54,10 +55,10 @@ dependencies {
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.2")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.3")
     androidTestImplementation(libs.kotlinx.coroutines.test)
 
     testImplementation(libs.junit)
 
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.2")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.3")
 }

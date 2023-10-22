@@ -19,11 +19,12 @@ rootProject.name = "Writeopia"
 
 include(":writeopia")
 include(":writeopia_models")
-include(":plugins:writeopia_persistence")
+include(":plugins:writeopia_persistence_room")
 include(":plugins:writeopia_serialization")
 include(":plugins:writeopia_network")
 include(":plugins:writeopia_export")
 include(":plugins:writeopia_import_document")
+include(":plugins:writeopia_persistence_core")
 include(":application:androidApp")
 include(":application:resources")
 include(":application:auth_core")

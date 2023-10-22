@@ -2,26 +2,21 @@ package io.writeopia.editor.di
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.writeopia.sdk.manager.DocumentRepository
-import io.writeopia.sdk.manager.WriteopiaManager
-import io.writeopia.sdk.persistence.repository.DocumentRepositoryImpl
 import io.writeopia.auth.core.AuthManager
 import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.editor.NoteEditorViewModel
-import io.writeopia.persistence.WriteopiaApplicationDatabase
+import io.writeopia.persistence.injection.RepositoriesInjection
+import io.writeopia.sdk.manager.DocumentRepository
+import io.writeopia.sdk.manager.WriteopiaManager
 import kotlinx.coroutines.Dispatchers
 
 class EditorInjector(
-    private val database: WriteopiaApplicationDatabase,
     private val authCoreInjection: AuthCoreInjection,
+    private val repositoriesInjection: RepositoriesInjection
 ) {
 
     private fun provideDocumentRepository(): DocumentRepository =
-        DocumentRepositoryImpl(
-            database.documentDao(),
-            database.storyUnitDao()
-        )
-
+        repositoriesInjection.provideDocumentRepository()
 
     private fun provideWriteopiaManager(
         authManager: AuthManager = authCoreInjection.provideAccountManager()

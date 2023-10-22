@@ -5,11 +5,12 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import io.writeopia.sdk.persistence.entity.document.CREATED_AT
-import io.writeopia.sdk.persistence.entity.document.DOCUMENT_ENTITY
+import io.writeopia.sdk.persistence.core.CREATED_AT
+import io.writeopia.sdk.persistence.core.DOCUMENT_ENTITY
+import io.writeopia.sdk.persistence.core.LAST_UPDATED_AT
+import io.writeopia.sdk.persistence.core.TITLE
 import io.writeopia.sdk.persistence.entity.document.DocumentEntity
-import io.writeopia.sdk.persistence.entity.document.LAST_UPDATED_AT
-import io.writeopia.sdk.persistence.entity.document.TITLE
+
 import io.writeopia.sdk.persistence.entity.story.STORY_UNIT_ENTITY
 import io.writeopia.sdk.persistence.entity.story.StoryStepEntity
 

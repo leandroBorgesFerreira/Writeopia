@@ -23,6 +23,7 @@ import io.writeopia.editor.navigation.editorNavigation
 import io.writeopia.note_menu.di.NotesMenuInjection
 import io.writeopia.note_menu.navigation.notesMenuNavigation
 import io.writeopia.persistence.WriteopiaApplicationDatabase
+import io.writeopia.persistence.injection.RepositoriesInjection
 import io.writeopia.sdk.network.injector.ApiInjector
 import io.writeopia.theme.ApplicationComposeTheme
 import io.writeopia.utils_module.Destinations
@@ -41,7 +42,6 @@ class NavigationActivity : AppCompatActivity() {
 fun NavigationGraph(
     application: Application,
     navController: NavHostController = rememberNavController(),
-    database: WriteopiaApplicationDatabase = WriteopiaApplicationDatabase.database(application),
     sharedPreferences: SharedPreferences = application.getSharedPreferences(
         "io.writeopia.preferences",
         Context.MODE_PRIVATE
@@ -52,10 +52,11 @@ fun NavigationGraph(
     val apiInjector =
         ApiInjector(apiLogger = AndroidLogger, bearerTokenHandler = AmplifyTokenHandler)
     val authCoreInjection = AuthCoreInjection(sharedPreferences)
-    val authInjection = AuthInjection(authCoreInjection, database, apiInjector)
-    val editorInjector = EditorInjector(database, authCoreInjection)
+    val repositoriesInjection = RepositoriesInjection(application)
+    val authInjection = AuthInjection(authCoreInjection, apiInjector, repositoriesInjection)
+    val editorInjector = EditorInjector(authCoreInjection, repositoriesInjection)
     val notesMenuInjection =
-        NotesMenuInjection(database, sharedPreferences, authCoreInjection.provideAccountManager())
+        NotesMenuInjection(sharedPreferences, authCoreInjection.provideAccountManager(), repositoriesInjection)
 
     ApplicationComposeTheme {
         NavHost(navController = navController, startDestination = startDestination) {
