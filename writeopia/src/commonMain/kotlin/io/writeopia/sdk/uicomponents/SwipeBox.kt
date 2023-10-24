@@ -92,7 +92,6 @@ fun SwipeBox(
         }
         .clip(cornersShape)
         .background(colorAnimated)
-        .padding(vertical = 4.dp)
         .pointerInput(Unit) {
             detectHorizontalDragGestures(
                 onDragStart = { _ -> dragging = true },
