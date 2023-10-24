@@ -2,7 +2,7 @@ package io.writeopia.note_menu.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import io.writeopia.auth.core.AuthManager
+import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.note_menu.data.usecase.NotesConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel

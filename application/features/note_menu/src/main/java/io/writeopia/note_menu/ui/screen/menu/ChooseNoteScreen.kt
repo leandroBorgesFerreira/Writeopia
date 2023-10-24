@@ -64,9 +64,7 @@ internal fun ChooseNoteScreen(
     LaunchedEffect(key1 = "refresh", block = {
         chooseNoteViewModel.requestDocuments(false)
         // Todo: Remove BuildConfig.DEBUG check later.
-        if (!BuildConfig.DEBUG) {
-            chooseNoteViewModel.requestUser()
-        }
+        chooseNoteViewModel.requestUser()
     })
 
     val hasSelectedNotes by chooseNoteViewModel.hasSelectedNotes.collectAsStateWithLifecycle()

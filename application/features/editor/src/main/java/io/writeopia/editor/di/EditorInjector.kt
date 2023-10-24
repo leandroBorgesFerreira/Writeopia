@@ -2,8 +2,8 @@ package io.writeopia.editor.di
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.writeopia.auth.core.AuthManager
 import io.writeopia.auth.core.di.AuthCoreInjection
+import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.editor.NoteEditorViewModel
 import io.writeopia.persistence.injection.RepositoriesInjection
 import io.writeopia.sdk.manager.DocumentRepository
