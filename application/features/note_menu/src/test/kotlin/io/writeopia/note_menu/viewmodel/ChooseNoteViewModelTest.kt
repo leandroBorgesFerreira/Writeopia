@@ -20,58 +20,35 @@ class ChooseNoteViewModelTest {
     private val notesConfig: NotesConfigurationRepository = mockk()
     private val authManager: AuthManager = mockk()
 
-    private val testDispatcher = UnconfinedTestDispatcher()
-
-    @BeforeTest
-    fun setup() {
-        Dispatchers.setMain(testDispatcher)
-    }
-
-    @AfterTest
-    fun tearDown() {
-        Dispatchers.resetMain()
-    }
-
     @Test
-    fun `it should be possible to select documents`() = runTest {
-        val viewModel = ChooseNoteViewModel(notesUseCase, notesConfig, authManager)
-
-        repeat(5) { i ->
-            viewModel.onDocumentSelected("$i", true)
-        }
-
-        val selectedNotesList = mutableListOf<Boolean>()
-
-        backgroundScope.launch(testDispatcher) {
-            viewModel.hasSelectedNotes.toList(selectedNotesList)
-        }
-
-        assertEquals(selectedNotesList.size, 2)
-        assertTrue(viewModel.hasSelectedNotes.value)
-    }
-
-    @Test
-    @Ignore("Test fails when running with other tests")
     fun `after deleting a document the selection should be reset `() = runTest {
-        coEvery { notesUseCase.deleteNotes(any()) } returns Unit
+        val testDispatcher = UnconfinedTestDispatcher(testScheduler)
+        Dispatchers.setMain(testDispatcher)
 
-        val viewModel = ChooseNoteViewModel(notesUseCase, notesConfig, authManager)
+        try {
+            coEvery { notesUseCase.deleteNotes(any()) } returns Unit
 
-        val selectedNotesList = mutableListOf<Boolean>()
-        backgroundScope.launch(testDispatcher) {
-            viewModel.hasSelectedNotes.toList(selectedNotesList)
+            val viewModel = ChooseNoteViewModel(notesUseCase, notesConfig, authManager)
+
+            val selectedNotesList = mutableListOf<Boolean>()
+            backgroundScope.launch(testDispatcher) {
+                viewModel.hasSelectedNotes.toList(selectedNotesList)
+            }
+
+            repeat(5) { i ->
+                viewModel.onDocumentSelected("$i", true)
+            }
+            viewModel.deleteSelectedNotes()
+
+            advanceUntilIdle()
+
+            assertEquals(selectedNotesList[0], false)
+            assertEquals(selectedNotesList[1], true)
+            assertEquals(selectedNotesList[2], false)
+            assertFalse(viewModel.hasSelectedNotes.value)
+        } finally {
+            Dispatchers.resetMain()
         }
-
-        repeat(5) { i ->
-            viewModel.onDocumentSelected("$i", true)
-        }
-        viewModel.deleteSelectedNotes()
-
-        advanceUntilIdle()
-
-        assertEquals(selectedNotesList[0], false)
-        assertEquals(selectedNotesList[1], true)
-        assertEquals(selectedNotesList[2], false)
-        assertFalse(viewModel.hasSelectedNotes.value)
     }
+
 }
