@@ -47,6 +47,7 @@ import io.writeopia.note_menu.ui.screen.configuration.NotesSelectionMenu
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.note_menu.viewmodel.UserState
 import com.valentinilk.shimmer.shimmer
+import io.writeopia.note_menu.BuildConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -62,7 +63,10 @@ internal fun ChooseNoteScreen(
 ) {
     LaunchedEffect(key1 = "refresh", block = {
         chooseNoteViewModel.requestDocuments(false)
-        chooseNoteViewModel.requestUser()
+        // Todo: Remove BuildConfig.DEBUG check later.
+        if (!BuildConfig.DEBUG) {
+            chooseNoteViewModel.requestUser()
+        }
     })
 
     val hasSelectedNotes by chooseNoteViewModel.hasSelectedNotes.collectAsStateWithLifecycle()

@@ -2,6 +2,7 @@ package io.writeopia.account.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.writeopia.account.BuildConfig
 import io.writeopia.auth.core.AuthManager
 import io.writeopia.auth.core.repository.AuthRepository
 import io.writeopia.utils_module.ResultData
@@ -21,8 +22,13 @@ class AccountMenuViewModel(
 
     fun checkLoggedIn() {
         viewModelScope.launch {
-            _isLoggedIn.value = ResultData.Loading()
-            _isLoggedIn.value = authManager.isLoggedIn()
+            // Todo: Remove BuildConfig.DEBUG check later.
+            if (!BuildConfig.DEBUG) {
+                _isLoggedIn.value = ResultData.Loading()
+                _isLoggedIn.value = authManager.isLoggedIn()
+            } else {
+                _isLoggedIn.value = ResultData.Complete(false)
+            }
         }
     }
 
