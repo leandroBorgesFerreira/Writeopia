@@ -23,8 +23,7 @@ import io.writeopia.editor.di.EditorInjector
 import io.writeopia.editor.navigation.editorNavigation
 import io.writeopia.note_menu.di.NotesMenuInjection
 import io.writeopia.note_menu.navigation.notesMenuNavigation
-import io.writeopia.persistence.WriteopiaApplicationDatabase
-import io.writeopia.persistence.injection.RepositoriesInjection
+import io.writeopia.persistence.injection.DaoInjection
 import io.writeopia.sdk.network.injector.ApiInjector
 import io.writeopia.theme.ApplicationComposeTheme
 import io.writeopia.utils_module.Destinations
@@ -59,11 +58,11 @@ fun NavigationGraph(
     val apiInjector =
         ApiInjector(apiLogger = AndroidLogger, bearerTokenHandler = AmplifyTokenHandler)
     val authCoreInjection = AuthCoreInjection(sharedPreferences)
-    val repositoriesInjection = RepositoriesInjection(application)
-    val authInjection = AuthInjection(authCoreInjection, apiInjector, repositoriesInjection)
-    val editorInjector = EditorInjector(authCoreInjection, repositoriesInjection)
+    val daoInjection = DaoInjection(application)
+    val authInjection = AuthInjection(authCoreInjection, apiInjector, daoInjection)
+    val editorInjector = EditorInjector(authCoreInjection, daoInjection)
     val notesMenuInjection =
-        NotesMenuInjection(sharedPreferences, authCoreInjection.provideAccountManager(), repositoriesInjection)
+        NotesMenuInjection(sharedPreferences, authCoreInjection.provideAccountManager(), daoInjection)
 
     ApplicationComposeTheme {
         NavHost(navController = navController, startDestination = startDestination) {

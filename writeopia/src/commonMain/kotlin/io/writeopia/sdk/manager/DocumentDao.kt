@@ -8,7 +8,7 @@ import io.writeopia.sdk.models.story.StoryStep
  * The implementations of this interface shouldn't control order (sorting) or oder configurations,
  * those need to be passed as parameters.
  */
-interface DocumentRepository : DocumentUpdate {
+interface DocumentDao : DocumentUpdate {
 
     suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document>
 

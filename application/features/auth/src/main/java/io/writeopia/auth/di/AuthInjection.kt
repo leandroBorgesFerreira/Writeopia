@@ -9,25 +9,25 @@ import io.writeopia.auth.intronotes.IntroNotesUseCase
 import io.writeopia.auth.login.LoginViewModel
 import io.writeopia.auth.menu.AuthMenuViewModel
 import io.writeopia.auth.register.RegisterViewModel
-import io.writeopia.persistence.injection.RepositoriesInjection
-import io.writeopia.sdk.manager.DocumentRepository
+import io.writeopia.persistence.injection.DaoInjection
+import io.writeopia.sdk.manager.DocumentDao
 import io.writeopia.sdk.network.injector.ApiInjector
 import io.writeopia.sdk.network.notes.NotesApi
 
 class AuthInjection(
     private val authCoreInjection: AuthCoreInjection,
     private val apiInjector: ApiInjector,
-    private val repositoriesInjection: RepositoriesInjection
+    private val daoInjection: DaoInjection
 ) {
 
-    private fun provideDocumentRepository(): DocumentRepository = repositoriesInjection.provideDocumentRepository()
+    private fun provideDocumentRepository(): DocumentDao = daoInjection.provideDocumentDao()
 
     private fun provideIntroNotesUseCase(
-        documentRepository: DocumentRepository = provideDocumentRepository(),
+        documentDao: DocumentDao = provideDocumentRepository(),
         notesApi: NotesApi = apiInjector.notesApi()
     ): IntroNotesUseCase =
         IntroNotesUseCase(
-            documentRepository = documentRepository,
+            documentDao = documentDao,
             notesApi = notesApi
         )
 

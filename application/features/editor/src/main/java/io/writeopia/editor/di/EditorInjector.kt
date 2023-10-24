@@ -5,18 +5,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.editor.NoteEditorViewModel
-import io.writeopia.persistence.injection.RepositoriesInjection
-import io.writeopia.sdk.manager.DocumentRepository
+import io.writeopia.persistence.injection.DaoInjection
+import io.writeopia.sdk.manager.DocumentDao
 import io.writeopia.sdk.manager.WriteopiaManager
 import kotlinx.coroutines.Dispatchers
 
 class EditorInjector(
     private val authCoreInjection: AuthCoreInjection,
-    private val repositoriesInjection: RepositoriesInjection
+    private val daoInjection: DaoInjection
 ) {
 
-    private fun provideDocumentRepository(): DocumentRepository =
-        repositoriesInjection.provideDocumentRepository()
+    private fun provideDocumentRepository(): DocumentDao =
+        daoInjection.provideDocumentDao()
 
     private fun provideWriteopiaManager(
         authManager: AuthManager = authCoreInjection.provideAccountManager()
@@ -27,11 +27,11 @@ class EditorInjector(
 
     @Composable
     internal fun provideNoteDetailsViewModel(
-        documentRepository: DocumentRepository = provideDocumentRepository(),
+        documentDao: DocumentDao = provideDocumentRepository(),
         writeopiaManager: WriteopiaManager = provideWriteopiaManager()
     ): NoteEditorViewModel {
         return viewModel(initializer = {
-            NoteEditorViewModel(writeopiaManager, documentRepository)
+            NoteEditorViewModel(writeopiaManager, documentDao)
         })
     }
 }

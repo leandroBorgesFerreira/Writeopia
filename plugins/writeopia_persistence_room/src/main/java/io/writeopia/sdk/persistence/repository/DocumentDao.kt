@@ -1,19 +1,17 @@
 package io.writeopia.sdk.persistence.repository
 
-import io.writeopia.sdk.manager.DocumentRepository
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.persistence.dao.DocumentDao
 import io.writeopia.sdk.persistence.dao.StoryUnitDao
 import io.writeopia.sdk.persistence.entity.document.DocumentEntity
 import io.writeopia.sdk.persistence.entity.story.StoryStepEntity
 import io.writeopia.sdk.persistence.parse.toEntity
 import io.writeopia.sdk.persistence.parse.toModel
 
-class DocumentRepositoryImpl(
+class DocumentDao(
     private val documentDao: DocumentDao,
     private val storyUnitDao: StoryUnitDao
-) : DocumentRepository {
+) : io.writeopia.sdk.manager.DocumentDao {
 
     override suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document> =
         documentDao.loadDocumentsWithContentForUser(orderBy, userId)
