@@ -5,10 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amplifyframework.auth.AuthException
 import io.writeopia.sdk.models.document.Document
-import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
-import io.writeopia.auth.core.AuthManager
 import io.writeopia.auth.core.data.User
+import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.note_menu.data.usecase.NotesConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard

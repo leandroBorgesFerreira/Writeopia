@@ -28,10 +28,7 @@ fun NavGraphBuilder.accountMenuNavigation(
         }
     ) {
         LaunchedEffect(key1 = "start") {
-            // Todo: Remove BuildConfig.DEBUG check later.
-            if (!BuildConfig.DEBUG) {
-                accountMenuViewModel.checkLoggedIn()
-            }
+            accountMenuViewModel.checkLoggedIn()
         }
 
         AccountMenuScreen(

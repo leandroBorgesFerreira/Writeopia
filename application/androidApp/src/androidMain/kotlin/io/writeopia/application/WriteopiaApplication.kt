@@ -11,7 +11,6 @@ class WriteopiaApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         VideoFrameConfig.configCoilForVideoFrame(this)
-        // Todo: Remove BuildConfig.DEBUG check later.
         if (!BuildConfig.DEBUG) {
             try {
                 AuthInitializer.initializeAwsAuth(applicationContext)

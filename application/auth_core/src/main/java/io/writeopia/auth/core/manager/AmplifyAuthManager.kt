@@ -1,4 +1,4 @@
-package io.writeopia.auth.core
+package io.writeopia.auth.core.manager
 
 import android.content.SharedPreferences
 import android.util.Log
@@ -17,15 +17,15 @@ private const val ANONYMOUS_USER_KEY = "ANONYMOUS_USER_KEY"
  * This class encapsulates the logic of auth so the framework doesn't get exposed to the app, making
  * changes easier (like changing Amplify to Firebase)
  */
-class AuthManager(private val sharedPreferences: SharedPreferences) {
+class AmplifyAuthManager(private val sharedPreferences: SharedPreferences): AuthManager {
 
-    fun setUsageAsAnonymous(isAnonymous: Boolean) {
+    private fun setUsageAsAnonymous(isAnonymous: Boolean) {
         sharedPreferences.edit().run {
             this.putBoolean(ANONYMOUS_USER_KEY, isAnonymous)
         }
     }
 
-    suspend fun getUser(): User =
+    override suspend fun getUser(): User =
         try {
             val userAttributes = Amplify.Auth.fetchUserAttributes()
 
@@ -50,7 +50,7 @@ class AuthManager(private val sharedPreferences: SharedPreferences) {
             User.disconnectedUser()
         }
 
-    suspend fun isLoggedIn(): ResultData<Boolean> =
+    override suspend fun isLoggedIn(): ResultData<Boolean> =
         try {
             val session = Amplify.Auth.fetchAuthSession()
             Log.i("AmplifyQuickstart", "Auth session = $session")
@@ -60,7 +60,7 @@ class AuthManager(private val sharedPreferences: SharedPreferences) {
             ResultData.Error(error)
         }
 
-    suspend fun signUp(email: String, password: String, name: String): ResultData<Boolean> {
+    override suspend fun signUp(email: String, password: String, name: String): ResultData<Boolean> {
         val options = AuthSignUpOptions.builder()
             .userAttribute(AuthUserAttributeKey.email(), email)
             .userAttribute(AuthUserAttributeKey.name(), name)
@@ -81,7 +81,7 @@ class AuthManager(private val sharedPreferences: SharedPreferences) {
         }
     }
 
-    suspend fun signIn(email: String, password: String): ResultData<Boolean> =
+    override suspend fun signIn(email: String, password: String): ResultData<Boolean> =
         try {
             val result = Amplify.Auth.signIn(email, password)
             if (result.isSignedIn) {
@@ -102,7 +102,7 @@ class AuthManager(private val sharedPreferences: SharedPreferences) {
             ResultData.Error(error)
         }
 
-    suspend fun logout(): ResultData<Boolean> =
+    override suspend fun logout(): ResultData<Boolean> =
         when (val signOutResult = Amplify.Auth.signOut()) {
             is AWSCognitoAuthSignOutResult.CompleteSignOut -> {
                 // Sign Out completed fully and without errors.
