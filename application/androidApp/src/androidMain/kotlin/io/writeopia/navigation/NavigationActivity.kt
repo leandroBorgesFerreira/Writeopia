@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import io.writeopia.AndroidLogger
 import io.writeopia.account.navigation.accountMenuNavigation
 import io.writeopia.account.viewmodel.AccountMenuViewModel
+import io.writeopia.auth.core.BuildConfig
 import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.auth.core.token.AmplifyTokenHandler
 import io.writeopia.auth.di.AuthInjection
@@ -33,7 +34,13 @@ class NavigationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            NavigationGraph(application = application)
+            val startDestination = if (BuildConfig.DEBUG) {
+                Destinations.CHOOSE_NOTE.id
+            } else {
+                Destinations.AUTH_MENU_INNER_NAVIGATION.id
+            }
+
+            NavigationGraph(application = application, startDestination = startDestination)
         }
     }
 }
