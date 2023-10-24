@@ -104,7 +104,7 @@ internal class ChooseNoteViewModel(
         _editState.value = false
     }
 
-    fun selectionListener(id: String, selected: Boolean) {
+    fun onDocumentSelected(id: String, selected: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             val selectedIds = _selectedNotes.value
             val newIds = if (selected) selectedIds + id else selectedIds - id
@@ -147,9 +147,7 @@ internal class ChooseNoteViewModel(
 
         viewModelScope.launch(Dispatchers.IO) {
             notesUseCase.deleteNotes(selected)
-
-            _selectedNotes.value = emptySet()
-
+            clearSelection()
             refreshNotes()
         }
     }

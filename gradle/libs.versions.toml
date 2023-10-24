@@ -24,6 +24,7 @@ agp = "8.1.2"
 kotlin = "1.9.10"
 compose-compiler = "1.5.3"
 writeopia = "0.4.1"
+mockk = "1.13.8"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
@@ -61,6 +62,7 @@ room-testing = { group = "androidx.room", name = "room-testing", version.ref = "
 viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "compose" }
 runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "compose" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 
 [plugins]
 application = { id = "com.android.application", version.ref = "agp" }

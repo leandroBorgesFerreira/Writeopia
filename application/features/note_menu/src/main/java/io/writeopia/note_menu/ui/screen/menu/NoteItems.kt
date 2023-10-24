@@ -127,7 +127,7 @@ private fun LazyGridNotes(
         content = {
             items(
                 documents,
-//                key = { document -> document.hashCode() } //Todo: This breaks the swipe to edit - Fix it
+                key = { document -> document.hashCode() }
             ) { document ->
                 DocumentItem(document, onDocumentClick, selectionListener, previewDrawers())
             }
