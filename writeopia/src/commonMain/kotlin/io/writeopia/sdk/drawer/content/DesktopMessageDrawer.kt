@@ -5,8 +5,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
@@ -42,21 +41,24 @@ class DesktopMessageDrawer(
     private val onTextEdit: (Action.StoryStateChange) -> Unit = { },
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     private val allowLineBreaks: Boolean = false,
+    private val onLineBreak: (Action.LineBreak) -> Unit = {},
     override var onFocusChanged: (FocusState) -> Unit = {}
 ) : SimpleMessageDrawer {
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
-        if (drawInfo.editable) {
+        var inputText by remember {
             val text = step.text ?: ""
-            val inputText = TextFieldValue(text, TextRange(text.length))
+            mutableStateOf(TextFieldValue(text, TextRange(text.length)))
+        }
 
-            if (drawInfo.focusId == step.id) {
-                LaunchedEffect(step.localId) {
-                    focusRequester?.requestFocus()
-                }
+        if (drawInfo.focusId == step.id) {
+            LaunchedEffect(step.localId) {
+                focusRequester?.requestFocus()
             }
+        }
 
+        if (drawInfo.editable) {
             BasicTextField(
                 modifier = modifier
                     .padding(start = 16.dp)
@@ -74,9 +76,11 @@ class DesktopMessageDrawer(
                 value = inputText,
                 onValueChange = { value ->
                     val changedText = value.text
+
                     if (allowLineBreaks || !changedText.contains("\n")) {
                         onTextEdit(Action.StoryStateChange(step.copy(text = changedText), drawInfo.position))
                         commandHandler.handleCommand(changedText, step, drawInfo.position)
+                        inputText = value
                     }
                 },
                 keyboardOptions = KeyboardOptions(
