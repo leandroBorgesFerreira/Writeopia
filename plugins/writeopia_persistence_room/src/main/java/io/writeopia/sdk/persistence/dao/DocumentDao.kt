@@ -26,14 +26,14 @@ interface DocumentDao {
     @Query("DELETE FROM $DOCUMENT_ENTITY WHERE user_id = :userId")
     suspend fun deleteDocumentsByUserId(userId: String)
 
+    @Query("SELECT * FROM $DOCUMENT_ENTITY WHERE $DOCUMENT_ENTITY.id = :id")
+    suspend fun loadDocumentById(id: String): DocumentEntity?
+
     @Query("SELECT * FROM $DOCUMENT_ENTITY")
     suspend fun loadAllDocuments(): List<DocumentEntity>
 
     @Query("SELECT id FROM $DOCUMENT_ENTITY")
     suspend fun loadAllIds(): List<String>
-
-    @Query("SELECT * FROM $DOCUMENT_ENTITY WHERE $DOCUMENT_ENTITY.id = :id")
-    suspend fun loadDocumentById(id: String): DocumentEntity?
 
     /* The order here doesn't matter, because only one document should be returned */
     @Query(

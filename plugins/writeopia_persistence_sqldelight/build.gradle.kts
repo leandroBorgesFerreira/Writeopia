@@ -14,14 +14,15 @@ plugins {
 kotlin {
     jvm {}
 
-    js(IR) {
-        browser()
-    }
+//    js(IR) {
+//        browser()
+//    }
 
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation(project(":writeopia_models"))
+                implementation(libs.kotlinx.datetime)
             }
         }
 
@@ -35,8 +36,8 @@ kotlin {
 
 sqldelight {
     databases {
-        create("Writeopia_DB") {
-            packageName.set("io.writeopia")
+        create("WriteopiaDb") {
+            packageName.set("io.writeopia.sql")
         }
     }
 }
