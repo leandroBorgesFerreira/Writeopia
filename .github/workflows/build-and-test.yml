@@ -24,7 +24,7 @@ jobs:
           distribution: adopt
           java-version: '17'
       - name: Build debug android 
-        rrun: ./gradlew test
+        run: ./gradlew test
   android_build:
     name: General - Build debug
     runs-on: ubuntu-22.04
