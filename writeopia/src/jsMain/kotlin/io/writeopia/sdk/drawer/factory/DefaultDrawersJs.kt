@@ -20,7 +20,6 @@ import io.writeopia.sdk.drawer.content.*
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.text.edition.TextCommandHandler
-import org.jetbrains.skiko.SkikoKey
 
 private const val LARGE_START_PADDING = 26
 private const val MEDIUM_START_PADDING = 12

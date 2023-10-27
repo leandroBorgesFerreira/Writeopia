@@ -281,33 +281,6 @@ class WriteopiaManager(
     }
 
     /**
-     * An text edition of a [StoryStep]
-     *
-     * @param text String
-     * @param position Int
-     */
-    fun onTextEdit(text: String, position: Int) {
-        if (isOnSelection) {
-            cancelSelection()
-        }
-
-        val currentStory = _currentStory.value.stories
-        val oldText = _currentStory.value.stories[position]?.text
-        val newStory = _currentStory.value.stories[position]?.copy(text = text)
-
-        if (newStory != null && oldText != text) {
-            contentHandler.changeStoryStepState(
-                currentStory,
-                newStory,
-                position
-            )?.let { newState ->
-                _currentStory.value = newState
-                backStackManager.addAction(BackstackAction.StoryTextChange(newStory, position))
-            }
-        }
-    }
-
-    /**
      * Creates a line break. When a line break happens, the line it divided into two [StoryStep]s
      * of the same, if possible, or the next line will be a Message.
      *
