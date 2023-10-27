@@ -1,4 +1,4 @@
-package io.writeopia.sdk.drawer.content
+package io.writeopia.sdk.drawer.content.js
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues

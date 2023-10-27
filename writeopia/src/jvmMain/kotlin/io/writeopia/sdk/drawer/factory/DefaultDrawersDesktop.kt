@@ -2,7 +2,6 @@ package io.writeopia.sdk.drawer.factory
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -89,7 +88,7 @@ object DefaultDrawersDesktop {
         val headerDrawer = headerDrawerDesktop(
             manager,
             headerClick = {},
-            onKeyEvent = KeyEventListenerFactory.create(
+            onKeyEvent = KeyEventListenerFactory.desktop(
                 manager,
                 isEmptyErase = { _, _ -> false },
                 deleteOnEmptyErase = false
@@ -144,7 +143,7 @@ object DefaultDrawersDesktop {
         val focusRequester = remember { FocusRequester() }
         return DesktopMessageDrawer(
             modifier = Modifier.weight(1F).padding(8.dp),
-            onKeyEvent = KeyEventListenerFactory.create(
+            onKeyEvent = KeyEventListenerFactory.desktop(
                 manager,
                 isEmptyErase = { keyEvent, inputText ->
                     keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE &&

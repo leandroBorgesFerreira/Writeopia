@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.input.key.key
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -17,9 +18,11 @@ import androidx.compose.ui.unit.sp
 import io.writeopia.sdk.drawer.SimpleMessageDrawer
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.content.*
+import io.writeopia.sdk.drawer.content.js.DesktopTitleDrawer
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.text.edition.TextCommandHandler
+import org.jetbrains.skiko.SkikoKey
 
 private const val LARGE_START_PADDING = 26
 private const val MEDIUM_START_PADDING = 12
@@ -74,9 +77,13 @@ object DefaultDrawersJs {
         return JsMessageDrawer(
             modifier = Modifier.weight(1F).padding(start = 8.dp),
             textStyle = TextStyle(fontSize = fontSize),
-            onKeyEvent = KeyEventListenerFactoryWeb.createWeb(
+            onKeyEvent = KeyEventListenerFactory.js(
                 manager,
-                deleteOnEmptyErase = deleteOnEmptyErase
+                deleteOnEmptyErase = deleteOnEmptyErase,
+                isLineBreakKey = { keyEvent -> keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER },
+                isEmptyErase = { keyEvent, inputText ->
+                    keyEvent.nativeKeyEvent.key == SkikoKey.KEY_BACKSPACE && inputText.selection.start == 0
+                },
             ),
             onTextEdit = manager::changeStoryState,
             focusRequester = focusRequester,
@@ -115,9 +122,11 @@ object DefaultDrawersJs {
     }
 
     private fun headerDrawer(writeopiaManager: WriteopiaManager): StoryStepDrawer {
-        val keyEvent = KeyEventListenerFactory.create(
+        val onKeyEvent = KeyEventListenerFactory.js(
             writeopiaManager,
-            deleteOnEmptyErase = false
+            deleteOnEmptyErase = false,
+            isEmptyErase = { _, _ -> false},
+            isLineBreakKey = { keyEvent -> keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER },
         )
 
         return HeaderDrawer(
@@ -125,7 +134,7 @@ object DefaultDrawersJs {
                 DesktopTitleDrawer(
                     modifier = Modifier.align(Alignment.BottomStart),
                     onTextEdit = writeopiaManager::changeStoryState,
-                    onKeyEvent = keyEvent,
+                    onKeyEvent = onKeyEvent,
                 )
             },
         )
@@ -164,6 +173,4 @@ object DefaultDrawersJs {
             messageDrawer = messageDrawer,
         )
     }
-
-
 }
