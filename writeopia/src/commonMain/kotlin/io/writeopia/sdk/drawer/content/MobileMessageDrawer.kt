@@ -91,7 +91,7 @@ class MobileMessageDrawer(
                     val text = value.text
 
                     inputText = if (text.contains("\n") && !allowLineBreaks) {
-                        onLineBreak(Action.LineBreak(step, drawInfo.position))
+                        onLineBreak(Action.LineBreak(step.copy(text = text), drawInfo.position))
 
                         val newText = text.split("\n", limit = 2)[0]
                         TextFieldValue(newText, TextRange(newText.length))
