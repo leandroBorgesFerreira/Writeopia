@@ -1,6 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="writeopia-desktop">
-    <output-path>$PROJECT_DIR$/writeopia/build/libs</output-path>
-    <root id="archive" name="writeopia-desktop.jar" />
-  </artifact>
-</component>
