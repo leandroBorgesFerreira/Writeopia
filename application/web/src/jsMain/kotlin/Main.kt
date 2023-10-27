@@ -1,16 +1,16 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,6 +25,7 @@ import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.story.DrawState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.skiko.wasm.onWasmReady
 
 fun main() {
@@ -79,17 +80,30 @@ fun main() {
     }
 }
 
-
 @Composable
 fun CreateTextEditor(writeopiaManager: WriteopiaManager) {
-    TextEditor(drawers = DefaultDrawersJs.create(writeopiaManager), drawState = writeopiaManager.toDraw)
+    val listState: LazyListState = rememberLazyListState()
+    val position by writeopiaManager.scrollToPosition.collectAsState()
+
+    LaunchedEffect(position) {
+        writeopiaManager.scrollToPosition.collectLatest {
+            listState.animateScrollBy(70F)
+        }
+    }
+
+    TextEditor(
+        lazyListState = listState,
+        drawers = DefaultDrawersJs.create(writeopiaManager),
+        drawState = writeopiaManager.toDraw
+    )
 }
 
 @Composable
 fun TextEditor(
+    lazyListState: LazyListState,
     drawState: Flow<DrawState>,
     drawers: Map<Int, StoryStepDrawer>
 ) {
     val toDraw by drawState.collectAsState(DrawState())
-    WriteopiaEditor(modifier = Modifier, drawers = drawers, storyState = toDraw)
+    WriteopiaEditor(modifier = Modifier, drawers = drawers, storyState = toDraw, listState = lazyListState)
 }

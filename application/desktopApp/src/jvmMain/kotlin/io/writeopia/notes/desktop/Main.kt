@@ -2,16 +2,16 @@ package io.writeopia.notes.desktop
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,6 +29,8 @@ import io.writeopia.sdk.model.story.DrawState
 import io.writeopia.sdk.serialization.data.DecorationApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.lang.System.Logger
 
 fun main() = application {
@@ -40,7 +42,7 @@ fun main() = application {
         val writeopiaManager = WriteopiaManager(dispatcher = Dispatchers.IO).apply {
             newStory()
         }
-        
+
         MaterialTheme {
             Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
                 //Todo: Move this to WriteopiaEditorBox
@@ -83,14 +85,29 @@ fun main() = application {
 
 @Composable
 fun CreateTextEditor(manager: WriteopiaManager) {
-    TextEditor(drawers = DefaultDrawersDesktop.create(manager), drawState = manager.toDraw)
+    val listState: LazyListState = rememberLazyListState()
+    val coroutine = rememberCoroutineScope()
+
+    coroutine.launch {
+        manager.scrollToPosition.collectLatest {
+            listState.animateScrollBy(70F)
+        }
+    }
+
+    TextEditor(lazyListState = listState, drawers = DefaultDrawersDesktop.create(manager), drawState = manager.toDraw)
 }
 
 @Composable
 fun TextEditor(
+    lazyListState: LazyListState,
     drawState: Flow<DrawState>,
     drawers: Map<Int, StoryStepDrawer>
 ) {
     val toDraw by drawState.collectAsState(DrawState())
-    WriteopiaEditor(modifier = Modifier.fillMaxWidth(), drawers = drawers, storyState = toDraw)
+    WriteopiaEditor(
+        modifier = Modifier.fillMaxWidth(),
+        drawers = drawers,
+        storyState = toDraw,
+        listState = lazyListState
+    )
 }
