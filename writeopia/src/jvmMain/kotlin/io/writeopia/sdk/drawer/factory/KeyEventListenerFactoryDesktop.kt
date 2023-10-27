@@ -17,9 +17,6 @@ object KeyEventListenerFactoryDesktop {
     ): (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean =
         KeyEventListenerFactory.create(
             manager,
-            isLineBreakKey = { keyEvent ->
-                keyEvent.awtEventOrNull?.keyCode == java.awt.event.KeyEvent.VK_ENTER
-            },
             isEmptyErase = { keyEvent, inputText ->
                 keyEvent.awtEventOrNull?.keyCode == java.awt.event.KeyEvent.VK_BACK_SPACE &&
                         inputText.selection.start == 0

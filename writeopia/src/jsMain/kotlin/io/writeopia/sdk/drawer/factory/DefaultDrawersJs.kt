@@ -118,7 +118,6 @@ object DefaultDrawersJs {
     private fun headerDrawer(writeopiaManager: WriteopiaManager): StoryStepDrawer {
         val keyEvent = KeyEventListenerFactory.create(
             writeopiaManager,
-            isLineBreakKey = { keyEvent -> keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER },
             deleteOnEmptyErase = false
         )
 

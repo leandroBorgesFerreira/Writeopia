@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import io.writeopia.sdk.WriteopiaEditor
 import io.writeopia.sdk.WriteopiaEditorBox
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.factory.DefaultDrawersDesktop
@@ -47,7 +48,6 @@ fun main() = application {
                     Column(
                         modifier = Modifier
                             .align(Alignment.Center)
-                            .verticalScroll(rememberScrollState())
                             .let { modifierLet ->
                                 if (maxWidth > 900.dp) {
                                     modifierLet.width(1000.dp)
@@ -92,5 +92,5 @@ fun TextEditor(
     drawers: Map<Int, StoryStepDrawer>
 ) {
     val toDraw by drawState.collectAsState(DrawState())
-    WriteopiaEditorBox(modifier = Modifier.fillMaxWidth(), drawers = drawers, storyState = toDraw)
+    WriteopiaEditor(modifier = Modifier.fillMaxWidth(), drawers = drawers, storyState = toDraw)
 }
