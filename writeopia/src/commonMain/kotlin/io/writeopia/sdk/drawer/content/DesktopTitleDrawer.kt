@@ -67,9 +67,6 @@ class DesktopTitleDrawer(
                     .clickable {
                         focusRequester.requestFocus()
                     }
-                    .semantics {
-                        testTag = "TitleDrawer"
-                    }
                     .fillMaxWidth()
                     .focusRequester(focusRequester)
                     .onKeyEvent { keyEvent ->

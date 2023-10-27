@@ -3,11 +3,13 @@ package io.writeopia.sdk.drawer.content
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.StoryStepDrawer
@@ -68,15 +70,21 @@ fun headerDrawerDesktop(
     headerClick: () -> Unit,
     onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean,
     modifier: Modifier = Modifier,
-    innerPadding: PaddingValues? = null
 ): StoryStepDrawer =
     HeaderDrawer(
+        modifier = modifier,
         drawer = {
-            DesktopTitleDrawer(
-                modifier = modifier.align(Alignment.BottomStart),
-                innerPadding = innerPadding,
+            DesktopMessageDrawer(
+                modifier = Modifier.align(Alignment.BottomStart).padding(start = 16.dp, bottom = 16.dp),
                 onTextEdit = manager::changeStoryState,
-                onKeyEvent = onKeyEvent
+                onKeyEvent = onKeyEvent,
+                onLineBreak = manager::onLineBreak,
+                textStyle = {
+                    MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
             )
         },
         headerClick = headerClick

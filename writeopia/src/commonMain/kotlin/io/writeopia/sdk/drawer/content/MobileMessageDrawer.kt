@@ -35,7 +35,6 @@ import io.writeopia.sdk.utils.ui.defaultTextStyle
  */
 class MobileMessageDrawer(
     private val modifier: Modifier = Modifier,
-    private val allowLineBreaks: Boolean,
     private val isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
     private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
     private val focusRequester: FocusRequester? = null,
@@ -43,6 +42,7 @@ class MobileMessageDrawer(
     private val emptyErase: ((Int) -> Unit)? = null,
     private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
+    private val allowLineBreaks: Boolean = false,
     private val onLineBreak: (Action.LineBreak) -> Unit = {},
     override var onFocusChanged: (FocusState) -> Unit = {}
 ) : SimpleMessageDrawer {

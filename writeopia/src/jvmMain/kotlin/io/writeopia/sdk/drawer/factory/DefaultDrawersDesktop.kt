@@ -88,16 +88,12 @@ object DefaultDrawersDesktop {
             ) { desktopMessageDrawer(manager) }
         val headerDrawer = headerDrawerDesktop(
             manager,
-            innerPadding = PaddingValues(start = 16.dp),
             headerClick = {},
             onKeyEvent = KeyEventListenerFactory.create(
                 manager,
-                isLineBreakKey = { keyEvent ->
-                    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_ENTER
-                },
                 isEmptyErase = { _, _ -> false },
                 deleteOnEmptyErase = false
-            )
+            ),
         )
 
         return buildMap {
@@ -134,6 +130,7 @@ object DefaultDrawersDesktop {
             textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
             focusRequester = focusRequester,
             commandHandler = textCommandHandler,
+            onLineBreak = manager::onLineBreak,
         )
     }
 
@@ -159,6 +156,7 @@ object DefaultDrawersDesktop {
             textStyle = { codeBlockStyle() },
             focusRequester = focusRequester,
             commandHandler = textCommandHandler,
+            onLineBreak = manager::onLineBreak,
             allowLineBreaks = true
         )
     }

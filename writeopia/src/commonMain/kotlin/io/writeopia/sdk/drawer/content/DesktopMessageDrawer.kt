@@ -75,12 +75,18 @@ class DesktopMessageDrawer(
                     .onFocusChanged(onFocusChanged),
                 value = inputText,
                 onValueChange = { value ->
-                    val changedText = value.text
+                    val text = value.text
 
-                    if (allowLineBreaks || !changedText.contains("\n")) {
-                        onTextEdit(Action.StoryStateChange(step.copy(text = changedText), drawInfo.position))
-                        commandHandler.handleCommand(changedText, step, drawInfo.position)
-                        inputText = value
+                    inputText = if (text.contains("\n") && !allowLineBreaks) {
+                        onLineBreak(Action.LineBreak(step.copy(text = text), drawInfo.position))
+
+                        val newText = text.split("\n", limit = 2)[0]
+                        TextFieldValue(newText, TextRange(newText.length))
+                    } else {
+                        onTextEdit(Action.StoryStateChange(step.copy(text = text), drawInfo.position))
+                        commandHandler.handleCommand(text, step, drawInfo.position)
+
+                        value
                     }
                 },
                 keyboardOptions = KeyboardOptions(

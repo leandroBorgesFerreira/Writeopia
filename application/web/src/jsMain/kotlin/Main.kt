@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
+import io.writeopia.sdk.WriteopiaEditor
 import io.writeopia.sdk.WriteopiaEditorBox
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.factory.DefaultDrawersJs
@@ -41,8 +42,7 @@ fun main() {
                         interactionSource = remember { MutableInteractionSource() },
                     )
                     .fillMaxSize()
-                    .background(Color.Gray)
-                    .verticalScroll(rememberScrollState()),
+                    .background(Color.Gray),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
 
@@ -91,5 +91,5 @@ fun TextEditor(
     drawers: Map<Int, StoryStepDrawer>
 ) {
     val toDraw by drawState.collectAsState(DrawState())
-    WriteopiaEditorBox(modifier = Modifier, drawers = drawers, storyState = toDraw)
+    WriteopiaEditor(modifier = Modifier, drawers = drawers, storyState = toDraw)
 }
