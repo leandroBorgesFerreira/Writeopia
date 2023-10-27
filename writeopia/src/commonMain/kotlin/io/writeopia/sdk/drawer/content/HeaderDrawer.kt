@@ -56,10 +56,16 @@ fun headerDrawer(
 ): StoryStepDrawer =
     HeaderDrawer(
         drawer = {
-            MobileTitleDrawer(
-                modifier = modifier.align(Alignment.BottomStart),
+            MobileMessageDrawer(
+                modifier = Modifier.align(Alignment.BottomStart).padding(start = 16.dp, bottom = 16.dp),
                 onTextEdit = manager::changeStoryState,
                 onLineBreak = manager::onLineBreak,
+                textStyle = {
+                    MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
             )
         },
         headerClick = headerClick

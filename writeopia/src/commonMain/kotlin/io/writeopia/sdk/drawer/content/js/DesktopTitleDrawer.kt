@@ -1,17 +1,22 @@
-package io.writeopia.sdk.drawer.content
+package io.writeopia.sdk.drawer.content.js
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.TextRange
@@ -25,17 +30,18 @@ import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.utils.ui.transparentTextInputColors
 
-const val TITLE_DRAWER_TEST_TAG = "TitleDrawerTextField"
+const val DESKTOP_TITLE_DRAWER_TEST_TAG = "DesktopTitleDrawerTextField"
 
 /**
  * Draw a text that can be edited. The edition of the text is both reflect in this Composable and
  * also notified by onTextEdit. It is necessary to reflect here to avoid losing the focus on the
  * TextField.
  */
-class MobileTitleDrawer(
+class DesktopTitleDrawer(
     private val modifier: Modifier = Modifier,
+    private val innerPadding: PaddingValues? = null,
     private val onTextEdit: (Action.StoryStateChange) -> Unit = { },
-    private val onLineBreak: (Action.LineBreak) -> Unit = {},
+    private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean = { _, _, _, _ -> false },
 ) : StoryStepDrawer {
 
     @Composable
@@ -47,10 +53,8 @@ class MobileTitleDrawer(
         )
 
         if (drawInfo.editable) {
-            var inputText by remember {
-                val text = step.text ?: ""
-                mutableStateOf(TextFieldValue(text, TextRange(text.length)))
-            }
+            val text = step.text ?: ""
+            val inputText = TextFieldValue(text, TextRange(text.length))
 
             LaunchedEffect(drawInfo.focusId) {
                 if (drawInfo.focusId == step.id) {
@@ -63,21 +67,21 @@ class MobileTitleDrawer(
                     .clickable {
                         focusRequester.requestFocus()
                     }
-                    .semantics {
-                        testTag = "TitleDrawer"
-                    }
                     .fillMaxWidth()
                     .focusRequester(focusRequester)
+                    .onKeyEvent { keyEvent ->
+                        onKeyEvent(keyEvent, inputText, step, drawInfo.position)
+                    }.let { modifierLet ->
+                        innerPadding?.let(modifierLet::padding) ?: modifierLet
+                    }
                     .semantics {
-                        testTag = TITLE_DRAWER_TEST_TAG
+                        testTag = DESKTOP_TITLE_DRAWER_TEST_TAG
                     },
                 value = inputText,
                 onValueChange = { value ->
-                    if (value.text.contains("\n")) {
-                        onLineBreak(Action.LineBreak(step, drawInfo.position))
-                    } else {
-                        inputText = value
-                        onTextEdit(Action.StoryStateChange(step.copy(text = value.text), drawInfo.position))
+                    val changedText = value.text
+                    if (!changedText.contains("\n")) {
+                        onTextEdit(Action.StoryStateChange(step.copy(text = changedText), drawInfo.position))
                     }
                 },
                 keyboardOptions = KeyboardOptions(

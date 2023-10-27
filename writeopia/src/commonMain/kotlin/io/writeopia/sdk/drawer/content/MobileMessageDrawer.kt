@@ -38,7 +38,7 @@ class MobileMessageDrawer(
     private val isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
     private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
     private val focusRequester: FocusRequester? = null,
-    private val onTextEdit: (String, Int) -> Unit = { _, _ -> },
+    private val onTextEdit: (Action.StoryStateChange)  -> Unit = {},
     private val emptyErase: ((Int) -> Unit)? = null,
     private val onDeleteRequest: (Action.DeleteStory) -> Unit = {},
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
@@ -96,7 +96,7 @@ class MobileMessageDrawer(
                         val newText = text.split("\n", limit = 2)[0]
                         TextFieldValue(newText, TextRange(newText.length))
                     } else {
-                        onTextEdit(value.text, drawInfo.position)
+                        onTextEdit(Action.StoryStateChange(step, drawInfo.position))
                         commandHandler.handleCommand(text, step, drawInfo.position)
 
                         value

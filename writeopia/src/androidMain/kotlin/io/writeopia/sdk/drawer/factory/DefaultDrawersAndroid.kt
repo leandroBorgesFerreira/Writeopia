@@ -188,7 +188,7 @@ object DefaultDrawersAndroid {
             isEmptyErase = { keyEvent, selection ->
                 keyEvent.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DEL && selection.selection.start == 0
             },
-            onTextEdit = manager::onTextEdit,
+            onTextEdit = manager::changeStoryState,
             textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
             focusRequester = focusRequester,
             commandHandler = textCommandHandler,
