@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="writeopia_serialization-jvm">
-    <output-path>$PROJECT_DIR$/plugins/writeopia_serialization/build/libs</output-path>
-    <root id="archive" name="writeopia_serialization-jvm.jar">
-      <element id="module-output" name="Writeopia.plugins.writeopia_serialization.jvmMain" />
-    </root>
-  </artifact>
-</component>

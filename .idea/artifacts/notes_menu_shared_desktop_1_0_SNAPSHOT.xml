@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="notes_menu_shared-desktop-1.0-SNAPSHOT">
-    <output-path>$PROJECT_DIR$/application/notes_menu_shared/build/libs</output-path>
-    <root id="archive" name="notes_menu_shared-desktop-1.0-SNAPSHOT.jar">
-      <element id="module-output" name="Writeopia.application.notes_menu_shared.desktopMain" />
-    </root>
-  </artifact>
-</component>
