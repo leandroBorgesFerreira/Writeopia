@@ -61,7 +61,8 @@ class WriteopiaManager(
         StoryState(stories = emptyMap(), lastEdit = LastEdit.Nothing)
     )
 
-    private val _documentInfo: MutableStateFlow<DocumentInfo> = MutableStateFlow(DocumentInfo.empty())
+    private val _documentInfo: MutableStateFlow<DocumentInfo> =
+        MutableStateFlow(DocumentInfo.empty())
 
     private val _positionsOnEdit = MutableStateFlow(setOf<Int>())
     val onEditPositions = _positionsOnEdit.asStateFlow()
@@ -334,7 +335,8 @@ class WriteopiaManager(
                 this[lastPosition] = lastContentStory.copyNewLocalId()
             }
 
-            val newState = _currentStory.value.copy(focusId = lastContentStory.id, stories = newStoriesState)
+            val newState =
+                _currentStory.value.copy(focusId = lastContentStory.id, stories = newStoriesState)
             _currentStory.value = newState
         } else {
             var acc = stories.size - 1

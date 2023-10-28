@@ -58,7 +58,7 @@ internal class NoteEditorViewModel(
 
     val currentTitle = writeopiaManager.currentDocument.filterNotNull().map { document ->
         document.title
-    }
+    }.stateIn(viewModelScope, started = SharingStarted.Lazily, initialValue = "")
 
     private val _shouldGoToNextScreen = MutableStateFlow(false)
     val shouldGoToNextScreen = _shouldGoToNextScreen.asStateFlow()
@@ -112,7 +112,7 @@ internal class NoteEditorViewModel(
             writeopiaManager.currentDocument.stateIn(this).value?.let { document ->
                 documentRepository.saveDocument(document)
                 writeopiaManager.saveOnStoryChanges(
-                    io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker(
+                    OnUpdateDocumentTracker(
                         documentRepository
                     )
                 )
@@ -129,7 +129,7 @@ internal class NoteEditorViewModel(
             if (document != null) {
                 writeopiaManager.initDocument(document)
                 writeopiaManager.saveOnStoryChanges(
-                    io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker(
+                    OnUpdateDocumentTracker(
                         documentRepository
                     )
                 )

@@ -109,8 +109,6 @@ internal fun NoteEditorScreen(
     Scaffold(
         topBar = {
             TopBar(
-                initialTitle = title?.takeIf { it.isNotBlank() }
-                    ?: stringResource(id = R.string.note),
                 titleState = noteEditorViewModel.currentTitle,
                 navigationClick = {
                     systemUiController.setStatusBarColor(color = systemBarDefaultColor)
@@ -188,12 +186,11 @@ internal fun NoteEditorScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar(
-    initialTitle: String,
-    titleState: Flow<String> = MutableStateFlow(""),
+    titleState: StateFlow<String>,
     navigationClick: () -> Unit = {},
     shareDocument: () -> Unit
 ) {
-    val title by titleState.collectAsStateWithLifecycle(initialTitle)
+    val title by titleState.collectAsStateWithLifecycle()
 
     TopAppBar(
         modifier = Modifier.height(44.dp),
@@ -252,7 +249,7 @@ private fun TopBar(
 @Composable
 private fun TopBar_Preview() {
     Box(modifier = Modifier.background(Color.LightGray)) {
-        TopBar(initialTitle = "", titleState = MutableStateFlow("Title"), shareDocument = {})
+        TopBar(titleState = MutableStateFlow("Title"), shareDocument = {})
     }
 }
 

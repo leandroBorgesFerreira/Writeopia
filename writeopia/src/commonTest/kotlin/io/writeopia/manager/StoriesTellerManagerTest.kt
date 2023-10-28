@@ -9,6 +9,7 @@ import io.writeopia.utils.MapStoryData
 import io.writeopia.sdk.manager.WriteopiaManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
 import kotlin.test.*
@@ -62,7 +63,8 @@ class WriteopiaManagerTest {
 
     @Test
     fun `one space has to be added between steps`() = runTest {
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
         val oldSize = messagesRepo.history().size
 
         val now = Clock.System.now()
@@ -94,7 +96,14 @@ class WriteopiaManagerTest {
 
         val storyManager =
             WriteopiaManager(dispatcher = UnconfinedTestDispatcher(), userId = { "" }).apply {
-                initDocument(Document(content = input, userId = "", createdAt = now, lastUpdatedAt = now))
+                initDocument(
+                    Document(
+                        content = input,
+                        userId = "",
+                        createdAt = now,
+                        lastUpdatedAt = now
+                    )
+                )
             }
 
         val currentStory = storyManager.currentStory.value.stories
@@ -119,8 +128,47 @@ class WriteopiaManagerTest {
     }
 
     @Test
+    // Todo: Come back to this test later
+    @Ignore
+    fun whenNewTitleChangesItShouldChangeTheDocumentTitleChangesToo() = runTest {
+        val input = MapStoryData.singleCheckItem()
+        val checkItem = input[0]
+
+        val now = Clock.System.now()
+
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(), userId = { "" }).apply {
+                initDocument(
+                    Document(
+                        content = input,
+                        userId = "",
+                        createdAt = now,
+                        lastUpdatedAt = now
+                    )
+                )
+            }
+
+        val title ="Title"
+
+        storyManager.changeStoryState(
+            Action.StoryStateChange(
+                StoryStep(
+                    text = title,
+                    type = StoryTypes.TITLE.type
+                ),
+                position = 0
+            )
+        )
+
+        advanceUntilIdle()
+
+à        assertEquals(title, storyManager.currentDocument.value?.title)
+    }
+
+    @Test
     fun `merge request should work`() = runTest {
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
         val now = Clock.System.now()
         storyManager.initDocument(
             Document(
@@ -166,7 +214,8 @@ class WriteopiaManagerTest {
 
     @Test
     fun `merge request should work2`() = runTest {
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
         val now = Clock.System.now()
 
         storyManager.initDocument(
@@ -206,7 +255,8 @@ class WriteopiaManagerTest {
 
     @Test
     fun `multiple merge requests should work`() = runTest {
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
         val now = Clock.System.now()
         storyManager.initDocument(
             Document(
@@ -281,7 +331,8 @@ class WriteopiaManagerTest {
     fun `it should be possible to merge an image inside a message group`() = runTest {
         val now = Clock.System.now()
 
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
         storyManager.initDocument(
             Document(
                 content = imageGroupRepo.history(),
@@ -321,7 +372,8 @@ class WriteopiaManagerTest {
     fun `it should be possible to merge an image outside a message group`() = runTest {
         val now = Clock.System.now()
 
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
         storyManager.initDocument(
             Document(
                 content = imageGroupRepo.history(),
@@ -364,7 +416,8 @@ class WriteopiaManagerTest {
     fun `when moving outside of a group, the parent Id should be null now`() = runTest {
         val now = Clock.System.now()
 
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
         storyManager.initDocument(
             Document(
                 content = imageGroupRepo.history(),
@@ -422,7 +475,8 @@ class WriteopiaManagerTest {
             override suspend fun history(): Map<Int, StoryStep> = MapStoryData.simpleMessages()
         }
 
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
         storyManager.initDocument(
             Document(
                 content = simpleMessagesRepo.history(),
@@ -457,7 +511,8 @@ class WriteopiaManagerTest {
             override suspend fun history(): Map<Int, StoryStep> = MapStoryData.simpleMessages()
         }
 
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
 
         storyManager.initDocument(
             Document(
@@ -488,7 +543,8 @@ class WriteopiaManagerTest {
     fun `deleting and leave a single element in a group destroys the group`() = runTest {
         val now = Clock.System.now()
 
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
         storyManager.initDocument(
             Document(
                 content = imageGroupRepo.history(),
@@ -536,7 +592,8 @@ class WriteopiaManagerTest {
     fun `when deleting a message it should not leave consecutive spaces`() = runTest {
         val now = Clock.System.now()
 
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
         storyManager.initDocument(
             Document(
                 content = messagesRepo.history(),
@@ -568,7 +625,9 @@ class WriteopiaManagerTest {
         runTest {
             val now = Clock.System.now()
 
-            val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+            val storyManager = WriteopiaManager(
+                dispatcher = UnconfinedTestDispatcher(testScheduler),
+                userId = { "" })
             storyManager.initDocument(
                 Document(
                     content = singleMessageRepo.history(),
@@ -596,7 +655,9 @@ class WriteopiaManagerTest {
         runTest {
             val now = Clock.System.now()
 
-            val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+            val storyManager = WriteopiaManager(
+                dispatcher = UnconfinedTestDispatcher(testScheduler),
+                userId = { "" })
             storyManager.initDocument(
                 Document(
                     content = messagesRepo.history(),
@@ -633,7 +694,8 @@ class WriteopiaManagerTest {
          */
         val now = Clock.System.now()
 
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
         storyManager.initDocument(
             Document(
                 content = complexMessagesRepository.history(),
@@ -710,10 +772,18 @@ class WriteopiaManagerTest {
     fun `it should be possible to add content and undo it - 1 unit`() {
         val now = Clock.System.now()
 
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(), userId = { "" })
         val input = MapStoryData.singleCheckItem()
 
-        storyManager.initDocument(Document(content = input, userId = "", createdAt = now, lastUpdatedAt = now))
+        storyManager.initDocument(
+            Document(
+                content = input,
+                userId = "",
+                createdAt = now,
+                lastUpdatedAt = now
+            )
+        )
         val currentStory = storyManager.currentStory.value.stories
 
         storyManager.onLineBreak(Action.LineBreak(input[0]!!, 0))
@@ -727,10 +797,18 @@ class WriteopiaManagerTest {
     fun `it should be possible to add content and undo it - many units`() = runTest {
         val now = Clock.System.now()
 
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
         val input = MapStoryData.singleCheckItem()
 
-        storyManager.initDocument(Document(content = input, userId = "", createdAt = now, lastUpdatedAt = now))
+        storyManager.initDocument(
+            Document(
+                content = input,
+                userId = "",
+                createdAt = now,
+                lastUpdatedAt = now
+            )
+        )
         val currentStory = storyManager.currentStory.value.stories
 
         storyManager.onLineBreak(Action.LineBreak(input[0]!!, 0))
@@ -764,11 +842,19 @@ class WriteopiaManagerTest {
     fun `spaces should be correct in the story`() {
         val now = Clock.System.now()
 
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(), userId = { "" })
         val input = MapStoryData.singleCheckItem()
 
         storyManager.run {
-            initDocument(Document(content = input, userId = "", createdAt = now, lastUpdatedAt = now))
+            initDocument(
+                Document(
+                    content = input,
+                    userId = "",
+                    createdAt = now,
+                    lastUpdatedAt = now
+                )
+            )
 
             onLineBreak(Action.LineBreak(input[0]!!, 0))
             onLineBreak(Action.LineBreak(input[0]!!, 2))
@@ -799,7 +885,8 @@ class WriteopiaManagerTest {
     fun `initializing the stories 2 times should not add the last story unit twice`() = runTest {
         val now = Clock.System.now()
 
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
         storyManager.initDocument(
             Document(
                 content = complexMessagesRepository.history(),
@@ -812,7 +899,14 @@ class WriteopiaManagerTest {
         val stories = storyManager.currentStory.value.stories
         assertEquals(StoryTypes.LAST_SPACE.type, stories.values.last().type)
 
-        storyManager.initDocument(Document(content = stories, userId = "", createdAt = now, lastUpdatedAt = now))
+        storyManager.initDocument(
+            Document(
+                content = stories,
+                userId = "",
+                createdAt = now,
+                lastUpdatedAt = now
+            )
+        )
 
         val newStories = storyManager.currentStory.value.stories
         val storyList = newStories.values.toList()
@@ -825,7 +919,8 @@ class WriteopiaManagerTest {
     fun `it should be possible to select messages`() = runTest {
         val now = Clock.System.now()
 
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
         storyManager.initDocument(
             Document(
                 content = complexMessagesRepository.history(),
@@ -846,7 +941,8 @@ class WriteopiaManagerTest {
     fun `it should be possible to delete selected messages`() = runTest {
         val now = Clock.System.now()
 
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
         storyManager.initDocument(
             Document(
                 content = messagesRepo.history(),
@@ -896,7 +992,8 @@ class WriteopiaManagerTest {
     fun `it should be possible to undo bulk deletion`() = runTest {
         val now = Clock.System.now()
 
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
         storyManager.initDocument(
             Document(
                 content = messagesRepo.history(),
@@ -948,7 +1045,8 @@ class WriteopiaManagerTest {
     fun `when clicking in the last position, a message should be added at the bottom`() = runTest {
         val now = Clock.System.now()
 
-        val storyManager = WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
+        val storyManager =
+            WriteopiaManager(dispatcher = UnconfinedTestDispatcher(testScheduler), userId = { "" })
         storyManager.initDocument(
             Document(
                 content = imagesInLineRepo.history(),
