@@ -47,6 +47,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -187,13 +188,14 @@ internal fun NoteEditorScreen(
 @Composable
 private fun TopBar(
     titleState: StateFlow<String>,
+    modifier: Modifier = Modifier,
     navigationClick: () -> Unit = {},
     shareDocument: () -> Unit
 ) {
     val title by titleState.collectAsStateWithLifecycle()
 
     TopAppBar(
-        modifier = Modifier.height(44.dp),
+        modifier = modifier.height(44.dp),
         title = {
             Row(
                 modifier = Modifier.fillMaxHeight(),
