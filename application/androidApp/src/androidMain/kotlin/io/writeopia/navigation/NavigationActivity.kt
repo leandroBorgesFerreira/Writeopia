@@ -53,17 +53,22 @@ fun NavigationGraph(
         "io.writeopia.preferences",
         Context.MODE_PRIVATE
     ),
+    database: WriteopiaApplicationDatabase = WriteopiaApplicationDatabase.database(application),
     startDestination: String = Destinations.AUTH_MENU_INNER_NAVIGATION.id
 ) {
 
     val apiInjector =
         ApiInjector(apiLogger = AndroidLogger, bearerTokenHandler = AmplifyTokenHandler)
     val authCoreInjection = AuthCoreInjection(sharedPreferences)
-    val repositoriesInjection = RepositoriesInjection(application)
+    val repositoriesInjection = RepositoriesInjection(database)
     val authInjection = AuthInjection(authCoreInjection, apiInjector, repositoriesInjection)
     val editorInjector = EditorInjector(authCoreInjection, repositoriesInjection)
     val notesMenuInjection =
-        NotesMenuInjection(sharedPreferences, authCoreInjection.provideAccountManager(), repositoriesInjection)
+        NotesMenuInjection(
+            sharedPreferences,
+            authCoreInjection.provideAccountManager(),
+            repositoriesInjection
+        )
 
     ApplicationComposeTheme {
         NavHost(navController = navController, startDestination = startDestination) {

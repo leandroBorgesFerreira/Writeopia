@@ -70,7 +70,7 @@ object DefaultDrawersAndroid {
                     manager,
                     emptyErase = null,
                     textCommandHandler = textCommandHandler,
-                    allowLineBreaks = true
+                    allowLineBreaks = true,
                 )
             }
         )
@@ -100,7 +100,7 @@ object DefaultDrawersAndroid {
                     manager,
                     emptyErase = null,
                     textCommandHandler = textCommandHandler,
-                    allowLineBreaks = true
+                    allowLineBreaks = true,
                 )
             }
         )

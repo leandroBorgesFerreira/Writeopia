@@ -5,9 +5,9 @@ import io.writeopia.persistence.WriteopiaApplicationDatabase
 import io.writeopia.sdk.manager.DocumentRepository
 import io.writeopia.sdk.persistence.repository.DocumentRepositoryImpl
 
-class RepositoriesInjection(application: Application) {
-
-    private val database: WriteopiaApplicationDatabase = WriteopiaApplicationDatabase.database(application)
+class RepositoriesInjection(
+    private val database: WriteopiaApplicationDatabase
+) {
 
     fun provideDocumentRepository(): DocumentRepository =
         DocumentRepositoryImpl(

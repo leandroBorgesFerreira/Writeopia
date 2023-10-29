@@ -43,6 +43,22 @@ class NoteMenuAndroidTest {
         documentsMenuRobot.assertNoteWithTitle(noteTitle)
     }
 
+    @Test
+    fun whenAddingTitleItShouldUpdateToolbarTitleToo() {
+        startContent()
+
+        val noteTitle = "Note1"
+
+        val documentsMenuRobot = DocumentsMenuRobot(composeTestRule)
+        documentsMenuRobot.goToAddNote()
+
+        DocumentEditRobot(composeTestRule).run {
+            verifyItIsInEdition()
+            writeTitle(noteTitle)
+            verifyToolbarTitle(noteTitle)
+        }
+    }
+
     private fun startContent() {
         composeTestRule.setContent {
             NavigationGraph(
