@@ -59,6 +59,25 @@ class NoteMenuAndroidTest {
         }
     }
 
+    @Test
+    fun itShouldBePossibleToOpenANoteWithoutTitle() {
+        startContent()
+
+        val documentsMenuRobot = DocumentsMenuRobot(composeTestRule)
+        documentsMenuRobot.goToAddNote()
+
+        val text = "Text"
+
+        DocumentEditRobot(composeTestRule).run {
+            verifyItIsInEdition()
+            addLine()
+            writeText(text, 2)
+            goBack()
+            clickWithText(text)
+            checkWithText(text) //It shouldn't crash
+        }
+    }
+
     private fun startContent() {
         composeTestRule.setContent {
             NavigationGraph(
