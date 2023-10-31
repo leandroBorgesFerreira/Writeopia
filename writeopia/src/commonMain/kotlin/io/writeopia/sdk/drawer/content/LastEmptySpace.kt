@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.draganddrop.target.DropTarget
@@ -52,6 +53,7 @@ class LastEmptySpace(
                         indication = null,
                         onClick = click
                     )
+                    .testTag("LastEmptySpace")
             )
         }
     }

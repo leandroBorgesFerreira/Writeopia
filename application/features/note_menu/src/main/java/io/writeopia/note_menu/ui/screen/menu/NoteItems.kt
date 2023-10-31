@@ -159,19 +159,24 @@ private fun DocumentItem(
     selectionListener: (String, Boolean) -> Unit,
     drawers: Map<Int, StoryStepDrawer>
 ) {
+    val titleFallback = stringResource(R.string.untitled)
+
     SwipeBox(
         modifier = Modifier
             .padding(bottom = 6.dp)
             .fillMaxWidth()
             .clickable {
-                documentClick(documentUi.documentId, documentUi.title)
+                documentClick(
+                    documentUi.documentId,
+                    documentUi.title.takeIf { it.isNotEmpty() } ?: titleFallback
+                )
             }
             .semantics {
                 testTag = "$DOCUMENT_ITEM_TEST_TAG${documentUi.title}"
             },
         isOnEditState = documentUi.selected,
-        swipeListener = {
-            state -> selectionListener(documentUi.documentId, state)
+        swipeListener = { state ->
+            selectionListener(documentUi.documentId, state)
         },
         cornersShape = MaterialTheme.shapes.large,
         defaultColor = MaterialTheme.colorScheme.surfaceVariant
@@ -194,7 +199,9 @@ private fun DocumentItem(
 private fun NoNotesScreen() {
     Box(modifier = Modifier.fillMaxSize()) {
         Text(
-            modifier = Modifier.padding(8.dp).align(Alignment.Center),
+            modifier = Modifier
+                .padding(8.dp)
+                .align(Alignment.Center),
             text = stringResource(R.string.you_dont_have_notes),
             style = MaterialTheme.typography.titleLarge
         )
