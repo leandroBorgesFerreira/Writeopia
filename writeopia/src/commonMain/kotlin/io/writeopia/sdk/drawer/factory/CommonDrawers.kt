@@ -78,7 +78,7 @@ object CommonDrawers {
                     textStyle = { codeBlockStyle() },
                     isEmptyErase = isEmptyErase,
                     deleteOnEmptyErase = true,
-                    allowLineBreaks = false
+                    allowLineBreaks = true
                 )
             }
         )
