@@ -4,7 +4,7 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.focus.FocusRequester
-import io.writeopia.sdk.drawer.content.DesktopMessageDrawer
+import io.writeopia.sdk.drawer.content.MessageDrawer
 import io.writeopia.sdk.drawer.content.unOrderedListItemDrawer
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
@@ -18,7 +18,7 @@ fun UnOrderedListItemDrawerPreview() {
 
         unOrderedListItemDrawer(
             messageDrawer = {
-                DesktopMessageDrawer(focusRequester = focusRequester)
+                MessageDrawer(focusRequester = focusRequester)
             },
             focusRequester = focusRequester
         ).Step(

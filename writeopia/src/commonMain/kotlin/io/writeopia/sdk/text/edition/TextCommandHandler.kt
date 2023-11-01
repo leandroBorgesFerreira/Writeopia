@@ -24,6 +24,8 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
     }
 
     companion object {
+        fun noCommands(): TextCommandHandler = TextCommandHandler(emptyMap())
+
         fun defaultCommands(manager: WriteopiaManager): TextCommandHandler =
             TextCommandHandler(
                 mapOf(
