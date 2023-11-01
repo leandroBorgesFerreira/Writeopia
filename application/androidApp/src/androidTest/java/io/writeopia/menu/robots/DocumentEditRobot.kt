@@ -21,11 +21,11 @@ class DocumentEditRobot(private val composeTestRule: ComposeTestRule) {
     }
 
     fun writeTitle(text: String) {
-        composeTestRule.onNodeWithTag("MobileMessageDrawer_0").performTextInput(text)
+        composeTestRule.onNodeWithTag("MessageDrawer_0").performTextInput(text)
     }
 
     fun writeText(text: String, index: Int) {
-        composeTestRule.onNodeWithTag("MobileMessageDrawer_$index").performTextInput(text)
+        composeTestRule.onNodeWithTag("MessageDrawer_$index").performTextInput(text)
     }
 
     fun addLine() {

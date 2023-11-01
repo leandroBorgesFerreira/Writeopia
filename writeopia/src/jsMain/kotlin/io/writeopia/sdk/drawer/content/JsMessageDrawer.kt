@@ -30,8 +30,8 @@ import io.writeopia.sdk.text.edition.TextCommandHandler
  * This class contains the logic of the basic message of the SDK. As many other drawers need some
  * text in it this Drawer can be used instead of duplicating this text logic.
  *
- * Important: This class is currently a duplication of [DesktopMessageDrawer] for JS due to compilation problems.
- * This class may be substituted for [DesktopMessageDrawer].
+ * Important: This class is currently a duplication of [MessageDrawer] for JS due to compilation problems.
+ * This class may be substituted for [MessageDrawer].
  */
 class JsMessageDrawer(
     private val modifier: Modifier = Modifier,

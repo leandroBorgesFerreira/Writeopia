@@ -51,28 +51,6 @@ class HeaderDrawer(
 
 fun headerDrawer(
     manager: WriteopiaManager,
-    headerClick: () -> Unit = {},
-    modifier: Modifier = Modifier
-): StoryStepDrawer =
-    HeaderDrawer(
-        drawer = {
-            MobileMessageDrawer(
-                modifier = Modifier.align(Alignment.BottomStart).padding(start = 16.dp, bottom = 16.dp),
-                onTextEdit = manager::changeStoryState,
-                onLineBreak = manager::onLineBreak,
-                textStyle = {
-                    MaterialTheme.typography.headlineMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                }
-            )
-        },
-        headerClick = headerClick
-    )
-
-fun headerDrawerDesktop(
-    manager: WriteopiaManager,
     headerClick: () -> Unit,
     onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean,
     modifier: Modifier = Modifier,
@@ -80,7 +58,7 @@ fun headerDrawerDesktop(
     HeaderDrawer(
         modifier = modifier,
         drawer = {
-            DesktopMessageDrawer(
+            MessageDrawer(
                 modifier = Modifier.align(Alignment.BottomStart).padding(start = 16.dp, bottom = 16.dp),
                 onTextEdit = manager::changeStoryState,
                 onKeyEvent = onKeyEvent,

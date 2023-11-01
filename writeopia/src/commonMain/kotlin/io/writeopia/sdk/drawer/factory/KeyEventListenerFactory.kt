@@ -9,7 +9,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 
 object KeyEventListenerFactory {
 
-    fun desktop(
+    fun create(
         manager: WriteopiaManager,
         isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
         deleteOnEmptyErase: Boolean = false
