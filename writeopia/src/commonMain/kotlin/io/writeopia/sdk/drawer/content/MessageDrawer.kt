@@ -13,6 +13,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -69,7 +70,8 @@ class MessageDrawer(
                 .onKeyEvent { keyEvent ->
                     onKeyEvent(keyEvent, inputText, step, drawInfo.position)
                 }
-                .onFocusChanged(onFocusChanged),
+                .onFocusChanged(onFocusChanged)
+                .testTag("MessageDrawer_${drawInfo.position}"),
             value = inputText,
             onValueChange = { value ->
                 val text = value.text
