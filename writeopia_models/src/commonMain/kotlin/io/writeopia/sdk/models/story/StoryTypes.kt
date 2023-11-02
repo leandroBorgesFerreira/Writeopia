@@ -57,5 +57,7 @@ enum class StoryTypes(val type: StoryType) {
 
     companion object {
         fun fromName(stringValue: String): StoryTypes = entries.first { it.type.name == stringValue }
+
+        fun fromNumber(number: Int): StoryTypes = entries.first { it.type.number == number }
     }
 }
