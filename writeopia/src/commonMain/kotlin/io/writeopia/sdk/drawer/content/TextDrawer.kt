@@ -1,5 +1,6 @@
 package io.writeopia.sdk.drawer.content
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -19,7 +20,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.drawer.SimpleMessageDrawer
+import io.writeopia.sdk.drawer.SimpleTextDrawer
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
@@ -27,12 +28,11 @@ import io.writeopia.sdk.text.edition.TextCommandHandler
 import io.writeopia.sdk.utils.ui.defaultTextStyle
 
 /**
- * Simple message drawer mostly intended to be used as a component for more complex drawers.
+ * Simple message drawer intended to be used as a component for more complex drawers.
  * This class contains the logic of the basic message of the SDK. As many other drawers need some
  * text in it this Drawer can be used instead of duplicating this text logic.
- *
  */
-class MessageDrawer(
+class TextDrawer(
     private val modifier: Modifier = Modifier,
     private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean = { _, _, _, _ -> false },
     private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
@@ -42,10 +42,15 @@ class MessageDrawer(
     private val allowLineBreaks: Boolean = false,
     private val onLineBreak: (Action.LineBreak) -> Unit = {},
     override var onFocusChanged: (FocusState) -> Unit = {}
-) : SimpleMessageDrawer {
+) : SimpleTextDrawer {
 
     @Composable
-    override fun Step(step: StoryStep, drawInfo: DrawInfo) {
+    override fun Text(
+        step: StoryStep,
+        drawInfo: DrawInfo,
+        interactionSource: MutableInteractionSource,
+        decorationBox: @Composable (innerTextField: @Composable () -> Unit) -> Unit
+    ) {
         var inputText by remember {
             val text = step.text ?: ""
             mutableStateOf(TextFieldValue(text, TextRange(text.length)))
@@ -93,7 +98,9 @@ class MessageDrawer(
                 capitalization = KeyboardCapitalization.Sentences
             ),
             textStyle = textStyle(step),
-            cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
+            cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+            interactionSource = interactionSource,
+            decorationBox = decorationBox
         )
     }
 }

@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.drawer.content.MessageDrawer
+import io.writeopia.sdk.drawer.content.TextDrawer
 import io.writeopia.sdk.drawer.content.HeaderDrawer
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.Decoration
@@ -30,7 +30,7 @@ fun HeaderDrawerStepPreview() {
 
     HeaderDrawer(
         drawer = {
-            MessageDrawer(
+            TextDrawer(
                 modifier = Modifier.align(Alignment.BottomStart).padding(start = 16.dp, bottom = 16.dp),
                 onTextEdit = { },
                 onLineBreak = { },
@@ -57,7 +57,7 @@ fun HeaderDrawerStepPreviewNoColor() {
 
     HeaderDrawer(
         drawer = {
-            MessageDrawer(
+            TextDrawer(
                 modifier = Modifier.align(Alignment.BottomStart).padding(start = 16.dp, bottom = 16.dp),
                 onTextEdit = { },
                 onLineBreak = { },
