@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import io.writeopia.sdk.drawer.SimpleMessageDrawer
+import io.writeopia.sdk.drawer.SimpleTextDrawer
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
@@ -15,7 +15,7 @@ import io.writeopia.sdk.models.story.StoryStep
  * Drawer for a complex message with swipe action, drag and drop logic and a start content to add functionality
  * like a checkbox or a different Composable.
  */
-actual class MessageItemDrawer actual constructor(
+actual class TextItemDrawer actual constructor(
     modifier: Modifier,
     customBackgroundColor: Color,
     clickable: Boolean,
@@ -23,7 +23,7 @@ actual class MessageItemDrawer actual constructor(
     focusRequester: FocusRequester?,
     dragIconWidth: Dp,
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
-    messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
+    messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ) : StoryStepDrawer {
 
     @Composable

@@ -19,7 +19,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.drawer.SimpleMessageDrawer
+import io.writeopia.sdk.drawer.SimpleTextDrawer
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
@@ -30,10 +30,10 @@ import io.writeopia.sdk.text.edition.TextCommandHandler
  * This class contains the logic of the basic message of the SDK. As many other drawers need some
  * text in it this Drawer can be used instead of duplicating this text logic.
  *
- * Important: This class is currently a duplication of [MessageDrawer] for JS due to compilation problems.
- * This class may be substituted for [MessageDrawer].
+ * Important: This class is currently a duplication of [TextDrawer] for JS due to compilation problems.
+ * This class may be substituted for [TextDrawer].
  */
-class JsMessageDrawer(
+class JsTextDrawer(
     private val modifier: Modifier = Modifier,
     private val textStyle: TextStyle? = null,
     private val focusRequester: FocusRequester? = null,
@@ -41,7 +41,7 @@ class JsMessageDrawer(
     private val onTextEdit: (Action.StoryStateChange) -> Unit = { },
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     override var onFocusChanged: (FocusState) -> Unit = {}
-) : SimpleMessageDrawer {
+) : SimpleTextDrawer {
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {

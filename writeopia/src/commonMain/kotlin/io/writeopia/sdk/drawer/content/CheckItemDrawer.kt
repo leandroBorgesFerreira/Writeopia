@@ -2,7 +2,6 @@ package io.writeopia.sdk.drawer.content
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,7 +15,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.drawer.SimpleMessageDrawer
+import io.writeopia.sdk.drawer.SimpleTextDrawer
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.action.Action
@@ -53,9 +52,9 @@ fun checkItemDrawer(
             )
         }
     },
-    messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
+    messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer =
-    MessageItemDrawer(
+    TextItemDrawer(
         modifier,
         customBackgroundColor,
         clickable,
@@ -71,7 +70,7 @@ fun checkItemDrawer(
     manager: WriteopiaManager,
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
-    messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
+    messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer {
     val focusRequesterCheckItem = remember { FocusRequester() }
     return checkItemDrawer(

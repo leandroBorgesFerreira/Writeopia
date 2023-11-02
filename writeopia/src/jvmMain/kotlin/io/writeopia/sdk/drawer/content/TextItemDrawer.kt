@@ -13,7 +13,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import io.writeopia.sdk.draganddrop.target.DragTargetWithDragItem
-import io.writeopia.sdk.drawer.SimpleMessageDrawer
+import io.writeopia.sdk.drawer.SimpleTextDrawer
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.sdk.model.draw.DrawInfo
@@ -24,7 +24,7 @@ import io.writeopia.sdk.uicomponents.SwipeBox
  * Drawer for a complex message with swipe action, drag and drop logic and a start content to add functionality
  * like a checkbox or a different Composable.
  */
-actual class MessageItemDrawer actual constructor(
+actual class TextItemDrawer actual constructor(
     private val modifier: Modifier,
     private val customBackgroundColor: Color,
     private val clickable: Boolean,
@@ -32,7 +32,7 @@ actual class MessageItemDrawer actual constructor(
     private val focusRequester: FocusRequester?,
     private val dragIconWidth: Dp,
     private val startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
-    private val messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
+    private val messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ) : StoryStepDrawer {
 
     @Composable
@@ -76,8 +76,15 @@ actual class MessageItemDrawer actual constructor(
                     focusRequester?.requestFocus()
                 }
             ) {
+                val interactionSourceText = remember { MutableInteractionSource() }
+
                 startContent?.invoke(step, drawInfo)
-                messageDrawer().Step(step = step, drawInfo = drawInfo)
+                messageDrawer().Text(
+                    step = step,
+                    drawInfo = drawInfo,
+                    interactionSource = interactionSourceText,
+                    decorationBox = @Composable { innerTextField -> innerTextField() }
+                )
             }
         }
     }

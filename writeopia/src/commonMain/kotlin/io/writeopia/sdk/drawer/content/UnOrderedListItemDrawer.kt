@@ -12,7 +12,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.drawer.SimpleMessageDrawer
+import io.writeopia.sdk.drawer.SimpleTextDrawer
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.draw.DrawInfo
@@ -36,9 +36,9 @@ fun unOrderedListItemDrawer(
             text = "-",
         )
     },
-    messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
+    messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer =
-    MessageItemDrawer(
+    TextItemDrawer(
         modifier,
         customBackgroundColor,
         clickable,
@@ -54,7 +54,7 @@ fun unOrderedListItemDrawer(
     manager: WriteopiaManager,
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
-    messageDrawer: @Composable RowScope.() -> SimpleMessageDrawer
+    messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer {
     val focusRequesterUnOrderedList = remember { FocusRequester() }
 

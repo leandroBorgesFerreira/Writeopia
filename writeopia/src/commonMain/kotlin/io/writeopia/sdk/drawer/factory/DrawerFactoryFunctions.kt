@@ -1,7 +1,6 @@
 package io.writeopia.sdk.drawer.factory
 
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -10,9 +9,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.writeopia.sdk.drawer.SimpleMessageDrawer
+import io.writeopia.sdk.drawer.SimpleTextDrawer
 import io.writeopia.sdk.drawer.StoryStepDrawer
-import io.writeopia.sdk.drawer.content.swipeMessageDrawer
+import io.writeopia.sdk.drawer.content.swipeTextDrawer
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.models.story.StoryTypes
 
@@ -21,11 +20,11 @@ fun defaultHxDrawers(
     manager: WriteopiaManager,
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
-    messageDrawer: @Composable RowScope.(TextUnit) -> SimpleMessageDrawer
+    messageDrawer: @Composable RowScope.(TextUnit) -> SimpleTextDrawer
 ): Map<Int, StoryStepDrawer> {
     val createHDrawer = @Composable { fontSize: TextUnit ->
         val focusRequesterH = remember { FocusRequester() }
-        swipeMessageDrawer(
+        swipeTextDrawer(
             modifier = modifier,
             onSelected = manager::onSelected,
             focusRequester = focusRequesterH,

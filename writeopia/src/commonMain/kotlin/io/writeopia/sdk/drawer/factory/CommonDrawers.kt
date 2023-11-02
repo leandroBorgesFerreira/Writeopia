@@ -45,7 +45,7 @@ object CommonDrawers {
         isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false }
     ): Map<Int, StoryStepDrawer> {
         val focusRequesterMessageBox = remember { FocusRequester() }
-        val messageBoxDrawer = swipeMessageDrawer(
+        val textBoxDrawer = swipeTextDrawer(
             modifier = Modifier
                 .padding(horizontal = LARGE_START_PADDING.dp)
                 .clip(shape = defaultBorder)
@@ -63,7 +63,7 @@ object CommonDrawers {
             }
         )
 
-        val codeBlockDrawer = swipeMessageDrawer(
+        val codeBlockDrawer = swipeTextDrawer(
             modifier = Modifier
                 .padding(horizontal = LARGE_START_PADDING.dp)
                 .background(Color.Gray),
@@ -83,7 +83,7 @@ object CommonDrawers {
             }
         )
 
-        val swipeMessageDrawer = swipeMessageDrawer(
+        val swipeTextDrawer = swipeTextDrawer(
             manager,
             modifier = Modifier.padding(start = MEDIUM_START_PADDING.dp),
             dragIconWidth = DRAG_ICON_WIDTH.dp
@@ -147,8 +147,8 @@ object CommonDrawers {
         )
 
         return buildMap {
-            put(StoryTypes.TEXT_BOX.type.number, messageBoxDrawer)
-            put(StoryTypes.TEXT.type.number, swipeMessageDrawer)
+            put(StoryTypes.TEXT_BOX.type.number, textBoxDrawer)
+            put(StoryTypes.TEXT.type.number, swipeTextDrawer)
             put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
             put(StoryTypes.SPACE.type.number, SpaceDrawer(manager::moveRequest))
             put(
@@ -176,9 +176,9 @@ object CommonDrawers {
         deleteOnEmptyErase: Boolean = false,
         allowLineBreaks: Boolean = false,
         isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
-    ): MessageDrawer {
+    ): TextDrawer {
         val focusRequester = remember { FocusRequester() }
-        return MessageDrawer(
+        return TextDrawer(
             modifier = modifier.weight(1F),
             onKeyEvent =
             KeyEventListenerFactory.create(
