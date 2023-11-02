@@ -8,10 +8,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -31,7 +29,6 @@ fun checkItemDrawer(
     customBackgroundColor: Color = Color.Transparent,
     clickable: Boolean = true,
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
-    focusRequester: FocusRequester? = null,
     dragIconWidth: Dp = 16.dp,
     onCheckedChange: (Action.StoryStateChange) -> Unit = {},
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)? = { step, drawInfo ->
@@ -59,7 +56,6 @@ fun checkItemDrawer(
         customBackgroundColor,
         clickable,
         onSelected,
-        focusRequester,
         dragIconWidth,
         startContent,
         messageDrawer
@@ -71,18 +67,13 @@ fun checkItemDrawer(
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
-): StoryStepDrawer {
-    val focusRequesterCheckItem = remember { FocusRequester() }
-    return checkItemDrawer(
+): StoryStepDrawer = checkItemDrawer(
         modifier = modifier,
         onCheckedChange = manager::changeStoryState,
         onSelected = manager::onSelected,
         customBackgroundColor = Color.Transparent,
-        focusRequester = focusRequesterCheckItem,
         dragIconWidth = dragIconWidth,
         messageDrawer = {
             messageDrawer()
         },
     )
-}
-

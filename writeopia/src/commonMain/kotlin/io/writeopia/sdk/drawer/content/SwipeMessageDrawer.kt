@@ -19,7 +19,6 @@ fun swipeTextDrawer(
     modifier: Modifier = Modifier,
     customBackgroundColor: Color = Color.Transparent,
     clickable: Boolean = true,
-    focusRequester: FocusRequester,
     dragIconWidth: Dp = 16.dp,
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
@@ -29,7 +28,6 @@ fun swipeTextDrawer(
         customBackgroundColor,
         clickable,
         onSelected,
-        focusRequester,
         dragIconWidth,
         null,
         messageDrawer
@@ -42,11 +40,9 @@ fun swipeTextDrawer(
     dragIconWidth: Dp = 16.dp,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer {
-    val focusRequesterSwipeMessage = remember { FocusRequester() }
     return swipeTextDrawer(
         modifier = modifier,
         onSelected = manager::onSelected,
-        focusRequester = focusRequesterSwipeMessage,
         dragIconWidth = dragIconWidth,
         customBackgroundColor = Color.Transparent,
         messageDrawer = {

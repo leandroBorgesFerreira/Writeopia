@@ -5,10 +5,8 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.key.KeyEvent
@@ -44,13 +42,11 @@ object CommonDrawers {
         textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager),
         isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false }
     ): Map<Int, StoryStepDrawer> {
-        val focusRequesterMessageBox = remember { FocusRequester() }
         val textBoxDrawer = swipeTextDrawer(
             modifier = Modifier
                 .padding(horizontal = LARGE_START_PADDING.dp)
                 .clip(shape = defaultBorder)
                 .background(groupsBackgroundColor),
-            focusRequester = focusRequesterMessageBox,
             dragIconWidth = DRAG_ICON_WIDTH.dp,
             onSelected = manager::onSelected,
             messageDrawer = {
@@ -67,7 +63,6 @@ object CommonDrawers {
             modifier = Modifier
                 .padding(horizontal = LARGE_START_PADDING.dp)
                 .background(Color.Gray),
-            focusRequester = focusRequesterMessageBox,
             dragIconWidth = DRAG_ICON_WIDTH.dp,
             onSelected = manager::onSelected,
             messageDrawer = {
@@ -177,7 +172,6 @@ object CommonDrawers {
         allowLineBreaks: Boolean = false,
         isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
     ): TextDrawer {
-        val focusRequester = remember { FocusRequester() }
         return TextDrawer(
             modifier = modifier.weight(1F),
             onKeyEvent =
@@ -188,7 +182,6 @@ object CommonDrawers {
             ),
             onTextEdit = manager::changeStoryState,
             textStyle = textStyle,
-            focusRequester = focusRequester,
             commandHandler = textCommandHandler,
             onLineBreak = manager::onLineBreak,
             allowLineBreaks = allowLineBreaks

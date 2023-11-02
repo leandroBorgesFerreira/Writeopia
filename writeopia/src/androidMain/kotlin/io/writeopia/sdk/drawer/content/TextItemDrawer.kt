@@ -27,7 +27,6 @@ actual class TextItemDrawer actual constructor(
     private val customBackgroundColor: Color,
     private val clickable: Boolean,
     private val onSelected: (Boolean, Int) -> Unit,
-    private val focusRequester: FocusRequester?,
     private val dragIconWidth: Dp,
     private val startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
     private val messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
@@ -37,13 +36,14 @@ actual class TextItemDrawer actual constructor(
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         val dropInfo = DropInfo(step, drawInfo.position)
         var showDragIcon by remember { mutableStateOf(false) }
+        val focusRequester = remember { FocusRequester() }
 
         SwipeBox(
             modifier = modifier
                 .apply {
                     if (clickable) {
                         clickable {
-                            focusRequester?.requestFocus()
+                            focusRequester.requestFocus()
                         }
                     }
                 },
@@ -60,7 +60,7 @@ actual class TextItemDrawer actual constructor(
                     .apply {
                         if (clickable) {
                             clickable {
-                                focusRequester?.requestFocus()
+                                focusRequester.requestFocus()
                             }
                         }
                     },
@@ -69,7 +69,7 @@ actual class TextItemDrawer actual constructor(
                 position = drawInfo.position,
                 dragIconWidth = dragIconWidth,
                 emptySpaceClick = {
-                    focusRequester?.requestFocus()
+                    focusRequester.requestFocus()
                 }
             ) {
                 startContent?.invoke(step, drawInfo)
@@ -83,6 +83,7 @@ actual class TextItemDrawer actual constructor(
                     step = step,
                     drawInfo = drawInfo,
                     interactionSource = interactionSource,
+                    focusRequester = focusRequester,
                     decorationBox = @Composable { innerTextField -> innerTextField() }
                 )
             }

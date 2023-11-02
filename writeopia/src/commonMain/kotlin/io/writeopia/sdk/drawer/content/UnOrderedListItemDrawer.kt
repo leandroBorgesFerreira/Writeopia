@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -27,7 +25,6 @@ fun unOrderedListItemDrawer(
     customBackgroundColor: Color = Color.Transparent,
     clickable: Boolean = true,
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
-    focusRequester: FocusRequester? = null,
     dragIconWidth: Dp = 16.dp,
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)? = { _, _ ->
         Spacer(modifier = Modifier.width(8.dp))
@@ -43,7 +40,6 @@ fun unOrderedListItemDrawer(
         customBackgroundColor,
         clickable,
         onSelected,
-        focusRequester,
         dragIconWidth,
         startContent,
         messageDrawer
@@ -55,15 +51,10 @@ fun unOrderedListItemDrawer(
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
-): StoryStepDrawer {
-    val focusRequesterUnOrderedList = remember { FocusRequester() }
-
-    return unOrderedListItemDrawer(
+): StoryStepDrawer = unOrderedListItemDrawer(
         modifier = modifier,
         onSelected = manager::onSelected,
-        focusRequester = focusRequesterUnOrderedList,
         customBackgroundColor = Color.Transparent,
         dragIconWidth = dragIconWidth,
         messageDrawer = messageDrawer,
     )
-}
