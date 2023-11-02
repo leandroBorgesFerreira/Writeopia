@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.kotlinAndroid) apply false
     alias(libs.plugins.nativeCocoapods) apply false
+    alias(libs.plugins.sqldelight) apply false
     id("com.google.devtools.ksp") version "1.9.10-1.0.13" apply false
     id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
     id("org.jetbrains.dokka") version "1.8.10"
@@ -12,6 +13,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.jvm) apply false
     id("org.jetbrains.compose") version "1.5.10" apply false
 }
+
 apply(from = "${rootDir}/scripts/publish-root.gradle")
 
 dagCommand {
@@ -20,3 +22,4 @@ dagCommand {
     outputType = "json"
     printModulesInfo = true
 }
+

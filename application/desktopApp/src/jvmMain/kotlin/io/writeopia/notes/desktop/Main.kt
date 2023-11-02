@@ -26,6 +26,8 @@ import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.factory.DefaultDrawersDesktop
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.story.DrawState
+import io.writeopia.sdk.persistence.sqldelight.DriverFactory
+import io.writeopia.sdk.persistence.sqldelight.createDatabase
 import io.writeopia.sdk.serialization.data.DecorationApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -110,4 +112,8 @@ fun TextEditor(
         storyState = toDraw,
         listState = lazyListState
     )
+}
+
+fun createPersistence() {
+    val writeopiaDb = createDatabase(DriverFactory())
 }

@@ -1,0 +1,31 @@
+CREATE TABLE documentEntity (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  created_at INTEGER NOT NULL,
+  last_updated_at INTEGER NOT NULL,
+  user_id TEXT NOT NULL
+);
+
+selectAll:
+SELECT *
+FROM documentEntity;
+
+selectWithContent:
+SELECT *
+FROM documentEntity
+INNER JOIN storyStepEntity ON storyStepEntity.document_id=documentEntity.id;
+
+selectById:
+SELECT *
+FROM documentEntity
+WHERE id = ?;
+
+insert:
+INSERT INTO documentEntity(id, title, created_at, last_updated_at, user_id)
+VALUES (?, ?, ?, ?, ?);
+
+delete:
+DELETE FROM documentEntity WHERE id = ?;
+
+deleteByUserId:
+DELETE FROM documentEntity WHERE user_id = ?;

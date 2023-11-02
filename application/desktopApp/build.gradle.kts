@@ -16,6 +16,8 @@ kotlin {
                 implementation(project(":writeopia"))
                 implementation(project(":plugins:writeopia_serialization"))
                 implementation(project(":plugins:writeopia_network"))
+                implementation(project(":plugins:writeopia_persistence_core"))
+                implementation(project(":plugins:writeopia_persistence_sqldelight"))
             }
         }
     }
