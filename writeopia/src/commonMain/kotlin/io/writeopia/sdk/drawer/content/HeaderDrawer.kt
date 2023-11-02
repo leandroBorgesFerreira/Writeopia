@@ -59,6 +59,7 @@ class HeaderDrawer(
                 step = step,
                 drawInfo = drawInfo,
                 interactionSource = interactionSource,
+                focusRequester = null,
                 decorationBox = @Composable { innerTextField ->
                     TextFieldDefaults.DecorationBox(
                         value = step.text ?: "",

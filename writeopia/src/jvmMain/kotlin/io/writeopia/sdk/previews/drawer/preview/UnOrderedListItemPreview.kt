@@ -14,13 +14,10 @@ import io.writeopia.sdk.models.story.StoryTypes
 @Composable
 fun UnOrderedListItemDrawerPreview() {
     Surface {
-        val focusRequester = FocusRequester()
-
         unOrderedListItemDrawer(
             messageDrawer = {
-                TextDrawer(focusRequester = focusRequester)
+                TextDrawer()
             },
-            focusRequester = focusRequester
         ).Step(
             step = StoryStep(
                 type = StoryTypes.TEXT.type,

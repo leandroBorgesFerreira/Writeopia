@@ -29,7 +29,6 @@ actual class TextItemDrawer actual constructor(
     private val customBackgroundColor: Color,
     private val clickable: Boolean,
     private val onSelected: (Boolean, Int) -> Unit,
-    private val focusRequester: FocusRequester?,
     private val dragIconWidth: Dp,
     private val startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
     private val messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
@@ -37,6 +36,7 @@ actual class TextItemDrawer actual constructor(
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
+        val focusRequester = remember { FocusRequester() }
         val dropInfo = DropInfo(step, drawInfo.position)
         val interactionSource = remember { MutableInteractionSource() }
         val isHovered by interactionSource.collectIsHoveredAsState()
@@ -47,7 +47,7 @@ actual class TextItemDrawer actual constructor(
                 .apply {
                     if (clickable) {
                         clickable {
-                            focusRequester?.requestFocus()
+                            focusRequester.requestFocus()
                         }
                     }
                 },
@@ -64,7 +64,7 @@ actual class TextItemDrawer actual constructor(
                     .apply {
                         if (clickable) {
                             clickable {
-                                focusRequester?.requestFocus()
+                                focusRequester.requestFocus()
                             }
                         }
                     },
@@ -73,7 +73,7 @@ actual class TextItemDrawer actual constructor(
                 position = drawInfo.position,
                 dragIconWidth = dragIconWidth,
                 emptySpaceClick = {
-                    focusRequester?.requestFocus()
+                    focusRequester.requestFocus()
                 }
             ) {
                 val interactionSourceText = remember { MutableInteractionSource() }
@@ -83,6 +83,7 @@ actual class TextItemDrawer actual constructor(
                     step = step,
                     drawInfo = drawInfo,
                     interactionSource = interactionSourceText,
+                    focusRequester = focusRequester,
                     decorationBox = @Composable { innerTextField -> innerTextField() }
                 )
             }

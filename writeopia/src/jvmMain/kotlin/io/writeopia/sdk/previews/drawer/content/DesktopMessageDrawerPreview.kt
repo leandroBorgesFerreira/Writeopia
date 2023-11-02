@@ -13,10 +13,11 @@ import io.writeopia.sdk.models.story.StoryTypes
 @Preview
 @Composable
 fun DesktopMessageDrawerPreview() {
-    TextDrawer(focusRequester = FocusRequester()).Text(
+    TextDrawer().Text(
         step = StoryStep(text = "Some text", type = StoryTypes.TEXT.type),
         drawInfo = DrawInfo(),
         interactionSource = remember { MutableInteractionSource() },
+        focusRequester = FocusRequester(),
         decorationBox = @Composable { innerTextField -> innerTextField() }
     )
 }

@@ -36,7 +36,6 @@ class TextDrawer(
     private val modifier: Modifier = Modifier,
     private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean = { _, _, _, _ -> false },
     private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
-    private val focusRequester: FocusRequester? = null,
     private val onTextEdit: (Action.StoryStateChange) -> Unit = { },
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     private val allowLineBreaks: Boolean = false,
@@ -49,6 +48,7 @@ class TextDrawer(
         step: StoryStep,
         drawInfo: DrawInfo,
         interactionSource: MutableInteractionSource,
+        focusRequester: FocusRequester?,
         decorationBox: @Composable (innerTextField: @Composable () -> Unit) -> Unit
     ) {
         var inputText by remember {

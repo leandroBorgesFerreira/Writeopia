@@ -21,7 +21,6 @@ expect class TextItemDrawer(
     customBackgroundColor: Color = Color.Transparent,
     clickable: Boolean = true,
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
-    focusRequester: FocusRequester? = null,
     dragIconWidth: Dp = 16.dp,
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer

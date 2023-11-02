@@ -2,9 +2,7 @@ package io.writeopia.sdk.drawer.factory
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -23,11 +21,9 @@ fun defaultHxDrawers(
     messageDrawer: @Composable RowScope.(TextUnit) -> SimpleTextDrawer
 ): Map<Int, StoryStepDrawer> {
     val createHDrawer = @Composable { fontSize: TextUnit ->
-        val focusRequesterH = remember { FocusRequester() }
         swipeTextDrawer(
             modifier = modifier,
             onSelected = manager::onSelected,
-            focusRequester = focusRequesterH,
             messageDrawer = {
                 messageDrawer(fontSize)
             },

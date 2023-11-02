@@ -23,14 +23,9 @@ private fun UnOrderedListItemPreview() {
         .padding(vertical = 4.dp, horizontal = 6.dp)
         .fillMaxWidth()
 
-    val focusRequester = FocusRequester()
-
     unOrderedListItemDrawer(
         modifier,
-        focusRequester = focusRequester,
-        messageDrawer = {
-            TextDrawer(focusRequester = focusRequester)
-        }
+        messageDrawer = { TextDrawer() }
     ).Step(
         StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type, text = "Item1"),
         DrawInfo()
