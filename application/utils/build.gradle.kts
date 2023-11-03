@@ -1,6 +1,5 @@
 plugins {
     kotlin("multiplatform")
-    alias(libs.plugins.sqldelight)
 }
 
 kotlin {

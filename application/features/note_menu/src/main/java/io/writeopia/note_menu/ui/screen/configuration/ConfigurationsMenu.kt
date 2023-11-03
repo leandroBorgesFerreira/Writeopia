@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.writeopia.appresourcers.R
 import io.writeopia.common_ui.SlideInBox
-import io.writeopia.sdk.persistence.core.sorting.OrderBy
 
 private const val INNER_PADDING = 3
 
