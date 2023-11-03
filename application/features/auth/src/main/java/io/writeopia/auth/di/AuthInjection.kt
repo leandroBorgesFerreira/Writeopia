@@ -9,7 +9,7 @@ import io.writeopia.auth.intronotes.IntroNotesUseCase
 import io.writeopia.auth.login.LoginViewModel
 import io.writeopia.auth.menu.AuthMenuViewModel
 import io.writeopia.auth.register.RegisterViewModel
-import io.writeopia.persistence.injection.RepositoriesInjection
+import io.writeopia.persistence.injection.DaosInjection
 import io.writeopia.sdk.persistence.core.dao.DocumentDao
 import io.writeopia.sdk.network.injector.ApiInjector
 import io.writeopia.sdk.network.notes.NotesApi
@@ -17,10 +17,10 @@ import io.writeopia.sdk.network.notes.NotesApi
 class AuthInjection(
     private val authCoreInjection: AuthCoreInjection,
     private val apiInjector: ApiInjector,
-    private val repositoriesInjection: RepositoriesInjection
+    private val daosInjection: DaosInjection
 ) {
 
-    private fun provideDocumentRepository(): DocumentDao = repositoriesInjection.provideDocumentRepository()
+    private fun provideDocumentRepository(): DocumentDao = daosInjection.provideDocumentDao()
 
     private fun provideIntroNotesUseCase(
         documentDao: DocumentDao = provideDocumentRepository(),

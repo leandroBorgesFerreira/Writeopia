@@ -4,11 +4,11 @@ import io.writeopia.persistence.WriteopiaApplicationDatabase
 import io.writeopia.sdk.persistence.core.dao.DocumentDao
 import io.writeopia.sdk.persistence.dao.room.RoomDocumentDao
 
-class RepositoriesInjection(
+class DaosInjection(
     private val database: WriteopiaApplicationDatabase
 ) {
 
-    fun provideDocumentRepository(): DocumentDao =
+    fun provideDocumentDao(): DocumentDao =
         RoomDocumentDao(
             database.documentDao(),
             database.storyUnitDao()

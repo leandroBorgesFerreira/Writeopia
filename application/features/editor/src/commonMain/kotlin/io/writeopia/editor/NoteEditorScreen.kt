@@ -65,7 +65,7 @@ import io.writeopia.editor.model.EditState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.flow.collectLatest
 import java.util.UUID
-import io.writeopia.appresourcers.R
+//import io.writeopia.appresourcers.R
 import io.writeopia.sdk.models.id.GenerateId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -103,7 +103,8 @@ internal fun NoteEditorScreen(
     } else {
         noteEditorViewModel.createNewDocument(
             GenerateId.generate(),
-            stringResource(R.string.untitled)
+            "Untitled",
+//            stringResource(R.string.untitled)
         )
     }
 
@@ -225,7 +226,8 @@ private fun TopBar(
                         .clickable(onClick = navigationClick)
                         .padding(10.dp),
                     imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.back),
+                    contentDescription = "",
+//                    stringResource(R.string.back),
                     tint = MaterialTheme.colorScheme.onBackground
                 )
             }

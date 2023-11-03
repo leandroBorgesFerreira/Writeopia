@@ -7,6 +7,7 @@ plugins {
 
 kotlin {
     androidTarget()
+    jvm{}
 
     sourceSets {
         val commonMain by getting {
@@ -49,6 +50,12 @@ kotlin {
 
                 implementation("androidx.activity:activity-compose")
                 implementation(libs.accompanist.systemuicontroller)
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+
             }
         }
     }
