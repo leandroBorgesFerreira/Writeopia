@@ -38,7 +38,7 @@ jobs:
         with:
           distribution: adopt
           java-version: '17'
-      - name: Build debug android 
+      - name: JVM tests
         run: ./gradlew jvmTest
   android_build:
     name: General - Build debug
