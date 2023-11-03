@@ -1,22 +1,20 @@
 plugins {
-    id("java-library")
-    alias(libs.plugins.org.jetbrains.kotlin.jvm)
+    kotlin("multiplatform")
+    alias(libs.plugins.sqldelight)
 }
 
-dependencies {
-    implementation(project(":writeopia_models"))
-}
+kotlin {
+    jvm {}
 
-kotlin{
-    sourceSets.all {
-        languageSettings {
-            languageVersion = "1.9"
+//    js(IR) {
+//        browser()
+//    }
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(project(":writeopia_models"))
+            }
         }
     }
-}
-
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
 }
