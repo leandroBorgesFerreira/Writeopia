@@ -10,7 +10,7 @@ import io.writeopia.sdk.backstack.BackstackInform
 import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.filter.DocumentFilter
 import io.writeopia.sdk.filter.DocumentFilterObject
-import io.writeopia.sdk.manager.DocumentRepository
+import io.writeopia.sdk.persistence.core.dao.DocumentDao
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.story.DrawState
@@ -37,7 +37,7 @@ import kotlinx.serialization.json.Json
 
 internal class NoteEditorViewModel(
     val writeopiaManager: WriteopiaManager,
-    private val documentRepository: DocumentRepository,
+    private val documentDao: DocumentDao,
     private val documentFilter: DocumentFilter = DocumentFilterObject,
 ) : ViewModel(),
     BackstackInform by writeopiaManager,
@@ -110,10 +110,10 @@ internal class NoteEditorViewModel(
 
         viewModelScope.launch {
             writeopiaManager.currentDocument.stateIn(this).value?.let { document ->
-                documentRepository.saveDocument(document)
+                documentDao.saveDocument(document)
                 writeopiaManager.saveOnStoryChanges(
                     OnUpdateDocumentTracker(
-                        documentRepository
+                        documentDao
                     )
                 )
             }
@@ -124,13 +124,13 @@ internal class NoteEditorViewModel(
         if (writeopiaManager.isInitialized()) return
 
         viewModelScope.launch(Dispatchers.IO) {
-            val document = documentRepository.loadDocumentById(documentId)
+            val document = documentDao.loadDocumentById(documentId)
 
             if (document != null) {
                 writeopiaManager.initDocument(document)
                 writeopiaManager.saveOnStoryChanges(
                     OnUpdateDocumentTracker(
-                        documentRepository
+                        documentDao
                     )
                 )
             }
@@ -142,7 +142,7 @@ internal class NoteEditorViewModel(
             val document = writeopiaManager.currentDocument.stateIn(this).value
 
             if (document != null && story.value.stories.noContent()) {
-                documentRepository.deleteDocument(document)
+                documentDao.deleteDocument(document)
             }
 
             withContext(Dispatchers.Main) {

@@ -1,16 +1,15 @@
 package io.writeopia.persistence.injection
 
-import android.app.Application
 import io.writeopia.persistence.WriteopiaApplicationDatabase
-import io.writeopia.sdk.manager.DocumentRepository
-import io.writeopia.sdk.persistence.repository.DocumentRepositoryImpl
+import io.writeopia.sdk.persistence.core.dao.DocumentDao
+import io.writeopia.sdk.persistence.dao.room.RoomDocumentDao
 
 class RepositoriesInjection(
     private val database: WriteopiaApplicationDatabase
 ) {
 
-    fun provideDocumentRepository(): DocumentRepository =
-        DocumentRepositoryImpl(
+    fun provideDocumentRepository(): DocumentDao =
+        RoomDocumentDao(
             database.documentDao(),
             database.storyUnitDao()
         )

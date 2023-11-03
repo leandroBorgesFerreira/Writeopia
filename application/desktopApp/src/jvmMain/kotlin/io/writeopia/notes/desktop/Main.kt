@@ -7,9 +7,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,19 +19,16 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import io.writeopia.sdk.WriteopiaEditor
-import io.writeopia.sdk.WriteopiaEditorBox
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.factory.DefaultDrawersDesktop
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.story.DrawState
 import io.writeopia.sdk.persistence.sqldelight.DriverFactory
-import io.writeopia.sdk.persistence.sqldelight.createDatabase
-import io.writeopia.sdk.serialization.data.DecorationApi
+import io.writeopia.sdk.persistence.sqldelight.di.SqlDelightDaoInjector
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.lang.System.Logger
 
 fun main() = application {
     Window(
@@ -41,43 +36,48 @@ fun main() = application {
         title = "Writeopia for Desktop",
         state = rememberWindowState(width = 1100.dp, height = 800.dp)
     ) {
-        val writeopiaManager = WriteopiaManager(dispatcher = Dispatchers.IO).apply {
-            newStory()
-        }
+        App()
+    }
+}
 
-        MaterialTheme {
-            Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-                //Todo: Move this to WriteopiaEditorBox
-                BoxWithConstraints {
-                    Column(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .let { modifierLet ->
-                                if (maxWidth > 900.dp) {
-                                    modifierLet.width(1000.dp)
-                                } else {
-                                    modifierLet.fillMaxWidth()
-                                }
+@Composable
+fun App() {
+    val writeopiaManager = WriteopiaManager(dispatcher = Dispatchers.IO).apply {
+        newStory()
+    }
+
+    MaterialTheme {
+        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            //Todo: Move this to WriteopiaEditorBox
+            BoxWithConstraints {
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .let { modifierLet ->
+                            if (maxWidth > 900.dp) {
+                                modifierLet.width(1000.dp)
+                            } else {
+                                modifierLet.fillMaxWidth()
                             }
-                            .defaultMinSize(minHeight = 700.dp)
-                            .padding(start = 30.dp, end = 30.dp, top = 30.dp, bottom = 30.dp)
-                            .clip(RoundedCornerShape(20.dp))
-                            .background(Color.White),
-                    ) {
-                        CreateTextEditor(writeopiaManager)
+                        }
+                        .defaultMinSize(minHeight = 700.dp)
+                        .padding(start = 30.dp, end = 30.dp, top = 30.dp, bottom = 30.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color.White),
+                ) {
+                    CreateTextEditor(writeopiaManager)
 
-                        Box(
-                            modifier = Modifier.weight(1F)
-                                .fillMaxWidth()
-                                .clickable(
-                                    onClick = {
-                                        writeopiaManager.clickAtTheEnd()
-                                    },
-                                    interactionSource = remember { MutableInteractionSource() },
-                                    indication = null,
-                                )
-                        )
-                    }
+                    Box(
+                        modifier = Modifier.weight(1F)
+                            .fillMaxWidth()
+                            .clickable(
+                                onClick = {
+                                    writeopiaManager.clickAtTheEnd()
+                                },
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                            )
+                    )
                 }
             }
         }
@@ -86,7 +86,7 @@ fun main() = application {
 
 
 @Composable
-fun CreateTextEditor(manager: WriteopiaManager) {
+private fun CreateTextEditor(manager: WriteopiaManager) {
     val listState: LazyListState = rememberLazyListState()
     val coroutine = rememberCoroutineScope()
 
@@ -100,7 +100,7 @@ fun CreateTextEditor(manager: WriteopiaManager) {
 }
 
 @Composable
-fun TextEditor(
+private fun TextEditor(
     lazyListState: LazyListState,
     drawState: Flow<DrawState>,
     drawers: Map<Int, StoryStepDrawer>
@@ -114,6 +114,6 @@ fun TextEditor(
     )
 }
 
-fun createPersistence() {
-    val writeopiaDb = createDatabase(DriverFactory())
+private fun createPersistence() {
+    SqlDelightDaoInjector(DriverFactory()).provideDocumentDao()
 }

@@ -9,7 +9,7 @@ import io.writeopia.sdk.persistence.entity.story.STORY_UNIT_ENTITY
 import io.writeopia.sdk.persistence.entity.story.StoryStepEntity
 
 @Dao
-interface StoryUnitDao {
+interface StoryUnitEntityDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertStoryUnits(vararg storyStep: StoryStepEntity)

@@ -6,7 +6,7 @@ import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.editor.NoteEditorViewModel
 import io.writeopia.persistence.injection.RepositoriesInjection
-import io.writeopia.sdk.manager.DocumentRepository
+import io.writeopia.sdk.persistence.core.dao.DocumentDao
 import io.writeopia.sdk.manager.WriteopiaManager
 import kotlinx.coroutines.Dispatchers
 
@@ -15,7 +15,7 @@ class EditorInjector(
     private val repositoriesInjection: RepositoriesInjection
 ) {
 
-    private fun provideDocumentRepository(): DocumentRepository =
+    private fun provideDocumentRepository(): DocumentDao =
         repositoriesInjection.provideDocumentRepository()
 
     private fun provideWriteopiaManager(
@@ -27,11 +27,11 @@ class EditorInjector(
 
     @Composable
     internal fun provideNoteDetailsViewModel(
-        documentRepository: DocumentRepository = provideDocumentRepository(),
+        documentDao: DocumentDao = provideDocumentRepository(),
         writeopiaManager: WriteopiaManager = provideWriteopiaManager()
     ): NoteEditorViewModel {
         return viewModel(initializer = {
-            NoteEditorViewModel(writeopiaManager, documentRepository)
+            NoteEditorViewModel(writeopiaManager, documentDao)
         })
     }
 }

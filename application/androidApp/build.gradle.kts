@@ -9,6 +9,17 @@ kotlin {
     androidTarget()
 
     sourceSets {
+        val androidInstrumentedTest by getting {
+            dependencies {
+                implementation(project(":application:common_ui_tests"))
+
+                implementation(libs.androidx.junit)
+                implementation(libs.androidx.espresso.core)
+
+                implementation(libs.androidx.compose.test)
+            }
+        }
+
         val androidMain by getting {
             dependencies {
                 implementation(project(":writeopia"))
@@ -38,6 +49,8 @@ kotlin {
                 implementation(platform("androidx.compose:compose-bom:2023.09.02"))
             }
         }
+
+
     }
 }
 
@@ -81,13 +94,4 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
-}
-
-
-dependencies {
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.2")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.2")
 }

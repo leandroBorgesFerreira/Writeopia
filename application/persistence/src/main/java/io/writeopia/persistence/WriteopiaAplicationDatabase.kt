@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import io.writeopia.sdk.persistence.converter.IdListConverter
-import io.writeopia.sdk.persistence.dao.DocumentDao
-import io.writeopia.sdk.persistence.dao.StoryUnitDao
+import io.writeopia.sdk.persistence.dao.DocumentEntityDao
+import io.writeopia.sdk.persistence.dao.StoryUnitEntityDao
 import io.writeopia.sdk.persistence.entity.document.DocumentEntity
 import io.writeopia.sdk.persistence.entity.story.StoryStepEntity
 
@@ -24,8 +24,8 @@ private const val DATABASE_NAME = "WriteopiaDatabase"
 @TypeConverters(IdListConverter::class)
 abstract class WriteopiaApplicationDatabase : RoomDatabase() {
 
-    abstract fun documentDao(): DocumentDao
-    abstract fun storyUnitDao(): StoryUnitDao
+    abstract fun documentDao(): DocumentEntityDao
+    abstract fun storyUnitDao(): StoryUnitEntityDao
 
     companion object {
         private var instance: WriteopiaApplicationDatabase? = null
