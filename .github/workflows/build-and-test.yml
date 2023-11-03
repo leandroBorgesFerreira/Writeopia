@@ -25,6 +25,21 @@ jobs:
           java-version: '17'
       - name: Build debug android 
         run: ./gradlew testDebug
+  ui_jvm_tests:
+    name: Jvm UI Compose tests
+    runs-on: ubuntu-22.04
+    env:
+      isCI: "true"
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: adopt
+          java-version: '17'
+      - name: Build debug android 
+        run: ./gradlew jvmTest
   android_build:
     name: General - Build debug
     runs-on: ubuntu-22.04

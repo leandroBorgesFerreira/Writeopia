@@ -1,3 +1,4 @@
+import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -8,6 +9,13 @@ plugins {
 kotlin {
     jvm {}
     sourceSets {
+        val commonTest by getting {
+            dependencies {
+                implementation(compose("org.jetbrains.compose.ui:ui-test-junit4"))
+                implementation(project(":application:common_ui_tests"))
+            }
+        }
+
         val jvmMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)

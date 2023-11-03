@@ -15,7 +15,7 @@ ktorClient = "2.3.3"
 ktx = "1.12.0"
 appCompat = "1.6.1"
 material = "1.10.0"
-material3Desktop = "1.5.2"
+material3Desktop = "1.5.10"
 materialIconsExtended = "1.5.4"
 room = "2.6.0"
 compose = "2.6.2"
@@ -23,6 +23,7 @@ navigation-compose = "2.7.5"
 agp = "8.1.2"
 kotlin = "1.9.10"
 compose-compiler = "1.5.3"
+composeTest = "1.5.4"
 writeopia = "0.4.1"
 mockk = "1.13.8"
 sqldelight = "2.0.0"
@@ -33,6 +34,8 @@ aws-amplifyframework-core-kotlin = { module = "com.amplifyframework:core-kotlin"
 aws-amplifyframework-cognito = { module = "com.amplifyframework:aws-auth-cognito", version.ref = "amplify" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
+androidx-compose-test = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "composeTest" }
+androidx-compose-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "composeTest" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "junit" }
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }

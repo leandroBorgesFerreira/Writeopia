@@ -8,11 +8,11 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.persistence.dao.DocumentDao
-import io.writeopia.sdk.persistence.dao.StoryUnitDao
+import io.writeopia.sdk.persistence.dao.DocumentEntityDao
+import io.writeopia.sdk.persistence.dao.StoryUnitEntityDao
 import io.writeopia.sdk.persistence.parse.toEntity
 import io.writeopia.sdk.persistence.parse.toModel
-import io.writeopia.sdk.persistence.repository.DocumentRepositoryImpl
+import io.writeopia.sdk.persistence.dao.room.RoomDocumentDao
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.*
@@ -22,12 +22,12 @@ import org.junit.runner.RunWith
 import java.time.Instant
 
 @RunWith(AndroidJUnit4::class)
-class DocumentRepositoryTest {
+class DocumentDaoTest {
 
     private lateinit var database: WriteopiaApplicationDatabase
-    private lateinit var documentDao: DocumentDao
-    private lateinit var storyUnitDao: StoryUnitDao
-    private lateinit var documentRepository: DocumentRepositoryImpl
+    private lateinit var documentEntityDao: DocumentEntityDao
+    private lateinit var storyUnitEntityDao: StoryUnitEntityDao
+    private lateinit var documentRepository: RoomDocumentDao
 
     @Before
     fun createDb() {
@@ -37,10 +37,10 @@ class DocumentRepositoryTest {
             WriteopiaApplicationDatabase::class.java
         ).build()
 
-        documentDao = database.documentDao()
-        storyUnitDao = database.storyUnitDao()
+        documentEntityDao = database.documentDao()
+        storyUnitEntityDao = database.storyUnitDao()
 
-        documentRepository = DocumentRepositoryImpl(documentDao, storyUnitDao)
+        documentRepository = RoomDocumentDao(documentEntityDao, storyUnitEntityDao)
     }
 
     @After
@@ -60,7 +60,7 @@ class DocumentRepositoryTest {
             userId = "userId",
         )
 
-        val loadedDocument = documentDao.run {
+        val loadedDocument = documentEntityDao.run {
             insertDocuments(document.toEntity())
             loadDocumentById(id)
         }
@@ -82,7 +82,7 @@ class DocumentRepositoryTest {
 
         documentRepository.saveDocument(document)
 
-        val loadedDocument = documentDao.loadDocumentById(id)
+        val loadedDocument = documentEntityDao.loadDocumentById(id)
         assertEquals(document, loadedDocument?.toModel())
     }
 
@@ -119,8 +119,8 @@ class DocumentRepositoryTest {
         documentRepository.saveDocument(document)
         val loadedDocument = documentRepository.loadDocumentById(id)
 
-        assertTrue(storyUnitDao.loadDocumentContent(id).isNotEmpty())
-        assertTrue(documentDao.loadDocumentWithContentById(id)?.values?.isNotEmpty() ?: false)
+        assertTrue(storyUnitEntityDao.loadDocumentContent(id).isNotEmpty())
+        assertTrue(documentEntityDao.loadDocumentWithContentById(id)?.values?.isNotEmpty() ?: false)
         assertEquals(document, loadedDocument)
     }
 

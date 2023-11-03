@@ -3,7 +3,7 @@ package io.writeopia.note_menu.di
 import android.content.SharedPreferences
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.writeopia.sdk.manager.DocumentRepository
+import io.writeopia.sdk.persistence.core.dao.DocumentDao
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.note_menu.data.usecase.NotesConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
@@ -16,17 +16,17 @@ class NotesMenuInjection(
     private val repositoriesInjection: RepositoriesInjection
 ) {
 
-    private fun provideDocumentRepository(): DocumentRepository = repositoriesInjection.provideDocumentRepository()
+    private fun provideDocumentRepository(): DocumentDao = repositoriesInjection.provideDocumentRepository()
 
     private fun provideNotesConfigurationRepository(): NotesConfigurationRepository =
         NotesConfigurationRepository(sharedPreferences)
 
     private fun provideNotesUseCase(
-        documentRepository: DocumentRepository = provideDocumentRepository(),
+        documentDao: DocumentDao = provideDocumentRepository(),
         notesConfigurationRepository: NotesConfigurationRepository =
             provideNotesConfigurationRepository()
     ): NotesUseCase {
-        return NotesUseCase(documentRepository, notesConfigurationRepository)
+        return NotesUseCase(documentDao, notesConfigurationRepository)
     }
 
     @Composable

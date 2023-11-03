@@ -1,18 +1,21 @@
-package io.writeopia.menu
+package io.writeopia.notes
 
 import android.app.Application
 import android.content.Context
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.junit4.createComposeRule
+import io.writeopia.common.uitests.DocumentEditRobot
+import io.writeopia.robots.DocumentEditPageRobot
 import io.writeopia.navigation.NavigationGraph
 import io.writeopia.persistence.WriteopiaApplicationDatabase
-import io.writeopia.menu.robots.DocumentEditRobot
-import io.writeopia.menu.robots.DocumentsMenuRobot
+import io.writeopia.robots.DocumentsMenuRobot
 import io.writeopia.utils_module.Destinations
 import org.junit.Rule
 import org.junit.Test
 
 class NoteMenuAndroidTest {
+
+    //Todo: Move those tests to a common module once desktopApp also is a viable app.
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -21,8 +24,8 @@ class NoteMenuAndroidTest {
     fun itShouldBePossibleToAddNote() {
         startContent()
 
-        DocumentsMenuRobot(composeTestRule).goToAddNote()
-        DocumentEditRobot(composeTestRule).verifyItIsInEdition()
+        DocumentsMenuRobot(composeTestRule).goToEditNote()
+        DocumentEditPageRobot(composeTestRule).verifyItIsInEdition()
     }
 
     @Test
@@ -32,14 +35,16 @@ class NoteMenuAndroidTest {
         val noteTitle = "Note1"
 
         val documentsMenuRobot = DocumentsMenuRobot(composeTestRule)
-        documentsMenuRobot.goToAddNote()
+        documentsMenuRobot.goToEditNote()
+
+        val documentEditPageRobot = DocumentEditPageRobot(composeTestRule)
+        documentEditPageRobot.verifyItIsInEdition()
 
         DocumentEditRobot(composeTestRule).run {
-            verifyItIsInEdition()
             writeTitle(noteTitle)
-            goBack()
         }
 
+        documentEditPageRobot.goBack()
         documentsMenuRobot.assertNoteWithTitle(noteTitle)
     }
 
@@ -50,13 +55,16 @@ class NoteMenuAndroidTest {
         val noteTitle = "Note1"
 
         val documentsMenuRobot = DocumentsMenuRobot(composeTestRule)
-        documentsMenuRobot.goToAddNote()
+        documentsMenuRobot.goToEditNote()
+
+        val documentEditPageRobot = DocumentEditPageRobot(composeTestRule)
+        documentEditPageRobot.verifyItIsInEdition()
 
         DocumentEditRobot(composeTestRule).run {
-            verifyItIsInEdition()
             writeTitle(noteTitle)
-            verifyToolbarTitle(noteTitle)
         }
+
+        documentEditPageRobot.verifyToolbarTitle(noteTitle)
     }
 
     @Test
@@ -64,15 +72,22 @@ class NoteMenuAndroidTest {
         startContent()
 
         val documentsMenuRobot = DocumentsMenuRobot(composeTestRule)
-        documentsMenuRobot.goToAddNote()
+        documentsMenuRobot.goToEditNote()
 
         val text = "Text"
 
-        DocumentEditRobot(composeTestRule).run {
-            verifyItIsInEdition()
+        val documentEditPageRobot = DocumentEditPageRobot(composeTestRule)
+        documentEditPageRobot.verifyItIsInEdition()
+
+        val documentEditRobot = DocumentEditRobot(composeTestRule)
+        documentEditRobot.run {
             addLine()
             writeText(text, 2)
-            goBack()
+        }
+
+        documentEditPageRobot.goBack()
+
+        documentEditRobot.run {
             clickWithText(text)
             checkWithText(text) //It shouldn't crash
         }

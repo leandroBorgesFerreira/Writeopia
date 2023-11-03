@@ -15,7 +15,7 @@ import io.writeopia.sdk.persistence.entity.story.STORY_UNIT_ENTITY
 import io.writeopia.sdk.persistence.entity.story.StoryStepEntity
 
 @Dao
-interface DocumentDao {
+interface DocumentEntityDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDocuments(vararg documents: DocumentEntity)

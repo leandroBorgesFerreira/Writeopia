@@ -1,5 +1,6 @@
-package io.writeopia.sdk.manager
+package io.writeopia.sdk.persistence.core.dao
 
+import io.writeopia.sdk.manager.DocumentUpdate
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 
@@ -8,13 +9,13 @@ import io.writeopia.sdk.models.story.StoryStep
  * The implementations of this interface shouldn't control order (sorting) or oder configurations,
  * those need to be passed as parameters.
  */
-interface DocumentRepository : DocumentUpdate {
+interface DocumentDao : DocumentUpdate {
 
     suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document>
 
     suspend fun loadDocumentById(id: String): Document?
 
-    suspend fun loadDocumentsById(ids: List<String>, orderBy: String): List<Document>
+    suspend fun loadDocumentsWithContentByIds(ids: List<String>, orderBy: String): List<Document>
 
     /**
      * Saves document. Both with content and meta data.
@@ -32,7 +33,7 @@ interface DocumentRepository : DocumentUpdate {
 
     suspend fun deleteDocument(document: Document)
 
-    suspend fun deleteDocumentById(ids: Set<String>)
+    suspend fun deleteDocumentByIds(ids: Set<String>)
 
     /**
      * Deleted all the documents of a User

@@ -1,4 +1,4 @@
-package io.writeopia.menu.robots
+package io.writeopia.robots
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeTestRule
@@ -13,7 +13,7 @@ class DocumentsMenuRobot(private val composeTestRule: ComposeTestRule) {
         composeTestRule.onNodeWithTag("$DOCUMENT_ITEM_TEST_TAG$title").assertIsDisplayed()
     }
 
-    fun goToAddNote() {
+    fun goToEditNote() {
         composeTestRule.onNodeWithTag(ADD_NOTE_TEST_TAG).performClick()
     }
 }
