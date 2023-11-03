@@ -35,7 +35,10 @@ WHERE documentEntity.id = ?;
 
 insert:
 INSERT INTO documentEntity(id, title, created_at, last_updated_at, user_id)
-VALUES (?, ?, ?, ?, ?);
+VALUES (?, ?, ?, ?, ?)
+ON CONFLICT(id) DO
+UPDATE SET id=excluded.id, title=excluded.title, created_at=excluded.created_at,
+last_updated_at=excluded.last_updated_at, user_id=excluded.user_id;
 
 delete:
 DELETE FROM documentEntity WHERE id = ?;

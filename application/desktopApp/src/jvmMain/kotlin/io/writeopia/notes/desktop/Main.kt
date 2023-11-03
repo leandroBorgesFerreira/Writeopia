@@ -21,8 +21,10 @@ import androidx.compose.ui.window.rememberWindowState
 import io.writeopia.sdk.WriteopiaEditor
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.factory.DefaultDrawersDesktop
+import io.writeopia.sdk.manager.DocumentUpdate
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.story.DrawState
+import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
 import io.writeopia.sdk.persistence.sqldelight.DriverFactory
 import io.writeopia.sdk.persistence.sqldelight.di.SqlDelightDaoInjector
 import kotlinx.coroutines.Dispatchers
@@ -44,6 +46,7 @@ fun main() = application {
 fun App() {
     val writeopiaManager = WriteopiaManager(dispatcher = Dispatchers.IO).apply {
         newStory()
+        saveOnStoryChanges(OnUpdateDocumentTracker(createPersistence()))
     }
 
     MaterialTheme {
@@ -114,6 +117,4 @@ private fun TextEditor(
     )
 }
 
-private fun createPersistence() {
-    SqlDelightDaoInjector(DriverFactory()).provideDocumentDao()
-}
+private fun createPersistence(): DocumentUpdate = SqlDelightDaoInjector(DriverFactory()).provideDocumentDao()
