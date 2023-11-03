@@ -51,7 +51,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.tooling.preview.Preview
+//import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -247,13 +247,13 @@ private fun TopBar(
     )
 }
 
-@Preview
-@Composable
-private fun TopBar_Preview() {
-    Box(modifier = Modifier.background(Color.LightGray)) {
-        TopBar(titleState = MutableStateFlow("Title"), shareDocument = {})
-    }
-}
+//@Preview
+//@Composable
+//private fun TopBar_Preview() {
+//    Box(modifier = Modifier.background(Color.LightGray)) {
+//        TopBar(titleState = MutableStateFlow("Title"), shareDocument = {})
+//    }
+//}
 
 @Composable
 private fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
@@ -349,22 +349,22 @@ private fun BottomScreen(
     }
 }
 
-@Preview
-@Composable
-private fun BottomScreenTextPreview() {
-    BottomScreen(
-        editState = MutableStateFlow(EditState.TEXT),
-        canUndo = MutableStateFlow(true),
-        canRedo = MutableStateFlow(true),
-    )
-}
-
-@Preview
-@Composable
-private fun BottomScreenSelectedPreview() {
-    BottomScreen(
-        editState = MutableStateFlow(EditState.SELECTED_TEXT),
-        canUndo = MutableStateFlow(true),
-        canRedo = MutableStateFlow(true),
-    )
-}
+//@Preview
+//@Composable
+//private fun BottomScreenTextPreview() {
+//    BottomScreen(
+//        editState = MutableStateFlow(EditState.TEXT),
+//        canUndo = MutableStateFlow(true),
+//        canRedo = MutableStateFlow(true),
+//    )
+//}
+//
+//@Preview
+//@Composable
+//private fun BottomScreenSelectedPreview() {
+//    BottomScreen(
+//        editState = MutableStateFlow(EditState.SELECTED_TEXT),
+//        canUndo = MutableStateFlow(true),
+//        canRedo = MutableStateFlow(true),
+//    )
+//}

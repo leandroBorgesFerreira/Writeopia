@@ -1,8 +1,57 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinSerialization)
-    id("com.google.devtools.ksp")
+    kotlin("multiplatform")
+//    alias(libs.plugins.sqldelight)
+}
+
+kotlin {
+    androidTarget()
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(project(":writeopia"))
+                implementation(project(":writeopia_models"))
+                implementation(project(":plugins:writeopia_export"))
+                implementation(project(":plugins:writeopia_persistence_core"))
+                implementation(project(":plugins:writeopia_serialization"))
+
+                implementation(project(":application:resources"))
+                implementation(project(":application:utils"))
+                implementation(project(":application:auth_core"))
+                implementation(project(":application:common_ui"))
+                implementation(project(":application:persistence"))
+
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.kotlinx.datetime)
+
+                implementation(libs.material)
+
+                implementation(libs.viewmodel.compose)
+                implementation(libs.runtime.compose)
+                implementation(libs.navigation.compose)
+
+                implementation(libs.androidx.material.icons.extended)
+
+                implementation(libs.accompanist.systemuicontroller)
+
+                implementation("androidx.compose.material3:material3")
+                implementation("androidx.compose.material3:material3-window-size-class")
+
+                implementation(platform("androidx.compose:compose-bom:2023.09.02"))
+            }
+        }
+
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.appCompat)
+
+                implementation("androidx.activity:activity-compose")
+                implementation(libs.accompanist.systemuicontroller)
+            }
+        }
+    }
 }
 
 android {
@@ -26,12 +75,8 @@ android {
         }
     }
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -39,63 +84,4 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
-}
-
-kotlin{
-    sourceSets.all {
-        languageSettings {
-            languageVersion = "1.9"
-        }
-    }
-}
-
-dependencies {
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
-    implementation(project(":writeopia"))
-    implementation(project(":writeopia_models"))
-    implementation(project(":plugins:writeopia_export"))
-    implementation(project(":plugins:writeopia_persistence_core"))
-    implementation(project(":plugins:writeopia_serialization"))
-
-    implementation(project(":application:resources"))
-    implementation(project(":application:utils"))
-    implementation(project(":application:auth_core"))
-    implementation(project(":application:common_ui"))
-    implementation(project(":application:persistence"))
-
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.kotlinx.datetime)
-
-    implementation(libs.appCompat)
-    implementation(libs.material)
-
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
-
-    implementation(libs.viewmodel.compose)
-    implementation(libs.runtime.compose)
-    implementation(libs.navigation.compose)
-
-    // Compose - Preview
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-
-    implementation("androidx.activity:activity-compose")
-    implementation(libs.androidx.material.icons.extended)
-
-    implementation(libs.accompanist.systemuicontroller)
-
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material3:material3-window-size-class")
-
-    // Compose - Preview
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-
-    implementation(platform(libs.androidx.compose.bom))
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }

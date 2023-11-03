@@ -30,7 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+//import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.writeopia.common_ui.SlideInBox
 
@@ -110,23 +110,23 @@ fun BoxScope.HeaderEdition(
     }
 }
 
-@Preview
-@Composable
-fun HeaderEditionPreview() {
-    val colors = listOf(
-        Color.Blue.toArgb(),
-        Color.White.toArgb(),
-        Color.Cyan.toArgb(),
-        Color.LightGray.toArgb(),
-        Color.Red.toArgb(),
-    )
-
-    Box(modifier = Modifier.background(Color.White)) {
-        HeaderEdition(
-            availableColors = colors,
-            onColorSelection = {},
-            outsideClick = {},
-            visibilityState = true
-        )
-    }
-}
+//@Preview
+//@Composable
+//fun HeaderEditionPreview() {
+//    val colors = listOf(
+//        Color.Blue.toArgb(),
+//        Color.White.toArgb(),
+//        Color.Cyan.toArgb(),
+//        Color.LightGray.toArgb(),
+//        Color.Red.toArgb(),
+//    )
+//
+//    Box(modifier = Modifier.background(Color.White)) {
+//        HeaderEdition(
+//            availableColors = colors,
+//            onColorSelection = {},
+//            outsideClick = {},
+//            visibilityState = true
+//        )
+//    }
+//}
