@@ -1,60 +1,25 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinAndroid)
+    kotlin("multiplatform")
+    id("org.jetbrains.compose")
 }
 
-android {
-    namespace = "io.writeopia.common_ui"
-    compileSdk = 33
+kotlin {
+    jvm {}
 
-    defaultConfig {
-        minSdk = 24
+//    js(IR) {
+//        browser()
+//    }
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.materialIconsExtended)
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                implementation(compose.components.resources)
+            }
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
-}
-
-kotlin{
-    sourceSets.all {
-        languageSettings {
-            languageVersion = "1.9"
-        }
-    }
-}
-
-dependencies {
-    implementation(libs.runtime.compose)
-    implementation(libs.androidx.material.icons.extended)
-    implementation("androidx.compose.material3:material3")
-
-    // Compose - Preview
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-
-    implementation(platform(libs.androidx.compose.bom))
 }
