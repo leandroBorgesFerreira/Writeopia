@@ -29,19 +29,12 @@ kotlin {
 
                 implementation(libs.material)
 
-                implementation(libs.viewmodel.compose)
-                implementation(libs.navigation.compose)
-
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.materialIconsExtended)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
-
-                implementation(libs.accompanist.systemuicontroller)
-
-                implementation(platform("androidx.compose:compose-bom:2023.09.02"))
             }
         }
 
@@ -52,9 +45,10 @@ kotlin {
                 implementation("androidx.activity:activity-compose")
                 implementation(libs.accompanist.systemuicontroller)
 
-                implementation(libs.androidx.material.icons.extended)
-
                 implementation(libs.viewmodel.compose)
+                implementation(libs.navigation.compose)
+
+                implementation(platform("androidx.compose:compose-bom:2023.09.02"))
             }
         }
 
