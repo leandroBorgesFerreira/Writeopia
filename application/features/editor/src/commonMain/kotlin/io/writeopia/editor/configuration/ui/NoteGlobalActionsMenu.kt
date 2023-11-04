@@ -16,11 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 //import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.writeopia.appresourcers.R
 
 //@Preview
 @Composable
@@ -34,7 +32,8 @@ internal fun NoteGlobalActionsMenu(onShareJson: () -> Unit = {}, onShareMd: () -
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = stringResource(id = R.string.export),
+            text = "Export",
+//            stringResource(id = R.string.export),
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onBackground
         )
@@ -42,11 +41,19 @@ internal fun NoteGlobalActionsMenu(onShareJson: () -> Unit = {}, onShareMd: () -
         Spacer(modifier = Modifier.height(16.dp))
 
         Row {
-            ShareButton(text = stringResource(id = R.string.export_json), onClick = onShareJson)
+            ShareButton(
+                text = "Export as Json",
+//                stringResource(id = R.string.export_json),
+                onClick = onShareJson
+            )
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            ShareButton(text = stringResource(id = R.string.export_md), onClick = onShareMd)
+            ShareButton(
+                text = "Export as Markdown",
+//                stringResource(id = R.string.export_md),
+                onClick = onShareMd
+            )
         }
     }
 }

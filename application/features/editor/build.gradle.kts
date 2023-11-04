@@ -29,9 +29,8 @@ kotlin {
 
                 implementation(libs.material)
 
-//                implementation(libs.viewmodel.compose)
-//                implementation(libs.runtime.compose)
-//                implementation(libs.navigation.compose)
+                implementation(libs.viewmodel.compose)
+                implementation(libs.navigation.compose)
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)
