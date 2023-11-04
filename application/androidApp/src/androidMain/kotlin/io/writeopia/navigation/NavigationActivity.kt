@@ -14,7 +14,7 @@ import io.writeopia.AndroidLogger
 import io.writeopia.account.navigation.accountMenuNavigation
 import io.writeopia.account.viewmodel.AccountMenuViewModel
 import io.writeopia.auth.core.BuildConfig
-import io.writeopia.auth.core.di.AuthCoreInjection
+import io.writeopia.auth.core.di.AndroidAuthCoreInjection
 import io.writeopia.auth.core.token.AmplifyTokenHandler
 import io.writeopia.auth.di.AuthInjection
 import io.writeopia.auth.navigation.authNavigation
@@ -24,7 +24,7 @@ import io.writeopia.editor.navigation.editorNavigation
 import io.writeopia.note_menu.di.NotesMenuInjection
 import io.writeopia.note_menu.navigation.notesMenuNavigation
 import io.writeopia.persistence.WriteopiaApplicationDatabase
-import io.writeopia.persistence.injection.RepositoriesInjection
+import io.writeopia.persistence.injection.RoomDaosInjection
 import io.writeopia.sdk.network.injector.ApiInjector
 import io.writeopia.theme.ApplicationComposeTheme
 import io.writeopia.utils_module.Destinations
@@ -59,15 +59,15 @@ fun NavigationGraph(
 
     val apiInjector =
         ApiInjector(apiLogger = AndroidLogger, bearerTokenHandler = AmplifyTokenHandler)
-    val authCoreInjection = AuthCoreInjection(sharedPreferences)
-    val repositoriesInjection = RepositoriesInjection(database)
-    val authInjection = AuthInjection(authCoreInjection, apiInjector, repositoriesInjection)
-    val editorInjector = EditorInjector(authCoreInjection, repositoriesInjection)
+    val authCoreInjection = AndroidAuthCoreInjection(sharedPreferences)
+    val daosInjection = RoomDaosInjection(database)
+    val authInjection = AuthInjection(authCoreInjection, apiInjector, daosInjection)
+    val editorInjector = EditorInjector(authCoreInjection, daosInjection)
     val notesMenuInjection =
         NotesMenuInjection(
             sharedPreferences,
             authCoreInjection.provideAccountManager(),
-            repositoriesInjection
+            daosInjection
         )
 
     ApplicationComposeTheme {

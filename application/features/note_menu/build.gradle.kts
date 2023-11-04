@@ -54,11 +54,11 @@ dependencies {
     implementation(project(":writeopia_models"))
     implementation(project(":plugins:writeopia_persistence_core"))
 
-    implementation(project(":application:resources"))
-    implementation(project(":application:utils"))
-    implementation(project(":application:common_ui"))
-    implementation(project(":application:auth_core"))
-    implementation(project(":application:persistence"))
+    implementation(project(":application:core:resources"))
+    implementation(project(":application:core:utils"))
+    implementation(project(":application:core:common_ui"))
+    implementation(project(":application:core:auth_core"))
+    implementation(project(":application:core:persistence_bridge"))
     implementation(project(":application:features:account"))
 
     implementation(libs.aws.amplifyframework.core.kotlin)

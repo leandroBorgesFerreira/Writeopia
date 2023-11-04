@@ -12,7 +12,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(compose("org.jetbrains.compose.ui:ui-test-junit4"))
-                implementation(project(":application:common_ui_tests"))
+                implementation(project(":application:core:common_ui_tests"))
             }
         }
 
@@ -25,7 +25,7 @@ kotlin {
                 implementation(project(":plugins:writeopia_serialization"))
                 implementation(project(":plugins:writeopia_network"))
                 implementation(project(":plugins:writeopia_persistence_core"))
-                implementation(project(":plugins:writeopia_persistence_sqldelight"))
+                implementation(project(":application:core:persistence_bridge"))
             }
         }
     }

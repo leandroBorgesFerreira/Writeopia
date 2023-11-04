@@ -8,15 +8,15 @@ import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.note_menu.data.usecase.NotesConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
-import io.writeopia.persistence.injection.RepositoriesInjection
+import io.writeopia.persistence.injection.RoomDaosInjection
 
 class NotesMenuInjection(
     private val sharedPreferences: SharedPreferences,
     private val authManager: AuthManager,
-    private val repositoriesInjection: RepositoriesInjection
+    private val daosInjection: RoomDaosInjection
 ) {
 
-    private fun provideDocumentRepository(): DocumentDao = repositoriesInjection.provideDocumentRepository()
+    private fun provideDocumentRepository(): DocumentDao = daosInjection.provideDocumentDao()
 
     private fun provideNotesConfigurationRepository(): NotesConfigurationRepository =
         NotesConfigurationRepository(sharedPreferences)

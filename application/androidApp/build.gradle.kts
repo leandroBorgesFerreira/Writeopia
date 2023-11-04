@@ -11,7 +11,7 @@ kotlin {
     sourceSets {
         val androidInstrumentedTest by getting {
             dependencies {
-                implementation(project(":application:common_ui_tests"))
+                implementation(project(":application:core:common_ui_tests"))
 
                 implementation(libs.androidx.junit)
                 implementation(libs.androidx.espresso.core)
@@ -28,10 +28,10 @@ kotlin {
                 implementation(project(":plugins:writeopia_serialization"))
                 implementation(project(":plugins:writeopia_network"))
 
-                implementation(project(":application:utils"))
-                implementation(project(":application:persistence"))
-                implementation(project(":application:auth_core"))
-                implementation(project(":application:resources"))
+                implementation(project(":application:core:utils"))
+                implementation(project(":application:core:persistence_bridge"))
+                implementation(project(":application:core:auth_core"))
+                implementation(project(":application:core:resources"))
                 implementation(project(":application:features:note_menu"))
                 implementation(project(":application:features:editor"))
                 implementation(project(":application:features:auth"))
@@ -49,8 +49,6 @@ kotlin {
                 implementation(platform("androidx.compose:compose-bom:2023.09.02"))
             }
         }
-
-
     }
 }
 

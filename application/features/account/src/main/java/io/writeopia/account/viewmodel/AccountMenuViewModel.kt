@@ -2,7 +2,6 @@ package io.writeopia.account.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.writeopia.account.BuildConfig
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.auth.core.repository.AuthRepository
 import io.writeopia.utils_module.ResultData
