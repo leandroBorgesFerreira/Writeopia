@@ -1,12 +1,41 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
+    kotlin("multiplatform")
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinAndroid)
 }
 
+kotlin {
+    jvm {}
+    androidTarget()
+
+//    js(IR) {
+//        browser()
+//    }
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+                api(project(":plugins:writeopia_persistence_sqldelight"))
+            }
+        }
+
+        val androidMain by getting {
+            dependencies {
+                api(project(":application:core:persistence"))
+            }
+        }
+    }
+}
+
+
 android {
-    namespace = "io.writeopia.persistence_bridge"
-    compileSdk = 33
+    namespace = "io.writeopia.sdk.persistence.bridge"
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
@@ -18,24 +47,18 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+
+    publishing {
+        singleVariant("release")
     }
-}
-
-dependencies {
-
-    implementation(libs.androidx.ktx)
-    implementation(libs.appCompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }

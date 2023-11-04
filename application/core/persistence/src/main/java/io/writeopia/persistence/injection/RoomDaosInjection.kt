@@ -4,7 +4,7 @@ import io.writeopia.persistence.WriteopiaApplicationDatabase
 import io.writeopia.sdk.persistence.core.dao.DocumentDao
 import io.writeopia.sdk.persistence.dao.room.RoomDocumentDao
 
-class DaosInjection(
+class RoomDaosInjection(
     private val database: WriteopiaApplicationDatabase
 ) {
 

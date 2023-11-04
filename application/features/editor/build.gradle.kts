@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinSerialization)
     kotlin("multiplatform")
-//    alias(libs.plugins.sqldelight)
+    id("org.jetbrains.compose")
 }
 
 kotlin {
@@ -18,27 +18,29 @@ kotlin {
                 implementation(project(":plugins:writeopia_persistence_core"))
                 implementation(project(":plugins:writeopia_serialization"))
 
-                implementation(project(":application:core:resources"))
+//                implementation(project(":application:core:resources"))
                 implementation(project(":application:core:utils"))
-                implementation(project(":application:core:auth_core"))
+//                implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:common_ui"))
-                implementation(project(":application:core:persistence"))
+                implementation(project(":application:core:persistence_bridge"))
 
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.datetime)
 
                 implementation(libs.material)
 
-                implementation(libs.viewmodel.compose)
-                implementation(libs.runtime.compose)
-                implementation(libs.navigation.compose)
+//                implementation(libs.viewmodel.compose)
+//                implementation(libs.runtime.compose)
+//                implementation(libs.navigation.compose)
 
-                implementation(libs.androidx.material.icons.extended)
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.materialIconsExtended)
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                implementation(compose.components.resources)
 
                 implementation(libs.accompanist.systemuicontroller)
-
-                implementation("androidx.compose.material3:material3")
-                implementation("androidx.compose.material3:material3-window-size-class")
 
                 implementation(platform("androidx.compose:compose-bom:2023.09.02"))
             }
@@ -50,6 +52,8 @@ kotlin {
 
                 implementation("androidx.activity:activity-compose")
                 implementation(libs.accompanist.systemuicontroller)
+
+                implementation(libs.androidx.material.icons.extended)
             }
         }
 
