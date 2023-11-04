@@ -10,16 +10,17 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.persistence.dao.DocumentEntityDao
 import io.writeopia.sdk.persistence.dao.StoryUnitEntityDao
+import io.writeopia.sdk.persistence.dao.room.RoomDocumentDao
 import io.writeopia.sdk.persistence.parse.toEntity
 import io.writeopia.sdk.persistence.parse.toModel
-import io.writeopia.sdk.persistence.dao.room.RoomDocumentDao
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.Clock
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.time.Instant
 
 @RunWith(AndroidJUnit4::class)
 class DocumentDaoTest {
@@ -55,8 +56,8 @@ class DocumentDaoTest {
             id = id,
             title = "Document1",
             content = emptyMap(),
-            createdAt = Instant.now(),
-            lastUpdatedAt = Instant.now(),
+            createdAt = Clock.System.now(),
+            lastUpdatedAt = Clock.System.now(),
             userId = "userId",
         )
 
@@ -75,8 +76,8 @@ class DocumentDaoTest {
             id = id,
             title = "Document1",
             content = emptyMap(),
-            createdAt = Instant.now(),
-            lastUpdatedAt = Instant.now(),
+            createdAt = Clock.System.now(),
+            lastUpdatedAt = Clock.System.now(),
             userId = "userId",
         )
 
@@ -93,8 +94,8 @@ class DocumentDaoTest {
             id = id,
             title = "Document1",
             content = simpleImage(),
-            createdAt = Instant.now(),
-            lastUpdatedAt = Instant.now(),
+            createdAt = Clock.System.now(),
+            lastUpdatedAt = Clock.System.now(),
             userId = "userId",
         )
 
@@ -111,8 +112,8 @@ class DocumentDaoTest {
             id = id,
             title = "Document1",
             content = imageStepsList(),
-            createdAt = Instant.now(),
-            lastUpdatedAt = Instant.now(),
+            createdAt = Clock.System.now(),
+            lastUpdatedAt = Clock.System.now(),
             userId = "userId",
         )
 
@@ -132,8 +133,8 @@ class DocumentDaoTest {
             id = id,
             title = "Document1",
             content = imageGroup(),
-            createdAt = Instant.now(),
-            lastUpdatedAt = Instant.now(),
+            createdAt = Clock.System.now(),
+            lastUpdatedAt = Clock.System.now(),
             userId = "userId",
         )
 

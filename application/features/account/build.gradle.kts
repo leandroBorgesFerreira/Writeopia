@@ -48,9 +48,9 @@ kotlin{
 }
 
 dependencies {
-    implementation(project(":application:utils"))
-    implementation(project(":application:resources"))
-    implementation(project(":application:auth_core"))
+    implementation(project(":application:core:utils"))
+    implementation(project(":application:core:resources"))
+    implementation(project(":application:core:auth_core"))
 
     implementation(libs.androidx.ktx)
     implementation(libs.appCompat)

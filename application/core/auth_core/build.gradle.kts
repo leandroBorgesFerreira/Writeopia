@@ -2,11 +2,10 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
-    id("com.google.devtools.ksp")
 }
 
 android {
-    namespace = "io.writeopia.persistence"
+    namespace = "io.writeopia.auth.core"
     compileSdk = 34
 
     defaultConfig {
@@ -26,7 +25,6 @@ android {
         }
     }
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -36,29 +34,18 @@ android {
 }
 
 dependencies {
-    implementation(project(":writeopia"))
-    implementation(project(":writeopia_models"))
-    implementation(project(":plugins:writeopia_persistence_room"))
-    implementation(project(":plugins:writeopia_persistence_core"))
-
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
-
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    implementation(libs.room.paging)
-    ksp(libs.room.compiler)
+    implementation(project(":application:core:utils"))
+    implementation(project(":plugins:writeopia_network"))
 
     implementation(libs.androidx.ktx)
     implementation(libs.appCompat)
-    implementation(libs.material)
 
+    implementation(libs.aws.amplifyframework.cognito)
+    implementation(libs.aws.amplifyframework.core.kotlin)
+
+    implementation(libs.material)
+    testImplementation(libs.junit)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.compose.test)
-    debugImplementation(libs.androidx.compose.test.manifest)
-    androidTestImplementation(libs.kotlinx.coroutines.test)
-
-    testImplementation(libs.junit)
-
 }

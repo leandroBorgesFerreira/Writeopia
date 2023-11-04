@@ -5,8 +5,8 @@ plugins {
 }
 
 android {
-    namespace = "io.writeopia.auth.core"
-    compileSdk = 34
+    namespace = "io.writeopia.persistence_bridge"
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 24
@@ -18,34 +18,24 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "1.8"
     }
 }
 
 dependencies {
-    implementation(project(":application:utils"))
-    implementation(project(":plugins:writeopia_network"))
 
     implementation(libs.androidx.ktx)
     implementation(libs.appCompat)
-
-    implementation(libs.aws.amplifyframework.cognito)
-    implementation(libs.aws.amplifyframework.core.kotlin)
-
     implementation(libs.material)
     testImplementation(libs.junit)
-
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
