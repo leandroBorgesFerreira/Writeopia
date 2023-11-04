@@ -3,7 +3,7 @@ package io.writeopia.auth.core.manager
 import io.writeopia.auth.core.data.User
 import io.writeopia.utils_module.ResultData
 
-class MockAuthManager : AuthManager {
+internal class MockAuthManager : AuthManager {
 
     override suspend fun getUser(): User = User.disconnectedUser()
 

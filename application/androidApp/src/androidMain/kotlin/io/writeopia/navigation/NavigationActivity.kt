@@ -14,7 +14,7 @@ import io.writeopia.AndroidLogger
 import io.writeopia.account.navigation.accountMenuNavigation
 import io.writeopia.account.viewmodel.AccountMenuViewModel
 import io.writeopia.auth.core.BuildConfig
-import io.writeopia.auth.core.di.AuthCoreInjection
+import io.writeopia.auth.core.di.AndroidAuthCoreInjection
 import io.writeopia.auth.core.token.AmplifyTokenHandler
 import io.writeopia.auth.di.AuthInjection
 import io.writeopia.auth.navigation.authNavigation
@@ -59,7 +59,7 @@ fun NavigationGraph(
 
     val apiInjector =
         ApiInjector(apiLogger = AndroidLogger, bearerTokenHandler = AmplifyTokenHandler)
-    val authCoreInjection = AuthCoreInjection(sharedPreferences)
+    val authCoreInjection = AndroidAuthCoreInjection(sharedPreferences)
     val daosInjection = RoomDaosInjection(database)
     val authInjection = AuthInjection(authCoreInjection, apiInjector, daosInjection)
     val editorInjector = EditorInjector(authCoreInjection, daosInjection)

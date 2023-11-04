@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-internal class AuthMenuViewModel(
+class AuthMenuViewModel(
     private val authManager: AuthManager,
     private val authRepository: AuthRepository
 ) : ViewModel() {

@@ -17,7 +17,7 @@ private const val ANONYMOUS_USER_KEY = "ANONYMOUS_USER_KEY"
  * This class encapsulates the logic of auth so the framework doesn't get exposed to the app, making
  * changes easier (like changing Amplify to Firebase)
  */
-class AmplifyAuthManager(private val sharedPreferences: SharedPreferences): AuthManager {
+internal class AmplifyAuthManager(private val sharedPreferences: SharedPreferences): AuthManager {
 
     private fun setUsageAsAnonymous(isAnonymous: Boolean) {
         sharedPreferences.edit().run {

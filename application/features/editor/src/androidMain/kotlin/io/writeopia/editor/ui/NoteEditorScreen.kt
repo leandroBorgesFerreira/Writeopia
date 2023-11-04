@@ -1,4 +1,4 @@
-package io.writeopia.editor
+package io.writeopia.editor.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
@@ -37,24 +37,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 //import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.writeopia.sdk.WriteopiaEditor
 import io.writeopia.sdk.drawer.factory.DefaultDrawersAndroid
 import io.writeopia.sdk.uicomponents.EditionScreen
@@ -63,12 +57,10 @@ import io.writeopia.editor.configuration.ui.NoteGlobalActionsMenu
 import io.writeopia.editor.input.InputScreen
 import io.writeopia.editor.model.EditState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import io.writeopia.editor.NoteEditorViewModel
 import kotlinx.coroutines.flow.collectLatest
-import java.util.UUID
 //import io.writeopia.appresourcers.R
 import io.writeopia.sdk.models.id.GenerateId
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 const val NAVIGATE_BACK_TEST_TAG = "NoteEditorScreenNavigateBack"
@@ -152,7 +144,7 @@ internal fun NoteEditorScreen(
                 Color.White.toArgb(),
             )
 
-            val headerEdition by noteEditorViewModel.editHeader.collectAsStateWithLifecycle()
+            val headerEdition by noteEditorViewModel.editHeader.collectAsState()
 
             HeaderEdition(
                 modifier = Modifier.fillMaxWidth(),
@@ -162,7 +154,7 @@ internal fun NoteEditorScreen(
                 visibilityState = headerEdition
             )
 
-            val showGlobalMenu by noteEditorViewModel.showGlobalMenu.collectAsStateWithLifecycle()
+            val showGlobalMenu by noteEditorViewModel.showGlobalMenu.collectAsState()
 
             val context = LocalContext.current
 
@@ -193,7 +185,7 @@ private fun TopBar(
     navigationClick: () -> Unit = {},
     shareDocument: () -> Unit
 ) {
-    val title by titleState.collectAsStateWithLifecycle()
+    val title by titleState.collectAsState()
 
     TopAppBar(
         modifier = modifier.height(44.dp),
@@ -259,10 +251,10 @@ private fun TopBar(
 
 @Composable
 private fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
-    val storyState by noteEditorViewModel.toDraw.collectAsStateWithLifecycle()
-    val editable by noteEditorViewModel.isEditable.collectAsStateWithLifecycle()
+    val storyState by noteEditorViewModel.toDraw.collectAsState()
+    val editable by noteEditorViewModel.isEditable.collectAsState()
     val listState: LazyListState = rememberLazyListState()
-    val position by noteEditorViewModel.scrollToPosition.collectAsStateWithLifecycle()
+    val position by noteEditorViewModel.scrollToPosition.collectAsState()
 
     if (position != null) {
         LaunchedEffect(position, block = {
@@ -299,7 +291,7 @@ private fun BottomScreen(
     canRedo: StateFlow<Boolean>,
     deleteSelection: () -> Unit = {}
 ) {
-    val edit by editState.collectAsStateWithLifecycle()
+    val edit by editState.collectAsState()
 
     val topCorner = CornerSize(10.dp)
     val bottomCorner = CornerSize(0.dp)

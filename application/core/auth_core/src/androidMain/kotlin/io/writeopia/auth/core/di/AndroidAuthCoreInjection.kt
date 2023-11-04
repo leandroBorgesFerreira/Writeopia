@@ -6,16 +6,15 @@ import io.writeopia.auth.core.manager.AmplifyAuthManager
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.auth.core.manager.MockAuthManager
 import io.writeopia.auth.core.repository.AuthRepository
+import io.writeopia.auth.core.repository.SharedPrefsAuthRepository
 
-class AuthCoreInjection(private val sharedPreferences: SharedPreferences) {
+class AndroidAuthCoreInjection(private val sharedPreferences: SharedPreferences) : AuthCoreInjection {
 
-    fun provideAccountManager(): AuthManager = if (!BuildConfig.DEBUG) {
+    override fun provideAccountManager(): AuthManager = if (!BuildConfig.DEBUG) {
         AmplifyAuthManager(sharedPreferences)
     } else {
         MockAuthManager()
     }
 
-    fun provideAuthRepository(
-        sharedPreferences: SharedPreferences = this.sharedPreferences
-    ): AuthRepository = AuthRepository(sharedPreferences)
+    override fun provideAuthRepository(): AuthRepository = SharedPrefsAuthRepository(sharedPreferences)
 }

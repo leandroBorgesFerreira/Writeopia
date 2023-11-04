@@ -20,7 +20,7 @@ kotlin {
 
 //                implementation(project(":application:core:resources"))
                 implementation(project(":application:core:utils"))
-//                implementation(project(":application:core:auth_core"))
+                implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:common_ui"))
                 implementation(project(":application:core:persistence_bridge"))
 
@@ -53,6 +53,8 @@ kotlin {
                 implementation(libs.accompanist.systemuicontroller)
 
                 implementation(libs.androidx.material.icons.extended)
+
+                implementation(libs.viewmodel.compose)
             }
         }
 

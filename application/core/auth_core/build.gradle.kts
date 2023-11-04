@@ -1,7 +1,44 @@
+import org.jetbrains.compose.compose
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinAndroid)
+    kotlin("multiplatform")
+}
+
+
+kotlin {
+    jvm {}
+    androidTarget()
+
+//    js(IR) {
+//        browser()
+//    }
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(project(":application:core:utils"))
+                implementation(project(":plugins:writeopia_network"))
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+
+            }
+        }
+
+        val androidMain by getting {
+            dependencies {
+//                implementation(libs.androidx.ktx)
+//                implementation(libs.appCompat)
+
+                implementation(libs.aws.amplifyframework.cognito)
+                implementation(libs.aws.amplifyframework.core.kotlin)
+            }
+        }
+    }
 }
 
 android {
@@ -28,24 +65,4 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-}
-
-dependencies {
-    implementation(project(":application:core:utils"))
-    implementation(project(":plugins:writeopia_network"))
-
-    implementation(libs.androidx.ktx)
-    implementation(libs.appCompat)
-
-    implementation(libs.aws.amplifyframework.cognito)
-    implementation(libs.aws.amplifyframework.core.kotlin)
-
-    implementation(libs.material)
-    testImplementation(libs.junit)
-
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }
