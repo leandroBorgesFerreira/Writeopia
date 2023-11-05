@@ -7,8 +7,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import io.writeopia.editor.ui.NoteEditorScreen
 import io.writeopia.editor.di.EditorInjector
+import io.writeopia.editor.ui.NoteEditorScreen
 import io.writeopia.utils_module.Destinations
 
 fun NavGraphBuilder.editorNavigation(

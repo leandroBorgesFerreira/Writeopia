@@ -62,7 +62,7 @@ fun NavigationGraph(
     val authCoreInjection = AndroidAuthCoreInjection(sharedPreferences)
     val daosInjection = RoomDaosInjection(database)
     val authInjection = AuthInjection(authCoreInjection, apiInjector, daosInjection)
-    val editorInjector = EditorInjector(authCoreInjection, daosInjection)
+    val editorInjector = EditorInjector.create(authCoreInjection, daosInjection)
     val notesMenuInjection =
         NotesMenuInjection(
             sharedPreferences,
