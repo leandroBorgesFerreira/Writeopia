@@ -1,30 +1,16 @@
 package io.writeopia.editor.di
 
 import io.writeopia.auth.core.di.AuthCoreInjection
-import io.writeopia.auth.core.manager.AuthManager
-import io.writeopia.editor.NoteEditorViewModel
-import io.writeopia.sdk.manager.WriteopiaManager
-import io.writeopia.sdk.persistence.core.dao.DocumentDao
+import io.writeopia.editor.AndroidNoteEditorViewModel
 import io.writeopia.sdk.persistence.core.di.DaosInjector
-import kotlinx.coroutines.Dispatchers
 
-class EditorInjector(
-    private val authCoreInjection: AuthCoreInjection,
-    private val daosInjection: DaosInjector
-) {
+class EditorInjector internal constructor(private val editorKmpInjector: EditorKmpInjector) {
 
-    private fun provideDocumentRepository(): DocumentDao =
-        daosInjection.provideDocumentDao()
+    internal fun provideNoteDetailsViewModel(): AndroidNoteEditorViewModel =
+        AndroidNoteEditorViewModel(editorKmpInjector.provideNoteDetailsViewModel())
 
-    private fun provideWriteopiaManager(
-        authManager: AuthManager = authCoreInjection.provideAccountManager()
-    ) = WriteopiaManager(
-        userId = { authManager.getUser().id },
-        dispatcher = Dispatchers.IO
-    )
-
-    internal fun provideNoteDetailsViewModel(
-        documentDao: DocumentDao = provideDocumentRepository(),
-        writeopiaManager: WriteopiaManager = provideWriteopiaManager()
-    ): NoteEditorViewModel = NoteEditorViewModel(writeopiaManager, documentDao)
+    companion object {
+        fun create(authCoreInjection: AuthCoreInjection, daosInjection: DaosInjector) =
+            EditorInjector(EditorKmpInjector(authCoreInjection, daosInjection))
+    }
 }

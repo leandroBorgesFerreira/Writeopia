@@ -1,5 +1,7 @@
 package io.writeopia.editor.ui
 
+import android.content.Context
+import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -57,7 +59,8 @@ import io.writeopia.editor.configuration.ui.NoteGlobalActionsMenu
 import io.writeopia.editor.input.InputScreen
 import io.writeopia.editor.model.EditState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import io.writeopia.editor.NoteEditorViewModel
+import io.writeopia.editor.viewmodel.NoteEditorViewModel
+import io.writeopia.editor.viewmodel.ShareDocument
 import kotlinx.coroutines.flow.collectLatest
 //import io.writeopia.appresourcers.R
 import io.writeopia.sdk.models.id.GenerateId
@@ -98,6 +101,15 @@ internal fun NoteEditorScreen(
             "Untitled",
 //            stringResource(R.string.untitled)
         )
+    }
+
+    val context = LocalContext.current
+    val document = noteEditorViewModel.documentToShareInfo.collectAsState().value
+
+    if (document != null) {
+        LaunchedEffect(document.hashCode()) {
+            shareDocument(context, document)
+        }
     }
 
     Scaffold(
@@ -156,8 +168,6 @@ internal fun NoteEditorScreen(
 
             val showGlobalMenu by noteEditorViewModel.showGlobalMenu.collectAsState()
 
-            val context = LocalContext.current
-
             AnimatedVisibility(
                 visible = showGlobalMenu,
                 enter = slideInVertically(
@@ -168,8 +178,8 @@ internal fun NoteEditorScreen(
                 )
             ) {
                 NoteGlobalActionsMenu(
-                    onShareJson = { noteEditorViewModel.shareDocumentInJson(context) },
-                    onShareMd = { noteEditorViewModel.shareDocumentInMarkdown(context) }
+                    onShareJson = { noteEditorViewModel.shareDocumentInJson() },
+                    onShareMd = { noteEditorViewModel.shareDocumentInMarkdown() }
                 )
             }
         }
@@ -238,6 +248,20 @@ private fun TopBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.background
         )
+    )
+}
+
+private fun shareDocument(context: Context, shareDocument: ShareDocument) {
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        putExtra(Intent.EXTRA_TEXT, shareDocument.content)
+        putExtra(Intent.EXTRA_TITLE, shareDocument.title)
+        action = Intent.ACTION_SEND
+        this.type = shareDocument.type
+    }
+
+    context.startActivity(
+        Intent.createChooser(intent, "Export Document")
     )
 }
 
