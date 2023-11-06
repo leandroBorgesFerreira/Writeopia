@@ -131,7 +131,7 @@ internal fun NoteEditorScreen(
                 .imePadding()
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
-                TextEditor(noteEditorViewModel)
+                TextEditor(noteEditorViewModel, DefaultDrawersAndroid)
 
                 BottomScreen(
                     noteEditorViewModel.isEditState,
@@ -272,39 +272,6 @@ private fun shareDocument(context: Context, shareDocument: ShareDocument) {
 //        TopBar(titleState = MutableStateFlow("Title"), shareDocument = {})
 //    }
 //}
-
-@Composable
-private fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
-    val storyState by noteEditorViewModel.toDraw.collectAsState()
-    val editable by noteEditorViewModel.isEditable.collectAsState()
-    val listState: LazyListState = rememberLazyListState()
-    val position by noteEditorViewModel.scrollToPosition.collectAsState()
-
-    if (position != null) {
-        LaunchedEffect(position, block = {
-            noteEditorViewModel.scrollToPosition.collectLatest {
-                listState.animateScrollBy(70F)
-            }
-        })
-    }
-
-    val clipShape = MaterialTheme.shapes.medium
-
-    WriteopiaEditor(
-        modifier = Modifier
-            .fillMaxWidth()
-            .weight(1F),
-        storyState = storyState,
-        editable = editable,
-        listState = listState,
-        drawers = DefaultDrawersAndroid.create(
-            noteEditorViewModel.writeopiaManager,
-            defaultBorder = clipShape,
-            onHeaderClick = noteEditorViewModel::onHeaderClick
-//            groupsBackgroundColor = MaterialTheme.colorScheme.surface
-        )
-    )
-}
 
 @Composable
 private fun BottomScreen(

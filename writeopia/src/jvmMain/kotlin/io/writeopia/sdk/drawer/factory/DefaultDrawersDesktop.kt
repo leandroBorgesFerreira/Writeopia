@@ -8,17 +8,19 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.manager.WriteopiaManager
+import io.writeopia.sdk.text.edition.TextCommandHandler
 import java.awt.event.KeyEvent
 
-object DefaultDrawersDesktop {
+object DefaultDrawersDesktop : DrawersFactory {
 
     @Composable
-    fun create(
+    override fun create(
         manager: WriteopiaManager,
-        defaultBorder: Shape = MaterialTheme.shapes.medium,
-        editable: Boolean = false,
-        groupsBackgroundColor: Color = Color.Transparent,
-        onHeaderClick: () -> Unit = {}
+        defaultBorder: Shape,
+        editable: Boolean,
+        groupsBackgroundColor: Color,
+        onHeaderClick: () -> Unit,
+        textCommandHandler: TextCommandHandler
     ): Map<Int, StoryStepDrawer> =
         CommonDrawers.create(
             manager,
