@@ -2,9 +2,7 @@ package io.writeopia.sdk.drawer.content
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -33,7 +31,6 @@ fun swipeTextDrawer(
         messageDrawer
     )
 
-@Composable
 fun swipeTextDrawer(
     manager: WriteopiaManager,
     modifier: Modifier = Modifier,

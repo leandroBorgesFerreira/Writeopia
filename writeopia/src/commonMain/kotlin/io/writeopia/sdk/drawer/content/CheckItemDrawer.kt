@@ -2,6 +2,7 @@ package io.writeopia.sdk.drawer.content
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -9,7 +10,6 @@ import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -35,7 +35,6 @@ fun checkItemDrawer(
         CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
             Spacer(modifier = Modifier.width(8.dp))
             Checkbox(
-                modifier = Modifier.scale(0.8F),
                 checked = step.checked ?: false,
                 onCheckedChange = { checked ->
                     onCheckedChange(
@@ -45,6 +44,7 @@ fun checkItemDrawer(
                         )
                     )
                 },
+                modifier.padding(vertical = 4.dp),
                 enabled = drawInfo.editable,
             )
         }
@@ -61,19 +61,18 @@ fun checkItemDrawer(
         messageDrawer
     )
 
-@Composable
 fun checkItemDrawer(
     manager: WriteopiaManager,
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer = checkItemDrawer(
-        modifier = modifier,
-        onCheckedChange = manager::changeStoryState,
-        onSelected = manager::onSelected,
-        customBackgroundColor = Color.Transparent,
-        dragIconWidth = dragIconWidth,
-        messageDrawer = {
-            messageDrawer()
-        },
-    )
+    modifier = modifier,
+    onCheckedChange = manager::changeStoryState,
+    onSelected = manager::onSelected,
+    customBackgroundColor = Color.Transparent,
+    dragIconWidth = dragIconWidth,
+    messageDrawer = {
+        messageDrawer()
+    },
+)
