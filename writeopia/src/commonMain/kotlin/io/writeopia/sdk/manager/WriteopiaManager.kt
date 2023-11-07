@@ -58,7 +58,7 @@ class WriteopiaManager(
     val scrollToPosition: StateFlow<Int?> = _scrollToPosition.asStateFlow()
 
     private val _currentStory: MutableStateFlow<StoryState> = MutableStateFlow(
-        StoryState(stories = emptyMap(), lastEdit = LastEdit.Nothing)
+        StoryState(stories = initialContent(), lastEdit = LastEdit.Nothing)
     )
 
     private val _documentInfo: MutableStateFlow<DocumentInfo> =
@@ -428,3 +428,9 @@ class WriteopiaManager(
         coroutineScope.cancel()
     }
 }
+
+fun initialContent() : Map<Int, StoryStep> =
+    mapOf(
+        0 to StoryStep(text = "", type = StoryTypes.TITLE.type)
+    )
+

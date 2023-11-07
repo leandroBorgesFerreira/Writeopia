@@ -9,7 +9,9 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,17 +20,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import io.writeopia.sdk.WriteopiaEditor
-import io.writeopia.sdk.drawer.StoryStepDrawer
+import io.writeopia.auth.core.di.KmpAuthCoreInjection
+import io.writeopia.editor.di.EditorKmpInjector
+import io.writeopia.editor.ui.TextEditor
 import io.writeopia.sdk.drawer.factory.DefaultDrawersDesktop
-import io.writeopia.sdk.manager.DocumentUpdate
 import io.writeopia.sdk.manager.WriteopiaManager
-import io.writeopia.sdk.model.story.DrawState
 import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
 import io.writeopia.sdk.persistence.sqldelight.DriverFactory
 import io.writeopia.sdk.persistence.sqldelight.di.SqlDelightDaoInjector
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -44,9 +44,16 @@ fun main() = application {
 
 @Composable
 fun App() {
+    val authCoreInjection = KmpAuthCoreInjection()
+    val daosInjection = SqlDelightDaoInjector(DriverFactory())
+
+    val editorInjetor = EditorKmpInjector(
+        authCoreInjection = authCoreInjection,
+        daosInjection = daosInjection
+    )
+
     val writeopiaManager = WriteopiaManager(dispatcher = Dispatchers.IO).apply {
-        newStory()
-        saveOnStoryChanges(OnUpdateDocumentTracker(createPersistence()))
+        saveOnStoryChanges(OnUpdateDocumentTracker(daosInjection.provideDocumentDao()))
     }
 
     MaterialTheme {
@@ -68,7 +75,7 @@ fun App() {
                         .clip(RoundedCornerShape(20.dp))
                         .background(Color.White),
                 ) {
-                    CreateTextEditor(writeopiaManager)
+                    CreateTextEditor(writeopiaManager, editorInjetor)
 
                     Box(
                         modifier = Modifier.weight(1F)
@@ -89,7 +96,7 @@ fun App() {
 
 
 @Composable
-private fun CreateTextEditor(manager: WriteopiaManager) {
+private fun CreateTextEditor(manager: WriteopiaManager, editorKmpInjector: EditorKmpInjector) {
     val listState: LazyListState = rememberLazyListState()
     val coroutine = rememberCoroutineScope()
 
@@ -99,22 +106,12 @@ private fun CreateTextEditor(manager: WriteopiaManager) {
         }
     }
 
-    TextEditor(lazyListState = listState, drawers = DefaultDrawersDesktop.create(manager), drawState = manager.toDraw)
+    val viewModel = editorKmpInjector.provideNoteDetailsViewModel()
+    viewModel.initCoroutine(coroutine)
+    manager.newStory()
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        TextEditor(viewModel, DefaultDrawersDesktop)
+    }
 }
 
-@Composable
-private fun TextEditor(
-    lazyListState: LazyListState,
-    drawState: Flow<DrawState>,
-    drawers: Map<Int, StoryStepDrawer>
-) {
-    val toDraw by drawState.collectAsState(DrawState())
-    WriteopiaEditor(
-        modifier = Modifier.fillMaxWidth(),
-        drawers = drawers,
-        storyState = toDraw,
-        listState = lazyListState
-    )
-}
-
-private fun createPersistence(): DocumentUpdate = SqlDelightDaoInjector(DriverFactory()).provideDocumentDao()

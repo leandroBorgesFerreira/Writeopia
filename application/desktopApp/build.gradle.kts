@@ -26,6 +26,8 @@ kotlin {
                 implementation(project(":plugins:writeopia_network"))
                 implementation(project(":plugins:writeopia_persistence_core"))
                 implementation(project(":application:core:persistence_bridge"))
+                implementation(project(":application:core:auth_core"))
+                implementation(project(":application:features:editor"))
             }
         }
     }

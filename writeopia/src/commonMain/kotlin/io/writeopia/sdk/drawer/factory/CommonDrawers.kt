@@ -40,7 +40,9 @@ object CommonDrawers {
         groupsBackgroundColor: Color = Color.Transparent,
         onHeaderClick: () -> Unit = {},
         textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager),
-        isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false }
+        dragIconWidth: Dp = DRAG_ICON_WIDTH.dp,
+        isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
+
     ): Map<Int, StoryStepDrawer> {
         val textBoxDrawer = swipeTextDrawer(
             modifier = Modifier
@@ -63,7 +65,7 @@ object CommonDrawers {
             modifier = Modifier
                 .padding(horizontal = LARGE_START_PADDING.dp)
                 .background(Color.Gray),
-            dragIconWidth = DRAG_ICON_WIDTH.dp,
+            dragIconWidth = dragIconWidth,
             onSelected = manager::onSelected,
             messageDrawer = {
                 messageDrawer(
@@ -81,7 +83,7 @@ object CommonDrawers {
         val swipeTextDrawer = swipeTextDrawer(
             manager,
             modifier = Modifier.padding(start = MEDIUM_START_PADDING.dp),
-            dragIconWidth = DRAG_ICON_WIDTH.dp
+            dragIconWidth = dragIconWidth
         ) {
             messageDrawer(
                 manager = manager,
@@ -95,7 +97,7 @@ object CommonDrawers {
             defaultHxDrawers(
                 manager = manager,
                 modifier = Modifier.padding(horizontal = SMALL_START_PADDING.dp),
-                dragIconWidth = DRAG_ICON_WIDTH.dp
+                dragIconWidth = dragIconWidth
             ) { fontSize ->
                 messageDrawer(
                     manager,
@@ -108,7 +110,7 @@ object CommonDrawers {
         val checkItemDrawer = checkItemDrawer(
             manager,
             Modifier.padding(horizontal = LARGE_START_PADDING.dp),
-            dragIconWidth = DRAG_ICON_WIDTH.dp,
+            dragIconWidth = dragIconWidth,
         ) {
             messageDrawer(
                 manager,
@@ -122,7 +124,7 @@ object CommonDrawers {
             unOrderedListItemDrawer(
                 manager,
                 Modifier.padding(horizontal = LARGE_START_PADDING.dp),
-                dragIconWidth = DRAG_ICON_WIDTH.dp,
+                dragIconWidth = dragIconWidth,
             ) {
                 messageDrawer(
                     manager,

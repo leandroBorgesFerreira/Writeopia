@@ -29,6 +29,7 @@ object DefaultDrawersDesktop : DrawersFactory {
             editable,
             groupsBackgroundColor,
             onHeaderClick,
+            dragIconWidth = 16.dp,
             isEmptyErase = { keyEvent, inputText ->
                 keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE && inputText.selection.start == 0
             })

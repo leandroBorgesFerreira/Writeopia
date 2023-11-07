@@ -6,15 +6,15 @@ import io.writeopia.editor.viewmodel.NoteEditorKmpViewModel
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.persistence.core.dao.DocumentDao
 import io.writeopia.sdk.persistence.core.di.DaosInjector
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
-internal class EditorKmpInjector(
+class EditorKmpInjector(
     private val authCoreInjection: AuthCoreInjection,
     private val daosInjection: DaosInjector
 ) {
 
-    private fun provideDocumentRepository(): DocumentDao =
-        daosInjection.provideDocumentDao()
+    private fun provideDocumentRepository(): DocumentDao = daosInjection.provideDocumentDao()
 
     private fun provideWriteopiaManager(
         authManager: AuthManager = authCoreInjection.provideAccountManager()
@@ -23,8 +23,8 @@ internal class EditorKmpInjector(
         dispatcher = Dispatchers.IO
     )
 
-    internal fun provideNoteDetailsViewModel(
+    fun provideNoteDetailsViewModel(
         documentDao: DocumentDao = provideDocumentRepository(),
-        writeopiaManager: WriteopiaManager = provideWriteopiaManager()
+        writeopiaManager: WriteopiaManager = provideWriteopiaManager(),
     ): NoteEditorKmpViewModel = NoteEditorKmpViewModel(writeopiaManager, documentDao)
 }

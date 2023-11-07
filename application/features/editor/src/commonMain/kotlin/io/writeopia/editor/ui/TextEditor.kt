@@ -1,7 +1,9 @@
 package io.writeopia.editor.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -19,7 +21,7 @@ import io.writeopia.sdk.text.edition.TextCommandHandler
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-internal fun ColumnScope.TextEditor(
+fun ColumnScope.TextEditor(
     noteEditorViewModel: NoteEditorViewModel,
     drawersFactory: DrawersFactory
 ) {
@@ -40,9 +42,7 @@ internal fun ColumnScope.TextEditor(
 
     WriteopiaEditor(
         modifier = Modifier
-            .fillMaxWidth()
-            .weight(1F),
-        storyState = storyState,
+            .fillMaxWidth(),
         editable = editable,
         listState = listState,
         drawers = drawersFactory.create(
@@ -52,6 +52,7 @@ internal fun ColumnScope.TextEditor(
             editable = true,
             textCommandHandler = TextCommandHandler.defaultCommands(noteEditorViewModel.writeopiaManager),
             groupsBackgroundColor = Color.Transparent,
-        )
+        ),
+        storyState = storyState,
     )
 }

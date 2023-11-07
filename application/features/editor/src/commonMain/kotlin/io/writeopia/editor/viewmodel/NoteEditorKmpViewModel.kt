@@ -26,7 +26,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-internal class NoteEditorKmpViewModel(
+class NoteEditorKmpViewModel(
     override val writeopiaManager: WriteopiaManager,
     private val documentDao: DocumentDao,
     private val documentFilter: DocumentFilter = DocumentFilterObject,
@@ -112,7 +112,7 @@ internal class NoteEditorKmpViewModel(
 
         writeopiaManager.newStory(documentId, title)
 
-        coroutineScope.launch {
+        coroutineScope.launch(Dispatchers.IO) {
             writeopiaManager.currentDocument.stateIn(this).value?.let { document ->
                 documentDao.saveDocument(document)
                 writeopiaManager.saveOnStoryChanges(
