@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
-    id("com.google.devtools.ksp")
 }
 
 android {
@@ -68,10 +67,6 @@ dependencies {
     implementation(libs.appCompat)
     implementation(libs.material)
 
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
-
     implementation(libs.viewmodel.compose)
     implementation(libs.runtime.compose)
     implementation(libs.androidx.material.icons.extended)
@@ -90,10 +85,4 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
 
     implementation(libs.compose.shimmer)
-
-    testImplementation(libs.mockk)
-    testImplementation(kotlin("test"))
-    testImplementation(libs.kotlinx.coroutines.test)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }
