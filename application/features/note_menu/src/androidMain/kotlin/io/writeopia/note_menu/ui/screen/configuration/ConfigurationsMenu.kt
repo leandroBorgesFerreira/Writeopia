@@ -1,16 +1,9 @@
 package io.writeopia.note_menu.ui.screen.configuration
 
+//import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -25,13 +18,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.writeopia.appresourcers.R
 import io.writeopia.common_ui.SlideInBox
 
 private const val INNER_PADDING = 3
@@ -104,7 +93,8 @@ private fun ArrangementOptions(listOptionClick: () -> Unit, gridOptionClick: () 
                 .orderConfigModifier(clickable = gridOptionClick)
                 .weight(1F),
             imageVector = Icons.Outlined.Dashboard,
-            contentDescription = stringResource(R.string.staggered_card),
+            contentDescription = "staggered card",
+//            stringResource(R.string.staggered_card),
             tint = MaterialTheme.colorScheme.onPrimary
         )
 
@@ -115,7 +105,8 @@ private fun ArrangementOptions(listOptionClick: () -> Unit, gridOptionClick: () 
                 .orderConfigModifier(clickable = listOptionClick)
                 .weight(1F),
             imageVector = Icons.Outlined.List,
-            contentDescription = stringResource(R.string.note_list),
+            contentDescription = "note list",
+//            stringResource(R.string.note_list),
             tint = MaterialTheme.colorScheme.onPrimary
         )
     }
@@ -123,7 +114,12 @@ private fun ArrangementOptions(listOptionClick: () -> Unit, gridOptionClick: () 
 
 @Composable
 private fun ArrangementSection(listOptionClick: () -> Unit, gridOptionClick: () -> Unit) {
-    SectionText(text = stringResource(R.string.arrangement))
+    SectionText(
+        text = "Arrangement"
+//        stringResource(
+//            R.string.arrangement
+//        )
+    )
 
     ArrangementOptions(
         listOptionClick = listOptionClick,
@@ -133,7 +129,9 @@ private fun ArrangementSection(listOptionClick: () -> Unit, gridOptionClick: () 
 
 @Composable
 private fun SortingSection(sortingSelected: (io.writeopia.sdk.persistence.core.sorting.OrderBy) -> Unit) {
-    SectionText(text = stringResource(R.string.sorting))
+    SectionText(text = "Sorting"
+//    stringResource(R.string.sorting)
+    )
     val optionStyle = MaterialTheme.typography.bodyMedium.copy(
         color = MaterialTheme.colorScheme.onPrimary,
         fontWeight = FontWeight.Bold
@@ -150,7 +148,8 @@ private fun SortingSection(sortingSelected: (io.writeopia.sdk.persistence.core.s
             modifier = Modifier
                 .clickable { sortingSelected(io.writeopia.sdk.persistence.core.sorting.OrderBy.UPDATE) }
                 .sortingOptionModifier(),
-            text = stringResource(R.string.last_updated),
+            text = "Last updated",
+//            stringResource(R.string.last_updated)
             style = optionStyle,
         )
 
@@ -160,7 +159,8 @@ private fun SortingSection(sortingSelected: (io.writeopia.sdk.persistence.core.s
             modifier = Modifier
                 .clickable { sortingSelected(io.writeopia.sdk.persistence.core.sorting.OrderBy.CREATE) }
                 .sortingOptionModifier(),
-            text = stringResource(R.string.last_created),
+            text = "Create",
+//            stringResource(R.string.last_created),
             style = optionStyle,
         )
 
@@ -170,7 +170,8 @@ private fun SortingSection(sortingSelected: (io.writeopia.sdk.persistence.core.s
             modifier = Modifier
                 .clickable { sortingSelected(io.writeopia.sdk.persistence.core.sorting.OrderBy.NAME) }
                 .sortingOptionModifier(),
-            text = stringResource(R.string.name),
+            text = "Name",
+//            stringResource(R.string.name),
             style = optionStyle,
         )
     }
@@ -186,18 +187,18 @@ private fun Modifier.orderConfigModifier(clickable: () -> Unit): Modifier =
             .padding(6.dp)
     }
 
-@Preview
-@Composable
-private fun ConfigurationsMenu_Preview() {
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .background(Color.White)) {
-        ConfigurationsMenu(Modifier, true, {}, {}, {}, {})
-    }
-}
-
-@Preview
-@Composable
-private fun ArrangementOptions_Preview() {
-    ArrangementOptions({}, {})
-}
+//@Preview
+//@Composable
+//private fun ConfigurationsMenu_Preview() {
+//    Box(modifier = Modifier
+//        .fillMaxWidth()
+//        .background(Color.White)) {
+//        ConfigurationsMenu(Modifier, true, {}, {}, {}, {})
+//    }
+//}
+//
+//@Preview
+//@Composable
+//private fun ArrangementOptions_Preview() {
+//    ArrangementOptions({}, {})
+//}

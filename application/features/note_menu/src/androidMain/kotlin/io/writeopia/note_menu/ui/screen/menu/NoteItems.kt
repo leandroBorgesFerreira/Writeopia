@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,14 +28,12 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.writeopia.note_menu.ui.dto.DocumentUi
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.note_menu.viewmodel.NotesArrangement
-import io.writeopia.appresourcers.R
+//import io.writeopia.appresourcers.R
 import io.writeopia.utils_module.ResultData
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
@@ -52,7 +51,7 @@ internal fun Notes(
     selectionListener: (String, Boolean) -> Unit,
 ) {
     when (val documents =
-        chooseNoteViewModel.documentsState.collectAsStateWithLifecycle().value
+        chooseNoteViewModel.documentsState.collectAsState().value
     ) {
         is ResultData.Complete -> {
             Column(modifier = Modifier.fillMaxWidth()) {
@@ -61,8 +60,7 @@ internal fun Notes(
                 if (data.isEmpty()) {
                     NoNotesScreen()
                 } else {
-                    val arrangement by chooseNoteViewModel.notesArrangement
-                        .collectAsStateWithLifecycle()
+                    val arrangement by chooseNoteViewModel.notesArrangement.collectAsState()
 
                     when (arrangement) {
                         NotesArrangement.GRID -> {
@@ -159,7 +157,8 @@ private fun DocumentItem(
     selectionListener: (String, Boolean) -> Unit,
     drawers: Map<Int, StoryStepDrawer>
 ) {
-    val titleFallback = stringResource(R.string.untitled)
+    val titleFallback = "untitled"
+//        stringResource(R.string.untitled)
 
     SwipeBox(
         modifier = Modifier
@@ -194,7 +193,7 @@ private fun DocumentItem(
     }
 }
 
-@Preview
+//@Preview
 @Composable
 private fun NoNotesScreen() {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -202,7 +201,8 @@ private fun NoNotesScreen() {
             modifier = Modifier
                 .padding(8.dp)
                 .align(Alignment.Center),
-            text = stringResource(R.string.you_dont_have_notes),
+            text = "You don\'t have notes",
+//            stringResource(R.string.you_dont_have_notes),
             style = MaterialTheme.typography.titleLarge
         )
     }

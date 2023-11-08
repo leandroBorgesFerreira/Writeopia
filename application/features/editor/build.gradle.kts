@@ -42,7 +42,7 @@ kotlin {
             dependencies {
                 implementation(libs.appCompat)
 
-                implementation("androidx.activity:activity-compose")
+//                implementation("androidx.activity:activity-compose")
                 implementation(libs.accompanist.systemuicontroller)
 
                 implementation(libs.viewmodel.compose)

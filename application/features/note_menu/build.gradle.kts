@@ -1,6 +1,59 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinAndroid)
+    kotlin("multiplatform")
+    id("org.jetbrains.compose")
+}
+
+kotlin {
+    androidTarget()
+    jvm{}
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(project(":writeopia"))
+                implementation(project(":writeopia_models"))
+                implementation(project(":plugins:writeopia_persistence_core"))
+
+//                implementation(project(":application:core:resources"))
+                implementation(project(":application:core:utils"))
+                implementation(project(":application:core:common_ui"))
+                implementation(project(":application:core:auth_core"))
+                implementation(project(":application:core:persistence_bridge"))
+                implementation(project(":application:features:account"))
+
+                implementation(libs.compose.shimmer)
+
+                implementation(libs.kotlinx.datetime)
+
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.materialIconsExtended)
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                implementation(compose.components.resources)
+            }
+        }
+
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.appCompat)
+
+                implementation(libs.aws.amplifyframework.core.kotlin)
+                implementation(libs.coil.compose)
+                implementation(libs.viewmodel.compose)
+                implementation(libs.navigation.compose)
+
+                implementation(platform("androidx.compose:compose-bom:2023.09.02"))
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+
+            }
+        }
+    }
 }
 
 android {
@@ -28,9 +81,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     buildFeatures {
         compose = true
     }
@@ -45,44 +95,4 @@ kotlin{
             languageVersion = "1.9"
         }
     }
-}
-
-dependencies {
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
-    implementation(project(":writeopia"))
-    implementation(project(":writeopia_models"))
-    implementation(project(":plugins:writeopia_persistence_core"))
-
-    implementation(project(":application:core:resources"))
-    implementation(project(":application:core:utils"))
-    implementation(project(":application:core:common_ui"))
-    implementation(project(":application:core:auth_core"))
-    implementation(project(":application:core:persistence_bridge"))
-    implementation(project(":application:features:account"))
-
-    implementation(libs.aws.amplifyframework.core.kotlin)
-
-    implementation(libs.kotlinx.datetime)
-
-    implementation(libs.appCompat)
-    implementation(libs.material)
-
-    implementation(libs.viewmodel.compose)
-    implementation(libs.runtime.compose)
-    implementation(libs.androidx.material.icons.extended)
-    implementation(libs.navigation.compose)
-
-    implementation(libs.coil.compose)
-
-    implementation("androidx.activity:activity-compose")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material3:material3-window-size-class")
-
-    // Compose - Preview
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-
-    implementation(platform(libs.androidx.compose.bom))
-
-    implementation(libs.compose.shimmer)
 }
