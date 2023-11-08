@@ -42,7 +42,8 @@ fun ColumnScope.TextEditor(
 
     WriteopiaEditor(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .weight(1F),
         editable = editable,
         listState = listState,
         drawers = drawersFactory.create(
