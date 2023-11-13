@@ -10,7 +10,7 @@ import io.writeopia.sdk.models.id.GenerateId
  */
 internal class NotesUseCase(
     private val documentDao: DocumentDao,
-    private val notesConfig: NotesConfigurationRepository
+    private val notesConfig: RoomNotesConfigurationRepository
 ) {
 
     suspend fun loadDocumentsForUser(userId: String): List<Document> =

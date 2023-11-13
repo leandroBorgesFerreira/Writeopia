@@ -10,7 +10,7 @@ internal enum class NotesArrangement(val type: String) {
     companion object {
 
         fun fromString(string: String): NotesArrangement =
-            values().firstOrNull { notesArrangement ->
+            entries.firstOrNull { notesArrangement ->
                 notesArrangement.type == string
             } ?: throw IllegalArgumentException("not a NotesArrangement")
 

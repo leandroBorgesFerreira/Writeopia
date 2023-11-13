@@ -7,7 +7,7 @@ import io.writeopia.sdk.persistence.dao.room.RoomDocumentDao
 
 class RoomDaosInjection(
     private val database: WriteopiaApplicationDatabase
-) : DaosInjector{
+) : DaosInjector {
 
     override fun provideDocumentDao(): DocumentDao =
         RoomDocumentDao(

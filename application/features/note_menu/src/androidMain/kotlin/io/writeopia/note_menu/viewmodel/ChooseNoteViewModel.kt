@@ -8,7 +8,7 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
-import io.writeopia.note_menu.data.usecase.NotesConfigurationRepository
+import io.writeopia.note_menu.data.usecase.RoomNotesConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
 import io.writeopia.note_menu.ui.dto.DocumentUi
@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 
 internal class ChooseNoteViewModel(
     private val notesUseCase: NotesUseCase,
-    private val notesConfig: NotesConfigurationRepository,
+    private val notesConfig: RoomNotesConfigurationRepository,
     private val authManager: AuthManager,
     private val previewParser: PreviewParser = PreviewParser(),
 ) : ViewModel() {
@@ -118,13 +118,17 @@ internal class ChooseNoteViewModel(
     }
 
     fun listArrangementSelected() {
-        notesConfig.saveDocumentArrangementPref(NotesArrangement.LIST)
-        _notesArrangement.value = NotesArrangement.LIST
+        viewModelScope.launch {
+            notesConfig.saveDocumentArrangementPref(NotesArrangement.LIST)
+            _notesArrangement.value = NotesArrangement.LIST
+        }
     }
 
     fun gridArrangementSelected() {
-        notesConfig.saveDocumentArrangementPref(NotesArrangement.GRID)
-        _notesArrangement.value = NotesArrangement.GRID
+        viewModelScope.launch {
+            notesConfig.saveDocumentArrangementPref(NotesArrangement.GRID)
+            _notesArrangement.value = NotesArrangement.GRID
+        }
     }
 
     fun sortingSelected(orderBy: io.writeopia.sdk.persistence.core.sorting.OrderBy) {

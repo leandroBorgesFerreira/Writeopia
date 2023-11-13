@@ -24,6 +24,7 @@ import io.writeopia.editor.navigation.editorNavigation
 import io.writeopia.note_menu.di.NotesMenuInjection
 import io.writeopia.note_menu.navigation.notesMenuNavigation
 import io.writeopia.persistence.WriteopiaApplicationDatabase
+import io.writeopia.persistence.injection.AppDaosInjection
 import io.writeopia.persistence.injection.RoomDaosInjection
 import io.writeopia.sdk.network.injector.ApiInjector
 import io.writeopia.theme.ApplicationComposeTheme
@@ -57,6 +58,7 @@ fun NavigationGraph(
     startDestination: String = Destinations.AUTH_MENU_INNER_NAVIGATION.id
 ) {
 
+    val appDaosInjection = AppDaosInjection(database)
     val apiInjector =
         ApiInjector(apiLogger = AndroidLogger, bearerTokenHandler = AmplifyTokenHandler)
     val authCoreInjection = AndroidAuthCoreInjection(sharedPreferences)
@@ -65,7 +67,7 @@ fun NavigationGraph(
     val editorInjector = EditorInjector.create(authCoreInjection, daosInjection)
     val notesMenuInjection =
         NotesMenuInjection(
-            sharedPreferences,
+            appDaosInjection.provideConfigurationDao(),
             authCoreInjection.provideAccountManager(),
             daosInjection
         )
