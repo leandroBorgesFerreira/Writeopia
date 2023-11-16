@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
@@ -29,7 +30,7 @@ fun AccountMenuScreen(
     goToRegister: () -> Unit
 ) {
 
-    val isLoggedIn = isLoggedInState.collectAsStateWithLifecycle().value.toBoolean()
+    val isLoggedIn = isLoggedInState.collectAsState().value.toBoolean()
 
     Column(modifier = Modifier.fillMaxSize()) {
         Text(
