@@ -52,13 +52,16 @@ class WriteopiaManager(
     private val userId: suspend () -> String = { "no_user_id_provided" },
 ) : BackstackHandler, BackstackInform by backStackManager {
 
+    private val initialContent: Map<Int, StoryStep> =
+        mapOf(0 to StoryStep(text = "", type = StoryTypes.TITLE.type))
+
     private var localUserId: String? = null
 
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
     val scrollToPosition: StateFlow<Int?> = _scrollToPosition.asStateFlow()
 
     private val _currentStory: MutableStateFlow<StoryState> = MutableStateFlow(
-        StoryState(stories = initialContent(), lastEdit = LastEdit.Nothing)
+        StoryState(stories = initialContent, lastEdit = LastEdit.Nothing)
     )
 
     private val _documentInfo: MutableStateFlow<DocumentInfo> =
@@ -122,7 +125,7 @@ class WriteopiaManager(
         }
     }
 
-    fun isInitialized(): Boolean = _currentStory.value.stories.isNotEmpty()
+    fun isInitialized(): Boolean = _currentStory.value.stories != initialContent
 
     /**
      * Creates a new story. Use this when you wouldn't like to load a documented previously saved.
@@ -428,6 +431,4 @@ class WriteopiaManager(
         coroutineScope.cancel()
     }
 }
-
-fun initialContent() : Map<Int, StoryStep> = emptyMap()
 
