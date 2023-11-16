@@ -12,7 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import io.writeopia.AndroidLogger
 import io.writeopia.account.navigation.accountMenuNavigation
-import io.writeopia.account.viewmodel.AccountMenuViewModel
+import io.writeopia.account.viewmodel.AccountMenuAndroidViewModel
+import io.writeopia.account.viewmodel.AccountMenuKmpViewModel
 import io.writeopia.auth.core.BuildConfig
 import io.writeopia.auth.core.di.AndroidAuthCoreInjection
 import io.writeopia.auth.core.token.AmplifyTokenHandler
@@ -89,9 +90,11 @@ fun NavigationGraph(
             )
 
             accountMenuNavigation(
-                accountMenuViewModel = AccountMenuViewModel(
-                    authCoreInjection.provideAccountManager(),
-                    authCoreInjection.provideAuthRepository()
+                accountMenuViewModel = AccountMenuAndroidViewModel(
+                    AccountMenuKmpViewModel(
+                        authCoreInjection.provideAccountManager(),
+                        authCoreInjection.provideAuthRepository()
+                    )
                 ),
                 navController::navigateToAuthMenu
             )

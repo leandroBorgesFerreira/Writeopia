@@ -5,13 +5,12 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import io.writeopia.account.BuildConfig
 import io.writeopia.account.ui.AccountMenuScreen
-import io.writeopia.account.viewmodel.AccountMenuViewModel
+import io.writeopia.account.viewmodel.AccountMenuAndroidViewModel
 import io.writeopia.utils_module.Destinations
 
 fun NavGraphBuilder.accountMenuNavigation(
-    accountMenuViewModel: AccountMenuViewModel,
+    accountMenuViewModel: AccountMenuAndroidViewModel,
     navigateToAuthMenu: () -> Unit
 ) {
     composable(
