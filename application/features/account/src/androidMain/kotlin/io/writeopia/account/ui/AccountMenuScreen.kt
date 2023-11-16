@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -19,7 +18,8 @@ import io.writeopia.account.viewmodel.AccountMenuViewModel
 import io.writeopia.utils_module.ResultData
 import io.writeopia.utils_module.toBoolean
 import kotlinx.coroutines.flow.StateFlow
-import io.writeopia.appresourcers.R
+
+//import io.writeopia.appresourcers.R
 
 @Composable
 fun AccountMenuScreen(
@@ -45,7 +45,8 @@ fun AccountMenuScreen(
                 .clip(RoundedCornerShape(6.dp))
                 .background(MaterialTheme.colorScheme.secondary)
                 .padding(8.dp),
-            text = if (isLoggedIn) stringResource(R.string.logout) else stringResource(R.string.register),
+            text = if (isLoggedIn) "Logout" else "Register",
+//            if (isLoggedIn) stringResource(R.string.logout) else stringResource(R.string.register),
             color = MaterialTheme.colorScheme.onPrimary,
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontWeight = FontWeight.Bold
