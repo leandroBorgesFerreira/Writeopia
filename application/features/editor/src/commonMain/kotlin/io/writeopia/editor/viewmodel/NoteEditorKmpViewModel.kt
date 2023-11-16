@@ -79,7 +79,7 @@ internal class NoteEditorKmpViewModel(
     private val _documentToShareInfo = MutableStateFlow<ShareDocument?>(null)
     override val documentToShareInfo: StateFlow<ShareDocument?> = _documentToShareInfo.asStateFlow()
 
-    fun initCoroutine(coroutineScope: CoroutineScope) {
+    override fun initCoroutine(coroutineScope: CoroutineScope) {
         this.coroutineScope = coroutineScope
     }
 
