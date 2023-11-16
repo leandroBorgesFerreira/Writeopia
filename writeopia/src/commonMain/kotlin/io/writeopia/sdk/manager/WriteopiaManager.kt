@@ -429,8 +429,5 @@ class WriteopiaManager(
     }
 }
 
-fun initialContent() : Map<Int, StoryStep> =
-    mapOf(
-        0 to StoryStep(text = "", type = StoryTypes.TITLE.type)
-    )
+fun initialContent() : Map<Int, StoryStep> = emptyMap()
 

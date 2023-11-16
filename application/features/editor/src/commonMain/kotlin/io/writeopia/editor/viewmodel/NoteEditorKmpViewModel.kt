@@ -108,20 +108,24 @@ class NoteEditorKmpViewModel(
     }
 
     override fun createNewDocument(documentId: String, title: String) {
-        if (writeopiaManager.isInitialized()) return
+        //Todo: There is a problem here!!
+        if (writeopiaManager.isInitialized()) {
+            return
+        }
 
         writeopiaManager.newStory(documentId, title)
 
         coroutineScope.launch(Dispatchers.IO) {
             writeopiaManager.currentDocument.stateIn(this).value?.let { document ->
                 documentDao.saveDocument(document)
-                writeopiaManager.saveOnStoryChanges(
-                    OnUpdateDocumentTracker(
-                        documentDao
-                    )
-                )
             }
         }
+
+        writeopiaManager.saveOnStoryChanges(
+            OnUpdateDocumentTracker(
+                documentDao
+            )
+        )
     }
 
     override fun requestDocumentContent(documentId: String) {
