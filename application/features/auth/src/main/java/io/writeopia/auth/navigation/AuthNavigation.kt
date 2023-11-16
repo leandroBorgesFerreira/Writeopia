@@ -17,8 +17,6 @@ fun NavGraphBuilder.authNavigation(
     authInjection: AuthInjection,
     toAppNavigation: () -> Unit
 ) {
-
-
     navigation(
         startDestination = Destinations.AUTH_MENU.id,
         route = Destinations.AUTH_MENU_INNER_NAVIGATION.id
