@@ -24,8 +24,7 @@ class NotesMenuInjection(
 
     private fun provideNotesUseCase(
         documentRepository: DocumentRepository = provideDocumentRepository(),
-        notesConfigurationRepository: NotesConfigurationRepository =
-            provideNotesConfigurationRepository()
+        notesConfigurationRepository: NotesConfigurationRepository = provideNotesConfigurationRepository()
     ): NotesUseCase {
         return NotesUseCase(documentRepository, notesConfigurationRepository)
     }

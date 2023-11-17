@@ -1,11 +1,16 @@
 CREATE TABLE notesConfiguration (
   user_id TEXT PRIMARY KEY,
   arrangement_type TEXT NOT NULL,
-  order_by_type TEXT NOT NULL
+  order_by TEXT NOT NULL
 );
 
 selectConfigurationByUserId:
 SELECT *
-FROM notesConfiguration;
+FROM notesConfiguration
+WHERE notesConfiguration.user_id = ?;
 
-
+insert:
+INSERT INTO notesConfiguration(user_id, arrangement_type, order_by)
+VALUES (?, ?, ?)
+ON CONFLICT(user_id) DO
+UPDATE SET user_id=excluded.user_id, arrangement_type=excluded.arrangement_type, order_by=excluded.order_by;

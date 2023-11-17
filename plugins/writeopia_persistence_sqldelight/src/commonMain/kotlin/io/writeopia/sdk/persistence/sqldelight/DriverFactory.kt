@@ -1,7 +1,7 @@
 package io.writeopia.sdk.persistence.sqldelight
 
 import app.cash.sqldelight.db.SqlDriver
-import io.writeopia.sql.WriteopiaDb
+import io.writeopia.sdk.sql.WriteopiaDb
 
 
 expect class DriverFactory {

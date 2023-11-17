@@ -3,9 +3,9 @@ package io.writeopia.sdk.persistence.sqldelight.dao
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sql.DocumentEntityQueries
-import io.writeopia.sql.StoryStepEntityQueries
-import io.writeopia.sql.WriteopiaDb
+import io.writeopia.sdk.sql.DocumentEntityQueries
+import io.writeopia.sdk.sql.StoryStepEntityQueries
+import io.writeopia.sdk.sql.WriteopiaDb
 import kotlinx.datetime.Instant
 
 class DocumentSqlDao(database: WriteopiaDb) {
