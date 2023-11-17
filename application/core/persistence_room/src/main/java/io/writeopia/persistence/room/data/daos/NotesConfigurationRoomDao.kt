@@ -7,10 +7,10 @@ import androidx.room.Query
 import io.writeopia.persistence.room.data.entities.NotesConfigurationEntity
 
 @Dao
-interface NotesConfigurationRoomDao: NotesConfigurationDao {
+interface NotesConfigurationRoomDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    override suspend fun saveConfiguration(configuration: NotesConfigurationEntity)
+    suspend fun saveConfiguration(configuration: NotesConfigurationEntity)
 
     @Query("SELECT * FROM notes_configuration WHERE notes_configuration.user_id = :userId LIMIT 1")
-    override suspend fun getConfigurationByUserId(userId: String): NotesConfigurationEntity?
+    suspend fun getConfigurationByUserId(userId: String): NotesConfigurationEntity?
 }

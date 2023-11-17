@@ -1,6 +1,6 @@
 package io.writeopia.note_menu.data.usecase
 
-import io.writeopia.persistence.core.repositories.NotesConfigurationRepository
+import io.writeopia.note_menu.data.repository.NotesConfigurationRepository
 import io.writeopia.sdk.persistence.core.dao.DocumentRepository
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.id.GenerateId

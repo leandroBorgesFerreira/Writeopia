@@ -1,6 +1,6 @@
 package io.writeopia.sqldelight
 
-class NotesConfigurationSqlDelightDao: NotesConfigurationDao{
+class NotesConfigurationSqlDelightDao {
 
 
 }

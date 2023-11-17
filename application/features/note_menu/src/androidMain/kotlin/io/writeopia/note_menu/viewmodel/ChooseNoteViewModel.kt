@@ -4,33 +4,27 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amplifyframework.auth.AuthException
-import io.writeopia.sdk.models.document.Document
-import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
-import io.writeopia.note_menu.data.usecase.NotesConfigurationRoomRepository
+import io.writeopia.note_menu.data.NotesArrangement
+import io.writeopia.note_menu.data.repository.NotesConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
 import io.writeopia.note_menu.ui.dto.DocumentUi
-import io.writeopia.persistence.core.models.NotesArrangement
+import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
+import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.utils_module.DISCONNECTED_USER_ID
 import io.writeopia.utils_module.ResultData
-import io.writeopia.utils_module.toBoolean
 import io.writeopia.utils_module.map
+import io.writeopia.utils_module.toBoolean
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 internal class ChooseNoteViewModel(
     private val notesUseCase: NotesUseCase,
-    private val notesConfig: NotesConfigurationRoomRepository,
+    private val notesConfig: NotesConfigurationRepository,
     private val authManager: AuthManager,
     private val previewParser: PreviewParser = PreviewParser(),
 ) : ViewModel() {

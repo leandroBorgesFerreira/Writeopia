@@ -1,6 +1,6 @@
-package io.writeopia.persistence.core.repositories
+package io.writeopia.note_menu.data.repository
 
-import io.writeopia.persistence.core.models.NotesArrangement
+import io.writeopia.note_menu.data.NotesArrangement
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 
 interface NotesConfigurationRepository {
