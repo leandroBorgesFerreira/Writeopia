@@ -1,3 +1,5 @@
+//enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
         google()
@@ -26,7 +28,7 @@ include(":plugins:writeopia_export")
 include(":plugins:writeopia_import_document")
 include(":plugins:writeopia_persistence_core")
 include(":plugins:writeopia_persistence_sqldelight")
-include(":application:androidApp")
+include(":backend:intronotes")
 include(":application:core:resources")
 include(":application:core:auth_core")
 include(":application:core:utils")
@@ -35,10 +37,12 @@ include(":application:core:common_ui_tests")
 include(":application:core:persistence_room")
 include(":application:core:persistence_sqldelight")
 include(":application:core:persistence_bridge")
+include(":application:core:persistence_core")
 include(":application:features:account")
 include(":application:features:editor")
 include(":application:features:note_menu")
 include(":application:features:auth")
 include(":application:desktopApp")
 include(":application:web")
-include(":backend:intronotes")
+include(":application:androidApp")
+

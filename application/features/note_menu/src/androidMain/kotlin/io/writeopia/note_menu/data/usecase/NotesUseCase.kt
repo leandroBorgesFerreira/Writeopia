@@ -1,5 +1,6 @@
 package io.writeopia.note_menu.data.usecase
 
+import io.writeopia.persistence.core.repositories.NotesConfigurationRepository
 import io.writeopia.sdk.persistence.core.dao.DocumentRepository
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.id.GenerateId
@@ -14,13 +15,13 @@ internal class NotesUseCase(
 ) {
 
     suspend fun loadDocumentsForUser(userId: String): List<Document> =
-        notesConfig.getOrderPreference()
-            ?.let { orderBy -> documentRepository.loadDocumentsForUser(orderBy, userId) }!!
+        notesConfig.getOrderPreference(userId)
+            .let { orderBy -> documentRepository.loadDocumentsForUser(orderBy, userId) }
 
-    suspend fun duplicateDocuments(ids: List<String>) {
-        notesConfig.getOrderPreference()?.let { orderBy ->
+    suspend fun duplicateDocuments(ids: List<String>, userId: String) {
+        notesConfig.getOrderPreference(userId).let { orderBy ->
             documentRepository.loadDocumentsWithContentByIds(ids, orderBy)
-        }?.let { documents ->
+        }.let { documents ->
             documents.map { document ->
                 document.copy(
                     id = GenerateId.generate(),
@@ -28,7 +29,7 @@ internal class NotesUseCase(
                         storyStep.copy(id = GenerateId.generate())
                     })
             }
-        }?.let { newDocuments ->
+        }.let { newDocuments ->
             newDocuments.forEach { document ->
                 documentRepository.saveDocument(document)
             }

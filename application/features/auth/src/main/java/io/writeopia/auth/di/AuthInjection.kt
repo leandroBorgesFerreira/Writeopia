@@ -9,7 +9,7 @@ import io.writeopia.auth.intronotes.IntroNotesUseCase
 import io.writeopia.auth.login.LoginViewModel
 import io.writeopia.auth.menu.AuthMenuViewModel
 import io.writeopia.auth.register.RegisterViewModel
-import io.writeopia.persistence.injection.RoomDaosInjection
+import io.writeopia.persistence.room.injection.RoomDaosInjection
 import io.writeopia.sdk.persistence.core.dao.DocumentRepository
 import io.writeopia.sdk.network.injector.ApiInjector
 import io.writeopia.sdk.network.notes.NotesApi

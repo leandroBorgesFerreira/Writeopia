@@ -1,4 +1,4 @@
-package io.writeopia.persistence.data.entities
+package io.writeopia.persistence.room.data.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

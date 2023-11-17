@@ -24,9 +24,9 @@ import io.writeopia.editor.di.EditorInjector
 import io.writeopia.editor.navigation.editorNavigation
 import io.writeopia.note_menu.di.NotesMenuInjection
 import io.writeopia.note_menu.navigation.notesMenuNavigation
-import io.writeopia.persistence.WriteopiaApplicationDatabase
-import io.writeopia.persistence.injection.AppDaosInjection
-import io.writeopia.persistence.injection.RoomDaosInjection
+import io.writeopia.persistence.room.WriteopiaApplicationDatabase
+import io.writeopia.persistence.room.injection.AppDaosInjection
+import io.writeopia.persistence.room.injection.RoomDaosInjection
 import io.writeopia.sdk.network.injector.ApiInjector
 import io.writeopia.theme.ApplicationComposeTheme
 import io.writeopia.utils_module.Destinations

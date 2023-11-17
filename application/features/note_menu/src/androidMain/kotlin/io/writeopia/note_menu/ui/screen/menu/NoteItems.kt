@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.writeopia.note_menu.ui.dto.DocumentUi
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
-import io.writeopia.note_menu.viewmodel.NotesArrangement
+import io.writeopia.persistence.core.models.NotesArrangement
 //import io.writeopia.appresourcers.R
 import io.writeopia.utils_module.ResultData
 import io.writeopia.sdk.model.draw.DrawInfo
@@ -62,7 +62,7 @@ internal fun Notes(
                     val arrangement by chooseNoteViewModel.notesArrangement.collectAsState()
 
                     when (arrangement) {
-                        NotesArrangement.GRID -> {
+                        io.writeopia.persistence.core.models.NotesArrangement.GRID -> {
                             LazyGridNotes(
                                 documents.data,
                                 selectionListener = selectionListener,
@@ -70,7 +70,7 @@ internal fun Notes(
                             )
                         }
 
-                        NotesArrangement.LIST -> {
+                        io.writeopia.persistence.core.models.NotesArrangement.LIST -> {
                             LazyColumnNotes(
                                 documents.data,
                                 selectionListener = selectionListener,

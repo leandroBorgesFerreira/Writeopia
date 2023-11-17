@@ -1,0 +1,11 @@
+CREATE TABLE notesConfiguration (
+  user_id TEXT PRIMARY KEY,
+  arrangement_type TEXT NOT NULL,
+  order_by_type TEXT NOT NULL
+);
+
+selectConfigurationByUserId:
+SELECT *
+FROM notesConfiguration;
+
+
