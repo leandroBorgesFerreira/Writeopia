@@ -2,10 +2,10 @@ package io.writeopia.sdk.persistence.sqldelight.dao.sql
 
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.persistence.core.dao.DocumentDao
+import io.writeopia.sdk.persistence.core.dao.DocumentRepository
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 
-class SqlDelightDocumentDao(private val documentSqlDao: DocumentSqlDao): DocumentDao {
+class SqlDelightDocumentRepository(private val documentSqlDao: DocumentSqlDao): DocumentRepository {
     override suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document> {
         //Todo: Add orderby!
         return documentSqlDao.loadDocumentsWithContentByUserId(userId)

@@ -1,8 +1,8 @@
 package io.writeopia.sdk.persistence.core.di
 
-import io.writeopia.sdk.persistence.core.dao.DocumentDao
+import io.writeopia.sdk.persistence.core.dao.DocumentRepository
 
 interface DaosInjector {
 
-    fun provideDocumentDao(): DocumentDao
+    fun provideDocumentDao(): DocumentRepository
 }

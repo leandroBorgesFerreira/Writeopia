@@ -26,7 +26,7 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-                api(project(":application:core:persistence"))
+                api(project(":application:core:persistence_room"))
             }
         }
     }

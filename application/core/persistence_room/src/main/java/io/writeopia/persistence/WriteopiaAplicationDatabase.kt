@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import io.writeopia.persistence.data.daos.NotesConfigurationDao
+import io.writeopia.persistence.data.daos.RoomNotesConfigurationDao
 import io.writeopia.persistence.data.entities.NotesConfigurationEntity
 import io.writeopia.sdk.persistence.converter.IdListConverter
 import io.writeopia.sdk.persistence.dao.DocumentEntityDao
@@ -29,7 +29,7 @@ abstract class WriteopiaApplicationDatabase : RoomDatabase() {
 
     abstract fun documentDao(): DocumentEntityDao
     abstract fun storyUnitDao(): StoryUnitEntityDao
-    abstract fun notesConfigurationDao(): NotesConfigurationDao
+    abstract fun notesConfigurationDao(): RoomNotesConfigurationDao
 
     companion object {
         private var instance: WriteopiaApplicationDatabase? = null

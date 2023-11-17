@@ -10,7 +10,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.persistence.dao.DocumentEntityDao
 import io.writeopia.sdk.persistence.dao.StoryUnitEntityDao
-import io.writeopia.sdk.persistence.dao.room.RoomDocumentDao
+import io.writeopia.sdk.persistence.dao.room.RoomDocumentRepository
 import io.writeopia.sdk.persistence.parse.toEntity
 import io.writeopia.sdk.persistence.parse.toModel
 import kotlinx.coroutines.test.runTest
@@ -23,12 +23,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class DocumentDaoTest {
+class DocumentRepositoryTest {
 
     private lateinit var database: WriteopiaApplicationDatabase
     private lateinit var documentEntityDao: DocumentEntityDao
     private lateinit var storyUnitEntityDao: StoryUnitEntityDao
-    private lateinit var documentRepository: RoomDocumentDao
+    private lateinit var documentRepository: RoomDocumentRepository
 
     @Before
     fun createDb() {
@@ -41,7 +41,7 @@ class DocumentDaoTest {
         documentEntityDao = database.documentDao()
         storyUnitEntityDao = database.storyUnitDao()
 
-        documentRepository = RoomDocumentDao(documentEntityDao, storyUnitEntityDao)
+        documentRepository = RoomDocumentRepository(documentEntityDao, storyUnitEntityDao)
     }
 
     @After

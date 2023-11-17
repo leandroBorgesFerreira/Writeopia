@@ -1,9 +1,9 @@
 package io.writeopia.persistence.injection
 
 import io.writeopia.persistence.WriteopiaApplicationDatabase
-import io.writeopia.persistence.data.daos.NotesConfigurationDao
+import io.writeopia.persistence.data.daos.RoomNotesConfigurationDao
 
 class AppDaosInjection(private val database: WriteopiaApplicationDatabase) {
 
-    fun provideConfigurationDao(): NotesConfigurationDao = database.notesConfigurationDao()
+    fun provideConfigurationDao(): RoomNotesConfigurationDao = database.notesConfigurationDao()
 }

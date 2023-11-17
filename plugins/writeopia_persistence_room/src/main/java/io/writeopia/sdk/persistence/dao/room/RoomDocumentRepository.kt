@@ -1,6 +1,6 @@
 package io.writeopia.sdk.persistence.dao.room
 
-import io.writeopia.sdk.persistence.core.dao.DocumentDao
+import io.writeopia.sdk.persistence.core.dao.DocumentRepository
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.persistence.dao.DocumentEntityDao
@@ -10,10 +10,10 @@ import io.writeopia.sdk.persistence.entity.story.StoryStepEntity
 import io.writeopia.sdk.persistence.parse.toEntity
 import io.writeopia.sdk.persistence.parse.toModel
 
-class RoomDocumentDao(
+class RoomDocumentRepository(
     private val documentEntityDao: DocumentEntityDao,
     private val storyUnitEntityDao: StoryUnitEntityDao
-) : DocumentDao {
+) : DocumentRepository {
 
     override suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document> =
         documentEntityDao.loadDocumentsWithContentForUser(orderBy, userId)
