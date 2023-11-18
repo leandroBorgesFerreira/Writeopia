@@ -1,17 +1,20 @@
-package io.writeopia.sdk.persistence.sqldelight.di
+package io.writeopia.sqldelight.di
 
 import io.writeopia.sdk.persistence.core.dao.DocumentRepository
 import io.writeopia.sdk.persistence.core.di.DaosInjector
-import io.writeopia.sdk.persistence.sqldelight.DriverFactory
-import io.writeopia.sdk.persistence.sqldelight.createDatabase
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import io.writeopia.sdk.persistence.sqldelight.dao.sql.SqlDelightDocumentRepository
+import io.writeopia.sqldelight.database.DriverFactory
+import io.writeopia.sqldelight.database.createDatabase
 
-class SqlDelightDaoInjector(driverFactory: DriverFactory): DaosInjector {
+class SqlDelightDaoInjector(driverFactory: DriverFactory) : DaosInjector {
 
     private val database = createDatabase(driverFactory)
 
-    private fun provideDocumentSqlDao(): DocumentSqlDao = DocumentSqlDao(database)
+    private fun provideDocumentSqlDao(): DocumentSqlDao = DocumentSqlDao(
+        database.documentEntityQueries,
+        database.storyStepEntityQueries
+    )
 
     override fun provideDocumentDao(): DocumentRepository = SqlDelightDocumentRepository(provideDocumentSqlDao())
 }

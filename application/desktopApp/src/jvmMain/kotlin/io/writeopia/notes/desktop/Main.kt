@@ -26,8 +26,8 @@ import io.writeopia.editor.ui.TextEditor
 import io.writeopia.sdk.drawer.factory.DefaultDrawersDesktop
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
-import io.writeopia.sdk.persistence.sqldelight.DriverFactory
-import io.writeopia.sdk.persistence.sqldelight.di.SqlDelightDaoInjector
+import io.writeopia.sqldelight.database.DriverFactory
+import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

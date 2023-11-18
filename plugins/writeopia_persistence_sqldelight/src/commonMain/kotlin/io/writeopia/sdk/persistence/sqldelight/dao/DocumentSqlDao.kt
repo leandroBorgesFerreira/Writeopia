@@ -5,12 +5,12 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.sql.DocumentEntityQueries
 import io.writeopia.sdk.sql.StoryStepEntityQueries
-import io.writeopia.sdk.sql.WriteopiaDb
 import kotlinx.datetime.Instant
 
-class DocumentSqlDao(database: WriteopiaDb) {
-    private val documentQueries: DocumentEntityQueries = database.documentEntityQueries
-    private val storyStepQueries: StoryStepEntityQueries = database.storyStepEntityQueries
+class DocumentSqlDao(
+    private val documentQueries: DocumentEntityQueries,
+    private val storyStepQueries: StoryStepEntityQueries,
+) {
 
     fun insertDocumentWithContent(document: Document) {
         document.content.values.forEachIndexed { i, storyStep ->

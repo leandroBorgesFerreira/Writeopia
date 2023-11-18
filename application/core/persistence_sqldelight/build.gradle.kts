@@ -14,6 +14,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":plugins:writeopia_persistence_core"))
+                implementation(project(":plugins:writeopia_persistence_sqldelight"))
             }
         }
 

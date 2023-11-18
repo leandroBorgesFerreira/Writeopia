@@ -10,7 +10,7 @@ class NotesConfigurationSqlDelightDao(database: WriteopiaDb) {
 
     fun saveConfiguration(notesConfiguration: NotesConfiguration) {
         notesConfiguration.run {
-            notesConfigurationQueries.insert(user_id, arrangement_type, order_by_type)
+            notesConfigurationQueries.insert(user_id, arrangement_type, order_by)
         }
     }
 
