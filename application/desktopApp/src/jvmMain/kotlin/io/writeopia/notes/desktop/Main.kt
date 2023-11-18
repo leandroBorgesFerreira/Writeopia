@@ -26,7 +26,7 @@ import io.writeopia.editor.ui.TextEditor
 import io.writeopia.sdk.drawer.factory.DefaultDrawersDesktop
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
-import io.writeopia.sqldelight.database.DriverFactory
+import io.writeopia.sqldelight.create
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -45,7 +45,7 @@ fun main() = application {
 @Composable
 fun App() {
     val authCoreInjection = KmpAuthCoreInjection()
-    val daosInjection = SqlDelightDaoInjector(DriverFactory())
+    val daosInjection = SqlDelightDaoInjector.create()
 
     val editorInjetor = EditorKmpInjector(
         authCoreInjection = authCoreInjection,
