@@ -7,7 +7,7 @@ import io.writeopia.sdk.persistence.sqldelight.dao.sql.SqlDelightDocumentReposit
 import io.writeopia.sqldelight.database.createDatabase
 import io.writeopia.sqldelight.database.driver.DriverFactory
 
-class SqlDelightDaoInjector(driverFactory: DriverFactory) : DaosInjector {
+internal class SqlDelightDaoInjector(driverFactory: DriverFactory) : DaosInjector {
 
     private val database = createDatabase(driverFactory)
 
