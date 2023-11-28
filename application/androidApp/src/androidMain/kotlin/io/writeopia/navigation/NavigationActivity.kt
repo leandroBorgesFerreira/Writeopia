@@ -11,9 +11,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import io.writeopia.AndroidLogger
+import io.writeopia.account.di.AccountMenuInjector
 import io.writeopia.account.navigation.accountMenuNavigation
-import io.writeopia.account.viewmodel.AccountMenuAndroidViewModel
-import io.writeopia.account.viewmodel.AccountMenuKmpViewModel
 import io.writeopia.auth.core.BuildConfig
 import io.writeopia.auth.core.di.AndroidAuthCoreInjection
 import io.writeopia.auth.core.token.AmplifyTokenHandler
@@ -66,6 +65,7 @@ fun NavigationGraph(
     val daosInjection = RoomDaosInjection(database)
     val authInjection = AuthInjection(authCoreInjection, apiInjector, daosInjection)
     val editorInjector = EditorInjector.create(authCoreInjection, daosInjection)
+    val accountMenuInjector = AccountMenuInjector.create(authCoreInjection)
     val notesMenuInjection =
         NotesMenuInjection(
             appDaosInjection.provideConfigurationDao(),
@@ -90,12 +90,7 @@ fun NavigationGraph(
             )
 
             accountMenuNavigation(
-                accountMenuViewModel = AccountMenuAndroidViewModel(
-                    AccountMenuKmpViewModel(
-                        authCoreInjection.provideAccountManager(),
-                        authCoreInjection.provideAuthRepository()
-                    )
-                ),
+                accountMenuInjector = accountMenuInjector,
                 navController::navigateToAuthMenu
             )
         }

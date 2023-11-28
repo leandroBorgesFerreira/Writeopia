@@ -1,9 +1,5 @@
 package io.writeopia.note_menu.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.amplifyframework.auth.AuthException
 import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.note_menu.data.NotesArrangement
@@ -14,67 +10,70 @@ import io.writeopia.note_menu.ui.dto.DocumentUi
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
-import io.writeopia.utils_module.DISCONNECTED_USER_ID
-import io.writeopia.utils_module.ResultData
-import io.writeopia.utils_module.map
-import io.writeopia.utils_module.toBoolean
+import io.writeopia.utils_module.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-internal class ChooseNoteViewModel(
+internal class ChooseNoteKmpViewModel(
     private val notesUseCase: NotesUseCase,
     private val notesConfig: NotesConfigurationRepository,
     private val authManager: AuthManager,
     private val previewParser: PreviewParser = PreviewParser(),
-) : ViewModel() {
+) : ChooseNoteViewModel, KmpViewModel {
 
     private var localUserId: String? = null
 
+    private lateinit var coroutineScope: CoroutineScope
+
     private val _selectedNotes = MutableStateFlow(setOf<String>())
-    val hasSelectedNotes = _selectedNotes.map { selectedIds ->
+    override val hasSelectedNotes: StateFlow<Boolean> = _selectedNotes.map { selectedIds ->
         selectedIds.isNotEmpty()
-    }.stateIn(viewModelScope, SharingStarted.Lazily, false)
+    }.stateIn(coroutineScope, SharingStarted.Lazily, false)
 
     private val _documentsState: MutableStateFlow<ResultData<List<Document>>> =
         MutableStateFlow(ResultData.Idle())
 
     private val _user: MutableStateFlow<UserState<User>> = MutableStateFlow(UserState.Idle())
-    val userName: StateFlow<UserState<String>> = _user.map { userState ->
+    override val userName: StateFlow<UserState<String>> = _user.map { userState ->
         userState.map { user ->
             user.name
         }
-    }.stateIn(viewModelScope, SharingStarted.Lazily, UserState.Idle())
+    }.stateIn(coroutineScope, SharingStarted.Lazily, UserState.Idle())
 
-    val documentsState: StateFlow<ResultData<List<DocumentUi>>> =
+    override val documentsState: StateFlow<ResultData<List<DocumentUi>>> =
         combine(_selectedNotes, _documentsState) { selectedNoteIds, resultData ->
             resultData.map { documentList ->
                 documentList.map { document ->
                     document.toUiCard(previewParser, selectedNoteIds.contains(document.id))
                 }
             }
-        }.stateIn(viewModelScope, SharingStarted.Lazily, ResultData.Idle())
+        }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Idle())
 
     private val _notesArrangement = MutableStateFlow<NotesArrangement?>(null)
-    val notesArrangement = _notesArrangement.asStateFlow()
+    override val notesArrangement: StateFlow<NotesArrangement?> = _notesArrangement.asStateFlow()
 
     private val _editState = MutableStateFlow(false)
-    val editState = _editState.asStateFlow()
+    override val editState: StateFlow<Boolean> = _editState.asStateFlow()
 
     private suspend fun getUserId(): String =
         localUserId ?: authManager.getUser().id.also { id ->
             localUserId = id
         }
 
-    fun requestDocuments(force: Boolean) {
+    override fun initCoroutine(coroutineScope: CoroutineScope) {
+        this.coroutineScope = coroutineScope
+    }
+    override fun requestDocuments(force: Boolean) {
         if (documentsState.value !is ResultData.Complete || force) {
-            viewModelScope.launch(Dispatchers.IO) {
+            coroutineScope.launch(Dispatchers.IO) {
                 refreshNotes()
             }
         }
     }
 
-    suspend fun requestUser() {
+    override suspend fun requestUser() {
         try {
             _user.value = if (authManager.isLoggedIn().toBoolean()) {
                 val user = authManager.getUser()
@@ -87,21 +86,21 @@ internal class ChooseNoteViewModel(
             } else {
                 UserState.DisconnectedUser(User.disconnectedUser())
             }
-        } catch (error: AuthException) {
-            Log.d("ChooseNoteViewModel", "Error fetching user attributes. Error: $error")
+        } catch (error: Exception) {
+//            Log.d("ChooseNoteViewModel", "Error fetching user attributes. Error: $error")
         }
     }
 
-    fun editMenu() {
+    override fun editMenu() {
         _editState.value = !editState.value
     }
 
-    fun cancelMenu() {
+    override fun cancelMenu() {
         _editState.value = false
     }
 
-    fun onDocumentSelected(id: String, selected: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
+    override fun onDocumentSelected(id: String, selected: Boolean) {
+        coroutineScope.launch(Dispatchers.IO) {
             val selectedIds = _selectedNotes.value
             val newIds = if (selected) selectedIds + id else selectedIds - id
 
@@ -109,50 +108,50 @@ internal class ChooseNoteViewModel(
         }
     }
 
-    fun clearSelection() {
+    override fun clearSelection() {
         _selectedNotes.value = emptySet()
     }
 
-    fun listArrangementSelected() {
-        viewModelScope.launch {
+    override fun listArrangementSelected() {
+        coroutineScope.launch {
             notesConfig.saveDocumentArrangementPref(NotesArrangement.LIST, getUserId())
             _notesArrangement.value = NotesArrangement.LIST
         }
     }
 
-    fun gridArrangementSelected() {
-        viewModelScope.launch {
+    override fun gridArrangementSelected() {
+        coroutineScope.launch {
             notesConfig.saveDocumentArrangementPref(NotesArrangement.GRID, getUserId())
             _notesArrangement.value = NotesArrangement.GRID
         }
     }
 
-    fun sortingSelected(orderBy: OrderBy) {
-        viewModelScope.launch(Dispatchers.IO) {
+    override fun sortingSelected(orderBy: OrderBy) {
+        coroutineScope.launch(Dispatchers.IO) {
             notesConfig.saveDocumentSortingPref(orderBy, getUserId())
             refreshNotes()
         }
     }
 
-    fun copySelectedNotes() {
-        viewModelScope.launch(Dispatchers.IO) {
+    override fun copySelectedNotes() {
+        coroutineScope.launch(Dispatchers.IO) {
             notesUseCase.duplicateDocuments(_selectedNotes.value.toList(), getUserId())
             clearSelection()
             refreshNotes()
         }
     }
 
-    fun deleteSelectedNotes() {
+    override fun deleteSelectedNotes() {
         val selected = _selectedNotes.value
 
-        viewModelScope.launch(Dispatchers.IO) {
+        coroutineScope.launch(Dispatchers.IO) {
             notesUseCase.deleteNotes(selected)
             clearSelection()
             refreshNotes()
         }
     }
 
-    fun favoriteSelectedNotes() {
+    override fun favoriteSelectedNotes() {
 
     }
 
@@ -168,20 +167,3 @@ internal class ChooseNoteViewModel(
         }
     }
 }
-
-sealed interface UserState<T> {
-    class Idle<T> : UserState<T>
-    class Loading<T> : UserState<T>
-    class ConnectedUser<T>(val data: T) : UserState<T>
-    class UserNotReturned<T> : UserState<T>
-    class DisconnectedUser<T>(val data: T) : UserState<T>
-}
-
-fun <T, R> UserState<T>.map(fn: (T) -> R): UserState<R> =
-    when (this) {
-        is UserState.ConnectedUser -> UserState.ConnectedUser(fn(this.data))
-        is UserState.Idle -> UserState.Idle()
-        is UserState.Loading -> UserState.Loading()
-        is UserState.DisconnectedUser -> UserState.DisconnectedUser(fn(this.data))
-        is UserState.UserNotReturned -> UserState.UserNotReturned()
-    }

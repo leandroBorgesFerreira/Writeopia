@@ -28,7 +28,7 @@ class ChooseNoteViewModelTest {
         try {
             coEvery { notesUseCase.deleteNotes(any()) } returns Unit
 
-            val viewModel = ChooseNoteViewModel(notesUseCase, notesConfig, authManager)
+            val viewModel = ChooseNoteKmpViewModel(notesUseCase, notesConfig, authManager)
 
             val selectedNotesList = mutableListOf<Boolean>()
             backgroundScope.launch(testDispatcher) {

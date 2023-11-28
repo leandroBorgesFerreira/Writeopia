@@ -18,6 +18,7 @@ import io.writeopia.sdk.serialization.extensions.toApi
 import io.writeopia.sdk.serialization.json.writeopiaJson
 import io.writeopia.sdk.serialization.request.wrapInRequest
 import io.writeopia.sdk.utils.extensions.noContent
+import io.writeopia.utils_module.KmpViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -30,7 +31,7 @@ class NoteEditorKmpViewModel(
     override val writeopiaManager: WriteopiaManager,
     private val documentRepository: DocumentRepository,
     private val documentFilter: DocumentFilter = DocumentFilterObject,
-) : NoteEditorViewModel, BackstackInform by writeopiaManager, BackstackHandler by writeopiaManager {
+) : NoteEditorViewModel, KmpViewModel, BackstackInform by writeopiaManager, BackstackHandler by writeopiaManager {
 
     private lateinit var coroutineScope: CoroutineScope
 

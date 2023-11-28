@@ -4,7 +4,7 @@ import io.writeopia.utils_module.KmpViewModel
 import io.writeopia.utils_module.ResultData
 import kotlinx.coroutines.flow.StateFlow
 
-interface AccountMenuViewModel : KmpViewModel {
+interface AccountMenuViewModel {
 
     val isLoggedIn: StateFlow<ResultData<Boolean>>
 

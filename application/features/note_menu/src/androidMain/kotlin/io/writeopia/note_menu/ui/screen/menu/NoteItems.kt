@@ -1,14 +1,8 @@
 package io.writeopia.note_menu.ui.screen.menu
 
+//import io.writeopia.appresourcers.R
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -32,16 +26,15 @@ import androidx.compose.ui.unit.sp
 import io.writeopia.note_menu.data.NotesArrangement
 import io.writeopia.note_menu.ui.dto.DocumentUi
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
-//import io.writeopia.appresourcers.R
-import io.writeopia.utils_module.ResultData
-import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.preview.CheckItemPreviewDrawer
 import io.writeopia.sdk.drawer.preview.HeaderPreviewDrawer
 import io.writeopia.sdk.drawer.preview.TextPreviewDrawer
 import io.writeopia.sdk.drawer.preview.UnOrderedListItemPreviewDrawer
+import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.uicomponents.SwipeBox
+import io.writeopia.utils_module.ResultData
 
 @Composable
 internal fun Notes(

@@ -5,9 +5,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.sdk.persistence.core.dao.DocumentRepository
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.note_menu.data.usecase.NotesUseCase
-import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
+import io.writeopia.note_menu.viewmodel.ChooseNoteKmpViewModel
 import io.writeopia.note_menu.data.repository.NotesConfigurationRepository
 import io.writeopia.note_menu.data.repository.NotesConfigurationRoomRepository
+import io.writeopia.note_menu.viewmodel.ChooseNoteAndroidViewModel
+import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.persistence.room.data.daos.NotesConfigurationRoomDao
 import io.writeopia.persistence.room.injection.RoomDaosInjection
 
@@ -29,17 +31,13 @@ class NotesMenuInjection(
         return NotesUseCase(documentRepository, notesConfigurationRepository)
     }
 
-    @Composable
-    internal fun provideChooseNoteViewModel(
+    internal fun provideChooseKmpNoteViewModel(
         notesUseCase: NotesUseCase = provideNotesUseCase(),
         notesConfig: NotesConfigurationRepository = provideNotesConfigurationRepository()
-    ): ChooseNoteViewModel {
-        return viewModel(
-            factory = ChooseNoteViewModelFactory(
-                notesUseCase,
-                notesConfig,
-                authManager
-            )
-        )
-    }
+    ): ChooseNoteKmpViewModel = ChooseNoteKmpViewModel(notesUseCase, notesConfig, authManager)
+
+    @Composable
+    internal fun provideChooseNoteViewModel(
+        chooseNoteKmpViewModel: ChooseNoteKmpViewModel = provideChooseKmpNoteViewModel()
+    ): ChooseNoteViewModel = viewModel { ChooseNoteAndroidViewModel(chooseNoteKmpViewModel) }
 }

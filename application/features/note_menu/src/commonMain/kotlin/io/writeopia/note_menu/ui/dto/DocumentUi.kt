@@ -2,7 +2,7 @@ package io.writeopia.note_menu.ui.dto
 
 import io.writeopia.sdk.models.story.StoryStep
 
-internal data class DocumentUi(
+data class DocumentUi(
     val documentId: String,
     val title: String,
     val lastEdit: String,

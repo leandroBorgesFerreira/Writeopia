@@ -8,7 +8,7 @@ import io.writeopia.sdk.model.story.DrawState
 import io.writeopia.utils_module.KmpViewModel
 import kotlinx.coroutines.flow.StateFlow
 
-interface NoteEditorViewModel: BackstackInform, BackstackHandler, KmpViewModel {
+interface NoteEditorViewModel: BackstackInform, BackstackHandler {
 
     val writeopiaManager: WriteopiaManager
 

@@ -30,6 +30,7 @@ import coil.request.ImageRequest
 import com.valentinilk.shimmer.shimmer
 import io.writeopia.note_menu.ui.screen.configuration.ConfigurationsMenu
 import io.writeopia.note_menu.ui.screen.configuration.NotesSelectionMenu
+import io.writeopia.note_menu.viewmodel.ChooseNoteKmpViewModel
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.note_menu.viewmodel.UserState
 import kotlinx.coroutines.flow.MutableStateFlow

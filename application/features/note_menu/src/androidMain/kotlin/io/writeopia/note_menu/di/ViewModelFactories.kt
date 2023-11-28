@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.note_menu.data.repository.NotesConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
-import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
+import io.writeopia.note_menu.viewmodel.ChooseNoteKmpViewModel
 
 internal class ChooseNoteViewModelFactory(
     private val notesUseCase: NotesUseCase,
@@ -14,8 +14,8 @@ internal class ChooseNoteViewModelFactory(
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ChooseNoteViewModel::class.java)) {
-            return ChooseNoteViewModel(notesUseCase, notesConfig, authManager) as T
+        if (modelClass.isAssignableFrom(ChooseNoteKmpViewModel::class.java)) {
+            return ChooseNoteKmpViewModel(notesUseCase, notesConfig, authManager) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
