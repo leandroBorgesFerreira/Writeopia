@@ -1,5 +1,6 @@
 package io.writeopia.note_menu.ui.screen.menu
 
+//import androidx.compose.ui.tooling.preview.Preview
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,14 +24,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-//import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.valentinilk.shimmer.shimmer
 import io.writeopia.note_menu.ui.screen.configuration.ConfigurationsMenu
 import io.writeopia.note_menu.ui.screen.configuration.NotesSelectionMenu
-import io.writeopia.note_menu.viewmodel.ChooseNoteKmpViewModel
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.note_menu.viewmodel.UserState
 import kotlinx.coroutines.flow.MutableStateFlow
