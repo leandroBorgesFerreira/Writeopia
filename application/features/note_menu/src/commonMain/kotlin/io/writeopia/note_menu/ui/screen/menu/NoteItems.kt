@@ -36,6 +36,9 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.uicomponents.SwipeBox
 import io.writeopia.utils_module.ResultData
 
+const val DOCUMENT_ITEM_TEST_TAG = "DocumentItem_"
+const val ADD_NOTE_TEST_TAG = "addNote"
+
 @Composable
 internal fun Notes(
     chooseNoteViewModel: ChooseNoteViewModel,

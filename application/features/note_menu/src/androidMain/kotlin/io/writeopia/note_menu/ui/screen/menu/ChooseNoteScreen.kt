@@ -36,9 +36,6 @@ import io.writeopia.note_menu.viewmodel.UserState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-const val DOCUMENT_ITEM_TEST_TAG = "DocumentItem_"
-const val ADD_NOTE_TEST_TAG = "addNote"
-
 @Composable
 internal fun ChooseNoteScreen(
     chooseNoteViewModel: ChooseNoteViewModel,

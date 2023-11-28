@@ -31,7 +31,7 @@ class NotesMenuInjection(
         return NotesUseCase(documentRepository, notesConfigurationRepository)
     }
 
-    internal fun provideChooseKmpNoteViewModel(
+    private fun provideChooseKmpNoteViewModel(
         notesUseCase: NotesUseCase = provideNotesUseCase(),
         notesConfig: NotesConfigurationRepository = provideNotesConfigurationRepository()
     ): ChooseNoteKmpViewModel = ChooseNoteKmpViewModel(notesUseCase, notesConfig, authManager)
