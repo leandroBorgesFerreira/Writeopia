@@ -86,7 +86,7 @@ dependencies {
 
     implementation(platform(libs.androidx.compose.bom))
 
-    testImplementation(libs.junit)
+    testImplementation(libs.kotlin.test)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

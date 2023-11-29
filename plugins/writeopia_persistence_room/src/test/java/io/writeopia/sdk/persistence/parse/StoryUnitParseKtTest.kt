@@ -2,8 +2,8 @@ package io.writeopia.sdk.persistence.parse
 
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.persistence.utils.imageGroup
-import org.junit.Assert.*
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class StoryUnitParseKtTest {
 
@@ -15,16 +15,13 @@ class StoryUnitParseKtTest {
         assertEquals("group_image", entity.first().type)
 
         entity.forEachIndexed { i, entityUnit ->
-            assertEquals("step $i should have a document id", id, entityUnit.documentId)
+            assertEquals( id, entityUnit.documentId, "step $i should have a document id")
         }
 
         val parentId = entity.first().id
 
         entity.drop(1).forEachIndexed { i, entityUnit ->
-            assertEquals(
-                "step ${i + 1} should have a parent id",
-                parentId, entityUnit.parentId
-            )
+            assertEquals(parentId, entityUnit.parentId, "step ${i + 1} should have a parent id")
         }
     }
 }

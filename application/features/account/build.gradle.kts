@@ -90,33 +90,3 @@ kotlin{
         }
     }
 }
-//
-//dependencies {
-//    implementation(project(":application:core:utils"))
-//    implementation(project(":application:core:resources"))
-//    implementation(project(":application:core:auth_core"))
-//
-//    implementation(libs.androidx.ktx)
-//    implementation(libs.appCompat)
-//    implementation(libs.material)
-//    testImplementation(libs.junit)
-//    androidTestImplementation(libs.androidx.junit)
-//    androidTestImplementation(libs.androidx.espresso.core)
-//
-//    implementation(libs.aws.amplifyframework.core.kotlin)
-//
-//    implementation(libs.viewmodel.compose)
-//    implementation(libs.runtime.compose)
-//    implementation(libs.androidx.material.icons.extended)
-//    implementation(libs.navigation.compose)
-//
-//    implementation("androidx.activity:activity-compose")
-//    implementation("androidx.compose.material3:material3")
-//    implementation("androidx.compose.material3:material3-window-size-class")
-//
-//    // Compose - Preview
-//    implementation("androidx.compose.ui:ui-tooling-preview")
-//    debugImplementation("androidx.compose.ui:ui-tooling")
-//
-//    implementation(platform(libs.androidx.compose.bom))
-//}

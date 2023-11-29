@@ -1,7 +1,13 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     alias(libs.plugins.androidLibrary)
     kotlin("multiplatform")
     id("org.jetbrains.compose")
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "17"
 }
 
 kotlin {
@@ -32,6 +38,14 @@ kotlin {
                 implementation(compose.materialIconsExtended)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+            }
+        }
+
+        val commonTest by getting {
+            dependencies {
+                implementation(libs.kotlin.test)
+                implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.mockk)
             }
         }
 

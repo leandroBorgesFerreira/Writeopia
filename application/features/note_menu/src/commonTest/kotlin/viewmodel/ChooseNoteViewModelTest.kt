@@ -1,22 +1,24 @@
-package io.writeopia.note_menu.viewmodel
+package viewmodel
 
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.writeopia.auth.core.manager.AuthManager
-import io.writeopia.note_menu.data.repository.NotesConfigurationRoomRepository
+import io.writeopia.note_menu.data.repository.NotesConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
+import io.writeopia.note_menu.viewmodel.ChooseNoteKmpViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.*
 import kotlin.test.*
+import kotlin.test.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ChooseNoteViewModelTest {
 
     private val notesUseCase: NotesUseCase = mockk()
-    private val notesConfig: NotesConfigurationRoomRepository = mockk()
+    private val notesConfig: NotesConfigurationRepository = mockk()
     private val authManager: AuthManager = mockk()
 
     @Test
@@ -28,7 +30,9 @@ class ChooseNoteViewModelTest {
         try {
             coEvery { notesUseCase.deleteNotes(any()) } returns Unit
 
-            val viewModel = ChooseNoteKmpViewModel(notesUseCase, notesConfig, authManager)
+            val viewModel = ChooseNoteKmpViewModel(notesUseCase, notesConfig, authManager).apply {
+                initCoroutine(this@runTest)
+            }
 
             val selectedNotesList = mutableListOf<Boolean>()
             backgroundScope.launch(testDispatcher) {

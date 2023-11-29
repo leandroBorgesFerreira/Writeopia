@@ -60,6 +60,6 @@ dependencies {
     debugImplementation(libs.androidx.compose.test.manifest)
     androidTestImplementation(libs.kotlinx.coroutines.test)
 
-    testImplementation(libs.junit)
+    testImplementation(libs.kotlin.test)
 
 }
