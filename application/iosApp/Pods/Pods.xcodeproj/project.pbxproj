@@ -79,14 +79,6 @@
 			path = ../../../writeopia;
 			sourceTree = "<group>";
 		};
-		412BBB8D9158D5572545AAFA /* xcschemes */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = xcschemes;
-			path = Pods.xcodeproj/xcuserdata/leandroborgesferreira.xcuserdatad/xcschemes;
-			sourceTree = "<group>";
-		};
 		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -154,7 +146,6 @@
 				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
 				77300D8A9D03A6015A380915984BFE3D /* Products */,
 				E6742A08F5B97D242DD1C27D2607DAF3 /* Targets Support Files */,
-				412BBB8D9158D5572545AAFA /* xcschemes */,
 			);
 			sourceTree = "<group>";
 		};
