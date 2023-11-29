@@ -28,21 +28,25 @@ internal class ChooseNoteKmpViewModel(
     private lateinit var coroutineScope: CoroutineScope
 
     private val _selectedNotes = MutableStateFlow(setOf<String>())
-    override val hasSelectedNotes: StateFlow<Boolean> = _selectedNotes.map { selectedIds ->
-        selectedIds.isNotEmpty()
-    }.stateIn(coroutineScope, SharingStarted.Lazily, false)
+    override val hasSelectedNotes: StateFlow<Boolean> by lazy {
+        _selectedNotes.map { selectedIds ->
+            selectedIds.isNotEmpty()
+        }.stateIn(coroutineScope, SharingStarted.Lazily, false)
+    }
 
     private val _documentsState: MutableStateFlow<ResultData<List<Document>>> =
         MutableStateFlow(ResultData.Idle())
 
     private val _user: MutableStateFlow<UserState<User>> = MutableStateFlow(UserState.Idle())
-    override val userName: StateFlow<UserState<String>> = _user.map { userState ->
-        userState.map { user ->
-            user.name
-        }
-    }.stateIn(coroutineScope, SharingStarted.Lazily, UserState.Idle())
+    override val userName: StateFlow<UserState<String>> by lazy {
+        _user.map { userState ->
+            userState.map { user ->
+                user.name
+            }
+        }.stateIn(coroutineScope, SharingStarted.Lazily, UserState.Idle())
+    }
 
-    override val documentsState: StateFlow<ResultData<List<DocumentUi>>> =
+    override val documentsState: StateFlow<ResultData<List<DocumentUi>>> by lazy {
         combine(_selectedNotes, _documentsState) { selectedNoteIds, resultData ->
             resultData.map { documentList ->
                 documentList.map { document ->
@@ -50,6 +54,7 @@ internal class ChooseNoteKmpViewModel(
                 }
             }
         }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Idle())
+    }
 
     private val _notesArrangement = MutableStateFlow<NotesArrangement?>(null)
     override val notesArrangement: StateFlow<NotesArrangement?> = _notesArrangement.asStateFlow()
