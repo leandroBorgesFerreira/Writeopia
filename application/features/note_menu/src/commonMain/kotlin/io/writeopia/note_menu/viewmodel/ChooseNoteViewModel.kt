@@ -2,6 +2,7 @@ package io.writeopia.note_menu.viewmodel
 
 import io.writeopia.note_menu.data.NotesArrangement
 import io.writeopia.note_menu.ui.dto.DocumentUi
+import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.utils_module.ResultData
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +13,7 @@ interface ChooseNoteViewModel {
 
     val userName: StateFlow<UserState<String>>
 
-    val documentsState: StateFlow<ResultData<List<DocumentUi>>>
+    val documentsState: StateFlow<ResultData<NotesUi>>
 
     val notesArrangement: StateFlow<NotesArrangement?>
 

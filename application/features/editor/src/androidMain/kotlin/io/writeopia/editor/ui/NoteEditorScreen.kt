@@ -68,7 +68,7 @@ internal fun NoteEditorScreen(
     }
 
     if (documentId != null) {
-        noteEditorViewModel.requestDocumentContent(documentId)
+        noteEditorViewModel.loadDocument(documentId)
     } else {
         noteEditorViewModel.createNewDocument(
             GenerateId.generate(),

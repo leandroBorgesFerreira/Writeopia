@@ -43,9 +43,9 @@ internal fun ChooseNoteScreen(
     newNote: () -> Unit,
 ) {
     LaunchedEffect(key1 = "refresh", block = {
+        chooseNoteViewModel.requestUser()
         chooseNoteViewModel.requestDocuments(false)
         // Todo: Remove BuildConfig.DEBUG check later.
-        chooseNoteViewModel.requestUser()
     })
 
     val hasSelectedNotes by chooseNoteViewModel.hasSelectedNotes.collectAsState()
@@ -79,7 +79,7 @@ internal fun ChooseNoteScreen(
             ) { paddingValues ->
                 Content(
                     chooseNoteViewModel = chooseNoteViewModel,
-                    navigateToNote = navigateToNote,
+                    loadNote = navigateToNote,
                     selectionListener = chooseNoteViewModel::onDocumentSelected,
                     paddingValues = paddingValues,
                 )
@@ -184,7 +184,7 @@ private fun TopBar(
 @Composable
 private fun getUserName(userNameState: UserState<String>): String =
     when (userNameState) {
-        is UserState.ConnectedUser ->  "${userNameState}\'s Workspace"
+        is UserState.ConnectedUser -> "${userNameState}\'s Workspace"
 //            stringResource(id = R.string.name_space, userNameState.data)
         is UserState.DisconnectedUser -> "Offline Workspace"
 //            stringResource(id = R.string.offline_workspace)
@@ -215,19 +215,16 @@ private fun FloatingActionButton(newNoteClick: () -> Unit) {
 @Composable
 private fun Content(
     chooseNoteViewModel: ChooseNoteViewModel,
-    navigateToNote: (String, String) -> Unit,
+    loadNote: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
     paddingValues: PaddingValues,
 ) {
-    Box(
+    Notes(
+        documents = chooseNoteViewModel.documentsState.collectAsState().value,
+        loagNote = loadNote,
+        selectionListener = selectionListener,
         modifier = Modifier
             .padding(paddingValues)
             .fillMaxSize()
-    ) {
-        Notes(
-            chooseNoteViewModel = chooseNoteViewModel,
-            navigateToNote = navigateToNote,
-            selectionListener = selectionListener,
-        )
-    }
+    )
 }

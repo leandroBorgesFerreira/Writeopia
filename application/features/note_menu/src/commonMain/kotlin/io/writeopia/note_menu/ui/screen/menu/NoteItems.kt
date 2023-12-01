@@ -13,8 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
@@ -25,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.writeopia.note_menu.data.NotesArrangement
 import io.writeopia.note_menu.ui.dto.DocumentUi
-import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
+import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.preview.CheckItemPreviewDrawer
 import io.writeopia.sdk.drawer.preview.HeaderPreviewDrawer
@@ -40,45 +38,36 @@ const val DOCUMENT_ITEM_TEST_TAG = "DocumentItem_"
 const val ADD_NOTE_TEST_TAG = "addNote"
 
 @Composable
-internal fun Notes(
-    chooseNoteViewModel: ChooseNoteViewModel,
-    navigateToNote: (String, String) -> Unit,
+fun Notes(
+    documents: ResultData<NotesUi>,
+    loagNote: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    when (val documents =
-        chooseNoteViewModel.documentsState.collectAsState().value
-    ) {
+    when (documents) {
         is ResultData.Complete -> {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                val data = documents.data
+            Column(modifier = modifier.fillMaxWidth()) {
+                val notesUi: NotesUi = documents.data
 
-                if (data.isEmpty()) {
+                if (notesUi.documentUiList.isEmpty()) {
                     NoNotesScreen()
                 } else {
-                    val arrangement by chooseNoteViewModel.notesArrangement.collectAsState()
+                    val documentsUiList = notesUi.documentUiList
 
-                    when (arrangement) {
+                    when (notesUi.notesArrangement) {
                         NotesArrangement.GRID -> {
                             LazyGridNotes(
-                                documents.data,
+                                documentsUiList,
                                 selectionListener = selectionListener,
-                                onDocumentClick = navigateToNote
+                                onDocumentClick = loagNote
                             )
                         }
 
                         NotesArrangement.LIST -> {
                             LazyColumnNotes(
-                                documents.data,
+                                documentsUiList,
                                 selectionListener = selectionListener,
-                                onDocumentClick = navigateToNote
-                            )
-                        }
-
-                        else -> {
-                            LazyGridNotes(
-                                documents.data,
-                                selectionListener = selectionListener,
-                                onDocumentClick = navigateToNote
+                                onDocumentClick = loagNote
                             )
                         }
                     }
@@ -91,7 +80,7 @@ internal fun Notes(
                 documents.exception.printStackTrace()
             }
 
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = modifier.fillMaxSize()) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
                     text = "Error!!"// stringResource(R.string.error_loading_notes)
@@ -100,7 +89,7 @@ internal fun Notes(
         }
 
         is ResultData.Loading, is ResultData.Idle -> {
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = modifier.fillMaxSize()) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }

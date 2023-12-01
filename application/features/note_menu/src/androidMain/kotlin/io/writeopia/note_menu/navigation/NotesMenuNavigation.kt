@@ -3,15 +3,15 @@ package io.writeopia.note_menu.navigation
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.lifecycle.viewmodel.compose.viewModel
-import io.writeopia.note_menu.di.NotesMenuInjection
+import io.writeopia.note_menu.di.NotesMenuKmpInjection
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import io.writeopia.note_menu.di.NotesMenuAndroidInjection
 import io.writeopia.note_menu.ui.screen.menu.ChooseNoteScreen
 import io.writeopia.utils_module.Destinations
 
 fun NavGraphBuilder.notesMenuNavigation(
-    notesMenuInjection: NotesMenuInjection,
+    notesMenuInjection: NotesMenuAndroidInjection,
     navigateToNote: (String, String) -> Unit,
     navigateToNewNote: () -> Unit,
     navigateToAccount: () -> Unit,

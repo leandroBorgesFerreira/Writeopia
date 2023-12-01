@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.writeopia.account.viewmodel.AccountMenuViewModel
 import io.writeopia.utils_module.ResultData
 import io.writeopia.utils_module.toBoolean

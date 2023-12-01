@@ -38,7 +38,7 @@ interface NoteEditorViewModel: BackstackInform, BackstackHandler {
 
     fun createNewDocument(documentId: String, title: String)
 
-    fun requestDocumentContent(documentId: String)
+    fun loadDocument(documentId: String)
 
     fun onHeaderColorSelection(color: Int?)
 

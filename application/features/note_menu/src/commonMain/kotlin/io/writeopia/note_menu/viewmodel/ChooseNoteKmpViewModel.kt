@@ -7,6 +7,7 @@ import io.writeopia.note_menu.data.repository.NotesConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
 import io.writeopia.note_menu.ui.dto.DocumentUi
+import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
@@ -46,18 +47,26 @@ internal class ChooseNoteKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, UserState.Idle())
     }
 
-    override val documentsState: StateFlow<ResultData<List<DocumentUi>>> by lazy {
-        combine(_selectedNotes, _documentsState) { selectedNoteIds, resultData ->
+    private val _notesArrangement = MutableStateFlow(NotesArrangement.GRID)
+    override val notesArrangement: StateFlow<NotesArrangement> = _notesArrangement.asStateFlow()
+
+    override val documentsState: StateFlow<ResultData<NotesUi>> by lazy {
+        combine(
+            _selectedNotes,
+            _documentsState,
+            notesArrangement
+        ) { selectedNoteIds, resultData, arrangement ->
             resultData.map { documentList ->
-                documentList.map { document ->
-                    document.toUiCard(previewParser, selectedNoteIds.contains(document.id))
-                }
+                NotesUi(
+                    documentUiList = documentList.map { document ->
+                        document.toUiCard(previewParser, selectedNoteIds.contains(document.id))
+                    },
+                    notesArrangement = arrangement
+                )
+
             }
         }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Idle())
     }
-
-    private val _notesArrangement = MutableStateFlow<NotesArrangement?>(null)
-    override val notesArrangement: StateFlow<NotesArrangement?> = _notesArrangement.asStateFlow()
 
     private val _editState = MutableStateFlow(false)
     override val editState: StateFlow<Boolean> = _editState.asStateFlow()
@@ -70,6 +79,7 @@ internal class ChooseNoteKmpViewModel(
     override fun initCoroutine(coroutineScope: CoroutineScope) {
         this.coroutineScope = coroutineScope
     }
+
     override fun requestDocuments(force: Boolean) {
         if (documentsState.value !is ResultData.Complete || force) {
             coroutineScope.launch(Dispatchers.IO) {
@@ -165,7 +175,8 @@ internal class ChooseNoteKmpViewModel(
 
         try {
             val data = notesUseCase.loadDocumentsForUser(getUserId())
-            _notesArrangement.value = NotesArrangement.fromString(notesConfig.arrangementPref(getUserId()))
+            _notesArrangement.value =
+                NotesArrangement.fromString(notesConfig.arrangementPref(getUserId()))
             _documentsState.value = ResultData.Complete(data)
         } catch (e: Exception) {
             _documentsState.value = ResultData.Error(e)

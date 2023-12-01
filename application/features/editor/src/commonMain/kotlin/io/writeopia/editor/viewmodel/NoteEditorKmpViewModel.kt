@@ -129,7 +129,7 @@ class NoteEditorKmpViewModel(
         )
     }
 
-    override fun requestDocumentContent(documentId: String) {
+    override fun loadDocument(documentId: String) {
         if (writeopiaManager.isInitialized()) return
 
         coroutineScope.launch(Dispatchers.IO) {
