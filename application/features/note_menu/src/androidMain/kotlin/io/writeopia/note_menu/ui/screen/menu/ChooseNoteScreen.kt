@@ -221,7 +221,7 @@ private fun Content(
 ) {
     Notes(
         documents = chooseNoteViewModel.documentsState.collectAsState().value,
-        loagNote = loadNote,
+        loadNote = loadNote,
         selectionListener = selectionListener,
         modifier = Modifier
             .padding(paddingValues)

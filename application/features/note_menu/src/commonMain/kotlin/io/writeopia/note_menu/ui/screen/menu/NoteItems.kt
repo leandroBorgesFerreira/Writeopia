@@ -40,7 +40,7 @@ const val ADD_NOTE_TEST_TAG = "addNote"
 @Composable
 fun Notes(
     documents: ResultData<NotesUi>,
-    loagNote: (String, String) -> Unit,
+    loadNote: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -59,7 +59,7 @@ fun Notes(
                             LazyGridNotes(
                                 documentsUiList,
                                 selectionListener = selectionListener,
-                                onDocumentClick = loagNote
+                                onDocumentClick = loadNote
                             )
                         }
 
@@ -67,7 +67,7 @@ fun Notes(
                             LazyColumnNotes(
                                 documentsUiList,
                                 selectionListener = selectionListener,
-                                onDocumentClick = loagNote
+                                onDocumentClick = loadNote
                             )
                         }
                     }

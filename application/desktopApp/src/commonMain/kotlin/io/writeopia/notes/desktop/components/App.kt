@@ -6,6 +6,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.editor.di.EditorKmpInjector
@@ -57,12 +58,19 @@ internal fun App(driverFactory: DriverFactory) {
         Crossfade(currentPage, animationSpec = tween(durationMillis = 300)) { state ->
             when (state) {
                 NavigationPage.NoteMenu -> {
+                    val coroutineScope = rememberCoroutineScope()
+
+                    val viewModel = remember {
+                        notesMenuInjection.provideChooseNoteViewModel(coroutineScope)
+                    }
+
                     NotesMenu(
-                        notesMenuInjection.provideChooseNoteViewModel(rememberCoroutineScope()),
+                        viewModel,
                         onNewNoteClick = {
                             navigationViewModel.navigateTo(NavigationPage.Editor())
                         },
                         onNoteClick = { id, title ->
+                            println("navigating to note with id: $id")
                             navigationViewModel.navigateTo(NavigationPage.Editor(id, title))
                         }
                     )
@@ -77,7 +85,8 @@ internal fun App(driverFactory: DriverFactory) {
                             AppTextEditor(
                                 writeopiaManager,
                                 editorInjector.provideNoteDetailsViewModel(),
-                                DefaultDrawersDesktop
+                                DefaultDrawersDesktop,
+                                loadNoteId = state.noteId
                             )
                         }
                     )

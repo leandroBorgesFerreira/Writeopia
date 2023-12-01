@@ -31,7 +31,7 @@ fun NotesMenu(
     Box {
         Notes(
             documents = chooseNoteViewModel.documentsState.collectAsState().value,
-            loagNote = onNoteClick,
+            loadNote = onNoteClick,
             selectionListener = { _, _ -> },
             modifier = Modifier.fillMaxSize()
         )
