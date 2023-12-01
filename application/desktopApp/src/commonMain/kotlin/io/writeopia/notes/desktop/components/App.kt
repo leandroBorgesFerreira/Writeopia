@@ -59,7 +59,6 @@ internal fun App(driverFactory: DriverFactory) {
             when (state) {
                 NavigationPage.NoteMenu -> {
                     val coroutineScope = rememberCoroutineScope()
-
                     val viewModel = remember {
                         notesMenuInjection.provideChooseNoteViewModel(coroutineScope)
                     }
@@ -70,7 +69,6 @@ internal fun App(driverFactory: DriverFactory) {
                             navigationViewModel.navigateTo(NavigationPage.Editor())
                         },
                         onNoteClick = { id, title ->
-                            println("navigating to note with id: $id")
                             navigationViewModel.navigateTo(NavigationPage.Editor(id, title))
                         }
                     )
