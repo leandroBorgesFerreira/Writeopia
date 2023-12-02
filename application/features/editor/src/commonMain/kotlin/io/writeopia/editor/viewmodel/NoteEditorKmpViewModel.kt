@@ -12,7 +12,7 @@ import io.writeopia.sdk.model.story.DrawState
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.Decoration
-import io.writeopia.sdk.persistence.core.dao.DocumentRepository
+import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
 import io.writeopia.sdk.serialization.extensions.toApi
 import io.writeopia.sdk.serialization.json.writeopiaJson

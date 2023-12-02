@@ -1,6 +1,6 @@
 package io.writeopia.sdk.persistence.dao.room
 
-import io.writeopia.sdk.persistence.core.dao.DocumentRepository
+import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.persistence.dao.DocumentEntityDao

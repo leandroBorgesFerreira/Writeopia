@@ -5,7 +5,7 @@ import io.writeopia.note_menu.data.repository.NotesConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.viewmodel.ChooseNoteKmpViewModel
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
-import io.writeopia.sdk.persistence.core.dao.DocumentRepository
+import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import kotlinx.coroutines.CoroutineScope
 

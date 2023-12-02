@@ -1,4 +1,4 @@
-package io.writeopia.sdk.persistence.core.dao
+package io.writeopia.sdk.persistence.core.repository
 
 import io.writeopia.sdk.manager.DocumentUpdate
 import io.writeopia.sdk.models.document.Document

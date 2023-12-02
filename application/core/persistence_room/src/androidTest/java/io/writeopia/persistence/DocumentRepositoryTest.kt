@@ -9,6 +9,7 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.dao.DocumentEntityDao
 import io.writeopia.sdk.persistence.dao.StoryUnitEntityDao
 import io.writeopia.sdk.persistence.dao.room.RoomDocumentRepository
@@ -29,7 +30,7 @@ class DocumentRepositoryTest {
     private lateinit var database: WriteopiaApplicationDatabase
     private lateinit var documentEntityDao: DocumentEntityDao
     private lateinit var storyUnitEntityDao: StoryUnitEntityDao
-    private lateinit var documentRepository: RoomDocumentRepository
+    private lateinit var documentRepository: DocumentRepository
 
     @Before
     fun createDb() {

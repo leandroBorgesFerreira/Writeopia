@@ -4,7 +4,7 @@ import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.editor.viewmodel.NoteEditorKmpViewModel
 import io.writeopia.sdk.manager.WriteopiaManager
-import io.writeopia.sdk.persistence.core.dao.DocumentRepository
+import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import kotlinx.coroutines.Dispatchers
 
