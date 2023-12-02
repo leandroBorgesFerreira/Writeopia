@@ -59,6 +59,7 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.test)
     debugImplementation(libs.androidx.compose.test.manifest)
     androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(project(":libraries:dbtest"))
 
     testImplementation(libs.kotlin.test)
 

@@ -44,4 +44,4 @@ include(":application:features:auth")
 include(":application:desktopApp")
 include(":application:web")
 include(":application:androidApp")
-
+include(":libraries:dbtest")
