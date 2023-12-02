@@ -23,13 +23,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class DocumentRepositoryTest {
+class DocumentRoomRepositoryTest {
 
     private lateinit var database: WriteopiaApplicationDatabase
     private lateinit var documentEntityDao: DocumentEntityDao
     private lateinit var storyUnitEntityDao: StoryUnitEntityDao
     private lateinit var documentRepository: DocumentRepository
-
     private lateinit var documentRepositoryTests: DocumentRepositoryTests
 
     @Before
