@@ -15,12 +15,20 @@ kotlin {
             dependencies {
                 implementation(project(":plugins:writeopia_persistence_core"))
                 implementation(project(":plugins:writeopia_persistence_sqldelight"))
+                implementation(project(":libraries:dbtest"))
             }
         }
 
         val jvmMain by getting {
             dependencies {
                 implementation(libs.sqldelight.jvm)
+            }
+        }
+
+        val jvmTest by getting {
+            dependencies {
+                implementation(libs.kotlin.test)
+                implementation(libs.kotlinx.coroutines.test)
             }
         }
     }

@@ -73,7 +73,7 @@ class DocumentRoomRepositoryTest {
 
     @Test
     fun saveSimpleDocumentInRepository() = runTest {
-        documentRepositoryTests.saveAndLoadASimpleDocument()
+        documentRepositoryTests.saveAndLoadADocumentWithoutContent()
     }
 
     @Test

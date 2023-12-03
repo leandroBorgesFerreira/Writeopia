@@ -21,7 +21,8 @@ class DocumentSqlDao(
     }
 
     fun insertDocument(document: Document) {
-        documentQueries.insert(id = document.id,
+        documentQueries.insert(
+            id = document.id,
             title = document.title,
             created_at = document.createdAt.toEpochMilliseconds(),
             last_updated_at = document.lastUpdatedAt.toEpochMilliseconds(),
@@ -166,31 +167,33 @@ class DocumentSqlDao(
         documentQueries.selectWithContentById(documentId).executeAsList()
             .groupBy { it.document_id }
             .mapNotNull { (documentId, content) ->
-                content.firstOrNull()?.run {
+                content.firstOrNull()?.let { document ->
                     Document(
                         id = documentId,
-                        title = title,
+                        title = document.title,
                         content = content.associate { innerContent ->
                             val storyStep = StoryStep(
-                                id = id_,
-                                localId = local_id,
-                                type = StoryTypes.fromNumber(type.toInt()).type,
-                                parentId = parent_id,
-                                url = url,
-                                path = path,
-                                text = text,
-                                checked = checked == 1L,
+                                id = innerContent.id_,
+                                localId = innerContent.local_id,
+                                type = StoryTypes.fromNumber(innerContent.type.toInt()).type,
+                                parentId = innerContent.parent_id,
+                                url = innerContent.url,
+                                path = innerContent.path,
+                                text = innerContent.text,
+                                checked = innerContent.checked == 1L,
 //                                steps = emptyList(), // Todo: Fix!
 //                                decoration = decoration, // Todo: Fix!
                             )
 
                             innerContent.position.toInt() to storyStep
                         },
-                        createdAt = Instant.fromEpochMilliseconds(created_at),
-                        lastUpdatedAt = Instant.fromEpochMilliseconds(last_updated_at),
-                        userId = user_id,
+                        createdAt = Instant.fromEpochMilliseconds(document.created_at),
+                        lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
+                        userId = document.user_id,
                     )
                 }
+
+
             }
             .firstOrNull()
 
