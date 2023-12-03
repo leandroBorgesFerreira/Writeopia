@@ -13,7 +13,7 @@ kotlin {
             dependencies {
                 implementation(project(":application:core:common_ui_tests"))
 
-                implementation(libs.androidx.junit)
+                implementation(libs.kotlin.test)
                 implementation(libs.androidx.espresso.core)
 
                 implementation(libs.androidx.compose.test)

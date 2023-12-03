@@ -1,0 +1,54 @@
+CREATE TABLE documentEntity (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  created_at INTEGER NOT NULL,
+  last_updated_at INTEGER NOT NULL,
+  user_id TEXT NOT NULL
+);
+
+selectAll:
+SELECT *
+FROM documentEntity;
+
+selectWithContent:
+SELECT *
+FROM documentEntity
+LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
+ORDER BY position;
+
+selectWithContentByIds:
+SELECT *
+FROM documentEntity
+LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
+WHERE documentEntity.id IN ?
+ORDER BY position;
+
+selectWithContentByUserId:
+SELECT *
+FROM documentEntity
+LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
+WHERE documentEntity.user_id = ?
+ORDER BY position;
+
+selectWithContentById:
+SELECT *
+FROM documentEntity
+LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
+WHERE documentEntity.id = ?
+ORDER BY position;
+
+insert:
+INSERT INTO documentEntity(id, title, created_at, last_updated_at, user_id)
+VALUES (?, ?, ?, ?, ?)
+ON CONFLICT(id) DO
+UPDATE SET id=excluded.id, title=excluded.title, created_at=excluded.created_at,
+last_updated_at=excluded.last_updated_at, user_id=excluded.user_id;
+
+delete:
+DELETE FROM documentEntity WHERE id = ?;
+
+deleteByIds:
+DELETE FROM documentEntity WHERE id IN ?;
+
+deleteByUserId:
+DELETE FROM documentEntity WHERE user_id = ?;

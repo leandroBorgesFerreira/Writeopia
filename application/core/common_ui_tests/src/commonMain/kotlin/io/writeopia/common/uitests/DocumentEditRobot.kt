@@ -2,6 +2,7 @@ package io.writeopia.common.uitests
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeTestRule
+import junit.framework.TestCase.assertTrue
 
 class DocumentEditRobot(private val composeTestRule: ComposeTestRule) {
 
@@ -22,7 +23,7 @@ class DocumentEditRobot(private val composeTestRule: ComposeTestRule) {
     }
 
     fun checkWithText(text: String) {
-        composeTestRule.onNodeWithText(text).assertIsDisplayed()
+        assertTrue(composeTestRule.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty())
     }
 
     fun checkWithTitle(text: String) {

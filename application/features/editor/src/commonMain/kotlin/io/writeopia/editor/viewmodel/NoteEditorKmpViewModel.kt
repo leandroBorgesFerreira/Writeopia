@@ -12,12 +12,13 @@ import io.writeopia.sdk.model.story.DrawState
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.Decoration
-import io.writeopia.sdk.persistence.core.dao.DocumentDao
+import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
 import io.writeopia.sdk.serialization.extensions.toApi
 import io.writeopia.sdk.serialization.json.writeopiaJson
 import io.writeopia.sdk.serialization.request.wrapInRequest
 import io.writeopia.sdk.utils.extensions.noContent
+import io.writeopia.utils_module.KmpViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -26,11 +27,11 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-internal class NoteEditorKmpViewModel(
+class NoteEditorKmpViewModel(
     override val writeopiaManager: WriteopiaManager,
-    private val documentDao: DocumentDao,
+    private val documentRepository: DocumentRepository,
     private val documentFilter: DocumentFilter = DocumentFilterObject,
-) : NoteEditorViewModel, BackstackInform by writeopiaManager, BackstackHandler by writeopiaManager {
+) : NoteEditorViewModel, KmpViewModel, BackstackInform by writeopiaManager, BackstackHandler by writeopiaManager {
 
     private lateinit var coroutineScope: CoroutineScope
 
@@ -79,7 +80,7 @@ internal class NoteEditorKmpViewModel(
     private val _documentToShareInfo = MutableStateFlow<ShareDocument?>(null)
     override val documentToShareInfo: StateFlow<ShareDocument?> = _documentToShareInfo.asStateFlow()
 
-    fun initCoroutine(coroutineScope: CoroutineScope) {
+    override fun initCoroutine(coroutineScope: CoroutineScope) {
         this.coroutineScope = coroutineScope
     }
 
@@ -108,33 +109,37 @@ internal class NoteEditorKmpViewModel(
     }
 
     override fun createNewDocument(documentId: String, title: String) {
-        if (writeopiaManager.isInitialized()) return
+        //Todo: There is a problem here!!
+        if (writeopiaManager.isInitialized()) {
+            return
+        }
 
         writeopiaManager.newStory(documentId, title)
 
-        coroutineScope.launch {
+        coroutineScope.launch(Dispatchers.IO) {
             writeopiaManager.currentDocument.stateIn(this).value?.let { document ->
-                documentDao.saveDocument(document)
-                writeopiaManager.saveOnStoryChanges(
-                    OnUpdateDocumentTracker(
-                        documentDao
-                    )
-                )
+                documentRepository.saveDocument(document)
             }
         }
+
+        writeopiaManager.saveOnStoryChanges(
+            OnUpdateDocumentTracker(
+                documentRepository
+            )
+        )
     }
 
-    override fun requestDocumentContent(documentId: String) {
+    override fun loadDocument(documentId: String) {
         if (writeopiaManager.isInitialized()) return
 
         coroutineScope.launch(Dispatchers.IO) {
-            val document = documentDao.loadDocumentById(documentId)
+            val document = documentRepository.loadDocumentById(documentId)
 
             if (document != null) {
-                writeopiaManager.initDocument(document)
+                writeopiaManager.loadDocument(document)
                 writeopiaManager.saveOnStoryChanges(
                     OnUpdateDocumentTracker(
-                        documentDao
+                        documentRepository
                     )
                 )
             }
@@ -205,7 +210,7 @@ internal class NoteEditorKmpViewModel(
             val document = writeopiaManager.currentDocument.stateIn(this).value
 
             if (document != null && story.value.stories.noContent()) {
-                documentDao.deleteDocument(document)
+                documentRepository.deleteDocument(document)
             }
 
             withContext(Dispatchers.Main) {

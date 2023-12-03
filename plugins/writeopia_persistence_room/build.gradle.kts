@@ -68,7 +68,7 @@ dependencies {
     ksp(libs.room.compiler)
     implementation(libs.room.paging)
 
-    testImplementation(libs.junit)
+    testImplementation(libs.kotlin.test)
     testImplementation(libs.room.testing)
 
     androidTestImplementation(libs.androidx.junit)

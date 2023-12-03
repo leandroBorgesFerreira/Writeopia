@@ -48,7 +48,7 @@ class HeaderDrawer(
                             .background(Color(backgroundColor))
                             .padding(top = 130.dp)
                     } else {
-                        modifierLet.padding(top = 40.dp)
+                        modifierLet.padding(top = 30.dp)
                     }
                 }
                 .fillMaxWidth()
@@ -95,7 +95,7 @@ fun headerDrawer(
         modifier = modifier,
         drawer = {
             TextDrawer(
-                modifier = Modifier.align(Alignment.BottomStart).padding(start = 16.dp, bottom = 16.dp),
+                modifier = Modifier.align(Alignment.BottomStart),
                 onTextEdit = manager::changeStoryState,
                 onKeyEvent = onKeyEvent,
                 onLineBreak = manager::onLineBreak,

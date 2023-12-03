@@ -29,7 +29,7 @@ dependencies {
     implementation("software.amazon.awssdk:dynamodb-enhanced")
     implementation(project(":writeopia_models"))
 
-    testImplementation(libs.junit)
+    testImplementation(libs.kotlin.test)
     testImplementation("com.amazonaws:DynamoDBLocal:2.0.0")
     testImplementation("io.github.ganadist.sqlite4java:libsqlite4java-osx-arm64:1.0.392")
 }

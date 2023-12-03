@@ -52,13 +52,16 @@ class WriteopiaManager(
     private val userId: suspend () -> String = { "no_user_id_provided" },
 ) : BackstackHandler, BackstackInform by backStackManager {
 
+    private val initialContent: Map<Int, StoryStep> =
+        mapOf(0 to StoryStep(text = "", type = StoryTypes.TITLE.type))
+
     private var localUserId: String? = null
 
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
     val scrollToPosition: StateFlow<Int?> = _scrollToPosition.asStateFlow()
 
     private val _currentStory: MutableStateFlow<StoryState> = MutableStateFlow(
-        StoryState(stories = emptyMap(), lastEdit = LastEdit.Nothing)
+        StoryState(stories = initialContent, lastEdit = LastEdit.Nothing)
     )
 
     private val _documentInfo: MutableStateFlow<DocumentInfo> =
@@ -103,6 +106,8 @@ class WriteopiaManager(
         DrawState(toDrawStories, focus)
     }
 
+    private var _initialized = false
+
     private suspend fun getUserId(): String =
         localUserId ?: userId.invoke().also { id ->
             localUserId = id
@@ -122,7 +127,8 @@ class WriteopiaManager(
         }
     }
 
-    fun isInitialized(): Boolean = _currentStory.value.stories.isNotEmpty()
+//    fun isInitialized(): Boolean = _currentStory.value.stories != initialContent
+    fun isInitialized(): Boolean = _initialized
 
     /**
      * Creates a new story. Use this when you wouldn't like to load a documented previously saved.
@@ -130,7 +136,11 @@ class WriteopiaManager(
      * @param documentId the id of the document that will be created
      * @param title the title of the document
      */
-    fun newStory(documentId: String = GenerateId.generate(), title: String = "") {
+    fun newStory(documentId: String = GenerateId.generate(), title: String = "", forceRestart: Boolean = false) {
+        if (isInitialized() && !forceRestart) return
+
+        _initialized = true
+
         val firstMessage = StoryStep(
             localId = GenerateId.generate(),
             type = StoryTypes.TITLE.type
@@ -160,8 +170,10 @@ class WriteopiaManager(
      *
      * @param document [Document]
      */
-    fun initDocument(document: Document) {
+    fun loadDocument(document: Document) {
         if (isInitialized()) return
+
+        _initialized = true
 
         val stories = document.content
         _currentStory.value =
@@ -428,3 +440,4 @@ class WriteopiaManager(
         coroutineScope.cancel()
     }
 }
+

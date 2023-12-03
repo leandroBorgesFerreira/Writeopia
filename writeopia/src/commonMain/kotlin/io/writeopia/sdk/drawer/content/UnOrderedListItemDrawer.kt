@@ -20,6 +20,20 @@ import io.writeopia.sdk.models.story.StoryStep
  * Drawer for a unordered list. This type of item it just a normal message with some decoration
  * at the start of Composable to show that this is part of a list.
  */
+
+fun unOrderedListItemDrawer(
+    manager: WriteopiaManager,
+    modifier: Modifier = Modifier,
+    dragIconWidth: Dp = 16.dp,
+    messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
+): StoryStepDrawer = unOrderedListItemDrawer(
+    modifier = modifier,
+    onSelected = manager::onSelected,
+    customBackgroundColor = Color.Transparent,
+    dragIconWidth = dragIconWidth,
+    messageDrawer = messageDrawer,
+)
+
 fun unOrderedListItemDrawer(
     modifier: Modifier = Modifier,
     customBackgroundColor: Color = Color.Transparent,
@@ -43,18 +57,4 @@ fun unOrderedListItemDrawer(
         dragIconWidth,
         startContent,
         messageDrawer
-    )
-
-@Composable
-fun unOrderedListItemDrawer(
-    manager: WriteopiaManager,
-    modifier: Modifier = Modifier,
-    dragIconWidth: Dp = 16.dp,
-    messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
-): StoryStepDrawer = unOrderedListItemDrawer(
-        modifier = modifier,
-        onSelected = manager::onSelected,
-        customBackgroundColor = Color.Transparent,
-        dragIconWidth = dragIconWidth,
-        messageDrawer = messageDrawer,
     )

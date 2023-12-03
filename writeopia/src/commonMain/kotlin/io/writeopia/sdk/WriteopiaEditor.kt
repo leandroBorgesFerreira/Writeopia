@@ -21,7 +21,7 @@ fun WriteopiaEditor(
     editable: Boolean = true,
     listState: LazyListState = rememberLazyListState(),
     drawers: Map<Int, StoryStepDrawer>,
-    storyState: DrawState = DrawState(emptyMap())
+    storyState: DrawState
 ) {
     val content = storyState.stories.values.toList()
 

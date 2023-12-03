@@ -7,7 +7,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import io.writeopia.common.uitests.CommonTests
 import io.writeopia.common.uitests.DocumentEditRobot
 import io.writeopia.navigation.NavigationGraph
-import io.writeopia.persistence.WriteopiaApplicationDatabase
+import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.robots.DocumentsMenuRobot
 import io.writeopia.utils_module.Destinations
 import org.junit.Rule

@@ -5,6 +5,7 @@ import io.writeopia.sdk.backstack.BackstackHandler
 import io.writeopia.sdk.backstack.BackstackInform
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.story.DrawState
+import io.writeopia.utils_module.KmpViewModel
 import kotlinx.coroutines.flow.StateFlow
 
 interface NoteEditorViewModel: BackstackInform, BackstackHandler {
@@ -37,7 +38,7 @@ interface NoteEditorViewModel: BackstackInform, BackstackHandler {
 
     fun createNewDocument(documentId: String, title: String)
 
-    fun requestDocumentContent(documentId: String)
+    fun loadDocument(documentId: String)
 
     fun onHeaderColorSelection(color: Int?)
 

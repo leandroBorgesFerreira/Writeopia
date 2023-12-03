@@ -14,19 +14,19 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-
+                api(project(":application:core:persistence_sqldelight"))
             }
         }
 
         val jvmMain by getting {
             dependencies {
-                api(project(":plugins:writeopia_persistence_sqldelight"))
+
             }
         }
 
         val androidMain by getting {
             dependencies {
-                api(project(":application:core:persistence"))
+                api(project(":application:core:persistence_room"))
             }
         }
     }

@@ -1,44 +1,22 @@
 package io.writeopia.editor.ui
 
+//import androidx.compose.ui.tooling.preview.Preview
+//import io.writeopia.appresourcers.R
 import android.content.Context
 import android.content.Intent
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.animateScrollBy
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,22 +26,18 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-//import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.writeopia.sdk.WriteopiaEditor
-import io.writeopia.sdk.drawer.factory.DefaultDrawersAndroid
-import io.writeopia.sdk.uicomponents.EditionScreen
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import io.writeopia.editor.configuration.ui.HeaderEdition
 import io.writeopia.editor.configuration.ui.NoteGlobalActionsMenu
 import io.writeopia.editor.input.InputScreen
 import io.writeopia.editor.model.EditState
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import io.writeopia.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.editor.viewmodel.ShareDocument
-import kotlinx.coroutines.flow.collectLatest
-//import io.writeopia.appresourcers.R
+import io.writeopia.sdk.drawer.factory.DefaultDrawersAndroid
 import io.writeopia.sdk.models.id.GenerateId
+import io.writeopia.sdk.uicomponents.EditionScreen
 import kotlinx.coroutines.flow.StateFlow
 
 const val NAVIGATE_BACK_TEST_TAG = "NoteEditorScreenNavigateBack"
@@ -94,7 +68,7 @@ internal fun NoteEditorScreen(
     }
 
     if (documentId != null) {
-        noteEditorViewModel.requestDocumentContent(documentId)
+        noteEditorViewModel.loadDocument(documentId)
     } else {
         noteEditorViewModel.createNewDocument(
             GenerateId.generate(),
@@ -131,7 +105,7 @@ internal fun NoteEditorScreen(
                 .imePadding()
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
-                TextEditor(noteEditorViewModel)
+                TextEditor(noteEditorViewModel, DefaultDrawersAndroid)
 
                 BottomScreen(
                     noteEditorViewModel.isEditState,
@@ -272,39 +246,6 @@ private fun shareDocument(context: Context, shareDocument: ShareDocument) {
 //        TopBar(titleState = MutableStateFlow("Title"), shareDocument = {})
 //    }
 //}
-
-@Composable
-private fun ColumnScope.TextEditor(noteEditorViewModel: NoteEditorViewModel) {
-    val storyState by noteEditorViewModel.toDraw.collectAsState()
-    val editable by noteEditorViewModel.isEditable.collectAsState()
-    val listState: LazyListState = rememberLazyListState()
-    val position by noteEditorViewModel.scrollToPosition.collectAsState()
-
-    if (position != null) {
-        LaunchedEffect(position, block = {
-            noteEditorViewModel.scrollToPosition.collectLatest {
-                listState.animateScrollBy(70F)
-            }
-        })
-    }
-
-    val clipShape = MaterialTheme.shapes.medium
-
-    WriteopiaEditor(
-        modifier = Modifier
-            .fillMaxWidth()
-            .weight(1F),
-        storyState = storyState,
-        editable = editable,
-        listState = listState,
-        drawers = DefaultDrawersAndroid.create(
-            noteEditorViewModel.writeopiaManager,
-            defaultBorder = clipShape,
-            onHeaderClick = noteEditorViewModel::onHeaderClick
-//            groupsBackgroundColor = MaterialTheme.colorScheme.surface
-        )
-    )
-}
 
 @Composable
 private fun BottomScreen(

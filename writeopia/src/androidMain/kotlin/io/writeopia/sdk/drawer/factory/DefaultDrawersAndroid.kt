@@ -1,7 +1,6 @@
 package io.writeopia.sdk.drawer.factory
 
 import android.view.KeyEvent
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -13,15 +12,16 @@ import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.text.edition.TextCommandHandler
 
-object DefaultDrawersAndroid {
+object DefaultDrawersAndroid : DrawersFactory {
 
     @Composable
-    fun create(
-        manager: WriteopiaManager, defaultBorder: Shape = MaterialTheme.shapes.medium,
-        editable: Boolean = false,
-        groupsBackgroundColor: Color = Color.Transparent,
-        onHeaderClick: () -> Unit = {},
-        textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager)
+    override fun create(
+        manager: WriteopiaManager,
+        defaultBorder: Shape,
+        editable: Boolean,
+        groupsBackgroundColor: Color,
+        onHeaderClick: () -> Unit,
+        textCommandHandler: TextCommandHandler
     ): Map<Int, StoryStepDrawer> {
         val imageDrawer = ImageDrawer(
             containerModifier = Modifier::defaultImageShape,
