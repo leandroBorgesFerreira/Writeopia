@@ -74,6 +74,10 @@ internal fun App(driverFactory: DriverFactory) {
                     )
                 }
                 is NavigationPage.Editor -> {
+                    val viewModel = remember {
+                        editorInjector.provideNoteDetailsViewModel()
+                    }
+
                     EditorScaffold(
                         clickAtBottom = writeopiaManager::clickAtTheEnd,
                         onBackClick = {
@@ -82,7 +86,7 @@ internal fun App(driverFactory: DriverFactory) {
                         content = {
                             AppTextEditor(
                                 writeopiaManager,
-                                editorInjector.provideNoteDetailsViewModel(),
+                                viewModel,
                                 DefaultDrawersDesktop,
                                 loadNoteId = state.noteId
                             )

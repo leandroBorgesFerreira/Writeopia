@@ -25,7 +25,6 @@ fun NotesMenu(
     LaunchedEffect(key1 = "refresh", block = {
         chooseNoteViewModel.requestUser()
         chooseNoteViewModel.requestDocuments(false)
-        // Todo: Remove BuildConfig.DEBUG check later.
     })
 
     Box {

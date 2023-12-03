@@ -106,6 +106,8 @@ class WriteopiaManager(
         DrawState(toDrawStories, focus)
     }
 
+    private var _initialized = false
+
     private suspend fun getUserId(): String =
         localUserId ?: userId.invoke().also { id ->
             localUserId = id
@@ -125,7 +127,8 @@ class WriteopiaManager(
         }
     }
 
-    fun isInitialized(): Boolean = _currentStory.value.stories != initialContent
+//    fun isInitialized(): Boolean = _currentStory.value.stories != initialContent
+    fun isInitialized(): Boolean = _initialized
 
     /**
      * Creates a new story. Use this when you wouldn't like to load a documented previously saved.
@@ -133,7 +136,11 @@ class WriteopiaManager(
      * @param documentId the id of the document that will be created
      * @param title the title of the document
      */
-    fun newStory(documentId: String = GenerateId.generate(), title: String = "") {
+    fun newStory(documentId: String = GenerateId.generate(), title: String = "", forceRestart: Boolean = false) {
+        if (isInitialized() && !forceRestart) return
+
+        _initialized = true
+
         val firstMessage = StoryStep(
             localId = GenerateId.generate(),
             type = StoryTypes.TITLE.type
@@ -163,8 +170,10 @@ class WriteopiaManager(
      *
      * @param document [Document]
      */
-    fun initDocument(document: Document) {
+    fun loadDocument(document: Document) {
         if (isInitialized()) return
+
+        _initialized = true
 
         val stories = document.content
         _currentStory.value =

@@ -136,7 +136,7 @@ class NoteEditorKmpViewModel(
             val document = documentRepository.loadDocumentById(documentId)
 
             if (document != null) {
-                writeopiaManager.initDocument(document)
+                writeopiaManager.loadDocument(document)
                 writeopiaManager.saveOnStoryChanges(
                     OnUpdateDocumentTracker(
                         documentRepository
