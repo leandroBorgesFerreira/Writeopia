@@ -33,3 +33,4 @@ amplifytools.xcconfig
 **.sample
 #amplify-do-not-edit-end
 local_scripts/
+application/desktopApp/writeopia.db
