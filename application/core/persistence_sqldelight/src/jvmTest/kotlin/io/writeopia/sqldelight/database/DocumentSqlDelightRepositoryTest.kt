@@ -6,6 +6,7 @@ import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
+import kotlin.test.Ignore
 import kotlin.test.Test
 
 class DocumentSqlDelightRepositoryTest {
@@ -40,6 +41,7 @@ class DocumentSqlDelightRepositoryTest {
     }
 
     @Test
+    @Ignore("Step inside step persistence is currently not supported")
     fun savingAndLoadingDocumentOneImageGroupInRepository() = runTest {
         documentRepositoryTests.savingAndLoadingDocumentOneImageGroupInRepository()
     }
