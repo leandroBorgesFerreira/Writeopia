@@ -13,24 +13,24 @@ FROM documentEntity;
 selectWithContent:
 SELECT *
 FROM documentEntity
-INNER JOIN storyStepEntity ON storyStepEntity.document_id=documentEntity.id;
+LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id;
 
 selectWithContentByIds:
 SELECT *
 FROM documentEntity
-INNER JOIN storyStepEntity ON storyStepEntity.document_id=documentEntity.id
+LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
 WHERE documentEntity.id IN ?;
 
 selectWithContentByUserId:
 SELECT *
 FROM documentEntity
-INNER JOIN storyStepEntity ON storyStepEntity.document_id=documentEntity.id
+LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
 WHERE documentEntity.user_id = ?;
 
 selectWithContentById:
 SELECT *
 FROM documentEntity
-INNER JOIN storyStepEntity ON storyStepEntity.document_id=documentEntity.id
+LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
 WHERE documentEntity.id = ?;
 
 insert:

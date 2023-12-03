@@ -57,65 +57,71 @@ class DocumentSqlDao(
     }
 
     fun loadDocumentWithContentByIds(id: List<String>): List<Document> =
-        documentQueries.selectWithContentByIds(id)
-            .executeAsList()
-            .groupBy { it.document_id }
+        documentQueries.selectWithContentByIds(id).executeAsList()
+            .groupBy { it.id }
             .mapNotNull { (documentId, content) ->
-                content.firstOrNull()?.run {
-                    Document(
-                        id = documentId,
-                        title = title,
-                        content = content.associate { innerContent ->
-                            val storyStep = StoryStep(
-                                id = id_,
-                                localId = local_id,
-                                type = StoryTypes.fromNumber(type.toInt()).type,
-                                parentId = parent_id,
-                                url = url,
-                                path = path,
-                                text = text,
-                                checked = checked == 1L,
+                content.firstOrNull()?.let { document ->
+                    val innerContent = content.filter { innerContent ->
+                        !innerContent.id_.isNullOrEmpty()
+                    }.associate { innerContent ->
+                        val storyStep = StoryStep(
+                            id = innerContent.id_!!,
+                            localId = innerContent.local_id!!,
+                            type = StoryTypes.fromNumber(innerContent.type!!.toInt()).type,
+                            parentId = innerContent.parent_id,
+                            url = innerContent.url,
+                            path = innerContent.path,
+                            text = innerContent.text,
+                            checked = innerContent.checked == 1L,
 //                                steps = emptyList(), // Todo: Fix!
 //                                decoration = decoration, // Todo: Fix!
-                            )
+                        )
 
-                            innerContent.position.toInt() to storyStep
-                        },
-                        createdAt = Instant.fromEpochMilliseconds(created_at),
-                        lastUpdatedAt = Instant.fromEpochMilliseconds(last_updated_at),
-                        userId = user_id,
+                        innerContent.position!!.toInt() to storyStep
+                    }
+
+                    Document(
+                        id = documentId,
+                        title = document.title,
+                        content = innerContent,
+                        createdAt = Instant.fromEpochMilliseconds(document.created_at),
+                        lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
+                        userId = document.user_id,
                     )
                 }
             }
 
     fun loadDocumentsWithContentByIds(ids: Set<String>): List<Document> {
-        val result = documentQueries.selectWithContentByIds(ids)
-            .executeAsList()
-            .groupBy { it.document_id }
+        val result = documentQueries.selectWithContentByIds(ids).executeAsList()
+            .groupBy { it.id }
             .mapNotNull { (documentId, content) ->
-                content.firstOrNull()?.run {
-                    Document(
-                        id = documentId,
-                        title = title,
-                        content = content.associate { innerContent ->
-                            val storyStep = StoryStep(
-                                id = id_,
-                                localId = local_id,
-                                type = StoryTypes.fromNumber(type.toInt()).type,
-                                parentId = parent_id,
-                                url = url,
-                                path = path,
-                                text = text,
-                                checked = checked == 1L,
+                content.firstOrNull()?.let { document ->
+                    val innerContent = content.filter { innerContent ->
+                        !innerContent.id_.isNullOrEmpty()
+                    }.associate { innerContent ->
+                        val storyStep = StoryStep(
+                            id = innerContent.id_!!,
+                            localId = innerContent.local_id!!,
+                            type = StoryTypes.fromNumber(innerContent.type!!.toInt()).type,
+                            parentId = innerContent.parent_id,
+                            url = innerContent.url,
+                            path = innerContent.path,
+                            text = innerContent.text,
+                            checked = innerContent.checked == 1L,
 //                                steps = emptyList(), // Todo: Fix!
 //                                decoration = decoration, // Todo: Fix!
-                            )
+                        )
 
-                            innerContent.position.toInt() to storyStep
-                        },
-                        createdAt = Instant.fromEpochMilliseconds(created_at),
-                        lastUpdatedAt = Instant.fromEpochMilliseconds(last_updated_at),
-                        userId = user_id,
+                        innerContent.position!!.toInt() to storyStep
+                    }
+
+                    Document(
+                        id = documentId,
+                        title = document.title,
+                        content = innerContent,
+                        createdAt = Instant.fromEpochMilliseconds(document.created_at),
+                        lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
+                        userId = document.user_id,
                     )
                 }
             }
@@ -125,31 +131,35 @@ class DocumentSqlDao(
 
     fun loadDocumentsWithContentByUserId(userId: String): List<Document> {
         return documentQueries.selectWithContentByUserId(userId).executeAsList()
-            .groupBy { it.document_id }
+            .groupBy { it.id }
             .mapNotNull { (documentId, content) ->
-                content.firstOrNull()?.run {
-                    Document(
-                        id = documentId,
-                        title = title,
-                        content = content.associate { innerContent ->
-                            val storyStep = StoryStep(
-                                id = id_,
-                                localId = local_id,
-                                type = StoryTypes.fromNumber(type.toInt()).type,
-                                parentId = parent_id,
-                                url = url,
-                                path = path,
-                                text = text,
-                                checked = checked == 1L,
+                content.firstOrNull()?.let { document ->
+                    val innerContent = content.filter { innerContent ->
+                        !innerContent.id_.isNullOrEmpty()
+                    }.associate { innerContent ->
+                        val storyStep = StoryStep(
+                            id = innerContent.id_!!,
+                            localId = innerContent.local_id!!,
+                            type = StoryTypes.fromNumber(innerContent.type!!.toInt()).type,
+                            parentId = innerContent.parent_id,
+                            url = innerContent.url,
+                            path = innerContent.path,
+                            text = innerContent.text,
+                            checked = innerContent.checked == 1L,
 //                                steps = emptyList(), // Todo: Fix!
 //                                decoration = decoration, // Todo: Fix!
-                            )
+                        )
 
-                            innerContent.position.toInt() to storyStep
-                        },
-                        createdAt = Instant.fromEpochMilliseconds(created_at),
-                        lastUpdatedAt = Instant.fromEpochMilliseconds(last_updated_at),
-                        userId = user_id,
+                        innerContent.position!!.toInt() to storyStep
+                    }
+
+                    Document(
+                        id = documentId,
+                        title = document.title,
+                        content = innerContent,
+                        createdAt = Instant.fromEpochMilliseconds(document.created_at),
+                        lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
+                        userId = document.user_id,
                     )
                 }
             }
@@ -165,35 +175,37 @@ class DocumentSqlDao(
 
     fun loadDocumentWithContentById(documentId: String): Document? =
         documentQueries.selectWithContentById(documentId).executeAsList()
-            .groupBy { it.document_id }
+            .groupBy { it.id }
             .mapNotNull { (documentId, content) ->
                 content.firstOrNull()?.let { document ->
+                    val innerContent = content.filter { innerContent ->
+                        !innerContent.id_.isNullOrEmpty()
+                    }.associate { innerContent ->
+                        val storyStep = StoryStep(
+                            id = innerContent.id_!!,
+                            localId = innerContent.local_id!!,
+                            type = StoryTypes.fromNumber(innerContent.type!!.toInt()).type,
+                            parentId = innerContent.parent_id,
+                            url = innerContent.url,
+                            path = innerContent.path,
+                            text = innerContent.text,
+                            checked = innerContent.checked == 1L,
+//                                steps = emptyList(), // Todo: Fix!
+//                                decoration = decoration, // Todo: Fix!
+                        )
+
+                        innerContent.position!!.toInt() to storyStep
+                    }
+
                     Document(
                         id = documentId,
                         title = document.title,
-                        content = content.associate { innerContent ->
-                            val storyStep = StoryStep(
-                                id = innerContent.id_,
-                                localId = innerContent.local_id,
-                                type = StoryTypes.fromNumber(innerContent.type.toInt()).type,
-                                parentId = innerContent.parent_id,
-                                url = innerContent.url,
-                                path = innerContent.path,
-                                text = innerContent.text,
-                                checked = innerContent.checked == 1L,
-//                                steps = emptyList(), // Todo: Fix!
-//                                decoration = decoration, // Todo: Fix!
-                            )
-
-                            innerContent.position.toInt() to storyStep
-                        },
+                        content = innerContent,
                         createdAt = Instant.fromEpochMilliseconds(document.created_at),
                         lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
                         userId = document.user_id,
                     )
                 }
-
-
             }
             .firstOrNull()
 
