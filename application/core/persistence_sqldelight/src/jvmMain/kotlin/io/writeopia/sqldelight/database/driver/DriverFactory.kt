@@ -9,9 +9,5 @@ actual class DriverFactory {
     actual fun createDriver(
         url: String,
         properties: Properties,
-    ): SqlDriver {
-        val driver: SqlDriver = JdbcSqliteDriver(url, properties)
-        WriteopiaDb.Schema.create(driver)
-        return driver
-    }
+    ): SqlDriver = JdbcSqliteDriver(url, properties, WriteopiaDb.Schema)
 }
