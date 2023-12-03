@@ -13,25 +13,29 @@ FROM documentEntity;
 selectWithContent:
 SELECT *
 FROM documentEntity
-LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id;
+LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
+ORDER BY position;
 
 selectWithContentByIds:
 SELECT *
 FROM documentEntity
 LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
-WHERE documentEntity.id IN ?;
+WHERE documentEntity.id IN ?
+ORDER BY position;
 
 selectWithContentByUserId:
 SELECT *
 FROM documentEntity
 LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
-WHERE documentEntity.user_id = ?;
+WHERE documentEntity.user_id = ?
+ORDER BY position;
 
 selectWithContentById:
 SELECT *
 FROM documentEntity
 LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
-WHERE documentEntity.id = ?;
+WHERE documentEntity.id = ?
+ORDER BY position;
 
 insert:
 INSERT INTO documentEntity(id, title, created_at, last_updated_at, user_id)
