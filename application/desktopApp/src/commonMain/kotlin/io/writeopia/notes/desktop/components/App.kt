@@ -16,15 +16,14 @@ import io.writeopia.notes.desktop.components.navigation.NavigationViewModel
 import io.writeopia.sdk.drawer.factory.DefaultDrawersDesktop
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
+import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.database.createDatabase
 import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import kotlinx.coroutines.Dispatchers
 
 @Composable
-internal fun App(driverFactory: DriverFactory) {
-    val database = createDatabase(driverFactory, url = "jdbc:sqlite:writeopia.db")
-
+internal fun App(database: WriteopiaDb) {
     val authCoreInjection = KmpAuthCoreInjection()
     val repositoryInjection = SqlDelightDaoInjector(database)
 

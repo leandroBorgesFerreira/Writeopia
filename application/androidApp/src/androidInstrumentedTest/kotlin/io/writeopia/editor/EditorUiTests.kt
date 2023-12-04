@@ -22,9 +22,10 @@ class EditorUiTests {
     fun itShouldBePossibleToWriteATitleAndSomeContent() {
         startContent()
 
-        DocumentsMenuRobot(composeTestRule).goToEditNote()
-
-        EditorCommonTests.testAddTitleAndContent(DocumentEditRobot(composeTestRule))
+        EditorCommonTests.testAddTitleAndContent(
+            DocumentsMenuRobot(composeTestRule),
+            DocumentEditRobot(composeTestRule)
+        )
     }
 
     private fun startContent() {

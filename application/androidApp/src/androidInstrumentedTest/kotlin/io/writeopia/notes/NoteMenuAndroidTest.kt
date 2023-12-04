@@ -6,6 +6,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.junit4.createComposeRule
 import io.writeopia.common.uitests.robots.DocumentEditRobot
 import io.writeopia.common.uitests.robots.DocumentsMenuRobot
+import io.writeopia.common.uitests.tests.editor.EditorCommonTests
 import io.writeopia.robots.AndroidDocumentEditPageRobot
 import io.writeopia.navigation.NavigationGraph
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
@@ -32,20 +33,14 @@ class NoteMenuAndroidTest {
     fun itShouldBePossibleToSaveNoteWithTitle() {
         startContent()
 
-        val noteTitle = "Note1"
+        EditorCommonTests.saveNoteWithTitle(DocumentsMenuRobot(composeTestRule), DocumentEditRobot(composeTestRule))
+    }
 
-        val documentsMenuRobot = DocumentsMenuRobot(composeTestRule)
-        documentsMenuRobot.goToEditNote()
+    @Test
+    fun itShouldBePossibleToOpenANoteWithoutTitle() {
+        startContent()
 
-        val documentEditPageRobot = AndroidDocumentEditPageRobot(composeTestRule)
-        documentEditPageRobot.verifyItIsInEdition()
-
-        DocumentEditRobot(composeTestRule).run {
-            writeTitle(noteTitle)
-        }
-
-        documentEditPageRobot.goBack()
-        documentsMenuRobot.assertNoteWithTitle(noteTitle)
+        EditorCommonTests.openNoteWithoutTitle(DocumentsMenuRobot(composeTestRule), DocumentEditRobot(composeTestRule))
     }
 
     @Test
@@ -65,32 +60,6 @@ class NoteMenuAndroidTest {
         }
 
         documentEditPageRobot.verifyToolbarTitle(noteTitle)
-    }
-
-    @Test
-    fun itShouldBePossibleToOpenANoteWithoutTitle() {
-        startContent()
-
-        val documentsMenuRobot = DocumentsMenuRobot(composeTestRule)
-        documentsMenuRobot.goToEditNote()
-
-        val text = "Text"
-
-        val documentEditPageRobot = AndroidDocumentEditPageRobot(composeTestRule)
-        documentEditPageRobot.verifyItIsInEdition()
-
-        val documentEditRobot = DocumentEditRobot(composeTestRule)
-        documentEditRobot.run {
-            addLine()
-            writeText(text, 2)
-        }
-
-        documentEditPageRobot.goBack()
-
-        documentEditRobot.run {
-            clickWithText(text)
-            checkWithText(text) //It shouldn't crash
-        }
     }
 
     private fun startContent() {

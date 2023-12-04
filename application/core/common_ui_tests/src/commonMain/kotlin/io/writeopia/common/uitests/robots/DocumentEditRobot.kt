@@ -29,4 +29,8 @@ class DocumentEditRobot(private val composeTestRule: ComposeTestRule) {
     fun checkWithTitle(text: String) {
         composeTestRule.onNodeWithTag("MessageDrawer_0").assertTextContains(text)
     }
+
+    fun goBack() {
+        composeTestRule.onNodeWithTag("NoteEditorScreenNavigateBack").performClick()
+    }
 }

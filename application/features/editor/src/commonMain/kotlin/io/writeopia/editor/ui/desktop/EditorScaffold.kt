@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -71,6 +72,7 @@ fun EditorScaffold(
                     .padding(horizontal = 50.dp, vertical = 50.dp)
                     .clip(CircleShape)
                     .clickable(onClick = onBackClick)
+                    .testTag("NoteEditorScreenNavigateBack")
             )
         }
     }
