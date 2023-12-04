@@ -1,4 +1,4 @@
-package io.writeopia.common.uitests
+package io.writeopia.common.uitests.robots
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeTestRule

@@ -1,6 +1,8 @@
-package io.writeopia.common.uitests
+package io.writeopia.common.uitests.tests.editor
 
-object CommonTests {
+import io.writeopia.common.uitests.robots.DocumentEditRobot
+
+object EditorCommonTests {
 
     fun testAddTitleAndContent(documentEditRobot: DocumentEditRobot) {
         val title = "Some Title"

@@ -4,11 +4,11 @@ import android.app.Application
 import android.content.Context
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.junit4.createComposeRule
-import io.writeopia.common.uitests.DocumentEditRobot
-import io.writeopia.robots.DocumentEditPageRobot
+import io.writeopia.common.uitests.robots.DocumentEditRobot
+import io.writeopia.common.uitests.robots.DocumentsMenuRobot
+import io.writeopia.robots.AndroidDocumentEditPageRobot
 import io.writeopia.navigation.NavigationGraph
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
-import io.writeopia.robots.DocumentsMenuRobot
 import io.writeopia.utils_module.Destinations
 import org.junit.Rule
 import org.junit.Test
@@ -25,7 +25,7 @@ class NoteMenuAndroidTest {
         startContent()
 
         DocumentsMenuRobot(composeTestRule).goToEditNote()
-        DocumentEditPageRobot(composeTestRule).verifyItIsInEdition()
+        AndroidDocumentEditPageRobot(composeTestRule).verifyItIsInEdition()
     }
 
     @Test
@@ -37,7 +37,7 @@ class NoteMenuAndroidTest {
         val documentsMenuRobot = DocumentsMenuRobot(composeTestRule)
         documentsMenuRobot.goToEditNote()
 
-        val documentEditPageRobot = DocumentEditPageRobot(composeTestRule)
+        val documentEditPageRobot = AndroidDocumentEditPageRobot(composeTestRule)
         documentEditPageRobot.verifyItIsInEdition()
 
         DocumentEditRobot(composeTestRule).run {
@@ -57,7 +57,7 @@ class NoteMenuAndroidTest {
         val documentsMenuRobot = DocumentsMenuRobot(composeTestRule)
         documentsMenuRobot.goToEditNote()
 
-        val documentEditPageRobot = DocumentEditPageRobot(composeTestRule)
+        val documentEditPageRobot = AndroidDocumentEditPageRobot(composeTestRule)
         documentEditPageRobot.verifyItIsInEdition()
 
         DocumentEditRobot(composeTestRule).run {
@@ -76,7 +76,7 @@ class NoteMenuAndroidTest {
 
         val text = "Text"
 
-        val documentEditPageRobot = DocumentEditPageRobot(composeTestRule)
+        val documentEditPageRobot = AndroidDocumentEditPageRobot(composeTestRule)
         documentEditPageRobot.verifyItIsInEdition()
 
         val documentEditRobot = DocumentEditRobot(composeTestRule)

@@ -12,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.writeopia.note_menu.ui.screen.menu.Notes
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
@@ -36,7 +37,7 @@ fun NotesMenu(
         )
 
         FloatingActionButton(
-            modifier = Modifier.align(Alignment.BottomEnd).padding(36.dp),
+            modifier = Modifier.align(Alignment.BottomEnd).padding(36.dp).testTag("addNote"),
             onClick = onNewNoteClick,
             content = {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "New note")
