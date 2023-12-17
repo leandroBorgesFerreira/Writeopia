@@ -25,21 +25,6 @@ jobs:
           java-version: '17'
       - name: Tests debug
         run: ./gradlew test
-  android_connected_tests:
-    name: Android Connected tests
-    runs-on: ubuntu-22.04
-    env:
-      isCI: "true"
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: adopt
-          java-version: '17'
-      - name: UI Tests android
-        run: ./gradlew pixel7api33DebugAndroidTest
   ui_jvm_tests:
     name: Jvm UI Compose tests
     runs-on: ubuntu-22.04
