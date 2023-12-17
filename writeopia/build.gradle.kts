@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    id("org.jetbrains.compose")
     kotlin("multiplatform")
     alias(libs.plugins.nativeCocoapods)
 }
@@ -48,15 +47,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.materialIconsExtended)
-                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-                implementation(compose.components.resources)
-
                 implementation(project(":writeopia_models"))
-
+                implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kotlinx.datetime)
             }
         }
@@ -70,7 +62,6 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation(compose.preview)
             }
         }
 

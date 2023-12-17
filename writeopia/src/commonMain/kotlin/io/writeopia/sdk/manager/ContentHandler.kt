@@ -9,10 +9,10 @@ import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.utils.StoryStepFactory
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.toEditState
 import io.writeopia.sdk.utils.iterables.MapOperations
+import io.writeopia.sdk.utils.ui.StoryStepFactory
 
 /**
  * Class dedicated to handle adding, deleting or changing StorySteps

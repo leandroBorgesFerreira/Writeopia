@@ -37,7 +37,7 @@ import io.writeopia.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.editor.viewmodel.ShareDocument
 import io.writeopia.sdk.drawer.factory.DefaultDrawersAndroid
 import io.writeopia.sdk.models.id.GenerateId
-import io.writeopia.sdk.uicomponents.EditionScreen
+import io.writeopia.ui.components.EditionScreen
 import kotlinx.coroutines.flow.StateFlow
 
 const val NAVIGATE_BACK_TEST_TAG = "NoteEditorScreenNavigateBack"
@@ -299,7 +299,7 @@ private fun BottomScreen(
             }
 
             EditState.SELECTED_TEXT -> {
-                EditionScreen(
+                io.writeopia.ui.components.EditionScreen(
                     modifier = containerModifier,
                     onDelete = deleteSelection
                 )
