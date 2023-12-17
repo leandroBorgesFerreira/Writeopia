@@ -4,28 +4,33 @@ amplify = "2.11.1"
 coilVersion = "2.3.0"
 composeBom = "2023.10.01"
 composeShimmer = "1.0.5"
-desugar_jdk_libs = "2.0.3"
+desugar_jdk_libs = "2.0.4"
 espressoCore = "3.5.1"
 junit = "1.1.5"
 kotlinxCoroutines = "1.7.3"
 kotlinxDatetime = "0.4.1"
-kotlinxSerializationJson = "1.6.0"
+kotlinxSerializationJson = "1.6.1"
 ktorClient = "2.3.3"
 ktx = "1.12.0"
 appCompat = "1.6.1"
-material = "1.10.0"
+material = "1.11.0"
 material3Desktop = "1.5.10"
 materialIconsExtended = "1.5.4"
-room = "2.6.0"
+room = "2.6.1"
 compose = "2.6.2"
-navigation-compose = "2.7.5"
-agp = "8.1.2"
-kotlin = "1.9.10"
-compose-compiler = "1.5.3"
+navigation-compose = "2.7.6"
+agp = "8.1.4"
+kotlin = "1.9.21"
+compose-compiler = "1.5.6"
 composeTest = "1.5.4"
 writeopia = "0.4.1"
-mockk = "1.12.5"
+mockk = "1.13.8"
 sqldelight = "2.0.0"
+ksp = "1.9.21-1.0.16"
+compose-multiplatform = "1.5.11"
+dag-command = "1.8.1"
+dokka = "1.8.10"
+nexus-publish = "1.3.0"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
@@ -76,3 +81,8 @@ nativeCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = 
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization",  version.ref = "kotlin" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+dag-command = { id = "io.github.leandroborgesferreira.dag-command", version.ref = "dag-command" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish" }

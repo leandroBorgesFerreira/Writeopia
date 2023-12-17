@@ -5,7 +5,7 @@ import androidx.compose.ui.test.junit4.ComposeTestRule
 import io.writeopia.editor.ui.NAVIGATE_BACK_TEST_TAG
 import io.writeopia.editor.ui.NOTE_EDITION_SCREEN_TITLE_TEST_TAG
 
-class DocumentEditPageRobot(private val composeTestRule: ComposeTestRule) {
+class AndroidDocumentEditPageRobot(private val composeTestRule: ComposeTestRule) {
 
     fun verifyItIsInEdition() {
         composeTestRule.onNodeWithTag(NOTE_EDITION_SCREEN_TITLE_TEST_TAG).assertIsDisplayed()

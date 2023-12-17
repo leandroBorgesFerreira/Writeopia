@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -54,13 +55,15 @@ fun EditorScaffold(
                 content()
 
                 Box(
-                    modifier = Modifier.weight(1F)
+                    modifier = Modifier
+                        .weight(1F)
                         .fillMaxWidth()
                         .clickable(
                             onClick = clickAtBottom,
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
                         )
+                        .testTag("EditorBottomContent")
                 )
             }
 
@@ -71,6 +74,7 @@ fun EditorScaffold(
                     .padding(horizontal = 50.dp, vertical = 50.dp)
                     .clip(CircleShape)
                     .clickable(onClick = onBackClick)
+                    .testTag("NoteEditorScreenNavigateBack")
             )
         }
     }

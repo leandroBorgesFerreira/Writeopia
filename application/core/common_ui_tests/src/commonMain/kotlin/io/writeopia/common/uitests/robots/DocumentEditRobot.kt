@@ -1,4 +1,4 @@
-package io.writeopia.common.uitests
+package io.writeopia.common.uitests.robots
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeTestRule
@@ -28,5 +28,9 @@ class DocumentEditRobot(private val composeTestRule: ComposeTestRule) {
 
     fun checkWithTitle(text: String) {
         composeTestRule.onNodeWithTag("MessageDrawer_0").assertTextContains(text)
+    }
+
+    fun goBack() {
+        composeTestRule.onNodeWithTag("NoteEditorScreenNavigateBack").performClick()
     }
 }

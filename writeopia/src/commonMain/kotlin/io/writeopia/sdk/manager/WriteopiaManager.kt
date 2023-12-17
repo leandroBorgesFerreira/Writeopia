@@ -127,7 +127,6 @@ class WriteopiaManager(
         }
     }
 
-//    fun isInitialized(): Boolean = _currentStory.value.stories != initialContent
     fun isInitialized(): Boolean = _initialized
 
     /**
@@ -136,7 +135,11 @@ class WriteopiaManager(
      * @param documentId the id of the document that will be created
      * @param title the title of the document
      */
-    fun newStory(documentId: String = GenerateId.generate(), title: String = "", forceRestart: Boolean = false) {
+    fun newStory(
+        documentId: String = GenerateId.generate(),
+        title: String = "",
+        forceRestart: Boolean = false
+    ) {
         if (isInitialized() && !forceRestart) return
 
         _initialized = true
@@ -342,14 +345,12 @@ class WriteopiaManager(
         val lastPosition = stories.size - 3
         val lastContentStory = stories[lastPosition]
 
-        if (lastContentStory?.type == StoryTypes.TEXT.type) {
+        val newState = if (lastContentStory?.type == StoryTypes.TEXT.type) {
             val newStoriesState = stories.toMutableMap().apply {
                 this[lastPosition] = lastContentStory.copyNewLocalId()
             }
 
-            val newState =
-                _currentStory.value.copy(focusId = lastContentStory.id, stories = newStoriesState)
-            _currentStory.value = newState
+            _currentStory.value.copy(focusId = lastContentStory.id, stories = newStoriesState)
         } else {
             var acc = stories.size - 1
             val newLastMessage =
@@ -362,8 +363,10 @@ class WriteopiaManager(
                 acc to StoryStep(type = StoryTypes.LAST_SPACE.type),
             )
 
-            _currentStory.value = StoryState(newStories, LastEdit.Whole, newLastMessage.id)
+            StoryState(newStories, LastEdit.Whole, newLastMessage.id)
         }
+
+        _currentStory.value = newState
     }
 
     /**

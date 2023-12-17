@@ -4,11 +4,11 @@ import android.app.Application
 import android.content.Context
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.junit4.createComposeRule
-import io.writeopia.common.uitests.CommonTests
-import io.writeopia.common.uitests.DocumentEditRobot
+import io.writeopia.common.uitests.tests.editor.EditorCommonTests
+import io.writeopia.common.uitests.robots.DocumentEditRobot
+import io.writeopia.common.uitests.robots.DocumentsMenuRobot
 import io.writeopia.navigation.NavigationGraph
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
-import io.writeopia.robots.DocumentsMenuRobot
 import io.writeopia.utils_module.Destinations
 import org.junit.Rule
 import org.junit.Test
@@ -22,7 +22,10 @@ class EditorUiTests {
     fun itShouldBePossibleToWriteATitleAndSomeContent() {
         startContent()
 
-        CommonTests.testAddTitleAndContent(DocumentEditRobot(composeTestRule))
+        EditorCommonTests.testAddTitleAndContent(
+            DocumentsMenuRobot(composeTestRule),
+            DocumentEditRobot(composeTestRule)
+        )
     }
 
     private fun startContent() {
@@ -40,7 +43,5 @@ class EditorUiTests {
                 startDestination = Destinations.CHOOSE_NOTE.id
             )
         }
-
-         DocumentsMenuRobot(composeTestRule).goToEditNote()
     }
 }

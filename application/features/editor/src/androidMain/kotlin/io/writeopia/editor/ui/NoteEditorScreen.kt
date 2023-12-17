@@ -105,7 +105,7 @@ internal fun NoteEditorScreen(
                 .imePadding()
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
-                TextEditor(noteEditorViewModel, DefaultDrawersAndroid)
+                TextEditor(noteEditorViewModel, DefaultDrawersAndroid, Modifier.weight(1F))
 
                 BottomScreen(
                     noteEditorViewModel.isEditState,

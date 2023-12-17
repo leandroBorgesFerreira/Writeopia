@@ -91,46 +91,9 @@ class DocumentSqlDao(
                 }
             }
 
-    fun loadDocumentsWithContentByIds(ids: Set<String>): List<Document> {
-        val result = documentQueries.selectWithContentByIds(ids).executeAsList()
-            .groupBy { it.id }
-            .mapNotNull { (documentId, content) ->
-                content.firstOrNull()?.let { document ->
-                    val innerContent = content.filter { innerContent ->
-                        !innerContent.id_.isNullOrEmpty()
-                    }.associate { innerContent ->
-                        val storyStep = StoryStep(
-                            id = innerContent.id_!!,
-                            localId = innerContent.local_id!!,
-                            type = StoryTypes.fromNumber(innerContent.type!!.toInt()).type,
-                            parentId = innerContent.parent_id,
-                            url = innerContent.url,
-                            path = innerContent.path,
-                            text = innerContent.text,
-                            checked = innerContent.checked == 1L,
-//                                steps = emptyList(), // Todo: Fix!
-//                                decoration = decoration, // Todo: Fix!
-                        )
-
-                        innerContent.position!!.toInt() to storyStep
-                    }
-
-                    Document(
-                        id = documentId,
-                        title = document.title,
-                        content = innerContent,
-                        createdAt = Instant.fromEpochMilliseconds(document.created_at),
-                        lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
-                        userId = document.user_id,
-                    )
-                }
-            }
-
-        return result
-    }
-
     fun loadDocumentsWithContentByUserId(userId: String): List<Document> {
-        return documentQueries.selectWithContentByUserId(userId).executeAsList()
+        return documentQueries.selectWithContentByUserId(userId)
+            .executeAsList()
             .groupBy { it.id }
             .mapNotNull { (documentId, content) ->
                 content.firstOrNull()?.let { document ->

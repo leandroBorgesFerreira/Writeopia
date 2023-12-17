@@ -23,7 +23,8 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun ColumnScope.TextEditor(
     noteEditorViewModel: NoteEditorViewModel,
-    drawersFactory: DrawersFactory
+    drawersFactory: DrawersFactory,
+    modifier: Modifier = Modifier,
 ) {
     val storyState by noteEditorViewModel.toDraw.collectAsState()
     val editable by noteEditorViewModel.isEditable.collectAsState()
@@ -41,9 +42,7 @@ fun ColumnScope.TextEditor(
     val clipShape = MaterialTheme.shapes.medium
 
     WriteopiaEditor(
-        modifier = Modifier
-            .fillMaxWidth()
-            .weight(1F),
+        modifier = modifier.fillMaxWidth(),
         editable = editable,
         listState = listState,
         drawers = drawersFactory.create(

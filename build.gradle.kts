@@ -5,13 +5,12 @@ plugins {
     alias(libs.plugins.kotlinAndroid) apply false
     alias(libs.plugins.nativeCocoapods) apply false
     alias(libs.plugins.sqldelight) apply false
-    id("com.google.devtools.ksp") version "1.9.10-1.0.13" apply false
-    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
-    id("org.jetbrains.dokka") version "1.8.10"
-    id("io.github.leandroborgesferreira.dag-command") version "1.6.0" apply true
-    id("com.google.gms.google-services") version "4.3.15" apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.nexus.publish)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.dag.command) apply true
     alias(libs.plugins.org.jetbrains.kotlin.jvm) apply false
-    id("org.jetbrains.compose") version "1.5.10" apply false
+    alias(libs.plugins.compose.multiplatform) apply false
 }
 
 apply(from = "${rootDir}/scripts/publish-root.gradle")

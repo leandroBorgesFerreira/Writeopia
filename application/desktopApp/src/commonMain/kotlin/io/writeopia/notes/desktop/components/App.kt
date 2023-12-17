@@ -14,17 +14,11 @@ import io.writeopia.note_menu.ui.desktop.NotesMenu
 import io.writeopia.notes.desktop.components.navigation.NavigationPage
 import io.writeopia.notes.desktop.components.navigation.NavigationViewModel
 import io.writeopia.sdk.drawer.factory.DefaultDrawersDesktop
-import io.writeopia.sdk.manager.WriteopiaManager
-import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
-import io.writeopia.sqldelight.database.createDatabase
-import io.writeopia.sqldelight.database.driver.DriverFactory
+import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
-import kotlinx.coroutines.Dispatchers
 
 @Composable
-internal fun App(driverFactory: DriverFactory) {
-    val database = createDatabase(driverFactory, url = "jdbc:sqlite:writeopia.db")
-
+internal fun App(database: WriteopiaDb) {
     val authCoreInjection = KmpAuthCoreInjection()
     val repositoryInjection = SqlDelightDaoInjector(database)
 
@@ -41,10 +35,6 @@ internal fun App(driverFactory: DriverFactory) {
         repositoryInjection = repositoryInjection,
     )
 
-    val writeopiaManager = WriteopiaManager(dispatcher = Dispatchers.IO).apply {
-        saveOnStoryChanges(OnUpdateDocumentTracker(repositoryInjection.provideDocumentRepository()))
-    }
-
     val navigationViewModel = NavigationViewModel()
 
     MaterialTheme {
@@ -54,34 +44,38 @@ internal fun App(driverFactory: DriverFactory) {
             when (state) {
                 NavigationPage.NoteMenu -> {
                     val coroutineScope = rememberCoroutineScope()
-                    val viewModel = remember {
+                    val chooseNoteViewModel = remember {
                         notesMenuInjection.provideChooseNoteViewModel(coroutineScope)
                     }
 
                     NotesMenu(
-                        viewModel,
+                        chooseNoteViewModel,
                         onNewNoteClick = {
                             navigationViewModel.navigateTo(NavigationPage.Editor())
                         },
                         onNoteClick = { id, title ->
                             navigationViewModel.navigateTo(NavigationPage.Editor(id, title))
+                        },
+                        onDeleteClick = {
+                            chooseNoteViewModel.deleteSelectedNotes()
                         }
                     )
                 }
+
                 is NavigationPage.Editor -> {
-                    val viewModel = remember {
-                        editorInjector.provideNoteDetailsViewModel()
+                    val noteEditorViewModel = remember {
+                        editorInjector.provideNoteEditorViewModel()
                     }
 
                     EditorScaffold(
-                        clickAtBottom = writeopiaManager::clickAtTheEnd,
+                        clickAtBottom = noteEditorViewModel.writeopiaManager::clickAtTheEnd,
                         onBackClick = {
                             navigationViewModel.navigateTo(NavigationPage.NoteMenu)
                         },
                         content = {
                             AppTextEditor(
-                                writeopiaManager,
-                                viewModel,
+                                noteEditorViewModel.writeopiaManager,
+                                noteEditorViewModel,
                                 DefaultDrawersDesktop,
                                 loadNoteId = state.noteId
                             )

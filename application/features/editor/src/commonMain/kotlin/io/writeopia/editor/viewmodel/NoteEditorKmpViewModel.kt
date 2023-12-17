@@ -31,7 +31,8 @@ class NoteEditorKmpViewModel(
     override val writeopiaManager: WriteopiaManager,
     private val documentRepository: DocumentRepository,
     private val documentFilter: DocumentFilter = DocumentFilterObject,
-) : NoteEditorViewModel, KmpViewModel, BackstackInform by writeopiaManager, BackstackHandler by writeopiaManager {
+) : NoteEditorViewModel, KmpViewModel, BackstackInform by writeopiaManager,
+    BackstackHandler by writeopiaManager {
 
     private lateinit var coroutineScope: CoroutineScope
 
@@ -118,15 +119,15 @@ class NoteEditorKmpViewModel(
 
         coroutineScope.launch(Dispatchers.IO) {
             writeopiaManager.currentDocument.stateIn(this).value?.let { document ->
-                documentRepository.saveDocument(document)
+                documentRepository.saveDocument(
+                    document.copy(
+                        content = documentFilter.removeTypesFromDocument(document.content)
+                    )
+                )
             }
         }
 
-        writeopiaManager.saveOnStoryChanges(
-            OnUpdateDocumentTracker(
-                documentRepository
-            )
-        )
+        writeopiaManager.saveOnStoryChanges(OnUpdateDocumentTracker(documentRepository))
     }
 
     override fun loadDocument(documentId: String) {
