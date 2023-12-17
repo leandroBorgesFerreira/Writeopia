@@ -1,6 +1,5 @@
 package io.writeopia.utils.extensions
 
-import androidx.compose.runtime.toMutableStateMap
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.utils.extensions.noContent
@@ -30,7 +29,7 @@ class StoryExtensionsKtTest {
                 )
                 )
             }
-        }.toMutableStateMap()
+        }.toMap().toMutableMap()
 
         storyStepMap[5] = StoryStep(
             type = StoryTypes.TEXT.type,
