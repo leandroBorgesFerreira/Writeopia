@@ -1,5 +1,4 @@
 plugins {
-    alias(libs.plugins.androidLibrary)
     kotlin("multiplatform")
     alias(libs.plugins.nativeCocoapods)
 }
@@ -14,8 +13,6 @@ plugins {
 
 kotlin {
     jvm {}
-
-    androidTarget()
 
     listOf(
         iosX64(),
@@ -81,34 +78,9 @@ kotlin {
             dependsOn(iosMain)
         }
 
-        val androidMain by getting {
-            dependencies {
-                // Coil
-                implementation(libs.coil.compose)
-                implementation(libs.coil.video)
-            }
-        }
-
         val jsMain by getting {
             dependencies {
             }
         }
-    }
-}
-
-android {
-    namespace = "io.writeopia.sdk"
-    compileSdk = 34
-
-    defaultConfig {
-        minSdk = 24
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
     }
 }
