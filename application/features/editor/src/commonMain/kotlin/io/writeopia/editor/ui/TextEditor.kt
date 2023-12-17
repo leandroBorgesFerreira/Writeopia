@@ -1,9 +1,7 @@
 package io.writeopia.editor.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -15,9 +13,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import io.writeopia.editor.viewmodel.NoteEditorViewModel
-import io.writeopia.sdk.WriteopiaEditor
-import io.writeopia.sdk.drawer.factory.DrawersFactory
 import io.writeopia.sdk.text.edition.TextCommandHandler
+import io.writeopia.ui.WriteopiaEditor
+import io.writeopia.ui.drawer.factory.DrawersFactory
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable

@@ -10,8 +10,8 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.normalization.addinbetween.AddSteps
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
 import io.writeopia.utils.MapStoryData
-import io.writeopia.sdk.utils.StoryStepFactory
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
+import io.writeopia.sdk.utils.ui.StoryStepFactory
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

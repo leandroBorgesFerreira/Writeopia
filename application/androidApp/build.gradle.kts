@@ -23,6 +23,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(project(":writeopia"))
+                implementation(project(":writeopia_ui"))
                 implementation(project(":writeopia_models"))
                 implementation(project(":plugins:writeopia_persistence_core"))
                 implementation(project(":plugins:writeopia_serialization"))
@@ -91,5 +92,17 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+    }
+
+    testOptions {
+        managedDevices {
+            localDevices {
+                create("pixel7api33") {
+                    device = "Pixel 7"
+                    apiLevel = 33
+                    systemImageSource = "aosp"
+                }
+            }
+        }
     }
 }

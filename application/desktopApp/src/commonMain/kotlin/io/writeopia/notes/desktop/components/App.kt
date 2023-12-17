@@ -13,9 +13,9 @@ import io.writeopia.note_menu.di.NotesMenuKmpInjection
 import io.writeopia.note_menu.ui.desktop.NotesMenu
 import io.writeopia.notes.desktop.components.navigation.NavigationPage
 import io.writeopia.notes.desktop.components.navigation.NavigationViewModel
-import io.writeopia.sdk.drawer.factory.DefaultDrawersDesktop
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
+import io.writeopia.ui.drawer.factory.DefaultDrawersDesktop
 
 @Composable
 internal fun App(database: WriteopiaDb) {

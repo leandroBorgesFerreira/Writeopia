@@ -21,6 +21,7 @@ rootProject.name = "Writeopia"
 
 include(":writeopia")
 include(":writeopia_models")
+include(":writeopia_ui")
 include(":plugins:writeopia_persistence_room")
 include(":plugins:writeopia_serialization")
 include(":plugins:writeopia_network")
