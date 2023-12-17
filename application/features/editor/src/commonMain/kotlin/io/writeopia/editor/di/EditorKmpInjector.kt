@@ -23,7 +23,7 @@ class EditorKmpInjector(
         dispatcher = Dispatchers.IO
     )
 
-    fun provideNoteDetailsViewModel(
+    fun provideNoteEditorViewModel(
         documentRepository: DocumentRepository = provideDocumentRepository(),
         writeopiaManager: WriteopiaManager = provideWriteopiaManager(),
     ): NoteEditorKmpViewModel = NoteEditorKmpViewModel(writeopiaManager, documentRepository)

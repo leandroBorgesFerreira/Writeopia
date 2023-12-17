@@ -7,7 +7,7 @@ import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 class EditorInjector internal constructor(private val editorKmpInjector: EditorKmpInjector) {
 
     internal fun provideNoteDetailsViewModel(): AndroidNoteEditorViewModel =
-        AndroidNoteEditorViewModel(editorKmpInjector.provideNoteDetailsViewModel())
+        AndroidNoteEditorViewModel(editorKmpInjector.provideNoteEditorViewModel())
 
     companion object {
         fun create(authCoreInjection: AuthCoreInjection, daosInjection: RepositoryInjector) =
