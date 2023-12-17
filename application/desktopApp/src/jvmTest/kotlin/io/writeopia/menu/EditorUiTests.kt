@@ -29,14 +29,20 @@ class EditorUiTests {
     fun itShouldBePossibleToSaveNoteWithTitle() {
         startContent()
 
-        EditorCommonTests.saveNoteWithTitle(DocumentsMenuRobot(composeTestRule), DocumentEditRobot(composeTestRule))
+        EditorCommonTests.saveNoteWithTitle(
+            DocumentsMenuRobot(composeTestRule),
+            DocumentEditRobot(composeTestRule)
+        )
     }
 
     @Test
     fun itShouldBePossibleToOpenANoteWithoutTitle() {
         startContent()
 
-        EditorCommonTests.openNoteWithoutTitle(DocumentsMenuRobot(composeTestRule), DocumentEditRobot(composeTestRule))
+        EditorCommonTests.openNoteWithoutTitle(
+            DocumentsMenuRobot(composeTestRule),
+            DocumentEditRobot(composeTestRule)
+        )
     }
 
 

@@ -64,6 +64,9 @@ internal fun App(database: WriteopiaDb) {
                         },
                         onNoteClick = { id, title ->
                             navigationViewModel.navigateTo(NavigationPage.Editor(id, title))
+                        },
+                        onDeleteClick = {
+                            viewModel.deleteSelectedNotes()
                         }
                     )
                 }

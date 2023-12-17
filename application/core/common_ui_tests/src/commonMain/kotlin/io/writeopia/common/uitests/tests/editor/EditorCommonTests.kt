@@ -5,7 +5,10 @@ import io.writeopia.common.uitests.robots.DocumentsMenuRobot
 
 object EditorCommonTests {
 
-    fun testAddTitleAndContent(documentsMenuRobot: DocumentsMenuRobot, documentEditRobot: DocumentEditRobot) {
+    fun testAddTitleAndContent(
+        documentsMenuRobot: DocumentsMenuRobot,
+        documentEditRobot: DocumentEditRobot
+    ) {
         val title = "Some Title"
         val text = "Some text"
 
@@ -20,7 +23,10 @@ object EditorCommonTests {
         }
     }
 
-    fun saveNoteWithTitle(documentsMenuRobot: DocumentsMenuRobot, documentEditRobot: DocumentEditRobot) {
+    fun saveNoteWithTitle(
+        documentsMenuRobot: DocumentsMenuRobot,
+        documentEditRobot: DocumentEditRobot
+    ) {
         val noteTitle = "Note1"
 
         documentsMenuRobot.goToEditNote()
@@ -33,7 +39,10 @@ object EditorCommonTests {
         documentsMenuRobot.assertNoteWithTitle(noteTitle)
     }
 
-    fun openNoteWithoutTitle(documentsMenuRobot: DocumentsMenuRobot, documentEditRobot: DocumentEditRobot) {
+    fun openNoteWithoutTitle(
+        documentsMenuRobot: DocumentsMenuRobot,
+        documentEditRobot: DocumentEditRobot
+    ) {
         val text = "Text"
 
         documentsMenuRobot.goToEditNote()
