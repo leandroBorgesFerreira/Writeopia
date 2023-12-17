@@ -10,8 +10,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import io.writeopia.editor.ui.TextEditor
 import io.writeopia.editor.viewmodel.NoteEditorKmpViewModel
-import io.writeopia.sdk.drawer.factory.DrawersFactory
 import io.writeopia.sdk.manager.WriteopiaManager
+import io.writeopia.ui.drawer.factory.DrawersFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.UUID

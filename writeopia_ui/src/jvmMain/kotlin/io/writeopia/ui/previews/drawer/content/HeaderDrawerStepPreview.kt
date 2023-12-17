@@ -10,12 +10,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.drawer.content.TextDrawer
-import io.writeopia.sdk.drawer.content.HeaderDrawer
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.ui.drawer.content.HeaderDrawer
+import io.writeopia.ui.drawer.content.TextDrawer
 
 @Preview
 @Composable

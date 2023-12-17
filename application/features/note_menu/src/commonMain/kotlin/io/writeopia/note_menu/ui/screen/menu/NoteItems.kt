@@ -24,14 +24,14 @@ import androidx.compose.ui.unit.sp
 import io.writeopia.note_menu.data.NotesArrangement
 import io.writeopia.note_menu.ui.dto.DocumentUi
 import io.writeopia.note_menu.ui.dto.NotesUi
-import io.writeopia.sdk.drawer.StoryStepDrawer
-import io.writeopia.sdk.drawer.preview.CheckItemPreviewDrawer
-import io.writeopia.sdk.drawer.preview.HeaderPreviewDrawer
-import io.writeopia.sdk.drawer.preview.TextPreviewDrawer
-import io.writeopia.sdk.drawer.preview.UnOrderedListItemPreviewDrawer
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.uicomponents.SwipeBox
+import io.writeopia.ui.components.SwipeBox
+import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.drawer.preview.CheckItemPreviewDrawer
+import io.writeopia.ui.drawer.preview.HeaderPreviewDrawer
+import io.writeopia.ui.drawer.preview.TextPreviewDrawer
+import io.writeopia.ui.drawer.preview.UnOrderedListItemPreviewDrawer
 import io.writeopia.utils_module.ResultData
 
 const val DOCUMENT_ITEM_TEST_TAG = "DocumentItem_"

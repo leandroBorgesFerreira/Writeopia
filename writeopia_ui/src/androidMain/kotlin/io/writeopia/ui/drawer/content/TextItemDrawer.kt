@@ -1,4 +1,4 @@
-package io.writeopia.sdk.drawer.content
+package io.writeopia.ui.drawer.content
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -10,13 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import io.writeopia.sdk.draganddrop.target.DragTargetWithDragItem
-import io.writeopia.sdk.drawer.SimpleTextDrawer
-import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.uicomponents.SwipeBox
+import io.writeopia.ui.components.SwipeBox
+import io.writeopia.ui.draganddrop.target.DragTargetWithDragItem
+import io.writeopia.ui.drawer.SimpleTextDrawer
+import io.writeopia.ui.drawer.StoryStepDrawer
 
 /**
  * Drawer for a complex message with swipe action, drag and drop logic and a start content to add functionality

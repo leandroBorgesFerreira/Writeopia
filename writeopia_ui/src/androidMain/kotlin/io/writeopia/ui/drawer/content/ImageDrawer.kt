@@ -23,15 +23,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.writeopia.ui.target.DragTarget
-import io.writeopia.sdk.draganddrop.target.DropTarget
 import io.writeopia.sdk.model.draw.DrawInfo
-import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import io.writeopia.sdk.model.action.Action
+import io.writeopia.ui.draganddrop.target.DragTarget
+import io.writeopia.ui.draganddrop.target.DropTarget
+import io.writeopia.ui.drawer.StoryStepDrawer
 
 /**
  * Draws a image. Uses Coil to parse the image.

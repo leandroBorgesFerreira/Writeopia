@@ -45,8 +45,8 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 // Coil
-//                implementation(libs.coil.compose)
-//                implementation(libs.coil.video)
+                implementation(libs.coil.compose)
+                implementation(libs.coil.video)
             }
         }
         val jsMain by getting {

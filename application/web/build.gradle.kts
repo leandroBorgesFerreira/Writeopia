@@ -22,6 +22,7 @@ kotlin {
 
                 implementation(project(":writeopia_models"))
                 implementation(project(":writeopia"))
+                implementation(project(":writeopia_ui"))
             }
         }
     }

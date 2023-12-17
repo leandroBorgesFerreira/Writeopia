@@ -6,11 +6,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.content.*
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.text.edition.TextCommandHandler
+import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.drawer.content.RowGroupDrawer
+import io.writeopia.ui.drawer.factory.CommonDrawers
+import io.writeopia.ui.drawer.factory.DrawersFactory
 
 object DefaultDrawersAndroid : DrawersFactory {
 
