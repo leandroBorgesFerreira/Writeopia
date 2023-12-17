@@ -10,8 +10,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  android_debug_build_and_test:
-    name: Android UI tests and a gradle tests
+  gradle_tests:
+    name: Gradle tests
     runs-on: ubuntu-22.04
     env:
       isCI: "true"
@@ -25,6 +25,19 @@ jobs:
           java-version: '17'
       - name: Tests debug
         run: ./gradlew test
+  android_connected_tests:
+    name: Android Connected tests
+    runs-on: ubuntu-22.04
+    env:
+      isCI: "true"
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: adopt
+          java-version: '17'
       - name: UI Tests android
         run: ./gradlew pixel7api33DebugAndroidTest
   ui_jvm_tests:
