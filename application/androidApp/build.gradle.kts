@@ -93,4 +93,16 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
+
+    testOptions {
+        managedDevices {
+            localDevices {
+                create("pixel7api33") {
+                    device = "Pixel 7"
+                    apiLevel = 33
+                    systemImageSource = "aosp"
+                }
+            }
+        }
+    }
 }
