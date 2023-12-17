@@ -1,6 +1,9 @@
 package io.writeopia.menu
 
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import io.writeopia.common.uitests.tests.editor.EditorCommonTests
 import io.writeopia.common.uitests.robots.DocumentEditRobot
 import io.writeopia.common.uitests.robots.DocumentsMenuRobot
@@ -43,6 +46,14 @@ class EditorUiTests {
             DocumentsMenuRobot(composeTestRule),
             DocumentEditRobot(composeTestRule)
         )
+    }
+
+    @Test
+    fun theBottomBoxShouldInitializeVisible() {
+        startContent()
+
+        DocumentsMenuRobot(composeTestRule).goToEditNote()
+        composeTestRule.onNodeWithTag("EditorBottomContent").assertIsDisplayed()
     }
 
 

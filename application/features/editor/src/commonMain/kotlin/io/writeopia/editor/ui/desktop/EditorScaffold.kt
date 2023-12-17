@@ -55,13 +55,15 @@ fun EditorScaffold(
                 content()
 
                 Box(
-                    modifier = Modifier.weight(1F)
+                    modifier = Modifier
+                        .weight(1F)
                         .fillMaxWidth()
                         .clickable(
                             onClick = clickAtBottom,
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
                         )
+                        .testTag("EditorBottomContent")
                 )
             }
 
