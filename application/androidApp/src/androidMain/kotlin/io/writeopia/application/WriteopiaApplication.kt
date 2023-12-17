@@ -3,8 +3,8 @@ package io.writeopia.application
 import android.app.Application
 import android.util.Log
 import io.writeopia.BuildConfig
-import io.writeopia.sdk.video.VideoFrameConfig
 import io.writeopia.auth.core.AuthInitializer
+import io.writeopia.ui.drawer.video.VideoFrameConfig
 
 class WriteopiaApplication : Application() {
 
