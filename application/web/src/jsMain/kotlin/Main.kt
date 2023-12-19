@@ -5,9 +5,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
@@ -18,10 +16,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import io.writeopia.sdk.WriteopiaEditor
-import io.writeopia.sdk.WriteopiaEditorBox
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.factory.DefaultDrawersJs
-import io.writeopia.sdk.manager.WriteopiaManager
+import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.model.story.DrawState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -31,7 +28,7 @@ import org.jetbrains.skiko.wasm.onWasmReady
 fun main() {
     onWasmReady {
         Window("Compose Rich Editor") {
-            val writeopiaManager = WriteopiaManager(dispatcher = Dispatchers.Main).apply {
+            val writeopiaManager = WriteopiaStateManager.create(dispatcher = Dispatchers.Main, Wi).apply {
                 newStory()
             }
 
@@ -81,7 +78,7 @@ fun main() {
 }
 
 @Composable
-fun CreateTextEditor(writeopiaManager: WriteopiaManager) {
+fun CreateTextEditor(writeopiaManager: WriteopiaStateManager) {
     val listState: LazyListState = rememberLazyListState()
     val position by writeopiaManager.scrollToPosition.collectAsState()
 

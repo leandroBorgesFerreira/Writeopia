@@ -41,6 +41,14 @@ kotlin {
             }
         }
 
+        val commonTest by getting {
+            dependencies {
+                implementation(project(":writeopia"))
+                implementation(project(":writeopia_models"))
+                implementation(libs.kotlin.test)
+                implementation(libs.kotlinx.coroutines.test)
+            }
+        }
 
         val androidMain by getting {
             dependencies {
@@ -49,10 +57,12 @@ kotlin {
                 implementation(libs.coil.video)
             }
         }
+
         val jsMain by getting {
             dependencies {
             }
         }
+
         val jvmMain by getting {
             dependencies {
                 implementation(compose.preview)

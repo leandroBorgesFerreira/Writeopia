@@ -2,7 +2,7 @@ package io.writeopia.ui.drawer.factory
 
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.text.input.TextFieldValue
-import io.writeopia.sdk.manager.WriteopiaManager
+import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
@@ -10,7 +10,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 object KeyEventListenerFactory {
 
     fun create(
-        manager: WriteopiaManager,
+        manager: WriteopiaStateManager,
         isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
         deleteOnEmptyErase: Boolean = false
     ): (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean {
@@ -32,7 +32,7 @@ object KeyEventListenerFactory {
     }
 
     fun js(
-        manager: WriteopiaManager,
+        manager: WriteopiaStateManager,
         isLineBreakKey: (KeyEvent) -> Boolean = { false },
         isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
         deleteOnEmptyErase: Boolean = false

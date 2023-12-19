@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.writeopia.sdk.manager.WriteopiaManager
+import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
@@ -15,7 +15,7 @@ import io.writeopia.ui.drawer.content.swipeTextDrawer
 
 @Composable
 fun defaultHxDrawers(
-    manager: WriteopiaManager,
+    manager: WriteopiaStateManager,
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
     messageDrawer: @Composable RowScope.(TextUnit) -> SimpleTextDrawer

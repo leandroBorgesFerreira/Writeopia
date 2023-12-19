@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.manager.WriteopiaManager
+import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.drawer.SimpleTextDrawer
@@ -22,7 +22,7 @@ import io.writeopia.ui.drawer.StoryStepDrawer
  */
 
 fun unOrderedListItemDrawer(
-    manager: WriteopiaManager,
+    manager: WriteopiaStateManager,
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer

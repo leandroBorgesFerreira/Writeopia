@@ -18,9 +18,9 @@ import io.writeopia.sdk.drawer.SimpleTextDrawer
 import io.writeopia.sdk.drawer.StoryStepDrawer
 import io.writeopia.sdk.drawer.content.*
 import io.writeopia.sdk.drawer.content.js.DesktopTitleDrawer
-import io.writeopia.sdk.manager.WriteopiaManager
+import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.text.edition.TextCommandHandler
+import io.writeopia.ui.edition.TextCommandHandler
 import org.jetbrains.skiko.SkikoKey
 import io.writeopia.sdk.drawer.content.JsTextDrawer
 
@@ -32,7 +32,7 @@ object DefaultDrawersJs {
 
     @Composable
     fun create(
-        manager: WriteopiaManager,
+        manager: WriteopiaStateManager,
         defaultBorder: Shape = MaterialTheme.shapes.medium,
         editable: Boolean = false,
         groupsBackgroundColor: Color = Color.Transparent,
@@ -69,7 +69,7 @@ object DefaultDrawersJs {
 
     @Composable
     fun RowScope.jsMessageDrawer(
-        manager: WriteopiaManager,
+        manager: WriteopiaStateManager,
         fontSize: TextUnit = 16.sp,
         deleteOnEmptyErase: Boolean = false
     ): JsTextDrawer {
@@ -93,7 +93,7 @@ object DefaultDrawersJs {
 
     @Composable
     fun defaultHxDrawers(
-        writeopiaManager: WriteopiaManager,
+        writeopiaManager: WriteopiaStateManager,
         messageDrawer: @Composable RowScope.(TextUnit) -> SimpleTextDrawer
     ): Map<Int, StoryStepDrawer> {
         val createHDrawer = @Composable { fontSize: TextUnit ->
@@ -121,7 +121,7 @@ object DefaultDrawersJs {
         )
     }
 
-    private fun headerDrawer(writeopiaManager: WriteopiaManager): StoryStepDrawer {
+    private fun headerDrawer(writeopiaManager: WriteopiaStateManager): StoryStepDrawer {
         val onKeyEvent = KeyEventListenerFactory.js(
             writeopiaManager,
             deleteOnEmptyErase = false,
@@ -142,7 +142,7 @@ object DefaultDrawersJs {
 
     @Composable
     fun checkItemDrawer(
-        writeopiaManager: WriteopiaManager,
+        writeopiaManager: WriteopiaStateManager,
         messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
     ): StoryStepDrawer {
         val focusRequesterCheckItem = remember { FocusRequester() }
@@ -160,7 +160,7 @@ object DefaultDrawersJs {
 
     @Composable
     fun unOrderedListItemDrawer(
-        writeopiaManager: WriteopiaManager,
+        writeopiaManager: WriteopiaStateManager,
         messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
     ): StoryStepDrawer {
         val focusRequesterUnOrderedList = remember { FocusRequester() }

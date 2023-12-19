@@ -3,15 +3,15 @@ package io.writeopia.ui.drawer.factory
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import io.writeopia.sdk.manager.WriteopiaManager
-import io.writeopia.sdk.text.edition.TextCommandHandler
+import io.writeopia.ui.manager.WriteopiaStateManager
+import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.drawer.StoryStepDrawer
 
 interface DrawersFactory {
 
     @Composable
     fun create(
-        manager: WriteopiaManager,
+        manager: WriteopiaStateManager,
         defaultBorder: Shape,
         editable: Boolean,
         groupsBackgroundColor: Color,

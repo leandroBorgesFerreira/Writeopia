@@ -21,11 +21,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.manager.WriteopiaManager
+
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.utils.transparentTextInputColors
 
 /**
@@ -89,7 +90,7 @@ class HeaderDrawer(
 }
 
 fun headerDrawer(
-    manager: WriteopiaManager,
+    manager: WriteopiaStateManager,
     headerClick: () -> Unit,
     onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean,
     modifier: Modifier = Modifier,

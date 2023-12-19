@@ -1,12 +1,12 @@
 package io.writeopia.editor.viewmodel
 
 import io.writeopia.editor.model.EditState
-import io.writeopia.sdk.backstack.BackstackHandler
-import io.writeopia.sdk.backstack.BackstackInform
+import io.writeopia.ui.backstack.BackstackHandler
+import io.writeopia.ui.backstack.BackstackInform
 import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.filter.DocumentFilter
 import io.writeopia.sdk.filter.DocumentFilterObject
-import io.writeopia.sdk.manager.WriteopiaManager
+import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.story.DrawState
 import io.writeopia.sdk.model.story.StoryState
@@ -28,7 +28,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class NoteEditorKmpViewModel(
-    override val writeopiaManager: WriteopiaManager,
+    override val writeopiaManager: WriteopiaStateManager,
     private val documentRepository: DocumentRepository,
     private val documentFilter: DocumentFilter = DocumentFilterObject,
 ) : NoteEditorViewModel, KmpViewModel, BackstackInform by writeopiaManager,

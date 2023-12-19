@@ -7,9 +7,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.content.*
-import io.writeopia.sdk.manager.WriteopiaManager
+import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.text.edition.TextCommandHandler
+import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.content.RowGroupDrawer
 import io.writeopia.ui.drawer.factory.CommonDrawers
@@ -19,7 +19,7 @@ object DefaultDrawersAndroid : DrawersFactory {
 
     @Composable
     override fun create(
-        manager: WriteopiaManager,
+        manager: WriteopiaStateManager,
         defaultBorder: Shape,
         editable: Boolean,
         groupsBackgroundColor: Color,

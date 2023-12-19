@@ -14,10 +14,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.manager.WriteopiaManager
+import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.text.edition.TextCommandHandler
+import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.content.LastEmptySpace
 import io.writeopia.ui.drawer.content.SpaceDrawer
@@ -39,7 +39,7 @@ object CommonDrawers {
 
     @Composable
     fun create(
-        manager: WriteopiaManager,
+        manager: WriteopiaStateManager,
         marginAtBottom: Dp,
         defaultBorder: Shape = MaterialTheme.shapes.medium,
         editable: Boolean = false,
@@ -49,7 +49,7 @@ object CommonDrawers {
         dragIconWidth: Dp = DRAG_ICON_WIDTH.dp,
         isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
 
-    ): Map<Int, StoryStepDrawer> {
+        ): Map<Int, StoryStepDrawer> {
         val textBoxDrawer = swipeTextDrawer(
             modifier = Modifier
                 .padding(horizontal = LARGE_START_PADDING.dp)
@@ -172,7 +172,7 @@ object CommonDrawers {
 
     @Composable
     private fun RowScope.messageDrawer(
-        manager: WriteopiaManager,
+        manager: WriteopiaStateManager,
         modifier: Modifier = Modifier,
         textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
         textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager),
