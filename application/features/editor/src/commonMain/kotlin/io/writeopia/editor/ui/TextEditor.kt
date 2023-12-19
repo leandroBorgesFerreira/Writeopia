@@ -13,7 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import io.writeopia.editor.viewmodel.NoteEditorViewModel
-import io.writeopia.sdk.text.edition.TextCommandHandler
+import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.WriteopiaEditor
 import io.writeopia.ui.drawer.factory.DrawersFactory
 import kotlinx.coroutines.flow.collectLatest

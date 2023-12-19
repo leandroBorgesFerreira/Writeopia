@@ -1,4 +1,4 @@
-package io.writeopia.utils.extensions
+package io.writeopia.extensions
 
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes

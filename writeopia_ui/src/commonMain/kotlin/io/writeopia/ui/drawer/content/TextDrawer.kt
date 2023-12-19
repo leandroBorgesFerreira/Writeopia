@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.text.edition.TextCommandHandler
+import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.utils.defaultTextStyle
 

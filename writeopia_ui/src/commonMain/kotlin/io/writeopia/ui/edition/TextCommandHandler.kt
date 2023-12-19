@@ -1,9 +1,10 @@
-package io.writeopia.sdk.text.edition
+package io.writeopia.ui.edition
 
-import io.writeopia.sdk.manager.WriteopiaManager
+
 import io.writeopia.sdk.models.command.*
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.ui.manager.WriteopiaStateManager
 
 class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) -> Unit>) {
 
@@ -26,7 +27,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
     companion object {
         fun noCommands(): TextCommandHandler = TextCommandHandler(emptyMap())
 
-        fun defaultCommands(manager: WriteopiaManager): TextCommandHandler =
+        fun defaultCommands(manager: WriteopiaStateManager): TextCommandHandler =
             TextCommandHandler(
                 mapOf(
                     CommandFactory.checkItem() to { _, position ->

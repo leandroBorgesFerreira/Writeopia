@@ -175,21 +175,26 @@ class ContentHandler(
         }
     }
 
+
+    /**
+     * Delete story steps in bulk. Returns a pair with first the new state of stories and
+     * the deleted stories.
+     */
     fun bulkDeletion(
         positions: Iterable<Int>,
         stories: Map<Int, StoryStep>
     ): Pair<Map<Int, StoryStep>, Map<Int, StoryStep>> {
         val deleted = mutableMapOf<Int, StoryStep>()
-        val mutable = stories.toMutableMap()
+        val newState = stories.toMutableMap()
         positions.forEach { position ->
-            mutable.remove(position)?.let { deletedStory ->
+            newState.remove(position)?.let { deletedStory ->
                 deleted[position] = deletedStory
             }
 
-            mutable.remove(position + 1)
+            newState.remove(position + 1)
         }
 
-        return mutable to deleted
+        return newState to deleted
     }
 }
 
