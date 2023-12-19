@@ -26,7 +26,6 @@ private const val DEFAULT_TEXT_EDIT_LIMIT = 20
  * @param movementHandler [MovementHandler] Used to move, merge and separate content.
  */
 internal class PerStateBackstackManager(
-    //A dynamic value would be better!
     private val textEditLimit: Int = DEFAULT_TEXT_EDIT_LIMIT,
     private val contentHandler: ContentHandler,
     private val movementHandler: MovementHandler
