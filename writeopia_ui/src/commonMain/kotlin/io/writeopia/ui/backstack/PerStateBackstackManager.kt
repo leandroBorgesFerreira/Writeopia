@@ -1,4 +1,4 @@
-package io.writeopia.sdk.backstack
+package io.writeopia.ui.backstack
 
 import io.writeopia.sdk.manager.ContentHandler
 import io.writeopia.sdk.manager.MovementHandler

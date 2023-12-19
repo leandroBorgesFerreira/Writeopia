@@ -1,8 +1,8 @@
 package io.writeopia.editor.viewmodel
 
 import io.writeopia.editor.model.EditState
-import io.writeopia.sdk.backstack.BackstackHandler
-import io.writeopia.sdk.backstack.BackstackInform
+import io.writeopia.ui.backstack.BackstackHandler
+import io.writeopia.ui.backstack.BackstackInform
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.model.story.DrawState
 import kotlinx.coroutines.flow.StateFlow

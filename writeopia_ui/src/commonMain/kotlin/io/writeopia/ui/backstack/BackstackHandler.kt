@@ -1,4 +1,4 @@
-package io.writeopia.sdk.backstack
+package io.writeopia.ui.backstack
 
 /**
  * BackstackHandler is responsible for undoing and redoing content edition action (like deleting

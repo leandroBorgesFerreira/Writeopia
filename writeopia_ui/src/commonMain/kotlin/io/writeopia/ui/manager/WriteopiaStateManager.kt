@@ -1,8 +1,8 @@
 package io.writeopia.ui.manager
 
-import io.writeopia.sdk.backstack.BackstackHandler
-import io.writeopia.sdk.backstack.BackstackInform
-import io.writeopia.sdk.backstack.BackstackManager
+import io.writeopia.ui.backstack.BackstackHandler
+import io.writeopia.ui.backstack.BackstackInform
+import io.writeopia.ui.backstack.BackstackManager
 import io.writeopia.sdk.manager.ContentHandler
 import io.writeopia.sdk.manager.DocumentTracker
 import io.writeopia.sdk.manager.MovementHandler

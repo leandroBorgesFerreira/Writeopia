@@ -1,6 +1,5 @@
-package io.writeopia.backstack
+package io.writeopia.ui.backstack
 
-import io.writeopia.sdk.backstack.PerStateBackstackManager
 import io.writeopia.sdk.manager.ContentHandler
 import io.writeopia.sdk.manager.MovementHandler
 import io.writeopia.sdk.model.action.BackstackAction

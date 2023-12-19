@@ -1,8 +1,8 @@
 package io.writeopia.editor.viewmodel
 
 import io.writeopia.editor.model.EditState
-import io.writeopia.sdk.backstack.BackstackHandler
-import io.writeopia.sdk.backstack.BackstackInform
+import io.writeopia.ui.backstack.BackstackHandler
+import io.writeopia.ui.backstack.BackstackInform
 import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.filter.DocumentFilter
 import io.writeopia.sdk.filter.DocumentFilterObject
