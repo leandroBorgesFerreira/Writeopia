@@ -8,6 +8,8 @@ import org.springframework.web.reactive.function.server.buildAndAwait
 
 class EditorHandler(private val writeopiaEditorApi: WriteopiaEditorApi) {
 
+    fun example() = writeopiaEditorApi.example()
+
     suspend fun saveDocument(documentApi: DocumentApi): ServerResponse =
         ServerResponse.accepted()
             .bodyValueAndAwait(writeopiaEditorApi.saveDocument(documentApi))

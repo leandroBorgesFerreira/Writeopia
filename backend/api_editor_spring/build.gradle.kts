@@ -14,9 +14,11 @@ java {
 dependencies {
     implementation(project(":backend:api_editor"))
     implementation(project(":plugins:writeopia_serialization"))
+    implementation(project(":writeopia_models"))
 
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlin.coroutines.reactor)
+    implementation(libs.kotlinx.datetime)
 
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
