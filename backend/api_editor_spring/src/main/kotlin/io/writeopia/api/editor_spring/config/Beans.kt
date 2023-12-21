@@ -9,6 +9,10 @@ val beans = beans {
     bean<WriteopiaEditorApi> {
         WriteopiaEditorApi.create()
     }
+
+    bean {
+        appRouter()
+    }
 }
 
 class BeansInitializer : ApplicationContextInitializer<GenericApplicationContext> {

@@ -14,6 +14,9 @@ java {
 dependencies {
     implementation(project(":backend:api_editor"))
 
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlin.coroutines.reactor)
+
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
