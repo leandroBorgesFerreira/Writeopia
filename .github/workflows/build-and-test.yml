@@ -69,7 +69,7 @@ jobs:
           distribution: adopt
           java-version: '17'
       - name: Build backend
-        run: ./gradlew backend:intronotes:assemble
+        run: ./gradlew backend:intronotes:assemble backend:api_editor:assemble backend:api_editor_spring:assemble 
   test_docusaurus:
     name: Test docusaurus
     runs-on: ubuntu-latest
