@@ -13,6 +13,7 @@ java {
 
 dependencies {
     implementation(project(":backend:api_editor"))
+    implementation(project(":plugins:writeopia_serialization"))
 
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlin.coroutines.reactor)

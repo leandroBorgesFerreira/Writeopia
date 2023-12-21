@@ -5,6 +5,9 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import io.writeopia.sdk.persistence.sqldelight.dao.sql.SqlDelightDocumentRepository
+import io.writeopia.sdk.serialization.data.DocumentApi
+import io.writeopia.sdk.serialization.extensions.toApi
+import io.writeopia.sdk.serialization.extensions.toModel
 import io.writeopia.sdk.sql.WriteopiaDb
 import java.util.Properties
 
@@ -12,11 +15,12 @@ class WriteopiaEditorApi(
     private val documentRepository: DocumentRepository
 ) {
 
-    suspend fun saveDocument(document: Document) {
-        documentRepository.saveDocument(document)
+    suspend fun saveDocument(document: DocumentApi) {
+        documentRepository.saveDocument(document.toModel())
     }
 
-    suspend fun getDocument(id: String): Document? = documentRepository.loadDocumentById(id)
+    suspend fun getDocument(id: String): DocumentApi? =
+        documentRepository.loadDocumentById(id)?.toApi()
 
     companion object {
         private fun createDatabase(
