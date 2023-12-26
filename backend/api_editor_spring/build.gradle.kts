@@ -1,5 +1,4 @@
 plugins {
-    id("java-library")
     alias(libs.plugins.org.jetbrains.kotlin.jvm)
     alias(libs.plugins.spring.boot)
     alias(libs.plugins.spring.kotlin)
@@ -26,8 +25,4 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
     testImplementation(libs.kotlin.test)
-}
-
-tasks.bootBuildImage {
-    builder.set("paketobuildpacks/builder-jammy-base:latest")
 }
