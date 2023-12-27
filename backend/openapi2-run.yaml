@@ -1,0 +1,22 @@
+# openapi2-run.yaml
+swagger: '2.0'
+info:
+  title: writeopia-api
+  description: API for Writeopia Text Editor
+  version: 0.0.1
+schemes:
+- https
+produces:
+- application/json
+x-google-backend:
+  address: https://api-editor-spring-x5nkpuy5sq-ew.a.run.app
+paths:
+  /api/writeopia/example:
+    get:
+      summary: An example document
+      operationId: example
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string

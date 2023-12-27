@@ -29,11 +29,8 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-//                implementation(libs.androidx.ktx)
-//                implementation(libs.appCompat)
-
-                implementation(libs.aws.amplifyframework.cognito)
-                implementation(libs.aws.amplifyframework.core.kotlin)
+                implementation(libs.firebase.auth)
+                implementation(platform(libs.firebase.bom.get()))
             }
         }
     }

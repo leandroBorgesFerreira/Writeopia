@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.auth.intronotes.IntroNotesUseCase
 import io.writeopia.utils_module.ResultData
-import io.writeopia.utils_module.toBoolean
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -45,9 +44,9 @@ internal class RegisterViewModel(
 
         viewModelScope.launch {
             val result = authManager.signUp(_email.value, _password.value, _name.value)
-            if (result.toBoolean()) {
-                introNotesUseCase.addIntroNotes()
-            }
+//                if (result.toBoolean()) {
+//                    introNotesUseCase.addIntroNotes()
+//                }
 
             _register.value = result
         }

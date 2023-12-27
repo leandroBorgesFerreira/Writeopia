@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.compose")
     alias(libs.plugins.application)
     id("kotlin-parcelize")
+    alias(libs.plugins.google.services)
 }
 
 kotlin {
@@ -76,11 +77,12 @@ android {
             )
         }
         release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {

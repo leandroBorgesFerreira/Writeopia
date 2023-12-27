@@ -50,8 +50,8 @@ internal object ApiInjectorDefaults {
                 bearer {
                     loadTokens {
                         BearerTokens(
-                            bearerTokenHandler.getIdToken(),
-                            bearerTokenHandler.getRefreshToken()
+                            bearerTokenHandler.getIdToken() ?: "",
+                            "",
                         )
                     }
                 }

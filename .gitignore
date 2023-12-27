@@ -9,7 +9,7 @@
 .cxx
 local.properties
 
-google-services.json
+*/**/google-services.json
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend

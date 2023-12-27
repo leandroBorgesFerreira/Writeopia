@@ -15,7 +15,7 @@ import io.writeopia.account.di.AccountMenuInjector
 import io.writeopia.account.navigation.accountMenuNavigation
 import io.writeopia.auth.core.BuildConfig
 import io.writeopia.auth.core.di.AndroidAuthCoreInjection
-import io.writeopia.auth.core.token.AmplifyTokenHandler
+import io.writeopia.auth.core.token.FirebaseTokenHandler
 import io.writeopia.auth.di.AuthInjection
 import io.writeopia.auth.navigation.authNavigation
 import io.writeopia.auth.navigation.navigateToAuthMenu
@@ -23,7 +23,6 @@ import io.writeopia.editor.di.EditorInjector
 import io.writeopia.editor.navigation.editorNavigation
 import io.writeopia.note_menu.di.NotesConfigurationInjector
 import io.writeopia.note_menu.di.NotesMenuAndroidInjection
-import io.writeopia.note_menu.di.NotesMenuKmpInjection
 import io.writeopia.note_menu.navigation.notesMenuNavigation
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
@@ -33,6 +32,8 @@ import io.writeopia.theme.ApplicationComposeTheme
 import io.writeopia.utils_module.Destinations
 
 class NavigationActivity : AppCompatActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -63,7 +64,7 @@ fun NavigationGraph(
     val appDaosInjection = AppRoomDaosInjection(database)
     val notesConfigurationInjector = NotesConfigurationInjector(appDaosInjection)
     val apiInjector =
-        ApiInjector(apiLogger = AndroidLogger, bearerTokenHandler = AmplifyTokenHandler)
+        ApiInjector(apiLogger = AndroidLogger, bearerTokenHandler = FirebaseTokenHandler)
     val authCoreInjection = AndroidAuthCoreInjection(sharedPreferences)
     val repositoryInjection = RoomRespositoryInjection(database)
     val authInjection = AuthInjection(authCoreInjection, apiInjector, repositoryInjection)
