@@ -40,9 +40,9 @@ internal class LoginViewModel(
         viewModelScope.launch {
             val result = authManager.signIn(_email.value, _password.value)
 
-            if (result.toBoolean()) {
-                introNotesUseCase.addIntroNotes()
-            }
+//            if (result.toBoolean()) {
+//                introNotesUseCase.addIntroNotes()
+//            }
 
             _loginState.value = result
         }
