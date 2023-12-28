@@ -17,11 +17,7 @@ class AndroidAuthCoreInjection(
 
     private val auth: FirebaseAuth = Firebase.auth
 
-    override fun provideAccountManager(): AuthManager = if (!BuildConfig.DEBUG) {
-        FirebaseAuthManager(auth)
-    } else {
-        MockAuthManager()
-    }
+    override fun provideAccountManager(): AuthManager = FirebaseAuthManager(auth)
 
     override fun provideAuthRepository(): AuthRepository =
         SharedPrefsAuthRepository(sharedPreferences)
