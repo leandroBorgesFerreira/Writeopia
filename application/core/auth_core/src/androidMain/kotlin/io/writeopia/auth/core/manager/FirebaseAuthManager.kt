@@ -1,6 +1,7 @@
 package io.writeopia.auth.core.manager
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import io.writeopia.auth.core.data.User
 import io.writeopia.utils_module.ResultData
 import kotlinx.coroutines.tasks.await
@@ -26,7 +27,23 @@ class FirebaseAuthManager(private val auth: FirebaseAuth) : AuthManager {
     ): ResultData<Boolean> =
         try {
             val result = auth.createUserWithEmailAndPassword(email, password).await()
-            ResultData.Complete(result.user != null)
+            val user = result.user
+            val userCreated = user != null
+
+            try {
+                if (user != null) {
+                    val profileUpdates = UserProfileChangeRequest.Builder()
+                        .setDisplayName(name)
+                        .build()
+
+                    user.updateProfile(profileUpdates).await()
+                }
+
+                ResultData.Complete(userCreated)
+            } catch (e: Exception) {
+                ResultData.Complete(userCreated)
+            }
+
         } catch (e: Exception) {
             ResultData.Error(e)
         }

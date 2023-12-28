@@ -184,7 +184,8 @@ private fun TopBar(
 @Composable
 private fun getUserName(userNameState: UserState<String>): String =
     when (userNameState) {
-        is UserState.ConnectedUser -> "${userNameState}\'s Workspace"
+        is UserState.ConnectedUser ->
+            "${userNameState.data.takeIf { it.isNotEmpty() } ?: "Unkown"}\'s Workspace"
 //            stringResource(id = R.string.name_space, userNameState.data)
         is UserState.DisconnectedUser -> "Offline Workspace"
 //            stringResource(id = R.string.offline_workspace)
