@@ -19,6 +19,8 @@ dependencies {
     implementation(libs.kotlin.coroutines.reactor)
     implementation(libs.kotlinx.datetime)
 
+    implementation(libs.firebase.admin)
+
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
