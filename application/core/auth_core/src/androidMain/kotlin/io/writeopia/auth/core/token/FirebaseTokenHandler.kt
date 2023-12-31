@@ -8,6 +8,6 @@ import kotlinx.coroutines.tasks.await
 object FirebaseTokenHandler : BearerTokenHandler {
 
     override suspend fun getIdToken(): String? =
-        Firebase.auth.currentUser?.getIdToken(true)?.await()?.token
+        Firebase.auth.currentUser?.getIdToken(false)?.await()?.token
 
 }
