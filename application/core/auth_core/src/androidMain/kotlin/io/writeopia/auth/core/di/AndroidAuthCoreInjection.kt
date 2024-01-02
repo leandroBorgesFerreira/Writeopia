@@ -7,7 +7,6 @@ import com.google.firebase.ktx.Firebase
 import io.writeopia.auth.core.BuildConfig
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.auth.core.manager.FirebaseAuthManager
-import io.writeopia.auth.core.manager.MockAuthManager
 import io.writeopia.auth.core.repository.AuthRepository
 import io.writeopia.auth.core.repository.SharedPrefsAuthRepository
 

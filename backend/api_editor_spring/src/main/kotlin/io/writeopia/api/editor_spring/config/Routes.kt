@@ -52,7 +52,3 @@ suspend fun withAuth(request: ServerRequest, func: suspend () -> ServerResponse)
 }
 
 private suspend fun unAuthorized() = ServerResponse.status(HttpStatus.UNAUTHORIZED).buildAndAwait()
-
-object Hi {
-    fun hi(name: String) = "Hi $name!"
-}
