@@ -9,7 +9,6 @@ import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.awaitBody
 import org.springframework.web.reactive.function.server.bodyValueAndAwait
-import org.springframework.web.reactive.function.server.buildAndAwait
 import org.springframework.web.reactive.function.server.coRouter
 
 fun appRouter(editorHandler: EditorHandler) = coRouter {
@@ -38,15 +37,16 @@ suspend fun withAuth(request: ServerRequest, func: suspend () -> ServerResponse)
     val idToken = request.headers()
         .firstHeader("Authorization")
         ?.replace("Bearer ", "")
-        ?: return unAuthorized()
+        ?: return unAuthorized("The token was not correctly parsed")
 
     return try {
         FirebaseAuth.getInstance().verifyIdToken(idToken)
         func()
     } catch (e: FirebaseAuthException) {
         println("Unauthorized: ${e.message}")
-        unAuthorized()
+        unAuthorized(e.message ?: "Auth failed")
     }
 }
 
-private suspend fun unAuthorized() = ServerResponse.status(HttpStatus.UNAUTHORIZED).buildAndAwait()
+private suspend fun unAuthorized(message: String = "Auth failed") =
+    ServerResponse.status(HttpStatus.UNAUTHORIZED).bodyValueAndAwait(message)
