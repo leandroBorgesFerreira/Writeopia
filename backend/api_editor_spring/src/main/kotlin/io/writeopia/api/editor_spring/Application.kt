@@ -1,25 +1,17 @@
 package io.writeopia.api.editor_spring
 
-import com.google.auth.oauth2.GoogleCredentials
-import com.google.firebase.FirebaseApp
-import com.google.firebase.FirebaseOptions
+import io.writeopia.api.editor_spring.config.BeansInitializer
+import io.writeopia.api.editor_spring.config.FirebaseInitializer
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
+import org.springframework.boot.builder.SpringApplicationBuilder
 
 @SpringBootApplication
 class DocumentEditorApplication
 
 fun main(args: Array<String>) {
-    initFirebase()
-    runApplication<DocumentEditorApplication>(*args)
-}
-
-private fun initFirebase() {
-    val option = FirebaseOptions.builder()
-        .setProjectId(loadProjectId())
-        .setCredentials(GoogleCredentials.getApplicationDefault())
+    SpringApplicationBuilder(DocumentEditorApplication::class.java)
+        .initializers(BeansInitializer(), FirebaseInitializer())
         .build()
-    FirebaseApp.initializeApp(option)
+        .run(*args)
 }
 
-private fun loadProjectId(): String = System.getenv("WRITEOPIA_CLOUD_ID")

@@ -12,11 +12,10 @@ import org.springframework.web.reactive.function.server.bodyValueAndAwait
 import org.springframework.web.reactive.function.server.buildAndAwait
 import org.springframework.web.reactive.function.server.coRouter
 
-
 fun appRouter(editorHandler: EditorHandler) = coRouter {
     accept(MediaType.APPLICATION_JSON).nest {
         "/api/writeopia".nest {
-            GET("/example") { 
+            GET("/example") {
                 ServerResponse.ok().bodyValueAndAwait(editorHandler.example())
             }
 
@@ -45,6 +44,7 @@ suspend fun withAuth(request: ServerRequest, func: suspend () -> ServerResponse)
         FirebaseAuth.getInstance().verifyIdToken(idToken)
         func()
     } catch (e: FirebaseAuthException) {
+        println("Unauthorized: ${e.message}")
         unAuthorized()
     }
 }
