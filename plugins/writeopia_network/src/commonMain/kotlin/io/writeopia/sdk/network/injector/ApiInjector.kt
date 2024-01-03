@@ -34,28 +34,26 @@ internal object ApiInjectorDefaults {
         json: Json = writeopiaJson,
         bearerTokenHandler: BearerTokenHandler,
         apiLogger: Logger,
+    ) = HttpClient {
+        install(ContentNegotiation) {
+            json(json = json)
+        }
 
-    ) =
-        HttpClient {
-            install(ContentNegotiation) {
-                json(json = json)
-            }
-
-            install(Logging) {
-                logger = apiLogger
-                level = LogLevel.ALL
+        install(Logging) {
+            logger = apiLogger
+            level = LogLevel.ALL
 //                sanitizeHeader { header -> header == HttpHeaders.Authorization }
-            }
+        }
 
-            install(Auth) {
-                bearer {
-                    loadTokens {
-                        BearerTokens(
-                            bearerTokenHandler.getIdToken() ?: "",
-                            "",
-                        )
-                    }
+        install(Auth) {
+            bearer {
+                loadTokens {
+                    BearerTokens(
+                        bearerTokenHandler.getIdToken() ?: "",
+                        "",
+                    )
                 }
             }
         }
+    }
 }

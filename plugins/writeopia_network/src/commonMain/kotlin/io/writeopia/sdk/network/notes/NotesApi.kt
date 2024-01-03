@@ -19,8 +19,7 @@ class NotesApi(private val client: () -> HttpClient, private val baseUrl: String
      */
     suspend fun introNotes(): List<Document> {
         return client().get("${baseUrl}/${EndPoints.introNotes()}")
-            .body<WriteopiaRequest<List<DocumentApi>>>()
-            .data
+            .body<List<DocumentApi>>()
             .map { documentApi -> documentApi.toModel() }
     }
 }
