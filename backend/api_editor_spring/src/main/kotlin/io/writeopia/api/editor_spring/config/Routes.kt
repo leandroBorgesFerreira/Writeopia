@@ -41,9 +41,11 @@ fun appRouter(editorHandler: EditorHandler) = coRouter {
 }
 
 suspend fun withAuth(request: ServerRequest, func: suspend () -> ServerResponse): ServerResponse {
-    val idToken = request.headers()
-        .firstHeader("Authorization")
-        ?.replace("Bearer ", "")
+    val token = request.headers().run {
+        firstHeader("X-Forwarded-Authorization") ?: firstHeader("Authorization")
+    }
+
+    val idToken = token?.replace("Bearer ", "")
         ?: return unAuthorized("The token was not correctly parsed")
 
     return try {
