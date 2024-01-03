@@ -73,6 +73,8 @@ dependencies {
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
+    implementation(libs.kotlinx.datetime)
+
     implementation(libs.viewmodel.compose)
     implementation(libs.runtime.compose)
     implementation(libs.navigation.compose)

@@ -9,6 +9,7 @@ import io.writeopia.sdk.serialization.data.DecorationApi
 import io.writeopia.sdk.serialization.data.DocumentApi
 import io.writeopia.sdk.serialization.data.StoryStepApi
 import io.writeopia.sdk.serialization.data.StoryTypeApi
+import kotlinx.datetime.Instant
 
 fun StoryStep.toApi(position: Int): StoryStepApi =
     StoryStepApi(
@@ -59,8 +60,8 @@ fun Document.toApi(): DocumentApi =
         id = id,
         title = title,
         content = content.map { (position, story) -> story.toApi(position) },
-        createdAt = createdAt,
-        lastUpdatedAt = lastUpdatedAt,
+        createdAt = createdAt.toEpochMilliseconds(),
+        lastUpdatedAt = lastUpdatedAt.toEpochMilliseconds(),
         userId = userId,
     )
 
@@ -69,7 +70,7 @@ fun DocumentApi.toModel(): Document =
         id = id,
         title = title,
         content = content.associateBy { it.position }.mapValues { (_, story) -> story.toModel() },
-        createdAt = createdAt,
-        lastUpdatedAt = lastUpdatedAt,
+        createdAt = Instant.fromEpochMilliseconds(createdAt),
+        lastUpdatedAt = Instant.fromEpochMilliseconds(lastUpdatedAt),
         userId = userId,
     )

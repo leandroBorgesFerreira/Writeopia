@@ -8,16 +8,18 @@ import org.springframework.web.reactive.function.server.buildAndAwait
 
 class EditorHandler(private val writeopiaEditorApi: WriteopiaEditorApi) {
 
-    fun example() = writeopiaEditorApi.example()
+    suspend fun example(): ServerResponse =
+        ServerResponse.ok().bodyValueAndAwait(writeopiaEditorApi.example())
+
+    suspend fun introNotes(): ServerResponse =
+        ServerResponse.accepted().bodyValueAndAwait(writeopiaEditorApi.introNotes())
 
     suspend fun saveDocument(documentApi: DocumentApi): ServerResponse =
         ServerResponse.accepted()
             .bodyValueAndAwait(writeopiaEditorApi.saveDocument(documentApi))
 
-
     suspend fun getDocument(id: String): ServerResponse =
         writeopiaEditorApi.getDocument(id)?.let { document ->
             ServerResponse.ok().bodyValueAndAwait(document)
         } ?: ServerResponse.notFound().buildAndAwait()
-
 }

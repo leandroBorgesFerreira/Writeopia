@@ -11,9 +11,10 @@ java {
 }
 
 dependencies {
+    implementation(project(":writeopia_models"))
+    implementation(project(":common:endpoints"))
     implementation(project(":backend:api_editor"))
     implementation(project(":plugins:writeopia_serialization"))
-    implementation(project(":writeopia_models"))
 
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlin.coroutines.reactor)

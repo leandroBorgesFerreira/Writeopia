@@ -23,7 +23,7 @@ class ApiInjector(
             apiLogger = apiLogger
         )
     },
-    private val baseUrl: String = ApiInjectorDefaults.baseUrl(),
+    private val baseUrl: String,
 ) {
 
     fun notesApi(): NotesApi = NotesApi(client, baseUrl)
@@ -33,7 +33,8 @@ internal object ApiInjectorDefaults {
     fun httpClientJson(
         json: Json = writeopiaJson,
         bearerTokenHandler: BearerTokenHandler,
-        apiLogger: Logger
+        apiLogger: Logger,
+
     ) =
         HttpClient {
             install(ContentNegotiation) {
@@ -57,6 +58,4 @@ internal object ApiInjectorDefaults {
                 }
             }
         }
-
-    fun baseUrl(): String = "https://api.writeopia.net"
 }

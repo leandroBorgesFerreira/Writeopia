@@ -11,9 +11,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import io.writeopia.AndroidLogger
+import io.writeopia.BuildConfig
 import io.writeopia.account.di.AccountMenuInjector
 import io.writeopia.account.navigation.accountMenuNavigation
-import io.writeopia.auth.core.BuildConfig
 import io.writeopia.auth.core.di.AndroidAuthCoreInjection
 import io.writeopia.auth.core.token.FirebaseTokenHandler
 import io.writeopia.auth.di.AuthInjection
@@ -64,7 +64,11 @@ fun NavigationGraph(
     val appDaosInjection = AppRoomDaosInjection(database)
     val notesConfigurationInjector = NotesConfigurationInjector(appDaosInjection)
     val apiInjector =
-        ApiInjector(apiLogger = AndroidLogger, bearerTokenHandler = FirebaseTokenHandler)
+        ApiInjector(
+            apiLogger = AndroidLogger,
+            bearerTokenHandler = FirebaseTokenHandler,
+            baseUrl = BuildConfig.BASE_URL
+        )
     val authCoreInjection = AndroidAuthCoreInjection(sharedPreferences)
     val repositoryInjection = RoomRespositoryInjection(database)
     val authInjection = AuthInjection(authCoreInjection, apiInjector, repositoryInjection)

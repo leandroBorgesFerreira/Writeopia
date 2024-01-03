@@ -25,8 +25,8 @@ internal fun DocumentApi.toEntity(): DocumentEntity =
                 position = storyStep.position,
             )
         },
-        createdAt = this.createdAt.toEpochMilliseconds(),
-        lastUpdatedAt = this.lastUpdatedAt.toEpochMilliseconds()
+        createdAt = this.createdAt,
+        lastUpdatedAt = this.lastUpdatedAt
     )
 
 internal fun DocumentEntity.toAPi(): DocumentApi {
@@ -47,8 +47,8 @@ internal fun DocumentEntity.toAPi(): DocumentApi {
                 position = storyStepEntity.position!!,
             )
         } ?: emptyList(),
-        createdAt = this.createdAt?.let(Instant::fromEpochMilliseconds) ?: now,
-        lastUpdatedAt = this.lastUpdatedAt?.let(Instant::fromEpochMilliseconds) ?: now,
+        createdAt = this.createdAt ?: now.toEpochMilliseconds(),
+        lastUpdatedAt = this.lastUpdatedAt ?: now.toEpochMilliseconds(),
         userId = this.userId ?: ""
     )
 }

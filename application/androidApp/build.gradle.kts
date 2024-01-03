@@ -59,6 +59,9 @@ android {
     compileSdk = 34
 
     defaultConfig {
+        val baseUrl = System.getenv("WRITEOPIA_BASE_URL")
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
+
         applicationId = "io.writeopia"
         minSdk = 24
         targetSdk = 34

@@ -1,7 +1,6 @@
 package io.writeopia.api.editor
 
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
-import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
@@ -18,6 +17,25 @@ class WriteopiaEditorApi(
     private val documentRepository: DocumentRepository
 ) {
 
+    fun introNotes(): List<DocumentApi> {
+        val title = "Connected!"
+        val now = Clock.System.now()
+
+        val documentList = listOf(
+            StoryStep(type = StoryTypes.TITLE.type, text = title),
+            StoryStep(type = StoryTypes.TEXT.type, text = "You're now connected. Enjoy the app!!"),
+        )
+
+        return DocumentApi(
+            id = "welcomeNote",
+            title = title,
+            content = documentList.mapIndexed { i, storyStep -> storyStep.toApi(i) },
+            createdAt = now.toEpochMilliseconds(),
+            lastUpdatedAt = now.toEpochMilliseconds(),
+            userId = "null",
+        ).let(::listOf)
+    }
+
     fun example(): DocumentApi {
         val title = "Example Document"
         val now = Clock.System.now()
@@ -31,8 +49,8 @@ class WriteopiaEditorApi(
             id = "document_123",
             title = title,
             content = documentList.mapIndexed { i, storyStep -> storyStep.toApi(i) },
-            createdAt = now,
-            lastUpdatedAt = now,
+            createdAt = now.toEpochMilliseconds(),
+            lastUpdatedAt = now.toEpochMilliseconds(),
             userId = "user_123",
         )
     }

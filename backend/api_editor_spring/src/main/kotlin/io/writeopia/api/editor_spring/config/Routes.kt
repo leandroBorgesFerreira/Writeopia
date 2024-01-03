@@ -3,6 +3,7 @@ package io.writeopia.api.editor_spring.config
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import io.writeopia.api.editor_spring.EditorHandler
+import io.writeopia.app.endpoints.EndPoints
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.server.ServerRequest
@@ -14,8 +15,14 @@ import org.springframework.web.reactive.function.server.coRouter
 fun appRouter(editorHandler: EditorHandler) = coRouter {
     accept(MediaType.APPLICATION_JSON).nest {
         "/api/writeopia".nest {
-            GET("/example") {
-                ServerResponse.ok().bodyValueAndAwait(editorHandler.example())
+            GET("/document/example") {
+                editorHandler.example()
+            }
+
+            GET("/${EndPoints.introNotes()}") { request ->
+                withAuth(request) {
+                    editorHandler.introNotes()
+                }
             }
 
             GET("/document/{id}") { request ->
