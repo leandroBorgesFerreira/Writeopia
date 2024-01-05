@@ -14,7 +14,7 @@ import org.springframework.web.reactive.function.server.coRouter
 
 fun appRouter(editorHandler: EditorHandler) = coRouter {
     accept(MediaType.APPLICATION_JSON).nest {
-        "/api/writeopia".nest {
+        "/api".nest {
             GET("/document/example") {
                 editorHandler.example()
             }
