@@ -22,6 +22,8 @@ dependencies {
 
     implementation(libs.firebase.admin)
 
+    implementation(libs.sql.postgres.socket.factory)
+
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 

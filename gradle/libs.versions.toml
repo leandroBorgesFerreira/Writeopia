@@ -1,6 +1,5 @@
 [versions]
 accompanist = "0.32.0"
-amplify = "2.11.1"
 coilVersion = "2.3.0"
 composeBom = "2023.10.01"
 composeShimmer = "1.0.5"
@@ -15,8 +14,9 @@ ktorClient = "2.3.3"
 ktx = "1.12.0"
 appCompat = "1.6.1"
 material = "1.11.0"
-material3Desktop = "1.5.10"
+material3Desktop = "1.5.11"
 materialIconsExtended = "1.5.4"
+postgresSocketFactory = "1.15.1"
 room = "2.6.1"
 compose = "2.6.2"
 navigation-compose = "2.7.6"
@@ -39,8 +39,6 @@ google-services = "4.4.0"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
-aws-amplifyframework-core-kotlin = { module = "com.amplifyframework:core-kotlin", version.ref = "amplify" }
-aws-amplifyframework-cognito = { module = "com.amplifyframework:aws-auth-cognito", version.ref = "amplify" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
 androidx-compose-test = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "composeTest" }
@@ -70,6 +68,7 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ktor-client-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorClient" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 material3-desktop = { module = "org.jetbrains.compose.material3:material3-desktop", version.ref = "material3Desktop" }
+sql-postgres-socket-factory = { module = "com.google.cloud.sql:postgres-socket-factory", version.ref = "postgresSocketFactory" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }

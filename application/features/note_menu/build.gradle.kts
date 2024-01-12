@@ -54,7 +54,6 @@ kotlin {
             dependencies {
                 implementation(libs.appCompat)
 
-                implementation(libs.aws.amplifyframework.core.kotlin)
                 implementation(libs.coil.compose)
                 implementation(libs.viewmodel.compose)
                 implementation(libs.navigation.compose)

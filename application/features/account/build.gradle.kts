@@ -32,7 +32,6 @@ kotlin {
                 implementation(libs.appCompat)
 
                 implementation("androidx.activity:activity-compose")
-                implementation(libs.aws.amplifyframework.core.kotlin)
 
                 implementation(libs.viewmodel.compose)
                 implementation(libs.navigation.compose)
