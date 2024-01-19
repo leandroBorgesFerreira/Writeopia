@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: writeopia-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: myminikube.info
+    http:
+      paths:
+      - path: /document/user
+        pathType: Prefix
+        backend:
+          service:
+            name: documents-service
+            port:
+              number: 9376

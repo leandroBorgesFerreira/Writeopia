@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: documents-deploy
+  labels:
+    app: documents-app
+    app.kubernetes.io/name: documents-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: documents-app
+  template:
+    metadata:
+      labels:
+        app: documents-app
+    spec:
+      containers:
+      - name: documents-container
+        image: writeopia_documents:0.0.2
+        ports:
+        - containerPort: 8080

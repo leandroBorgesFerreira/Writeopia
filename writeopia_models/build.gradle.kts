@@ -15,20 +15,20 @@ plugins {
 kotlin {
     jvm {}
 
-    val dummy = Attribute.of("dummy", String::class.java)
+//    val dummy = Attribute.of("dummy", String::class.java)
 
-    listOf(
-        iosX64(),
-        iosArm64 {
-            attributes.attribute(dummy, "KT-55751")
-        },
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-//            baseName = "shared"
-            isStatic = true
-        }
-    }
+//    listOf(
+//        iosX64(),
+//        iosArm64 {
+//            attributes.attribute(dummy, "KT-55751")
+//        },
+//        iosSimulatorArm64()
+//    ).forEach { iosTarget ->
+//        iosTarget.binaries.framework {
+////            baseName = "shared"
+//            isStatic = true
+//        }
+//    }
 
     js(IR) {
         browser()
@@ -41,19 +41,19 @@ kotlin {
             }
         }
 
-        val iosMain by creating {
-            dependsOn(commonMain)
-            dependencies {}
-        }
-        val iosX64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosArm64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain)
-        }
+//        val iosMain by creating {
+//            dependsOn(commonMain)
+//            dependencies {}
+//        }
+//        val iosX64Main by getting {
+//            dependsOn(iosMain)
+//        }
+//        val iosArm64Main by getting {
+//            dependsOn(iosMain)
+//        }
+//        val iosSimulatorArm64Main by getting {
+//            dependsOn(iosMain)
+//        }
 
         val jsMain by getting {
             dependencies {
