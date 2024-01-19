@@ -5,6 +5,9 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import io.writeopia.api.editor.WriteopiaEditorApi
 import io.writeopia.api.editor_spring.EditorHandler
+import io.writeopia.api.editor_spring.auth.FixedTokenHandler
+import io.writeopia.sdk.network.injector.ApiClientInjector
+import io.writeopia.sdk.network.notes.NotesApi
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.support.GenericApplicationContext
 import org.springframework.context.support.beans
@@ -22,6 +25,12 @@ val beans = beans {
         appRouter(ref<EditorHandler>())
     }
 }
+
+internal fun notesApiFromToken(token: String): NotesApi =
+    ApiClientInjector(
+        bearerTokenHandler = FixedTokenHandler(token),
+        baseUrl = System.getenv("WRITEOPIA_BASE_URL")
+    ).notesApi()
 
 class BeansInitializer : ApplicationContextInitializer<GenericApplicationContext> {
     override fun initialize(context: GenericApplicationContext) {
@@ -45,3 +54,4 @@ class FirebaseInitializer: ApplicationContextInitializer<GenericApplicationConte
         initFirebase()
     }
 }
+

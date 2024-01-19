@@ -23,6 +23,8 @@ dependencies {
 
     implementation(libs.firebase.admin)
 
+    implementation(libs.ktor.client.logging)
+
     implementation(libs.sql.postgres.socket.factory)
 
     implementation("org.springframework.boot:spring-boot-starter-webflux")

@@ -21,4 +21,9 @@ class NotesApi(private val client: () -> HttpClient, private val baseUrl: String
             .body<List<DocumentApi>>()
             .map { documentApi -> documentApi.toModel() }
     }
+
+    suspend fun proxyUserDocumentsApi(): List<DocumentApi> {
+        return client().get("${baseUrl}/${EndPoints.userNotes("mock")}")
+            .body<List<DocumentApi>>()
+    }
 }

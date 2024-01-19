@@ -1,6 +1,7 @@
 package io.writeopia.api.editor_spring
 
 import io.writeopia.api.editor.WriteopiaEditorApi
+import io.writeopia.api.editor_spring.config.notesApiFromToken
 import io.writeopia.sdk.serialization.data.DocumentApi
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.bodyValueAndAwait
@@ -22,4 +23,14 @@ class EditorHandler(private val writeopiaEditorApi: WriteopiaEditorApi) {
         writeopiaEditorApi.getDocument(id)?.let { document ->
             ServerResponse.ok().bodyValueAndAwait(document)
         } ?: ServerResponse.notFound().buildAndAwait()
+
+    suspend fun getProxyUserDocument(firebaseToken: String): ServerResponse {
+        try {
+            val documentApiList = notesApiFromToken(firebaseToken).proxyUserDocumentsApi()
+            return ServerResponse.ok().bodyValueAndAwait(documentApiList)
+        } catch (e: Exception) {
+            println(e.message)
+            throw e
+        }
+    }
 }

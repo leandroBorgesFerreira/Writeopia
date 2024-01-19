@@ -8,22 +8,23 @@ import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-class ApiInjector(
-    private val apiLogger: Logger,
+class ApiClientInjector(
+    private val baseUrl: String,
     private val bearerTokenHandler: BearerTokenHandler,
+    private val apiLogger: Logger = Logger.Companion.DEFAULT,
     private val client: () -> HttpClient = {
         ApiInjectorDefaults.httpClientJson(
             bearerTokenHandler = bearerTokenHandler,
             apiLogger = apiLogger
         )
-    },
-    private val baseUrl: String,
+    }
 ) {
 
     fun notesApi(): NotesApi = NotesApi(client, baseUrl)

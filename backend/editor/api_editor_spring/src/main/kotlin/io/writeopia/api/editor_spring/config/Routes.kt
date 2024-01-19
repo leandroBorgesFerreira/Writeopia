@@ -31,6 +31,12 @@ fun appRouter(editorHandler: EditorHandler) = coRouter {
                 }
             }
 
+            GET("/${EndPoints.proxyUserNotes()}") { request ->
+                withAuthProxy(request) { token ->
+                    editorHandler.getProxyUserDocument(token)
+                }
+            }
+
             POST("/document") { request ->
                 withAuth(request) {
                     editorHandler.saveDocument(request.awaitBody())
@@ -51,6 +57,26 @@ suspend fun withAuth(request: ServerRequest, func: suspend () -> ServerResponse)
     return try {
         FirebaseAuth.getInstance().verifyIdToken(idToken)
         func()
+    } catch (e: FirebaseAuthException) {
+        println("Unauthorized: ${e.message}")
+        unAuthorized(e.message ?: "Auth failed")
+    }
+}
+
+suspend fun withAuthProxy(
+    request: ServerRequest,
+    func: suspend (String) -> ServerResponse
+): ServerResponse {
+    val token = request.headers().run {
+        firstHeader("X-Forwarded-Authorization") ?: firstHeader("Authorization")
+    }
+
+    val idToken = token?.replace("Bearer ", "")
+        ?: return unAuthorized("The token was not correctly parsed")
+
+    return try {
+        FirebaseAuth.getInstance().verifyIdToken(idToken)
+        func(idToken)
     } catch (e: FirebaseAuthException) {
         println("Unauthorized: ${e.message}")
         unAuthorized(e.message ?: "Auth failed")
