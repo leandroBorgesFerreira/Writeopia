@@ -1,6 +1,7 @@
 package io.wirteopia.api.editor_spring
 
 import io.writeopia.api.editor.WriteopiaEditorApi
+import io.writeopia.api.editor.utils.example
 import io.writeopia.api.editor_spring.EditorHandler
 import io.writeopia.api.editor_spring.config.appRouter
 import io.writeopia.app.endpoints.EndPoints
@@ -38,4 +39,22 @@ class ApplicationTest {
             .expectBody(object : ParameterizedTypeReference<List<DocumentApi>>() {})
     }
 
+    @Test
+    fun itShouldBePossibleToSaveAndGetDocuments() {
+        val id = "mockId"
+
+        webClient.post()
+            .uri("/api/document")
+            .bodyValue(DocumentApi.example(id = id))
+            .exchange()
+            .expectStatus()
+            .isAccepted
+
+        webClient.get()
+            .uri("/api/document/$id")
+            .exchange()
+            .expectStatus()
+            .isOk
+            .expectBody(DocumentApi::class.java)
+    }
 }
