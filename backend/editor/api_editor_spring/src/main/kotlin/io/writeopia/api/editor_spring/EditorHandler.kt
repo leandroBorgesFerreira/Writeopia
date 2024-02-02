@@ -13,7 +13,7 @@ class EditorHandler(private val writeopiaEditorApi: WriteopiaEditorApi) {
         ServerResponse.ok().bodyValueAndAwait(writeopiaEditorApi.example())
 
     suspend fun introNotes(): ServerResponse =
-        ServerResponse.accepted().bodyValueAndAwait(writeopiaEditorApi.introNotes())
+        ServerResponse.ok().bodyValueAndAwait(writeopiaEditorApi.introNotes())
 
     suspend fun saveDocument(documentApi: DocumentApi): ServerResponse =
         ServerResponse.accepted()

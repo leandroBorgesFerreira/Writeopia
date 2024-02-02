@@ -12,7 +12,7 @@ import org.springframework.web.reactive.function.server.awaitBody
 import org.springframework.web.reactive.function.server.bodyValueAndAwait
 import org.springframework.web.reactive.function.server.coRouter
 
-fun appRouter(editorHandler: EditorHandler) = coRouter {
+fun appRouter(editorHandler: EditorHandler, byPassAuth: Boolean = false) = coRouter {
     accept(MediaType.APPLICATION_JSON).nest {
         "/api".nest {
             GET("/document/example") {
@@ -20,13 +20,13 @@ fun appRouter(editorHandler: EditorHandler) = coRouter {
             }
 
             GET("/${EndPoints.introNotes()}") { request ->
-                withAuth(request) {
+                withAuth(request, byPass = byPassAuth) {
                     editorHandler.introNotes()
                 }
             }
 
             GET("/document/{id}") { request ->
-                withAuth(request) {
+                withAuth(request, byPass = byPassAuth) {
                     editorHandler.getDocument(request.pathVariable("id"))
                 }
             }
@@ -38,7 +38,7 @@ fun appRouter(editorHandler: EditorHandler) = coRouter {
             }
 
             POST("/document") { request ->
-                withAuth(request) {
+                withAuth(request, byPass = byPassAuth) {
                     editorHandler.saveDocument(request.awaitBody())
                 }
             }
@@ -46,7 +46,13 @@ fun appRouter(editorHandler: EditorHandler) = coRouter {
     }
 }
 
-suspend fun withAuth(request: ServerRequest, func: suspend () -> ServerResponse): ServerResponse {
+suspend fun withAuth(
+    request: ServerRequest,
+    byPass: Boolean = false,
+    func: suspend () -> ServerResponse
+): ServerResponse {
+    if (byPass) return func()
+
     val token = request.headers().run {
         firstHeader("X-Forwarded-Authorization") ?: firstHeader("Authorization")
     }
@@ -65,7 +71,7 @@ suspend fun withAuth(request: ServerRequest, func: suspend () -> ServerResponse)
 
 suspend fun withAuthProxy(
     request: ServerRequest,
-    func: suspend (String) -> ServerResponse
+    func: suspend (String) -> ServerResponse,
 ): ServerResponse {
     val token = request.headers().run {
         firstHeader("X-Forwarded-Authorization") ?: firstHeader("Authorization")

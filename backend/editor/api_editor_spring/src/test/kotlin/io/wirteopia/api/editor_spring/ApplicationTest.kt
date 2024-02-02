@@ -3,15 +3,19 @@ package io.wirteopia.api.editor_spring
 import io.writeopia.api.editor.WriteopiaEditorApi
 import io.writeopia.api.editor_spring.EditorHandler
 import io.writeopia.api.editor_spring.config.appRouter
+import io.writeopia.app.endpoints.EndPoints
 import io.writeopia.sdk.serialization.data.DocumentApi
-import org.junit.Test
+import org.springframework.core.ParameterizedTypeReference
 import org.springframework.test.web.reactive.server.WebTestClient
+import kotlin.test.Test
 
 
 class ApplicationTest {
 
+    private val router = appRouter(EditorHandler(WriteopiaEditorApi.create()), byPassAuth = true)
+
     private val webClient = WebTestClient
-        .bindToRouterFunction(appRouter(EditorHandler(WriteopiaEditorApi.create())))
+        .bindToRouterFunction(router)
         .build()
 
     @Test
@@ -23,6 +27,15 @@ class ApplicationTest {
             .isOk()
             .expectBody(DocumentApi::class.java)
     }
-    
+
+    @Test
+    fun itShouldBePossibleToGetIntroNotes() {
+        webClient.get()
+            .uri("/api/${EndPoints.introNotes()}")
+            .exchange()
+            .expectStatus()
+            .isOk()
+            .expectBody(object : ParameterizedTypeReference<List<DocumentApi>>() {})
+    }
 
 }
