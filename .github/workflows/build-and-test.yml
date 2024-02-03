@@ -69,7 +69,7 @@ jobs:
           distribution: adopt
           java-version: '17'
       - name: Build backend
-        run: ./gradlew backend:intronotes:assemble backend:api_editor:assemble backend:api_editor_spring:assemble :backend:editor:api_editor_spring:test
+        run: ./gradlew backend:documents:documents_spring:assemble backend:editor:api_editor:assemble backend:editor:api_editor_spring:assemble :backend:editor:api_editor_spring:test
   test_docusaurus:
     name: Test docusaurus
     runs-on: ubuntu-latest
@@ -80,10 +80,10 @@ jobs:
           node-version: 18
           cache: yarn
           cache-dependency-path: documentation/writeopia_docs/package-lock.json
-
       - name: Install dependencies
         working-directory: ./documentation/writeopia_docs
         run: yarn install --frozen-lockfile
       - name: Test build website
         working-directory: ./documentation/writeopia_docs
         run: yarn build
+        
