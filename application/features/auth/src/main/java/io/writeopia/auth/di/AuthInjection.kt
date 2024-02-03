@@ -11,12 +11,12 @@ import io.writeopia.auth.menu.AuthMenuViewModel
 import io.writeopia.auth.register.RegisterViewModel
 import io.writeopia.persistence.room.injection.RoomRespositoryInjection
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
-import io.writeopia.sdk.network.injector.ApiInjector
+import io.writeopia.sdk.network.injector.ApiClientInjector
 import io.writeopia.sdk.network.notes.NotesApi
 
 class AuthInjection(
     private val authCoreInjection: AuthCoreInjection,
-    private val apiInjector: ApiInjector,
+    private val apiClientInjector: ApiClientInjector,
     private val daosInjection: RoomRespositoryInjection
 ) {
 
@@ -24,7 +24,7 @@ class AuthInjection(
 
     private fun provideIntroNotesUseCase(
         documentRepository: DocumentRepository = provideDocumentRepository(),
-        notesApi: NotesApi = apiInjector.notesApi()
+        notesApi: NotesApi = apiClientInjector.notesApi()
     ): IntroNotesUseCase =
         IntroNotesUseCase(
             documentRepository = documentRepository,

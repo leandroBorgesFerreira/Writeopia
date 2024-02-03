@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.compose")
     alias(libs.plugins.application)
     id("kotlin-parcelize")
+    alias(libs.plugins.google.services)
 }
 
 kotlin {
@@ -58,6 +59,9 @@ android {
     compileSdk = 34
 
     defaultConfig {
+        val baseUrl = System.getenv("WRITEOPIA_BASE_URL")
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
+
         applicationId = "io.writeopia"
         minSdk = 24
         targetSdk = 34
@@ -81,6 +85,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {

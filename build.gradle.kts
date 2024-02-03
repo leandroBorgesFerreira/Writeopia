@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.dag.command) apply true
     alias(libs.plugins.org.jetbrains.kotlin.jvm) apply false
     alias(libs.plugins.compose.multiplatform) apply false
+    alias(libs.plugins.google.services) apply false
 }
 
 apply(from = "${rootDir}/scripts/publish-root.gradle")

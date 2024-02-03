@@ -9,7 +9,12 @@
 .cxx
 local.properties
 
-google-services.json
+application/androidApp/google-services.json
+
+/terraform/**/*
+
+local_scripts/
+application/desktopApp/writeopia.db
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
@@ -32,5 +37,5 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
-local_scripts/
-application/desktopApp/writeopia.db
+
+

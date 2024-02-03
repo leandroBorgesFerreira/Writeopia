@@ -1,4 +1,0 @@
-FROM openjdk:17
-COPY build/libs/api_editor_spring.jar api_editor_spring.jar 
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "api_editor_spring.jar"]

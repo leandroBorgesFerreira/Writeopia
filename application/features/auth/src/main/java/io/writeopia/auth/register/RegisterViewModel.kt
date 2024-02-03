@@ -1,5 +1,6 @@
 package io.writeopia.auth.register
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.writeopia.auth.core.manager.AuthManager
@@ -46,7 +47,12 @@ internal class RegisterViewModel(
         viewModelScope.launch {
             val result = authManager.signUp(_email.value, _password.value, _name.value)
             if (result.toBoolean()) {
-                introNotesUseCase.addIntroNotes()
+                try {
+                    introNotesUseCase.addIntroNotes(authManager.getUser().id)
+                } catch (e: Exception) {
+                    Log.d("RegisterViewModel", "Could not add intro notes. Error: ${e.message}")
+                }
+
             }
 
             _register.value = result

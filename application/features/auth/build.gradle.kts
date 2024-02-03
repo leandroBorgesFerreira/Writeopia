@@ -67,11 +67,11 @@ dependencies {
     implementation(libs.appCompat)
     implementation(libs.material)
 
-    implementation(libs.aws.amplifyframework.core.kotlin)
-
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
+
+    implementation(libs.kotlinx.datetime)
 
     implementation(libs.viewmodel.compose)
     implementation(libs.runtime.compose)

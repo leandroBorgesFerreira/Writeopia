@@ -10,7 +10,7 @@ data class DocumentApi(
     val id: String = "",
     val title: String = "",
     val content: List<StoryStepApi> = emptyList(),
-    @Contextual val createdAt: Instant = Clock.System.now(),
-    @Contextual val lastUpdatedAt: Instant = Clock.System.now(),
+    val createdAt: Long = Clock.System.now().toEpochMilliseconds(),
+    val lastUpdatedAt: Long = Clock.System.now().toEpochMilliseconds(),
     val userId: String,
 )

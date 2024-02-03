@@ -5,11 +5,12 @@ import io.writeopia.sdk.network.notes.NotesApi
 
 internal class IntroNotesUseCase(
     private val documentRepository: DocumentRepository,
-    private val notesApi: NotesApi
+    private val notesApi: NotesApi,
 ) {
-
-    suspend fun addIntroNotes() {
-        notesApi.introNotes().forEach { document ->
+    suspend fun addIntroNotes(userId: String) {
+        notesApi.introNotes()
+            .map { document -> document.copy(userId = userId) }
+            .forEach { document ->
             documentRepository.saveDocument(document)
         }
     }

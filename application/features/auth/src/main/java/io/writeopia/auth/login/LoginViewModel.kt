@@ -1,5 +1,6 @@
 package io.writeopia.auth.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.writeopia.auth.core.manager.AuthManager
@@ -41,7 +42,11 @@ internal class LoginViewModel(
             val result = authManager.signIn(_email.value, _password.value)
 
             if (result.toBoolean()) {
-                introNotesUseCase.addIntroNotes()
+                try {
+                    introNotesUseCase.addIntroNotes(authManager.getUser().id)
+                } catch (e: Exception) {
+                    Log.d("LoginViewModel", "Could not add intro notes. Error: ${e.message}")
+                }
             }
 
             _loginState.value = result

@@ -1,11 +1,11 @@
 [versions]
 accompanist = "0.32.0"
-amplify = "2.11.1"
 coilVersion = "2.3.0"
 composeBom = "2023.10.01"
 composeShimmer = "1.0.5"
 desugar_jdk_libs = "2.0.4"
 espressoCore = "3.5.1"
+firebaseAdmin = "9.2.0"
 junit = "1.1.5"
 kotlinxCoroutines = "1.7.3"
 kotlinxDatetime = "0.4.1"
@@ -14,8 +14,9 @@ ktorClient = "2.3.3"
 ktx = "1.12.0"
 appCompat = "1.6.1"
 material = "1.11.0"
-material3Desktop = "1.5.10"
+material3Desktop = "1.5.11"
 materialIconsExtended = "1.5.4"
+postgresSocketFactory = "1.15.1"
 room = "2.6.1"
 compose = "2.6.2"
 navigation-compose = "2.7.6"
@@ -33,11 +34,11 @@ dokka = "1.8.10"
 nexus-publish = "1.3.0"
 sprint-boot = "3.1.5"
 sprint-dependencyManagement = "1.1.3"
+firebase = "32.7.0"
+google-services = "4.4.0"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
-aws-amplifyframework-core-kotlin = { module = "com.amplifyframework:core-kotlin", version.ref = "amplify" }
-aws-amplifyframework-cognito = { module = "com.amplifyframework:aws-auth-cognito", version.ref = "amplify" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
 androidx-compose-test = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "composeTest" }
@@ -50,6 +51,9 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVersion"
 coil-video = { module = "io.coil-kt:coil-video", version.ref = "coilVersion" }
 compose-shimmer = { module = "com.valentinilk.shimmer:compose-shimmer", version.ref = "composeShimmer" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+firebase-admin = { module = "com.google.firebase:firebase-admin", version.ref = "firebaseAdmin" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlin-coroutines-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
@@ -64,6 +68,7 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ktor-client-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorClient" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 material3-desktop = { module = "org.jetbrains.compose.material3:material3-desktop", version.ref = "material3Desktop" }
+sql-postgres-socket-factory = { module = "com.google.cloud.sql:postgres-socket-factory", version.ref = "postgresSocketFactory" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
@@ -75,7 +80,6 @@ navigation-compose = { group = "androidx.navigation", name = "navigation-compose
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 sqldelight-jvm = { group = "app.cash.sqldelight", name = "sqlite-driver", version.ref = "sqldelight" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
-
 [plugins]
 application = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
@@ -92,3 +96,4 @@ nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "n
 spring-boot = { id = "org.springframework.boot", version.ref = "sprint-boot" }
 spring-kotlin = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
 spring-dependencyManagement = { id = "io.spring.dependency-management", version.ref = "sprint-dependencyManagement" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
