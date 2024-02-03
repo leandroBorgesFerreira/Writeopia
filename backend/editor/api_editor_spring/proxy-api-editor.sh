@@ -1,1 +1,0 @@
-gcloud run services proxy api-editor-spring --project writeopia
