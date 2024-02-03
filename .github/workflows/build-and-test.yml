@@ -10,21 +10,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  gradle_tests:
-    name: Gradle tests
-    runs-on: ubuntu-22.04
-    env:
-      isCI: "true"
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: adopt
-          java-version: '17'
-      - name: Tests debug
-        run: ./gradlew test
   ui_jvm_tests:
     name: Jvm UI Compose tests
     runs-on: ubuntu-22.04
@@ -54,7 +39,7 @@ jobs:
           distribution: adopt
           java-version: '17'
       - name: Build debug 
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug testDebug
   backend_build_and_test:
     name: Backend - build
     runs-on: ubuntu-22.04

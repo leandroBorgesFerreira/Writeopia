@@ -9,7 +9,7 @@
 .cxx
 local.properties
 
-*/**/google-services.json
+application/androidApp/google-services.json
 
 /terraform/**/*
 
