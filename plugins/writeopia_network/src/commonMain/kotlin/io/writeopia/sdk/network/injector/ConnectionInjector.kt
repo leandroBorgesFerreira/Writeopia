@@ -12,26 +12,30 @@ import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.websocket.*
 import io.ktor.serialization.kotlinx.json.json
+import io.writeopia.sdk.network.websocket.WebsocketEditionManager
 import kotlinx.serialization.json.Json
 
-class ApiClientInjector(
+class ConnectionInjector(
     private val baseUrl: String,
     private val bearerTokenHandler: BearerTokenHandler,
     private val apiLogger: Logger = Logger.Companion.DEFAULT,
-    private val client: () -> HttpClient = {
-        ApiInjectorDefaults.httpClientJson(
+    private val client: HttpClient =
+        ApiInjectorDefaults.httpClient(
             bearerTokenHandler = bearerTokenHandler,
             apiLogger = apiLogger
         )
-    }
 ) {
 
     fun notesApi(): NotesApi = NotesApi(client, baseUrl)
+
+    fun liveEditionManager(): WebsocketEditionManager =
+        WebsocketEditionManager(host = "127.0.0.1", client = client, json = writeopiaJson)
 }
 
 internal object ApiInjectorDefaults {
-    fun httpClientJson(
+    fun httpClient(
         json: Json = writeopiaJson,
         bearerTokenHandler: BearerTokenHandler,
         apiLogger: Logger,
@@ -39,6 +43,8 @@ internal object ApiInjectorDefaults {
         install(ContentNegotiation) {
             json(json = json)
         }
+
+        install(WebSockets)
 
         install(Logging) {
             logger = apiLogger

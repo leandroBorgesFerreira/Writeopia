@@ -18,6 +18,7 @@ kotlin {
                 implementation(project(":plugins:writeopia_export"))
                 implementation(project(":plugins:writeopia_persistence_core"))
                 implementation(project(":plugins:writeopia_serialization"))
+                implementation(project(":plugins:writeopia_network"))
 
 //                implementation(project(":application:core:resources"))
                 implementation(project(":application:core:utils"))

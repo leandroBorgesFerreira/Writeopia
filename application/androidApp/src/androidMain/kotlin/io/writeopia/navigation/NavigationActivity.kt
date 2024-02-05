@@ -27,7 +27,7 @@ import io.writeopia.note_menu.navigation.notesMenuNavigation
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 import io.writeopia.persistence.room.injection.RoomRespositoryInjection
-import io.writeopia.sdk.network.injector.ApiClientInjector
+import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.theme.ApplicationComposeTheme
 import io.writeopia.utils_module.Destinations
 
@@ -63,16 +63,17 @@ fun NavigationGraph(
 
     val appDaosInjection = AppRoomDaosInjection(database)
     val notesConfigurationInjector = NotesConfigurationInjector(appDaosInjection)
-    val apiClientInjector =
-        ApiClientInjector(
+    val connectionInjector =
+        ConnectionInjector(
             apiLogger = AndroidLogger,
             bearerTokenHandler = FirebaseTokenHandler,
             baseUrl = BuildConfig.BASE_URL
         )
     val authCoreInjection = AndroidAuthCoreInjection(sharedPreferences)
     val repositoryInjection = RoomRespositoryInjection(database)
-    val authInjection = AuthInjection(authCoreInjection, apiClientInjector, repositoryInjection)
-    val editorInjector = EditorInjector.create(authCoreInjection, repositoryInjection)
+    val authInjection = AuthInjection(authCoreInjection, connectionInjector, repositoryInjection)
+    val editorInjector =
+        EditorInjector.create(authCoreInjection, repositoryInjection, connectionInjector)
     val accountMenuInjector = AccountMenuInjector.create(authCoreInjection)
     val notesMenuInjection = NotesMenuAndroidInjection.create(
         notesConfigurationInjector,

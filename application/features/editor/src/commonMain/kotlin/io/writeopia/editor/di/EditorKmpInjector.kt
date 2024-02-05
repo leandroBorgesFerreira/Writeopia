@@ -4,14 +4,17 @@ import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.editor.viewmodel.NoteEditorKmpViewModel
 import io.writeopia.sdk.manager.WriteopiaManager
+import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
+import io.writeopia.sdk.shared_edition.SharedEditionManager
 import kotlinx.coroutines.Dispatchers
 
 class EditorKmpInjector(
     private val authCoreInjection: AuthCoreInjection,
-    private val repositoryInjection: RepositoryInjector
+    private val repositoryInjection: RepositoryInjector,
+    private val connectionInjection: ConnectionInjector,
 ) {
 
     private fun provideDocumentRepository(): DocumentRepository =
@@ -31,5 +34,11 @@ class EditorKmpInjector(
     fun provideNoteEditorViewModel(
         documentRepository: DocumentRepository = provideDocumentRepository(),
         writeopiaManager: WriteopiaStateManager = provideWriteopiaStateManager(),
-    ): NoteEditorKmpViewModel = NoteEditorKmpViewModel(writeopiaManager, documentRepository)
+        sharedEditionManager: SharedEditionManager = connectionInjection.liveEditionManager()
+    ): NoteEditorKmpViewModel =
+        NoteEditorKmpViewModel(
+            writeopiaManager,
+            documentRepository,
+            sharedEditionManager = sharedEditionManager
+        )
 }
