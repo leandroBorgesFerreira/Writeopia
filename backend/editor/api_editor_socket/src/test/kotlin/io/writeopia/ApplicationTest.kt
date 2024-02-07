@@ -60,16 +60,16 @@ class ApplicationTest {
             body<DocumentApi>()
         }
     }
+}
 
-    private fun ApplicationTestBuilder.clientClient() = createClient {
-        install(ContentNegotiation) {
-            json(json = writeopiaJson)
-        }
+private fun ApplicationTestBuilder.clientClient() = createClient {
+    install(ContentNegotiation) {
+        json(json = writeopiaJson)
     }
+}
 
-    private fun ApplicationTestBuilder.defaultConfig() {
-        application {
-            module(byPassAuth = true)
-        }
+private fun ApplicationTestBuilder.defaultConfig() {
+    application {
+        module(byPassAuth = true)
     }
 }
