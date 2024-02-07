@@ -16,8 +16,8 @@ fun main() {
     ).start(wait = true)
 }
 
-fun Application.module() {
+fun Application.module(byPassAuth: Boolean = false) {
     configureSockets()
-    configureRouting()
+    configureRouting(byPassAuth = byPassAuth)
     configureSerialization()
 }

@@ -16,7 +16,8 @@ import io.writeopia.sdk.serialization.json.writeopiaJson
 import kotlinx.serialization.encodeToString
 
 fun Application.configureRouting(
-    writeopiaEditorApi: WriteopiaEditorApi = WriteopiaEditorApi.create()
+    writeopiaEditorApi: WriteopiaEditorApi = WriteopiaEditorApi.create(),
+    byPassAuth: Boolean = false
 ) {
     routing {
         route("/api") {
@@ -29,13 +30,13 @@ fun Application.configureRouting(
             }
 
             get("/${EndPoints.introNotes()}") {
-                call.withAuth {
+                call.withAuth(byPass = byPassAuth) {
                     call.respond(HttpStatusCode.OK, writeopiaEditorApi.introNotes())
                 }
             }
 
             get("/document/{id}") {
-                call.withAuth {
+                call.withAuth(byPass = byPassAuth) {
                     call.parameters["id"]?.let { id ->
                         writeopiaEditorApi.getDocument(id)
                     }?.let { documentApi ->
@@ -47,7 +48,7 @@ fun Application.configureRouting(
             }
 
             post("/document") {
-                call.withAuth {
+                call.withAuth(byPass = byPassAuth) {
                     writeopiaEditorApi.saveDocument(call.receive<DocumentApi>())
                     call.respond(HttpStatusCode.Accepted)
                 }
