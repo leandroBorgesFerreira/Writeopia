@@ -20,11 +20,11 @@ fun Application.configureRouting(
     byPassAuth: Boolean = false
 ) {
     routing {
-        route("/api") {
-            get("/hi") {
-                call.respondText("Hello World!")
-            }
+        get("/") {
+            call.respondText("Hello World!")
+        }
 
+        route("/api") {
             get("/document/example") {
                 call.respond(HttpStatusCode.OK, writeopiaEditorApi.example())
             }
