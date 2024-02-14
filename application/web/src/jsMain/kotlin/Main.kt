@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import io.writeopia.sdk.WriteopiaEditor
 import io.writeopia.sdk.drawer.StoryStepDrawer
-import io.writeopia.sdk.drawer.factory.DefaultDrawersJs
+import io.writeopia.ui.drawer.factory.DefaultDrawersJs
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.model.story.DrawState
 import kotlinx.coroutines.Dispatchers
