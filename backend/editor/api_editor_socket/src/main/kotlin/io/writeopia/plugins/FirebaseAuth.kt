@@ -11,4 +11,4 @@ fun configureFirebase() {
         .build()
     FirebaseApp.initializeApp(option)}
 
-private fun loadProjectId(): String = System.getenv("WRITEOPIA_CLOUD_ID")
+private fun loadProjectId(): String = System.getenv("WRITEOPIA_FIREBASE_ID")
