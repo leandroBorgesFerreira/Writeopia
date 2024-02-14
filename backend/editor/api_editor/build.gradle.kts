@@ -18,6 +18,8 @@ dependencies {
     implementation(project(":plugins:writeopia_persistence_sqldelight"))
 
     implementation(libs.sqldelight.jvm)
+    implementation(libs.sqldelight.jdbc.driver)
+    implementation(libs.database.hikaricp)
 
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.datetime)

@@ -1,7 +1,7 @@
 package io.wirteopia.api.editor_spring
 
 import io.writeopia.api.editor.WriteopiaEditorApi
-import io.writeopia.api.editor.utils.example
+import io.writeopia.api.utils.example
 import io.writeopia.api.editor_spring.EditorHandler
 import io.writeopia.api.editor_spring.config.appRouter
 import io.writeopia.app.endpoints.EndPoints

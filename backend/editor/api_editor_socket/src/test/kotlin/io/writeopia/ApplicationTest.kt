@@ -11,7 +11,7 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
-import io.writeopia.api.editor.utils.example
+import io.writeopia.api.utils.example
 import io.writeopia.app.endpoints.EndPoints
 import io.writeopia.sdk.serialization.data.DocumentApi
 import io.writeopia.sdk.serialization.json.writeopiaJson

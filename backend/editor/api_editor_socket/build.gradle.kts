@@ -41,6 +41,8 @@ dependencies {
 
     implementation(libs.firebase.admin)
 
+    implementation(libs.database.hikaricp)
+
     testImplementation(libs.ktor.server.tests)
     testImplementation(libs.kotlin.test)
 }

@@ -1,7 +1,7 @@
 package io.writeopia.api.editor
 
-import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
-import io.writeopia.api.editor.utils.example
+import io.writeopia.api.utils.example
+import io.writeopia.database.connection.SqlDelightJdbcConnection
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
@@ -12,7 +12,6 @@ import io.writeopia.sdk.serialization.extensions.toApi
 import io.writeopia.sdk.serialization.extensions.toModel
 import io.writeopia.sdk.sql.WriteopiaDb
 import kotlinx.datetime.Clock
-import java.util.Properties
 
 class WriteopiaEditorApi(
     private val documentRepository: DocumentRepository
@@ -48,14 +47,19 @@ class WriteopiaEditorApi(
 
     companion object {
         private fun createDatabase(
-            url: String = JdbcSqliteDriver.IN_MEMORY
+            inMemory: Boolean = false
         ): WriteopiaDb {
-            val driver = JdbcSqliteDriver(url, Properties(), WriteopiaDb.Schema)
+            val driver = if (inMemory) {
+                SqlDelightJdbcConnection.jdbcDriver(System.getenv("DB_USER"))
+            } else {
+                SqlDelightJdbcConnection.inMemory()
+            }
+
             return WriteopiaDb(driver)
         }
 
-        fun create(): WriteopiaEditorApi {
-            val database: WriteopiaDb = createDatabase()
+        fun create(inMemory: Boolean = false): WriteopiaEditorApi {
+            val database: WriteopiaDb = createDatabase(inMemory)
             val documentSqlDao = DocumentSqlDao(
                 database.documentEntityQueries,
                 database.storyStepEntityQueries
