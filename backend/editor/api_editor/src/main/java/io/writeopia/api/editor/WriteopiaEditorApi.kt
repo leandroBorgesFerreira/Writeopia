@@ -50,9 +50,9 @@ class WriteopiaEditorApi(
             inMemory: Boolean = false
         ): WriteopiaDb {
             val driver = if (inMemory) {
-                SqlDelightJdbcConnection.jdbcDriver(System.getenv("DB_USER"))
-            } else {
                 SqlDelightJdbcConnection.inMemory()
+            } else {
+                SqlDelightJdbcConnection.jdbcDriver(System.getenv("DB_USER"))
             }
 
             return WriteopiaDb(driver)
