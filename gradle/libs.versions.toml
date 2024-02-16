@@ -38,6 +38,7 @@ firebase = "32.7.0"
 google-services = "4.4.0"
 logback-classic = "1.4.14"
 hikaricp = "5.1.0"
+postgresql = "42.6.0"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
@@ -93,6 +94,7 @@ sqldelight-jdbc-driver = { group = "app.cash.sqldelight", name = "jdbc-driver", 
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback-classic" }
 database-hikaricp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikaricp" }
+database-postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
 
 [plugins]
 application = { id = "com.android.application", version.ref = "agp" }

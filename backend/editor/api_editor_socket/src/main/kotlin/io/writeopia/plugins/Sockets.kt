@@ -22,8 +22,6 @@ fun Application.configureSockets() {
         val connections = Collections.synchronizedSet<Connection?>(LinkedHashSet())
 
         webSocket("/editor") {
-            println("Adding user!")
-
             val thisConnection = Connection(this)
             connections += thisConnection
 

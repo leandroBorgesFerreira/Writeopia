@@ -50,8 +50,10 @@ class WriteopiaEditorApi(
             inMemory: Boolean = false
         ): WriteopiaDb {
             val driver = if (inMemory) {
+                println("Creating a memory database...")
                 SqlDelightJdbcConnection.inMemory()
             } else {
+                println("Connecting to postgres database...")
                 SqlDelightJdbcConnection.jdbcDriver(System.getenv("DB_USER"))
             }
 
