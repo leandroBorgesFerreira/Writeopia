@@ -3,6 +3,7 @@ package io.writeopia
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import io.writeopia.api.editor.WriteopiaEditorApi
 import io.writeopia.plugins.configureFirebase
 import io.writeopia.plugins.configureRouting
 import io.writeopia.plugins.configureSerialization
@@ -18,8 +19,13 @@ fun main() {
 }
 
 fun Application.module(byPassAuth: Boolean = false) {
+    val dbInMemory = System.getenv("IN_MEMORY_DATABASE")?.let { it == "true" } ?: false
+
     configureFirebase()
     configureSockets()
-    configureRouting(byPassAuth = byPassAuth)
+    configureRouting(
+        writeopiaEditorApi = WriteopiaEditorApi.create(dbInMemory),
+        byPassAuth = byPassAuth
+    )
     configureSerialization()
 }
