@@ -21,7 +21,11 @@ fun Application.configureRouting(
 ) {
     routing {
         get("/") {
-            call.respondText("Hello World!")
+            call.respondText("Hello")
+        }
+
+        get("/hi") {
+            call.respondText("I'm alive")
         }
 
         route("/api") {
