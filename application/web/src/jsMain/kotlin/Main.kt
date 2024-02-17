@@ -15,11 +15,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
-import io.writeopia.sdk.WriteopiaEditor
-import io.writeopia.sdk.drawer.StoryStepDrawer
+import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.ui.drawer.factory.DefaultDrawersJs
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.model.story.DrawState
+import io.writeopia.ui.WriteopiaEditor
+import io.writeopia.ui.drawer.StoryStepDrawer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -28,7 +29,10 @@ import org.jetbrains.skiko.wasm.onWasmReady
 fun main() {
     onWasmReady {
         Window("Compose Rich Editor") {
-            val writeopiaManager = WriteopiaStateManager.create(dispatcher = Dispatchers.Main, Wi).apply {
+            val writeopiaManager = WriteopiaStateManager.create(
+                dispatcher = Dispatchers.Main,
+                writeopiaManager = WriteopiaManager()
+            ).apply {
                 newStory()
             }
 
@@ -102,5 +106,10 @@ fun TextEditor(
     drawers: Map<Int, StoryStepDrawer>
 ) {
     val toDraw by drawState.collectAsState(DrawState())
-    WriteopiaEditor(modifier = Modifier, drawers = drawers, storyState = toDraw, listState = lazyListState)
+    WriteopiaEditor(
+        modifier = Modifier,
+        drawers = drawers,
+        storyState = toDraw,
+        listState = lazyListState
+    )
 }

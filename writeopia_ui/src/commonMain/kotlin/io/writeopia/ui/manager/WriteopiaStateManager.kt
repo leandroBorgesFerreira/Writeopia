@@ -424,6 +424,8 @@ class WriteopiaStateManager(
 
     companion object {
         fun create(
+            writeopiaManager: WriteopiaManager,
+            dispatcher: CoroutineDispatcher,
             stepsNormalizer: UnitsNormalizationMap =
                 StepsMapNormalizationBuilder.reduceNormalizations {
                     defaultNormalizers()
@@ -432,14 +434,12 @@ class WriteopiaStateManager(
             contentHandler: ContentHandler = ContentHandler(
                 stepsNormalizer = stepsNormalizer
             ),
-            dispatcher: CoroutineDispatcher,
             coroutineScope: CoroutineScope = CoroutineScope(EmptyCoroutineContext),
             backStackManager: BackstackManager = BackstackManager.create(
                 contentHandler,
                 movementHandler
             ),
             userId: suspend () -> String = { "no_user_id_provided" },
-            writeopiaManager: WriteopiaManager
         ) = WriteopiaStateManager(
             stepsNormalizer,
             dispatcher,
