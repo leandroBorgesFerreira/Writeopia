@@ -9,6 +9,8 @@ fun configureFirebase() {
         .setProjectId(loadProjectId())
         .setCredentials(GoogleCredentials.getApplicationDefault())
         .build()
-    FirebaseApp.initializeApp(option)}
+
+    FirebaseApp.initializeApp(option)
+}
 
 private fun loadProjectId(): String = System.getenv("WRITEOPIA_FIREBASE_ID")

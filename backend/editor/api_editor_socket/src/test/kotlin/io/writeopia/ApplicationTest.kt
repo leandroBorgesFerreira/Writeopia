@@ -21,13 +21,15 @@ import kotlin.test.assertEquals
 class ApplicationTest {
 
     @Test
-    fun itShouldBePossibleToGetAnExampleDocument() = testApplication {
-        defaultConfig()
-        val client = clientClient()
+    fun itShouldBePossibleToGetAnExampleDocument() {
+        testApplication {
+            defaultConfig()
+            val client = clientClient()
 
-        client.get("/api/document/example").run {
-            assertEquals(HttpStatusCode.OK, status)
-            body<DocumentApi>()
+            client.get("/api/document/example").run {
+                assertEquals(HttpStatusCode.OK, status)
+                body<DocumentApi>()
+            }
         }
     }
 

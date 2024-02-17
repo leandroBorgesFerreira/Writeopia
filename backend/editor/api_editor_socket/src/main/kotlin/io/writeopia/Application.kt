@@ -21,7 +21,9 @@ fun main() {
 fun Application.module(byPassAuth: Boolean = false) {
     val dbInMemory = System.getenv("IN_MEMORY_DATABASE")?.let { it == "true" } ?: false
 
-    configureFirebase()
+    if (!byPassAuth) {
+        configureFirebase()
+    }
     configureSockets()
     configureRouting(
         writeopiaEditorApi = WriteopiaEditorApi.create(dbInMemory),
