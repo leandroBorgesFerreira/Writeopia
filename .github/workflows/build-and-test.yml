@@ -15,7 +15,10 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       isCI: "true"
-      WRITEOPIA_CLIENT_BASE_URL: "baseUrl"
+      IN_MEMORY_DATABASE: 'true'
+      DB_USER: 'user'
+      WRITEOPIA_FIREBASE_ID: 'id'
+      WRITEOPIA_CLIENT_BASE_URL: "baseurl"
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -49,6 +52,7 @@ jobs:
       IN_MEMORY_DATABASE: 'true'
       DB_USER: 'user'
       WRITEOPIA_FIREBASE_ID: 'id'
+      WRITEOPIA_CLIENT_BASE_URL: "baseurl"
     steps:
       - name: Check out code
         uses: actions/checkout@v3
