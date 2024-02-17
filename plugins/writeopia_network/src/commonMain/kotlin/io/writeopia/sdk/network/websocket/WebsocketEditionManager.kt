@@ -13,7 +13,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class WebsocketEditionManager(
-    private val host: String = "127.0.0.1",
+    private val host: String = "0.0.0.0",
     private val client: HttpClient,
     private val json: Json
 ) : SharedEditionManager {

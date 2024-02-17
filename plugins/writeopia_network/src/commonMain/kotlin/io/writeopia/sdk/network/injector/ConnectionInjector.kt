@@ -31,7 +31,7 @@ class ConnectionInjector(
     fun notesApi(): NotesApi = NotesApi(client, baseUrl)
 
     fun liveEditionManager(): WebsocketEditionManager =
-        WebsocketEditionManager(host = "127.0.0.1", client = client, json = writeopiaJson)
+        WebsocketEditionManager(host = "0.0.0.0", client = client, json = writeopiaJson)
 }
 
 internal object ApiInjectorDefaults {
