@@ -10,17 +10,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    env:
-      IN_MEMORY_DATABASE: 'true'
-      DB_USER: 'user'
-      WRITEOPIA_FIREBASE_ID: 'id'
-      WRITEOPIA_CLIENT_BASE_URL: "baseUrl"
   ui_jvm_tests:
     name: Jvm UI Compose tests
     runs-on: ubuntu-22.04
     env:
       isCI: "true"
+      WRITEOPIA_CLIENT_BASE_URL: "baseUrl"
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -51,6 +46,9 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       isCI: "true"
+      IN_MEMORY_DATABASE: 'true'
+      DB_USER: 'user'
+      WRITEOPIA_FIREBASE_ID: 'id'
     steps:
       - name: Check out code
         uses: actions/checkout@v3
