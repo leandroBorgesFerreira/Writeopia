@@ -29,7 +29,8 @@ jobs:
           java-version: '17'
       - name: JVM tests
         run: ./gradlew jvmTest
-      - uses: actions/upload-artifact@v2  
+      - name: upload results
+        uses: actions/upload-artifact@v2  
         if: success() || failure()
         with:
           name: test-results
@@ -68,7 +69,8 @@ jobs:
           java-version: '17'
       - name: Build backend
         run: ./gradlew backend:documents:documents_spring:assemble backend:editor:api_editor:assemble backend:editor:api_editor_spring:assemble :backend:editor:api_editor_spring:test
-      - uses: actions/upload-artifact@v2  
+      - name: upload results
+        uses: actions/upload-artifact@v2  
         if: success() || failure()
         with:
           name: test-results
