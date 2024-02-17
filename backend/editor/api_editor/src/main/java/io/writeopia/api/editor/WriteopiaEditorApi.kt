@@ -54,7 +54,7 @@ class WriteopiaEditorApi(
                 SqlDelightJdbcConnection.inMemory()
             } else {
                 println("Connecting to postgres database...")
-                SqlDelightJdbcConnection.jdbcDriver(System.getenv("DB_USER") ?: "null")
+                SqlDelightJdbcConnection.jdbcDriver(System.getenv("DB_USER"))
             }
 
             return WriteopiaDb(driver)
