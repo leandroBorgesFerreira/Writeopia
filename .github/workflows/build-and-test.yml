@@ -31,7 +31,7 @@ jobs:
         run: ./gradlew jvmTest
       - name: upload results
         uses: actions/upload-artifact@v2  
-        if: success() || failure()
+        if: failure()
         with:
           name: test-results-jvm
           path: ./application/desktopApp/build/reports/
@@ -71,7 +71,7 @@ jobs:
         run: ./gradlew backend:documents:documents_spring:assemble backend:editor:api_editor:assemble backend:editor:api_editor_spring:assemble :backend:editor:api_editor_spring:test
       - name: upload results
         uses: actions/upload-artifact@v2  
-        if: success() || failure()
+        if: failure()
         with:
           name: test-results-backend
           path: ./backend/editor/api_editor_spring/build/reports/

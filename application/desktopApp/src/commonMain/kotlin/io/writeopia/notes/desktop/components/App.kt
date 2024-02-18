@@ -26,7 +26,8 @@ internal fun App(database: WriteopiaDb, disableWebsocket: Boolean = false) {
     val connectionInjection =
         ConnectionInjector(
             bearerTokenHandler = MockTokenHandler,
-            baseUrl = System.getenv("WRITEOPIA_CLIENT_BASE_URL")
+            baseUrl = System.getenv("WRITEOPIA_CLIENT_BASE_URL"),
+            disableWebsocket = disableWebsocket
         )
 
     val editorInjector = EditorKmpInjector(
