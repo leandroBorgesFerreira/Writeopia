@@ -58,3 +58,12 @@ class WebsocketEditionManager(
         }
     }
 }
+
+internal class MockWebsocketEditionManager : SharedEditionManager {
+    override suspend fun startLiveEdition(
+        inFlow: Flow<Pair<StoryState, DocumentInfo>>,
+        outFlow: MutableStateFlow<StoryState>
+    ) {}
+
+    override suspend fun stopLiveEdition() {}
+}

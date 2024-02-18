@@ -20,7 +20,7 @@ import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.drawer.factory.DefaultDrawersDesktop
 
 @Composable
-internal fun App(database: WriteopiaDb) {
+internal fun App(database: WriteopiaDb, disableWebsocket: Boolean = false) {
     val authCoreInjection = KmpAuthCoreInjection()
     val repositoryInjection = SqlDelightDaoInjector(database)
     val connectionInjection =
