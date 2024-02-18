@@ -26,7 +26,6 @@ android {
         }
     }
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -52,9 +51,7 @@ dependencies {
     implementation(project(":writeopia_models"))
     implementation(project(":plugins:writeopia_persistence_room"))
     implementation(project(":plugins:writeopia_persistence_core"))
-
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
-
+    
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     implementation(libs.room.paging)
