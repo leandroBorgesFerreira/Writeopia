@@ -34,7 +34,6 @@ android {
         }
     }
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -55,8 +54,6 @@ kotlin{
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
-
     implementation(project(":writeopia"))
     implementation(project(":writeopia_models"))
     implementation(project(":plugins:writeopia_persistence_core"))
