@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v2  
         if: success() || failure()
         with:
-          name: test-results
+          name: test-results-jvm
           path: ./application/desktopApp/build/reports/
   general_build:
     name: General - Build debug
@@ -73,7 +73,7 @@ jobs:
         uses: actions/upload-artifact@v2  
         if: success() || failure()
         with:
-          name: test-results
+          name: test-results-backend
           path: ./backend/editor/api_editor_spring/build/reports/
   test_docusaurus:
     name: Test docusaurus
