@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       isCI: "true"
+      IN_MEMORY_DATABASE: 'true'
+      DB_USER: 'user'
+      WRITEOPIA_FIREBASE_ID: 'id'
+      WRITEOPIA_CLIENT_BASE_URL: "baseurl"
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -25,6 +29,12 @@ jobs:
           java-version: '17'
       - name: JVM tests
         run: ./gradlew jvmTest
+      - name: upload results
+        uses: actions/upload-artifact@v2  
+        if: failure()
+        with:
+          name: test-results-jvm
+          path: ./application/desktopApp/build/reports/
   general_build:
     name: General - Build debug
     runs-on: ubuntu-22.04
@@ -45,6 +55,10 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       isCI: "true"
+      IN_MEMORY_DATABASE: 'true'
+      DB_USER: 'user'
+      WRITEOPIA_FIREBASE_ID: 'id'
+      WRITEOPIA_CLIENT_BASE_URL: "baseurl"
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -55,6 +69,12 @@ jobs:
           java-version: '17'
       - name: Build backend
         run: ./gradlew backend:documents:documents_spring:assemble backend:editor:api_editor:assemble backend:editor:api_editor_spring:assemble :backend:editor:api_editor_spring:test
+      - name: upload results
+        uses: actions/upload-artifact@v2  
+        if: failure()
+        with:
+          name: test-results-backend
+          path: ./backend/editor/api_editor_spring/build/reports/
   test_docusaurus:
     name: Test docusaurus
     runs-on: ubuntu-latest

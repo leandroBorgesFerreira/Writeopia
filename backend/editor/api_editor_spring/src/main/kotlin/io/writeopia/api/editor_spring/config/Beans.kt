@@ -6,7 +6,7 @@ import com.google.firebase.FirebaseOptions
 import io.writeopia.api.editor.WriteopiaEditorApi
 import io.writeopia.api.editor_spring.EditorHandler
 import io.writeopia.api.editor_spring.auth.FixedTokenHandler
-import io.writeopia.sdk.network.injector.ApiClientInjector
+import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.network.notes.NotesApi
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.support.GenericApplicationContext
@@ -27,7 +27,7 @@ val beans = beans {
 }
 
 internal fun notesApiFromToken(token: String): NotesApi =
-    ApiClientInjector(
+    ConnectionInjector(
         bearerTokenHandler = FixedTokenHandler(token),
         baseUrl = System.getenv("WRITEOPIA_BASE_URL")
     ).notesApi()

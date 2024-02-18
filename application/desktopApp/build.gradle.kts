@@ -22,6 +22,9 @@ kotlin {
                 implementation(project(":application:core:utils"))
                 implementation(project(":application:features:editor"))
                 implementation(project(":application:features:note_menu"))
+
+                implementation(libs.ktor.client.logging)
+                implementation(libs.ktor.client.core)
             }
         }
 

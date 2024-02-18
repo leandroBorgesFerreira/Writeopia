@@ -11,19 +11,19 @@ import io.writeopia.app.endpoints.EndPoints
 /**
  * API for calling notes.
  */
-class NotesApi(private val client: () -> HttpClient, private val baseUrl: String) {
+class NotesApi(private val client: HttpClient, private val baseUrl: String) {
 
     /**
      * The introductory notes of the app. The first notes after login.
      */
     suspend fun introNotes(): List<Document> {
-        return client().get("${baseUrl}/${EndPoints.introNotes()}")
+        return client.get("${baseUrl}/${EndPoints.introNotes()}")
             .body<List<DocumentApi>>()
             .map { documentApi -> documentApi.toModel() }
     }
 
     suspend fun proxyUserDocumentsApi(): List<DocumentApi> {
-        return client().get("${baseUrl}/${EndPoints.userNotes("mock")}")
+        return client.get("${baseUrl}/${EndPoints.userNotes("mock")}")
             .body<List<DocumentApi>>()
     }
 }

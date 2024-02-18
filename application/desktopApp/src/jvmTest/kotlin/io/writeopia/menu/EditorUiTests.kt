@@ -59,7 +59,7 @@ class EditorUiTests {
 
     private fun startContent() {
         composeTestRule.setContent {
-            App(createDatabase(DriverFactory()))
+            App(createDatabase(DriverFactory()), disableWebsocket = true)
         }
     }
 }

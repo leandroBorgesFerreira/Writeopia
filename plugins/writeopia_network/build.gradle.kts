@@ -24,16 +24,20 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":writeopia_models"))
+                implementation(project(":writeopia"))
                 implementation(project(":common:endpoints"))
                 implementation(project(":plugins:writeopia_serialization"))
 
                 implementation(libs.kotlinx.serialization.json)
 
                 implementation(libs.ktor.client.content.negotiation)
-                implementation(libs.ktor.client.serialization.json)
                 implementation(libs.ktor.client.auth)
                 implementation(libs.ktor.client.logging)
+                implementation(libs.ktor.client.core)
+//                implementation(libs.ktor.client.cio)
+                implementation(libs.ktor.client.websockets)
 
+                implementation(libs.ktor.serialization.json)
                 implementation(libs.kotlinx.serialization.json)
             }
         }

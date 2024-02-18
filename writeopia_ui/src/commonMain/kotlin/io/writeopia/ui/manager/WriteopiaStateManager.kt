@@ -22,6 +22,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
+import io.writeopia.sdk.shared_edition.SharedEditionManager
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.toEditState
 import kotlinx.coroutines.CoroutineDispatcher
@@ -68,6 +69,8 @@ class WriteopiaStateManager(
 
     private val _positionsOnEdit = MutableStateFlow(setOf<Int>())
     val onEditPositions = _positionsOnEdit.asStateFlow()
+
+    private var sharedEditionManager: SharedEditionManager? = null
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
 
@@ -123,6 +126,15 @@ class WriteopiaStateManager(
     fun saveOnStoryChanges(documentTracker: DocumentTracker) {
         coroutineScope.launch(dispatcher) {
             documentTracker.saveOnStoryChanges(_documentEditionState, getUserId())
+        }
+    }
+
+    fun liveSync(sharedEditionManager: SharedEditionManager) {
+        coroutineScope.launch(dispatcher) {
+            sharedEditionManager.startLiveEdition(
+                inFlow = _documentEditionState,
+                outFlow = _currentStory,
+            )
         }
     }
 
@@ -403,11 +415,17 @@ class WriteopiaStateManager(
      * Clears the [WriteopiaStateManager]. Use this in the onCleared of your ViewModel.
      */
     fun onClear() {
-        coroutineScope.cancel()
+        coroutineScope.launch {
+            sharedEditionManager?.stopLiveEdition()
+        }.invokeOnCompletion {
+            coroutineScope.cancel()
+        }
     }
 
     companion object {
         fun create(
+            writeopiaManager: WriteopiaManager,
+            dispatcher: CoroutineDispatcher,
             stepsNormalizer: UnitsNormalizationMap =
                 StepsMapNormalizationBuilder.reduceNormalizations {
                     defaultNormalizers()
@@ -416,14 +434,12 @@ class WriteopiaStateManager(
             contentHandler: ContentHandler = ContentHandler(
                 stepsNormalizer = stepsNormalizer
             ),
-            dispatcher: CoroutineDispatcher,
             coroutineScope: CoroutineScope = CoroutineScope(EmptyCoroutineContext),
             backStackManager: BackstackManager = BackstackManager.create(
                 contentHandler,
                 movementHandler
             ),
             userId: suspend () -> String = { "no_user_id_provided" },
-            writeopiaManager: WriteopiaManager
         ) = WriteopiaStateManager(
             stepsNormalizer,
             dispatcher,

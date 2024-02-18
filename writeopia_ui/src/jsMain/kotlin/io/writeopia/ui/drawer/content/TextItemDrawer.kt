@@ -1,4 +1,4 @@
-package io.writeopia.sdk.drawer.content
+package io.writeopia.ui.drawer.content
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.hoverable
@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
@@ -28,7 +29,6 @@ actual class TextItemDrawer actual constructor(
     private val customBackgroundColor: Color,
     private val clickable: Boolean,
     private val onSelected: (Boolean, Int) -> Unit,
-    private val focusRequester: FocusRequester?,
     private val dragIconWidth: Dp,
     private val startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
     private val messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
@@ -46,7 +46,7 @@ actual class TextItemDrawer actual constructor(
                 .apply {
                     if (clickable) {
                         clickable {
-                            focusRequester?.requestFocus()
+//                            focusRequester?.requestFocus()
                         }
                     }
                 },
@@ -57,27 +57,27 @@ actual class TextItemDrawer actual constructor(
                 onSelected(isSelected, drawInfo.position)
             }
         ) {
-            DragTargetWithDragItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .apply {
-                        if (clickable) {
-                            clickable {
-                                focusRequester?.requestFocus()
-                            }
-                        }
-                    },
-                dataToDrop = dropInfo,
-                showIcon = isHovered,
-                position = drawInfo.position,
-                dragIconWidth = dragIconWidth,
-                emptySpaceClick = {
-                    focusRequester?.requestFocus()
-                }
-            ) {
-                startContent?.invoke(step, drawInfo)
-                messageDrawer().Step(step = step, drawInfo = drawInfo)
-            }
+//            DragTargetWithDragItem(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .apply {
+//                        if (clickable) {
+//                            clickable {
+//                                focusRequester?.requestFocus()
+//                            }
+//                        }
+//                    },
+//                dataToDrop = dropInfo,
+//                showIcon = isHovered,
+//                position = drawInfo.position,
+//                dragIconWidth = dragIconWidth,
+//                emptySpaceClick = {
+//                    focusRequester?.requestFocus()
+//                }
+//            ) {
+//                startContent?.invoke(step, drawInfo)
+//                messageDrawer().Step(step = step, drawInfo = drawInfo)
+//            }
         }
     }
 }

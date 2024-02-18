@@ -17,6 +17,7 @@ import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
 import io.writeopia.sdk.serialization.extensions.toApi
 import io.writeopia.sdk.serialization.json.writeopiaJson
 import io.writeopia.sdk.serialization.request.wrapInRequest
+import io.writeopia.sdk.shared_edition.SharedEditionManager
 import io.writeopia.sdk.utils.extensions.noContent
 import io.writeopia.utils_module.KmpViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -31,6 +32,7 @@ class NoteEditorKmpViewModel(
     override val writeopiaManager: WriteopiaStateManager,
     private val documentRepository: DocumentRepository,
     private val documentFilter: DocumentFilter = DocumentFilterObject,
+    private val sharedEditionManager: SharedEditionManager
 ) : NoteEditorViewModel, KmpViewModel, BackstackInform by writeopiaManager,
     BackstackHandler by writeopiaManager {
 
@@ -128,6 +130,7 @@ class NoteEditorKmpViewModel(
         }
 
         writeopiaManager.saveOnStoryChanges(OnUpdateDocumentTracker(documentRepository))
+        writeopiaManager.liveSync(sharedEditionManager)
     }
 
     override fun loadDocument(documentId: String) {

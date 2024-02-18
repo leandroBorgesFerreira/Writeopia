@@ -47,6 +47,8 @@ internal class LoginViewModel(
                 } catch (e: Exception) {
                     Log.d("LoginViewModel", "Could not add intro notes. Error: ${e.message}")
                 }
+            } else if (result is Error) {
+                Log.d("LoginViewModel", "error when singing in: ${result.message}")
             }
 
             _loginState.value = result

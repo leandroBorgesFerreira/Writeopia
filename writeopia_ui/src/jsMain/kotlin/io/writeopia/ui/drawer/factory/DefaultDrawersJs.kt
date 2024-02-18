@@ -1,4 +1,4 @@
-package io.writeopia.sdk.drawer.factory
+package io.writeopia.ui.drawer.factory
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
@@ -14,15 +14,17 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.writeopia.sdk.drawer.SimpleTextDrawer
-import io.writeopia.sdk.drawer.StoryStepDrawer
-import io.writeopia.sdk.drawer.content.*
-import io.writeopia.sdk.drawer.content.js.DesktopTitleDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.ui.drawer.SimpleTextDrawer
+import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.drawer.content.HeaderDrawer
 import io.writeopia.ui.edition.TextCommandHandler
 import org.jetbrains.skiko.SkikoKey
-import io.writeopia.sdk.drawer.content.JsTextDrawer
+import io.writeopia.ui.drawer.content.JsTextDrawer
+import io.writeopia.ui.drawer.content.SpaceDrawer
+import io.writeopia.ui.drawer.content.js.DesktopTitleDrawer
+import io.writeopia.ui.drawer.content.swipeTextDrawer
 
 private const val LARGE_START_PADDING = 26
 private const val MEDIUM_START_PADDING = 12
@@ -41,28 +43,31 @@ object DefaultDrawersJs {
         val focusRequesterMessageBoxSwipe = remember { FocusRequester() }
         val swipeMessageDrawer = swipeTextDrawer(
             modifier = Modifier.padding(start = MEDIUM_START_PADDING.dp),
-            focusRequester = focusRequesterMessageBoxSwipe
+//            focusRequester = focusRequesterMessageBoxSwipe
         ) {
             jsMessageDrawer(manager, deleteOnEmptyErase = true)
         }
         val hxDrawers =
-            defaultHxDrawers(manager, modifier = Modifier.padding(horizontal = SMALL_START_PADDING.dp)) { fontSize ->
+            DefaultDrawersJs.defaultHxDrawers(
+                manager,
+//                modifier = Modifier.padding(horizontal = SMALL_START_PADDING.dp)
+            ) { fontSize ->
                 jsMessageDrawer(manager, fontSize = fontSize, deleteOnEmptyErase = true)
             }
-        val checkItemDrawer = checkItemDrawer(manager) { jsMessageDrawer(manager) }
-        val headerDrawer = headerDrawer(manager)
-        val unOrderedListItemDrawer = unOrderedListItemDrawer(manager) { jsMessageDrawer(manager) }
+//        val checkItemDrawer = checkItemDrawer(manager) { jsMessageDrawer(manager) }
+//        val headerDrawer = headerDrawer(manager)
+//        val unOrderedListItemDrawer = unOrderedListItemDrawer(manager) { jsMessageDrawer(manager) }
 
         return buildMap {
             put(StoryTypes.TEXT.type.number, swipeMessageDrawer)
             put(StoryTypes.SPACE.type.number, SpaceDrawer(manager::moveRequest))
-            put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
-            put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
-            put(StoryTypes.TITLE.type.number, headerDrawer)
-            put(
-                StoryTypes.LAST_SPACE.type.number,
-                LastEmptySpace(height = 30.dp, moveRequest = manager::moveRequest, click = manager::clickAtTheEnd)
-            )
+//            put(StoryTypes.CHECK_ITEM.type.number, checkItemDrawer)
+//            put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
+//            put(StoryTypes.TITLE.type.number, headerDrawer)
+//            put(
+//                StoryTypes.LAST_SPACE.type.number,
+//                LastEmptySpace(height = 30.dp, moveRequest = manager::moveRequest, click = manager::clickAtTheEnd)
+//            )
             putAll(hxDrawers)
         }
     }
@@ -101,7 +106,7 @@ object DefaultDrawersJs {
             swipeTextDrawer(
                 modifier = Modifier.padding(horizontal = 12.dp),
                 onSelected = writeopiaManager::onSelected,
-                focusRequester = focusRequesterH,
+//                focusRequester = focusRequesterH,
                 messageDrawer = {
                     messageDrawer(fontSize)
                 }
@@ -121,56 +126,56 @@ object DefaultDrawersJs {
         )
     }
 
-    private fun headerDrawer(writeopiaManager: WriteopiaStateManager): StoryStepDrawer {
-        val onKeyEvent = KeyEventListenerFactory.js(
-            writeopiaManager,
-            deleteOnEmptyErase = false,
-            isEmptyErase = { _, _ -> false},
-            isLineBreakKey = { keyEvent -> keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER },
-        )
+//    private fun headerDrawer(writeopiaManager: WriteopiaStateManager): StoryStepDrawer {
+//        val onKeyEvent = KeyEventListenerFactory.js(
+//            writeopiaManager,
+//            deleteOnEmptyErase = false,
+//            isEmptyErase = { _, _ -> false},
+//            isLineBreakKey = { keyEvent -> keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER },
+//        )
+//
+//        return HeaderDrawer(
+//            drawer = {
+//                DesktopTitleDrawer(
+//                    modifier = Modifier.align(Alignment.BottomStart),
+//                    onTextEdit = writeopiaManager::changeStoryState,
+//                    onKeyEvent = onKeyEvent,
+//                )
+//            },
+//        )
+//    }
 
-        return HeaderDrawer(
-            drawer = {
-                DesktopTitleDrawer(
-                    modifier = Modifier.align(Alignment.BottomStart),
-                    onTextEdit = writeopiaManager::changeStoryState,
-                    onKeyEvent = onKeyEvent,
-                )
-            },
-        )
-    }
-
-    @Composable
-    fun checkItemDrawer(
-        writeopiaManager: WriteopiaStateManager,
-        messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
-    ): StoryStepDrawer {
-        val focusRequesterCheckItem = remember { FocusRequester() }
-        return checkItemDrawer(
-            modifier = Modifier.padding(start = LARGE_START_PADDING.dp, end = 12.dp),
-            onCheckedChange = writeopiaManager::changeStoryState,
-            onSelected = writeopiaManager::onSelected,
-            customBackgroundColor = Color.Transparent,
-            focusRequester = focusRequesterCheckItem,
-            messageDrawer = {
-                messageDrawer()
-            },
-        )
-    }
-
-    @Composable
-    fun unOrderedListItemDrawer(
-        writeopiaManager: WriteopiaStateManager,
-        messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
-    ): StoryStepDrawer {
-        val focusRequesterUnOrderedList = remember { FocusRequester() }
-
-        return unOrderedListItemDrawer(
-            modifier = Modifier.padding(start = LARGE_START_PADDING.dp, end = 12.dp),
-            onSelected = writeopiaManager::onSelected,
-            focusRequester = focusRequesterUnOrderedList,
-            customBackgroundColor = Color.Transparent,
-            messageDrawer = messageDrawer,
-        )
-    }
+//    @Composable
+//    fun checkItemDrawer(
+//        writeopiaManager: WriteopiaStateManager,
+//        messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
+//    ): StoryStepDrawer {
+//        val focusRequesterCheckItem = remember { FocusRequester() }
+//        return checkItemDrawer(
+//            modifier = Modifier.padding(start = LARGE_START_PADDING.dp, end = 12.dp),
+//            onCheckedChange = writeopiaManager::changeStoryState,
+//            onSelected = writeopiaManager::onSelected,
+//            customBackgroundColor = Color.Transparent,
+//            focusRequester = focusRequesterCheckItem,
+//            messageDrawer = {
+//                messageDrawer()
+//            },
+//        )
+//    }
+//
+//    @Composable
+//    fun unOrderedListItemDrawer(
+//        writeopiaManager: WriteopiaStateManager,
+//        messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
+//    ): StoryStepDrawer {
+//        val focusRequesterUnOrderedList = remember { FocusRequester() }
+//
+//        return unOrderedListItemDrawer(
+//            modifier = Modifier.padding(start = LARGE_START_PADDING.dp, end = 12.dp),
+//            onSelected = writeopiaManager::onSelected,
+//            focusRequester = focusRequesterUnOrderedList,
+//            customBackgroundColor = Color.Transparent,
+//            messageDrawer = messageDrawer,
+//        )
+//    }
 }

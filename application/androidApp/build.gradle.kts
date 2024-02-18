@@ -59,7 +59,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        val baseUrl = System.getenv("WRITEOPIA_BASE_URL")
+        val baseUrl = System.getenv("WRITEOPIA_CLIENT_BASE_URL")
         buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
 
         applicationId = "io.writeopia"
@@ -80,7 +80,8 @@ android {
             )
         }
         release {
-            isMinifyEnabled = true
+            //Todo: Re enable the minification and fix R8 bugs
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
