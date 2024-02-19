@@ -48,21 +48,21 @@ class WriteopiaEditorApi(
 
     companion object {
         private fun createDatabase(
-            logger: Logger,
+            logger: Logger?,
             inMemory: Boolean = false
         ): WriteopiaDb {
             val driver = if (inMemory) {
-                logger.info("Creating a memory database...")
+                logger?.info("Creating a memory database...")
                 SqlDelightJdbcConnection.inMemory()
             } else {
-                logger.info("Connecting to postgres database...")
+                logger?.info("Connecting to postgres database...")
                 SqlDelightJdbcConnection.jdbcDriver(System.getenv("DB_USER"))
             }
 
             return WriteopiaDb(driver)
         }
 
-        fun create(logger: Logger, inMemory: Boolean = false): WriteopiaEditorApi {
+        fun create(logger: Logger?, inMemory: Boolean = false): WriteopiaEditorApi {
             val database: WriteopiaDb = createDatabase(logger, inMemory)
             val documentSqlDao = DocumentSqlDao(
                 database.documentEntityQueries,
