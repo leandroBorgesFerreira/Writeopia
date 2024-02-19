@@ -18,7 +18,6 @@ repositories {
 }
 
 dependencies {
-
     implementation(project(":writeopia_models"))
     implementation(project(":common:endpoints"))
     implementation(project(":backend:editor:api_editor"))

@@ -1,5 +1,6 @@
 package io.writeopia.api.editor
 
+import io.ktor.util.logging.Logger
 import io.writeopia.api.utils.example
 import io.writeopia.database.connection.SqlDelightJdbcConnection
 import io.writeopia.sdk.models.story.StoryStep
@@ -14,7 +15,7 @@ import io.writeopia.sdk.sql.WriteopiaDb
 import kotlinx.datetime.Clock
 
 class WriteopiaEditorApi(
-    private val documentRepository: DocumentRepository
+    private val documentRepository: DocumentRepository,
 ) {
 
     fun introNotes(): List<DocumentApi> {
@@ -47,21 +48,22 @@ class WriteopiaEditorApi(
 
     companion object {
         private fun createDatabase(
+            logger: Logger,
             inMemory: Boolean = false
         ): WriteopiaDb {
             val driver = if (inMemory) {
-                println("Creating a memory database...")
+                logger.info("Creating a memory database...")
                 SqlDelightJdbcConnection.inMemory()
             } else {
-                println("Connecting to postgres database...")
+                logger.info("Connecting to postgres database...")
                 SqlDelightJdbcConnection.jdbcDriver(System.getenv("DB_USER"))
             }
 
             return WriteopiaDb(driver)
         }
 
-        fun create(inMemory: Boolean = false): WriteopiaEditorApi {
-            val database: WriteopiaDb = createDatabase(inMemory)
+        fun create(logger: Logger, inMemory: Boolean = false): WriteopiaEditorApi {
+            val database: WriteopiaDb = createDatabase(logger, inMemory)
             val documentSqlDao = DocumentSqlDao(
                 database.documentEntityQueries,
                 database.storyStepEntityQueries

@@ -26,7 +26,7 @@ fun Application.module(byPassAuth: Boolean = false) {
     }
     configureSockets()
     configureRouting(
-        writeopiaEditorApi = WriteopiaEditorApi.create(dbInMemory),
+        writeopiaEditorApi = WriteopiaEditorApi.create(log, dbInMemory),
         byPassAuth = byPassAuth
     )
     configureSerialization()
