@@ -17,6 +17,8 @@ dependencies {
     implementation(project(":plugins:writeopia_persistence_core"))
     implementation(project(":plugins:writeopia_persistence_sqldelight"))
 
+    implementation(libs.ktor.client.logging)
+
     implementation(libs.sqldelight.jvm)
     implementation(libs.sqldelight.jdbc.driver)
     implementation(libs.database.hikaricp)

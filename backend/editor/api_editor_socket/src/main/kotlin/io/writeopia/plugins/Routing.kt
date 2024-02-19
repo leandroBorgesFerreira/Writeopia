@@ -2,21 +2,24 @@ package io.writeopia.plugins
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
-import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.application.*
-import io.ktor.server.request.ApplicationRequest
+import io.ktor.server.application.Application
+import io.ktor.server.application.ApplicationCall
+import io.ktor.server.application.call
+import io.ktor.server.application.log
 import io.ktor.server.request.receive
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.server.response.respond
+import io.ktor.server.response.respondText
+import io.ktor.server.routing.get
+import io.ktor.server.routing.post
+import io.ktor.server.routing.route
+import io.ktor.server.routing.routing
 import io.writeopia.api.editor.WriteopiaEditorApi
 import io.writeopia.app.endpoints.EndPoints
 import io.writeopia.sdk.serialization.data.DocumentApi
-import io.writeopia.sdk.serialization.json.writeopiaJson
-import kotlinx.serialization.encodeToString
 
 fun Application.configureRouting(
-    writeopiaEditorApi: WriteopiaEditorApi = WriteopiaEditorApi.create(),
+    writeopiaEditorApi: WriteopiaEditorApi,
     byPassAuth: Boolean = false
 ) {
     routing {
@@ -78,7 +81,7 @@ suspend fun ApplicationCall.withAuth(
         FirebaseAuth.getInstance().verifyIdToken(idToken)
         func()
     } catch (e: FirebaseAuthException) {
-        println("Unauthorized: ${e.message}")
+        application.log.info("Unauthorized: ${e.message}")
         unAuthorized(e.message ?: "Auth failed")
     }
 }

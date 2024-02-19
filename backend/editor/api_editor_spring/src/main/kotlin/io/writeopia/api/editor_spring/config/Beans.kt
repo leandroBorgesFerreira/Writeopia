@@ -14,7 +14,7 @@ import org.springframework.context.support.beans
 
 val beans = beans {
     bean<WriteopiaEditorApi> {
-        WriteopiaEditorApi.create()
+        WriteopiaEditorApi.create(logger = null)
     }
 
     bean<EditorHandler> {
