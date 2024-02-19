@@ -14,7 +14,8 @@ import kotlin.test.Test
 
 class ApplicationTest {
 
-    private val router = appRouter(EditorHandler(WriteopiaEditorApi.create()), byPassAuth = true)
+    private val router =
+        appRouter(EditorHandler(WriteopiaEditorApi.create(logger = null)), byPassAuth = true)
 
     private val webClient = WebTestClient
         .bindToRouterFunction(router)
