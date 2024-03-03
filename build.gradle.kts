@@ -17,9 +17,9 @@ plugins {
 apply(from = "${rootDir}/scripts/publish-root.gradle")
 
 dagCommand {
-    filter = "all"
     defaultBranch = "origin/main"
-    outputType = "json"
+    outputType = "json_pretty_print"
     printModulesInfo = true
+//    filterModules = "[\":application:desktopApp\"]"
 }
 
