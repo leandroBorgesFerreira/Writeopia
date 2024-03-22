@@ -72,6 +72,6 @@ private fun ApplicationTestBuilder.clientClient() = createClient {
 
 private fun ApplicationTestBuilder.defaultConfig() {
     application {
-        module(byPassAuth = true)
+        module(byPassAuth = true, forceDbInMemory = true)
     }
 }
