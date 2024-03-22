@@ -13,8 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key.Companion.Window
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Window
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.ui.drawer.factory.DefaultDrawersJs
 import io.writeopia.ui.manager.WriteopiaStateManager
@@ -27,58 +27,58 @@ import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.skiko.wasm.onWasmReady
 
 fun main() {
-    onWasmReady {
-        Window("Compose Rich Editor") {
-            val writeopiaManager = WriteopiaStateManager.create(
-                dispatcher = Dispatchers.Main,
-                writeopiaManager = WriteopiaManager()
-            ).apply {
-                newStory()
-            }
-
-            Column(
-                Modifier
-                    .clickable(
-                        onClick = writeopiaManager::clickAtTheEnd,
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() },
-                    )
-                    .fillMaxSize()
-                    .background(Color.Gray),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-
-                Text(
-                    "Write your text bellow",
-                    modifier = Modifier.padding(20.dp),
-                    style = MaterialTheme.typography.titleLarge,
-                )
-
-                Column(
-                    modifier = Modifier
-                        .width(1000.dp)
-                        .defaultMinSize(minHeight = 700.dp)
-                        .padding(start = 30.dp, end = 30.dp, bottom = 30.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(Color.White)
-                ) {
-                    CreateTextEditor(writeopiaManager)
-
-                    Box(
-                        modifier = Modifier.weight(1F)
-                            .fillMaxWidth()
-                            .clickable(
-                                onClick = {
-                                    writeopiaManager.clickAtTheEnd()
-                                },
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                            )
-                    )
-                }
-            }
-        }
-    }
+//    onWasmReady {
+//        Window("Compose Rich Editor") {
+//            val writeopiaManager = WriteopiaStateManager.create(
+//                dispatcher = Dispatchers.Main,
+//                writeopiaManager = WriteopiaManager()
+//            ).apply {
+//                newStory()
+//            }
+//
+//            Column(
+//                Modifier
+//                    .clickable(
+//                        onClick = writeopiaManager::clickAtTheEnd,
+//                        indication = null,
+//                        interactionSource = remember { MutableInteractionSource() },
+//                    )
+//                    .fillMaxSize()
+//                    .background(Color.Gray),
+//                horizontalAlignment = Alignment.CenterHorizontally,
+//            ) {
+//
+//                Text(
+//                    "Write your text bellow",
+//                    modifier = Modifier.padding(20.dp),
+//                    style = MaterialTheme.typography.titleLarge,
+//                )
+//
+//                Column(
+//                    modifier = Modifier
+//                        .width(1000.dp)
+//                        .defaultMinSize(minHeight = 700.dp)
+//                        .padding(start = 30.dp, end = 30.dp, bottom = 30.dp)
+//                        .clip(RoundedCornerShape(20.dp))
+//                        .background(Color.White)
+//                ) {
+//                    CreateTextEditor(writeopiaManager)
+//
+//                    Box(
+//                        modifier = Modifier.weight(1F)
+//                            .fillMaxWidth()
+//                            .clickable(
+//                                onClick = {
+//                                    writeopiaManager.clickAtTheEnd()
+//                                },
+//                                interactionSource = remember { MutableInteractionSource() },
+//                                indication = null,
+//                            )
+//                    )
+//                }
+//            }
+//        }
+//    }
 }
 
 @Composable
