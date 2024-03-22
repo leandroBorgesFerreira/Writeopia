@@ -119,15 +119,15 @@ class NoteEditorKmpViewModel(
 
         writeopiaManager.newStory(documentId, title)
 
-        coroutineScope.launch(Dispatchers.IO) {
-            writeopiaManager.currentDocument.stateIn(this).value?.let { document ->
-                documentRepository.saveDocument(
-                    document.copy(
-                        content = documentFilter.removeTypesFromDocument(document.content)
-                    )
-                )
-            }
-        }
+//        coroutineScope.launch(Dispatchers.IO) {
+//            writeopiaManager.currentDocument.stateIn(this).value?.let { document ->
+//                documentRepository.saveDocument(
+//                    document.copy(
+//                        content = documentFilter.removeTypesFromDocument(document.content)
+//                    )
+//                )
+//            }
+//        }
 
         writeopiaManager.saveOnStoryChanges(OnUpdateDocumentTracker(documentRepository))
         writeopiaManager.liveSync(sharedEditionManager)

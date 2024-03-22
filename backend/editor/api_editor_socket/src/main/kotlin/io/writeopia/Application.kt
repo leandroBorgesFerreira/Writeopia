@@ -18,8 +18,9 @@ fun main() {
     ).start(wait = true)
 }
 
-fun Application.module(byPassAuth: Boolean = false) {
-    val dbInMemory = System.getenv("IN_MEMORY_DATABASE")?.let { it == "true" } ?: false
+fun Application.module(byPassAuth: Boolean = false, forceDbInMemory: Boolean? = null) {
+    val dbInMemory =
+        forceDbInMemory ?: System.getenv("IN_MEMORY_DATABASE")?.let { it == "true" } ?: false
 
     if (!byPassAuth) {
         configureFirebase()

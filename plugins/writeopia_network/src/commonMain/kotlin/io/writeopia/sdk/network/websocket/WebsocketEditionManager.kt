@@ -24,16 +24,21 @@ class WebsocketEditionManager(
         inFlow: Flow<Pair<StoryState, DocumentInfo>>,
         outFlow: MutableStateFlow<StoryState>
     ) {
-        client.webSocket(method = HttpMethod.Get, host = host, port = 8080, path = "/chat") {
-            outputMessages(outFlow)
-            inputMessages(inFlow)
+        try {
+            client.webSocket(method = HttpMethod.Get, host = host, port = 8080, path = "/chat") {
+                outputMessages(outFlow)
+                inputMessages(inFlow)
 
-            websocketSection = this
+                websocketSection = this
+            }
+        } catch (e: Exception) {
+            client.close()
         }
     }
 
     override suspend fun stopLiveEdition() {
         websocketSection?.close()
+        client.close()
     }
 
     private suspend fun DefaultClientWebSocketSession.outputMessages(outFlow: MutableStateFlow<StoryState>) {
