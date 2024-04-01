@@ -58,6 +58,14 @@ object MapStoryData {
             localId = "3",
             type = StoryTypes.IMAGE.type,
         ),
+        3 to StoryStep(
+            localId = "4",
+            type = StoryTypes.IMAGE.type,
+        ),
+        4 to StoryStep(
+            localId = "5",
+            type = StoryTypes.IMAGE.type,
+        ),
     )
 
     fun imageSimpleGroup(): Map<Int, List<StoryStep>> = mapOf(

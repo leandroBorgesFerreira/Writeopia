@@ -23,23 +23,23 @@ class StepsMapNormalizationBuilderTest {
         )
 
         assertEquals(
-            input.size * 2 + 1,
+            input.size,
             normalized.size,
             "There should be an space between all the story units"
         )
         assertEquals(
             StoryTypes.GROUP_IMAGE.type,
-            normalized[4]?.type,
+            normalized[2]?.type,
             "The images in the same position should be merged into GroupImage"
         )
         assertEquals(
             3,
-            normalized[4]?.steps?.size,
+            normalized[2]?.steps?.size,
             "The images in the same position should be merged into GroupImage"
         )
         assertEquals(
             StoryTypes.TEXT.type,
-            normalized[normalized.size - 3]?.type,
+            normalized[normalized.size - 1]?.type,
             "The last message should stay as it was"
         )
 

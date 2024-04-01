@@ -22,7 +22,7 @@ class PerStateBackstackManagerTest {
             contentHandler = ContentHandler(
                 stepsNormalizer = stepsNormalizer
             ),
-            movementHandler = MovementHandler(stepsNormalizer)
+            movementHandler = MovementHandler()
         )
 
     @Test

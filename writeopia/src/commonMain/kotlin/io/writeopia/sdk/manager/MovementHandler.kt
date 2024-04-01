@@ -2,15 +2,15 @@ package io.writeopia.sdk.manager
 
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.toEditState
+import io.writeopia.sdk.utils.iterables.addElementInPosition
 
 /**
  * Class responsible to handle move requests of Stories. This class handles the logic to move a
  * Story to another position, when a Story is grouped together with another one and when a
  * Story is separated from a group.
  */
-class MovementHandler(private val stepsNormalizer: UnitsNormalizationMap) {
+class MovementHandler {
 
     fun merge(stories: Map<Int, StoryStep>, info: Action.Merge): Map<Int, List<StoryStep>> {
         val sender = info.sender
@@ -44,13 +44,8 @@ class MovementHandler(private val stepsNormalizer: UnitsNormalizationMap) {
 
     fun move(stories: Map<Int, StoryStep>, move: Action.Move): Map<Int, StoryStep> {
         val mutable = stories.toMutableMap()
-        if (mutable[move.positionTo]?.type?.name != "space") throw IllegalStateException(
-            "You can only move a story to an empty space"
-        )
 
         val movedStories = mutable[move.positionFrom]?.let { moveStory ->
-            mutable[move.positionTo] = moveStory.copy(parentId = null)
-
             if (move.storyStep.parentId == null) {
                 mutable.remove(move.positionFrom)
             } else {
@@ -64,9 +59,16 @@ class MovementHandler(private val stepsNormalizer: UnitsNormalizationMap) {
                 }
             }
 
-            mutable
+            mutable.addElementInPosition(moveStory.copy(parentId = null), move.positionTo)
         } ?: stories
 
-        return stepsNormalizer(movedStories.toEditState())
+        return movedStories
     }
 }
+
+fun Action.Move.fixMove(): Action.Move =
+    if (this.positionTo < this.positionFrom) {
+        this.copy(positionTo = this.positionTo + 1)
+    } else {
+        this
+    }

@@ -7,6 +7,7 @@ import io.writeopia.sdk.manager.ContentHandler
 import io.writeopia.sdk.manager.DocumentTracker
 import io.writeopia.sdk.manager.MovementHandler
 import io.writeopia.sdk.manager.WriteopiaManager
+import io.writeopia.sdk.manager.fixMove
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.action.BackstackAction
 import io.writeopia.sdk.model.document.DocumentInfo
@@ -222,12 +223,14 @@ class WriteopiaStateManager(
             cancelSelection()
         }
 
-        _currentStory.value = writeopiaManager.moveRequest(move, _currentStory.value)
+        val fixedMove = move.fixMove()
+
+        _currentStory.value = writeopiaManager.moveRequest(fixedMove, _currentStory.value)
 
         val backStackAction = BackstackAction.Move(
-            storyStep = move.storyStep,
-            positionFrom = move.positionFrom,
-            positionTo = move.positionTo
+            storyStep = fixedMove.storyStep,
+            positionFrom = fixedMove.positionFrom,
+            positionTo = fixedMove.positionTo
         )
         backStackManager.addAction(backStackAction)
     }
@@ -357,16 +360,8 @@ class WriteopiaStateManager(
 
             _currentStory.value.copy(focusId = lastContentStory.id, stories = newStoriesState)
         } else {
-            var acc = stories.size - 1
-            val newLastMessage =
-                StoryStep(type = StoryTypes.TEXT.type)
-
-            //Todo: It should be possible to customize which steps are add
-            val newStories = stories + mapOf(
-                acc++ to newLastMessage,
-                acc++ to StoryStep(type = StoryTypes.SPACE.type),
-                acc to StoryStep(type = StoryTypes.LAST_SPACE.type),
-            )
+            val newLastMessage = StoryStep(type = StoryTypes.TEXT.type)
+            val newStories = stories + mapOf(stories.size to newLastMessage)
 
             StoryState(newStories, LastEdit.Whole, newLastMessage.id)
         }
@@ -430,7 +425,7 @@ class WriteopiaStateManager(
             _positionsOnEdit.value = emptySet()
 
             _currentStory.value =
-                _currentStory.value.copy(stories = newStories)
+                _currentStory.value.copy(stories = newStories, lastEdit = LastEdit.Whole)
         }
     }
 
@@ -460,7 +455,7 @@ class WriteopiaStateManager(
                 StepsMapNormalizationBuilder.reduceNormalizations {
                     defaultNormalizers()
                 },
-            movementHandler: MovementHandler = MovementHandler(stepsNormalizer),
+            movementHandler: MovementHandler = MovementHandler(),
             contentHandler: ContentHandler = ContentHandler(
                 stepsNormalizer = stepsNormalizer
             ),

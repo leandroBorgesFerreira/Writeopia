@@ -11,6 +11,8 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.ui.draganddrop.target.DraggableScreen
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.model.story.DrawState
+import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.StoryStepDrawer
 
 @Composable
@@ -34,16 +36,26 @@ fun WriteopiaEditor(
                     content,
                     key = { index, drawStory -> drawStory.key + index },
                     itemContent = { index, drawStory ->
-                        drawers[drawStory.storyStep.type.number]?.Step(
-                            step = drawStory.storyStep,
-                            drawInfo = DrawInfo(
-                                editable = editable,
-                                focusId = storyState.focusId,
-                                position = index,
-                                extraData = mapOf("listSize" to storyState.stories.size),
-                                selectMode = drawStory.isSelected
-                            )
-                        )
+                        buildList {
+                            add(drawers[drawStory.storyStep.type.number])
+                            add(drawers[StoryTypes.SPACE.type.number])
+
+                            if (index == content.lastIndex) {
+                                add(drawers[StoryTypes.LAST_SPACE.type.number])
+                            }
+                        }.filterNotNull()
+                            .forEach { drawer ->
+                                drawer.Step(
+                                    step = drawStory.storyStep,
+                                    drawInfo = DrawInfo(
+                                        editable = editable,
+                                        focusId = storyState.focusId,
+                                        position = index,
+                                        extraData = mapOf("listSize" to storyState.stories.size),
+                                        selectMode = drawStory.isSelected
+                                    )
+                                )
+                            }
                     }
                 )
             }

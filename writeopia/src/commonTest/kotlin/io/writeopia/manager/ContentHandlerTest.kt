@@ -7,11 +7,9 @@ import io.writeopia.sdk.models.command.CommandInfo
 import io.writeopia.sdk.models.command.CommandTrigger
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.normalization.addinbetween.AddSteps
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
 import io.writeopia.utils.MapStoryData
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
-import io.writeopia.sdk.utils.ui.StoryStepFactory
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -19,7 +17,7 @@ class ContentHandlerTest {
 
     @Test
     fun `should be possible to add content correctly`() {
-        val input = AddSteps.spaces(skipFirst = true).insert(MapStoryData.imageStepsList())
+        val input = MapStoryData.imageStepsList()
 
         val contentHandler =
             ContentHandler(
@@ -27,20 +25,14 @@ class ContentHandlerTest {
                 stepsNormalizer = normalizer()
             )
 
-        val storyStep =
-            StoryStep(type = StoryTypes.TEXT.type)
-        val newStory = contentHandler.addNewContent(input, storyStep, 2)
+        val storyStep = StoryStep(type = StoryTypes.TEXT.type)
+        val newStory = contentHandler.addNewContent(input, storyStep, 1)
 
         val expected = mapOf(
             0 to StoryStep(type = StoryTypes.IMAGE.type),
-            1 to StoryStepFactory.space(),
-            2 to storyStep,
-            3 to StoryStepFactory.space(),
-            4 to StoryStep(type = StoryTypes.IMAGE.type),
-            5 to StoryStepFactory.space(),
-            6 to StoryStep(type = StoryTypes.IMAGE.type),
-            7 to StoryStepFactory.space(),
-            8 to StoryStep(type = StoryTypes.LAST_SPACE.type),
+            1 to storyStep,
+            2 to StoryStep(type = StoryTypes.IMAGE.type),
+            3 to StoryStep(type = StoryTypes.IMAGE.type),
         ).mapValues { (_, storyStep) ->
             storyStep.type
         }
@@ -66,7 +58,7 @@ class ContentHandlerTest {
 
     @Test
     fun `when check item command is WRITTEN, the command should be removed for the story text`() {
-        val input = AddSteps.spaces(skipFirst = true).insert(MapStoryData.messagesInLine())
+        val input = MapStoryData.messagesInLine()
         val contentHandler = ContentHandler(stepsNormalizer = normalizer())
         val text = "Lalala"
 
@@ -94,7 +86,7 @@ class ContentHandlerTest {
 
     @Test
     fun `when deleting stories, the focus should move correctly`() {
-        val input = AddSteps.spaces(skipFirst = true).insert(MapStoryData.messagesInLine())
+        val input = MapStoryData.messagesInLine()
         val contentHandler = ContentHandler(stepsNormalizer = normalizer())
         val text = "Lalala"
 

@@ -11,8 +11,9 @@ import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.toEditState
-import io.writeopia.sdk.utils.iterables.MapOperations
-import io.writeopia.sdk.utils.ui.StoryStepFactory
+import io.writeopia.sdk.utils.iterables.addElementInPosition
+import io.writeopia.sdk.utils.iterables.mergeSortedMaps
+import io.writeopia.sdk.utils.iterables.normalizePositions
 
 /**
  * Class dedicated to handle adding, deleting or changing StorySteps
@@ -85,19 +86,12 @@ class ContentHandler(
         currentStory: Map<Int, StoryStep>,
         newStoryUnit: StoryStep,
         position: Int
-    ): Map<Int, StoryStep> =
-        MapOperations.addElementInPosition(
-            currentStory,
-            newStoryUnit,
-            StoryStepFactory.space(),
-            position
-        )
+    ): Map<Int, StoryStep> = currentStory.addElementInPosition(newStoryUnit, position)
 
     fun addNewContentBulk(
         currentStory: Map<Int, StoryStep>,
         newStory: Map<Int, StoryStep>,
-        addInBetween: () -> StoryStep
-    ): Map<Int, StoryStep> = MapOperations.mergeSortedMaps(currentStory, newStory, addInBetween)
+    ): Map<Int, StoryStep> = currentStory.mergeSortedMaps(newStory)
 
     fun onLineBreak(
         currentStory: Map<Int, StoryStep>,
@@ -114,7 +108,7 @@ class ContentHandler(
                 text = secondText,
             )
 
-            val addPosition = lineBreakInfo.position + 2
+            val addPosition = lineBreakInfo.position + 1
 
             //Todo: Cover this in unit tests!
             if (currentStory[addPosition]?.type == StoryTypes.SPACE.type) {
@@ -186,24 +180,24 @@ class ContentHandler(
     ): Pair<Map<Int, StoryStep>, Map<Int, StoryStep>> {
         val deleted = mutableMapOf<Int, StoryStep>()
         val newState = stories.toMutableMap()
+
         positions.forEach { position ->
             newState.remove(position)?.let { deletedStory ->
                 deleted[position] = deletedStory
             }
-
-            newState.remove(position + 1)
         }
 
-        return newState to deleted
+        return newState.normalizePositions() to deleted
     }
 }
 
 private fun defaultLineBreakMap(storyType: StoryType): StoryType =
-    when(storyType) {
+    when (storyType) {
         StoryTypes.H1.type,
         StoryTypes.H2.type,
         StoryTypes.H3.type,
         StoryTypes.H4.type,
         StoryTypes.TITLE.type -> StoryTypes.TEXT.type
+
         else -> storyType
     }

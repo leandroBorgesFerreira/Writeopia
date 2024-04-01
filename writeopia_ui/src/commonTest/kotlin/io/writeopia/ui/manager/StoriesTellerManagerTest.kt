@@ -17,9 +17,6 @@ import kotlin.test.*
 @OptIn(ExperimentalCoroutinesApi::class)
 class WriteopiaManagerTest {
 
-//    @get:Rule
-//    val mainDispatcherRule = MainDispatcherRule()
-
     private val imagesInLineRepo: StoriesRepository = object : StoriesRepository {
         override suspend fun history(): Map<Int, StoryStep> = MapStoryData.imageStepsList()
     }
@@ -52,8 +49,6 @@ class WriteopiaManagerTest {
         val currentStory = manager.currentStory.value.stories
         val expected = mapOf(
             0 to StoryStep(type = StoryTypes.TITLE.type),
-            1 to StoryStep(type = StoryTypes.SPACE.type),
-            2 to StoryStep(type = StoryTypes.LAST_SPACE.type),
         ).mapValues { (_, storyStep) ->
             storyStep.type
         }
@@ -61,35 +56,6 @@ class WriteopiaManagerTest {
         assertEquals(
             expected,
             currentStory.mapValues { (_, storyStep) -> storyStep.type }
-        )
-    }
-
-    @Test
-    fun oneSpaceHasToBeAddedBetweenSteps() = runTest {
-        val storyManager =
-            WriteopiaStateManager.create(
-                writeopiaManager = WriteopiaManager(),
-                dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
-        val oldSize = messagesRepo.history().size
-
-        val now = Clock.System.now()
-
-        storyManager.loadDocument(
-            Document(
-                content = messagesRepo.history(),
-                lastUpdatedAt = now,
-                createdAt = now,
-                userId = ""
-            )
-        )
-
-        val newStory = storyManager.currentStory.value.stories
-
-        assertEquals(
-            oldSize * 2 + 1,
-            newStory.size,
-            "a space should be added between each step"
         )
     }
 
@@ -126,13 +92,13 @@ class WriteopiaManagerTest {
         assertEquals("check_item", newStory[0]!!.type.name, "the first item should be a check_item")
         assertEquals(
             "check_item",
-            newStory[2]!!.type.name,
+            newStory[1]!!.type.name,
             "the second item should be a check_item"
         )
         assertEquals(
-            currentStory.size + 2,
+            currentStory.size + 1,
             newStory.size,
-            "the size of the story should be 5"
+            "the size of the story should be 2"
         )
     }
 
@@ -196,7 +162,7 @@ class WriteopiaManagerTest {
         val currentStory = storyManager.currentStory.value.stories
         val initialSize = currentStory.size
 
-        val positionFrom = 2
+        val positionFrom = 1
         val positionTo = 0
         val sender = currentStory[positionFrom]!!
         val receiver = currentStory[positionTo]!!
@@ -215,9 +181,9 @@ class WriteopiaManagerTest {
         val newStory = storyManager.currentStory.value.stories
 
         assertEquals(
-            initialSize - 2,
+            initialSize - 1,
             newStory.size,
-            "One image should be removed and one space"
+            "One image should be removed"
         )
         assertEquals(
             true,
@@ -247,7 +213,7 @@ class WriteopiaManagerTest {
         val currentStory = storyManager.currentStory.value.stories
         val initialSize = currentStory.size
 
-        val positionFrom = 2
+        val positionFrom = 1
         val positionTo = 0
 
         storyManager.mergeRequest(
@@ -261,7 +227,7 @@ class WriteopiaManagerTest {
 
         val newStory = storyManager.currentStory.value.stories
 
-        assertEquals(initialSize - 2, newStory.size)
+        assertEquals(initialSize - 1, newStory.size)
         assertEquals(
             true,
             newStory[positionTo]?.isGroup,
@@ -290,7 +256,7 @@ class WriteopiaManagerTest {
         val currentStory = storyManager.currentStory.value.stories
         val initialSize = currentStory.size
 
-        val positionFrom = 2
+        val positionFrom = 1
         val positionTo = 0
 
         storyManager.mergeRequest(
@@ -304,7 +270,7 @@ class WriteopiaManagerTest {
 
         val newHistory = storyManager.currentStory.value.stories
 
-        assertEquals(initialSize - 2, newHistory.size, "One space and one image were removed")
+        assertEquals(initialSize - 1, newHistory.size, "One space and one image were removed")
         assertEquals(
             true,
             newHistory[positionTo]?.isGroup,
@@ -319,7 +285,7 @@ class WriteopiaManagerTest {
         repeat(2) {
             val newHistory2 = storyManager.currentStory.value.stories
 
-            val newPositionFrom = 2
+            val newPositionFrom = 1
             val newPositionTo = 0
 
             storyManager.mergeRequest(
@@ -335,15 +301,15 @@ class WriteopiaManagerTest {
         val newHistory3 = storyManager.currentStory.value.stories
 
         assertEquals(
-            3,
+            initialSize - 3, //3 merges were requested
             newHistory3.size,
             "The minimum side should be 4 (group, space, large_space)"
         )
         assertEquals(true, newHistory3[positionTo]?.isGroup, "The GroupImage should still exist")
         assertEquals(
-            3,
+            4,
             newHistory3[positionTo]!!.steps.size,
-            "Now the group has 3 images"
+            "Now the group has 4 images"
         )
     }
 
@@ -369,7 +335,7 @@ class WriteopiaManagerTest {
         val initialSize = currentStory.size
         val initialImageGroupSize = currentStory[0]!!.steps.size
 
-        val positionFrom = 2
+        val positionFrom = 1
         val positionTo = 0
 
         val mergeInfo = Action.Merge(
@@ -382,7 +348,7 @@ class WriteopiaManagerTest {
 
         val newStory = storyManager.currentStory.value.stories
 
-        assertEquals(initialSize - 2, newStory.size, "One image and one space were removed")
+        assertEquals(initialSize - 1, newStory.size, "One image and one space were removed")
         assertTrue(newStory[positionTo]?.isGroup == true)
         assertEquals(
             initialImageGroupSize + 1,
@@ -408,7 +374,7 @@ class WriteopiaManagerTest {
                 lastUpdatedAt = now
             )
         )
-        val positionTo = 2
+        val positionTo = 1
         val positionFrom = 0
 
         val currentStory = storyManager.currentStory.value.stories
@@ -686,9 +652,9 @@ class WriteopiaManagerTest {
             storyManager.onLineBreak(Action.LineBreak(stories[position]!!, position = position))
 
             assertEquals(
-                initialSize + 2,
+                initialSize + 1,
                 storyManager.currentStory.value.stories.size,
-                "2 new stories should have been added"
+                "1 new story should have been added"
             )
         }
 
@@ -719,7 +685,7 @@ class WriteopiaManagerTest {
             val newStory = storyManager.currentStory.value.stories
 
             assertEquals(
-                initialSize + 2,
+                initialSize + 1,
                 newStory.size,
                 "2 new stories should have been added"
             )
@@ -865,8 +831,8 @@ class WriteopiaManagerTest {
 
         storyManager.onLineBreak(Action.LineBreak(input[0]!!, 0))
 
+        storyManager.onLineBreak(Action.LineBreak(input[0]!!, 1))
         storyManager.onLineBreak(Action.LineBreak(input[0]!!, 2))
-        storyManager.onLineBreak(Action.LineBreak(input[0]!!, 4))
         storyManager.undo()
         storyManager.undo()
         storyManager.undo()
@@ -888,89 +854,6 @@ class WriteopiaManagerTest {
                 assertEquals(storyUnit1.id, storyUnit2.id)
             }
         }
-    }
-
-    @Test
-    fun spacesShouldBeCorrectInTheStory() {
-        val now = Clock.System.now()
-
-        val storyManager =
-            WriteopiaStateManager.create(
-                writeopiaManager = WriteopiaManager(),
-                dispatcher = UnconfinedTestDispatcher(),
-                userId = { "" })
-        val input = MapStoryData.singleCheckItem()
-
-        storyManager.run {
-            loadDocument(
-                Document(
-                    content = input,
-                    userId = "",
-                    createdAt = now,
-                    lastUpdatedAt = now
-                )
-            )
-
-            onLineBreak(Action.LineBreak(input[0]!!, 0))
-            onLineBreak(Action.LineBreak(input[0]!!, 2))
-            onLineBreak(Action.LineBreak(input[0]!!, 4))
-
-            undo()
-            undo()
-            undo()
-
-            redo()
-            redo()
-        }
-
-        val newStory = storyManager.currentStory.value.stories
-
-        newStory.forEach { (position, storyUnit) ->
-            val isEven = position % 2 == 0
-
-            if (isEven) {
-                assertNotEquals(StoryTypes.SPACE.type, storyUnit.type)
-            } else {
-                assertEquals(StoryTypes.SPACE.type, storyUnit.type)
-            }
-        }
-    }
-
-    @Test
-    fun intializingTheStories2TimesShouldNotAddTheLastStoryUnitTwice() = runTest {
-        val now = Clock.System.now()
-
-        val storyManager =
-            WriteopiaStateManager.create(
-                writeopiaManager = WriteopiaManager(),
-                dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
-        storyManager.loadDocument(
-            Document(
-                content = complexMessagesRepository.history(),
-                userId = "",
-                createdAt = now,
-                lastUpdatedAt = now
-            )
-        )
-
-        val stories = storyManager.currentStory.value.stories
-        assertEquals(StoryTypes.LAST_SPACE.type, stories.values.last().type)
-
-        storyManager.loadDocument(
-            Document(
-                content = stories,
-                userId = "",
-                createdAt = now,
-                lastUpdatedAt = now
-            )
-        )
-
-        val newStories = storyManager.currentStory.value.stories
-        val storyList = newStories.values.toList()
-
-        assertEquals(StoryTypes.LAST_SPACE.type, storyList.last().type)
-        assertNotEquals(StoryTypes.LAST_SPACE.type, storyList[storyList.lastIndex - 1].type)
     }
 
     @Test
@@ -1037,7 +920,7 @@ class WriteopiaManagerTest {
         storyManager.deleteSelection()
 
         val newStories = storyManager.currentStory.value.stories
-        assertEquals(initialSize - selectionCount * 2, newStories.size)
+        assertEquals(initialSize - selectionCount, newStories.size)
 
         selectedStories.forEach { storyStep ->
             assertFalse(
@@ -1073,7 +956,7 @@ class WriteopiaManagerTest {
         val selectionCount = 3
         val selections = buildList {
             repeat(selectionCount) { index ->
-                this.add(index * 2 + 1)
+                this.add(index)
             }
         }
 
@@ -1091,7 +974,7 @@ class WriteopiaManagerTest {
         storyManager.deleteSelection()
 
         val newStories = storyManager.currentStory.value.stories
-        assertEquals(initialSize - selectionCount * 2, newStories.size)
+        assertEquals(initialSize - selectionCount, newStories.size)
 
         selectedStories.forEach { storyStep ->
             assertFalse(
@@ -1104,6 +987,9 @@ class WriteopiaManagerTest {
             storyManager.onEditPositions.value.isEmpty(),
             "The selection should be empty now"
         )
+
+        assertEquals(newStories.size, initialStories.size - selectionCount)
+        assertEquals(newStories.keys.toList(), initialStories.keys.take(newStories.size))
 
         storyManager.undo()
     }
@@ -1129,7 +1015,7 @@ class WriteopiaManagerTest {
         storyManager.clickAtTheEnd()
 
         val currentStory = storyManager.currentStory.value.stories
-        val lastContentStory = currentStory[currentStory.size - 3]
+        val lastContentStory = currentStory[currentStory.size - 1]
 
         assertEquals(lastContentStory!!.type, StoryTypes.TEXT.type)
         assertEquals(storyManager.currentStory.value.focusId, lastContentStory.id)

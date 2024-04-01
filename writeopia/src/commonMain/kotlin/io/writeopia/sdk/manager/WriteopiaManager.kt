@@ -12,6 +12,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.toEditState
+import io.writeopia.sdk.utils.iterables.normalizePositions
 import kotlinx.datetime.Clock
 
 class WriteopiaManager(
@@ -19,7 +20,7 @@ class WriteopiaManager(
         StepsMapNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
         },
-    private val movementHandler: MovementHandler = MovementHandler(stepsNormalizer),
+    private val movementHandler: MovementHandler = MovementHandler(),
     private val contentHandler: ContentHandler = ContentHandler(
         stepsNormalizer = stepsNormalizer
     ),
@@ -85,7 +86,7 @@ class WriteopiaManager(
     fun mergeRequest(info: Action.Merge, storyState: StoryState): StoryState {
         val movedStories = movementHandler.merge(storyState.stories, info)
         return StoryState(
-            stories = stepsNormalizer(movedStories),
+            stories = stepsNormalizer(movedStories).normalizePositions(),
             lastEdit = LastEdit.Whole
         )
     }
@@ -98,7 +99,10 @@ class WriteopiaManager(
      * @param storyState [StoryState]
      */
     fun moveRequest(move: Action.Move, storyState: StoryState) =
-        storyState.copy(stories = movementHandler.move(storyState.stories, move))
+        storyState.copy(
+            stories = movementHandler.move(storyState.stories, move),
+            lastEdit = LastEdit.Whole
+        )
 
     /**
      * At the moment it is only possible to check items not inside groups. Todo: Fix it!

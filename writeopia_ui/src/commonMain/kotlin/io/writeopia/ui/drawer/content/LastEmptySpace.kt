@@ -37,7 +37,7 @@ class LastEmptySpace(
                     Action.Move(
                         data.storyUnit,
                         positionFrom = data.positionFrom,
-                        positionTo = drawInfo.position - 1
+                        positionTo = drawInfo.position
                     )
                 )
             }
