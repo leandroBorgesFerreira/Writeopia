@@ -7,6 +7,7 @@ import io.writeopia.sdk.manager.ContentHandler
 import io.writeopia.sdk.manager.DocumentTracker
 import io.writeopia.sdk.manager.MovementHandler
 import io.writeopia.sdk.manager.WriteopiaManager
+import io.writeopia.sdk.manager.fixMove
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.action.BackstackAction
 import io.writeopia.sdk.model.document.DocumentInfo
@@ -222,12 +223,14 @@ class WriteopiaStateManager(
             cancelSelection()
         }
 
-        _currentStory.value = writeopiaManager.moveRequest(move, _currentStory.value)
+        val fixedMove = move.fixMove()
+
+        _currentStory.value = writeopiaManager.moveRequest(fixedMove, _currentStory.value)
 
         val backStackAction = BackstackAction.Move(
-            storyStep = move.storyStep,
-            positionFrom = move.positionFrom,
-            positionTo = move.positionTo
+            storyStep = fixedMove.storyStep,
+            positionFrom = fixedMove.positionFrom,
+            positionTo = fixedMove.positionTo
         )
         backStackManager.addAction(backStackAction)
     }
