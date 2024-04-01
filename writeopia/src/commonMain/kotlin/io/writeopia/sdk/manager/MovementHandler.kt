@@ -47,12 +47,8 @@ class MovementHandler {
         val mutable = stories.toMutableMap()
 
         val movedStories = mutable[move.positionFrom]?.let { moveStory ->
-            val muted =
-                mutable.addElementAfterInPosition(moveStory.copy(parentId = null), move.positionTo)
-                    .toMutableMap()
-
             if (move.storyStep.parentId == null) {
-                muted.remove(move.positionFrom)
+                mutable.remove(move.positionFrom)
             } else {
                 val fromGroup = mutable[move.positionFrom]
                 val newList = fromGroup?.steps?.filter { storyUnit ->
@@ -60,11 +56,11 @@ class MovementHandler {
                 }
 
                 if (newList != null) {
-                    muted[move.positionFrom] = fromGroup.copy(steps = newList)
+                    mutable[move.positionFrom] = fromGroup.copy(steps = newList)
                 }
             }
 
-            muted
+            mutable.addElementInPosition(moveStory.copy(parentId = null), move.positionTo)
         } ?: stories
 
         return movedStories
