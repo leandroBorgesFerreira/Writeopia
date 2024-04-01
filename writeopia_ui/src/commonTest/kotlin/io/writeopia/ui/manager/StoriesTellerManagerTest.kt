@@ -168,7 +168,6 @@ class WriteopiaManagerTest {
                     type = StoryTypes.TITLE.type
                 ),
                 position = 0,
-                onlyText = true
             )
         )
 
