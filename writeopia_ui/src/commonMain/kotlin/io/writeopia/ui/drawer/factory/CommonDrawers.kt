@@ -188,7 +188,7 @@ object CommonDrawers {
                 isEmptyErase = isEmptyErase,
                 deleteOnEmptyErase = deleteOnEmptyErase
             ),
-            onTextEdit = manager::changeStoryState,
+            onTextEdit = manager::changeStoryText,
             textStyle = textStyle,
             commandHandler = textCommandHandler,
             onLineBreak = manager::onLineBreak,

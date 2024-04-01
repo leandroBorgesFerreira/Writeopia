@@ -81,7 +81,12 @@ class DesktopTitleDrawer(
                 onValueChange = { value ->
                     val changedText = value.text
                     if (!changedText.contains("\n")) {
-                        onTextEdit(Action.StoryStateChange(step.copy(text = changedText), drawInfo.position))
+                        onTextEdit(
+                            Action.StoryStateChange(
+                                step.copy(text = changedText),
+                                drawInfo.position
+                            )
+                        )
                     }
                 },
                 keyboardOptions = KeyboardOptions(
