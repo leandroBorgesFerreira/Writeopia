@@ -25,16 +25,14 @@ class ContentHandlerTest {
                 stepsNormalizer = normalizer()
             )
 
-        val storyStep =
-            StoryStep(type = StoryTypes.TEXT.type)
-        val newStory = contentHandler.addNewContent(input, storyStep, 2)
+        val storyStep = StoryStep(type = StoryTypes.TEXT.type)
+        val newStory = contentHandler.addNewContent(input, storyStep, 1)
 
         val expected = mapOf(
             0 to StoryStep(type = StoryTypes.IMAGE.type),
-            2 to storyStep,
-            4 to StoryStep(type = StoryTypes.IMAGE.type),
-            6 to StoryStep(type = StoryTypes.IMAGE.type),
-            8 to StoryStep(type = StoryTypes.LAST_SPACE.type),
+            1 to storyStep,
+            2 to StoryStep(type = StoryTypes.IMAGE.type),
+            3 to StoryStep(type = StoryTypes.IMAGE.type),
         ).mapValues { (_, storyStep) ->
             storyStep.type
         }
