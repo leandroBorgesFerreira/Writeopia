@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: adopt
-          java-version: '17'
+          java-version: '21'
       - name: Release build
         run: ./gradlew assemble --scan
       - name: Publish to MavenCentral

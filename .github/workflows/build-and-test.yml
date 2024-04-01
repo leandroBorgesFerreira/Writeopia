@@ -26,7 +26,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: adopt
-          java-version: '17'
+          java-version: '21'
       - name: JVM tests
         run: ./gradlew jvmTest
       - name: upload results
@@ -47,7 +47,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: adopt
-          java-version: '17'
+          java-version: '21'
       - name: Build debug 
         run: ./gradlew assembleDebug testDebug
   backend_build_and_test:
@@ -66,7 +66,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: adopt
-          java-version: '17'
+          java-version: '21'
       - name: Build backend
         run: ./gradlew backend:documents:documents_spring:assemble backend:editor:api_editor:assemble backend:editor:api_editor_spring:assemble :backend:editor:api_editor_spring:test
       - name: upload results

@@ -21,6 +21,6 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: adopt
-          java-version: '17'
+          java-version: '21'
       - name: Build debug and test 
         run: ./gradlew buildDebug test
