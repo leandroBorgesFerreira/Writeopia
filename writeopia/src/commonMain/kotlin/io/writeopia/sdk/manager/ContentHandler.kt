@@ -107,7 +107,7 @@ class ContentHandler(
                 text = secondText,
             )
 
-            val addPosition = lineBreakInfo.position + 2
+            val addPosition = lineBreakInfo.position + 1
 
             //Todo: Cover this in unit tests!
             if (currentStory[addPosition]?.type == StoryTypes.SPACE.type) {
