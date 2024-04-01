@@ -8,7 +8,6 @@ import io.writeopia.sdk.model.action.SingleAction
 import io.writeopia.sdk.model.story.LastEdit
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.models.story.StoryTypes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -244,10 +243,7 @@ internal class PerStateBackstackManager(
 
     private fun revertBulkDelete(storyState: StoryState, action: BackstackAction.BulkDelete) =
         contentHandler.addNewContentBulk(storyState.stories,
-            action.deletedUnits,
-            addInBetween = {
-                StoryStep(type = StoryTypes.SPACE.type)
-            }
+            action.deletedUnits
         ).let { newStories ->
             StoryState(
                 newStories,

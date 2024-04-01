@@ -98,7 +98,10 @@ class WriteopiaManager(
      * @param storyState [StoryState]
      */
     fun moveRequest(move: Action.Move, storyState: StoryState) =
-        storyState.copy(stories = movementHandler.move(storyState.stories, move))
+        storyState.copy(
+            stories = movementHandler.move(storyState.stories, move),
+            lastEdit = LastEdit.Whole
+        )
 
     /**
      * At the moment it is only possible to check items not inside groups. Todo: Fix it!

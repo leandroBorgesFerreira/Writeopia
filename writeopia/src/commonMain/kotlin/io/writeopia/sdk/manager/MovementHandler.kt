@@ -2,8 +2,9 @@ package io.writeopia.sdk.manager
 
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.toEditState
+import io.writeopia.sdk.utils.iterables.addElementAfterInPosition
+import io.writeopia.sdk.utils.iterables.addElementInPosition
 
 /**
  * Class responsible to handle move requests of Stories. This class handles the logic to move a
@@ -46,10 +47,12 @@ class MovementHandler {
         val mutable = stories.toMutableMap()
 
         val movedStories = mutable[move.positionFrom]?.let { moveStory ->
-            mutable[move.positionTo] = moveStory.copy(parentId = null)
+            val muted =
+                mutable.addElementAfterInPosition(moveStory.copy(parentId = null), move.positionTo)
+                    .toMutableMap()
 
             if (move.storyStep.parentId == null) {
-                mutable.remove(move.positionFrom)
+                muted.remove(move.positionFrom)
             } else {
                 val fromGroup = mutable[move.positionFrom]
                 val newList = fromGroup?.steps?.filter { storyUnit ->
@@ -57,11 +60,11 @@ class MovementHandler {
                 }
 
                 if (newList != null) {
-                    mutable[move.positionFrom] = fromGroup.copy(steps = newList)
+                    muted[move.positionFrom] = fromGroup.copy(steps = newList)
                 }
             }
 
-            mutable
+            muted
         } ?: stories
 
         return movedStories
