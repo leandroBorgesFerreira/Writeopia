@@ -36,33 +36,26 @@ fun WriteopiaEditor(
                     content,
                     key = { index, drawStory -> drawStory.key + index },
                     itemContent = { index, drawStory ->
-                        drawers[drawStory.storyStep.type.number]?.Step(
-                            step = drawStory.storyStep,
-                            drawInfo = DrawInfo(
-                                editable = editable,
-                                focusId = storyState.focusId,
-                                position = index,
-                                extraData = mapOf("listSize" to storyState.stories.size),
-                                selectMode = drawStory.isSelected
-                            )
-                        )
+                        buildList {
+                            add(drawers[drawStory.storyStep.type.number])
+                            add(drawers[StoryTypes.SPACE.type.number])
 
-                        val spaceDrawer = if (index != content.lastIndex) {
-                            drawers[StoryTypes.SPACE.type.number]
-                        } else {
-                            drawers[StoryTypes.LAST_SPACE.type.number]
-                        }
-
-                        spaceDrawer?.Step(
-                            step = drawStory.storyStep,
-                            drawInfo = DrawInfo(
-                                editable = editable,
-                                focusId = storyState.focusId,
-                                position = index,
-                                extraData = mapOf("listSize" to storyState.stories.size),
-                                selectMode = drawStory.isSelected
-                            )
-                        )
+                            if (index == content.lastIndex) {
+                                add(drawers[StoryTypes.LAST_SPACE.type.number])
+                            }
+                        }.filterNotNull()
+                            .forEach { drawer ->
+                                drawer.Step(
+                                    step = drawStory.storyStep,
+                                    drawInfo = DrawInfo(
+                                        editable = editable,
+                                        focusId = storyState.focusId,
+                                        position = index,
+                                        extraData = mapOf("listSize" to storyState.stories.size),
+                                        selectMode = drawStory.isSelected
+                                    )
+                                )
+                            }
                     }
                 )
             }
