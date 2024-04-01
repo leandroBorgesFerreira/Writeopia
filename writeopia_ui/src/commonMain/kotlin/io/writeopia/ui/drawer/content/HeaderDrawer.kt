@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.text.font.FontWeight
@@ -41,6 +42,7 @@ class HeaderDrawer(
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         val backgroundColor = step.decoration.backgroundColor
+        val focusRequester = remember { FocusRequester() }
 
         Box(
             modifier = modifier
@@ -62,7 +64,7 @@ class HeaderDrawer(
                 step = step,
                 drawInfo = drawInfo,
                 interactionSource = interactionSource,
-                focusRequester = null,
+                focusRequester = focusRequester,
                 decorationBox = @Composable { innerTextField ->
                     TextFieldDefaults.DecorationBox(
                         value = step.text ?: "",
