@@ -32,7 +32,5 @@ fun <T> Map<Int, T>.addElementInPosition(
     return mutable.associateWithPosition()
 }
 
-fun <T> Map<Int, T>.addElementAfterInPosition(
-    element: T,
-    position: Int
-): Map<Int, T> = addElementInPosition(element, position + 1)
+fun <T> Map<Int, T>.normalizePositions(): Map<Int, T> =
+    values.toMutableList().associateWithPosition()

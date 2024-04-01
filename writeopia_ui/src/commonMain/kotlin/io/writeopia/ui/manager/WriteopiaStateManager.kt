@@ -357,12 +357,8 @@ class WriteopiaStateManager(
 
             _currentStory.value.copy(focusId = lastContentStory.id, stories = newStoriesState)
         } else {
-            val acc = stories.size - 1
-            val newLastMessage =
-                StoryStep(type = StoryTypes.TEXT.type)
-
-            //Todo: It should be possible to customize which steps are add
-            val newStories = stories + mapOf(acc to newLastMessage)
+            val newLastMessage = StoryStep(type = StoryTypes.TEXT.type)
+            val newStories = stories + mapOf(stories.size to newLastMessage)
 
             StoryState(newStories, LastEdit.Whole, newLastMessage.id)
         }

@@ -264,7 +264,7 @@ internal class PerStateBackstackManager(
     private fun BackstackAction.Move.revertMove(): Action.Move =
         Action.Move(
             storyStep = storyStep,
-            positionFrom = positionTo - 1,
-            positionTo = maxOf(positionFrom - 1, 0)
+            positionFrom = positionTo,
+            positionTo = maxOf(positionFrom, 0)
         )
 }

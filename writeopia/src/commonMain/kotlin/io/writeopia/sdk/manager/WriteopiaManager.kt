@@ -12,6 +12,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.toEditState
+import io.writeopia.sdk.utils.iterables.normalizePositions
 import kotlinx.datetime.Clock
 
 class WriteopiaManager(
@@ -85,7 +86,7 @@ class WriteopiaManager(
     fun mergeRequest(info: Action.Merge, storyState: StoryState): StoryState {
         val movedStories = movementHandler.merge(storyState.stories, info)
         return StoryState(
-            stories = stepsNormalizer(movedStories),
+            stories = stepsNormalizer(movedStories).normalizePositions(),
             lastEdit = LastEdit.Whole
         )
     }

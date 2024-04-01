@@ -3,7 +3,6 @@ package io.writeopia.sdk.manager
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.utils.extensions.toEditState
-import io.writeopia.sdk.utils.iterables.addElementAfterInPosition
 import io.writeopia.sdk.utils.iterables.addElementInPosition
 
 /**

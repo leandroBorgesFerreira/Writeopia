@@ -13,6 +13,7 @@ import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.toEditState
 import io.writeopia.sdk.utils.iterables.addElementInPosition
 import io.writeopia.sdk.utils.iterables.mergeSortedMaps
+import io.writeopia.sdk.utils.iterables.normalizePositions
 
 /**
  * Class dedicated to handle adding, deleting or changing StorySteps
@@ -179,15 +180,14 @@ class ContentHandler(
     ): Pair<Map<Int, StoryStep>, Map<Int, StoryStep>> {
         val deleted = mutableMapOf<Int, StoryStep>()
         val newState = stories.toMutableMap()
+
         positions.forEach { position ->
             newState.remove(position)?.let { deletedStory ->
                 deleted[position] = deletedStory
             }
-
-            newState.remove(position + 1)
         }
 
-        return newState to deleted
+        return newState.normalizePositions() to deleted
     }
 }
 

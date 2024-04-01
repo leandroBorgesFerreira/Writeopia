@@ -18,7 +18,7 @@ object EditorCommonTests {
             writeTitle(title)
             checkWithTitle(title)
             addLine()
-            writeText(text, 2)
+            writeText(text, 1)
             checkWithText(text)
         }
     }
@@ -39,7 +39,7 @@ object EditorCommonTests {
         documentsMenuRobot.assertNoteWithTitle(noteTitle)
     }
 
-    fun openNoteWithoutTitle(
+    fun editNoteLineWithoutTitle(
         documentsMenuRobot: DocumentsMenuRobot,
         documentEditRobot: DocumentEditRobot
     ) {
@@ -49,7 +49,7 @@ object EditorCommonTests {
 
         documentEditRobot.run {
             addLine()
-            writeText(text, 2)
+            writeText(text, 1)
             goBack()
         }
 
