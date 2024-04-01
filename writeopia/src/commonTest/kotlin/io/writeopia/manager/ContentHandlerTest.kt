@@ -7,7 +7,6 @@ import io.writeopia.sdk.models.command.CommandInfo
 import io.writeopia.sdk.models.command.CommandTrigger
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.normalization.addinbetween.AddSteps
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
 import io.writeopia.utils.MapStoryData
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
@@ -19,7 +18,7 @@ class ContentHandlerTest {
 
     @Test
     fun `should be possible to add content correctly`() {
-        val input = AddSteps.spaces(skipFirst = true).insert(MapStoryData.imageStepsList())
+        val input = MapStoryData.imageStepsList()
 
         val contentHandler =
             ContentHandler(
@@ -66,7 +65,7 @@ class ContentHandlerTest {
 
     @Test
     fun `when check item command is WRITTEN, the command should be removed for the story text`() {
-        val input = AddSteps.spaces(skipFirst = true).insert(MapStoryData.messagesInLine())
+        val input = MapStoryData.messagesInLine()
         val contentHandler = ContentHandler(stepsNormalizer = normalizer())
         val text = "Lalala"
 
@@ -94,7 +93,7 @@ class ContentHandlerTest {
 
     @Test
     fun `when deleting stories, the focus should move correctly`() {
-        val input = AddSteps.spaces(skipFirst = true).insert(MapStoryData.messagesInLine())
+        val input = MapStoryData.messagesInLine()
         val contentHandler = ContentHandler(stepsNormalizer = normalizer())
         val text = "Lalala"
 

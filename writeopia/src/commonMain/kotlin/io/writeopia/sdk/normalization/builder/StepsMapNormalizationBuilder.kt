@@ -2,7 +2,6 @@ package io.writeopia.sdk.normalization.builder
 
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.normalization.addinbetween.AddSteps
 import io.writeopia.sdk.normalization.merge.MergeLogic
 import io.writeopia.sdk.normalization.merge.MergeNormalization
 import io.writeopia.sdk.normalization.merge.StepsMergerCoordinator
@@ -57,14 +56,15 @@ class StepsMapNormalizationBuilder {
         }
 
         this.mergeNormalization = mergeNormalization::mergeSteps
-        normalizations.add(AddSteps.spaces(skipFirst = true)::insert)
     }
 
     private fun build(): UnitsNormalizationMap = { units ->
         val merged = mergeNormalization!!.invoke(units)
-        val reduced = reduceNormalizations(normalizations)
 
-        reduced(merged)
+        normalizations.takeIf { it.isNotEmpty() }
+            ?.let(::reduceNormalizations)
+            ?.invoke(merged)
+            ?: merged
     }
 
     private fun reduceNormalizations(
