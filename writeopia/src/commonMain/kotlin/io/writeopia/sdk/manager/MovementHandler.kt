@@ -59,7 +59,9 @@ class MovementHandler {
                 }
             }
 
-            mutable.addElementInPosition(moveStory.copy(parentId = null), move.positionTo)
+            val offset = if (move.positionTo < move.positionFrom) 1 else 0
+
+            mutable.addElementInPosition(moveStory.copy(parentId = null), move.positionTo + offset)
         } ?: stories
 
         return movedStories
