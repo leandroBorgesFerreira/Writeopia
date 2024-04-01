@@ -12,7 +12,6 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.toEditState
 import io.writeopia.sdk.utils.iterables.MapOperations
-import io.writeopia.sdk.utils.ui.StoryStepFactory
 
 /**
  * Class dedicated to handle adding, deleting or changing StorySteps
@@ -89,7 +88,6 @@ class ContentHandler(
         MapOperations.addElementInPosition(
             currentStory,
             newStoryUnit,
-            StoryStepFactory.space(),
             position
         )
 

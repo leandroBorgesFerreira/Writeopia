@@ -24,12 +24,10 @@ object MapOperations {
     fun <T> addElementInPosition(
         originalMap: Map<Int, T>,
         element: T,
-        addInBetween: T,
         position: Int
     ): Map<Int, T> {
         val mutable = originalMap.values.toMutableList()
 
-        mutable.add(min(position, mutable.lastIndex + 1), addInBetween)
         mutable.add(min(position, mutable.lastIndex + 1), element)
 
         return mutable.associateWithPosition()

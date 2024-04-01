@@ -10,7 +10,7 @@ import io.writeopia.sdk.utils.extensions.toEditState
  * Story to another position, when a Story is grouped together with another one and when a
  * Story is separated from a group.
  */
-class MovementHandler(private val stepsNormalizer: UnitsNormalizationMap) {
+class MovementHandler {
 
     fun merge(stories: Map<Int, StoryStep>, info: Action.Merge): Map<Int, List<StoryStep>> {
         val sender = info.sender
@@ -44,9 +44,6 @@ class MovementHandler(private val stepsNormalizer: UnitsNormalizationMap) {
 
     fun move(stories: Map<Int, StoryStep>, move: Action.Move): Map<Int, StoryStep> {
         val mutable = stories.toMutableMap()
-        if (mutable[move.positionTo]?.type?.name != "space") throw IllegalStateException(
-            "You can only move a story to an empty space"
-        )
 
         val movedStories = mutable[move.positionFrom]?.let { moveStory ->
             mutable[move.positionTo] = moveStory.copy(parentId = null)
@@ -67,6 +64,6 @@ class MovementHandler(private val stepsNormalizer: UnitsNormalizationMap) {
             mutable
         } ?: stories
 
-        return stepsNormalizer(movedStories.toEditState())
+        return movedStories
     }
 }

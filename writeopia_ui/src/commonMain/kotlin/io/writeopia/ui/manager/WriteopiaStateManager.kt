@@ -357,16 +357,12 @@ class WriteopiaStateManager(
 
             _currentStory.value.copy(focusId = lastContentStory.id, stories = newStoriesState)
         } else {
-            var acc = stories.size - 1
+            val acc = stories.size - 1
             val newLastMessage =
                 StoryStep(type = StoryTypes.TEXT.type)
 
             //Todo: It should be possible to customize which steps are add
-            val newStories = stories + mapOf(
-                acc++ to newLastMessage,
-                acc++ to StoryStep(type = StoryTypes.SPACE.type),
-                acc to StoryStep(type = StoryTypes.LAST_SPACE.type),
-            )
+            val newStories = stories + mapOf(acc to newLastMessage)
 
             StoryState(newStories, LastEdit.Whole, newLastMessage.id)
         }
@@ -460,7 +456,7 @@ class WriteopiaStateManager(
                 StepsMapNormalizationBuilder.reduceNormalizations {
                     defaultNormalizers()
                 },
-            movementHandler: MovementHandler = MovementHandler(stepsNormalizer),
+            movementHandler: MovementHandler = MovementHandler(),
             contentHandler: ContentHandler = ContentHandler(
                 stepsNormalizer = stepsNormalizer
             ),

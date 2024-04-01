@@ -10,7 +10,6 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
 import io.writeopia.utils.MapStoryData
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
-import io.writeopia.sdk.utils.ui.StoryStepFactory
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -32,13 +31,9 @@ class ContentHandlerTest {
 
         val expected = mapOf(
             0 to StoryStep(type = StoryTypes.IMAGE.type),
-            1 to StoryStepFactory.space(),
             2 to storyStep,
-            3 to StoryStepFactory.space(),
             4 to StoryStep(type = StoryTypes.IMAGE.type),
-            5 to StoryStepFactory.space(),
             6 to StoryStep(type = StoryTypes.IMAGE.type),
-            7 to StoryStepFactory.space(),
             8 to StoryStep(type = StoryTypes.LAST_SPACE.type),
         ).mapValues { (_, storyStep) ->
             storyStep.type

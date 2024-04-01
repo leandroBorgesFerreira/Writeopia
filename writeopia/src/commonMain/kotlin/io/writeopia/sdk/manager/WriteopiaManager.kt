@@ -19,7 +19,7 @@ class WriteopiaManager(
         StepsMapNormalizationBuilder.reduceNormalizations {
             defaultNormalizers()
         },
-    private val movementHandler: MovementHandler = MovementHandler(stepsNormalizer),
+    private val movementHandler: MovementHandler = MovementHandler(),
     private val contentHandler: ContentHandler = ContentHandler(
         stepsNormalizer = stepsNormalizer
     ),
