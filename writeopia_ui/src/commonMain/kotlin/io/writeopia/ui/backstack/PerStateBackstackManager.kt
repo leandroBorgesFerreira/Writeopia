@@ -16,8 +16,8 @@ private const val DEFAULT_TEXT_EDIT_LIMIT = 20
 
 /**
  * This is the default implementation of [BackstackManager]. It checks the previous or next state
- * and react accordingly. This class doesn't perform and state change and instead delegates this
- * function to its parameters. The oly responsibility of this class is to coordinate the state of
+ * and react accordingly. This class doesn't perform a state change and instead delegates this
+ * function to its dependencies. The only responsibility of this class is to coordinate the state of
  * the backstack.
  *
  * @param textEditLimit The limit of the text that should be used to divide two backstack calls.
@@ -189,7 +189,11 @@ internal class PerStateBackstackManager(
         backStack.add(action)
     }
 
-    private fun revertStoryState(state: StoryState, action: SingleAction, focusId: String?): StoryState {
+    private fun revertStoryState(
+        state: StoryState,
+        action: SingleAction,
+        focusId: String?
+    ): StoryState {
         val stories = state.stories.toMutableMap()
         val position = action.position
         val storyStep = action.storyStep

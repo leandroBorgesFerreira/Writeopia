@@ -99,7 +99,7 @@ fun headerDrawer(
         drawer = {
             TextDrawer(
                 modifier = Modifier.align(Alignment.BottomStart),
-                onTextEdit = manager::changeStoryState,
+                onTextEdit = manager::changeStoryText,
                 onKeyEvent = onKeyEvent,
                 onLineBreak = manager::onLineBreak,
                 textStyle = {

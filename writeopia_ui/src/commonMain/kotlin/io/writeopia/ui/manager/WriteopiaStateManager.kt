@@ -52,6 +52,8 @@ class WriteopiaStateManager(
     private val writeopiaManager: WriteopiaManager
 ) : BackstackHandler, BackstackInform by backStackManager {
 
+    private var lastStateChange: Action.StoryStateChange? = null
+
     private val initialContent: Map<Int, StoryStep> =
         mapOf(0 to StoryStep(text = "", type = StoryTypes.TITLE.type))
 
@@ -236,20 +238,48 @@ class WriteopiaStateManager(
      * @param stateChange [Action.StoryStateChange]
      */
     fun changeStoryState(stateChange: Action.StoryStateChange) {
+        val backstackAction = _currentStory.value.stories[stateChange.position]?.let { oldStory ->
+            BackstackAction.StoryStateChange(
+                storyStep = oldStory,
+                position = stateChange.position
+            )
+        }
+
+        changeStoryStateAndTrackIt(stateChange, backstackAction)
+    }
+
+    /**
+     * At the moment it is only possible to check items not inside groups. Todo: Fix it!
+     *
+     * @param stateChange [Action.StoryStateChange]
+     */
+    fun changeStoryText(stateChange: Action.StoryStateChange) {
+        val backstackAction = _currentStory.value.stories[stateChange.position]?.let { oldStory ->
+            BackstackAction.StoryTextChange(
+                storyStep = oldStory,
+                position = stateChange.position
+            )
+        }
+
+        changeStoryStateAndTrackIt(stateChange, backstackAction)
+    }
+
+    private fun changeStoryStateAndTrackIt(
+        stateChange: Action.StoryStateChange,
+        backstackAction: BackstackAction?
+    ) {
+        if (lastStateChange == stateChange) return
+        lastStateChange = stateChange
+
         if (isOnSelection) {
             cancelSelection()
         }
 
-        val oldStory = _currentStory.value.stories[stateChange.position] ?: return
-
         writeopiaManager.changeStoryState(stateChange, _currentStory.value)?.let { state ->
             _currentStory.value = state
-            backStackManager.addAction(
-                BackstackAction.StoryStateChange(
-                    storyStep = oldStory,
-                    position = stateChange.position
-                )
-            )
+            backstackAction?.let { action ->
+                backStackManager.addAction(action)
+            }
         }
     }
 

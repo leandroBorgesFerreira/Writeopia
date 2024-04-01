@@ -90,7 +90,7 @@ object DefaultDrawersJs {
                     keyEvent.nativeKeyEvent.key == SkikoKey.KEY_BACKSPACE && inputText.selection.start == 0
                 },
             ),
-            onTextEdit = manager::changeStoryState,
+            onTextEdit = manager::changeStoryText,
             focusRequester = focusRequester,
             commandHandler = TextCommandHandler.defaultCommands(manager),
         )
