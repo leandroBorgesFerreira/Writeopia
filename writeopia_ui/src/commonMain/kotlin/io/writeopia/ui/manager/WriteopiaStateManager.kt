@@ -426,7 +426,7 @@ class WriteopiaStateManager(
             _positionsOnEdit.value = emptySet()
 
             _currentStory.value =
-                _currentStory.value.copy(stories = newStories)
+                _currentStory.value.copy(stories = newStories, lastEdit = LastEdit.Whole)
         }
     }
 
