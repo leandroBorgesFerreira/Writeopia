@@ -1,5 +1,6 @@
 plugins {
     kotlin("multiplatform")
+    alias(libs.plugins.dokka)
 }
 
 //rootProject.extra.apply {

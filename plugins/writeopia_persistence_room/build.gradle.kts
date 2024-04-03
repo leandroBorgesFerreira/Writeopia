@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
     id("com.google.devtools.ksp")
+    alias(libs.plugins.dokka)
 }
-
 
 rootProject.extra.apply {
     set("PUBLISH_GROUP_ID", "io.writeopia")

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlinSerialization)
     kotlin("multiplatform")
+    alias(libs.plugins.dokka)
 }
 
 //rootProject.extra.apply {

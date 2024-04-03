@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform")
     alias(libs.plugins.sqldelight)
+    alias(libs.plugins.dokka)
 }
 
 //rootProject.extra.apply {

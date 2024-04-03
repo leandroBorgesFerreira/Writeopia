@@ -3,6 +3,7 @@ plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.dokka)
 //    alias(libs.plugins.nativeCocoapods)
 }
 
