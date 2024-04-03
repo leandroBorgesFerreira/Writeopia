@@ -136,7 +136,7 @@ class NoteEditorKmpViewModel(
     override fun loadDocument(documentId: String) {
         if (writeopiaManager.isInitialized()) return
 
-        coroutineScope.launch(Dispatchers.IO) {
+        coroutineScope.launch(Dispatchers.Default) {
             val document = documentRepository.loadDocumentById(documentId)
 
             if (document != null) {
@@ -210,7 +210,7 @@ class NoteEditorKmpViewModel(
     }
 
     private fun removeNoteIfEmpty(onComplete: () -> Unit) {
-        coroutineScope.launch(Dispatchers.IO) {
+        coroutineScope.launch(Dispatchers.Default) {
             val document = writeopiaManager.currentDocument.stateIn(this).value
 
             if (document != null && story.value.stories.noContent()) {

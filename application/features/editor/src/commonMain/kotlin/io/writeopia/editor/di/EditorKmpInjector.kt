@@ -27,7 +27,7 @@ class EditorKmpInjector(
         writeopiaManager: WriteopiaManager = provideWriteopiaManager()
     ) = WriteopiaStateManager.create(
         userId = { authManager.getUser().id },
-        dispatcher = Dispatchers.IO,
+        dispatcher = Dispatchers.Default,
         writeopiaManager = writeopiaManager
     )
 

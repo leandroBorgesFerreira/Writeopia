@@ -6,9 +6,10 @@ import org.w3c.dom.Worker
 
 actual class DriverFactory {
     actual fun createDriver(url: String): SqlDriver =
-        WebWorkerDriver(
-            Worker(
-                js("""new URL("@cashapp/sqldelight-sqljs-worker/sqljs.worker.js", import.meta.url)""")
-            )
-        )
+        throw IllegalStateException()
+//        WebWorkerDriver(
+//            Worker(
+//                js("""new URL("@cashapp/sqldelight-sqljs-worker/sqljs.worker.js", import.meta.url)""")
+//            )
+//        )
     }

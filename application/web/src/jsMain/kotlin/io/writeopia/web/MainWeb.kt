@@ -2,17 +2,22 @@ package io.writeopia.web
 
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.CanvasBasedWindow
+import io.writeopia.note_menu.di.NotesConfigurationInjector
 import io.writeopia.notes.desktop.components.App
-import io.writeopia.sqldelight.database.createDatabase
-import io.writeopia.sqldelight.database.driver.DriverFactory
+import io.writeopia.sdk.persistence.core.di.RepositoryInjector
+import io.writeopia.ui.drawer.factory.DefaultDrawersJs
 import org.jetbrains.skiko.wasm.onWasmReady
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     onWasmReady {
         CanvasBasedWindow("Writeopia") {
-            val database = createDatabase(DriverFactory(), url = "jdbc:sqlite:writeopia.db")
-            App(database)
+//            val database = createDatabase(DriverFactory(), url = "jdbc:sqlite:writeopia.db")
+            App(
+                notesConfigurationInjector = NotesConfigurationInjector(database),
+                repositoryInjection = RepositoryInjector.noop(),
+                DefaultDrawersJs
+            )
         }
     }
 }

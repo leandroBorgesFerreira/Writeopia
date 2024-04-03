@@ -10,11 +10,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import io.writeopia.editor.ui.TextEditor
 import io.writeopia.editor.viewmodel.NoteEditorKmpViewModel
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.drawer.factory.DrawersFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.util.UUID
 
 @Composable
 fun AppTextEditor(
@@ -34,7 +34,7 @@ fun AppTextEditor(
 
     viewModel.initCoroutine(coroutine)
     if (loadNoteId == null) {
-        viewModel.createNewDocument(UUID.randomUUID().toString(), "")
+        viewModel.createNewDocument(GenerateId.generate(), "")
     } else {
         viewModel.loadDocument(loadNoteId)
     }

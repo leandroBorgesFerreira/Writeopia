@@ -19,6 +19,9 @@ kotlin {
 
                 implementation(project(":application:core:persistence_sqldelight"))
                 implementation(project(":application:common_flows:wide_screen_common"))
+                implementation(project(":application:features:note_menu"))
+                implementation(project(":writeopia_ui"))
+                implementation(project(":plugins:writeopia_persistence_core"))
             }
         }
     }

@@ -21,6 +21,8 @@ kotlin {
 
                 implementation(project(":application:core:persistence_sqldelight"))
                 implementation(project(":application:common_flows:wide_screen_common"))
+                implementation(project(":application:features:note_menu"))
+                implementation(project(":writeopia_ui"))
             }
         }
     }
@@ -28,7 +30,7 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "io.writeopia.desktop.MainKt"
+        mainClass = "io.writeopia.desktop.MainDesktopKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)

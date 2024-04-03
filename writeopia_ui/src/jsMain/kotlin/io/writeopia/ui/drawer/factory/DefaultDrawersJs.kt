@@ -27,7 +27,19 @@ private const val LARGE_START_PADDING = 26
 private const val MEDIUM_START_PADDING = 12
 private const val SMALL_START_PADDING = 4
 
-object DefaultDrawersJs {
+object DefaultDrawersJs : DrawersFactory{
+
+    @Composable
+    override fun create(
+        manager: WriteopiaStateManager,
+        defaultBorder: Shape,
+        editable: Boolean,
+        groupsBackgroundColor: Color,
+        onHeaderClick: () -> Unit,
+        textCommandHandler: TextCommandHandler
+    ): Map<Int, StoryStepDrawer> {
+        return emptyMap()
+    }
 
     @Composable
     fun create(
