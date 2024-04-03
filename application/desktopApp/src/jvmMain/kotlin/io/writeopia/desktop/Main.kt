@@ -1,4 +1,4 @@
-package io.writeopia.notes.desktop
+package io.writeopia.desktop
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -18,6 +18,3 @@ fun main() = application {
         App(database)
     }
 }
-
-
-
