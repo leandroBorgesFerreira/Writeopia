@@ -10,6 +10,7 @@ kotlin {
     androidTarget()
     jvm{}
 
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -54,7 +55,7 @@ kotlin {
                 implementation(libs.viewmodel.compose)
                 implementation(libs.navigation.compose)
 
-                implementation(platform("androidx.compose:compose-bom:2024.03.00"))
+                implementation(project.dependencies.platform(libs.androidx.compose.bom))
             }
         }
 

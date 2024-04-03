@@ -8,6 +8,7 @@ kotlin {
     androidTarget()
     jvm{}
 
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -37,7 +38,7 @@ kotlin {
                 implementation(libs.navigation.compose)
                 implementation(libs.runtime.compose)
 
-                implementation(platform("androidx.compose:compose-bom:2023.09.02"))
+                implementation(project.dependencies.platform(libs.androidx.compose.bom))
             }
         }
 
