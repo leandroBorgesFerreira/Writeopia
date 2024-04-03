@@ -13,7 +13,7 @@ class DocumentSqlDao(
     private val storyStepQueries: StoryStepEntityQueries,
 ) {
 
-    fun insertDocumentWithContent(document: Document) {
+    suspend fun insertDocumentWithContent(document: Document) {
         document.content.values.forEachIndexed { i, storyStep ->
             insertStoryStep(storyStep, i.toLong(), document.id)
         }
@@ -21,7 +21,7 @@ class DocumentSqlDao(
         insertDocument(document)
     }
 
-    fun insertDocument(document: Document) {
+    suspend fun insertDocument(document: Document) {
         documentQueries.insert(
             id = document.id,
             title = document.title,
@@ -31,7 +31,7 @@ class DocumentSqlDao(
         )
     }
 
-    fun insertStoryStep(storyStep: StoryStep, position: Long, documentId: String) {
+    suspend fun insertStoryStep(storyStep: StoryStep, position: Long, documentId: String) {
         storyStep.run {
             storyStepQueries.insert(
                 id = id,
@@ -51,7 +51,7 @@ class DocumentSqlDao(
         }
     }
 
-    fun insertDocuments(vararg documents: Document) {
+    suspend fun insertDocuments(vararg documents: Document) {
         documents.forEach { document ->
             insertDocumentWithContent(document)
         }
@@ -129,11 +129,11 @@ class DocumentSqlDao(
             }
     }
 
-    fun deleteDocumentById(document: String) {
+    suspend fun deleteDocumentById(document: String) {
         documentQueries.delete(document)
     }
 
-    fun deleteDocumentByIds(ids: Set<String>) {
+    suspend fun deleteDocumentByIds(ids: Set<String>) {
         documentQueries.deleteByIds(ids)
     }
 
@@ -174,7 +174,7 @@ class DocumentSqlDao(
             }
             .firstOrNull()
 
-    fun deleteDocumentsByUserId(userId: String) {
+    suspend fun deleteDocumentsByUserId(userId: String) {
         documentQueries.deleteByUserId(userId)
     }
 }
