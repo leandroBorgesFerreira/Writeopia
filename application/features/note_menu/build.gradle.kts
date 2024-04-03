@@ -28,7 +28,6 @@ kotlin {
                 implementation(project(":application:core:persistence_bridge"))
                 implementation(project(":application:features:account"))
 
-                implementation(libs.compose.shimmer)
                 implementation(libs.kotlinx.datetime)
 
                 implementation(compose.runtime)
@@ -47,6 +46,8 @@ kotlin {
                 implementation(libs.coil.compose)
                 implementation(libs.viewmodel.compose)
                 implementation(libs.navigation.compose)
+
+                implementation(libs.compose.shimmer)
 
                 implementation(project.dependencies.platform(libs.androidx.compose.bom))
             }
