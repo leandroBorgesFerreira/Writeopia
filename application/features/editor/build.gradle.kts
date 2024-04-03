@@ -8,6 +8,9 @@ plugins {
 kotlin {
     androidTarget()
     jvm()
+    js(IR) {
+        browser()
+    }
 
     sourceSets {
         val commonMain by getting {

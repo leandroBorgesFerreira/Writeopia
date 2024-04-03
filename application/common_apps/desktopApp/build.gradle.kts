@@ -26,6 +26,12 @@ kotlin {
 
                 implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.client.core)
+
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.materialIconsExtended)
+                implementation(compose.desktop.currentOs)
             }
         }
 
@@ -38,7 +44,7 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation(compose.desktop.currentOs)
+
             }
         }
     }

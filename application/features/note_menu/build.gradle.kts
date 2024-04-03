@@ -8,8 +8,10 @@ plugins {
 
 kotlin {
     androidTarget()
-    jvm{}
-
+    jvm()
+    js(IR) {
+        browser()
+    }
 
     sourceSets {
         val commonMain by getting {
@@ -38,14 +40,6 @@ kotlin {
             }
         }
 
-        val commonTest by getting {
-            dependencies {
-                implementation(libs.kotlin.test)
-                implementation(libs.kotlinx.coroutines.test)
-                implementation(libs.mockk)
-            }
-        }
-
         val androidMain by getting {
             dependencies {
                 implementation(libs.appCompat)
@@ -61,6 +55,14 @@ kotlin {
         val jvmMain by getting {
             dependencies {
 
+            }
+        }
+
+        val jvmTest by getting {
+            dependencies {
+                implementation(libs.kotlin.test)
+                implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.mockk)
             }
         }
     }
