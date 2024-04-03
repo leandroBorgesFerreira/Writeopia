@@ -10,11 +10,13 @@ import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key.Companion.Window
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.CanvasBasedWindow
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.ui.drawer.factory.DefaultDrawersJs
 import io.writeopia.ui.manager.WriteopiaStateManager
@@ -26,8 +28,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.skiko.wasm.onWasmReady
 
+@OptIn(ExperimentalComposeUiApi::class)
 fun main() {
-//    onWasmReady {
+    onWasmReady {
+        CanvasBasedWindow("Writeopia") {
+            WriteopiaApp()
+        }
+    }
 //        Window("Compose Rich Editor") {
 //            val writeopiaManager = WriteopiaStateManager.create(
 //                dispatcher = Dispatchers.Main,
@@ -82,7 +89,12 @@ fun main() {
 }
 
 @Composable
-fun CreateTextEditor(writeopiaManager: WriteopiaStateManager) {
+private fun WriteopiaApp() {
+    Text("Oi!")
+}
+
+@Composable
+private fun CreateTextEditor(writeopiaManager: WriteopiaStateManager) {
     val listState: LazyListState = rememberLazyListState()
     val position by writeopiaManager.scrollToPosition.collectAsState()
 
@@ -100,7 +112,7 @@ fun CreateTextEditor(writeopiaManager: WriteopiaStateManager) {
 }
 
 @Composable
-fun TextEditor(
+private fun TextEditor(
     lazyListState: LazyListState,
     drawState: Flow<DrawState>,
     drawers: Map<Int, StoryStepDrawer>
