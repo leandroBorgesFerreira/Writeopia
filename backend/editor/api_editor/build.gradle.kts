@@ -36,6 +36,7 @@ sqldelight {
             packageName.set("io.writeopia.api")
             dialect("app.cash.sqldelight:postgresql-dialect:2.0.0")
             dependency(project(":plugins:writeopia_persistence_sqldelight"))
+            generateAsync.set(true)
         }
     }
 }

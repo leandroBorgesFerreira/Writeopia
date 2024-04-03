@@ -50,6 +50,7 @@ sqldelight {
             packageName.set("io.writeopia.sql")
             dialect("app.cash.sqldelight:sqlite-3-30-dialect:2.0.0")
             dependency(project(":plugins:writeopia_persistence_sqldelight"))
+            generateAsync.set(true)
         }
     }
 }

@@ -1,5 +1,6 @@
 package io.writeopia.sdk.persistence.sqldelight.dao
 
+import app.cash.sqldelight.async.coroutines.awaitAsList
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
@@ -56,8 +57,8 @@ class DocumentSqlDao(
         }
     }
 
-    fun loadDocumentWithContentByIds(id: List<String>): List<Document> =
-        documentQueries.selectWithContentByIds(id).executeAsList()
+    suspend fun loadDocumentWithContentByIds(id: List<String>): List<Document> =
+        documentQueries.selectWithContentByIds(id).awaitAsList()
             .groupBy { it.id }
             .mapNotNull { (documentId, content) ->
                 content.firstOrNull()?.let { document ->
@@ -91,9 +92,9 @@ class DocumentSqlDao(
                 }
             }
 
-    fun loadDocumentsWithContentByUserId(userId: String): List<Document> {
+    suspend fun loadDocumentsWithContentByUserId(userId: String): List<Document> {
         return documentQueries.selectWithContentByUserId(userId)
-            .executeAsList()
+            .awaitAsList()
             .groupBy { it.id }
             .mapNotNull { (documentId, content) ->
                 content.firstOrNull()?.let { document ->
@@ -136,8 +137,9 @@ class DocumentSqlDao(
         documentQueries.deleteByIds(ids)
     }
 
-    fun loadDocumentWithContentById(documentId: String): Document? =
-        documentQueries.selectWithContentById(documentId).executeAsList()
+    suspend fun loadDocumentWithContentById(documentId: String): Document? =
+        documentQueries.selectWithContentById(documentId)
+            .awaitAsList()
             .groupBy { it.id }
             .mapNotNull { (documentId, content) ->
                 content.firstOrNull()?.let { document ->

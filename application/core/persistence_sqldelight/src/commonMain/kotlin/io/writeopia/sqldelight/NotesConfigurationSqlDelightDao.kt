@@ -1,12 +1,14 @@
 package io.writeopia.sqldelight
 
+import app.cash.sqldelight.async.coroutines.awaitAsOneOrNull
 import io.writeopia.app.sql.NotesConfiguration
 import io.writeopia.app.sql.NotesConfigurationEntityQueries
 import io.writeopia.sql.WriteopiaDb
 
 class NotesConfigurationSqlDelightDao(database: WriteopiaDb) {
 
-    private val notesConfigurationQueries: NotesConfigurationEntityQueries = database.notesConfigurationEntityQueries
+    private val notesConfigurationQueries: NotesConfigurationEntityQueries =
+        database.notesConfigurationEntityQueries
 
     fun saveConfiguration(notesConfiguration: NotesConfiguration) {
         notesConfiguration.run {
@@ -14,7 +16,7 @@ class NotesConfigurationSqlDelightDao(database: WriteopiaDb) {
         }
     }
 
-    fun getConfigurationByUserId(userId: String): NotesConfiguration? =
-        notesConfigurationQueries.selectConfigurationByUserId(userId).executeAsOneOrNull()
+    suspend fun getConfigurationByUserId(userId: String): NotesConfiguration? =
+        notesConfigurationQueries.selectConfigurationByUserId(userId).awaitAsOneOrNull()
 
 }
