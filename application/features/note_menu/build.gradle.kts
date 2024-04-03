@@ -27,7 +27,6 @@ kotlin {
                 implementation(project(":application:features:account"))
 
                 implementation(libs.compose.shimmer)
-
                 implementation(libs.kotlinx.datetime)
 
                 implementation(compose.runtime)
