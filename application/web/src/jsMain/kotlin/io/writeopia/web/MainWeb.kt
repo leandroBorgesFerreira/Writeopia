@@ -9,7 +9,7 @@ import androidx.compose.ui.window.CanvasBasedWindow
 import io.writeopia.note_menu.di.NotesConfigurationInjector
 import io.writeopia.notes.desktop.components.App
 import io.writeopia.sqldelight.database.DatabaseCreation
-import io.writeopia.sqldelight.database.createDatabase
+import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.drawer.factory.DefaultDrawersJs
@@ -19,7 +19,7 @@ import org.jetbrains.skiko.wasm.onWasmReady
 fun main() {
     onWasmReady {
         CanvasBasedWindow("Writeopia") {
-            val databaseStateFlow = createDatabase(
+            val databaseStateFlow = DatabaseFactory.createDatabase(
                 DriverFactory(),
                 url = "",
                 rememberCoroutineScope()

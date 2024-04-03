@@ -9,20 +9,25 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
-fun createDatabase(
-    driverFactory: DriverFactory,
-    url: String,
-    coroutineScope: CoroutineScope
-): StateFlow<DatabaseCreation> {
-    println("Criando db")
-    val databaseState = MutableStateFlow<DatabaseCreation>(DatabaseCreation.Loading)
+object DatabaseFactory {
+    private var created = false
+    private val databaseState = MutableStateFlow<DatabaseCreation>(DatabaseCreation.Loading)
 
-    coroutineScope.launch {
-        val driver = driverFactory.createDriver(url)
-        databaseState.value = DatabaseCreation.Complete(WriteopiaDb(driver))
+    fun createDatabase(
+        driverFactory: DriverFactory,
+        url: String,
+        coroutineScope: CoroutineScope
+    ): StateFlow<DatabaseCreation> {
+        if (!created) {
+            created = true
+            coroutineScope.launch {
+                val driver = driverFactory.createDriver(url)
+                databaseState.value = DatabaseCreation.Complete(WriteopiaDb(driver))
+            }
+        }
+
+        return databaseState.asStateFlow()
     }
-
-    return databaseState.asStateFlow()
 }
 
 sealed interface DatabaseCreation {

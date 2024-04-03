@@ -10,16 +10,16 @@ import androidx.compose.ui.window.rememberWindowState
 import io.writeopia.note_menu.di.NotesConfigurationInjector
 import io.writeopia.notes.desktop.components.App
 import io.writeopia.sqldelight.database.DatabaseCreation
-import io.writeopia.sqldelight.database.createDatabase
+import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.drawer.factory.DefaultDrawersDesktop
 
 fun main() = application {
-    val databaseStateFlow = createDatabase(
+    val databaseStateFlow = DatabaseFactory.createDatabase(
         DriverFactory(),
 //        url = "jdbc:sqlite:", //In Memory
-            url = "jdbc:sqlite:writeopia.db",
+        url = "jdbc:sqlite:writeopia.db",
         rememberCoroutineScope()
     )
 
