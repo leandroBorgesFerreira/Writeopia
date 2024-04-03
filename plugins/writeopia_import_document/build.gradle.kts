@@ -27,3 +27,7 @@ kotlin {
         }
     }
 }
+
+tasks.dokkaHtmlPartial {
+    moduleName = "plugin:writeopia_import"
+}

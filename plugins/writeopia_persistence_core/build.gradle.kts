@@ -38,3 +38,6 @@ kotlin {
     }
 }
 
+tasks.dokkaHtmlPartial {
+    moduleName = "plugin:writeopia_persistence_core"
+}
