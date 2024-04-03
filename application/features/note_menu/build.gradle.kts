@@ -54,7 +54,7 @@ kotlin {
                 implementation(libs.viewmodel.compose)
                 implementation(libs.navigation.compose)
 
-                implementation(platform("androidx.compose:compose-bom:2023.09.02"))
+                implementation(platform("androidx.compose:compose-bom:2024.03.00"))
             }
         }
 

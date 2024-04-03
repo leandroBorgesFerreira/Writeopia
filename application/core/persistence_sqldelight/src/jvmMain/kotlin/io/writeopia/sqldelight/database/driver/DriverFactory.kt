@@ -8,6 +8,5 @@ import java.util.Properties
 actual class DriverFactory {
     actual fun createDriver(
         url: String,
-        properties: Properties,
-    ): SqlDriver = JdbcSqliteDriver(url, properties, WriteopiaDb.Schema)
+    ): SqlDriver = JdbcSqliteDriver(url, Properties(), WriteopiaDb.Schema)
 }

@@ -6,9 +6,10 @@ plugins {
 kotlin {
     jvm {}
 
-//    js(IR) {
-//        browser()
-//    }
+    js(IR) {
+        browser()
+        binaries.library()
+    }
 
     sourceSets {
         val commonMain by getting {
@@ -22,6 +23,13 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(libs.sqldelight.jvm)
+            }
+        }
+
+        val jsMain by getting {
+            dependencies {
+                implementation("app.cash.sqldelight:web-worker-driver:2.0.0")
+                implementation(devNpm("copy-webpack-plugin", "9.1.0"))
             }
         }
 
