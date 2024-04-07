@@ -110,6 +110,7 @@ object CommonDrawers {
                 messageDrawer(
                     manager,
                     textCommandHandler = TextCommandHandler.noCommands(),
+                    textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
                     eventListener = eventListener,
                     emptyErase = EmptyErase.CHANGE_TYPE,
                 )
