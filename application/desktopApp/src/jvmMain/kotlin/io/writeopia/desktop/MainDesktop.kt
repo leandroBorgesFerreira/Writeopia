@@ -9,6 +9,7 @@ import androidx.compose.ui.input.key.isAltPressed
 import androidx.compose.ui.input.key.isCtrlPressed
 import androidx.compose.ui.input.key.isMetaPressed
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
@@ -45,15 +46,16 @@ fun main() = application {
                     repositoryInjection = injector,
                     DefaultDrawersDesktop,
                     modifier = { writeopiaStateManager ->
-                        Modifier.onKeyEvent { keyEvent ->
-                            if (keyEvent.isMetaPressed &&
-                                keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_Z
-                            ) {
-                                println("writeopiaStateManager.undo()")
-                                writeopiaStateManager.undo()
-                            }
+                        Modifier.onPreviewKeyEvent { keyEvent ->
+                            val shouldHandle = keyEvent.isMetaPressed &&
+                                    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_Z
 
-                            true
+                            if (shouldHandle) {
+                                writeopiaStateManager.undo()
+                                true
+                            } else {
+                                false
+                            }
                         }
                     }
                 )
