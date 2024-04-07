@@ -49,7 +49,6 @@ object CommonDrawers {
         onHeaderClick: () -> Unit = {},
         textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager),
         dragIconWidth: Dp = DRAG_ICON_WIDTH.dp,
-        //Todo: Remove isEmptyErase
         eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean
     ): Map<Int, StoryStepDrawer> {
         val textBoxDrawer = swipeTextDrawer(

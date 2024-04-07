@@ -85,8 +85,6 @@ class TextDrawer(
                 val text = value.text
                 val newStep = step.copy(text = text)
 
-                println("onValueChange. text: $text")
-
                 inputText = if (text.contains("\n") && !allowLineBreaks) {
                     onLineBreak(Action.LineBreak(newStep, drawInfo.position))
 

@@ -11,42 +11,40 @@ import kotlin.test.Test
 
 class DocumentSqlDelightRepositoryTest {
 
-    private lateinit var documentRepositoryTests: DocumentRepositoryTests
-
-    private suspend fun createDb() {
+    private suspend fun createDb(): DocumentRepositoryTests {
         val database = createDatabase(DriverFactory(), JdbcSqliteDriver.IN_MEMORY)
         val documentRepository = SqlDelightDaoInjector(database).provideDocumentRepository()
-        documentRepositoryTests = DocumentRepositoryTests(documentRepository)
+        return DocumentRepositoryTests(documentRepository)
     }
 
     @Test
     fun saveAndLoadADocumentWithoutContent() = runTest {
-        createDb()
+        val documentRepositoryTests: DocumentRepositoryTests = createDb()
         documentRepositoryTests.saveAndLoadADocumentWithoutContent()
     }
 
     @Test
     fun saveAndLoadADocumentWithContent() = runTest {
-        createDb()
+        val documentRepositoryTests: DocumentRepositoryTests = createDb()
         documentRepositoryTests.saveAndLoadADocumentWithContent()
     }
 
     @Test
     fun savingAndLoadingDocumentWithOneImageInRepository() = runTest {
-        createDb()
+        val documentRepositoryTests: DocumentRepositoryTests = createDb()
         documentRepositoryTests.savingAndLoadingDocumentWithOneImageInRepository()
     }
 
     @Test
     fun savingAndLoadingDocumentWithManyImagesInRepository() = runTest {
-        createDb()
+        val documentRepositoryTests: DocumentRepositoryTests = createDb()
         documentRepositoryTests.savingAndLoadingDocumentWithManyImagesInRepository()
     }
 
     @Test
     @Ignore("Step inside step persistence is currently not supported")
     fun savingAndLoadingDocumentOneImageGroupInRepository() = runTest {
-        createDb()
+        val documentRepositoryTests: DocumentRepositoryTests = createDb()
         documentRepositoryTests.savingAndLoadingDocumentOneImageGroupInRepository()
     }
 }
