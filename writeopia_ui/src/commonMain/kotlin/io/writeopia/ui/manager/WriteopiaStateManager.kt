@@ -311,15 +311,20 @@ class WriteopiaStateManager(
      * @param lineBreak [Action.LineBreak]
      */
     fun onLineBreak(lineBreak: Action.LineBreak) {
+        println("WriteopiaStateManager - onLineBreak")
         if (isOnSelection) {
             cancelSelection()
         }
 
         coroutineScope.launch(dispatcher) {
+            println("WriteopiaStateManager - onLineBreak launch")
+
             val state = _currentStory.value
             writeopiaManager.onLineBreak(lineBreak, state)?.let { (info, newState) ->
                 val (newPosition, newStory) = info
                 // Todo: Fix this when the inner position are completed
+
+                println("new ids: ${newState.stories.values.joinToString { it.type.name }}")
                 backStackManager.addAction(BackstackAction.Add(newStory, newPosition))
                 _currentStory.value = newState
                 _scrollToPosition.value = info.first

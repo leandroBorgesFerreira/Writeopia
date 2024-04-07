@@ -19,6 +19,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.drawer.content.AddButtonDrawer
 import io.writeopia.ui.drawer.content.LastEmptySpace
 import io.writeopia.ui.drawer.content.SpaceDrawer
 import io.writeopia.ui.drawer.content.TextDrawer
@@ -155,7 +156,7 @@ object CommonDrawers {
         return buildMap {
             put(StoryTypes.TEXT_BOX.type.number, textBoxDrawer)
             put(StoryTypes.TEXT.type.number, swipeTextDrawer)
-            put(StoryTypes.ADD_BUTTON.type.number, io.writeopia.ui.drawer.content.AddButtonDrawer())
+            put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
             put(StoryTypes.SPACE.type.number, SpaceDrawer(manager::moveRequest))
             put(
                 StoryTypes.LAST_SPACE.type.number,
