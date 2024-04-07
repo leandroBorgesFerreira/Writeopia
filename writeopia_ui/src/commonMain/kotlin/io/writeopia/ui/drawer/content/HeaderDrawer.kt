@@ -27,6 +27,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
+import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.utils.transparentTextInputColors
 
 /**
@@ -93,7 +94,7 @@ class HeaderDrawer(
 fun headerDrawer(
     manager: WriteopiaStateManager,
     headerClick: () -> Unit,
-    onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean,
+    onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean,
     modifier: Modifier = Modifier,
 ): StoryStepDrawer =
     HeaderDrawer(
@@ -104,6 +105,7 @@ fun headerDrawer(
                 onTextEdit = manager::changeStoryText,
                 onKeyEvent = onKeyEvent,
                 onLineBreak = manager::onLineBreak,
+                emptyErase = EmptyErase.DISABLED,
                 textStyle = {
                     MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Bold,

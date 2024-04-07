@@ -349,6 +349,7 @@ class WriteopiaStateManager(
      * can receive the focus, from last to first.
      */
     fun clickAtTheEnd() {
+        println("Click at the end!")
         val stories = _currentStory.value.stories
         val lastPosition = stories.size - 3
         val lastContentStory = stories[lastPosition]

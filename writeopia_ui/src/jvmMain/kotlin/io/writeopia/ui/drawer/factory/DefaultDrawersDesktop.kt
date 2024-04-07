@@ -9,7 +9,6 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.drawer.StoryStepDrawer
-import org.jetbrains.skiko.SkikoKey
 import java.awt.event.KeyEvent
 
 object DefaultDrawersDesktop : DrawersFactory {
@@ -35,7 +34,6 @@ object DefaultDrawersDesktop : DrawersFactory {
                 manager = manager,
 //                isLineBreakKey = ::isLineBreak,
                 isEmptyErase = ::emptyErase,
-                deleteOnEmptyErase = true
             )
         )
 
@@ -46,7 +44,5 @@ object DefaultDrawersDesktop : DrawersFactory {
         keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE &&
                 input.selection.start == 0
 
-//    private fun isLineBreak(keyEvent: androidx.compose.ui.input.key.KeyEvent): Boolean =
-//        keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER
 
 }

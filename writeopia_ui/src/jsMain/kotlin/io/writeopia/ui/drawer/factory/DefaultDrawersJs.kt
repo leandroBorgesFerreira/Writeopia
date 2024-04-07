@@ -34,17 +34,23 @@ object DefaultDrawersJs : DrawersFactory {
             groupsBackgroundColor,
             onHeaderClick,
             dragIconWidth = 16.dp,
-            eventListener = KeyEventListenerFactory.create(
+            eventListener = KeyEventListenerFactory.js(
                 manager = manager,
+                isLineBreak = ::isLineBreak,
                 isEmptyErase = ::emptyErase,
                 deleteOnEmptyErase = true
             )
-        )
+        ).also {
+            println("Creating JS drawers")
+        }
 
     private fun emptyErase(keyEvent: KeyEvent, input: TextFieldValue): Boolean =
         keyEvent.nativeKeyEvent.key == SkikoKey.KEY_BACKSPACE && input.selection.start == 0
 
-    private fun isLineBreak(keyEvent: KeyEvent): Boolean =
-        keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER
+    private fun isLineBreak(keyEvent: KeyEvent): Boolean {
+        val result = keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER
 
+        println("isLineBreak: $result")
+        return result
+    }
 }

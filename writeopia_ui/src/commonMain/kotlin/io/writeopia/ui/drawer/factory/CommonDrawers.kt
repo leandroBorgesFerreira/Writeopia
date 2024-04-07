@@ -26,6 +26,7 @@ import io.writeopia.ui.drawer.content.checkItemDrawer
 import io.writeopia.ui.drawer.content.headerDrawer
 import io.writeopia.ui.drawer.content.swipeTextDrawer
 import io.writeopia.ui.drawer.content.unOrderedListItemDrawer
+import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.utils.codeBlockStyle
 import io.writeopia.ui.utils.defaultTextStyle
 
@@ -48,7 +49,7 @@ object CommonDrawers {
         textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager),
         dragIconWidth: Dp = DRAG_ICON_WIDTH.dp,
         //Todo: Remove isEmptyErase
-        eventListener: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean
+        eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean
     ): Map<Int, StoryStepDrawer> {
         val textBoxDrawer = swipeTextDrawer(
             modifier = Modifier
@@ -61,8 +62,9 @@ object CommonDrawers {
                 messageDrawer(
                     manager = manager,
                     textCommandHandler = textCommandHandler,
-                    eventListener = eventListener
-//                    allowLineBreaks = true
+                    eventListener = eventListener,
+                    allowLineBreaks = true,
+                    emptyErase = EmptyErase.CHANGE_TYPE,
                 )
             }
         )
@@ -81,7 +83,8 @@ object CommonDrawers {
                     textStyle = { codeBlockStyle() },
 //                    isEmptyErase = isEmptyErase,
 //                    deleteOnEmptyErase = true,
-                    allowLineBreaks = true
+                    allowLineBreaks = true,
+                    emptyErase = EmptyErase.CHANGE_TYPE,
                 )
             }
         )
@@ -94,8 +97,9 @@ object CommonDrawers {
             messageDrawer(
                 manager = manager,
                 textCommandHandler = textCommandHandler,
-                eventListener = eventListener
-//                deleteOnEmptyErase = true
+                eventListener = eventListener,
+                emptyErase = EmptyErase.DELETE,
+//                deleteOnEmptyErase = true,
             )
         }
 
@@ -109,7 +113,7 @@ object CommonDrawers {
                     manager,
                     textCommandHandler = TextCommandHandler.noCommands(),
                     eventListener = eventListener,
-
+                    emptyErase = EmptyErase.CHANGE_TYPE,
 //                    isEmptyErase = isEmptyErase,
 //                    deleteOnEmptyErase = false
                 )
@@ -122,7 +126,8 @@ object CommonDrawers {
             messageDrawer(
                 manager,
                 textCommandHandler = TextCommandHandler.noCommands(),
-                eventListener = eventListener
+                eventListener = eventListener,
+                emptyErase = EmptyErase.CHANGE_TYPE,
 //                deleteOnEmptyErase = false
             )
         }
@@ -136,18 +141,15 @@ object CommonDrawers {
                 messageDrawer(
                     manager,
                     textCommandHandler = TextCommandHandler.noCommands(),
-                    eventListener = eventListener
+                    eventListener = eventListener,
+                    emptyErase = EmptyErase.CHANGE_TYPE,
 //                    deleteOnEmptyErase = false
                 )
             }
         val headerDrawer = headerDrawer(
             manager,
             headerClick = onHeaderClick,
-            onKeyEvent = KeyEventListenerFactory.create(
-                manager,
-                isEmptyErase = { _, _ -> false },
-                deleteOnEmptyErase = false,
-            ),
+            onKeyEvent = eventListener,
         )
 
         return buildMap {
@@ -178,7 +180,8 @@ object CommonDrawers {
         textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
         textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager),
         allowLineBreaks: Boolean = false,
-        eventListener: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean
+        emptyErase: EmptyErase,
+        eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean
     ): TextDrawer {
         return TextDrawer(
             modifier = modifier.weight(1F),
@@ -187,7 +190,8 @@ object CommonDrawers {
             textStyle = textStyle,
             commandHandler = textCommandHandler,
             onLineBreak = manager::onLineBreak,
-            allowLineBreaks = allowLineBreaks
+            allowLineBreaks = allowLineBreaks,
+            emptyErase = emptyErase,
         )
     }
 }
