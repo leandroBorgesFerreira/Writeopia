@@ -3,6 +3,8 @@ package io.writeopia.ui.drawer.factory
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.edition.TextCommandHandler
@@ -32,5 +34,17 @@ object DefaultDrawersJs : DrawersFactory {
             groupsBackgroundColor,
             onHeaderClick,
             dragIconWidth = 16.dp,
-            isEmptyErase = { keyEvent, _ -> keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER })
+            eventListener = KeyEventListenerFactory.create(
+                manager = manager,
+                isEmptyErase = ::emptyErase,
+                deleteOnEmptyErase = true
+            )
+        )
+
+    private fun emptyErase(keyEvent: KeyEvent, input: TextFieldValue): Boolean =
+        keyEvent.nativeKeyEvent.key == SkikoKey.KEY_BACKSPACE && input.selection.start == 0
+
+    private fun isLineBreak(keyEvent: KeyEvent): Boolean =
+        keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER
+
 }

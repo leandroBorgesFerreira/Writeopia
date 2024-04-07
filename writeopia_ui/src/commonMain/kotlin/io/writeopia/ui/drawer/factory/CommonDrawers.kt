@@ -47,9 +47,9 @@ object CommonDrawers {
         onHeaderClick: () -> Unit = {},
         textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager),
         dragIconWidth: Dp = DRAG_ICON_WIDTH.dp,
-        isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
-
-        ): Map<Int, StoryStepDrawer> {
+        //Todo: Remove isEmptyErase
+        eventListener: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean
+    ): Map<Int, StoryStepDrawer> {
         val textBoxDrawer = swipeTextDrawer(
             modifier = Modifier
                 .padding(horizontal = LARGE_START_PADDING.dp)
@@ -61,8 +61,8 @@ object CommonDrawers {
                 messageDrawer(
                     manager = manager,
                     textCommandHandler = textCommandHandler,
-                    isEmptyErase = isEmptyErase,
-                    allowLineBreaks = true
+                    eventListener = eventListener
+//                    allowLineBreaks = true
                 )
             }
         )
@@ -77,10 +77,10 @@ object CommonDrawers {
                 messageDrawer(
                     manager = manager,
                     textCommandHandler = TextCommandHandler.noCommands(),
-                    modifier = Modifier.padding(vertical = 8.dp),
+                    eventListener = eventListener,
                     textStyle = { codeBlockStyle() },
-                    isEmptyErase = isEmptyErase,
-                    deleteOnEmptyErase = true,
+//                    isEmptyErase = isEmptyErase,
+//                    deleteOnEmptyErase = true,
                     allowLineBreaks = true
                 )
             }
@@ -94,8 +94,8 @@ object CommonDrawers {
             messageDrawer(
                 manager = manager,
                 textCommandHandler = textCommandHandler,
-                isEmptyErase = isEmptyErase,
-                deleteOnEmptyErase = true
+                eventListener = eventListener
+//                deleteOnEmptyErase = true
             )
         }
 
@@ -108,9 +108,10 @@ object CommonDrawers {
                 messageDrawer(
                     manager,
                     textCommandHandler = TextCommandHandler.noCommands(),
-                    textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
-                    isEmptyErase = isEmptyErase,
-                    deleteOnEmptyErase = false
+                    eventListener = eventListener,
+
+//                    isEmptyErase = isEmptyErase,
+//                    deleteOnEmptyErase = false
                 )
             }
         val checkItemDrawer = checkItemDrawer(
@@ -121,8 +122,8 @@ object CommonDrawers {
             messageDrawer(
                 manager,
                 textCommandHandler = TextCommandHandler.noCommands(),
-                isEmptyErase = isEmptyErase,
-                deleteOnEmptyErase = false
+                eventListener = eventListener
+//                deleteOnEmptyErase = false
             )
         }
 
@@ -135,8 +136,8 @@ object CommonDrawers {
                 messageDrawer(
                     manager,
                     textCommandHandler = TextCommandHandler.noCommands(),
-                    isEmptyErase = isEmptyErase,
-                    deleteOnEmptyErase = false
+                    eventListener = eventListener
+//                    deleteOnEmptyErase = false
                 )
             }
         val headerDrawer = headerDrawer(
@@ -176,18 +177,12 @@ object CommonDrawers {
         modifier: Modifier = Modifier,
         textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
         textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager),
-        deleteOnEmptyErase: Boolean = false,
         allowLineBreaks: Boolean = false,
-        isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
+        eventListener: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean
     ): TextDrawer {
         return TextDrawer(
             modifier = modifier.weight(1F),
-            onKeyEvent =
-            KeyEventListenerFactory.create(
-                manager,
-                isEmptyErase = isEmptyErase,
-                deleteOnEmptyErase = deleteOnEmptyErase
-            ),
+            onKeyEvent = eventListener,
             onTextEdit = manager::changeStoryText,
             textStyle = textStyle,
             commandHandler = textCommandHandler,
