@@ -8,21 +8,20 @@ kotlin {
         browser()
         binaries.executable()
     }
+
     sourceSets {
-        val jsMain by getting {
+        val commonMain by getting {
             dependencies {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
-                implementation(compose.ui)
-                implementation(compose.material)
                 implementation(compose.material3)
                 implementation(compose.materialIconsExtended)
-                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-                implementation(compose.components.resources)
 
-                implementation(project(":writeopia_models"))
-                implementation(project(":writeopia"))
+                implementation(project(":application:core:persistence_sqldelight"))
+                implementation(project(":application:common_flows:wide_screen_common"))
+                implementation(project(":application:features:note_menu"))
                 implementation(project(":writeopia_ui"))
+                implementation(project(":plugins:writeopia_persistence_core"))
             }
         }
     }

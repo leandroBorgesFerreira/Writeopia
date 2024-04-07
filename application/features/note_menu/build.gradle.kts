@@ -8,7 +8,10 @@ plugins {
 
 kotlin {
     androidTarget()
-    jvm{}
+    jvm()
+    js(IR) {
+        browser()
+    }
 
     sourceSets {
         val commonMain by getting {
@@ -25,8 +28,6 @@ kotlin {
                 implementation(project(":application:core:persistence_bridge"))
                 implementation(project(":application:features:account"))
 
-                implementation(libs.compose.shimmer)
-
                 implementation(libs.kotlinx.datetime)
 
                 implementation(compose.runtime)
@@ -38,14 +39,6 @@ kotlin {
             }
         }
 
-        val commonTest by getting {
-            dependencies {
-                implementation(libs.kotlin.test)
-                implementation(libs.kotlinx.coroutines.test)
-                implementation(libs.mockk)
-            }
-        }
-
         val androidMain by getting {
             dependencies {
                 implementation(libs.appCompat)
@@ -54,13 +47,23 @@ kotlin {
                 implementation(libs.viewmodel.compose)
                 implementation(libs.navigation.compose)
 
-                implementation(platform("androidx.compose:compose-bom:2023.09.02"))
+                implementation(libs.compose.shimmer)
+
+                implementation(project.dependencies.platform(libs.androidx.compose.bom))
             }
         }
 
         val jvmMain by getting {
             dependencies {
 
+            }
+        }
+
+        val jvmTest by getting {
+            dependencies {
+                implementation(libs.kotlin.test)
+                implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.mockk)
             }
         }
     }

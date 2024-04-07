@@ -7,9 +7,9 @@ kotlin {
     jvm {}
     androidTarget()
 
-//    js(IR) {
-//        browser()
-//    }
+    js(IR) {
+        browser()
+    }
 
     sourceSets {
         val commonMain by getting {
@@ -19,6 +19,12 @@ kotlin {
         }
 
         val jvmMain by getting {
+            dependencies {
+
+            }
+        }
+
+        val jsMain by getting {
             dependencies {
 
             }

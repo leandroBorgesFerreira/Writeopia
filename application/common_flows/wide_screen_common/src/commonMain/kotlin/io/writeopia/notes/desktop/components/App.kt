@@ -2,8 +2,12 @@ package io.writeopia.notes.desktop.components
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
-import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
 import io.writeopia.editor.di.EditorKmpInjector
@@ -15,18 +19,21 @@ import io.writeopia.note_menu.ui.desktop.NotesMenu
 import io.writeopia.notes.desktop.components.navigation.NavigationPage
 import io.writeopia.notes.desktop.components.navigation.NavigationViewModel
 import io.writeopia.sdk.network.injector.ConnectionInjector
-import io.writeopia.sql.WriteopiaDb
-import io.writeopia.sqldelight.di.SqlDelightDaoInjector
-import io.writeopia.ui.drawer.factory.DefaultDrawersDesktop
+import io.writeopia.sdk.persistence.core.di.RepositoryInjector
+import io.writeopia.ui.drawer.factory.DrawersFactory
 
 @Composable
-internal fun App(database: WriteopiaDb, disableWebsocket: Boolean = false) {
+fun App(
+    notesConfigurationInjector: NotesConfigurationInjector,
+    repositoryInjection: RepositoryInjector,
+    drawersFactory: DrawersFactory,
+    disableWebsocket: Boolean = false
+) {
     val authCoreInjection = KmpAuthCoreInjection()
-    val repositoryInjection = SqlDelightDaoInjector(database)
     val connectionInjection =
         ConnectionInjector(
             bearerTokenHandler = MockTokenHandler,
-            baseUrl = System.getenv("WRITEOPIA_CLIENT_BASE_URL"),
+            baseUrl = "https://writeopia.io/api",
             disableWebsocket = disableWebsocket
         )
 
@@ -35,8 +42,6 @@ internal fun App(database: WriteopiaDb, disableWebsocket: Boolean = false) {
         repositoryInjection = repositoryInjection,
         connectionInjection = connectionInjection
     )
-
-    val notesConfigurationInjector = NotesConfigurationInjector(database)
 
     val notesMenuInjection = NotesMenuKmpInjection(
         notesConfigurationInjector = notesConfigurationInjector,
@@ -85,7 +90,7 @@ internal fun App(database: WriteopiaDb, disableWebsocket: Boolean = false) {
                             AppTextEditor(
                                 noteEditorViewModel.writeopiaManager,
                                 noteEditorViewModel,
-                                DefaultDrawersDesktop,
+                                drawersFactory = drawersFactory,
                                 loadNoteId = state.noteId
                             )
                         }

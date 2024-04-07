@@ -15,9 +15,9 @@ plugins {
 kotlin {
     jvm {}
 
-//    js(IR) {
-//        browser()
-//    }
+    js(IR) {
+        browser()
+    }
 
     sourceSets {
         val commonMain by getting {
@@ -42,6 +42,7 @@ sqldelight {
         create("WriteopiaDb") {
             packageName.set("io.writeopia.sdk.sql")
             dialect("app.cash.sqldelight:sqlite-3-30-dialect:2.0.0")
+            generateAsync.set(true)
         }
     }
 }

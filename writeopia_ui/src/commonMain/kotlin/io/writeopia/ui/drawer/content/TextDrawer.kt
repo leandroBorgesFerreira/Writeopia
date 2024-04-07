@@ -25,6 +25,7 @@ import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.drawer.SimpleTextDrawer
+import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.utils.defaultTextStyle
 
 /**
@@ -34,13 +35,15 @@ import io.writeopia.ui.utils.defaultTextStyle
  */
 class TextDrawer(
     private val modifier: Modifier = Modifier,
-    private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int) -> Boolean = { _, _, _, _ -> false },
+    private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean =
+        { _, _, _, _, _ -> false },
     private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
     private val onTextEdit: (Action.StoryStateChange) -> Unit = { },
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     private val allowLineBreaks: Boolean = false,
+    private val emptyErase: EmptyErase = EmptyErase.CHANGE_TYPE,
     private val onLineBreak: (Action.LineBreak) -> Unit = {},
-    override var onFocusChanged: (FocusState) -> Unit = {}
+    override var onFocusChanged: (FocusState) -> Unit = {},
 ) : SimpleTextDrawer {
 
     @Composable
@@ -73,7 +76,7 @@ class TextDrawer(
                     }
                 }
                 .onKeyEvent { keyEvent ->
-                    onKeyEvent(keyEvent, inputText, step, drawInfo.position)
+                    onKeyEvent(keyEvent, inputText, step, drawInfo.position, emptyErase)
                 }
                 .onFocusChanged(onFocusChanged)
                 .testTag("MessageDrawer_${drawInfo.position}"),

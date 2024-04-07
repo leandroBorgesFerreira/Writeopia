@@ -7,7 +7,10 @@ plugins {
 
 kotlin {
     androidTarget()
-    jvm{}
+    jvm()
+    js(IR) {
+        browser()
+    }
 
     sourceSets {
         val commonMain by getting {
@@ -29,8 +32,6 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.datetime)
 
-                implementation(libs.material)
-
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
@@ -50,7 +51,7 @@ kotlin {
                 implementation(libs.viewmodel.compose)
                 implementation(libs.navigation.compose)
 
-                implementation(platform("androidx.compose:compose-bom:2023.09.02"))
+                implementation(project.dependencies.platform(libs.androidx.compose.bom))
             }
         }
 

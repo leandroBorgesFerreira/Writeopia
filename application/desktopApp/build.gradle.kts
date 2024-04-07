@@ -1,4 +1,3 @@
-import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -8,36 +7,23 @@ plugins {
 
 kotlin {
     jvm {}
+
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":writeopia_models"))
-                implementation(project(":writeopia"))
-                implementation(project(":writeopia_ui"))
-                implementation(project(":plugins:writeopia_serialization"))
-                implementation(project(":plugins:writeopia_network"))
-                implementation(project(":plugins:writeopia_persistence_core"))
-                implementation(project(":application:core:persistence_bridge"))
-                implementation(project(":application:core:auth_core"))
-                implementation(project(":application:core:utils"))
-                implementation(project(":application:features:editor"))
-                implementation(project(":application:features:note_menu"))
-
-                implementation(libs.ktor.client.logging)
-                implementation(libs.ktor.client.core)
-            }
-        }
-
-        val commonTest by getting {
-            dependencies {
-                implementation(compose("org.jetbrains.compose.ui:ui-test-junit4"))
-                implementation(project(":application:core:common_ui_tests"))
-            }
-        }
-
-        val jvmMain by getting {
-            dependencies {
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.materialIconsExtended)
                 implementation(compose.desktop.currentOs)
+
+                implementation(compose.desktop.currentOs)
+
+                implementation(project(":plugins:writeopia_persistence_core"))
+                implementation(project(":application:core:persistence_sqldelight"))
+                implementation(project(":application:common_flows:wide_screen_common"))
+                implementation(project(":application:features:note_menu"))
+                implementation(project(":writeopia_ui"))
             }
         }
     }
@@ -45,7 +31,7 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "io.writeopia.notes.desktop.MainKt"
+        mainClass = "io.writeopia.desktop.MainDesktopKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)

@@ -6,7 +6,6 @@ import io.writeopia.note_menu.data.NotesArrangement
 import io.writeopia.note_menu.data.repository.NotesConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
-import io.writeopia.note_menu.ui.dto.DocumentUi
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
@@ -82,7 +81,7 @@ internal class ChooseNoteKmpViewModel(
 
     override fun requestDocuments(force: Boolean) {
         if (documentsState.value !is ResultData.Complete || force) {
-            coroutineScope.launch(Dispatchers.IO) {
+            coroutineScope.launch(Dispatchers.Default) {
                 refreshNotes()
             }
         }
@@ -115,7 +114,7 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun onDocumentSelected(id: String, selected: Boolean) {
-        coroutineScope.launch(Dispatchers.IO) {
+        coroutineScope.launch(Dispatchers.Default) {
             val selectedIds = _selectedNotes.value
             val newIds = if (selected) selectedIds + id else selectedIds - id
 
@@ -142,14 +141,14 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun sortingSelected(orderBy: OrderBy) {
-        coroutineScope.launch(Dispatchers.IO) {
+        coroutineScope.launch(Dispatchers.Default) {
             notesConfig.saveDocumentSortingPref(orderBy, getUserId())
             refreshNotes()
         }
     }
 
     override fun copySelectedNotes() {
-        coroutineScope.launch(Dispatchers.IO) {
+        coroutineScope.launch(Dispatchers.Default) {
             notesUseCase.duplicateDocuments(_selectedNotes.value.toList(), getUserId())
             clearSelection()
             refreshNotes()
@@ -159,7 +158,7 @@ internal class ChooseNoteKmpViewModel(
     override fun deleteSelectedNotes() {
         val selected = _selectedNotes.value
 
-        coroutineScope.launch(Dispatchers.IO) {
+        coroutineScope.launch(Dispatchers.Default) {
             notesUseCase.deleteNotes(selected)
             clearSelection()
             refreshNotes()

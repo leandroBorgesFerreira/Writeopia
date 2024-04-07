@@ -5,9 +5,9 @@ plugins {
 kotlin {
     jvm {}
 
-//    js(IR) {
-//        browser()
-//    }
+    js(IR) {
+        browser()
+    }
 
     sourceSets {
         val commonMain by getting {

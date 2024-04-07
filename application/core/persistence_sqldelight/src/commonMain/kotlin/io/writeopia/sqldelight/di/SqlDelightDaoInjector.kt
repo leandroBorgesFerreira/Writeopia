@@ -6,15 +6,17 @@ import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import io.writeopia.sdk.persistence.sqldelight.dao.sql.SqlDelightDocumentRepository
 import io.writeopia.sql.WriteopiaDb
 
-class SqlDelightDaoInjector(private val database: WriteopiaDb) : RepositoryInjector {
+class SqlDelightDaoInjector(private val database: WriteopiaDb?) : RepositoryInjector {
 
     private fun provideDocumentSqlDao(): DocumentSqlDao = DocumentSqlDao(
-        database.documentEntityQueries,
-        database.storyStepEntityQueries
+        database?.documentEntityQueries,
+        database?.storyStepEntityQueries
     )
 
     override fun provideDocumentRepository(): DocumentRepository =
         SqlDelightDocumentRepository(provideDocumentSqlDao())
 
-    companion object
+    companion object {
+        fun noop() = SqlDelightDaoInjector(null)
+    }
 }

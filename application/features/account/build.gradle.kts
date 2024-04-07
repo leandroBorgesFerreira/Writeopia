@@ -7,6 +7,9 @@ plugins {
 kotlin {
     androidTarget()
     jvm{}
+    js(IR) {
+        browser()
+    }
 
     sourceSets {
         val commonMain by getting {
@@ -16,7 +19,6 @@ kotlin {
 
                 implementation(libs.kotlinx.datetime)
 
-                implementation(libs.material)
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)
@@ -37,7 +39,7 @@ kotlin {
                 implementation(libs.navigation.compose)
                 implementation(libs.runtime.compose)
 
-                implementation(platform("androidx.compose:compose-bom:2023.09.02"))
+                implementation(project.dependencies.platform(libs.androidx.compose.bom))
             }
         }
 

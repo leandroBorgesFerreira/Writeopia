@@ -19,6 +19,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.drawer.content.AddButtonDrawer
 import io.writeopia.ui.drawer.content.LastEmptySpace
 import io.writeopia.ui.drawer.content.SpaceDrawer
 import io.writeopia.ui.drawer.content.TextDrawer
@@ -26,6 +27,7 @@ import io.writeopia.ui.drawer.content.checkItemDrawer
 import io.writeopia.ui.drawer.content.headerDrawer
 import io.writeopia.ui.drawer.content.swipeTextDrawer
 import io.writeopia.ui.drawer.content.unOrderedListItemDrawer
+import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.utils.codeBlockStyle
 import io.writeopia.ui.utils.defaultTextStyle
 
@@ -47,9 +49,8 @@ object CommonDrawers {
         onHeaderClick: () -> Unit = {},
         textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager),
         dragIconWidth: Dp = DRAG_ICON_WIDTH.dp,
-        isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
-
-        ): Map<Int, StoryStepDrawer> {
+        eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean
+    ): Map<Int, StoryStepDrawer> {
         val textBoxDrawer = swipeTextDrawer(
             modifier = Modifier
                 .padding(horizontal = LARGE_START_PADDING.dp)
@@ -61,8 +62,9 @@ object CommonDrawers {
                 messageDrawer(
                     manager = manager,
                     textCommandHandler = textCommandHandler,
-                    isEmptyErase = isEmptyErase,
-                    allowLineBreaks = true
+                    eventListener = eventListener,
+                    allowLineBreaks = true,
+                    emptyErase = EmptyErase.CHANGE_TYPE,
                 )
             }
         )
@@ -77,11 +79,10 @@ object CommonDrawers {
                 messageDrawer(
                     manager = manager,
                     textCommandHandler = TextCommandHandler.noCommands(),
-                    modifier = Modifier.padding(vertical = 8.dp),
+                    eventListener = eventListener,
                     textStyle = { codeBlockStyle() },
-                    isEmptyErase = isEmptyErase,
-                    deleteOnEmptyErase = true,
-                    allowLineBreaks = true
+                    allowLineBreaks = true,
+                    emptyErase = EmptyErase.CHANGE_TYPE,
                 )
             }
         )
@@ -94,8 +95,8 @@ object CommonDrawers {
             messageDrawer(
                 manager = manager,
                 textCommandHandler = textCommandHandler,
-                isEmptyErase = isEmptyErase,
-                deleteOnEmptyErase = true
+                eventListener = eventListener,
+                emptyErase = EmptyErase.DELETE,
             )
         }
 
@@ -109,8 +110,8 @@ object CommonDrawers {
                     manager,
                     textCommandHandler = TextCommandHandler.noCommands(),
                     textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
-                    isEmptyErase = isEmptyErase,
-                    deleteOnEmptyErase = false
+                    eventListener = eventListener,
+                    emptyErase = EmptyErase.CHANGE_TYPE,
                 )
             }
         val checkItemDrawer = checkItemDrawer(
@@ -121,8 +122,8 @@ object CommonDrawers {
             messageDrawer(
                 manager,
                 textCommandHandler = TextCommandHandler.noCommands(),
-                isEmptyErase = isEmptyErase,
-                deleteOnEmptyErase = false
+                eventListener = eventListener,
+                emptyErase = EmptyErase.CHANGE_TYPE,
             )
         }
 
@@ -135,24 +136,20 @@ object CommonDrawers {
                 messageDrawer(
                     manager,
                     textCommandHandler = TextCommandHandler.noCommands(),
-                    isEmptyErase = isEmptyErase,
-                    deleteOnEmptyErase = false
+                    eventListener = eventListener,
+                    emptyErase = EmptyErase.CHANGE_TYPE,
                 )
             }
         val headerDrawer = headerDrawer(
             manager,
             headerClick = onHeaderClick,
-            onKeyEvent = KeyEventListenerFactory.create(
-                manager,
-                isEmptyErase = { _, _ -> false },
-                deleteOnEmptyErase = false,
-            ),
+            onKeyEvent = eventListener,
         )
 
         return buildMap {
             put(StoryTypes.TEXT_BOX.type.number, textBoxDrawer)
             put(StoryTypes.TEXT.type.number, swipeTextDrawer)
-            put(StoryTypes.ADD_BUTTON.type.number, io.writeopia.ui.drawer.content.AddButtonDrawer())
+            put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
             put(StoryTypes.SPACE.type.number, SpaceDrawer(manager::moveRequest))
             put(
                 StoryTypes.LAST_SPACE.type.number,
@@ -176,23 +173,19 @@ object CommonDrawers {
         modifier: Modifier = Modifier,
         textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
         textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager),
-        deleteOnEmptyErase: Boolean = false,
         allowLineBreaks: Boolean = false,
-        isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
+        emptyErase: EmptyErase,
+        eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean
     ): TextDrawer {
         return TextDrawer(
             modifier = modifier.weight(1F),
-            onKeyEvent =
-            KeyEventListenerFactory.create(
-                manager,
-                isEmptyErase = isEmptyErase,
-                deleteOnEmptyErase = deleteOnEmptyErase
-            ),
+            onKeyEvent = eventListener,
             onTextEdit = manager::changeStoryText,
             textStyle = textStyle,
             commandHandler = textCommandHandler,
             onLineBreak = manager::onLineBreak,
-            allowLineBreaks = allowLineBreaks
+            allowLineBreaks = allowLineBreaks,
+            emptyErase = emptyErase,
         )
     }
 }
