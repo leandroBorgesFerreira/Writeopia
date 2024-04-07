@@ -13,16 +13,16 @@ import org.jetbrains.skiko.wasm.onWasmReady
 fun main() {
     onWasmReady {
         CanvasBasedWindow("Writeopia") {
-            CreateAppInMemory()
+            CreateAppInMemory(repositoryInjection = SqlDelightDaoInjector.noop())
         }
     }
 }
 
 @Composable
-fun CreateAppInMemory() {
+fun CreateAppInMemory(repositoryInjection: SqlDelightDaoInjector) {
     App(
         notesConfigurationInjector = NotesConfigurationInjector.noop(),
-        repositoryInjection = SqlDelightDaoInjector.noop(),
+        repositoryInjection = repositoryInjection,
         drawersFactory = DefaultDrawersJs
     )
 }

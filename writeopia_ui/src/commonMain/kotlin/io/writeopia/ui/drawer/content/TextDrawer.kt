@@ -41,7 +41,7 @@ class TextDrawer(
     private val onTextEdit: (Action.StoryStateChange) -> Unit = { },
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     private val allowLineBreaks: Boolean = false,
-    private val lineBreakByContent: Boolean,
+    private val lineBreakByContent: Boolean = true,
     private val emptyErase: EmptyErase = EmptyErase.CHANGE_TYPE,
     private val onLineBreak: (Action.LineBreak) -> Unit = {},
     override var onFocusChanged: (FocusState) -> Unit = {}
