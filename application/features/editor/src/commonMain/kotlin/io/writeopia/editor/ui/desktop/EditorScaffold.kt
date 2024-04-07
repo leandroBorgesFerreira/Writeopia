@@ -35,7 +35,6 @@ fun EditorScaffold(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        //Todo: Move this to WriteopiaEditorBox
         BoxWithConstraints {
             Column(
                 modifier = Modifier
@@ -48,9 +47,9 @@ fun EditorScaffold(
                         }
                     }
                     .defaultMinSize(minHeight = 700.dp)
-                    .padding(30.dp)
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(Color.White),
+                    .padding(30.dp),
+//                    .clip(RoundedCornerShape(20.dp))
+//                    .background(Color.White)
             ) {
                 content()
 
