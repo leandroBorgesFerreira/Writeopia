@@ -43,7 +43,6 @@ fun App(
         connectionInjection = connectionInjection
     )
 
-
     val notesMenuInjection = NotesMenuKmpInjection(
         notesConfigurationInjector = notesConfigurationInjector,
         authCoreInjection = authCoreInjection,

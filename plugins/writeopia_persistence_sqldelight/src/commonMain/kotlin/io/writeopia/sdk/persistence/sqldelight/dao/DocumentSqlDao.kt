@@ -9,8 +9,8 @@ import io.writeopia.sdk.sql.StoryStepEntityQueries
 import kotlinx.datetime.Instant
 
 class DocumentSqlDao(
-    private val documentQueries: DocumentEntityQueries,
-    private val storyStepQueries: StoryStepEntityQueries,
+    private val documentQueries: DocumentEntityQueries?,
+    private val storyStepQueries: StoryStepEntityQueries?,
 ) {
 
     suspend fun insertDocumentWithContent(document: Document) {
@@ -22,7 +22,7 @@ class DocumentSqlDao(
     }
 
     suspend fun insertDocument(document: Document) {
-        documentQueries.insert(
+        documentQueries?.insert(
             id = document.id,
             title = document.title,
             created_at = document.createdAt.toEpochMilliseconds(),
@@ -33,7 +33,7 @@ class DocumentSqlDao(
 
     suspend fun insertStoryStep(storyStep: StoryStep, position: Long, documentId: String) {
         storyStep.run {
-            storyStepQueries.insert(
+            storyStepQueries?.insert(
                 id = id,
                 local_id = localId,
                 type = type.number.toLong(),
@@ -58,9 +58,10 @@ class DocumentSqlDao(
     }
 
     suspend fun loadDocumentWithContentByIds(id: List<String>): List<Document> =
-        documentQueries.selectWithContentByIds(id).awaitAsList()
-            .groupBy { it.id }
-            .mapNotNull { (documentId, content) ->
+        documentQueries?.selectWithContentByIds(id)
+            ?.awaitAsList()
+            ?.groupBy { it.id }
+            ?.mapNotNull { (documentId, content) ->
                 content.firstOrNull()?.let { document ->
                     val innerContent = content.filter { innerContent ->
                         !innerContent.id_.isNullOrEmpty()
@@ -90,13 +91,13 @@ class DocumentSqlDao(
                         userId = document.user_id,
                     )
                 }
-            }
+            } ?: emptyList()
 
     suspend fun loadDocumentsWithContentByUserId(userId: String): List<Document> {
-        return documentQueries.selectWithContentByUserId(userId)
-            .awaitAsList()
-            .groupBy { it.id }
-            .mapNotNull { (documentId, content) ->
+        return documentQueries?.selectWithContentByUserId(userId)
+            ?.awaitAsList()
+            ?.groupBy { it.id }
+            ?.mapNotNull { (documentId, content) ->
                 content.firstOrNull()?.let { document ->
                     val innerContent = content.filter { innerContent ->
                         !innerContent.id_.isNullOrEmpty()
@@ -126,22 +127,22 @@ class DocumentSqlDao(
                         userId = document.user_id,
                     )
                 }
-            }
+            } ?: emptyList()
     }
 
     suspend fun deleteDocumentById(document: String) {
-        documentQueries.delete(document)
+        documentQueries?.delete(document)
     }
 
     suspend fun deleteDocumentByIds(ids: Set<String>) {
-        documentQueries.deleteByIds(ids)
+        documentQueries?.deleteByIds(ids)
     }
 
     suspend fun loadDocumentWithContentById(documentId: String): Document? =
-        documentQueries.selectWithContentById(documentId)
-            .awaitAsList()
-            .groupBy { it.id }
-            .mapNotNull { (documentId, content) ->
+        documentQueries?.selectWithContentById(documentId)
+            ?.awaitAsList()
+            ?.groupBy { it.id }
+            ?.mapNotNull { (documentId, content) ->
                 content.firstOrNull()?.let { document ->
                     val innerContent = content.filter { innerContent ->
                         !innerContent.id_.isNullOrEmpty()
@@ -172,9 +173,9 @@ class DocumentSqlDao(
                     )
                 }
             }
-            .firstOrNull()
+            ?.firstOrNull()
 
     suspend fun deleteDocumentsByUserId(userId: String) {
-        documentQueries.deleteByUserId(userId)
+        documentQueries?.deleteByUserId(userId)
     }
 }
