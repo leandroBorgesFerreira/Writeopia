@@ -24,7 +24,7 @@ object DefaultDrawersJs : DrawersFactory {
         editable: Boolean,
         groupsBackgroundColor: Color,
         onHeaderClick: () -> Unit,
-        textCommandHandler: TextCommandHandler
+        textCommandHandler: TextCommandHandler,
     ): Map<Int, StoryStepDrawer> =
         CommonDrawers.create(
             manager,
@@ -34,12 +34,19 @@ object DefaultDrawersJs : DrawersFactory {
             groupsBackgroundColor,
             onHeaderClick,
             dragIconWidth = 16.dp,
+            lineBreakByContent = false,
             eventListener = KeyEventListenerFactory.js(
                 manager = manager,
+                isLineBreak = ::isLineBreak,
                 isEmptyErase = ::emptyErase,
-            )
+            ),
         )
 
     private fun emptyErase(keyEvent: KeyEvent, input: TextFieldValue): Boolean =
         keyEvent.nativeKeyEvent.key == SkikoKey.KEY_BACKSPACE && input.selection.start == 0
+
+    private fun isLineBreak(keyEvent: KeyEvent): Boolean =
+        (keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER).also {
+            println("isLineBreak: $it")
+        }
 }

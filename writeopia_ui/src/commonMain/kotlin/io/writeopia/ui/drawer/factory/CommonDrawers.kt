@@ -49,6 +49,7 @@ object CommonDrawers {
         onHeaderClick: () -> Unit = {},
         textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager),
         dragIconWidth: Dp = DRAG_ICON_WIDTH.dp,
+        lineBreakByContent: Boolean,
         eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean
     ): Map<Int, StoryStepDrawer> {
         val textBoxDrawer = swipeTextDrawer(
@@ -64,6 +65,7 @@ object CommonDrawers {
                     textCommandHandler = textCommandHandler,
                     eventListener = eventListener,
                     allowLineBreaks = true,
+                    lineBreakByContent = lineBreakByContent,
                     emptyErase = EmptyErase.CHANGE_TYPE,
                 )
             }
@@ -82,6 +84,7 @@ object CommonDrawers {
                     eventListener = eventListener,
                     textStyle = { codeBlockStyle() },
                     allowLineBreaks = true,
+                    lineBreakByContent = lineBreakByContent,
                     emptyErase = EmptyErase.CHANGE_TYPE,
                 )
             }
@@ -96,6 +99,7 @@ object CommonDrawers {
                 manager = manager,
                 textCommandHandler = textCommandHandler,
                 eventListener = eventListener,
+                lineBreakByContent = lineBreakByContent,
                 emptyErase = EmptyErase.DELETE,
             )
         }
@@ -112,6 +116,7 @@ object CommonDrawers {
                     textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
                     eventListener = eventListener,
                     emptyErase = EmptyErase.CHANGE_TYPE,
+                    lineBreakByContent = lineBreakByContent,
                 )
             }
         val checkItemDrawer = checkItemDrawer(
@@ -124,6 +129,7 @@ object CommonDrawers {
                 textCommandHandler = TextCommandHandler.noCommands(),
                 eventListener = eventListener,
                 emptyErase = EmptyErase.CHANGE_TYPE,
+                lineBreakByContent = lineBreakByContent,
             )
         }
 
@@ -138,12 +144,14 @@ object CommonDrawers {
                     textCommandHandler = TextCommandHandler.noCommands(),
                     eventListener = eventListener,
                     emptyErase = EmptyErase.CHANGE_TYPE,
+                    lineBreakByContent = lineBreakByContent,
                 )
             }
         val headerDrawer = headerDrawer(
             manager,
             headerClick = onHeaderClick,
             onKeyEvent = eventListener,
+            lineBreakByContent = lineBreakByContent,
         )
 
         return buildMap {
@@ -174,6 +182,7 @@ object CommonDrawers {
         textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
         textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager),
         allowLineBreaks: Boolean = false,
+        lineBreakByContent: Boolean,
         emptyErase: EmptyErase,
         eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean
     ): TextDrawer {
@@ -185,6 +194,7 @@ object CommonDrawers {
             commandHandler = textCommandHandler,
             onLineBreak = manager::onLineBreak,
             allowLineBreaks = allowLineBreaks,
+            lineBreakByContent = lineBreakByContent,
             emptyErase = emptyErase,
         )
     }
