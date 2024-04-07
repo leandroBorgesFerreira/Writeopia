@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.content.*
 import io.writeopia.ui.manager.WriteopiaStateManager
@@ -14,6 +15,7 @@ import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.content.RowGroupDrawer
 import io.writeopia.ui.drawer.factory.CommonDrawers
 import io.writeopia.ui.drawer.factory.DrawersFactory
+import io.writeopia.ui.drawer.factory.KeyEventListenerFactory
 
 object DefaultDrawersAndroid : DrawersFactory {
 
@@ -44,9 +46,11 @@ object DefaultDrawersAndroid : DrawersFactory {
             groupsBackgroundColor,
             onHeaderClick,
             textCommandHandler,
-            isEmptyErase = { keyEvent, inputText ->
-                keyEvent.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DEL && inputText.selection.start == 0
-            })
+            eventListener = KeyEventListenerFactory.android(
+                manager,
+                isEmptyErase = ::emptyErase
+            )
+        )
 
         return mapOf(
             StoryTypes.VIDEO.type.number to VideoDrawer(),
@@ -54,4 +58,10 @@ object DefaultDrawersAndroid : DrawersFactory {
             StoryTypes.GROUP_IMAGE.type.number to RowGroupDrawer(imageDrawerInGroup)
         ) + commonDrawers
     }
+
+    private fun emptyErase(
+        keyEvent: androidx.compose.ui.input.key.KeyEvent,
+        input: TextFieldValue
+    ): Boolean =
+        keyEvent.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DEL && input.selection.start == 0
 }

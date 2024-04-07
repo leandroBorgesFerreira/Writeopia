@@ -13,7 +13,7 @@ object DatabaseFactory {
     private var created = false
     private val databaseState = MutableStateFlow<DatabaseCreation>(DatabaseCreation.Loading)
 
-    fun createDatabase(
+    fun createDatabaseAsState(
         driverFactory: DriverFactory,
         url: String,
         coroutineScope: CoroutineScope
@@ -21,13 +21,21 @@ object DatabaseFactory {
         if (!created) {
             created = true
             coroutineScope.launch {
-                val driver = driverFactory.createDriver(url)
-                databaseState.value = DatabaseCreation.Complete(WriteopiaDb(driver))
+                databaseState.value = DatabaseCreation.Complete(createDatabase(driverFactory, url))
             }
         }
 
         return databaseState.asStateFlow()
     }
+
+    suspend fun createDatabase(
+        driverFactory: DriverFactory,
+        url: String = "jdbc:sqlite:"
+    ): WriteopiaDb {
+        val driver = driverFactory.createDriver(url)
+        return WriteopiaDb(driver)
+    }
+
 }
 
 sealed interface DatabaseCreation {

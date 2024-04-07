@@ -30,7 +30,7 @@ object DefaultDrawersDesktop : DrawersFactory {
             groupsBackgroundColor,
             onHeaderClick,
             dragIconWidth = 16.dp,
-            eventListener = KeyEventListenerFactory.create(
+            eventListener = KeyEventListenerFactory.desktop(
                 manager = manager,
 //                isLineBreakKey = ::isLineBreak,
                 isEmptyErase = ::emptyErase,
@@ -43,6 +43,4 @@ object DefaultDrawersDesktop : DrawersFactory {
     ): Boolean =
         keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE &&
                 input.selection.start == 0
-
-
 }

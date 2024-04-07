@@ -6,9 +6,13 @@ import androidx.compose.ui.test.onNodeWithTag
 import io.writeopia.common.uitests.tests.editor.EditorCommonTests
 import io.writeopia.common.uitests.robots.DocumentEditRobot
 import io.writeopia.common.uitests.robots.DocumentsMenuRobot
+import io.writeopia.note_menu.di.NotesConfigurationInjector
 import io.writeopia.notes.desktop.components.App
-import io.writeopia.sqldelight.database.createDatabase
+import io.writeopia.sqldelight.database.DatabaseFactory.createDatabase
 import io.writeopia.sqldelight.database.driver.DriverFactory
+import io.writeopia.sqldelight.di.SqlDelightDaoInjector
+import io.writeopia.ui.drawer.factory.DefaultDrawersDesktop
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
@@ -18,7 +22,7 @@ class EditorUiTests {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun itShouldBePossibleToWriteATitleAndSomeContent() {
+    fun itShouldBePossibleToWriteATitleAndSomeContent() = runTest {
         startContent()
 
         EditorCommonTests.testAddTitleAndContent(
@@ -28,7 +32,7 @@ class EditorUiTests {
     }
 
     @Test
-    fun itShouldBePossibleToSaveNoteWithTitle() {
+    fun itShouldBePossibleToSaveNoteWithTitle() = runTest {
         startContent()
 
         EditorCommonTests.saveNoteWithTitle(
@@ -38,7 +42,7 @@ class EditorUiTests {
     }
 
     @Test
-    fun itShouldBePossibleToOpenANoteWithoutTitle() {
+    fun itShouldBePossibleToOpenANoteWithoutTitle() = runTest {
         startContent()
 
         EditorCommonTests.editNoteLineWithoutTitle(
@@ -48,7 +52,7 @@ class EditorUiTests {
     }
 
     @Test
-    fun theBottomBoxShouldInitializeVisible() {
+    fun theBottomBoxShouldInitializeVisible() = runTest {
         startContent()
 
         DocumentsMenuRobot(composeTestRule).goToEditNote()
@@ -56,9 +60,17 @@ class EditorUiTests {
     }
 
 
-    private fun startContent() {
+    private suspend fun startContent() {
+        val database = createDatabase(DriverFactory())
+
+
         composeTestRule.setContent {
-            App(createDatabase(DriverFactory()), disableWebsocket = true)
+            App(
+                notesConfigurationInjector = NotesConfigurationInjector(database),
+                repositoryInjection = SqlDelightDaoInjector(database),
+                drawersFactory = DefaultDrawersDesktop,
+                disableWebsocket = true
+            )
         }
     }
 }

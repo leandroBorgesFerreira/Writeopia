@@ -16,7 +16,7 @@ import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.drawer.factory.DefaultDrawersDesktop
 
 fun main() = application {
-    val databaseStateFlow = DatabaseFactory.createDatabase(
+    val databaseStateFlow = DatabaseFactory.createDatabaseAsState(
         DriverFactory(),
 //        url = "jdbc:sqlite:", //In Memory
         url = "jdbc:sqlite:writeopia.db",
