@@ -96,6 +96,7 @@ fun headerDrawer(
     headerClick: () -> Unit,
     onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean,
     modifier: Modifier = Modifier,
+    lineBreakByContent: Boolean
 ): StoryStepDrawer =
     HeaderDrawer(
         modifier = modifier,
@@ -105,6 +106,7 @@ fun headerDrawer(
                 onTextEdit = manager::changeStoryText,
                 onKeyEvent = onKeyEvent,
                 onLineBreak = manager::onLineBreak,
+                lineBreakByContent = lineBreakByContent,
                 emptyErase = EmptyErase.DISABLED,
                 textStyle = {
                     MaterialTheme.typography.headlineMedium.copy(

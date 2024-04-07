@@ -46,6 +46,7 @@ object DefaultDrawersAndroid : DrawersFactory {
             groupsBackgroundColor,
             onHeaderClick,
             textCommandHandler,
+            lineBreakByContent = true,
             eventListener = KeyEventListenerFactory.android(
                 manager,
                 isEmptyErase = ::emptyErase

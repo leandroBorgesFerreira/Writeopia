@@ -23,6 +23,8 @@ fun main() = application {
         rememberCoroutineScope()
     )
 
+    val injector = SqlDelightDaoInjector(null)
+
     Window(
         onCloseRequest = ::exitApplication,
         title = "Writeopia for Desktop",
@@ -33,7 +35,7 @@ fun main() = application {
                 val database = databaseState.writeopiaDb
                 App(
                     notesConfigurationInjector = NotesConfigurationInjector(database),
-                    repositoryInjection = SqlDelightDaoInjector(database),
+                    repositoryInjection = injector,
                     DefaultDrawersDesktop
                 )
             }

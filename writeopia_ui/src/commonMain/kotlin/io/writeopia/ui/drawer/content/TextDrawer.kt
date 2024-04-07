@@ -41,9 +41,10 @@ class TextDrawer(
     private val onTextEdit: (Action.StoryStateChange) -> Unit = { },
     private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
     private val allowLineBreaks: Boolean = false,
+    private val lineBreakByContent: Boolean = true,
     private val emptyErase: EmptyErase = EmptyErase.CHANGE_TYPE,
     private val onLineBreak: (Action.LineBreak) -> Unit = {},
-    override var onFocusChanged: (FocusState) -> Unit = {},
+    override var onFocusChanged: (FocusState) -> Unit = {}
 ) : SimpleTextDrawer {
 
     @Composable
@@ -76,6 +77,7 @@ class TextDrawer(
                     }
                 }
                 .onKeyEvent { keyEvent ->
+                    println("onKeyEvent: $keyEvent")
                     onKeyEvent(keyEvent, inputText, step, drawInfo.position, emptyErase)
                 }
                 .onFocusChanged(onFocusChanged)
@@ -83,18 +85,26 @@ class TextDrawer(
             value = inputText,
             onValueChange = { value ->
                 val text = value.text
-                val newStep = step.copy(text = text)
-
-                inputText = if (text.contains("\n") && !allowLineBreaks) {
+                println("text $text")
+                inputText = if (lineBreakByContent && !allowLineBreaks && text.contains("\n")) {
+                    println("onValueChange. it has linebreak")
+                    val newStep = step.copy(text = text)
                     onLineBreak(Action.LineBreak(newStep, drawInfo.position))
 
                     val newText = text.split("\n", limit = 2)[0]
                     TextFieldValue(newText, TextRange(newText.length))
                 } else {
+                    println("onValueChange. it has not linebreak")
+                    val newText = if (allowLineBreaks) {
+                        text
+                    } else {
+                        text.replace("\n", "")
+                    }
+                    val newStep = step.copy(text = newText)
                     onTextEdit(Action.StoryStateChange(newStep, drawInfo.position))
                     commandHandler.handleCommand(text, newStep, drawInfo.position)
 
-                    value
+                    value.copy(text = newText)
                 }
             },
             keyboardOptions = KeyboardOptions(

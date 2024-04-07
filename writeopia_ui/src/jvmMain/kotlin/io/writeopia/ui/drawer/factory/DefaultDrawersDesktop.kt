@@ -30,6 +30,7 @@ object DefaultDrawersDesktop : DrawersFactory {
             groupsBackgroundColor,
             onHeaderClick,
             dragIconWidth = 16.dp,
+            lineBreakByContent = true,
             eventListener = KeyEventListenerFactory.desktop(
                 manager = manager,
 //                isLineBreakKey = ::isLineBreak,
