@@ -95,7 +95,11 @@ class TextDrawer(
                     TextFieldValue(newText, TextRange(newText.length))
                 } else {
                     println("onValueChange. it has not linebreak")
-                    val newText = text.replace("\n", "")
+                    val newText = if (allowLineBreaks) {
+                        text
+                    } else {
+                        text.replace("\n", "")
+                    }
                     val newStep = step.copy(text = newText)
                     onTextEdit(Action.StoryStateChange(newStep, drawInfo.position))
                     commandHandler.handleCommand(text, newStep, drawInfo.position)
