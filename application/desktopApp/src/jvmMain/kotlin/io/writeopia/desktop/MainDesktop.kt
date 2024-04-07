@@ -5,11 +5,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.awtEventOrNull
+import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isAltPressed
 import androidx.compose.ui.input.key.isCtrlPressed
 import androidx.compose.ui.input.key.isMetaPressed
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
@@ -48,7 +50,8 @@ fun main() = application {
                     modifier = { writeopiaStateManager ->
                         Modifier.onPreviewKeyEvent { keyEvent ->
                             val shouldHandle = keyEvent.isMetaPressed &&
-                                    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_Z
+                                    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_Z &&
+                                    keyEvent.type == KeyEventType.KeyDown
 
                             if (shouldHandle) {
                                 writeopiaStateManager.undo()
