@@ -2,6 +2,7 @@ package io.writeopia.notes.desktop.components
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -9,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
 import io.writeopia.editor.di.EditorKmpInjector
@@ -97,6 +99,7 @@ fun App(
                                 drawersFactory = drawersFactory,
                                 loadNoteId = state.noteId,
                                 modifier = modifier(noteEditorViewModel.writeopiaManager)
+                                    .padding(horizontal = 30.dp)
                             )
                         }
                     )
