@@ -8,6 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
 import io.writeopia.editor.di.EditorKmpInjector
@@ -18,16 +19,19 @@ import io.writeopia.note_menu.di.NotesMenuKmpInjection
 import io.writeopia.note_menu.ui.desktop.NotesMenu
 import io.writeopia.notes.desktop.components.navigation.NavigationPage
 import io.writeopia.notes.desktop.components.navigation.NavigationViewModel
+import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.ui.drawer.factory.DrawersFactory
+import io.writeopia.ui.manager.WriteopiaStateManager
 
 @Composable
 fun App(
     notesConfigurationInjector: NotesConfigurationInjector,
     repositoryInjection: RepositoryInjector,
     drawersFactory: DrawersFactory,
-    disableWebsocket: Boolean = false
+    disableWebsocket: Boolean = false,
+    modifier: (WriteopiaStateManager) -> Modifier = { _ -> Modifier }
 ) {
     val authCoreInjection = KmpAuthCoreInjection()
     val connectionInjection =
@@ -91,7 +95,8 @@ fun App(
                                 noteEditorViewModel.writeopiaManager,
                                 noteEditorViewModel,
                                 drawersFactory = drawersFactory,
-                                loadNoteId = state.noteId
+                                loadNoteId = state.noteId,
+                                modifier = modifier(noteEditorViewModel.writeopiaManager)
                             )
                         }
                     )

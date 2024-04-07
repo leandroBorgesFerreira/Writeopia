@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.onKeyEvent
 import io.writeopia.editor.ui.TextEditor
 import io.writeopia.editor.viewmodel.NoteEditorKmpViewModel
 import io.writeopia.sdk.models.id.GenerateId
@@ -21,7 +22,8 @@ fun AppTextEditor(
     manager: WriteopiaStateManager,
     viewModel: NoteEditorKmpViewModel,
     drawersFactory: DrawersFactory,
-    loadNoteId: String? = null
+    loadNoteId: String? = null,
+    modifier: Modifier = Modifier
 ) {
     val listState: LazyListState = rememberLazyListState()
     val coroutine = rememberCoroutineScope()
@@ -39,7 +41,7 @@ fun AppTextEditor(
         viewModel.loadDocument(loadNoteId)
     }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = modifier.fillMaxWidth()) {
         TextEditor(viewModel, drawersFactory)
     }
 }
