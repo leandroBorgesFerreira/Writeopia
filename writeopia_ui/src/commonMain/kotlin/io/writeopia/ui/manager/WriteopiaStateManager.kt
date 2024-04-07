@@ -350,7 +350,7 @@ class WriteopiaStateManager(
      */
     fun clickAtTheEnd() {
         val stories = _currentStory.value.stories
-        val lastPosition = stories.size - 3
+        val lastPosition = stories.size - 1
         val lastContentStory = stories[lastPosition]
 
         val newState = if (lastContentStory?.type == StoryTypes.TEXT.type) {
