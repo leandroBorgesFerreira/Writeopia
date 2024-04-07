@@ -38,9 +38,7 @@ object DefaultDrawersJs : DrawersFactory {
                 manager = manager,
                 isEmptyErase = ::emptyErase,
             )
-        ).also {
-            println("Creating JS drawers")
-        }
+        )
 
     private fun emptyErase(keyEvent: KeyEvent, input: TextFieldValue): Boolean =
         keyEvent.nativeKeyEvent.key == SkikoKey.KEY_BACKSPACE && input.selection.start == 0

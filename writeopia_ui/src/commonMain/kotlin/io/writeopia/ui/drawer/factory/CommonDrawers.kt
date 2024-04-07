@@ -82,8 +82,6 @@ object CommonDrawers {
                     textCommandHandler = TextCommandHandler.noCommands(),
                     eventListener = eventListener,
                     textStyle = { codeBlockStyle() },
-//                    isEmptyErase = isEmptyErase,
-//                    deleteOnEmptyErase = true,
                     allowLineBreaks = true,
                     emptyErase = EmptyErase.CHANGE_TYPE,
                 )
@@ -100,7 +98,6 @@ object CommonDrawers {
                 textCommandHandler = textCommandHandler,
                 eventListener = eventListener,
                 emptyErase = EmptyErase.DELETE,
-//                deleteOnEmptyErase = true,
             )
         }
 
@@ -115,8 +112,6 @@ object CommonDrawers {
                     textCommandHandler = TextCommandHandler.noCommands(),
                     eventListener = eventListener,
                     emptyErase = EmptyErase.CHANGE_TYPE,
-//                    isEmptyErase = isEmptyErase,
-//                    deleteOnEmptyErase = false
                 )
             }
         val checkItemDrawer = checkItemDrawer(
@@ -129,7 +124,6 @@ object CommonDrawers {
                 textCommandHandler = TextCommandHandler.noCommands(),
                 eventListener = eventListener,
                 emptyErase = EmptyErase.CHANGE_TYPE,
-//                deleteOnEmptyErase = false
             )
         }
 
@@ -144,7 +138,6 @@ object CommonDrawers {
                     textCommandHandler = TextCommandHandler.noCommands(),
                     eventListener = eventListener,
                     emptyErase = EmptyErase.CHANGE_TYPE,
-//                    deleteOnEmptyErase = false
                 )
             }
         val headerDrawer = headerDrawer(
