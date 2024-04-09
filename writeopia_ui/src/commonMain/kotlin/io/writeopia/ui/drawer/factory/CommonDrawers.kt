@@ -112,7 +112,7 @@ object CommonDrawers {
             ) { fontSize ->
                 messageDrawer(
                     manager,
-                    textCommandHandler = TextCommandHandler.noCommands(),
+                    textCommandHandler = textCommandHandler,
                     textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
                     eventListener = eventListener,
                     emptyErase = EmptyErase.CHANGE_TYPE,
@@ -126,7 +126,7 @@ object CommonDrawers {
         ) {
             messageDrawer(
                 manager,
-                textCommandHandler = TextCommandHandler.noCommands(),
+                textCommandHandler = textCommandHandler,
                 eventListener = eventListener,
                 emptyErase = EmptyErase.CHANGE_TYPE,
                 lineBreakByContent = lineBreakByContent,
@@ -141,7 +141,7 @@ object CommonDrawers {
             ) {
                 messageDrawer(
                     manager,
-                    textCommandHandler = TextCommandHandler.noCommands(),
+                    textCommandHandler = textCommandHandler,
                     eventListener = eventListener,
                     emptyErase = EmptyErase.CHANGE_TYPE,
                     lineBreakByContent = lineBreakByContent,

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -87,14 +88,12 @@ class TextDrawer(
                 val text = value.text
                 println("text $text")
                 inputText = if (lineBreakByContent && !allowLineBreaks && text.contains("\n")) {
-                    println("onValueChange. it has linebreak")
                     val newStep = step.copy(text = text)
                     onLineBreak(Action.LineBreak(newStep, drawInfo.position))
 
                     val newText = text.split("\n", limit = 2)[0]
                     TextFieldValue(newText, TextRange(newText.length))
                 } else {
-                    println("onValueChange. it has not linebreak")
                     val newText = if (allowLineBreaks) {
                         text
                     } else {
@@ -113,7 +112,7 @@ class TextDrawer(
             textStyle = textStyle(step),
             cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
             interactionSource = interactionSource,
-            decorationBox = decorationBox
+            decorationBox = decorationBox,
         )
     }
 }

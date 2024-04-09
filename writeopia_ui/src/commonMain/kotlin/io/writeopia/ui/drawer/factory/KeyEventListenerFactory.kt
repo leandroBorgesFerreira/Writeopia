@@ -4,6 +4,7 @@ import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.text.input.TextFieldValue
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.model.action.Action
+import io.writeopia.sdk.models.command.TypeInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.model.EmptyErase
@@ -23,7 +24,7 @@ object KeyEventListenerFactory {
                         }
 
                         EmptyErase.CHANGE_TYPE -> {
-                            manager.changeStoryType(position, StoryTypes.TEXT.type, null)
+                            manager.changeStoryType(position, TypeInfo(StoryTypes.TEXT.type), null)
                         }
 
                         EmptyErase.DISABLED -> {}
@@ -50,7 +51,7 @@ object KeyEventListenerFactory {
                         }
 
                         EmptyErase.CHANGE_TYPE -> {
-                            manager.changeStoryType(position, StoryTypes.TEXT.type, null)
+                            manager.changeStoryType(position, TypeInfo(StoryTypes.TEXT.type), null)
                         }
 
                         EmptyErase.DISABLED -> {}
@@ -83,7 +84,7 @@ object KeyEventListenerFactory {
                         }
 
                         EmptyErase.CHANGE_TYPE -> {
-                            manager.changeStoryType(position, StoryTypes.TEXT.type, null)
+                            manager.changeStoryType(position, TypeInfo(StoryTypes.TEXT.type), null)
                         }
 
                         EmptyErase.DISABLED -> {}

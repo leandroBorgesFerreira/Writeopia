@@ -5,6 +5,7 @@ import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.model.story.LastEdit
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.command.CommandInfo
+import io.writeopia.sdk.models.command.TypeInfo
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
@@ -130,13 +131,13 @@ class WriteopiaManager(
      */
     fun changeStoryType(
         position: Int,
-        storyType: StoryType,
+        typeInfo: TypeInfo,
         commandInfo: CommandInfo?,
         storyState: StoryState
     ): StoryState =
         contentHandler.changeStoryType(
             storyState.stories,
-            storyType,
+            typeInfo,
             position,
             commandInfo
         )

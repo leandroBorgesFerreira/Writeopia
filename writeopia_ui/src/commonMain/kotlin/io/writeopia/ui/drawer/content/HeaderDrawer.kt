@@ -96,7 +96,7 @@ fun headerDrawer(
     headerClick: () -> Unit,
     onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean,
     modifier: Modifier = Modifier,
-    lineBreakByContent: Boolean
+    lineBreakByContent: Boolean,
 ): StoryStepDrawer =
     HeaderDrawer(
         modifier = modifier,

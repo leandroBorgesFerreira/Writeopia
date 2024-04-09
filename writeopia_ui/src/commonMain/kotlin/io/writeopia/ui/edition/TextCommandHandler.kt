@@ -1,7 +1,10 @@
 package io.writeopia.ui.edition
 
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import io.writeopia.sdk.models.command.*
+import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.manager.WriteopiaStateManager
@@ -27,13 +30,15 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
     companion object {
         fun noCommands(): TextCommandHandler = TextCommandHandler(emptyMap())
 
-        fun defaultCommands(manager: WriteopiaStateManager): TextCommandHandler =
-            TextCommandHandler(
+        fun defaultCommands(manager: WriteopiaStateManager): TextCommandHandler {
+            val background = Color.Black.toArgb()
+
+            return TextCommandHandler(
                 mapOf(
                     CommandFactory.checkItem() to { _, position ->
                         manager.changeStoryType(
                             position,
-                            StoryTypes.CHECK_ITEM.type,
+                            TypeInfo(StoryTypes.CHECK_ITEM.type),
                             CommandInfo(
                                 CommandFactory.checkItem(),
                                 CommandTrigger.WRITTEN
@@ -42,7 +47,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                     }, CommandFactory.unOrderedList() to { _, position ->
                         manager.changeStoryType(
                             position,
-                            StoryTypes.UNORDERED_LIST_ITEM.type,
+                            TypeInfo(StoryTypes.UNORDERED_LIST_ITEM.type),
                             CommandInfo(
                                 CommandFactory.unOrderedList(),
                                 CommandTrigger.WRITTEN
@@ -52,7 +57,10 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                     CommandFactory.h1() to { _, position ->
                         manager.changeStoryType(
                             position,
-                            StoryTypes.H1.type,
+                            TypeInfo(
+                                StoryTypes.TEXT.type,
+                                Decoration(textSize = 28)
+                            ),
                             CommandInfo(
                                 CommandFactory.h1(),
                                 CommandTrigger.WRITTEN
@@ -62,7 +70,10 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                     CommandFactory.h2() to { _, position ->
                         manager.changeStoryType(
                             position,
-                            StoryTypes.H2.type,
+                            TypeInfo(
+                                StoryTypes.TEXT.type,
+                                Decoration(textSize = 24)
+                            ),
                             CommandInfo(
                                 CommandFactory.h2(),
                                 CommandTrigger.WRITTEN
@@ -72,7 +83,10 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                     CommandFactory.h3() to { _, position ->
                         manager.changeStoryType(
                             position,
-                            StoryTypes.H3.type,
+                            TypeInfo(
+                                StoryTypes.TEXT.type,
+                                Decoration(textSize = 20)
+                            ),
                             CommandInfo(
                                 CommandFactory.h3(),
                                 CommandTrigger.WRITTEN
@@ -82,7 +96,10 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                     CommandFactory.h4() to { _, position ->
                         manager.changeStoryType(
                             position,
-                            StoryTypes.H4.type,
+                            TypeInfo(
+                                StoryTypes.TEXT.type,
+                                Decoration(textSize = 18)
+                            ),
                             CommandInfo(
                                 CommandFactory.h4(),
                                 CommandTrigger.WRITTEN
@@ -92,7 +109,10 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                     CommandFactory.codeBlock() to { _, position ->
                         manager.changeStoryType(
                             position,
-                            StoryTypes.TEXT_BOX.type,
+                            TypeInfo(
+                                StoryTypes.CODE_BLOCK.type,
+                                Decoration(textSize = 16)
+                            ),
                             CommandInfo(
                                 CommandFactory.codeBlock(),
                                 CommandTrigger.WRITTEN
@@ -101,5 +121,6 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                     }
                 )
             )
+        }
     }
 }

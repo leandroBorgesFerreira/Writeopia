@@ -23,7 +23,8 @@ fun HeaderDrawerStepPreview() {
     val step = StoryStep(
         type = StoryTypes.TITLE.type,
         decoration = Decoration(
-            backgroundColor = Color.Blue.toArgb()
+            backgroundColor = Color.Blue.toArgb(),
+            textSize = 16
         ),
         text = "Document Title",
     )
@@ -51,7 +52,7 @@ fun HeaderDrawerStepPreview() {
 fun HeaderDrawerStepPreviewNoColor() {
     val step = StoryStep(
         type = StoryTypes.TITLE.type,
-        decoration = Decoration(),
+        decoration = Decoration(textSize = 16),
         text = "Document Title",
     )
 
