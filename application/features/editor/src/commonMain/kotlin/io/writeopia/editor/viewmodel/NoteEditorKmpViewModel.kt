@@ -153,9 +153,10 @@ class NoteEditorKmpViewModel(
     override fun onHeaderColorSelection(color: Int?) {
         onHeaderEditionCancel()
         writeopiaManager.currentStory.value.stories[0]?.let { storyStep ->
+
             val action = Action.StoryStateChange(
                 storyStep = storyStep.copy(
-                    decoration = Decoration(
+                    decoration = storyStep.decoration.copy(
                         backgroundColor = color
                     )
                 ),

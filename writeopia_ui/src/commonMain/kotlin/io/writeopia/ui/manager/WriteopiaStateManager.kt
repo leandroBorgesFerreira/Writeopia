@@ -20,12 +20,12 @@ import io.writeopia.sdk.models.command.CommandInfo
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
 import io.writeopia.sdk.shared_edition.SharedEditionManager
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.toEditState
+import io.writeopia.sdk.models.command.TypeInfo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
@@ -295,13 +295,13 @@ class WriteopiaStateManager(
      * @param storyType [StoryStep]
      * @param commandInfo [CommandInfo]
      */
-    fun changeStoryType(position: Int, storyType: StoryType, commandInfo: CommandInfo?) {
+    fun changeStoryType(position: Int, typeInfo: TypeInfo, commandInfo: CommandInfo?) {
         if (isOnSelection) {
             cancelSelection()
         }
 
         _currentStory.value =
-            writeopiaManager.changeStoryType(position, storyType, commandInfo, _currentStory.value)
+            writeopiaManager.changeStoryType(position, typeInfo, commandInfo, _currentStory.value)
     }
 
     /**

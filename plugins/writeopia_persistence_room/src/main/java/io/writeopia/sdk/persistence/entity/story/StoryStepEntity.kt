@@ -20,5 +20,6 @@ data class StoryStepEntity(
     @ColumnInfo(name = "document_id") val documentId: String,
     @ColumnInfo(name = "is_group") val isGroup: Boolean,
     @ColumnInfo(name = "has_inner_steps") val hasInnerSteps: Boolean,
-    @ColumnInfo(name = "background_color") val backgroundColor: Int?,
+    @ColumnInfo(name = "background_color") val backgroundColor: Int,
+    @ColumnInfo(name = "background_color") val fontSize: Int,
 )

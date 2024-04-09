@@ -34,7 +34,8 @@ fun StoryStepEntity.toModel(
         checked = checked,
         steps = steps.map { storyUnitEntity -> storyUnitEntity.toModel() },
         decoration = Decoration(
-            backgroundColor = backgroundColor
+            backgroundColor = backgroundColor,
+            textSize = fontSize
         )
     )
 

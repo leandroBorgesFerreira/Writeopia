@@ -33,6 +33,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                     CommandFactory.checkItem() to { _, position ->
                         manager.changeStoryType(
                             position,
+                            
                             StoryTypes.CHECK_ITEM.type,
                             CommandInfo(
                                 CommandFactory.checkItem(),
@@ -52,7 +53,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                     CommandFactory.h1() to { _, position ->
                         manager.changeStoryType(
                             position,
-                            StoryTypes.H1.type,
+                            StoryTypes.TEXT.type,
                             CommandInfo(
                                 CommandFactory.h1(),
                                 CommandTrigger.WRITTEN
@@ -62,7 +63,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                     CommandFactory.h2() to { _, position ->
                         manager.changeStoryType(
                             position,
-                            StoryTypes.H2.type,
+                            StoryTypes.TEXT.type,
                             CommandInfo(
                                 CommandFactory.h2(),
                                 CommandTrigger.WRITTEN
@@ -72,7 +73,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                     CommandFactory.h3() to { _, position ->
                         manager.changeStoryType(
                             position,
-                            StoryTypes.H3.type,
+                            StoryTypes.TEXT.type,
                             CommandInfo(
                                 CommandFactory.h3(),
                                 CommandTrigger.WRITTEN
@@ -82,7 +83,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                     CommandFactory.h4() to { _, position ->
                         manager.changeStoryType(
                             position,
-                            StoryTypes.H4.type,
+                            StoryTypes.TEXT.type,
                             CommandInfo(
                                 CommandFactory.h4(),
                                 CommandTrigger.WRITTEN
