@@ -3,6 +3,12 @@ package io.writeopia.desktop
 import androidx.compose.material.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.awtEventOrNull
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isMetaPressed
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
@@ -14,6 +20,7 @@ import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.drawer.factory.DefaultDrawersDesktop
+import java.awt.event.KeyEvent
 
 fun main() = application {
     val databaseStateFlow = DatabaseFactory.createDatabaseAsState(
@@ -36,7 +43,21 @@ fun main() = application {
                 App(
                     notesConfigurationInjector = NotesConfigurationInjector(database),
                     repositoryInjection = injector,
-                    DefaultDrawersDesktop
+                    DefaultDrawersDesktop,
+                    editorModifier = { writeopiaStateManager ->
+                        Modifier.onPreviewKeyEvent { keyEvent ->
+                            val shouldHandle = keyEvent.isMetaPressed &&
+                                    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_Z &&
+                                    keyEvent.type == KeyEventType.KeyDown
+
+                            if (shouldHandle) {
+                                writeopiaStateManager.undo()
+                                true
+                            } else {
+                                false
+                            }
+                        }
+                    }
                 )
             }
 
@@ -46,4 +67,3 @@ fun main() = application {
         }
     }
 }
-

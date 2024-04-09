@@ -21,7 +21,8 @@ fun AppTextEditor(
     manager: WriteopiaStateManager,
     viewModel: NoteEditorKmpViewModel,
     drawersFactory: DrawersFactory,
-    loadNoteId: String? = null
+    loadNoteId: String? = null,
+    modifier: Modifier = Modifier
 ) {
     val listState: LazyListState = rememberLazyListState()
     val coroutine = rememberCoroutineScope()
@@ -39,7 +40,5 @@ fun AppTextEditor(
         viewModel.loadDocument(loadNoteId)
     }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
-        TextEditor(viewModel, drawersFactory)
-    }
+    TextEditor(viewModel, drawersFactory, modifier)
 }

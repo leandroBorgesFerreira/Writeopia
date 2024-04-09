@@ -77,7 +77,7 @@ class TextDrawer(
                     }
                 }
                 .onKeyEvent { keyEvent ->
-                    println("onKeyEvent: $keyEvent")
+//                    println("onKeyEvent: $keyEvent")
                     onKeyEvent(keyEvent, inputText, step, drawInfo.position, emptyErase)
                 }
                 .onFocusChanged(onFocusChanged)

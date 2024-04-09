@@ -35,7 +35,6 @@ fun EditorScaffold(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        //Todo: Move this to WriteopiaEditorBox
         BoxWithConstraints {
             Column(
                 modifier = Modifier
@@ -48,9 +47,8 @@ fun EditorScaffold(
                         }
                     }
                     .defaultMinSize(minHeight = 700.dp)
-                    .padding(30.dp)
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(Color.White),
+//                    .clip(RoundedCornerShape(20.dp))
+//                    .background(Color.White)
             ) {
                 content()
 
@@ -71,7 +69,7 @@ fun EditorScaffold(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = "Back",
                 modifier = Modifier.align(Alignment.TopStart)
-                    .padding(horizontal = 50.dp, vertical = 50.dp)
+                    .padding(20.dp)
                     .clip(CircleShape)
                     .clickable(onClick = onBackClick)
                     .testTag("NoteEditorScreenNavigateBack")
