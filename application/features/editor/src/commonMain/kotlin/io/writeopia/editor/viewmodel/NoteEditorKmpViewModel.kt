@@ -155,11 +155,15 @@ class NoteEditorKmpViewModel(
         writeopiaManager.currentStory.value.stories[0]?.let { storyStep ->
 
             val action = Action.StoryStateChange(
-                storyStep = storyStep.copy(
-                    decoration = storyStep.decoration.copy(
-                        backgroundColor = color
+                storyStep = if (color != null) {
+                    storyStep.copy(
+                        decoration = storyStep.decoration.copy(
+                            backgroundColor = color
+                        )
                     )
-                ),
+                } else {
+                    storyStep
+                },
                 position = 0
             )
             writeopiaManager.changeStoryState(action)

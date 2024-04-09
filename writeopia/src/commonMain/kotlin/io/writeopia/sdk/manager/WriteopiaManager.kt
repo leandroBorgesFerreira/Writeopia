@@ -131,13 +131,13 @@ class WriteopiaManager(
      */
     fun changeStoryType(
         position: Int,
-        storyType: TypeInfo,
+        typeInfo: TypeInfo,
         commandInfo: CommandInfo?,
         storyState: StoryState
     ): StoryState =
         contentHandler.changeStoryType(
             storyState.stories,
-            storyType,
+            typeInfo,
             position,
             commandInfo
         )

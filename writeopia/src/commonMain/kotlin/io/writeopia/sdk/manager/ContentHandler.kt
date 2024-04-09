@@ -5,6 +5,7 @@ import io.writeopia.sdk.model.story.LastEdit
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.command.CommandInfo
 import io.writeopia.sdk.models.command.CommandTrigger
+import io.writeopia.sdk.models.command.TypeInfo
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
@@ -49,7 +50,7 @@ class ContentHandler(
 
     fun changeStoryType(
         currentStory: Map<Int, StoryStep>,
-        type: StoryType,
+        typeInfo: TypeInfo,
         position: Int,
         commandInfo: CommandInfo?
     ): StoryState {
@@ -69,11 +70,22 @@ class ContentHandler(
                 storyStep.text
             }
 
-            val newCheck = storyStep.copy(
-                localId = GenerateId.generate(),
-                type = type,
-                text = newText
-            )
+            val decoration = typeInfo.decoration
+
+            val newCheck = if (decoration != null) {
+                storyStep.copy(
+                    localId = GenerateId.generate(),
+                    type = typeInfo.storyType,
+                    text = newText,
+                    decoration = decoration
+                )
+            } else {
+                storyStep.copy(
+                    localId = GenerateId.generate(),
+                    type = typeInfo.storyType,
+                    text = newText,
+                )
+            }
 
             newMap[position] = newCheck
         }

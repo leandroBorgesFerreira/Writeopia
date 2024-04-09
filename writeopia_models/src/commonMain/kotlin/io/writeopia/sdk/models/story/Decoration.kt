@@ -6,7 +6,7 @@ package io.writeopia.sdk.models.story
  * @param backgroundColor The background color.
  */
 data class Decoration(
-    val backgroundColor: Int,
+    val backgroundColor: Int? = null,
     val textSize: Int,
     val fontWeight: WriteopiaFontWeight = WriteopiaFontWeight.NORMAL
 )

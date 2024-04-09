@@ -5,5 +5,5 @@ import io.writeopia.sdk.models.story.StoryType
 
 data class TypeInfo(
     val storyType: StoryType,
-    val textDecoration: Decoration
+    val decoration: Decoration? = null
 )

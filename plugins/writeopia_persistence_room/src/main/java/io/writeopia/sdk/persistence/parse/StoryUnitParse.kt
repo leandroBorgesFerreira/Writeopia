@@ -53,5 +53,6 @@ fun StoryStep.toEntity(position: Int, documentId: String): StoryStepEntity =
         documentId = documentId,
         isGroup = false,
         hasInnerSteps = this.steps.isNotEmpty(),
-        backgroundColor = this.decoration.backgroundColor
+        backgroundColor = this.decoration.backgroundColor,
+        fontSize = this.decoration.textSize
     )
