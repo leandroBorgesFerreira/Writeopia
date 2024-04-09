@@ -5,6 +5,7 @@ import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.models.command.CommandFactory
 import io.writeopia.sdk.models.command.CommandInfo
 import io.writeopia.sdk.models.command.CommandTrigger
+import io.writeopia.sdk.models.command.TypeInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
@@ -73,7 +74,7 @@ class ContentHandlerTest {
 
         val newState = contentHandler.changeStoryType(
             currentStory = mutable,
-            type = StoryTypes.CHECK_ITEM.type,
+            typeInfo = TypeInfo(StoryTypes.CHECK_ITEM.type),
             position = position,
             CommandInfo(CommandFactory.checkItem(), CommandTrigger.WRITTEN)
         )
@@ -101,15 +102,15 @@ class ContentHandlerTest {
 
         val newState = contentHandler.changeStoryType(
             currentStory = mutable,
-            type = StoryTypes.H1.type,
+            typeInfo = TypeInfo(StoryTypes.TEXT.type),
             position = position,
             CommandInfo(CommandFactory.h1(), CommandTrigger.WRITTEN)
         )
 
-        val h1Story = newState.stories[position]
+        val textStory = newState.stories[position]
 
-        assertEquals(StoryTypes.H1.type, h1Story?.type)
-        assertEquals(text, h1Story?.text)
+        assertEquals(StoryTypes.TEXT.type, textStory?.type)
+        assertEquals(text, textStory?.text)
 
         val deletePosition = 2
 
@@ -118,7 +119,7 @@ class ContentHandlerTest {
             newState.stories
         )
 
-        assertEquals(h1Story!!.id, newState2?.focusId,)
+        assertEquals(textStory!!.id, newState2?.focusId)
     }
 }
 
