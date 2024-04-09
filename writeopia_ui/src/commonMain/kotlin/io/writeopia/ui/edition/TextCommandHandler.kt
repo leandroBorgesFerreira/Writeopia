@@ -40,7 +40,6 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                             position,
                             TypeInfo(
                                 StoryTypes.CHECK_ITEM.type,
-                                Decoration(textSize = 16)
                             ),
                             CommandInfo(
                                 CommandFactory.checkItem(),
@@ -52,7 +51,6 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                             position,
                             TypeInfo(
                                 StoryTypes.UNORDERED_LIST_ITEM.type,
-                                Decoration(textSize = 16)
                             ),
                             CommandInfo(
                                 CommandFactory.unOrderedList(),
