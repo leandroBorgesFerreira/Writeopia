@@ -38,9 +38,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                     CommandFactory.checkItem() to { _, position ->
                         manager.changeStoryType(
                             position,
-                            TypeInfo(
-                                StoryTypes.CHECK_ITEM.type,
-                            ),
+                            TypeInfo(StoryTypes.CHECK_ITEM.type),
                             CommandInfo(
                                 CommandFactory.checkItem(),
                                 CommandTrigger.WRITTEN
@@ -49,9 +47,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                     }, CommandFactory.unOrderedList() to { _, position ->
                         manager.changeStoryType(
                             position,
-                            TypeInfo(
-                                StoryTypes.UNORDERED_LIST_ITEM.type,
-                            ),
+                            TypeInfo(StoryTypes.UNORDERED_LIST_ITEM.type),
                             CommandInfo(
                                 CommandFactory.unOrderedList(),
                                 CommandTrigger.WRITTEN
