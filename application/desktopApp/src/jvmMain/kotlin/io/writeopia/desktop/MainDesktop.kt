@@ -6,10 +6,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.awtEventOrNull
 import androidx.compose.ui.input.key.KeyEventType
-import androidx.compose.ui.input.key.isAltPressed
-import androidx.compose.ui.input.key.isCtrlPressed
 import androidx.compose.ui.input.key.isMetaPressed
-import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
@@ -47,7 +44,7 @@ fun main() = application {
                     notesConfigurationInjector = NotesConfigurationInjector(database),
                     repositoryInjection = injector,
                     DefaultDrawersDesktop,
-                    modifier = { writeopiaStateManager ->
+                    editorModifier = { writeopiaStateManager ->
                         Modifier.onPreviewKeyEvent { keyEvent ->
                             val shouldHandle = keyEvent.isMetaPressed &&
                                     keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_Z &&

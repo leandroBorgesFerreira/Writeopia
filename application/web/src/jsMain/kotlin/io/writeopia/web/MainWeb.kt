@@ -30,7 +30,7 @@ fun CreateAppInMemory(repositoryInjection: SqlDelightDaoInjector) {
         notesConfigurationInjector = NotesConfigurationInjector.noop(),
         repositoryInjection = repositoryInjection,
         drawersFactory = DefaultDrawersJs,
-        modifier = { writeopiaStateManager ->
+        editorModifier = { writeopiaStateManager ->
             Modifier.onPreviewKeyEvent { keyEvent ->
                 val shouldHandle = keyEvent.isMetaPressed &&
                         keyEvent.nativeKeyEvent.key == SkikoKey.KEY_Z &&

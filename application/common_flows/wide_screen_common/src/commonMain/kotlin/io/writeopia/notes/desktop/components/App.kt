@@ -21,7 +21,6 @@ import io.writeopia.note_menu.di.NotesMenuKmpInjection
 import io.writeopia.note_menu.ui.desktop.NotesMenu
 import io.writeopia.notes.desktop.components.navigation.NavigationPage
 import io.writeopia.notes.desktop.components.navigation.NavigationViewModel
-import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.ui.drawer.factory.DrawersFactory
@@ -33,7 +32,7 @@ fun App(
     repositoryInjection: RepositoryInjector,
     drawersFactory: DrawersFactory,
     disableWebsocket: Boolean = false,
-    modifier: (WriteopiaStateManager) -> Modifier = { _ -> Modifier }
+    editorModifier: (WriteopiaStateManager) -> Modifier = { _ -> Modifier }
 ) {
     val authCoreInjection = KmpAuthCoreInjection()
     val connectionInjection =
@@ -98,7 +97,7 @@ fun App(
                                 noteEditorViewModel,
                                 drawersFactory = drawersFactory,
                                 loadNoteId = state.noteId,
-                                modifier = modifier(noteEditorViewModel.writeopiaManager)
+                                modifier = editorModifier(noteEditorViewModel.writeopiaManager)
                                     .padding(horizontal = 30.dp)
                             )
                         }
