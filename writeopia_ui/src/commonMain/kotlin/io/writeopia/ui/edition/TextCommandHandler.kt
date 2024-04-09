@@ -51,7 +51,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                         manager.changeStoryType(
                             position,
                             TypeInfo(
-                                StoryTypes.CHECK_ITEM.type,
+                                StoryTypes.UNORDERED_LIST_ITEM.type,
                                 Decoration(textSize = 16)
                             ),
                             CommandInfo(
@@ -64,7 +64,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                         manager.changeStoryType(
                             position,
                             TypeInfo(
-                                StoryTypes.CHECK_ITEM.type,
+                                StoryTypes.TEXT.type,
                                 Decoration(textSize = 28)
                             ),
                             CommandInfo(
@@ -77,7 +77,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                         manager.changeStoryType(
                             position,
                             TypeInfo(
-                                StoryTypes.CHECK_ITEM.type,
+                                StoryTypes.TEXT.type,
                                 Decoration(textSize = 24)
                             ),
                             CommandInfo(
@@ -90,7 +90,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                         manager.changeStoryType(
                             position,
                             TypeInfo(
-                                StoryTypes.CHECK_ITEM.type,
+                                StoryTypes.TEXT.type,
                                 Decoration(textSize = 20)
                             ),
                             CommandInfo(
@@ -103,7 +103,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                         manager.changeStoryType(
                             position,
                             TypeInfo(
-                                StoryTypes.CHECK_ITEM.type,
+                                StoryTypes.TEXT.type,
                                 Decoration(textSize = 18)
                             ),
                             CommandInfo(
@@ -116,7 +116,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                         manager.changeStoryType(
                             position,
                             TypeInfo(
-                                StoryTypes.CHECK_ITEM.type,
+                                StoryTypes.CODE_BLOCK.type,
                                 Decoration(textSize = 16)
                             ),
                             CommandInfo(
