@@ -8,15 +8,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.writeopia.note_menu.ui.screen.file.fileChooser
 
 @Composable
-fun DesktopNoteActionsMenu(modifier: Modifier = Modifier) {
+fun DesktopNoteActionsMenu(
+    modifier: Modifier = Modifier,
+    fileChooser: (String) -> Unit = ::fileChooser
+) {
     Row(modifier = modifier) {
-        IconButton(onClick = {}) {
+        IconButton(onClick = { fileChooser() }) {
             Icon(imageVector = Icons.Default.FileUpload, contentDescription = "Export")
         }
 
-        IconButton(onClick = {}) {
+        IconButton(onClick = { fileChooser() }) {
             Icon(imageVector = Icons.Default.FileDownload, contentDescription = "Export")
         }
     }
