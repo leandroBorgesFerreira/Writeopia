@@ -23,10 +23,6 @@ class ContentHandler(
     private val focusableTypes: Set<Int> = setOf(
         StoryTypes.TITLE.type.number,
         StoryTypes.TEXT.type.number,
-        StoryTypes.H1.type.number,
-        StoryTypes.H2.type.number,
-        StoryTypes.H3.type.number,
-        StoryTypes.H4.type.number,
         StoryTypes.CHECK_ITEM.type.number,
         StoryTypes.UNORDERED_LIST_ITEM.type.number,
     ),
@@ -205,10 +201,6 @@ class ContentHandler(
 
 private fun defaultLineBreakMap(storyType: StoryType): StoryType =
     when (storyType) {
-        StoryTypes.H1.type,
-        StoryTypes.H2.type,
-        StoryTypes.H3.type,
-        StoryTypes.H4.type,
         StoryTypes.TITLE.type -> StoryTypes.TEXT.type
 
         else -> storyType

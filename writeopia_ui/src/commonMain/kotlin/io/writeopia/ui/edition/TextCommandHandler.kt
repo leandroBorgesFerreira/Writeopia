@@ -7,6 +7,7 @@ import io.writeopia.sdk.models.command.*
 import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.models.story.Tags
 import io.writeopia.ui.manager.WriteopiaStateManager
 
 class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) -> Unit>) {
@@ -63,7 +64,8 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                             ),
                             CommandInfo(
                                 CommandFactory.h1(),
-                                CommandTrigger.WRITTEN
+                                CommandTrigger.WRITTEN,
+                                tags = setOf(Tags.H1.tag)
                             )
                         )
                     },
@@ -76,7 +78,8 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                             ),
                             CommandInfo(
                                 CommandFactory.h2(),
-                                CommandTrigger.WRITTEN
+                                CommandTrigger.WRITTEN,
+                                tags = setOf(Tags.H2.tag)
                             )
                         )
                     },
@@ -89,7 +92,8 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                             ),
                             CommandInfo(
                                 CommandFactory.h3(),
-                                CommandTrigger.WRITTEN
+                                CommandTrigger.WRITTEN,
+                                tags = setOf(Tags.H3.tag)
                             )
                         )
                     },
@@ -102,7 +106,8 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                             ),
                             CommandInfo(
                                 CommandFactory.h4(),
-                                CommandTrigger.WRITTEN
+                                CommandTrigger.WRITTEN,
+                                tags = setOf(Tags.H4.tag)
                             )
                         )
                     },

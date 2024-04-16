@@ -104,21 +104,6 @@ object CommonDrawers {
             )
         }
 
-        val hxDrawers =
-            defaultHxDrawers(
-                manager = manager,
-                modifier = Modifier.padding(horizontal = SMALL_START_PADDING.dp),
-                dragIconWidth = dragIconWidth
-            ) { fontSize ->
-                messageDrawer(
-                    manager,
-                    textCommandHandler = textCommandHandler,
-                    textStyle = { defaultTextStyle(it).copy(fontSize = fontSize) },
-                    eventListener = eventListener,
-                    emptyErase = EmptyErase.CHANGE_TYPE,
-                    lineBreakByContent = lineBreakByContent,
-                )
-            }
         val checkItemDrawer = checkItemDrawer(
             manager,
             Modifier.padding(horizontal = LARGE_START_PADDING.dp),
@@ -171,7 +156,6 @@ object CommonDrawers {
             put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
             put(StoryTypes.TITLE.type.number, headerDrawer)
             put(StoryTypes.CODE_BLOCK.type.number, codeBlockDrawer)
-            putAll(hxDrawers)
         }
     }
 
