@@ -3,13 +3,20 @@ package io.writeopia.note_menu.ui.screen.configuration
 //import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.outlined.Dashboard
-import androidx.compose.material.icons.outlined.List
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,17 +29,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.writeopia.common_ui.SlideInBox
+import io.writeopia.sdk.persistence.core.sorting.OrderBy
 
 private const val INNER_PADDING = 3
 
 @Composable
-internal fun BoxScope.ConfigurationsMenu(
+internal fun BoxScope.MobileConfigurationsMenu(
     modifier: Modifier = Modifier,
     visibilityState: Boolean,
     outsideClick: () -> Unit,
     listOptionClick: () -> Unit,
     gridOptionClick: () -> Unit,
-    sortingSelected: (io.writeopia.sdk.persistence.core.sorting.OrderBy) -> Unit,
+    sortingSelected: (OrderBy) -> Unit,
 ) {
     SlideInBox(
         modifier = modifier.align(Alignment.BottomCenter),
@@ -104,7 +112,7 @@ private fun ArrangementOptions(listOptionClick: () -> Unit, gridOptionClick: () 
             modifier = Modifier
                 .orderConfigModifier(clickable = listOptionClick)
                 .weight(1F),
-            imageVector = Icons.Outlined.List,
+            imageVector = Icons.AutoMirrored.Outlined.List,
             contentDescription = "note list",
 //            stringResource(R.string.note_list),
             tint = MaterialTheme.colorScheme.onPrimary
@@ -128,7 +136,7 @@ private fun ArrangementSection(listOptionClick: () -> Unit, gridOptionClick: () 
 }
 
 @Composable
-private fun SortingSection(sortingSelected: (io.writeopia.sdk.persistence.core.sorting.OrderBy) -> Unit) {
+private fun SortingSection(sortingSelected: (OrderBy) -> Unit) {
     SectionText(text = "Sorting"
 //    stringResource(R.string.sorting)
     )
@@ -146,29 +154,29 @@ private fun SortingSection(sortingSelected: (io.writeopia.sdk.persistence.core.s
     ) {
         Text(
             modifier = Modifier
-                .clickable { sortingSelected(io.writeopia.sdk.persistence.core.sorting.OrderBy.UPDATE) }
+                .clickable { sortingSelected(OrderBy.UPDATE) }
                 .sortingOptionModifier(),
             text = "Last updated",
 //            stringResource(R.string.last_updated)
             style = optionStyle,
         )
 
-        Divider(color = MaterialTheme.colorScheme.primary)
+        HorizontalDivider(color = MaterialTheme.colorScheme.primary)
 
         Text(
             modifier = Modifier
-                .clickable { sortingSelected(io.writeopia.sdk.persistence.core.sorting.OrderBy.CREATE) }
+                .clickable { sortingSelected(OrderBy.CREATE) }
                 .sortingOptionModifier(),
             text = "Create",
 //            stringResource(R.string.last_created),
             style = optionStyle,
         )
 
-        Divider(color = MaterialTheme.colorScheme.primary)
+        HorizontalDivider(color = MaterialTheme.colorScheme.primary)
 
         Text(
             modifier = Modifier
-                .clickable { sortingSelected(io.writeopia.sdk.persistence.core.sorting.OrderBy.NAME) }
+                .clickable { sortingSelected(OrderBy.NAME) }
                 .sortingOptionModifier(),
             text = "Name",
 //            stringResource(R.string.name),
