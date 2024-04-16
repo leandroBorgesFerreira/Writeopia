@@ -2,17 +2,26 @@ package io.writeopia.sdk.export
 
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.models.story.Tags
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class DocumentToMarkdownTest {
 
     @Test
-    fun testMarkDownForOneLine() {
+    fun testMarkDown() {
         val content = mapOf(
-            0 to StoryStep(type = StoryTypes.H1.type, text = "Title!!"),
+            0 to StoryStep(
+                type = StoryTypes.TEXT.type,
+                text = "Title!!",
+                tags = setOf(Tags.H1.tag)
+            ),
             1 to StoryStep(type = StoryTypes.TEXT.type, text = "some text"),
-            2 to StoryStep(type = StoryTypes.H2.type, text = "Subtitle!!")
+            2 to StoryStep(
+                type = StoryTypes.TEXT.type,
+                text = "Subtitle!!",
+                tags = setOf(Tags.H2.tag)
+            )
         )
 
         val parsedContent = DocumentToMarkdown.parse(content, prettyPrint = true)
@@ -30,11 +39,19 @@ class DocumentToMarkdownTest {
     }
 
     @Test
-    fun testMarkdownForOneLinePrittyPrintFalse() {
+    fun testMarkdownPrettyPrintFalse() {
         val content = mapOf(
-            0 to StoryStep(type = StoryTypes.H1.type, text = "Title!!"),
+            0 to StoryStep(
+                type = StoryTypes.TEXT.type,
+                text = "Title!!",
+                tags = setOf(Tags.H1.tag)
+            ),
             1 to StoryStep(type = StoryTypes.TEXT.type, text = "some text"),
-            2 to StoryStep(type = StoryTypes.H2.type, text = "Subtitle!!")
+            2 to StoryStep(
+                type = StoryTypes.TEXT.type,
+                text = "Subtitle!!",
+                tags = setOf(Tags.H2.tag)
+            )
         )
 
         val parsedContent = DocumentToMarkdown.parse(content, prettyPrint = false)

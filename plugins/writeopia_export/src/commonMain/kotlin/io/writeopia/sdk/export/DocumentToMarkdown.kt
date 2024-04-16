@@ -2,6 +2,7 @@ package io.writeopia.sdk.export
 
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.models.story.Tags
 
 /**
  * This class parses a document as a Map<Int, [StoryStep]> to a String following the Markdown
@@ -45,16 +46,24 @@ object DocumentToMarkdown {
     private fun parseStep(storyStep: StoryStep): Pair<ContentAdd, String?> =
         when (storyStep.type.number) {
             StoryTypes.TITLE.type.number -> ContentAdd.NOTHING to "# ${storyStep.text}"
-            StoryTypes.H1.type.number ->
+
+            StoryTypes.TEXT.type.number -> parseText(storyStep)
+
+            else -> ContentAdd.NOTHING to storyStep.text
+        }
+
+    private fun parseText(storyStep: StoryStep): Pair<ContentAdd, String?> =
+        when {
+            storyStep.tags.contains(Tags.H1.tag) ->
                 ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER to "# ${storyStep.text}"
 
-            StoryTypes.H2.type.number ->
+            storyStep.tags.contains(Tags.H2.tag) ->
                 ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER to "## ${storyStep.text}"
 
-            StoryTypes.H3.type.number ->
+            storyStep.tags.contains(Tags.H3.tag) ->
                 ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER to "### ${storyStep.text}"
 
-            StoryTypes.H4.type.number ->
+            storyStep.tags.contains(Tags.H4.tag) ->
                 ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER to "#### ${storyStep.text}"
 
             else -> ContentAdd.NOTHING to storyStep.text

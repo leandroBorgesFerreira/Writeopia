@@ -194,31 +194,6 @@ private fun NoNotesScreen() {
 
 @Composable
 private fun previewDrawers(): Map<Int, StoryStepDrawer> {
-    val h1TextStyle = @Composable {
-        TextStyle(
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp
-        )
-    }
-    val h2TextStyle = @Composable {
-        TextStyle(
-            fontWeight = FontWeight.Bold,
-            fontSize = 22.sp
-        )
-    }
-    val h3TextStyle = @Composable {
-        TextStyle(
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp
-        )
-    }
-    val h4TextStyle = @Composable {
-        TextStyle(
-            fontWeight = FontWeight.Bold,
-            fontSize = 18.sp
-        )
-    }
-
     val unOrderedListItemPreviewDrawer = UnOrderedListItemPreviewDrawer()
 
     return mapOf(
@@ -230,9 +205,5 @@ private fun previewDrawers(): Map<Int, StoryStepDrawer> {
         StoryTypes.CHECK_ITEM.type.number to CheckItemPreviewDrawer(),
         StoryTypes.TEXT.type.number to TextPreviewDrawer(),
         StoryTypes.UNORDERED_LIST_ITEM.type.number to unOrderedListItemPreviewDrawer,
-        StoryTypes.H1.type.number to TextPreviewDrawer(style = h1TextStyle),
-        StoryTypes.H2.type.number to TextPreviewDrawer(style = h2TextStyle),
-        StoryTypes.H3.type.number to TextPreviewDrawer(style = h3TextStyle),
-        StoryTypes.H4.type.number to TextPreviewDrawer(style = h4TextStyle),
     )
 }
