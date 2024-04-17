@@ -7,6 +7,9 @@ import io.writeopia.note_menu.data.repository.NotesConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
 import io.writeopia.note_menu.ui.dto.NotesUi
+import io.writeopia.sdk.export.DocumentToJson
+import io.writeopia.sdk.export.DocumentToMarkdown
+import io.writeopia.sdk.export.DocumentWriter
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
@@ -21,6 +24,8 @@ internal class ChooseNoteKmpViewModel(
     private val notesConfig: NotesConfigurationRepository,
     private val authManager: AuthManager,
     private val previewParser: PreviewParser = PreviewParser(),
+    private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
+    private val documentToJson: DocumentToJson = DocumentToJson()
 ) : ChooseNoteViewModel, KmpViewModel {
 
     private var localUserId: String? = null
@@ -105,11 +110,11 @@ internal class ChooseNoteKmpViewModel(
         }
     }
 
-    override fun editMenu() {
+    override fun showEditMenu() {
         _editState.value = !editState.value
     }
 
-    override fun cancelMenu() {
+    override fun cancelEditMenu() {
         _editState.value = false
     }
 
@@ -167,6 +172,23 @@ internal class ChooseNoteKmpViewModel(
 
     override fun favoriteSelectedNotes() {
 
+    }
+
+    override fun directoryFilesAsMarkdown(path: String) {
+        directoryFilesAs(path, documentToMarkdown)
+    }
+
+    override fun directoryFilesAsJson(path: String) {
+        directoryFilesAs(path, documentToJson)
+    }
+
+    private fun directoryFilesAs(path: String, documentWriter: DocumentWriter) {
+        coroutineScope.launch(Dispatchers.Default) {
+            val data = notesUseCase.loadDocumentsForUser(getUserId())
+            documentWriter.writeDocuments(data, path)
+
+            cancelEditMenu()
+        }
     }
 
     private suspend fun refreshNotes() {

@@ -25,12 +25,9 @@ import java.awt.event.KeyEvent
 fun main() = application {
     val databaseStateFlow = DatabaseFactory.createDatabaseAsState(
         DriverFactory(),
-//        url = "jdbc:sqlite:", //In Memory
         url = "jdbc:sqlite:writeopia.db",
         rememberCoroutineScope()
     )
-
-    val injector = SqlDelightDaoInjector(null)
 
     Window(
         onCloseRequest = ::exitApplication,
@@ -40,9 +37,10 @@ fun main() = application {
         when (val databaseState = databaseStateFlow.collectAsState().value) {
             is DatabaseCreation.Complete -> {
                 val database = databaseState.writeopiaDb
+
                 App(
                     notesConfigurationInjector = NotesConfigurationInjector(database),
-                    repositoryInjection = injector,
+                    repositoryInjection = SqlDelightDaoInjector(database),
                     DefaultDrawersDesktop,
                     editorModifier = { writeopiaStateManager ->
                         Modifier.onPreviewKeyEvent { keyEvent ->

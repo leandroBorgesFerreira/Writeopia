@@ -1,4 +1,4 @@
-package io.writeopia.note_menu.ui.screen.menu
+package io.writeopia.note_menu.ui.screen.list
 
 //import io.writeopia.appresourcers.R
 import androidx.compose.foundation.clickable
@@ -17,10 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.writeopia.note_menu.data.NotesArrangement
 import io.writeopia.note_menu.ui.dto.DocumentUi
 import io.writeopia.note_menu.ui.dto.NotesUi
@@ -38,7 +36,7 @@ const val DOCUMENT_ITEM_TEST_TAG = "DocumentItem_"
 const val ADD_NOTE_TEST_TAG = "addNote"
 
 @Composable
-fun Notes(
+fun NotesCards(
     documents: ResultData<NotesUi>,
     loadNote: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,

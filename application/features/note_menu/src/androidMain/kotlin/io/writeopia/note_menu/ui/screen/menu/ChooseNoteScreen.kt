@@ -28,8 +28,10 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.valentinilk.shimmer.shimmer
-import io.writeopia.note_menu.ui.screen.configuration.ConfigurationsMenu
+import io.writeopia.note_menu.ui.screen.configuration.MobileConfigurationsMenu
 import io.writeopia.note_menu.ui.screen.configuration.NotesSelectionMenu
+import io.writeopia.note_menu.ui.screen.list.ADD_NOTE_TEST_TAG
+import io.writeopia.note_menu.ui.screen.list.NotesCards
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.note_menu.viewmodel.UserState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -54,7 +56,7 @@ internal fun ChooseNoteScreen(
     BackHandler(hasSelectedNotes || editState) {
         when {
             editState -> {
-                chooseNoteViewModel.cancelMenu()
+                chooseNoteViewModel.cancelEditMenu()
             }
 
             hasSelectedNotes -> {
@@ -70,7 +72,7 @@ internal fun ChooseNoteScreen(
                     TopBar(
                         titleState = chooseNoteViewModel.userName,
                         accountClick = navigateToAccount,
-                        menuClick = chooseNoteViewModel::editMenu
+                        menuClick = chooseNoteViewModel::showEditMenu
                     )
                 },
                 floatingActionButton = {
@@ -92,9 +94,9 @@ internal fun ChooseNoteScreen(
                 onDelete = chooseNoteViewModel::deleteSelectedNotes,
             )
 
-            ConfigurationsMenu(
+            MobileConfigurationsMenu(
                 visibilityState = editState,
-                outsideClick = chooseNoteViewModel::cancelMenu,
+                outsideClick = chooseNoteViewModel::cancelEditMenu,
                 listOptionClick = chooseNoteViewModel::listArrangementSelected,
                 gridOptionClick = chooseNoteViewModel::gridArrangementSelected,
                 sortingSelected = chooseNoteViewModel::sortingSelected
@@ -220,7 +222,7 @@ private fun Content(
     selectionListener: (String, Boolean) -> Unit,
     paddingValues: PaddingValues,
 ) {
-    Notes(
+    NotesCards(
         documents = chooseNoteViewModel.documentsState.collectAsState().value,
         loadNote = loadNote,
         selectionListener = selectionListener,

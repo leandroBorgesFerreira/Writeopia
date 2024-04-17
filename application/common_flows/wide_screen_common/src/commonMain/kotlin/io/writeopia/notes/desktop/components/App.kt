@@ -18,7 +18,7 @@ import io.writeopia.editor.ui.desktop.AppTextEditor
 import io.writeopia.editor.ui.desktop.EditorScaffold
 import io.writeopia.note_menu.di.NotesConfigurationInjector
 import io.writeopia.note_menu.di.NotesMenuKmpInjection
-import io.writeopia.note_menu.ui.desktop.NotesMenu
+import io.writeopia.note_menu.ui.screen.DesktopNotesMenu
 import io.writeopia.notes.desktop.components.navigation.NavigationPage
 import io.writeopia.notes.desktop.components.navigation.NavigationViewModel
 import io.writeopia.sdk.network.injector.ConnectionInjector
@@ -67,7 +67,7 @@ fun App(
                         notesMenuInjection.provideChooseNoteViewModel(coroutineScope)
                     }
 
-                    NotesMenu(
+                    DesktopNotesMenu(
                         chooseNoteViewModel,
                         onNewNoteClick = {
                             navigationViewModel.navigateTo(NavigationPage.Editor())

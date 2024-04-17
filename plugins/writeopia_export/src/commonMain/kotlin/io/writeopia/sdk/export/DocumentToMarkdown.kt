@@ -1,5 +1,8 @@
 package io.writeopia.sdk.export
 
+import io.writeopia.sdk.export.files.KmpFileWriter
+import io.writeopia.sdk.export.files.useWriter
+import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.Tags
@@ -8,40 +11,78 @@ import io.writeopia.sdk.models.story.Tags
  * This class parses a document as a Map<Int, [StoryStep]> to a String following the Markdown
  * syntax.
  */
-object DocumentToMarkdown {
+object DocumentToMarkdown: DocumentWriter {
 
     // In the future it may be necessary to add a parse to an OutputStream
+
+    override fun writeDocuments(documents: List<Document>, path: String) {
+        documents.forEach { document ->
+            KmpFileWriter(document, path, ".md").useWriter { writer ->
+                writeToWriter(
+                    content = document.content,
+                    kmpFileWriter = writer
+                )
+            }
+        }
+    }
 
     fun parse(
         document: Map<Int, StoryStep>,
         parseStep: (StoryStep) -> Pair<ContentAdd, String?> = ::parseStep,
-        prettyPrint: Boolean = false
+        prettyPrint: Boolean = false,
     ): String =
-        document.map { (_, storyStep) -> parseStep(storyStep) }
+        buildString {
+            writeTo(document, parseStep, prettyPrint) { line ->
+                if (line != null) {
+                    appendLine(line)
+                } else {
+                    appendLine()
+                }
+            }
+        }
+
+    private fun writeToWriter(
+        content: Map<Int, StoryStep>,
+        kmpFileWriter: KmpFileWriter,
+        parseStep: (StoryStep) -> Pair<ContentAdd, String?> = ::parseStep,
+        prettyPrint: Boolean = false
+    ) {
+        writeTo(content, parseStep, prettyPrint, kmpFileWriter::writeLine)
+    }
+
+    private fun writeTo(
+        content: Map<Int, StoryStep>,
+        parseStep: (StoryStep) -> Pair<ContentAdd, String?> = ::parseStep,
+        prettyPrint: Boolean = false,
+        writeFn: (String?) -> Unit
+    ) {
+        content
+            .asSequence()
+            .map { (_, storyStep) -> parseStep(storyStep) }
             .filter { (_, contextText) -> contextText != null }
             .let { contentList ->
-                buildString {
-                    contentList.forEach { (contentAdd, contextText) ->
-                        if (
-                            prettyPrint &&
-                            (contentAdd == ContentAdd.EMPTY_LINE_BEFORE ||
-                                    contentAdd == ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER)
-                        ) {
-                            appendLine()
-                        }
+                contentList.forEach { (contentAdd, contextText) ->
+                    if (
+                        prettyPrint &&
+                        (contentAdd == ContentAdd.EMPTY_LINE_BEFORE ||
+                                contentAdd == ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER)
+                    ) {
+                        writeFn(null)
+                    }
 
-                        appendLine(contextText)
+                    writeFn(contextText)
 
-                        if (
-                            prettyPrint &&
-                            (contentAdd == ContentAdd.EMPTY_LINE_AFTER ||
-                                    contentAdd == ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER)
-                        ) {
-                            appendLine()
-                        }
+                    if (
+                        prettyPrint &&
+                        (contentAdd == ContentAdd.EMPTY_LINE_AFTER ||
+                                contentAdd == ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER)
+                    ) {
+                        writeFn(null)
                     }
                 }
             }
+    }
+
 
     private fun parseStep(storyStep: StoryStep): Pair<ContentAdd, String?> =
         when (storyStep.type.number) {
@@ -69,6 +110,7 @@ object DocumentToMarkdown {
             else -> ContentAdd.NOTHING to storyStep.text
         }
 }
+
 
 enum class ContentAdd {
     NOTHING, EMPTY_LINE_BEFORE, EMPTY_LINE_AFTER, EMPTY_LINE_BEFORE_AND_AFTER
