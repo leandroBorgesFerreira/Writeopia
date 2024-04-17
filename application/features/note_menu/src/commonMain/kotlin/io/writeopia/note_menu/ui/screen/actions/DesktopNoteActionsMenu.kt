@@ -3,8 +3,9 @@ package io.writeopia.note_menu.ui.screen.actions
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AttachFile
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.FileDownload
-import androidx.compose.material.icons.filled.FileUpload
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -35,7 +36,7 @@ fun DesktopNoteActionsMenu(
                 DropdownMenuItem(
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Default.FileUpload,
+                            imageVector = Icons.Default.AttachFile,
                             contentDescription = "Export"
                         )
                     }, onClick = {
@@ -49,7 +50,7 @@ fun DesktopNoteActionsMenu(
                 DropdownMenuItem(
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Default.FileUpload,
+                            imageVector = Icons.Default.Description,
                             contentDescription = "Export"
                         )
                     }, onClick = {
@@ -70,10 +71,11 @@ fun DesktopNoteActionsMenu(
                         println("File chosen: ${fileChooserFun("")}")
                     },
                     text = {
-                        Text("Import as JSON")
+                        Text("Import file")
                     }
                 )
             }
         }
     }
 }
+
