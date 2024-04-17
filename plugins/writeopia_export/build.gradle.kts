@@ -23,6 +23,8 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":writeopia_models"))
+                implementation(project(":plugins:writeopia_serialization"))
+                implementation(libs.kotlinx.serialization.json)
             }
         }
 

@@ -20,6 +20,7 @@ kotlin {
                 implementation(project(":writeopia_ui"))
                 implementation(project(":writeopia_models"))
                 implementation(project(":plugins:writeopia_persistence_core"))
+                implementation(project(":plugins:writeopia_export"))
 
 //                implementation(project(":application:core:resources"))
                 implementation(project(":application:core:utils"))
@@ -36,6 +37,7 @@ kotlin {
                 implementation(compose.materialIconsExtended)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+                implementation(libs.kotlinx.serialization.json)
             }
         }
 

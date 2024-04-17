@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -40,8 +41,17 @@ fun DesktopNotesMenu(
 
     Box(modifier = Modifier.padding(40.dp).fillMaxSize()) {
         Column {
+            val showExtraOptions by chooseNoteViewModel.editState.collectAsState()
+
             Box(modifier = Modifier.fillMaxWidth()) {
-                DesktopNoteActionsMenu(modifier = Modifier.align(Alignment.CenterEnd))
+                DesktopNoteActionsMenu(
+                    modifier = Modifier.align(Alignment.CenterEnd),
+                    showExtraOptions = showExtraOptions,
+                    showExtraOptionsRequest = chooseNoteViewModel::showEditMenu,
+                    hideExtraOptionsRequest = chooseNoteViewModel::cancelEditMenu,
+                    exportAsMarkdownClick = chooseNoteViewModel::directoryFilesAsMarkdown,
+                    exportAsJsonClick = chooseNoteViewModel::directoryFilesAsJson,
+                )
             }
 
             NotesCards(

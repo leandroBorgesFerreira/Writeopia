@@ -1,7 +1,6 @@
 package io.writeopia.note_menu.viewmodel
 
 import io.writeopia.note_menu.data.NotesArrangement
-import io.writeopia.note_menu.ui.dto.DocumentUi
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.utils_module.ResultData
@@ -23,9 +22,13 @@ interface ChooseNoteViewModel {
 
     suspend fun requestUser()
 
-    fun editMenu()
+    fun showEditMenu()
 
-    fun cancelMenu()
+    fun cancelEditMenu()
+
+    fun directoryFilesAsMarkdown(path: String)
+
+    fun directoryFilesAsJson(path: String)
 
     fun onDocumentSelected(id: String, selected: Boolean)
 

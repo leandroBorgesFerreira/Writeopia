@@ -56,7 +56,7 @@ internal fun ChooseNoteScreen(
     BackHandler(hasSelectedNotes || editState) {
         when {
             editState -> {
-                chooseNoteViewModel.cancelMenu()
+                chooseNoteViewModel.cancelEditMenu()
             }
 
             hasSelectedNotes -> {
@@ -72,7 +72,7 @@ internal fun ChooseNoteScreen(
                     TopBar(
                         titleState = chooseNoteViewModel.userName,
                         accountClick = navigateToAccount,
-                        menuClick = chooseNoteViewModel::editMenu
+                        menuClick = chooseNoteViewModel::showEditMenu
                     )
                 },
                 floatingActionButton = {
@@ -96,7 +96,7 @@ internal fun ChooseNoteScreen(
 
             MobileConfigurationsMenu(
                 visibilityState = editState,
-                outsideClick = chooseNoteViewModel::cancelMenu,
+                outsideClick = chooseNoteViewModel::cancelEditMenu,
                 listOptionClick = chooseNoteViewModel::listArrangementSelected,
                 gridOptionClick = chooseNoteViewModel::gridArrangementSelected,
                 sortingSelected = chooseNoteViewModel::sortingSelected
