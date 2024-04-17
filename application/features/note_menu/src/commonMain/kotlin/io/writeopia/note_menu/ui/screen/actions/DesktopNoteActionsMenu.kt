@@ -14,7 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.writeopia.note_menu.ui.screen.file.fileChooser
+import io.writeopia.note_menu.ui.screen.file.fileChooserSave
 
 @Composable
 fun DesktopNoteActionsMenu(
@@ -22,7 +22,7 @@ fun DesktopNoteActionsMenu(
     showExtraOptions: Boolean,
     showExtraOptionsRequest: () -> Unit,
     hideExtraOptionsRequest: () -> Unit,
-    fileChooserFun: (String) -> String? = ::fileChooser,
+    fileChooserFun: (String) -> String? = ::fileChooserSave,
     exportAsMarkdownClick: (String) -> Unit,
     exportAsJsonClick: (String) -> Unit,
 ) {
