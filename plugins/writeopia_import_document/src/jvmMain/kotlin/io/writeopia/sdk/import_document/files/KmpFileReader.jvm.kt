@@ -2,6 +2,7 @@ package io.writeopia.sdk.import_document.files
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -12,7 +13,8 @@ actual object KmpFileReader {
 
     @OptIn(ExperimentalSerializationApi::class)
     actual inline fun <reified T> readObject(filePaths: List<String>, json: Json): Flow<T> =
-        filePaths.asFlow().map { path ->
-            json.decodeFromStream<T>(File(path).inputStream())
-        }
+        filePaths.asFlow()
+            .map(::File)
+            .filter { file -> file.extension == "json"}
+            .map { file -> file.inputStream().use(json::decodeFromStream) }
 }

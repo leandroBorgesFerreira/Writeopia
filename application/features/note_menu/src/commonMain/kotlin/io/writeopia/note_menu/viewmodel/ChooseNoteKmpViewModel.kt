@@ -196,7 +196,12 @@ internal class ChooseNoteKmpViewModel(
     override fun loadFiles(filePaths: List<String>) {
         coroutineScope.launch(Dispatchers.Default) {
             documentFromJson.readDocuments(filePaths)
-                .onCompletion { refreshNotes() }
+                .onCompletion { exception ->
+                    if (exception == null) {
+                        refreshNotes()
+                        cancelEditMenu()
+                    }
+                }
                 .collect(notesUseCase::saveDocument)
         }
     }
