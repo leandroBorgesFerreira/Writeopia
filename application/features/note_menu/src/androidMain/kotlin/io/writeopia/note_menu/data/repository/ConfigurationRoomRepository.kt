@@ -14,9 +14,15 @@ internal class ConfigurationRoomRepository(
     private val configurationDao: NotesConfigurationRoomDao
 ) : ConfigurationRepository {
 
-    override suspend fun saveDocumentArrangementPref(arrangement: NotesArrangement, userId: String) {
+    override suspend fun saveDocumentArrangementPref(
+        arrangement: NotesArrangement,
+        userId: String
+    ) {
         val configuration =
-            NotesConfigurationEntity(arrangementType = arrangement.type, orderByType = getOrderPreference(userId))
+            NotesConfigurationEntity(
+                arrangementType = arrangement.type,
+                orderByType = getOrderPreference(userId)
+            )
         configurationDao.saveConfiguration(configuration)
     }
 
@@ -30,10 +36,12 @@ internal class ConfigurationRoomRepository(
     }
 
     override suspend fun arrangementPref(userId: String): String =
-        configurationDao.getConfigurationByUserId(userId)?.arrangementType ?: NotesArrangement.GRID.type
+        configurationDao.getConfigurationByUserId(userId)?.arrangementType
+            ?: NotesArrangement.GRID.type
 
     override suspend fun getOrderPreference(userId: String): String =
-        configurationDao.getConfigurationByUserId(userId)?.orderByType ?: OrderBy.CREATE.type.toEntityField()
+        configurationDao.getConfigurationByUserId(userId)?.orderByType
+            ?: OrderBy.CREATE.type.toEntityField()
 
     override suspend fun saveWorkspacePath(path: String, userId: String) {
 
