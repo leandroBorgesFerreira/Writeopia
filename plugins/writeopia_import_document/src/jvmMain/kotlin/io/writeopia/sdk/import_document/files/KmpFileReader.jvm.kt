@@ -15,6 +15,15 @@ actual object KmpFileReader {
     actual inline fun <reified T> readObject(filePaths: List<String>, json: Json): Flow<T> =
         filePaths.asFlow()
             .map(::File)
-            .filter { file -> file.extension == "json"}
+            .readAllFiles(json)
+
+    actual inline fun <reified T> readDirectory(
+        directoryPath: String,
+        json: Json
+    ): Flow<T> = File(directoryPath).walk().asFlow().readAllFiles(json)
+
+    @OptIn(ExperimentalSerializationApi::class)
+    inline fun <reified T> Flow<File>.readAllFiles(json: Json): Flow<T> =
+        filter { file -> file.extension == "json" }
             .map { file -> file.inputStream().use(json::decodeFromStream) }
 }

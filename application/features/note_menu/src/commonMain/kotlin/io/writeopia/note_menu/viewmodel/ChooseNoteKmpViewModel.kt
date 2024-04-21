@@ -239,7 +239,12 @@ internal class ChooseNoteKmpViewModel(
                 path = path
             )
 
-            _syncInProgress.value = false
+            documentFromJson.readAllWorkSpace(path)
+                .onCompletion {
+                    _syncInProgress.value = false
+                    refreshNotes()
+                }
+                .collect(notesUseCase::saveDocument)
         }
     }
 

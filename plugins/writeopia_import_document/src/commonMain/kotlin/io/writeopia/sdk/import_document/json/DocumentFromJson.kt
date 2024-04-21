@@ -17,4 +17,8 @@ class DocumentFromJson(
     fun readDocuments(files: List<String>): Flow<Document> =
         kmpFileReader.readObject<DocumentApi>(files, json)
             .map { documentApi -> documentApi.toModel() }
+
+    fun readAllWorkSpace(path: String): Flow<Document> =
+        kmpFileReader.readDirectory<DocumentApi>(path, json)
+            .map { documentApi -> documentApi.toModel() }
 }
