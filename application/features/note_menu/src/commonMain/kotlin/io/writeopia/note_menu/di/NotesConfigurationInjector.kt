@@ -1,8 +1,8 @@
 package io.writeopia.note_menu.di
 
-import io.writeopia.note_menu.data.repository.NotesConfigurationRepository
+import io.writeopia.note_menu.data.repository.ConfigurationRepository
 
 expect class NotesConfigurationInjector {
 
-    fun provideNotesConfigurationRepository(): NotesConfigurationRepository
+    fun provideNotesConfigurationRepository(): ConfigurationRepository
 }

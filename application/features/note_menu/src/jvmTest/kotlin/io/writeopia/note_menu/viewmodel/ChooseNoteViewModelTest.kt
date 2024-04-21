@@ -3,7 +3,7 @@ package io.writeopia.note_menu.viewmodel
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.writeopia.auth.core.manager.AuthManager
-import io.writeopia.note_menu.data.repository.NotesConfigurationRepository
+import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,7 +17,7 @@ import kotlin.test.Test
 class ChooseNoteViewModelTest {
 
     private val notesUseCase: NotesUseCase = mockk()
-    private val notesConfig: NotesConfigurationRepository = mockk()
+    private val notesConfig: ConfigurationRepository = mockk()
     private val authManager: AuthManager = mockk()
 
     @Test

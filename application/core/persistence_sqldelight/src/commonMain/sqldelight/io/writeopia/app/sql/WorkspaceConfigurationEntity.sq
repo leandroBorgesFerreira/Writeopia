@@ -1,0 +1,15 @@
+CREATE TABLE workspaceConfiguration (
+  path TEXT,
+  user_id TEXT PRIMARY KEY
+);
+
+selectWorkspaceConfigurationByUserId:
+SELECT *
+FROM workspaceConfiguration
+WHERE workspaceConfiguration.user_id = ?;
+
+insert:
+INSERT INTO workspaceConfiguration(user_id, path)
+VALUES (?, ?)
+ON CONFLICT(user_id) DO
+UPDATE SET user_id=excluded.user_id, path=excluded.path;

@@ -10,4 +10,11 @@ actual object KmpFileReader {
     @OptIn(ExperimentalSerializationApi::class)
     actual inline fun <reified T> readObject(filePaths: List<String>, json: Json): Flow<T> =
         flow { }
+
+    actual inline fun <reified T> readDirectory(
+        directoryPath: String,
+        json: Json
+    ): Flow<T> = flow {  }
+
+
 }

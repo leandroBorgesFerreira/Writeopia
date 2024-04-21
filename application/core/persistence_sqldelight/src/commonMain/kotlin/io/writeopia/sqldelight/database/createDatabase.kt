@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-
 object DatabaseFactory {
     private var created = false
     private val databaseState = MutableStateFlow<DatabaseCreation>(DatabaseCreation.Loading)

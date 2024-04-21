@@ -3,7 +3,7 @@ package io.writeopia.note_menu.viewmodel
 import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.note_menu.data.NotesArrangement
-import io.writeopia.note_menu.data.repository.NotesConfigurationRepository
+import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
 import io.writeopia.note_menu.ui.dto.NotesUi
@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 
 internal class ChooseNoteKmpViewModel(
     private val notesUseCase: NotesUseCase,
-    private val notesConfig: NotesConfigurationRepository,
+    private val notesConfig: ConfigurationRepository,
     private val authManager: AuthManager,
     private val previewParser: PreviewParser = PreviewParser(),
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
@@ -56,6 +56,15 @@ internal class ChooseNoteKmpViewModel(
     private val _notesArrangement = MutableStateFlow(NotesArrangement.GRID)
     override val notesArrangement: StateFlow<NotesArrangement> = _notesArrangement.asStateFlow()
 
+    private val _showLocalSyncConfig = MutableStateFlow(false)
+    override val showLocalSyncConfigState = _showLocalSyncConfig.asStateFlow()
+
+    private val _editState = MutableStateFlow(false)
+    override val editState: StateFlow<Boolean> = _editState.asStateFlow()
+
+    private val _syncInProgress = MutableStateFlow(false)
+    override val syncInProgress = _syncInProgress.asStateFlow()
+
     override val documentsState: StateFlow<ResultData<NotesUi>> by lazy {
         combine(
             _selectedNotes,
@@ -73,9 +82,6 @@ internal class ChooseNoteKmpViewModel(
             }
         }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Idle())
     }
-
-    private val _editState = MutableStateFlow(false)
-    override val editState: StateFlow<Boolean> = _editState.asStateFlow()
 
     private suspend fun getUserId(): String =
         localUserId ?: authManager.getUser().id.also { id ->
@@ -184,15 +190,6 @@ internal class ChooseNoteKmpViewModel(
         directoryFilesAs(path, documentToJson)
     }
 
-    private fun directoryFilesAs(path: String, documentWriter: DocumentWriter) {
-        coroutineScope.launch(Dispatchers.Default) {
-            val data = notesUseCase.loadDocumentsForUser(getUserId())
-            documentWriter.writeDocuments(data, path)
-
-            cancelEditMenu()
-        }
-    }
-
     override fun loadFiles(filePaths: List<String>) {
         coroutineScope.launch(Dispatchers.Default) {
             documentFromJson.readDocuments(filePaths)
@@ -203,6 +200,60 @@ internal class ChooseNoteKmpViewModel(
                     }
                 }
                 .collect(notesUseCase::saveDocument)
+        }
+    }
+
+    override fun hideConfigSyncMenu() {
+        _showLocalSyncConfig.value = false
+    }
+
+    override fun selectedWorkplacePath(path: String) {
+        coroutineScope.launch(Dispatchers.Default) {
+            notesConfig.saveWorkspacePath(path = path, userId = getUserId())
+            _showLocalSyncConfig.value = false
+
+            syncWorkplace(path)
+        }
+    }
+
+    override fun onSyncLocallySelected() {
+        coroutineScope.launch(Dispatchers.Default) {
+            val workspacePath = notesConfig.loadWorkspacePath(getUserId())
+
+            println("workspacePath: $workspacePath")
+
+            if (workspacePath != null) {
+                syncWorkplace(workspacePath)
+            } else {
+                _showLocalSyncConfig.value = true
+            }
+        }
+    }
+
+    private fun syncWorkplace(path: String) {
+        coroutineScope.launch(Dispatchers.Default) {
+            _syncInProgress.value = true
+
+            documentToJson.writeDocuments(
+                documents = notesUseCase.loadDocumentsForUser(getUserId()),
+                path = path
+            )
+
+            documentFromJson.readAllWorkSpace(path)
+                .onCompletion {
+                    _syncInProgress.value = false
+                    refreshNotes()
+                }
+                .collect(notesUseCase::saveDocument)
+        }
+    }
+
+    private fun directoryFilesAs(path: String, documentWriter: DocumentWriter) {
+        coroutineScope.launch(Dispatchers.Default) {
+            val data = notesUseCase.loadDocumentsForUser(getUserId())
+            documentWriter.writeDocuments(data, path)
+
+            cancelEditMenu()
         }
     }
 

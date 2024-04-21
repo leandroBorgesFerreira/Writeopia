@@ -18,6 +18,10 @@ interface ChooseNoteViewModel {
 
     val editState: StateFlow<Boolean>
 
+    val showLocalSyncConfigState: StateFlow<Boolean>
+
+    val syncInProgress: StateFlow<Boolean>
+
     fun requestDocuments(force: Boolean)
 
     suspend fun requestUser()
@@ -34,6 +38,8 @@ interface ChooseNoteViewModel {
 
     fun onDocumentSelected(id: String, selected: Boolean)
 
+    fun onSyncLocallySelected()
+
     fun clearSelection()
 
     fun listArrangementSelected()
@@ -47,6 +53,10 @@ interface ChooseNoteViewModel {
     fun deleteSelectedNotes()
 
     fun favoriteSelectedNotes()
+
+    fun hideConfigSyncMenu()
+
+    fun selectedWorkplacePath(path: String)
 }
 
 sealed interface UserState<T> {

@@ -25,7 +25,7 @@ import java.awt.event.KeyEvent
 fun main() = application {
     val databaseStateFlow = DatabaseFactory.createDatabaseAsState(
         DriverFactory(),
-        url = "jdbc:sqlite:writeopia.db",
+        url = "jdbc:sqlite:writeopia.db_1",
         rememberCoroutineScope()
     )
 
