@@ -34,4 +34,10 @@ internal class ConfigurationRoomRepository(
 
     override suspend fun getOrderPreference(userId: String): String =
         configurationDao.getConfigurationByUserId(userId)?.orderByType ?: OrderBy.CREATE.type.toEntityField()
+
+    override suspend fun saveWorkspacePath(path: String, userId: String) {
+
+    }
+
+    override suspend fun loadWorkspacePath(userId: String): String? = null
 }
