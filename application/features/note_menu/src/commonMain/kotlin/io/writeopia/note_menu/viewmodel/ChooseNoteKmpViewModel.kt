@@ -10,6 +10,7 @@ import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.export.DocumentToJson
 import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.export.DocumentWriter
+import io.writeopia.sdk.import_document.json.DocumentFromJson
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
@@ -25,7 +26,8 @@ internal class ChooseNoteKmpViewModel(
     private val authManager: AuthManager,
     private val previewParser: PreviewParser = PreviewParser(),
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
-    private val documentToJson: DocumentToJson = DocumentToJson()
+    private val documentToJson: DocumentToJson = DocumentToJson(),
+    private val documentFromJson: DocumentFromJson = DocumentFromJson()
 ) : ChooseNoteViewModel, KmpViewModel {
 
     private var localUserId: String? = null
@@ -188,6 +190,14 @@ internal class ChooseNoteKmpViewModel(
             documentWriter.writeDocuments(data, path)
 
             cancelEditMenu()
+        }
+    }
+
+    override fun loadFiles(filePaths: List<String>) {
+        coroutineScope.launch(Dispatchers.Default) {
+            documentFromJson.readDocuments(filePaths)
+                .onCompletion { refreshNotes() }
+                .collect(notesUseCase::saveDocument)
         }
     }
 

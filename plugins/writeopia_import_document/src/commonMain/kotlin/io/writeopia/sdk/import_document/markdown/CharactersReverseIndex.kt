@@ -1,4 +1,4 @@
-package io.writeopia.sdk.import_document
+package io.writeopia.sdk.import_document.markdown
 
 import io.writeopia.sdk.models.command.Command
 import io.writeopia.sdk.models.command.CommandFactory

@@ -36,6 +36,10 @@ internal class NotesUseCase(
         }
     }
 
+    suspend fun saveDocument(document: Document) {
+        documentRepository.saveDocument(document)
+    }
+
     suspend fun deleteNotes(ids: Set<String>) {
         documentRepository.deleteDocumentByIds(ids)
     }

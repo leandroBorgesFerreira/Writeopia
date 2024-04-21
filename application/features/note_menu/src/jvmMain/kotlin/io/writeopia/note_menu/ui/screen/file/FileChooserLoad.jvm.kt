@@ -1,5 +1,13 @@
 package io.writeopia.note_menu.ui.screen.file
 
-actual fun fileChooserLoad(title: String): String? {
-    TODO("Not yet implemented")
+import androidx.compose.ui.awt.ComposeWindow
+import java.awt.FileDialog
+
+actual fun fileChooserLoad(title: String): List<String> {
+    val dialog = FileDialog(ComposeWindow(), title, FileDialog.LOAD).apply {
+        isMultipleMode = true
+        isVisible = true
+    }
+
+    return dialog.files?.takeIf { it.isNotEmpty() }?.map { it.absolutePath } ?: emptyList()
 }

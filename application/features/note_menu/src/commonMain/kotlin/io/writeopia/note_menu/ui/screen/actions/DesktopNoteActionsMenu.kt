@@ -14,6 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.writeopia.note_menu.ui.screen.file.fileChooserLoad
 import io.writeopia.note_menu.ui.screen.file.fileChooserSave
 
 @Composable
@@ -22,9 +23,9 @@ fun DesktopNoteActionsMenu(
     showExtraOptions: Boolean,
     showExtraOptionsRequest: () -> Unit,
     hideExtraOptionsRequest: () -> Unit,
-    fileChooserFun: (String) -> String? = ::fileChooserSave,
-    exportAsMarkdownClick: (String) -> Unit,
-    exportAsJsonClick: (String) -> Unit,
+    exportAsMarkdownClick: () -> Unit,
+    exportAsJsonClick: () -> Unit,
+    importClick: () -> Unit
 ) {
     Row(modifier = modifier) {
         Box {
@@ -39,9 +40,7 @@ fun DesktopNoteActionsMenu(
                             imageVector = Icons.Default.AttachFile,
                             contentDescription = "Export"
                         )
-                    }, onClick = {
-                        fileChooserFun("")?.let(exportAsMarkdownClick)
-                    },
+                    }, onClick = exportAsMarkdownClick,
                     text = {
                         Text("Export as Markdown")
                     }
@@ -53,9 +52,7 @@ fun DesktopNoteActionsMenu(
                             imageVector = Icons.Default.Description,
                             contentDescription = "Export"
                         )
-                    }, onClick = {
-                        fileChooserFun("")?.let(exportAsJsonClick)
-                    },
+                    }, onClick = exportAsJsonClick,
                     text = {
                         Text("Export as Json")
                     }
@@ -67,9 +64,8 @@ fun DesktopNoteActionsMenu(
                             imageVector = Icons.Default.FileDownload,
                             contentDescription = "Export"
                         )
-                    }, onClick = {
-                        println("File chosen: ${fileChooserFun("")}")
                     },
+                    onClick = importClick,
                     text = {
                         Text("Import file")
                     }

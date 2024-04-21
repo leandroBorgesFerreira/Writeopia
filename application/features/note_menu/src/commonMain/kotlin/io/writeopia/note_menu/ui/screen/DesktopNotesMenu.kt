@@ -21,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.writeopia.note_menu.ui.screen.actions.DesktopNoteActionsMenu
+import io.writeopia.note_menu.ui.screen.file.fileChooserLoad
+import io.writeopia.note_menu.ui.screen.file.fileChooserSave
 import io.writeopia.note_menu.ui.screen.list.NotesCards
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 
@@ -49,8 +51,16 @@ fun DesktopNotesMenu(
                     showExtraOptions = showExtraOptions,
                     showExtraOptionsRequest = chooseNoteViewModel::showEditMenu,
                     hideExtraOptionsRequest = chooseNoteViewModel::cancelEditMenu,
-                    exportAsMarkdownClick = chooseNoteViewModel::directoryFilesAsMarkdown,
-                    exportAsJsonClick = chooseNoteViewModel::directoryFilesAsJson,
+                    exportAsMarkdownClick = {
+                        fileChooserSave("")?.let(chooseNoteViewModel::directoryFilesAsMarkdown)
+
+                    },
+                    exportAsJsonClick = {
+                        fileChooserSave("")?.let(chooseNoteViewModel::directoryFilesAsJson)
+                    },
+                    importClick = {
+                        chooseNoteViewModel.loadFiles(fileChooserLoad(""))
+                    }
                 )
             }
 
