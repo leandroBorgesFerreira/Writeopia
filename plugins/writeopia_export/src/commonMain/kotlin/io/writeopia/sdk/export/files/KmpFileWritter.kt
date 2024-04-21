@@ -1,23 +1,18 @@
 package io.writeopia.sdk.export.files
 
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.utils.files.KmpClosable
 import kotlinx.serialization.json.Json
 
-expect class KmpFileWriter(document: Document, path: String, extension: String) {
+expect class KmpFileWriter(document: Document, path: String, extension: String): KmpClosable {
 
-    fun start()
+    override fun start()
 
     fun writeLine(line: String? = null)
 
-    fun close()
+    override fun close()
 
     inline fun <reified T> writeObject(data: T, json: Json)
-}
-
-fun KmpFileWriter.useWriter(func: (KmpFileWriter) -> Unit) {
-    start()
-    func(this)
-    close()
 }
 
 internal fun name(document: Document, path: String, extension: String) =

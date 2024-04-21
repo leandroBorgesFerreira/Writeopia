@@ -1,9 +1,4 @@
-package io.writeopia.sdk.import_document
-
-import io.writeopia.sdk.models.command.Command
-import io.writeopia.sdk.models.command.CommandFactory
-import io.writeopia.sdk.models.story.StoryType
-import io.writeopia.sdk.models.story.StoryTypes
+package io.writeopia.sdk.import_document.markdown
 
 public class MarkdownToDocument(
     private val charactersReverseIndexParser: CharactersReverseIndexParser

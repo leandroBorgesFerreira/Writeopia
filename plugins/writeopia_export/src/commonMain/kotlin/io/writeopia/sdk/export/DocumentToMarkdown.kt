@@ -1,11 +1,11 @@
 package io.writeopia.sdk.export
 
 import io.writeopia.sdk.export.files.KmpFileWriter
-import io.writeopia.sdk.export.files.useWriter
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.Tags
+import io.writeopia.sdk.utils.files.useKmp
 
 /**
  * This class parses a document as a Map<Int, [StoryStep]> to a String following the Markdown
@@ -17,7 +17,7 @@ object DocumentToMarkdown: DocumentWriter {
 
     override fun writeDocuments(documents: List<Document>, path: String) {
         documents.forEach { document ->
-            KmpFileWriter(document, path, ".md").useWriter { writer ->
+            KmpFileWriter(document, path, ".md").useKmp { writer ->
                 writeToWriter(
                     content = document.content,
                     kmpFileWriter = writer

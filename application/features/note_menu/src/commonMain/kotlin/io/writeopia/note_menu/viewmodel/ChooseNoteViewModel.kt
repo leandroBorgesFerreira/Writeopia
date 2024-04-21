@@ -30,6 +30,8 @@ interface ChooseNoteViewModel {
 
     fun directoryFilesAsJson(path: String)
 
+    fun loadFiles(filePaths: List<String>)
+
     fun onDocumentSelected(id: String, selected: Boolean)
 
     fun clearSelection()
