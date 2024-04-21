@@ -1,6 +1,6 @@
 CREATE TABLE workspaceConfiguration (
   path TEXT,
-  user_id TEXT
+  user_id TEXT PRIMARY KEY
 );
 
 selectWorkspaceConfigurationByUserId:
