@@ -1,6 +1,6 @@
 package io.writeopia.note_menu.data.usecase
 
-import io.writeopia.note_menu.data.repository.NotesConfigurationRepository
+import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.id.GenerateId
@@ -11,7 +11,7 @@ import io.writeopia.sdk.models.id.GenerateId
  */
 internal class NotesUseCase(
     private val documentRepository: DocumentRepository,
-    private val notesConfig: NotesConfigurationRepository
+    private val notesConfig: ConfigurationRepository
 ) {
 
     suspend fun loadDocumentsForUser(userId: String): List<Document> =

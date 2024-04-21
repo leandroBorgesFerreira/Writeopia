@@ -1,7 +1,7 @@
 package io.writeopia.note_menu.di
 
 import io.writeopia.auth.core.di.AuthCoreInjection
-import io.writeopia.note_menu.data.repository.NotesConfigurationRepository
+import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.viewmodel.ChooseNoteKmpViewModel
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
@@ -20,15 +20,15 @@ class NotesMenuKmpInjection(
 
     private fun provideNotesUseCase(
         documentRepository: DocumentRepository = provideDocumentRepository(),
-        notesConfigurationRepository: NotesConfigurationRepository =
+        configurationRepository: ConfigurationRepository =
             notesConfigurationInjector.provideNotesConfigurationRepository()
     ): NotesUseCase {
-        return NotesUseCase(documentRepository, notesConfigurationRepository)
+        return NotesUseCase(documentRepository, configurationRepository)
     }
 
     internal fun provideChooseKmpNoteViewModel(
         notesUseCase: NotesUseCase = provideNotesUseCase(),
-        notesConfig: NotesConfigurationRepository =
+        notesConfig: ConfigurationRepository =
             notesConfigurationInjector.provideNotesConfigurationRepository()
     ): ChooseNoteKmpViewModel =
         ChooseNoteKmpViewModel(notesUseCase, notesConfig, authCoreInjection.provideAccountManager())

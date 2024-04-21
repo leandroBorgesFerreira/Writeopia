@@ -1,6 +1,5 @@
 package io.writeopia.note_menu.ui.screen
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,7 +17,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -34,7 +32,6 @@ import io.writeopia.note_menu.ui.screen.file.fileChooserLoad
 import io.writeopia.note_menu.ui.screen.file.fileChooserSave
 import io.writeopia.note_menu.ui.screen.list.NotesCards
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
-import io.writeopia.ui.utils.defaultTextStyle
 
 @Composable
 fun DesktopNotesMenu(

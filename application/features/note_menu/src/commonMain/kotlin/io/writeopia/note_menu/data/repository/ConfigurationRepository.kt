@@ -3,7 +3,7 @@ package io.writeopia.note_menu.data.repository
 import io.writeopia.note_menu.data.NotesArrangement
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 
-interface NotesConfigurationRepository {
+interface ConfigurationRepository {
 
     suspend fun saveDocumentArrangementPref(arrangement: NotesArrangement, userId: String)
 
@@ -12,4 +12,8 @@ interface NotesConfigurationRepository {
     suspend fun arrangementPref(userId: String): String
 
     suspend fun getOrderPreference(userId: String): String
+
+    suspend fun saveWorkspacePath(path: String, userId: String)
+
+    suspend fun loadWorkspacePath(userId: String): String?
 }

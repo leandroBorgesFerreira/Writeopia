@@ -10,9 +10,9 @@ import io.writeopia.sdk.persistence.core.sorting.OrderBy
  * This class is responsible to keep the information of the preferences or the user about the
  * notes, like orderBy (creation, last edition, name...) and arrangement (cards, list...).
  */
-internal class NotesConfigurationRoomRepository(
+internal class ConfigurationRoomRepository(
     private val configurationDao: NotesConfigurationRoomDao
-) : NotesConfigurationRepository {
+) : ConfigurationRepository {
 
     override suspend fun saveDocumentArrangementPref(arrangement: NotesArrangement, userId: String) {
         val configuration =
