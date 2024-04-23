@@ -218,7 +218,8 @@ internal class ChooseNoteKmpViewModel(
 
     override fun onSyncLocallySelected() {
         coroutineScope.launch(Dispatchers.Default) {
-            val workspacePath = notesConfig.loadWorkspacePath(getUserId())
+            val userId = getUserId()
+            val workspacePath = notesConfig.loadWorkspacePath(userId)
 
             println("workspacePath: $workspacePath")
 
@@ -230,22 +231,20 @@ internal class ChooseNoteKmpViewModel(
         }
     }
 
-    private fun syncWorkplace(path: String) {
-        coroutineScope.launch(Dispatchers.Default) {
-            _syncInProgress.value = true
+    private suspend fun syncWorkplace(path: String) {
+        _syncInProgress.value = true
 
-            documentToJson.writeDocuments(
-                documents = notesUseCase.loadDocumentsForUser(getUserId()),
-                path = path
-            )
+        documentToJson.writeDocuments(
+            documents = notesUseCase.loadDocumentsForUser(getUserId()),
+            path = path
+        )
 
-            documentFromJson.readAllWorkSpace(path)
-                .onCompletion {
-                    _syncInProgress.value = false
-                    refreshNotes()
-                }
-                .collect(notesUseCase::saveDocument)
-        }
+        documentFromJson.readAllWorkSpace(path)
+            .onCompletion {
+                _syncInProgress.value = false
+                refreshNotes()
+            }
+            .collect(notesUseCase::saveDocument)
     }
 
     private fun directoryFilesAs(path: String, documentWriter: DocumentWriter) {

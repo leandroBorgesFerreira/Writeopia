@@ -80,6 +80,7 @@ fun DesktopNotesMenu(
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Black,
                     modifier = Modifier
+                        .testTag("syncLocally")
                         .clip(syncButtonShape)
                         .clickable(onClick = chooseNoteViewModel::onSyncLocallySelected)
                         .border(width = 2.dp, color = Color.Black, shape = syncButtonShape)
