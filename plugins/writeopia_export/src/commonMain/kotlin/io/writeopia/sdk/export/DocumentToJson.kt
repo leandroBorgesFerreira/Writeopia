@@ -8,13 +8,29 @@ import io.writeopia.sdk.serialization.json.writeopiaJson
 import io.writeopia.sdk.utils.files.useKmp
 import kotlinx.serialization.json.Json
 
-class DocumentToJson(private val json: Json = writeopiaJson): DocumentWriter {
+class DocumentToJson(private val json: Json = writeopiaJson) : DocumentWriter {
 
-    override fun writeDocuments(documents: List<Document>, path: String) {
+    override fun writeDocuments(
+        documents: List<Document>,
+        path: String,
+        addHashTable: Boolean
+    ) {
         documents.forEach { document ->
             KmpFileWriter(name(document, path, ".json")).useKmp { writer ->
                 writer.writeObject(document.toApi(), json)
             }
+        }
+
+        if (addHashTable) {
+            val hashTable = documents.associateBy { document -> document.id }
+                .mapValues { (_, document) ->
+                    document.saveHash
+                }
+
+            KmpFileWriter("$path/${DocumentWriter.HASH_TABLE_FILE_NAME}.json")
+                .useKmp { writer ->
+                    writer.writeObject(hashTable, json)
+                }
         }
     }
 }

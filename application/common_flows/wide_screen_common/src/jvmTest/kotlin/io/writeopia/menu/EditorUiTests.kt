@@ -23,7 +23,6 @@ class EditorUiTests {
     val composeTestRule = createComposeRule()
 
     @Test
-    @Ignore("Some error in sqldelight")
     fun itShouldBePossibleToWriteATitleAndSomeContent() = runTest {
         startContent()
 
@@ -34,7 +33,6 @@ class EditorUiTests {
     }
 
     @Test
-    @Ignore("Some error in sqldelight")
     fun itShouldBePossibleToSaveNoteWithTitle() = runTest {
         startContent()
 
@@ -45,7 +43,6 @@ class EditorUiTests {
     }
 
     @Test
-    @Ignore("Some error in sqldelight")
     fun itShouldBePossibleToOpenANoteWithoutTitle() = runTest {
         startContent()
 

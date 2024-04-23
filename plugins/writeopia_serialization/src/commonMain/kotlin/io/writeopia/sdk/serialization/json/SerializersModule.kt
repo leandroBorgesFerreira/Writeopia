@@ -9,4 +9,6 @@ fun writeopiaSerializersModule(): SerializersModule = SerializersModule {
     contextual(InstantSerializer)
 }
 
-val writeopiaJson: Json = Json { serializersModule = writeopiaSerializersModule() }
+val writeopiaJson: Json = Json {
+    serializersModule = writeopiaSerializersModule()
+}
