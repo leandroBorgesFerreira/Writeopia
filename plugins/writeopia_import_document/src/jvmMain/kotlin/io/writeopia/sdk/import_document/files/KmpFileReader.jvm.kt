@@ -20,7 +20,10 @@ actual object KmpFileReader {
     actual inline fun <reified T> readDirectory(
         directoryPath: String,
         json: Json
-    ): Flow<T> = File(directoryPath).walk().asFlow().readAllFiles(json)
+    ): Flow<T> = File(directoryPath).walk()
+        .filter { file -> file.name != "hash_table.json" }
+        .asFlow()
+        .readAllFiles(json)
 
     @OptIn(ExperimentalSerializationApi::class)
     inline fun <reified T> Flow<File>.readAllFiles(json: Json): Flow<T> =

@@ -15,6 +15,8 @@ class DocumentToJson(private val json: Json = writeopiaJson) : DocumentWriter {
         path: String,
         addHashTable: Boolean
     ) {
+        if (documents.isEmpty()) return
+
         documents.forEach { document ->
             KmpFileWriter(name(document, path, ".json")).useKmp { writer ->
                 writer.writeObject(document.toApi(), json)

@@ -234,17 +234,20 @@ internal class ChooseNoteKmpViewModel(
     private suspend fun syncWorkplace(path: String) {
         _syncInProgress.value = true
 
-        documentToJson.writeDocuments(
-            documents = notesUseCase.loadDocumentsForUser(getUserId()),
-            path = path
-        )
+        val currentNotes = notesUseCase.loadDocumentsForUser(getUserId())
 
         documentFromJson.readAllWorkSpace(path)
             .onCompletion {
-                _syncInProgress.value = false
                 refreshNotes()
             }
             .collect(notesUseCase::saveDocument)
+
+        documentToJson.writeDocuments(
+            documents = currentNotes,
+            path = path
+        )
+
+        _syncInProgress.value = false
     }
 
     private fun directoryFilesAs(path: String, documentWriter: DocumentWriter) {
