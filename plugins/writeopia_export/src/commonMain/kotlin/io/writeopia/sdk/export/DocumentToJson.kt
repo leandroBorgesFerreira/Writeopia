@@ -7,13 +7,15 @@ import io.writeopia.sdk.serialization.extensions.toApi
 import io.writeopia.sdk.serialization.json.writeopiaJson
 import io.writeopia.sdk.utils.files.useKmp
 import kotlinx.serialization.json.Json
+import io.writeopia.sdk.serialization.storage.WorkspaceStorageConfig
+import kotlinx.datetime.Clock
 
 class DocumentToJson(private val json: Json = writeopiaJson) : DocumentWriter {
 
     override fun writeDocuments(
         documents: List<Document>,
         path: String,
-        addHashTable: Boolean
+        writeConfigFile: Boolean
     ) {
         if (documents.isEmpty()) return
 
@@ -23,15 +25,15 @@ class DocumentToJson(private val json: Json = writeopiaJson) : DocumentWriter {
             }
         }
 
-        if (addHashTable) {
-            val hashTable = documents.associateBy { document -> document.id }
-                .mapValues { (_, document) ->
-                    document.saveHash
-                }
-
-            KmpFileWriter("$path/${DocumentWriter.HASH_TABLE_FILE_NAME}.json")
+        if (writeConfigFile) {
+            KmpFileWriter("$path/${DocumentWriter.CONFIG_FILE_NAME}.json")
                 .useKmp { writer ->
-                    writer.writeObject(hashTable, json)
+                    writer.writeObject(
+                        WorkspaceStorageConfig(
+                            lastUpdateTable = Clock.System.now().toEpochMilliseconds()
+                        ),
+                        json
+                    )
                 }
         }
     }

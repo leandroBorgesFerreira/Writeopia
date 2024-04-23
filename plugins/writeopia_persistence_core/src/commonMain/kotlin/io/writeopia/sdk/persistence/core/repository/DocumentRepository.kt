@@ -3,6 +3,7 @@ package io.writeopia.sdk.persistence.core.repository
 import io.writeopia.sdk.manager.DocumentUpdate
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
+import kotlinx.datetime.Instant
 
 /**
  * DocumentRepository is the repository for using simple CRUD operations in [Document].
@@ -12,6 +13,12 @@ import io.writeopia.sdk.models.story.StoryStep
 interface DocumentRepository : DocumentUpdate {
 
     suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document>
+    suspend fun loadDocumentsForUserAfterTime(
+        orderBy: String,
+        userId: String,
+        instant: Instant
+    ): List<Document>
+
 
     suspend fun loadDocumentById(id: String): Document?
 

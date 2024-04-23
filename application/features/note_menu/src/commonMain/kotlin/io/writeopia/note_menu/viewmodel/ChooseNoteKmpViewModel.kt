@@ -10,7 +10,7 @@ import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.export.DocumentToJson
 import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.export.DocumentWriter
-import io.writeopia.sdk.import_document.json.DocumentFromJson
+import io.writeopia.sdk.import_document.json.WriteopiaJsonParser
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
@@ -19,6 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
 
 internal class ChooseNoteKmpViewModel(
     private val notesUseCase: NotesUseCase,
@@ -27,7 +28,7 @@ internal class ChooseNoteKmpViewModel(
     private val previewParser: PreviewParser = PreviewParser(),
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
     private val documentToJson: DocumentToJson = DocumentToJson(),
-    private val documentFromJson: DocumentFromJson = DocumentFromJson()
+    private val writeopiaJsonParser: WriteopiaJsonParser = WriteopiaJsonParser()
 ) : ChooseNoteViewModel, KmpViewModel {
 
     private var localUserId: String? = null
@@ -192,7 +193,7 @@ internal class ChooseNoteKmpViewModel(
 
     override fun loadFiles(filePaths: List<String>) {
         coroutineScope.launch(Dispatchers.Default) {
-            documentFromJson.readDocuments(filePaths)
+            writeopiaJsonParser.readDocuments(filePaths)
                 .onCompletion { exception ->
                     if (exception == null) {
                         refreshNotes()
@@ -221,8 +222,6 @@ internal class ChooseNoteKmpViewModel(
             val userId = getUserId()
             val workspacePath = notesConfig.loadWorkspacePath(userId)
 
-            println("workspacePath: $workspacePath")
-
             if (workspacePath != null) {
                 syncWorkplace(workspacePath)
             } else {
@@ -234,9 +233,15 @@ internal class ChooseNoteKmpViewModel(
     private suspend fun syncWorkplace(path: String) {
         _syncInProgress.value = true
 
-        val currentNotes = notesUseCase.loadDocumentsForUser(getUserId())
+        val userId = getUserId()
 
-        documentFromJson.readAllWorkSpace(path)
+        val currentNotes = writeopiaJsonParser.lastUpdatesById(path)?.let { lastUpdated ->
+            notesUseCase.loadDocumentsForUserAfterTime(userId, lastUpdated)
+        } ?: run {
+            notesUseCase.loadDocumentsForUser(userId)
+        }
+
+        writeopiaJsonParser.readAllWorkSpace(path)
             .onCompletion {
                 refreshNotes()
             }

@@ -8,7 +8,7 @@ import kotlinx.serialization.json.Json
 actual object KmpFileReader {
 
     @OptIn(ExperimentalSerializationApi::class)
-    actual inline fun <reified T> readObject(filePaths: List<String>, json: Json): Flow<T> =
+    actual inline fun <reified T> readObjects(filePaths: List<String>, json: Json): Flow<T> =
         flow { }
 
     actual inline fun <reified T> readDirectory(
