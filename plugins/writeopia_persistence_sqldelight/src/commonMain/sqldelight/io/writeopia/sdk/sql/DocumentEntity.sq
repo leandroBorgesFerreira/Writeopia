@@ -3,7 +3,8 @@ CREATE TABLE documentEntity (
   title TEXT NOT NULL,
   created_at INTEGER NOT NULL,
   last_updated_at INTEGER NOT NULL,
-  user_id TEXT NOT NULL
+  user_id TEXT NOT NULL,
+  save_hash TEXT NOT NULL
 );
 
 selectAll:
@@ -38,11 +39,11 @@ WHERE documentEntity.id = ?
 ORDER BY position;
 
 insert:
-INSERT INTO documentEntity(id, title, created_at, last_updated_at, user_id)
-VALUES (?, ?, ?, ?, ?)
+INSERT INTO documentEntity(id, title, created_at, last_updated_at, user_id, save_hash)
+VALUES (?, ?, ?, ?, ?, ?)
 ON CONFLICT(id) DO
 UPDATE SET id=excluded.id, title=excluded.title, created_at=excluded.created_at,
-last_updated_at=excluded.last_updated_at, user_id=excluded.user_id;
+last_updated_at=excluded.last_updated_at, user_id=excluded.user_id, save_hash=excluded.save_hash;
 
 delete:
 DELETE FROM documentEntity WHERE id = ?;

@@ -27,7 +27,8 @@ class DocumentSqlDao(
             title = document.title,
             created_at = document.createdAt.toEpochMilliseconds(),
             last_updated_at = document.lastUpdatedAt.toEpochMilliseconds(),
-            user_id = document.userId
+            user_id = document.userId,
+            save_hash = document.saveHash
         )
     }
 
