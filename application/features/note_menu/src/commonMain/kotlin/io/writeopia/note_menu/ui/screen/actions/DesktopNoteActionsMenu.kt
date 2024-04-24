@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.FileDownload
+import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Sync
@@ -34,6 +35,7 @@ fun DesktopNoteActionsMenu(
     showExtraOptions: Boolean,
     showExtraOptionsRequest: () -> Unit,
     hideExtraOptionsRequest: () -> Unit,
+    configureDirectory: () -> Unit,
     exportAsMarkdownClick: () -> Unit,
     importClick: () -> Unit,
     syncInProgressState: StateFlow<SyncState>,
@@ -69,6 +71,18 @@ fun DesktopNoteActionsMenu(
             )
 
             DropdownMenu(expanded = showExtraOptions, onDismissRequest = hideExtraOptionsRequest) {
+                DropdownMenuItem(
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Folder,
+                            contentDescription = "Configure directory"
+                        )
+                    }, onClick = configureDirectory,
+                    text = {
+                        Text("Configure directory")
+                    }
+                )
+
                 DropdownMenuItem(
                     leadingIcon = {
                         Icon(

@@ -38,6 +38,8 @@ interface ChooseNoteViewModel {
 
     fun onSyncLocallySelected()
 
+    fun configureDirectory()
+
     fun onWriteLocallySelected()
 
     fun clearSelection()
@@ -87,7 +89,6 @@ sealed interface SyncState {
 }
 
 sealed interface ConfigState {
-    data class Reconfigure(val path: String, val syncRequest: SyncRequest) : ConfigState
 
     data class Configure(val path: String, val syncRequest: SyncRequest) : ConfigState
 
@@ -95,26 +96,23 @@ sealed interface ConfigState {
 }
 
 enum class SyncRequest {
-    WRITE, READ_WRITE
+    WRITE, READ_WRITE, CONFIGURE
 }
 
 fun ConfigState.setPath(func: () -> String): ConfigState =
     when (this) {
         is ConfigState.Configure -> ConfigState.Configure(func(), this.syncRequest)
         ConfigState.Idle -> ConfigState.Idle
-        is ConfigState.Reconfigure -> ConfigState.Reconfigure(func(), this.syncRequest)
     }
 
 fun ConfigState.getPath(): String? =
     when (this) {
         is ConfigState.Configure -> this.path
         ConfigState.Idle -> null
-        is ConfigState.Reconfigure -> this.path
     }
 
 fun ConfigState.getSyncRequest(): SyncRequest? =
     when (this) {
         is ConfigState.Configure -> syncRequest
         ConfigState.Idle -> null
-        is ConfigState.Reconfigure -> syncRequest
     }

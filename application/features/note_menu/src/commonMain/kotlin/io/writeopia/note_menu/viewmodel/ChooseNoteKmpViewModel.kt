@@ -182,6 +182,16 @@ internal class ChooseNoteKmpViewModel(
 
     }
 
+    override fun configureDirectory() {
+        coroutineScope.launch(Dispatchers.Default) {
+            _showLocalSyncConfig.value =
+                ConfigState.Configure(
+                    path = notesConfig.loadWorkspacePath(getUserId()) ?: "",
+                    syncRequest = SyncRequest.CONFIGURE
+                )
+        }
+    }
+
     override fun directoryFilesAsMarkdown(path: String) {
         directoryFilesAs(path, documentToMarkdown)
         cancelEditMenu()
@@ -220,11 +230,13 @@ internal class ChooseNoteKmpViewModel(
                         println("writeWorkspace")
                         writeWorkspace(path)
                     }
+
                     SyncRequest.READ_WRITE -> {
                         println("syncWorkplace")
                         syncWorkplace(path)
                     }
-                    null -> {}
+
+                    SyncRequest.CONFIGURE, null -> {}
                 }
 
                 _showLocalSyncConfig.value = ConfigState.Idle

@@ -56,6 +56,7 @@ fun DesktopNotesMenu(
                 showExtraOptions = showExtraOptions,
                 showExtraOptionsRequest = chooseNoteViewModel::showEditMenu,
                 hideExtraOptionsRequest = chooseNoteViewModel::cancelEditMenu,
+                configureDirectory = chooseNoteViewModel::configureDirectory,
                 exportAsMarkdownClick = {
                     fileChooserSave("")?.let(chooseNoteViewModel::directoryFilesAsMarkdown)
                 },
