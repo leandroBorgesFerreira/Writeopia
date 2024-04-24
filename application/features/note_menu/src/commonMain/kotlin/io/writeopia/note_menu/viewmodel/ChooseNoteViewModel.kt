@@ -20,7 +20,7 @@ interface ChooseNoteViewModel {
 
     val showLocalSyncConfigState: StateFlow<Boolean>
 
-    val syncInProgress: StateFlow<Boolean>
+    val syncInProgress: StateFlow<SyncState>
 
     fun requestDocuments(force: Boolean)
 
@@ -32,13 +32,13 @@ interface ChooseNoteViewModel {
 
     fun directoryFilesAsMarkdown(path: String)
 
-    fun directoryFilesAsJson(path: String)
-
     fun loadFiles(filePaths: List<String>)
 
     fun onDocumentSelected(id: String, selected: Boolean)
 
     fun onSyncLocallySelected()
+
+    fun onWriteLocallySelected()
 
     fun clearSelection()
 
@@ -75,3 +75,11 @@ fun <T, R> UserState<T>.map(fn: (T) -> R): UserState<R> =
         is UserState.DisconnectedUser -> UserState.DisconnectedUser(fn(this.data))
         is UserState.UserNotReturned -> UserState.UserNotReturned()
     }
+
+sealed interface SyncState {
+    data object LoadingSync: SyncState
+
+    data object LoadingWrite: SyncState
+
+    data object Idle: SyncState
+}

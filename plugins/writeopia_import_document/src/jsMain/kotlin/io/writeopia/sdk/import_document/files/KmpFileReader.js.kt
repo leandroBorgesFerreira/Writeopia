@@ -7,7 +7,6 @@ import kotlinx.serialization.json.Json
 
 actual object KmpFileReader {
 
-    @OptIn(ExperimentalSerializationApi::class)
     actual inline fun <reified T> readObjects(filePaths: List<String>, json: Json): Flow<T> =
         flow { }
 
@@ -15,6 +14,13 @@ actual object KmpFileReader {
         directoryPath: String,
         json: Json
     ): Flow<T> = flow {  }
+
+    actual inline fun <reified T> readObject(
+        filePath: String,
+        json: Json
+    ): T? {
+        TODO("Not yet implemented")
+    }
 
 
 }

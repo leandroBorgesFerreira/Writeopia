@@ -9,6 +9,7 @@ import io.writeopia.sdk.persistence.entity.document.DocumentEntity
 import io.writeopia.sdk.persistence.entity.story.StoryStepEntity
 import io.writeopia.sdk.persistence.parse.toEntity
 import io.writeopia.sdk.persistence.parse.toModel
+import kotlinx.datetime.Instant
 
 class RoomDocumentRepository(
     private val documentEntityDao: DocumentEntityDao,
@@ -21,6 +22,14 @@ class RoomDocumentRepository(
                 val content = loadInnerSteps(storyEntity)
                 documentEntity.toModel(content)
             } ?: emptyList()
+
+    override suspend fun loadDocumentsForUserAfterTime(
+        orderBy: String,
+        userId: String,
+        instant: Instant
+    ): List<Document> {
+        throw IllegalStateException("This method is not supported")
+    }
 
     override suspend fun loadDocumentById(id: String): Document? {
         val documentEntity = documentEntityDao.loadDocumentById(id)

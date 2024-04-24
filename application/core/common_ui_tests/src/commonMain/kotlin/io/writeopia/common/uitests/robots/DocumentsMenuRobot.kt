@@ -16,7 +16,7 @@ class DocumentsMenuRobot(private val composeTestRule: ComposeTestRule) {
     }
 
     fun syncClick() {
-        composeTestRule.onNodeWithTag("syncLocally").performClick()
+        composeTestRule.onNodeWithTag("syncWorkspaceLocally").performClick()
     }
 
 }

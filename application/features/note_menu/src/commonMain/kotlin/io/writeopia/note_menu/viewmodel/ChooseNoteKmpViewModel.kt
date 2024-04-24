@@ -17,6 +17,7 @@ import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.utils_module.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
@@ -63,7 +64,7 @@ internal class ChooseNoteKmpViewModel(
     private val _editState = MutableStateFlow(false)
     override val editState: StateFlow<Boolean> = _editState.asStateFlow()
 
-    private val _syncInProgress = MutableStateFlow(false)
+    private val _syncInProgress = MutableStateFlow<SyncState>(SyncState.Idle)
     override val syncInProgress = _syncInProgress.asStateFlow()
 
     override val documentsState: StateFlow<ResultData<NotesUi>> by lazy {
@@ -185,10 +186,7 @@ internal class ChooseNoteKmpViewModel(
 
     override fun directoryFilesAsMarkdown(path: String) {
         directoryFilesAs(path, documentToMarkdown)
-    }
-
-    override fun directoryFilesAsJson(path: String) {
-        directoryFilesAs(path, documentToJson)
+        cancelEditMenu()
     }
 
     override fun loadFiles(filePaths: List<String>) {
@@ -218,12 +216,20 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun onSyncLocallySelected() {
+        handleStorage(::syncWorkplace)
+    }
+
+    override fun onWriteLocallySelected() {
+        handleStorage(::writeWorkspace)
+    }
+
+    private fun handleStorage(workspaceFunc: suspend (String) -> Unit) {
         coroutineScope.launch(Dispatchers.Default) {
             val userId = getUserId()
             val workspacePath = notesConfig.loadWorkspacePath(userId)
 
             if (workspacePath != null) {
-                syncWorkplace(workspacePath)
+                workspaceFunc(workspacePath)
             } else {
                 _showLocalSyncConfig.value = true
             }
@@ -231,36 +237,50 @@ internal class ChooseNoteKmpViewModel(
     }
 
     private suspend fun syncWorkplace(path: String) {
-        _syncInProgress.value = true
+        _syncInProgress.value = SyncState.LoadingSync
 
         val userId = getUserId()
-
         val currentNotes = writeopiaJsonParser.lastUpdatesById(path)?.let { lastUpdated ->
             notesUseCase.loadDocumentsForUserAfterTime(userId, lastUpdated)
         } ?: run {
             notesUseCase.loadDocumentsForUser(userId)
         }
 
+        documentToJson.writeDocuments(
+            documents = currentNotes,
+            path = path
+        )
+
         writeopiaJsonParser.readAllWorkSpace(path)
             .onCompletion {
                 refreshNotes()
+                _syncInProgress.value = SyncState.Idle
             }
             .collect(notesUseCase::saveDocument)
+    }
+
+    private suspend fun writeWorkspace(path: String) {
+        _syncInProgress.value = SyncState.LoadingWrite
+
+        val userId = getUserId()
+        val currentNotes = writeopiaJsonParser.lastUpdatesById(path)?.let { lastUpdated ->
+            notesUseCase.loadDocumentsForUserAfterTime(userId, lastUpdated)
+        } ?: run {
+            notesUseCase.loadDocumentsForUser(userId)
+        }
 
         documentToJson.writeDocuments(
             documents = currentNotes,
             path = path
         )
 
-        _syncInProgress.value = false
+        _syncInProgress.value = SyncState.Idle
     }
 
     private fun directoryFilesAs(path: String, documentWriter: DocumentWriter) {
         coroutineScope.launch(Dispatchers.Default) {
             val data = notesUseCase.loadDocumentsForUser(getUserId())
             documentWriter.writeDocuments(data, path)
-
-            cancelEditMenu()
         }
     }
 
