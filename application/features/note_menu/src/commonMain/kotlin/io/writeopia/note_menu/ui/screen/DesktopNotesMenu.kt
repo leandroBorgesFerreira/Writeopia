@@ -46,7 +46,7 @@ fun DesktopNotesMenu(
 
     Box(
         modifier = modifier
-            .padding(start = 40.dp, end = 12.dp, bottom = 40.dp, top = 12.dp)
+            .padding(start = 40.dp, end = 20.dp, bottom = 40.dp, top = 12.dp)
             .fillMaxSize()
     ) {
         Column {
@@ -76,7 +76,7 @@ fun DesktopNotesMenu(
             )
         }
 
-        Column(modifier = Modifier.align(Alignment.BottomEnd).padding(horizontal = 30.dp)) {
+        Column(modifier = Modifier.align(Alignment.BottomEnd).padding(horizontal = 22.dp)) {
             FloatingActionButton(
                 modifier = Modifier.testTag("addNote"),
                 onClick = onNewNoteClick,
