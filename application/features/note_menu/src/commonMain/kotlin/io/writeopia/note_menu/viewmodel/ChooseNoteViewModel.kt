@@ -18,7 +18,7 @@ interface ChooseNoteViewModel {
 
     val editState: StateFlow<Boolean>
 
-    val showLocalSyncConfigState: StateFlow<Boolean>
+    val showLocalSyncConfigState: StateFlow<ConfigState>
 
     val syncInProgress: StateFlow<SyncState>
 
@@ -38,6 +38,8 @@ interface ChooseNoteViewModel {
 
     fun onSyncLocallySelected()
 
+    fun configureDirectory()
+
     fun onWriteLocallySelected()
 
     fun clearSelection()
@@ -56,7 +58,9 @@ interface ChooseNoteViewModel {
 
     fun hideConfigSyncMenu()
 
-    fun selectedWorkplacePath(path: String)
+    fun pathSelected(path: String)
+
+    fun confirmWorkplacePath()
 }
 
 sealed interface UserState<T> {
@@ -77,9 +81,38 @@ fun <T, R> UserState<T>.map(fn: (T) -> R): UserState<R> =
     }
 
 sealed interface SyncState {
-    data object LoadingSync: SyncState
+    data object LoadingSync : SyncState
 
-    data object LoadingWrite: SyncState
+    data object LoadingWrite : SyncState
 
-    data object Idle: SyncState
+    data object Idle : SyncState
 }
+
+sealed interface ConfigState {
+
+    data class Configure(val path: String, val syncRequest: SyncRequest) : ConfigState
+
+    data object Idle : ConfigState
+}
+
+enum class SyncRequest {
+    WRITE, READ_WRITE, CONFIGURE
+}
+
+fun ConfigState.setPath(func: () -> String): ConfigState =
+    when (this) {
+        is ConfigState.Configure -> ConfigState.Configure(func(), this.syncRequest)
+        ConfigState.Idle -> ConfigState.Idle
+    }
+
+fun ConfigState.getPath(): String? =
+    when (this) {
+        is ConfigState.Configure -> this.path
+        ConfigState.Idle -> null
+    }
+
+fun ConfigState.getSyncRequest(): SyncRequest? =
+    when (this) {
+        is ConfigState.Configure -> syncRequest
+        ConfigState.Idle -> null
+    }
