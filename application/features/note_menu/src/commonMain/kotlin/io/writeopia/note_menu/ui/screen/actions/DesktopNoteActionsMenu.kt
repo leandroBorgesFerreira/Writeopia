@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.writeopia.note_menu.viewmodel.SyncState
 import kotlinx.coroutines.flow.StateFlow
@@ -47,6 +48,7 @@ fun DesktopNoteActionsMenu(
                 imageVector = Icons.Default.Save,
                 contentDescription = "Save",
                 modifier = Modifier.icon(onWriteLocallySelected)
+                    .testTag("writeWorkspaceLocally")
             )
         }
 
@@ -55,6 +57,7 @@ fun DesktopNoteActionsMenu(
                 imageVector = Icons.Default.Sync,
                 contentDescription = "Save",
                 modifier = Modifier.icon(onSyncLocallySelected)
+                    .testTag("syncWorkspaceLocally")
             )
         }
 
@@ -110,7 +113,7 @@ private fun LoadingBox(showLoading: Boolean, content: @Composable () -> Unit) {
     }
 }
 
-private fun Modifier.icon(onClick: () -> Unit) : Modifier =
+private fun Modifier.icon(onClick: () -> Unit): Modifier =
     this.clip(CircleShape)
         .clickable(onClick = onClick)
         .size(36.dp)
