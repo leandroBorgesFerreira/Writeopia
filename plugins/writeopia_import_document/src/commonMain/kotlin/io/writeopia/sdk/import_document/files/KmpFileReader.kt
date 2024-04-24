@@ -7,7 +7,9 @@ import kotlinx.serialization.json.Json
 
 expect object KmpFileReader {
 
-    inline fun <reified T> readObject(filePaths: List<String>, json: Json): Flow<T>
+    inline fun <reified T> readObject(filePath: String, json: Json): T?
+
+    inline fun <reified T> readObjects(filePaths: List<String>, json: Json): Flow<T>
 
     inline fun <reified T> readDirectory(directoryPath: String, json: Json): Flow<T>
 }

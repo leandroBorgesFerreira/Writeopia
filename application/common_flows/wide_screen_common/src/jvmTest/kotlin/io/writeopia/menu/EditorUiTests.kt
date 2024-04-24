@@ -23,9 +23,8 @@ class EditorUiTests {
     val composeTestRule = createComposeRule()
 
     @Test
-    @Ignore("Some error in sqldelight")
     fun itShouldBePossibleToWriteATitleAndSomeContent() = runTest {
-        startContent()
+        startApp(composeTestRule)
 
         EditorCommonTests.testAddTitleAndContent(
             DocumentsMenuRobot(composeTestRule),
@@ -34,9 +33,8 @@ class EditorUiTests {
     }
 
     @Test
-    @Ignore("Some error in sqldelight")
     fun itShouldBePossibleToSaveNoteWithTitle() = runTest {
-        startContent()
+        startApp(composeTestRule)
 
         EditorCommonTests.saveNoteWithTitle(
             DocumentsMenuRobot(composeTestRule),
@@ -45,9 +43,8 @@ class EditorUiTests {
     }
 
     @Test
-    @Ignore("Some error in sqldelight")
     fun itShouldBePossibleToOpenANoteWithoutTitle() = runTest {
-        startContent()
+        startApp(composeTestRule)
 
         EditorCommonTests.editNoteLineWithoutTitle(
             DocumentsMenuRobot(composeTestRule),
@@ -57,24 +54,9 @@ class EditorUiTests {
 
     @Test
     fun theBottomBoxShouldInitializeVisible() = runTest {
-        startContent()
+        startApp(composeTestRule)
 
         DocumentsMenuRobot(composeTestRule).goToEditNote()
         composeTestRule.onNodeWithTag("EditorBottomContent").assertIsDisplayed()
-    }
-
-
-    private suspend fun startContent() {
-        val database = createDatabase(DriverFactory())
-
-
-        composeTestRule.setContent {
-            App(
-                notesConfigurationInjector = NotesConfigurationInjector(database),
-                repositoryInjection = SqlDelightDaoInjector(database),
-                drawersFactory = DefaultDrawersDesktop,
-                disableWebsocket = true
-            )
-        }
     }
 }

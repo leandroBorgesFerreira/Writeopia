@@ -2,6 +2,7 @@ package io.writeopia.sdk.persistence.core.repository
 
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
+import kotlinx.datetime.Instant
 
 class InMemoryDocumentRepository : DocumentRepository {
 
@@ -11,6 +12,12 @@ class InMemoryDocumentRepository : DocumentRepository {
         documentsMap.values.toList().also {
             println("loadDocumentsForUser")
         }
+
+    override suspend fun loadDocumentsForUserAfterTime(
+        orderBy: String,
+        userId: String,
+        instant: Instant
+    ): List<Document> = documentsMap.values.toList()
 
     override suspend fun loadDocumentById(id: String): Document? = documentsMap.values.firstOrNull()
 

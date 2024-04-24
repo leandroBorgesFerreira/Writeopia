@@ -14,4 +14,9 @@ class DocumentsMenuRobot(private val composeTestRule: ComposeTestRule) {
     fun goToEditNote() {
         composeTestRule.onNodeWithTag("addNote").performClick()
     }
+
+    fun syncClick() {
+        composeTestRule.onNodeWithTag("syncWorkspaceLocally").performClick()
+    }
+
 }

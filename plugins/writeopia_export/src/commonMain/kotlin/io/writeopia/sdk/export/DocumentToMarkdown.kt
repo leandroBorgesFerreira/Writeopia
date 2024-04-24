@@ -1,6 +1,7 @@
 package io.writeopia.sdk.export
 
 import io.writeopia.sdk.export.files.KmpFileWriter
+import io.writeopia.sdk.export.files.name
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
@@ -15,9 +16,9 @@ object DocumentToMarkdown: DocumentWriter {
 
     // In the future it may be necessary to add a parse to an OutputStream
 
-    override fun writeDocuments(documents: List<Document>, path: String) {
+    override fun writeDocuments(documents: List<Document>, path: String, addHashTable: Boolean) {
         documents.forEach { document ->
-            KmpFileWriter(document, path, ".md").useKmp { writer ->
+            KmpFileWriter(name(document, path, ".md")).useKmp { writer ->
                 writeToWriter(
                     content = document.content,
                     kmpFileWriter = writer

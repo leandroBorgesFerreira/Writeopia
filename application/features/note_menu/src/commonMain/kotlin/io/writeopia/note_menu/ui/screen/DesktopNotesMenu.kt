@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -58,36 +59,6 @@ fun DesktopNotesMenu(
             .fillMaxSize()
     ) {
         Column {
-            val syncButtonShape = RoundedCornerShape(10.dp)
-
-            Row(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                val showSyncLoading by chooseNoteViewModel.syncInProgress.collectAsState()
-
-                if (showSyncLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.then(Modifier.size(20.dp)),
-                        strokeWidth = 2.dp
-                    )
-
-                    Spacer(modifier = Modifier.width(8.dp))
-                }
-
-                Text(
-                    "Sync locally",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Black,
-                    modifier = Modifier
-                        .clip(syncButtonShape)
-                        .clickable(onClick = chooseNoteViewModel::onSyncLocallySelected)
-                        .border(width = 2.dp, color = Color.Black, shape = syncButtonShape)
-                        .padding(8.dp)
-                )
-            }
-
-
             val showExtraOptions by chooseNoteViewModel.editState.collectAsState()
 
             DesktopNoteActionsMenu(
@@ -97,14 +68,13 @@ fun DesktopNotesMenu(
                 hideExtraOptionsRequest = chooseNoteViewModel::cancelEditMenu,
                 exportAsMarkdownClick = {
                     fileChooserSave("")?.let(chooseNoteViewModel::directoryFilesAsMarkdown)
-
-                },
-                exportAsJsonClick = {
-                    fileChooserSave("")?.let(chooseNoteViewModel::directoryFilesAsJson)
                 },
                 importClick = {
                     chooseNoteViewModel.loadFiles(fileChooserLoad(""))
-                }
+                },
+                syncInProgressState = chooseNoteViewModel.syncInProgress,
+                onSyncLocallySelected = chooseNoteViewModel::onSyncLocallySelected,
+                onWriteLocallySelected = chooseNoteViewModel::onWriteLocallySelected,
             )
 
             NotesCards(

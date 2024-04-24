@@ -8,13 +8,9 @@ import kotlinx.serialization.json.encodeToStream
 import java.io.BufferedWriter
 import java.io.File
 
-actual class KmpFileWriter actual constructor(
-    document: Document,
-    path: String,
-    extension: String,
-) : KmpClosable {
+actual class KmpFileWriter actual constructor(fileName: String) : KmpClosable {
 
-    val file = File(name(document, path, extension))
+    val file = File(fileName)
     private var writer: BufferedWriter? = null
 
     actual override fun start() {

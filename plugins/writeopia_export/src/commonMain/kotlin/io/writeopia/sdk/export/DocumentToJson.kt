@@ -1,19 +1,40 @@
 package io.writeopia.sdk.export
 
 import io.writeopia.sdk.export.files.KmpFileWriter
+import io.writeopia.sdk.export.files.name
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.serialization.extensions.toApi
 import io.writeopia.sdk.serialization.json.writeopiaJson
 import io.writeopia.sdk.utils.files.useKmp
 import kotlinx.serialization.json.Json
+import io.writeopia.sdk.serialization.storage.WorkspaceStorageConfig
+import kotlinx.datetime.Clock
 
-class DocumentToJson(private val json: Json = writeopiaJson): DocumentWriter {
+class DocumentToJson(private val json: Json = writeopiaJson) : DocumentWriter {
 
-    override fun writeDocuments(documents: List<Document>, path: String) {
+    override fun writeDocuments(
+        documents: List<Document>,
+        path: String,
+        writeConfigFile: Boolean
+    ) {
+        if (documents.isEmpty()) return
+
         documents.forEach { document ->
-            KmpFileWriter(document, path, ".json").useKmp { writer ->
+            KmpFileWriter(name(document, path, ".json")).useKmp { writer ->
                 writer.writeObject(document.toApi(), json)
             }
+        }
+
+        if (writeConfigFile) {
+            KmpFileWriter("$path/${DocumentWriter.CONFIG_FILE_NAME}.json")
+                .useKmp { writer ->
+                    writer.writeObject(
+                        WorkspaceStorageConfig(
+                            lastUpdateTable = Clock.System.now().toEpochMilliseconds()
+                        ),
+                        json
+                    )
+                }
         }
     }
 }
