@@ -68,7 +68,7 @@ fun App(
                     }
 
                     DesktopNotesMenu(
-                        chooseNoteViewModel,
+                        chooseNoteViewModel = chooseNoteViewModel,
                         onNewNoteClick = {
                             navigationViewModel.navigateTo(NavigationPage.Editor())
                         },

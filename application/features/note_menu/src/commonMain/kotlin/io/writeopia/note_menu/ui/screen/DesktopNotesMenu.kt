@@ -30,6 +30,7 @@ import io.writeopia.note_menu.viewmodel.getPath
 
 @Composable
 fun DesktopNotesMenu(
+    modifier: Modifier = Modifier,
     chooseNoteViewModel: ChooseNoteViewModel,
     onNewNoteClick: () -> Unit,
     onDeleteClick: () -> Unit,
@@ -44,8 +45,8 @@ fun DesktopNotesMenu(
     )
 
     Box(
-        modifier = Modifier
-            .padding(start = 40.dp, end = 40.dp, bottom = 40.dp, top = 6.dp)
+        modifier = modifier
+            .padding(start = 40.dp, end = 12.dp, bottom = 40.dp, top = 12.dp)
             .fillMaxSize()
     ) {
         Column {
@@ -75,7 +76,7 @@ fun DesktopNotesMenu(
             )
         }
 
-        Column(modifier = Modifier.align(Alignment.BottomEnd)) {
+        Column(modifier = Modifier.align(Alignment.BottomEnd).padding(horizontal = 30.dp)) {
             FloatingActionButton(
                 modifier = Modifier.testTag("addNote"),
                 onClick = onNewNoteClick,
