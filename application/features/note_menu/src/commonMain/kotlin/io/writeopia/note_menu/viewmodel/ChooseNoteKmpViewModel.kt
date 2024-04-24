@@ -17,10 +17,8 @@ import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.utils_module.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Instant
 
 internal class ChooseNoteKmpViewModel(
     private val notesUseCase: NotesUseCase,
@@ -58,7 +56,7 @@ internal class ChooseNoteKmpViewModel(
     private val _notesArrangement = MutableStateFlow(NotesArrangement.GRID)
     override val notesArrangement: StateFlow<NotesArrangement> = _notesArrangement.asStateFlow()
 
-    private val _showLocalSyncConfig = MutableStateFlow(false)
+    private val _showLocalSyncConfig = MutableStateFlow<ConfigState>(ConfigState.Idle)
     override val showLocalSyncConfigState = _showLocalSyncConfig.asStateFlow()
 
     private val _editState = MutableStateFlow(false)
@@ -203,27 +201,50 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun hideConfigSyncMenu() {
-        _showLocalSyncConfig.value = false
+        _showLocalSyncConfig.value = ConfigState.Idle
     }
 
-    override fun selectedWorkplacePath(path: String) {
-        coroutineScope.launch(Dispatchers.Default) {
-            notesConfig.saveWorkspacePath(path = path, userId = getUserId())
-            _showLocalSyncConfig.value = false
+    override fun confirmWorkplacePath() {
+        println("confirmWorkplacePath")
 
-            syncWorkplace(path)
+        val path = _showLocalSyncConfig.value.getPath()
+
+        if (path != null) {
+            println("path != null")
+            coroutineScope.launch(Dispatchers.Default) {
+                println("launch")
+                notesConfig.saveWorkspacePath(path = path, userId = getUserId())
+
+                when (_showLocalSyncConfig.value.getSyncRequest()) {
+                    SyncRequest.WRITE -> {
+                        println("writeWorkspace")
+                        writeWorkspace(path)
+                    }
+                    SyncRequest.READ_WRITE -> {
+                        println("syncWorkplace")
+                        syncWorkplace(path)
+                    }
+                    null -> {}
+                }
+
+                _showLocalSyncConfig.value = ConfigState.Idle
+            }
         }
     }
 
+    override fun pathSelected(path: String) {
+        _showLocalSyncConfig.value = _showLocalSyncConfig.value.setPath { path }
+    }
+
     override fun onSyncLocallySelected() {
-        handleStorage(::syncWorkplace)
+        handleStorage(::syncWorkplace, SyncRequest.READ_WRITE)
     }
 
     override fun onWriteLocallySelected() {
-        handleStorage(::writeWorkspace)
+        handleStorage(::writeWorkspace, SyncRequest.WRITE)
     }
 
-    private fun handleStorage(workspaceFunc: suspend (String) -> Unit) {
+    private fun handleStorage(workspaceFunc: suspend (String) -> Unit, syncRequest: SyncRequest) {
         coroutineScope.launch(Dispatchers.Default) {
             val userId = getUserId()
             val workspacePath = notesConfig.loadWorkspacePath(userId)
@@ -231,7 +252,7 @@ internal class ChooseNoteKmpViewModel(
             if (workspacePath != null) {
                 workspaceFunc(workspacePath)
             } else {
-                _showLocalSyncConfig.value = true
+                _showLocalSyncConfig.value = ConfigState.Configure("", syncRequest)
             }
         }
     }
@@ -242,9 +263,7 @@ internal class ChooseNoteKmpViewModel(
         val userId = getUserId()
         val currentNotes = writeopiaJsonParser.lastUpdatesById(path)?.let { lastUpdated ->
             notesUseCase.loadDocumentsForUserAfterTime(userId, lastUpdated)
-        } ?: run {
-            notesUseCase.loadDocumentsForUser(userId)
-        }
+        } ?: notesUseCase.loadDocumentsForUser(userId)
 
         documentToJson.writeDocuments(
             documents = currentNotes,
