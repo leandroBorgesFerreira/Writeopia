@@ -178,7 +178,7 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun favoriteSelectedNotes() {
-
+        //Todo: Implement!
     }
 
     override fun configureDirectory() {

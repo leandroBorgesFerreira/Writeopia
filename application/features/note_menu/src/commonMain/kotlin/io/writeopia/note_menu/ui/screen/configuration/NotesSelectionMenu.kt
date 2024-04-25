@@ -1,6 +1,7 @@
 package io.writeopia.note_menu.ui.screen.configuration
 
 //import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
@@ -35,13 +36,12 @@ internal fun NotesSelectionMenu(
         CornerSize(0.dp),
         CornerSize(0.dp)
     ),
-    exitAnimationOffset: Float = 1F
-) {
-    val animationSpec = spring(
+    exitAnimationOffset: Float = 1F,
+    animationSpec: FiniteAnimationSpec<IntOffset> = spring(
         stiffness = 4000F,
         visibilityThreshold = IntOffset.VisibilityThreshold
     )
-
+) {
     SlideInBox(
         modifier = modifier,
         editState = visibilityState,

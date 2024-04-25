@@ -1,5 +1,7 @@
 package io.writeopia.note_menu.ui.screen
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -80,25 +82,15 @@ fun DesktopNotesMenu(
             )
         }
 
-        Column(modifier = Modifier.align(Alignment.BottomEnd).padding(horizontal = 22.dp)) {
-            FloatingActionButton(
-                modifier = Modifier.testTag("addNote"),
-                onClick = onNewNoteClick,
-                content = {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "New note")
-                }
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            FloatingActionButton(
-                modifier = Modifier.testTag("deleteNotes"),
-                onClick = onDeleteClick,
-                content = {
-                    Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
-                }
-            )
-        }
+        FloatingActionButton(
+            modifier = Modifier.align(Alignment.BottomEnd)
+                .padding(horizontal = 22.dp)
+                .testTag("addNote"),
+            onClick = onNewNoteClick,
+            content = {
+                Icon(imageVector = Icons.Default.Add, contentDescription = "New note")
+            }
+        )
 
         val configState = chooseNoteViewModel.showLocalSyncConfigState.collectAsState().value
 
@@ -107,9 +99,7 @@ fun DesktopNotesMenu(
                 currentPath = configState.getPath(),
                 pathChange = chooseNoteViewModel::pathSelected,
                 onDismissRequest = chooseNoteViewModel::hideConfigSyncMenu,
-                onConfirmation = {
-                    chooseNoteViewModel.confirmWorkplacePath()
-                }
+                onConfirmation = chooseNoteViewModel::confirmWorkplacePath
             )
         }
 
@@ -122,7 +112,8 @@ fun DesktopNotesMenu(
             onCopy = chooseNoteViewModel::copySelectedNotes,
             onFavorite = chooseNoteViewModel::favoriteSelectedNotes,
             shape = RoundedCornerShape(CornerSize(16.dp)),
-            exitAnimationOffset = 2.3F
+            exitAnimationOffset = 2.3F,
+            animationSpec = spring(dampingRatio = 0.6F)
         )
     }
 }
