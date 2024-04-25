@@ -15,50 +15,47 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import io.writeopia.common_ui.SlideInBox
 
 @Composable
-internal fun BoxScope.NotesSelectionMenu(
+internal fun NotesSelectionMenu(
     modifier: Modifier = Modifier,
     visibilityState: Boolean,
     onDelete: () -> Unit,
     onCopy: () -> Unit,
     onFavorite: () -> Unit,
+    shape: Shape = RoundedCornerShape(
+        CornerSize(16.dp),
+        CornerSize(16.dp),
+        CornerSize(0.dp),
+        CornerSize(0.dp)
+    ),
+    exitAnimationOffset: Float = 1F
 ) {
-
     val animationSpec = spring(
         stiffness = 4000F,
         visibilityThreshold = IntOffset.VisibilityThreshold
     )
 
     SlideInBox(
-        modifier = modifier.align(Alignment.BottomCenter),
+        modifier = modifier,
         editState = visibilityState,
         showBackground = false,
         outsideClick = { },
         enterAnimationSpec = animationSpec,
         exitAnimationSpec = animationSpec,
-        animationLabel = "configurationsMenuAnimation"
+        animationLabel = "configurationsMenuAnimation",
+        extraExitOffset = exitAnimationOffset
     ) {
-        val topCorner = CornerSize(16.dp)
-        val bottomCorner = CornerSize(0.dp)
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(
-                    RoundedCornerShape(
-                        topCorner,
-                        topCorner,
-                        bottomCorner,
-                        bottomCorner
-                    )
-                )
+                .clip(shape)
                 .background(MaterialTheme.colorScheme.primary),
         ) {
             Row {

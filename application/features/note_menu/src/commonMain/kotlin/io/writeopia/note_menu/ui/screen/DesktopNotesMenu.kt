@@ -6,6 +6,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -20,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.writeopia.note_menu.ui.screen.actions.DesktopNoteActionsMenu
+import io.writeopia.note_menu.ui.screen.configuration.NotesSelectionMenu
 import io.writeopia.note_menu.ui.screen.configuration.WorkspaceConfigurationDialog
 import io.writeopia.note_menu.ui.screen.file.fileChooserLoad
 import io.writeopia.note_menu.ui.screen.file.fileChooserSave
@@ -108,5 +112,17 @@ fun DesktopNotesMenu(
                 }
             )
         }
+
+        val hasSelectedNotes by chooseNoteViewModel.hasSelectedNotes.collectAsState()
+
+        NotesSelectionMenu(
+            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 40.dp).width(400.dp),
+            visibilityState = hasSelectedNotes,
+            onDelete = chooseNoteViewModel::deleteSelectedNotes,
+            onCopy = chooseNoteViewModel::copySelectedNotes,
+            onFavorite = chooseNoteViewModel::favoriteSelectedNotes,
+            shape = RoundedCornerShape(CornerSize(16.dp)),
+            exitAnimationOffset = 2.3F
+        )
     }
 }

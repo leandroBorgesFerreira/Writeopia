@@ -88,10 +88,11 @@ internal fun ChooseNoteScreen(
             }
 
             NotesSelectionMenu(
+                modifier = Modifier.align(Alignment.BottomCenter),
                 visibilityState = hasSelectedNotes,
+                onDelete = chooseNoteViewModel::deleteSelectedNotes,
                 onCopy = chooseNoteViewModel::copySelectedNotes,
                 onFavorite = chooseNoteViewModel::favoriteSelectedNotes,
-                onDelete = chooseNoteViewModel::deleteSelectedNotes,
             )
 
             MobileConfigurationsMenu(
