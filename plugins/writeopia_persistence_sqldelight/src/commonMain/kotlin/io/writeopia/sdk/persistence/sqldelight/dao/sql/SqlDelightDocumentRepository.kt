@@ -6,11 +6,12 @@ import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import kotlinx.datetime.Instant
 
-class SqlDelightDocumentRepository(private val documentSqlDao: DocumentSqlDao) :
-    DocumentRepository {
+class SqlDelightDocumentRepository(
+    private val documentSqlDao: DocumentSqlDao
+) : DocumentRepository {
+
     override suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document> {
-        //Todo: Add orderby!
-        return documentSqlDao.loadDocumentsWithContentByUserId(userId)
+        return documentSqlDao.loadDocumentsWithContentByUserId(orderBy, userId)
     }
 
     override suspend fun loadDocumentsForUserAfterTime(

@@ -1,6 +1,7 @@
 package io.writeopia.note_menu.ui.screen.list
 
 //import io.writeopia.appresourcers.R
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -95,6 +96,7 @@ fun NotesCards(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun LazyGridNotes(
     documents: List<DocumentUi>,
@@ -110,12 +112,19 @@ private fun LazyGridNotes(
                 documents,
                 key = { document -> document.hashCode() }
             ) { document ->
-                DocumentItem(document, onDocumentClick, selectionListener, previewDrawers())
+                DocumentItem(
+                    document,
+                    onDocumentClick,
+                    selectionListener,
+                    previewDrawers(),
+                    modifier = Modifier.animateItemPlacement()
+                )
             }
         }
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun LazyColumnNotes(
     documents: List<DocumentUi>,
@@ -127,7 +136,13 @@ private fun LazyColumnNotes(
         verticalArrangement = Arrangement.spacedBy(6.dp),
         content = {
             items(documents, key = { document -> document.hashCode() }) { document ->
-                DocumentItem(document, onDocumentClick, selectionListener, previewDrawers())
+                DocumentItem(
+                    document,
+                    onDocumentClick,
+                    selectionListener,
+                    previewDrawers(),
+                    modifier = Modifier.animateItemPlacement()
+                )
             }
         }
     )
@@ -138,13 +153,14 @@ private fun DocumentItem(
     documentUi: DocumentUi,
     documentClick: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
-    drawers: Map<Int, StoryStepDrawer>
+    drawers: Map<Int, StoryStepDrawer>,
+    modifier: Modifier = Modifier
 ) {
     val titleFallback = "untitled"
 //        stringResource(R.string.untitled)
 
     SwipeBox(
-        modifier = Modifier
+        modifier = modifier
             .padding(bottom = 6.dp)
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.large)

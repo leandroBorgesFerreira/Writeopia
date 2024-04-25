@@ -74,9 +74,6 @@ fun App(
                         },
                         onNoteClick = { id, title ->
                             navigationViewModel.navigateTo(NavigationPage.Editor(id, title))
-                        },
-                        onDeleteClick = {
-                            chooseNoteViewModel.deleteSelectedNotes()
                         }
                     )
                 }

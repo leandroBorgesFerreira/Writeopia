@@ -18,6 +18,8 @@ interface ChooseNoteViewModel {
 
     val editState: StateFlow<Boolean>
 
+    val showSortMenuState: StateFlow<Boolean>
+
     val showLocalSyncConfigState: StateFlow<ConfigState>
 
     val syncInProgress: StateFlow<SyncState>
@@ -28,7 +30,11 @@ interface ChooseNoteViewModel {
 
     fun showEditMenu()
 
+    fun showSortMenu()
+
     fun cancelEditMenu()
+
+    fun cancelSortMenu()
 
     fun directoryFilesAsMarkdown(path: String)
 
