@@ -48,5 +48,5 @@ class ConfigurationSqlDelightRepository(
     }
 
     override suspend fun loadWorkspacePath(userId: String): String? =
-        configurationSqlDelightDao.geWorkspaceByUserId(userId)?.path
+        configurationSqlDelightDao.getWorkspaceByUserId(userId)?.path
 }

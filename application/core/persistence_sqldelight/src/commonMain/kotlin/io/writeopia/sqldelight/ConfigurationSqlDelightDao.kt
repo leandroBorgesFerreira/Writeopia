@@ -30,7 +30,7 @@ class ConfigurationSqlDelightDao(database: WriteopiaDb?) {
     suspend fun getConfigurationByUserId(userId: String): NotesConfiguration? =
         notesConfigurationQueries?.selectConfigurationByUserId(userId)?.awaitAsOneOrNull()
 
-    suspend fun geWorkspaceByUserId(userId: String): WorkspaceConfiguration? =
+    suspend fun getWorkspaceByUserId(userId: String): WorkspaceConfiguration? =
         workspaceConfigurationQueries?.selectWorkspaceConfigurationByUserId(userId)
             ?.awaitAsOneOrNull()
 }
