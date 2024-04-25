@@ -10,6 +10,6 @@ enum class NotesArrangement(val type: String) {
         fun fromString(string: String): NotesArrangement =
             entries.firstOrNull { notesArrangement ->
                 notesArrangement.type == string
-            } ?: throw IllegalArgumentException("not a NotesArrangement")
+            } ?: throw IllegalArgumentException("not a NotesArrangement: $string")
     }
 }

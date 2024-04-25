@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
@@ -27,11 +29,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.writeopia.note_menu.viewmodel.SyncState
+import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun DesktopNoteActionsMenu(
     modifier: Modifier = Modifier,
+    showSortingOption: Boolean,
+    showSortOptionsRequest: () -> Unit,
+    hideSortOptionsRequest: () -> Unit,
+    selectSortOption: (OrderBy) -> Unit,
     showExtraOptions: Boolean,
     showExtraOptionsRequest: () -> Unit,
     hideExtraOptionsRequest: () -> Unit,
@@ -61,6 +68,58 @@ fun DesktopNoteActionsMenu(
                 modifier = Modifier.icon(onSyncLocallySelected)
                     .testTag("syncWorkspaceLocally")
             )
+        }
+
+        Box {
+            Icon(
+                imageVector = Icons.AutoMirrored.Default.Sort,
+                contentDescription = "Sort Options",
+                modifier = Modifier.icon(showSortOptionsRequest)
+            )
+
+            DropdownMenu(expanded = showSortingOption, onDismissRequest = hideSortOptionsRequest) {
+                DropdownMenuItem(
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Folder,
+                            contentDescription = "Sort by name"
+                        )
+                    }, onClick = {
+                        selectSortOption(OrderBy.NAME)
+                    },
+                    text = {
+                        Text("Sort by name")
+                    }
+                )
+
+                DropdownMenuItem(
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Folder,
+                            contentDescription = "Sort by creation"
+                        )
+                    }, onClick = {
+                        selectSortOption(OrderBy.CREATE)
+                    },
+                    text = {
+                        Text("Sort by creation")
+                    }
+                )
+
+                DropdownMenuItem(
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Folder,
+                            contentDescription = "Sort by last update"
+                        )
+                    }, onClick = {
+                        selectSortOption(OrderBy.UPDATE)
+                    },
+                    text = {
+                        Text("Sort by last update")
+                    }
+                )
+            }
         }
 
         Box {

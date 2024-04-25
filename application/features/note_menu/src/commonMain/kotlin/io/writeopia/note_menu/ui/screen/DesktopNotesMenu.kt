@@ -1,19 +1,15 @@
 package io.writeopia.note_menu.ui.screen
 
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -39,7 +35,6 @@ fun DesktopNotesMenu(
     modifier: Modifier = Modifier,
     chooseNoteViewModel: ChooseNoteViewModel,
     onNewNoteClick: () -> Unit,
-    onDeleteClick: () -> Unit,
     onNoteClick: (String, String) -> Unit
 ) {
     LaunchedEffect(
@@ -57,9 +52,14 @@ fun DesktopNotesMenu(
     ) {
         Column {
             val showExtraOptions by chooseNoteViewModel.editState.collectAsState()
+            val showSortOptions by chooseNoteViewModel.showSortMenuState.collectAsState()
 
             DesktopNoteActionsMenu(
                 modifier = Modifier.align(Alignment.End),
+                showSortingOption = showSortOptions,
+                showSortOptionsRequest = chooseNoteViewModel::showSortMenu,
+                hideSortOptionsRequest = chooseNoteViewModel::cancelSortMenu,
+                selectSortOption = chooseNoteViewModel::sortingSelected,
                 showExtraOptions = showExtraOptions,
                 showExtraOptionsRequest = chooseNoteViewModel::showEditMenu,
                 hideExtraOptionsRequest = chooseNoteViewModel::cancelEditMenu,

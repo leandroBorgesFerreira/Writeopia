@@ -18,7 +18,7 @@ class ConfigurationSqlDelightRepository(
             NotesConfiguration(
                 userId,
                 arrangement.type,
-                arrangementPref(userId)
+                getOrderPreference(userId)
             )
         )
     }
@@ -27,7 +27,7 @@ class ConfigurationSqlDelightRepository(
         configurationSqlDelightDao.saveNotesConfiguration(
             NotesConfiguration(
                 userId,
-                getOrderPreference(userId),
+                arrangementPref(userId),
                 orderBy.type
             )
         )
@@ -39,7 +39,7 @@ class ConfigurationSqlDelightRepository(
 
     override suspend fun getOrderPreference(userId: String): String =
         configurationSqlDelightDao.getConfigurationByUserId(userId)?.order_by
-            ?: NotesArrangement.GRID.type
+            ?: OrderBy.CREATE.type
 
     override suspend fun saveWorkspacePath(path: String, userId: String) {
         configurationSqlDelightDao.saveWorkspaceConfiguration(
@@ -48,5 +48,5 @@ class ConfigurationSqlDelightRepository(
     }
 
     override suspend fun loadWorkspacePath(userId: String): String? =
-        configurationSqlDelightDao.geWorkspaceByUserId(userId)?.path
+        configurationSqlDelightDao.getWorkspaceByUserId(userId)?.path
 }

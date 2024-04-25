@@ -2,18 +2,22 @@ package io.writeopia.note_menu.di
 
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.repository.ConfigurationSqlDelightRepository
+import io.writeopia.note_menu.data.repository.InMemoryConfigurationRepository
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.ConfigurationSqlDelightDao
 
-actual class NotesConfigurationInjector(private val writeopiaDb: WriteopiaDb?) {
+actual class NotesConfigurationInjector(
+//    private val writeopiaDb: WriteopiaDb?
+) {
 
-    private fun provideNotesConfigurationSqlDelightDao() =
-        ConfigurationSqlDelightDao(writeopiaDb)
+//    private fun provideNotesConfigurationSqlDelightDao() =
+//        if (writeopiaDb != null) ConfigurationSqlDelightDao(writeopiaDb) else null
+
 
     actual fun provideNotesConfigurationRepository(): ConfigurationRepository =
-        ConfigurationSqlDelightRepository(provideNotesConfigurationSqlDelightDao())
+        InMemoryConfigurationRepository.singleton()
 
     companion object {
-        fun noop() = NotesConfigurationInjector(null)
+        fun noop() = NotesConfigurationInjector()
     }
 }

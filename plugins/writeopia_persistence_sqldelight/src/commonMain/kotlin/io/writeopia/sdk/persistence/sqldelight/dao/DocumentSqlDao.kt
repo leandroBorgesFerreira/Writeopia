@@ -4,6 +4,8 @@ import app.cash.sqldelight.async.coroutines.awaitAsList
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.persistence.core.extensions.sortWithOrderBy
+import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.sql.DocumentEntityQueries
 import io.writeopia.sdk.sql.StoryStepEntityQueries
 import kotlinx.datetime.Instant
@@ -93,7 +95,7 @@ class DocumentSqlDao(
                 }
             } ?: emptyList()
 
-    suspend fun loadDocumentsWithContentByUserId(userId: String): List<Document> {
+    suspend fun loadDocumentsWithContentByUserId(orderBy: String, userId: String): List<Document> {
         return documentQueries?.selectWithContentByUserId(userId)
             ?.awaitAsList()
             ?.groupBy { it.id }
@@ -127,7 +129,9 @@ class DocumentSqlDao(
                         userId = document.user_id,
                     )
                 }
-            } ?: emptyList()
+            }
+            ?.sortWithOrderBy(OrderBy.fromString(orderBy))
+            ?: emptyList()
     }
 
 
@@ -220,3 +224,5 @@ class DocumentSqlDao(
         documentQueries?.deleteByUserId(userId)
     }
 }
+
+

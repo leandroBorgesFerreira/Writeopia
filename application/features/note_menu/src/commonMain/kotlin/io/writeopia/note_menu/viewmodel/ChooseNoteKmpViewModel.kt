@@ -65,6 +65,9 @@ internal class ChooseNoteKmpViewModel(
     private val _syncInProgress = MutableStateFlow<SyncState>(SyncState.Idle)
     override val syncInProgress = _syncInProgress.asStateFlow()
 
+    private val _showSortMenuState = MutableStateFlow(false)
+    override val showSortMenuState: StateFlow<Boolean> = _showSortMenuState.asStateFlow()
+
     override val documentsState: StateFlow<ResultData<NotesUi>> by lazy {
         combine(
             _selectedNotes,
@@ -179,6 +182,14 @@ internal class ChooseNoteKmpViewModel(
 
     override fun favoriteSelectedNotes() {
         //Todo: Implement!
+    }
+
+    override fun showSortMenu() {
+        _showSortMenuState.value = true
+    }
+
+    override fun cancelSortMenu() {
+        _showSortMenuState.value = false
     }
 
     override fun configureDirectory() {
@@ -318,9 +329,11 @@ internal class ChooseNoteKmpViewModel(
         _documentsState.value = ResultData.Loading()
 
         try {
-            val data = notesUseCase.loadDocumentsForUser(getUserId())
+            val userId = getUserId()
+
+            val data = notesUseCase.loadDocumentsForUser(userId)
             _notesArrangement.value =
-                NotesArrangement.fromString(notesConfig.arrangementPref(getUserId()))
+                NotesArrangement.fromString(notesConfig.arrangementPref(userId))
             _documentsState.value = ResultData.Complete(data)
         } catch (e: Exception) {
             _documentsState.value = ResultData.Error(e)

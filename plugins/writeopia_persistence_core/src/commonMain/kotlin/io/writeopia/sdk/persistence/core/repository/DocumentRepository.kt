@@ -13,6 +13,7 @@ import kotlinx.datetime.Instant
 interface DocumentRepository : DocumentUpdate {
 
     suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document>
+
     suspend fun loadDocumentsForUserAfterTime(
         orderBy: String,
         userId: String,

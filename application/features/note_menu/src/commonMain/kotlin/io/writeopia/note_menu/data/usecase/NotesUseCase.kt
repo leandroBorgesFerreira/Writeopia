@@ -15,9 +15,13 @@ internal class NotesUseCase(
     private val notesConfig: ConfigurationRepository
 ) {
 
-    suspend fun loadDocumentsForUser(userId: String): List<Document> =
-        notesConfig.getOrderPreference(userId)
-            .let { orderBy -> documentRepository.loadDocumentsForUser(orderBy, userId) }
+    suspend fun loadDocumentsForUser(userId: String): List<Document> {
+        return notesConfig.getOrderPreference(userId)
+            .let { orderBy ->
+                documentRepository.loadDocumentsForUser(orderBy, userId)
+            }
+    }
+
 
     suspend fun loadDocumentsForUserAfterTime(userId: String, time: Instant): List<Document> =
         notesConfig.getOrderPreference(userId)
