@@ -27,6 +27,7 @@ fun SlideInBox(
     editState: Boolean,
     animationLabel: String,
     outsideClick: () -> Unit,
+    extraExitOffset: Float = 1F,
     showBackground: Boolean = true,
     enterAnimationSpec: FiniteAnimationSpec<IntOffset> = spring(
         stiffness = Spring.StiffnessMediumLow,
@@ -36,7 +37,7 @@ fun SlideInBox(
         stiffness = Spring.StiffnessMediumLow,
         visibilityThreshold = IntOffset.VisibilityThreshold
     ),
-    content: @Composable AnimatedVisibilityScope.() -> Unit
+    content: @Composable AnimatedVisibilityScope.() -> Unit,
 ) {
     AnimatedVisibility(
         visible = editState && showBackground,
@@ -65,7 +66,7 @@ fun SlideInBox(
         ),
         exit = slideOutVertically(
             animationSpec = exitAnimationSpec,
-            targetOffsetY = { fullHeight -> fullHeight }
+            targetOffsetY = { fullHeight -> (fullHeight * extraExitOffset).toInt() }
         ),
         content = content
     )

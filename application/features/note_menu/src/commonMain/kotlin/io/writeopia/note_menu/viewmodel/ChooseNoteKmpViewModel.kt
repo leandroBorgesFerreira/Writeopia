@@ -163,7 +163,6 @@ internal class ChooseNoteKmpViewModel(
     override fun copySelectedNotes() {
         coroutineScope.launch(Dispatchers.Default) {
             notesUseCase.duplicateDocuments(_selectedNotes.value.toList(), getUserId())
-            clearSelection()
             refreshNotes()
         }
     }
@@ -179,7 +178,7 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun favoriteSelectedNotes() {
-
+        //Todo: Implement!
     }
 
     override fun configureDirectory() {
