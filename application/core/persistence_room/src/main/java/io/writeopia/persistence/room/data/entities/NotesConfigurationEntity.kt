@@ -8,7 +8,7 @@ private const val NOTES_CONFIGURATION = "NOTES_CONFIGURATION"
 
 @Entity(tableName = NOTES_CONFIGURATION)
 data class NotesConfigurationEntity(
-    @PrimaryKey(autoGenerate = false) @ColumnInfo(name = "user_id") val userId: Long = 0,
+    @PrimaryKey(autoGenerate = false) @ColumnInfo(name = "user_id") val userId: String,
     @ColumnInfo(name = "arrangement_type") val arrangementType: String,
     @ColumnInfo(name = "order_by_type") val orderByType: String
 )

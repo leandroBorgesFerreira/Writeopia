@@ -20,6 +20,7 @@ internal class ConfigurationRoomRepository(
     ) {
         val configuration =
             NotesConfigurationEntity(
+                userId = userId,
                 arrangementType = arrangement.type,
                 orderByType = getOrderPreference(userId)
             )
@@ -29,6 +30,7 @@ internal class ConfigurationRoomRepository(
     override suspend fun saveDocumentSortingPref(orderBy: OrderBy, userId: String) {
         val configuration =
             NotesConfigurationEntity(
+                userId = userId,
                 arrangementType = arrangementPref(userId),
                 orderByType = orderBy.type.toEntityField()
             )

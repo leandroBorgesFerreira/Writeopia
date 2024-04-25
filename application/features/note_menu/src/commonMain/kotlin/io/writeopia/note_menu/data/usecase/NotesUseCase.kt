@@ -32,18 +32,14 @@ internal class NotesUseCase(
     suspend fun duplicateDocuments(ids: List<String>, userId: String) {
         notesConfig.getOrderPreference(userId).let { orderBy ->
             documentRepository.loadDocumentsWithContentByIds(ids, orderBy)
-        }.let { documents ->
-            documents.map { document ->
-                document.copy(
-                    id = GenerateId.generate(),
-                    content = document.content.mapValues { (_, storyStep) ->
-                        storyStep.copy(id = GenerateId.generate())
-                    })
-            }
-        }.let { newDocuments ->
-            newDocuments.forEach { document ->
-                documentRepository.saveDocument(document)
-            }
+        }.map { document ->
+            document.copy(
+                id = GenerateId.generate(),
+                content = document.content.mapValues { (_, storyStep) ->
+                    storyStep.copy(id = GenerateId.generate())
+                })
+        }.forEach { document ->
+            documentRepository.saveDocument(document)
         }
     }
 
