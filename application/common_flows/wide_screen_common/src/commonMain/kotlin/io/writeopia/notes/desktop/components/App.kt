@@ -2,6 +2,7 @@ package io.writeopia.notes.desktop.components
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -23,6 +24,7 @@ import io.writeopia.notes.desktop.components.navigation.NavigationPage
 import io.writeopia.notes.desktop.components.navigation.NavigationViewModel
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
+import io.writeopia.theme.WrieopiaTheme
 import io.writeopia.ui.drawer.factory.DrawersFactory
 import io.writeopia.ui.manager.WriteopiaStateManager
 
@@ -56,8 +58,9 @@ fun App(
 
     val navigationViewModel = NavigationViewModel()
 
-    MaterialTheme {
+    WrieopiaTheme {
         val currentPage by navigationViewModel.navigationPage.collectAsState()
+        val backgroundColor = MaterialTheme.colorScheme.background
 
         Crossfade(currentPage, animationSpec = tween(durationMillis = 300)) { state ->
             when (state) {
@@ -74,7 +77,8 @@ fun App(
                         },
                         onNoteClick = { id, title ->
                             navigationViewModel.navigateTo(NavigationPage.Editor(id, title))
-                        }
+                        },
+                        modifier = Modifier.background(backgroundColor)
                     )
                 }
 
@@ -88,6 +92,7 @@ fun App(
                         onBackClick = {
                             navigationViewModel.navigateTo(NavigationPage.NoteMenu)
                         },
+                        modifier = Modifier.background(backgroundColor),
                         content = {
                             AppTextEditor(
                                 noteEditorViewModel.writeopiaManager,

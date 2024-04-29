@@ -49,6 +49,7 @@ internal fun NoteEditorScreen(
     title: String?,
     noteEditorViewModel: NoteEditorViewModel,
     navigateBack: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
 
     val systemUiController = rememberSystemUiController()
@@ -87,6 +88,7 @@ internal fun NoteEditorScreen(
     }
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopBar(
                 titleState = noteEditorViewModel.currentTitle,
@@ -104,7 +106,11 @@ internal fun NoteEditorScreen(
                 .fillMaxSize()
                 .imePadding()
         ) {
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+            ) {
                 TextEditor(noteEditorViewModel, DefaultDrawersAndroid, Modifier.weight(1F))
 
                 BottomScreen(

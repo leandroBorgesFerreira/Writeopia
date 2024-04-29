@@ -2,6 +2,7 @@ package io.writeopia.ui.draganddrop.target
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DragIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -78,7 +80,8 @@ fun DragTargetWithDragItem(
                             })
                         },
                     imageVector = Icons.Default.DragIndicator,
-                    contentDescription = "Drag icon"
+                    contentDescription = "Drag icon",
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             } else {
                 Spacer(modifier = Modifier.width(dragIconWidth).clickable(onClick = emptySpaceClick))
