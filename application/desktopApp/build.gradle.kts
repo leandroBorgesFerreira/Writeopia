@@ -38,6 +38,10 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Writeopia"
             packageVersion = "1.0.0"
+
+            jvmArgs(
+                "-Dapple.awt.application.appearance=system"
+            )
         }
     }
 }
