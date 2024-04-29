@@ -1,6 +1,7 @@
 package io.writeopia.note_menu.ui.screen
 
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -88,8 +90,12 @@ fun DesktopNotesMenu(
                 .testTag("addNote"),
             onClick = onNewNoteClick,
             content = {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "New note")
-            }
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "New note",
+                )
+            },
+            containerColor = MaterialTheme.colorScheme.primary
         )
 
         val configState = chooseNoteViewModel.showLocalSyncConfigState.collectAsState().value

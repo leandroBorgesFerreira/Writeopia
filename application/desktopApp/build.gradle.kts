@@ -21,6 +21,7 @@ kotlin {
 
                 implementation(project(":plugins:writeopia_persistence_core"))
                 implementation(project(":application:core:persistence_sqldelight"))
+                implementation(project(":application:core:theme"))
                 implementation(project(":application:common_flows:wide_screen_common"))
                 implementation(project(":application:features:note_menu"))
                 implementation(project(":writeopia_ui"))
@@ -37,6 +38,10 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Writeopia"
             packageVersion = "1.0.0"
+
+            jvmArgs(
+                "-Dapple.awt.application.appearance=system"
+            )
         }
     }
 }

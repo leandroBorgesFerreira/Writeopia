@@ -19,6 +19,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -57,7 +58,8 @@ fun DesktopNoteActionsMenu(
                 imageVector = Icons.Default.Save,
                 contentDescription = "Save",
                 modifier = Modifier.icon(onWriteLocallySelected)
-                    .testTag("writeWorkspaceLocally")
+                    .testTag("writeWorkspaceLocally"),
+                tint = MaterialTheme.colorScheme.onBackground
             )
         }
 
@@ -66,7 +68,8 @@ fun DesktopNoteActionsMenu(
                 imageVector = Icons.Default.Sync,
                 contentDescription = "Save",
                 modifier = Modifier.icon(onSyncLocallySelected)
-                    .testTag("syncWorkspaceLocally")
+                    .testTag("syncWorkspaceLocally"),
+                tint = MaterialTheme.colorScheme.onBackground
             )
         }
 
@@ -74,7 +77,8 @@ fun DesktopNoteActionsMenu(
             Icon(
                 imageVector = Icons.AutoMirrored.Default.Sort,
                 contentDescription = "Sort Options",
-                modifier = Modifier.icon(showSortOptionsRequest)
+                modifier = Modifier.icon(showSortOptionsRequest),
+                tint = MaterialTheme.colorScheme.onBackground
             )
 
             DropdownMenu(expanded = showSortingOption, onDismissRequest = hideSortOptionsRequest) {
@@ -126,7 +130,8 @@ fun DesktopNoteActionsMenu(
             Icon(
                 imageVector = Icons.Default.MoreVert,
                 contentDescription = "Export",
-                modifier = Modifier.icon(showExtraOptionsRequest)
+                modifier = Modifier.icon(showExtraOptionsRequest),
+                tint = MaterialTheme.colorScheme.onBackground
             )
 
             DropdownMenu(expanded = showExtraOptions, onDismissRequest = hideExtraOptionsRequest) {
@@ -134,7 +139,8 @@ fun DesktopNoteActionsMenu(
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Folder,
-                            contentDescription = "Configure directory"
+                            contentDescription = "Configure directory",
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     }, onClick = configureDirectory,
                     text = {
@@ -146,7 +152,8 @@ fun DesktopNoteActionsMenu(
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.AttachFile,
-                            contentDescription = "Export"
+                            contentDescription = "Export",
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     }, onClick = exportAsMarkdownClick,
                     text = {
@@ -158,7 +165,8 @@ fun DesktopNoteActionsMenu(
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.FileDownload,
-                            contentDescription = "Export"
+                            contentDescription = "Export",
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     },
                     onClick = importClick,

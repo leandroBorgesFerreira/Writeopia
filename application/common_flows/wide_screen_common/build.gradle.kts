@@ -26,6 +26,7 @@ kotlin {
                 implementation(project(":application:core:persistence_bridge"))
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:utils"))
+                implementation(project(":application:core:theme"))
                 implementation(project(":application:features:editor"))
                 implementation(project(":application:features:note_menu"))
 
