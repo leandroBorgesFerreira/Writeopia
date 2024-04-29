@@ -203,7 +203,8 @@ private fun NoNotesScreen() {
                 .align(Alignment.Center),
             text = "You don\'t have notes",
 //            stringResource(R.string.you_dont_have_notes),
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground
         )
     }
 }
