@@ -14,10 +14,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.content.AddButtonDrawer
 import io.writeopia.ui.drawer.content.LastEmptySpace
@@ -27,6 +25,8 @@ import io.writeopia.ui.drawer.content.checkItemDrawer
 import io.writeopia.ui.drawer.content.headerDrawer
 import io.writeopia.ui.drawer.content.swipeTextDrawer
 import io.writeopia.ui.drawer.content.unOrderedListItemDrawer
+import io.writeopia.ui.edition.TextCommandHandler
+import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.utils.codeBlockStyle
 import io.writeopia.ui.utils.defaultTextStyle

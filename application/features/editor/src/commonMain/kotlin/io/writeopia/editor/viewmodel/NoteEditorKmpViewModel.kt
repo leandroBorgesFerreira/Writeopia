@@ -11,13 +11,12 @@ import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.story.DrawState
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.document.Document
-import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
 import io.writeopia.sdk.serialization.extensions.toApi
 import io.writeopia.sdk.serialization.json.writeopiaJson
 import io.writeopia.sdk.serialization.request.wrapInRequest
-import io.writeopia.sdk.shared_edition.SharedEditionManager
+import io.writeopia.sdk.sharededition.SharedEditionManager
 import io.writeopia.sdk.utils.extensions.noContent
 import io.writeopia.utils_module.KmpViewModel
 import kotlinx.coroutines.CoroutineScope

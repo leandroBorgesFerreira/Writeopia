@@ -89,7 +89,7 @@ class ContentHandler(
         return StoryState(newMap, LastEdit.Whole, storyStep?.id)
     }
 
-    //Todo: Add unit test
+    // Todo: Add unit test
     fun addNewContent(
         currentStory: Map<Int, StoryStep>,
         newStoryUnit: StoryStep,
@@ -118,7 +118,7 @@ class ContentHandler(
 
             val addPosition = lineBreakInfo.position + 1
 
-            //Todo: Cover this in unit tests!
+            // Todo: Cover this in unit tests!
             if (currentStory[addPosition]?.type == StoryTypes.SPACE.type) {
                 throw IllegalStateException(
                     "it should not be possible to add content in the place of a space"
@@ -176,7 +176,6 @@ class ContentHandler(
             }
         }
     }
-
 
     /**
      * Delete story steps in bulk. Returns a pair with first the new state of stories and

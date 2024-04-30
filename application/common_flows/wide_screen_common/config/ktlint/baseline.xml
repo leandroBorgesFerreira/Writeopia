@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<baseline version="1.0">
+    <file name="src/commonMain/kotlin/io/writeopia/notes/desktop/components/navigation/NavigationState.kt">
+        <error line="4" column="16" source="standard:enum-wrapping" />
+        <error line="9" column="5" source="standard:blank-line-before-declaration" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/notes/desktop/components/navigation/NavigationViewModel.kt">
+        <error line="8" column="17" source="standard:property-naming" />
+    </file>
+    <file name="src/jvmTest/kotlin/io/writeopia/menu/EditorUiTests.kt">
+        <error line="3" column="1" source="standard:import-ordering" />
+        <error line="9" column="1" source="standard:no-unused-imports" />
+        <error line="10" column="1" source="standard:no-unused-imports" />
+        <error line="11" column="1" source="standard:no-unused-imports" />
+        <error line="12" column="1" source="standard:no-unused-imports" />
+        <error line="13" column="1" source="standard:no-unused-imports" />
+        <error line="14" column="1" source="standard:no-unused-imports" />
+        <error line="16" column="1" source="standard:no-unused-imports" />
+    </file>
+</baseline>

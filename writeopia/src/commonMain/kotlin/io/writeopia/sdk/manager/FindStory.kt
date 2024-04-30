@@ -7,7 +7,7 @@ import io.writeopia.sdk.models.story.StoryStep
  * also in GroupSteps.
  */
 object FindStory {
-    
+
     fun previousFocus(
         storyList: List<StoryStep>,
         localPosition: Int,
@@ -21,5 +21,4 @@ object FindStory {
 
         return null
     }
-
 }

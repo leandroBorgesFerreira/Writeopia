@@ -28,30 +28,31 @@ fun DragTarget(
     val currentState = LocalDragTargetInfo.current
     val haptic = LocalHapticFeedback.current
 
-    Box(modifier = modifier
-        .onGloballyPositioned { layoutCoordinates ->
-            // Todo: Offset.Zero Is wrong!
-            currentPosition = layoutCoordinates.localToWindow(Offset.Zero)
-        }
-        .pointerInput(Unit) {
-            detectDragGesturesAfterLongPress(onDragStart = { offset ->
-                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+    Box(
+        modifier = modifier
+            .onGloballyPositioned { layoutCoordinates ->
+                // Todo: Offset.Zero Is wrong!
+                currentPosition = layoutCoordinates.localToWindow(Offset.Zero)
+            }
+            .pointerInput(Unit) {
+                detectDragGesturesAfterLongPress(onDragStart = { offset ->
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
 
-                currentState.dataToDrop = dataToDrop
-                currentState.isDragging = true
-                currentState.dragPosition = currentPosition + offset
-                currentState.draggableComposable = content
-            }, onDrag = { change, dragAmount ->
-                change.consume()
-                currentState.dragOffset += Offset(dragAmount.x, dragAmount.y)
-            }, onDragEnd = {
-                currentState.isDragging = false
-                currentState.dragOffset = Offset.Zero
-            }, onDragCancel = {
-                currentState.dragOffset = Offset.Zero
-                currentState.isDragging = false
-            })
-        }
+                    currentState.dataToDrop = dataToDrop
+                    currentState.isDragging = true
+                    currentState.dragPosition = currentPosition + offset
+                    currentState.draggableComposable = content
+                }, onDrag = { change, dragAmount ->
+                    change.consume()
+                    currentState.dragOffset += Offset(dragAmount.x, dragAmount.y)
+                }, onDragEnd = {
+                    currentState.isDragging = false
+                    currentState.dragOffset = Offset.Zero
+                }, onDragCancel = {
+                    currentState.dragOffset = Offset.Zero
+                    currentState.isDragging = false
+                })
+            }
     ) {
         content()
     }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<baseline version="1.0">
+    <file name="build/generated/compose/resourceGenerator/kotlin/writeopia/writeopia_ui/generated/resources/Res.kt">
+        <error line="6" column="9" source="standard:package-name" />
+        <error line="26" column="19" source="standard:class-naming" />
+        <error line="28" column="19" source="standard:class-naming" />
+        <error line="30" column="19" source="standard:class-naming" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/ui/draganddrop/target/DragTargetWithDragItem.kt">
+        <error line="15" column="1" source="standard:no-wildcard-imports" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/ui/drawer/content/TextDrawer.kt">
+        <error line="8" column="1" source="standard:no-wildcard-imports" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/ui/drawer/preview/CheckItemPreviewDrawer.kt">
+        <error line="3" column="1" source="standard:no-wildcard-imports" />
+        <error line="4" column="1" source="standard:no-wildcard-imports" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/ui/edition/TextCommandHandler.kt">
+        <error line="5" column="1" source="standard:no-wildcard-imports" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/ui/manager/WriteopiaStateManager.kt">
+        <error line="70" column="17" source="standard:property-naming" />
+        <error line="73" column="17" source="standard:property-naming" />
+        <error line="99" column="17" source="standard:property-naming" />
+        <error line="114" column="17" source="standard:property-naming" />
+        <error line="191" column="5" source="standard:no-consecutive-comments" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/ui/utils/defaultTextStyle.kt">
+        <error line="1" column="1" source="standard:filename" />
+    </file>
+    <file name="src/commonTest/kotlin/io/writeopia/ui/manager/StoriesTellerManagerTest.kt">
+        <error line="1" column="1" source="standard:filename" />
+        <error line="15" column="1" source="standard:no-wildcard-imports" />
+        <error line="310" column="30" source="standard:discouraged-comment-location" />
+    </file>
+    <file name="src/commonTest/kotlin/io/writeopia/ui/utils/MapStoryData.kt">
+        <error line="189" column="1" source="standard:max-line-length" />
+        <error line="288" column="1" source="standard:max-line-length" />
+        <error line="303" column="1" source="standard:max-line-length" />
+        <error line="372" column="1" source="standard:max-line-length" />
+    </file>
+    <file name="src/jsMain/kotlin/io/writeopia/ui/drawer/content/TextItemDrawer.kt">
+        <error line="10" column="1" source="standard:no-wildcard-imports" />
+    </file>
+    <file name="src/jvmMain/kotlin/io/writeopia/ui/drawer/content/TextItemDrawer.kt">
+        <error line="10" column="1" source="standard:no-wildcard-imports" />
+    </file>
+</baseline>

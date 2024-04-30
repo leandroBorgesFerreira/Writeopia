@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<baseline version="1.0">
+    <file name="build.gradle.kts">
+        <error line="8" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="9" column="1" source="standard:comment-spacing" />
+        <error line="13" column="1" source="standard:comment-spacing" />
+        <error line="15" column="1" source="standard:comment-spacing" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/sdk/network/injector/ConnectionInjector.kt">
+        <error line="3" column="1" source="standard:import-ordering" />
+        <error line="15" column="1" source="standard:no-wildcard-imports" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/sdk/network/notes/NotesApi.kt">
+        <error line="3" column="1" source="standard:import-ordering" />
+        <error line="20" column="29" source="standard:string-template" />
+        <error line="26" column="29" source="standard:string-template" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/sdk/network/oauth/BearerTokenHandler.kt">
+        <error line="5" column="1" source="standard:no-blank-line-before-rbrace" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/sdk/network/websocket/WebsocketEditionManager.kt">
+        <error line="3" column="1" source="standard:no-wildcard-imports" />
+        <error line="4" column="1" source="standard:no-wildcard-imports" />
+        <error line="5" column="1" source="standard:no-wildcard-imports" />
+        <error line="6" column="1" source="standard:no-wildcard-imports" />
+    </file>
+</baseline>

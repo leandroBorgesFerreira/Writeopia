@@ -7,6 +7,7 @@ import io.writeopia.note_menu.viewmodel.ChooseNoteAndroidViewModel
 import io.writeopia.note_menu.viewmodel.ChooseNoteKmpViewModel
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class NotesMenuAndroidInjection(
     private val notesMenuKmpInjection: NotesMenuKmpInjection
@@ -27,7 +28,8 @@ class NotesMenuAndroidInjection(
             NotesMenuKmpInjection(
                 notesConfigurationInjector,
                 authCoreInjection,
-                repositoryInjection
+                repositoryInjection,
+                MutableStateFlow(false)
             )
         )
     }

@@ -24,9 +24,10 @@ class StoryExtensionsKtTest {
     fun `it should be able to recognize a not empty document`() {
         val storyStepMap = buildList {
             repeat(5) { index ->
-                add(index to StoryStep(
-                    type = StoryTypes.TEXT.type
-                )
+                add(
+                    index to StoryStep(
+                        type = StoryTypes.TEXT.type
+                    )
                 )
             }
         }.toMap().toMutableMap()

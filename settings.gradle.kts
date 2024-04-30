@@ -1,4 +1,4 @@
-//enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+// enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
     repositories {
@@ -48,7 +48,6 @@ include(":application:web")
 include(":application:androidApp")
 include(":libraries:dbtest")
 include(":backend:editor:api_editor")
-//include(":backend:editor:api_editor_spring")
 include(":backend:editor:api_editor_socket")
 include(":backend:documents:documents_spring")
 include(":common:endpoints")

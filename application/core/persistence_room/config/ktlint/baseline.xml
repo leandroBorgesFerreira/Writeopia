@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<baseline version="1.0">
+    <file name="build.gradle.kts">
+        <error line="51" column="1" source="standard:no-trailing-spaces" />
+        <error line="71" column="1" source="standard:no-blank-line-before-rbrace" />
+    </file>
+    <file name="src/main/java/io/writeopia/persistence/room/WriteopiaAplicationDatabase.kt">
+        <error line="1" column="1" source="standard:filename" />
+        <error line="31" column="5" source="standard:blank-line-before-declaration" />
+        <error line="32" column="5" source="standard:blank-line-before-declaration" />
+    </file>
+    <file name="src/main/java/io/writeopia/persistence/room/injection/RoomRespositoryInjection.kt">
+        <error line="3" column="1" source="standard:import-ordering" />
+    </file>
+</baseline>

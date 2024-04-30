@@ -6,7 +6,7 @@ import io.ktor.http.*
 import io.ktor.websocket.*
 import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.model.story.StoryState
-import io.writeopia.sdk.shared_edition.SharedEditionManager
+import io.writeopia.sdk.sharededition.SharedEditionManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.serialization.encodeToString

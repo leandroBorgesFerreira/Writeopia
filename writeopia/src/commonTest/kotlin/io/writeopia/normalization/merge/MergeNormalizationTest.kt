@@ -1,12 +1,12 @@
 package io.writeopia.normalization.merge
 
-import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
-import io.writeopia.sdk.normalization.merge.steps.StepToStepMerger
-import io.writeopia.utils.MapStoryData
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.normalization.merge.MergeNormalization
 import io.writeopia.sdk.normalization.merge.StepsMergerCoordinator
+import io.writeopia.sdk.normalization.merge.steps.StepToStepMerger
+import io.writeopia.utils.MapStoryData
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

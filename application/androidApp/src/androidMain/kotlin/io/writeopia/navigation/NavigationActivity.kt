@@ -33,7 +33,6 @@ import io.writeopia.utils_module.Destinations
 
 class NavigationActivity : AppCompatActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -60,7 +59,6 @@ fun NavigationGraph(
     database: WriteopiaApplicationDatabase = WriteopiaApplicationDatabase.database(application),
     startDestination: String = Destinations.AUTH_MENU_INNER_NAVIGATION.id
 ) {
-
     val appDaosInjection = AppRoomDaosInjection(database)
     val notesConfigurationInjector = NotesConfigurationInjector(appDaosInjection)
     val connectionInjector =

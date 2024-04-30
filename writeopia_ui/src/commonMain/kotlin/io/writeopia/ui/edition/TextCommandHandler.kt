@@ -1,6 +1,5 @@
 package io.writeopia.ui.edition
 
-
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import io.writeopia.sdk.models.command.*
@@ -13,7 +12,7 @@ import io.writeopia.ui.manager.WriteopiaStateManager
 class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) -> Unit>) {
 
     fun handleCommand(text: String, step: StoryStep, position: Int): Boolean {
-        //Todo(Leandro): Using a reverse index would improve the speed a lot.
+        // Todo(Leandro): Using a reverse index would improve the speed a lot.
         val command: Command = commandsMap.keys
             .firstOrNull { command ->
                 when (command.whereToFind) {
@@ -45,7 +44,8 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                                 CommandTrigger.WRITTEN
                             )
                         )
-                    }, CommandFactory.unOrderedList() to { _, position ->
+                    },
+                    CommandFactory.unOrderedList() to { _, position ->
                         manager.changeStoryType(
                             position,
                             TypeInfo(StoryTypes.UNORDERED_LIST_ITEM.type),

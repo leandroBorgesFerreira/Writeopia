@@ -5,8 +5,7 @@ import kotlin.math.min
 
 object MapOperations {
 
-    //Todo: Add unit tests
-
+    // Todo: Add unit tests
 }
 
 fun <T> Map<Int, T>.mergeSortedMaps(

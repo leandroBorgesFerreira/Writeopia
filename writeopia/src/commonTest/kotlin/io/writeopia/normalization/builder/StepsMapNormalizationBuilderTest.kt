@@ -1,8 +1,8 @@
 package io.writeopia.normalization.builder
 
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.utils.MapStoryData
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
+import io.writeopia.utils.MapStoryData
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

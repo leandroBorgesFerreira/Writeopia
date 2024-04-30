@@ -16,13 +16,11 @@ object ListStoryData {
                         type = StoryTypes.IMAGE.type,
                         parentId = "0"
                     ),
-
                     StoryStep(
                         localId = "2",
                         type = StoryTypes.IMAGE.type,
                         parentId = "0"
                     ),
-
                     StoryStep(
                         localId = "3",
                         type = StoryTypes.IMAGE.type,

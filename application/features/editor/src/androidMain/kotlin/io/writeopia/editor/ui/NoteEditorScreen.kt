@@ -35,9 +35,8 @@ import io.writeopia.editor.input.InputScreen
 import io.writeopia.editor.model.EditState
 import io.writeopia.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.editor.viewmodel.ShareDocument
-import io.writeopia.sdk.drawer.factory.DefaultDrawersAndroid
+import io.writeopia.ui.drawer.factory.DefaultDrawersAndroid
 import io.writeopia.sdk.models.id.GenerateId
-import io.writeopia.ui.components.EditionScreen
 import kotlinx.coroutines.flow.StateFlow
 
 const val NAVIGATE_BACK_TEST_TAG = "NoteEditorScreenNavigateBack"

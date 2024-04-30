@@ -2,11 +2,11 @@ package io.writeopia.ui.drawer.factory
 
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.text.input.TextFieldValue
-import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.models.command.TypeInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.EmptyErase
 
 object KeyEventListenerFactory {

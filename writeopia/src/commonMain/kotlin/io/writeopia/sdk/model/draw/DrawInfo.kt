@@ -1,6 +1,5 @@
 package io.writeopia.sdk.model.draw
 
-
 /**
  * The class holds the information of the content to be draw by the SDK.
  *

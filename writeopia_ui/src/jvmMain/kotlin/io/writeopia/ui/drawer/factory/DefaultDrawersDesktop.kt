@@ -6,9 +6,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import io.writeopia.ui.manager.WriteopiaStateManager
-import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.edition.TextCommandHandler
+import io.writeopia.ui.manager.WriteopiaStateManager
 import java.awt.event.KeyEvent
 
 object DefaultDrawersDesktop : DrawersFactory {
@@ -43,5 +43,5 @@ object DefaultDrawersDesktop : DrawersFactory {
         input: TextFieldValue
     ): Boolean =
         keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE &&
-                input.selection.start == 0
+            input.selection.start == 0
 }

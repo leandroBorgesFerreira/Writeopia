@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<baseline version="1.0">
+    <file name="src/androidInstrumentedTest/kotlin/io/writeopia/robots/AndroidDocumentEditPageRobot.kt">
+        <error line="3" column="1" source="standard:no-wildcard-imports" />
+    </file>
+    <file name="src/androidMain/kotlin/io/writeopia/Logger.kt">
+        <error line="1" column="1" source="standard:filename" />
+    </file>
+    <file name="src/androidMain/kotlin/io/writeopia/navigation/MenuNavigation.kt">
+        <error line="6" column="1" source="standard:no-consecutive-blank-lines" />
+    </file>
+    <file name="src/androidMain/kotlin/io/writeopia/theme/Shape.kt">
+        <error line="8" column="1" source="standard:indent" />
+        <error line="9" column="1" source="standard:indent" />
+        <error line="10" column="1" source="standard:indent" />
+    </file>
+    <file name="src/androidMain/kotlin/io/writeopia/theme/Theme.kt">
+        <error line="11" column="1" source="standard:indent" />
+        <error line="12" column="1" source="standard:indent" />
+        <error line="13" column="1" source="standard:indent" />
+        <error line="14" column="1" source="standard:indent" />
+        <error line="15" column="1" source="standard:indent" />
+        <error line="16" column="1" source="standard:indent" />
+        <error line="20" column="1" source="standard:indent" />
+        <error line="21" column="1" source="standard:indent" />
+        <error line="22" column="1" source="standard:indent" />
+        <error line="23" column="1" source="standard:indent" />
+        <error line="24" column="1" source="standard:indent" />
+        <error line="25" column="1" source="standard:indent" />
+        <error line="30" column="1" source="standard:indent" />
+        <error line="31" column="1" source="standard:indent" />
+        <error line="33" column="1" source="standard:indent" />
+        <error line="34" column="1" source="standard:indent" />
+        <error line="35" column="1" source="standard:indent" />
+        <error line="36" column="1" source="standard:indent" />
+        <error line="37" column="1" source="standard:indent" />
+        <error line="39" column="1" source="standard:indent" />
+        <error line="40" column="1" source="standard:indent" />
+        <error line="41" column="1" source="standard:indent" />
+        <error line="42" column="1" source="standard:indent" />
+        <error line="43" column="1" source="standard:indent" />
+        <error line="44" column="1" source="standard:indent" />
+    </file>
+    <file name="src/androidMain/kotlin/io/writeopia/theme/Type.kt">
+        <error line="10" column="1" source="standard:indent" />
+        <error line="11" column="1" source="standard:indent" />
+        <error line="12" column="1" source="standard:indent" />
+        <error line="13" column="1" source="standard:indent" />
+        <error line="14" column="1" source="standard:indent" />
+    </file>
+</baseline>

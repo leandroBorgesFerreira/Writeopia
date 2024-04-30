@@ -11,7 +11,7 @@ sealed class LastEdit {
     /**
      * No edition was make
      */
-    data object Nothing: LastEdit()
+    data object Nothing : LastEdit()
 
     /**
      * A whole edition was made like a line break (adding a new line) , a deletion
@@ -20,13 +20,13 @@ sealed class LastEdit {
      * It is important to notice that when new content is added between content this will change all
      * the values of the positions, so it is necessary to save the whole document again.
      */
-    data object Whole: LastEdit()
+    data object Whole : LastEdit()
 
     /**
      * A edition in the line was made, but the positions were not affected. In this case it is
-     * possible to update just one line. 
+     * possible to update just one line.
      */
-    data class LineEdition(val position: Int, val storyStep: StoryStep): LastEdit()
+    data class LineEdition(val position: Int, val storyStep: StoryStep) : LastEdit()
 
-    data class InfoEdition(val position: Int, val storyStep: StoryStep): LastEdit()
+    data class InfoEdition(val position: Int, val storyStep: StoryStep) : LastEdit()
 }

@@ -5,13 +5,13 @@ plugins {
 //    alias(libs.plugins.nativeCocoapods)
 }
 
-//rootProject.extra.apply {
+// rootProject.extra.apply {
 //    set("PUBLISH_GROUP_ID", "io.writeopia")
 //    set("PUBLISH_ARTIFACT_ID", "writeopia-models")
 //    set("PUBLISH_VERSION", libs.versions.writeopia.get())
-//}
+// }
 
-//apply(from = "${rootDir}/scripts/publish-module.gradle")
+// apply(from = "${rootDir}/scripts/publish-module.gradle")
 
 kotlin {
     jvm {}
@@ -26,7 +26,7 @@ kotlin {
 //        iosSimulatorArm64()
 //    ).forEach { iosTarget ->
 //        iosTarget.binaries.framework {
-////            baseName = "shared"
+// //            baseName = "shared"
 //            isStatic = true
 //        }
 //    }

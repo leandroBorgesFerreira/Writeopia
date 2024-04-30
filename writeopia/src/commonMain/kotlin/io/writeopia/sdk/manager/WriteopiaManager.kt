@@ -8,7 +8,6 @@ import io.writeopia.sdk.models.command.CommandInfo
 import io.writeopia.sdk.models.command.TypeInfo
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
@@ -92,7 +91,6 @@ class WriteopiaManager(
         )
     }
 
-
     /**
      * A request to move a content to a position.
      *
@@ -141,7 +139,6 @@ class WriteopiaManager(
             position,
             commandInfo
         )
-
 
     /**
      * Creates a line break. When a line break happens, the line it divided into two [StoryStep]s

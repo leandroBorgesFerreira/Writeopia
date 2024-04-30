@@ -18,7 +18,7 @@ class MovementHandler {
         val positionTo = info.positionTo
         val positionFrom = info.positionFrom
 
-        //This state should be allowed
+        // This state should be allowed
         if (info.positionFrom == info.positionTo) return stories.toEditState()
 
         val mutableHistory = stories.toEditState()

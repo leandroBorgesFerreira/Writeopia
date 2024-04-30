@@ -12,7 +12,6 @@ import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.drawer.StoryStepDrawer
 
-
 class TextPreviewDrawer(
     private val modifier: Modifier = Modifier.padding(vertical = 5.dp, horizontal = 16.dp),
     private val style: @Composable () -> TextStyle = {

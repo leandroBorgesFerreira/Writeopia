@@ -16,7 +16,7 @@ import io.ktor.client.plugins.websocket.*
 import io.ktor.serialization.kotlinx.json.json
 import io.writeopia.sdk.network.websocket.MockWebsocketEditionManager
 import io.writeopia.sdk.network.websocket.WebsocketEditionManager
-import io.writeopia.sdk.shared_edition.SharedEditionManager
+import io.writeopia.sdk.sharededition.SharedEditionManager
 import kotlinx.serialization.json.Json
 
 class ConnectionInjector(

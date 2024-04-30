@@ -18,7 +18,6 @@ class StepsMergerCoordinator(
 
     fun merge(step1: StoryStep, step2: StoryStep): StoryStep =
         stepMerger.merge(step1, step2, typeOfGroup ?: typeOfStep)
-
 }
 
 object MergeLogic {
@@ -29,8 +28,9 @@ object MergeLogic {
         typeOfStep: Int,
         typeOfGroup: Int?
     ): Boolean =
-        (step1.type.number == typeOfStep && step2.type.number == typeOfStep ||
-            step1.type.number == typeOfGroup && step2.type.number == typeOfStep ||
-            step1.type.number == typeOfStep && step2.type.number == typeOfGroup)
-
+        (
+            step1.type.number == typeOfStep && step2.type.number == typeOfStep ||
+                step1.type.number == typeOfGroup && step2.type.number == typeOfStep ||
+                step1.type.number == typeOfStep && step2.type.number == typeOfGroup
+        )
 }

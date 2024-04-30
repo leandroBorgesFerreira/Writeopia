@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -24,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.drawer.SimpleTextDrawer
+import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.utils.defaultTextStyle
 

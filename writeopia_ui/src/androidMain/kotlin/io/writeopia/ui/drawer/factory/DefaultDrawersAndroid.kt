@@ -1,4 +1,4 @@
-package io.writeopia.sdk.drawer.factory
+package io.writeopia.ui.drawer.factory
 
 import android.view.KeyEvent
 import androidx.compose.runtime.Composable
@@ -7,15 +7,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.drawer.content.*
-import io.writeopia.ui.manager.WriteopiaStateManager
+import io.writeopia.sdk.drawer.content.ImageDrawer
+import io.writeopia.sdk.drawer.content.VideoDrawer
+import io.writeopia.sdk.drawer.content.defaultImageShape
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.content.RowGroupDrawer
-import io.writeopia.ui.drawer.factory.CommonDrawers
-import io.writeopia.ui.drawer.factory.DrawersFactory
-import io.writeopia.ui.drawer.factory.KeyEventListenerFactory
+import io.writeopia.ui.edition.TextCommandHandler
+import io.writeopia.ui.manager.WriteopiaStateManager
 
 object DefaultDrawersAndroid : DrawersFactory {
 
@@ -49,7 +48,7 @@ object DefaultDrawersAndroid : DrawersFactory {
             lineBreakByContent = true,
             eventListener = KeyEventListenerFactory.android(
                 manager,
-                isEmptyErase = ::emptyErase
+                isEmptyErase = DefaultDrawersAndroid::emptyErase
             )
         )
 

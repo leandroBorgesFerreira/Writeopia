@@ -167,5 +167,4 @@ fun imageGroup(): Map<Int, StoryStep> {
             )
         ),
     )
-
 }

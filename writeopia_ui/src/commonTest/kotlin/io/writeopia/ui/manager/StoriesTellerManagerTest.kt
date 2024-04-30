@@ -42,7 +42,8 @@ class WriteopiaManagerTest {
         val manager = WriteopiaStateManager.create(
             writeopiaManager = WriteopiaManager(),
             dispatcher = UnconfinedTestDispatcher(),
-            userId = { "" })
+            userId = { "" }
+        )
 
         manager.newStory()
 
@@ -70,7 +71,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(),
-                userId = { "" }).apply {
+                userId = { "" }
+            ).apply {
                 loadDocument(
                     Document(
                         content = input,
@@ -114,7 +116,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(),
-                userId = { "" }).apply {
+                userId = { "" }
+            ).apply {
                 loadDocument(
                     Document(
                         content = input,
@@ -148,7 +151,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
         val now = Clock.System.now()
         storyManager.loadDocument(
             Document(
@@ -198,7 +202,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
         val now = Clock.System.now()
 
         storyManager.loadDocument(
@@ -242,7 +247,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
         val now = Clock.System.now()
         storyManager.loadDocument(
             Document(
@@ -301,7 +307,7 @@ class WriteopiaManagerTest {
         val newHistory3 = storyManager.currentStory.value.stories
 
         assertEquals(
-            initialSize - 3, //3 merges were requested
+            initialSize - 3, // 3 merges were requested
             newHistory3.size,
             "The minimum side should be 4 (group, space, large_space)"
         )
@@ -321,7 +327,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
         storyManager.loadDocument(
             Document(
                 content = imageGroupRepo.history(),
@@ -365,7 +372,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
         storyManager.loadDocument(
             Document(
                 content = imageGroupRepo.history(),
@@ -412,7 +420,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
         storyManager.loadDocument(
             Document(
                 content = imageGroupRepo.history(),
@@ -474,7 +483,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
         storyManager.loadDocument(
             Document(
                 content = simpleMessagesRepo.history(),
@@ -513,7 +523,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
 
         storyManager.loadDocument(
             Document(
@@ -548,7 +559,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
         storyManager.loadDocument(
             Document(
                 content = imageGroupRepo.history(),
@@ -600,7 +612,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
         storyManager.loadDocument(
             Document(
                 content = messagesRepo.history(),
@@ -612,7 +625,8 @@ class WriteopiaManagerTest {
 
         storyManager.onDelete(
             Action.DeleteStory(
-                storyManager.currentStory.value.stories[3]!!, 3
+                storyManager.currentStory.value.stories[3]!!,
+                3
             )
         )
 
@@ -635,7 +649,8 @@ class WriteopiaManagerTest {
             val storyManager = WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
             storyManager.loadDocument(
                 Document(
                     content = singleMessageRepo.history(),
@@ -666,7 +681,8 @@ class WriteopiaManagerTest {
             val storyManager = WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
             storyManager.loadDocument(
                 Document(
                     content = messagesRepo.history(),
@@ -707,7 +723,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
         storyManager.loadDocument(
             Document(
                 content = complexMessagesRepository.history(),
@@ -788,7 +805,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(),
-                userId = { "" })
+                userId = { "" }
+            )
         val input = MapStoryData.singleCheckItem()
 
         storyManager.loadDocument(
@@ -816,7 +834,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
         val input = MapStoryData.singleCheckItem()
 
         storyManager.loadDocument(
@@ -864,7 +883,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
         storyManager.loadDocument(
             Document(
                 content = complexMessagesRepository.history(),
@@ -889,7 +909,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
         storyManager.loadDocument(
             Document(
                 content = messagesRepo.history(),
@@ -943,7 +964,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
         storyManager.loadDocument(
             Document(
                 content = messagesRepo.history(),
@@ -1002,7 +1024,8 @@ class WriteopiaManagerTest {
             WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" })
+                userId = { "" }
+            )
         storyManager.loadDocument(
             Document(
                 content = imagesInLineRepo.history(),

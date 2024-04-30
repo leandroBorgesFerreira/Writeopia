@@ -11,6 +11,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.unit.dp
 import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
@@ -26,7 +28,7 @@ import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.theme.WrieopiaTheme
 import io.writeopia.ui.drawer.factory.DrawersFactory
-import io.writeopia.ui.manager.WriteopiaStateManager
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun App(
@@ -34,7 +36,8 @@ fun App(
     repositoryInjection: RepositoryInjector,
     drawersFactory: DrawersFactory,
     disableWebsocket: Boolean = false,
-    editorModifier: (WriteopiaStateManager) -> Modifier = { _ -> Modifier }
+    isUndoKeyEvent: (KeyEvent) -> Boolean,
+    selectionState: StateFlow<Boolean>,
 ) {
     val authCoreInjection = KmpAuthCoreInjection()
     val connectionInjection =
@@ -54,6 +57,7 @@ fun App(
         notesConfigurationInjector = notesConfigurationInjector,
         authCoreInjection = authCoreInjection,
         repositoryInjection = repositoryInjection,
+        selectionState
     )
 
     val navigationViewModel = NavigationViewModel()
@@ -76,7 +80,11 @@ fun App(
                             navigationViewModel.navigateTo(NavigationPage.Editor())
                         },
                         onNoteClick = { id, title ->
-                            navigationViewModel.navigateTo(NavigationPage.Editor(id, title))
+                            val isHandled = chooseNoteViewModel.handleNoteTap(id)
+
+                            if (!isHandled) {
+                                navigationViewModel.navigateTo(NavigationPage.Editor(id, title))
+                            }
                         },
                         modifier = Modifier.background(backgroundColor)
                     )
@@ -99,8 +107,14 @@ fun App(
                                 noteEditorViewModel,
                                 drawersFactory = drawersFactory,
                                 loadNoteId = state.noteId,
-                                modifier = editorModifier(noteEditorViewModel.writeopiaManager)
-                                    .padding(horizontal = 30.dp)
+                                modifier = Modifier.onPreviewKeyEvent { keyEvent ->
+                                    if (isUndoKeyEvent(keyEvent)) {
+                                        noteEditorViewModel.undo()
+                                        true
+                                    } else {
+                                        false
+                                    }
+                                }.padding(horizontal = 30.dp)
                             )
                         }
                     )

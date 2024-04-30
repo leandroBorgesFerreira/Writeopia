@@ -19,7 +19,8 @@ private fun CheckItemPreviewDrawerPreview() {
             step = StoryStep(
                 type = StoryTypes.CHECK_ITEM.type,
                 text = "Check item"
-            ), drawInfo = DrawInfo()
+            ),
+            drawInfo = DrawInfo()
         )
     }
 }

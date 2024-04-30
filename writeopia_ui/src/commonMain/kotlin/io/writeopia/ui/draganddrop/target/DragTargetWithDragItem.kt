@@ -2,7 +2,6 @@ package io.writeopia.ui.draganddrop.target
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Row
@@ -25,7 +24,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.draganddrop.DropInfo
 
-//Todo: Review this name
+// Todo: Review this name
 @Composable
 fun DragTargetWithDragItem(
     modifier: Modifier = Modifier,
@@ -49,7 +48,7 @@ fun DragTargetWithDragItem(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         val showDragIcon = showIcon ||
-                currentState.isDragging && position == currentState.dataToDrop?.positionFrom
+            currentState.isDragging && position == currentState.dataToDrop?.positionFrom
 
         Crossfade(
             targetState = showDragIcon,

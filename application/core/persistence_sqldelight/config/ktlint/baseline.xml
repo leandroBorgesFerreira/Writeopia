@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<baseline version="1.0">
+    <file name="build/generated/sqldelight/code/WriteopiaDb/commonMain/io/writeopia/app/sql/NotesConfiguration.kt">
+        <error line="6" column="1" source="standard:indent" />
+        <error line="7" column="1" source="standard:indent" />
+        <error line="8" column="1" source="standard:indent" />
+    </file>
+    <file name="build/generated/sqldelight/code/WriteopiaDb/commonMain/io/writeopia/app/sql/NotesConfigurationEntityQueries.kt">
+        <error line="12" column="1" source="standard:indent" />
+        <error line="14" column="1" source="standard:indent" />
+        <error line="14" column="52" source="standard:parameter-list-wrapping" />
+        <error line="14" column="52" source="standard:wrapping" />
+        <error line="14" column="68" source="standard:wrapping" />
+        <error line="14" column="69" source="standard:parameter-list-wrapping" />
+        <error line="15" column="1" source="standard:indent" />
+        <error line="16" column="1" source="standard:indent" />
+        <error line="17" column="1" source="standard:indent" />
+        <error line="18" column="1" source="standard:indent" />
+        <error line="18" column="8" source="standard:wrapping" />
+        <error line="18" column="9" source="standard:parameter-list-wrapping" />
+        <error line="19" column="1" source="standard:indent" />
+        <error line="20" column="1" source="standard:indent" />
+        <error line="21" column="1" source="standard:indent" />
+        <error line="22" column="1" source="standard:indent" />
+        <error line="23" column="1" source="standard:indent" />
+        <error line="24" column="1" source="standard:indent" />
+        <error line="26" column="1" source="standard:indent" />
+        <error line="27" column="1" source="standard:indent" />
+        <error line="28" column="1" source="standard:indent" />
+        <error line="29" column="1" source="standard:indent" />
+        <error line="30" column="1" source="standard:indent" />
+        <error line="31" column="1" source="standard:indent" />
+        <error line="32" column="1" source="standard:indent" />
+        <error line="33" column="1" source="standard:indent" />
+        <error line="35" column="1" source="standard:indent" />
+        <error line="36" column="1" source="standard:indent" />
+        <error line="37" column="1" source="standard:indent" />
+        <error line="38" column="1" source="standard:indent" />
+        <error line="39" column="1" source="standard:indent" />
+        <error line="40" column="1" source="standard:indent" />
+        <error line="40" column="20" source="standard:wrapping" />
+        <error line="40" column="35" source="standard:wrapping" />
+        <error line="45" column="26" source="standard:wrapping" />
+        <error line="45" column="27" source="standard:wrapping" />
+        <error line="46" column="1" source="standard:indent" />
+        <error line="47" column="1" source="standard:indent" />
+        <error line="48" column="1" source="standard:indent" />
+        <error line="50" column="1" source="standard:indent" />
+        <error line="51" column="1" source="standard:indent" />
+        <error line="52" column="1" source="standard:indent" />
+        <error line="53" column="1" source="standard:indent" />
+        <error line="55" column="1" source="standard:indent" />
+        <error line="56" column="1" source="standard:indent" />
+        <error line="57" column="1" source="standard:indent" />
+        <error line="58" column="1" source="standard:indent" />
+        <error line="59" column="1" source="standard:indent" />
+        <error line="60" column="1" source="standard:indent" />
+        <error line="61" column="1" source="standard:indent" />
+        <error line="63" column="1" source="standard:indent" />
+        <error line="64" column="1" source="standard:indent" />
+        <error line="65" column="1" source="standard:indent" />
+        <error line="67" column="1" source="standard:indent" />
+        <error line="68" column="1" source="standard:indent" />
+        <error line="68" column="29" source="standard:wrapping" />
+        <error line="68" column="43" source="standard:wrapping" />
+        <error line="72" column="1" source="standard:indent" />
+        <error line="72" column="22" source="standard:wrapping" />
+        <error line="72" column="31" source="standard:wrapping" />
+        <error line="73" column="1" source="standard:indent" />
+        <error line="74" column="1" source="standard:indent" />
+        <error line="76" column="1" source="standard:indent" />
+        <error line="77" column="1" source="standard:indent" />
+    </file>
+    <file name="build/generated/sqldelight/code/WriteopiaDb/commonMain/io/writeopia/app/sql/WorkspaceConfiguration.kt">
+        <error line="6" column="1" source="standard:indent" />
+        <error line="7" column="1" source="standard:indent" />
+    </file>
+    <file name="build/generated/sqldelight/code/WriteopiaDb/commonMain/io/writeopia/app/sql/WorkspaceConfigurationEntityQueries.kt">
+        <error line="12" column="1" source="standard:indent" />
+        <error line="14" column="1" source="standard:indent" />
+        <error line="14" column="61" source="standard:parameter-list-wrapping" />
+        <error line="14" column="61" source="standard:wrapping" />
+        <error line="14" column="77" source="standard:wrapping" />
+        <error line="14" column="78" source="standard:parameter-list-wrapping" />
+        <error line="14" column="87" source="standard:parameter-list-wrapping" />
+        <error line="14" column="87" source="standard:wrapping" />
+        <error line="15" column="1" source="standard:indent" />
+        <error line="15" column="21" source="standard:wrapping" />
+        <error line="15" column="22" source="standard:parameter-list-wrapping" />
+        <error line="15" column="27" source="standard:wrapping" />
+        <error line="15" column="28" source="standard:parameter-list-wrapping" />
+        <error line="16" column="1" source="standard:indent" />
+        <error line="17" column="1" source="standard:indent" />
+        <error line="18" column="1" source="standard:indent" />
+        <error line="19" column="1" source="standard:indent" />
+        <error line="20" column="1" source="standard:indent" />
+        <error line="21" column="1" source="standard:indent" />
+        <error line="23" column="1" source="standard:indent" />
+        <error line="24" column="1" source="standard:indent" />
+        <error line="25" column="1" source="standard:indent" />
+        <error line="26" column="1" source="standard:indent" />
+        <error line="27" column="1" source="standard:indent" />
+        <error line="28" column="1" source="standard:indent" />
+        <error line="29" column="1" source="standard:indent" />
+        <error line="31" column="1" source="standard:indent" />
+        <error line="32" column="1" source="standard:indent" />
+        <error line="32" column="20" source="standard:wrapping" />
+        <error line="32" column="35" source="standard:wrapping" />
+        <error line="37" column="26" source="standard:wrapping" />
+        <error line="37" column="27" source="standard:wrapping" />
+        <error line="38" column="1" source="standard:indent" />
+        <error line="39" column="1" source="standard:indent" />
+        <error line="41" column="1" source="standard:indent" />
+        <error line="42" column="1" source="standard:indent" />
+        <error line="43" column="1" source="standard:indent" />
+        <error line="44" column="1" source="standard:indent" />
+        <error line="46" column="1" source="standard:indent" />
+        <error line="47" column="1" source="standard:indent" />
+        <error line="48" column="1" source="standard:indent" />
+        <error line="49" column="1" source="standard:indent" />
+        <error line="50" column="1" source="standard:indent" />
+        <error line="51" column="1" source="standard:indent" />
+        <error line="52" column="1" source="standard:indent" />
+        <error line="54" column="1" source="standard:indent" />
+        <error line="55" column="1" source="standard:indent" />
+        <error line="56" column="1" source="standard:indent" />
+        <error line="58" column="1" source="standard:indent" />
+        <error line="59" column="1" source="standard:indent" />
+        <error line="59" column="29" source="standard:wrapping" />
+        <error line="59" column="43" source="standard:wrapping" />
+        <error line="63" column="1" source="standard:indent" />
+        <error line="63" column="22" source="standard:wrapping" />
+        <error line="63" column="31" source="standard:wrapping" />
+        <error line="64" column="1" source="standard:indent" />
+        <error line="65" column="1" source="standard:indent" />
+        <error line="67" column="1" source="standard:indent" />
+        <error line="68" column="1" source="standard:indent" />
+        <error line="69" column="1" source="standard:indent" />
+    </file>
+    <file name="build/generated/sqldelight/code/WriteopiaDb/commonMain/io/writeopia/sql/WriteopiaDb.kt">
+        <error line="15" column="1" source="standard:indent" />
+        <error line="17" column="1" source="standard:indent" />
+        <error line="19" column="1" source="standard:indent" />
+        <error line="20" column="1" source="standard:indent" />
+        <error line="21" column="1" source="standard:indent" />
+        <error line="23" column="1" source="standard:indent" />
+        <error line="24" column="1" source="standard:indent" />
+        <error line="25" column="1" source="standard:indent" />
+    </file>
+    <file name="build/generated/sqldelight/code/WriteopiaDb/commonMain/io/writeopia/sql/persistencesqldelight/WriteopiaDbImpl.kt">
+        <error line="18" column="1" source="standard:indent" />
+        <error line="24" column="1" source="standard:indent" />
+        <error line="26" column="1" source="standard:indent" />
+        <error line="28" column="1" source="standard:indent" />
+        <error line="29" column="1" source="standard:indent" />
+        <error line="31" column="1" source="standard:indent" />
+        <error line="33" column="1" source="standard:indent" />
+        <error line="34" column="1" source="standard:indent" />
+        <error line="36" column="1" source="standard:indent" />
+        <error line="37" column="1" source="standard:indent" />
+        <error line="38" column="1" source="standard:indent" />
+        <error line="40" column="1" source="standard:indent" />
+        <error line="41" column="1" source="standard:indent" />
+        <error line="41" column="22" source="standard:wrapping" />
+        <error line="41" column="27" source="standard:wrapping" />
+        <error line="49" column="1" source="standard:indent" />
+        <error line="49" column="28" source="standard:wrapping" />
+        <error line="49" column="29" source="standard:wrapping" />
+        <error line="50" column="1" source="standard:indent" />
+        <error line="50" column="22" source="standard:wrapping" />
+        <error line="50" column="27" source="standard:wrapping" />
+        <error line="56" column="1" source="standard:indent" />
+        <error line="56" column="28" source="standard:wrapping" />
+        <error line="56" column="29" source="standard:wrapping" />
+        <error line="57" column="1" source="standard:indent" />
+        <error line="57" column="22" source="standard:wrapping" />
+        <error line="57" column="27" source="standard:wrapping" />
+        <error line="73" column="1" source="standard:indent" />
+        <error line="73" column="28" source="standard:wrapping" />
+        <error line="73" column="29" source="standard:wrapping" />
+        <error line="74" column="1" source="standard:indent" />
+        <error line="74" column="22" source="standard:wrapping" />
+        <error line="74" column="27" source="standard:wrapping" />
+        <error line="79" column="1" source="standard:indent" />
+        <error line="79" column="28" source="standard:wrapping" />
+        <error line="79" column="29" source="standard:wrapping" />
+        <error line="80" column="1" source="standard:indent" />
+        <error line="82" column="1" source="standard:indent" />
+        <error line="83" column="1" source="standard:indent" />
+        <error line="84" column="1" source="standard:indent" />
+        <error line="85" column="1" source="standard:indent" />
+        <error line="86" column="1" source="standard:indent" />
+        <error line="87" column="1" source="standard:indent" />
+        <error line="88" column="1" source="standard:indent" />
+        <error line="89" column="1" source="standard:indent" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/sqldelight/database/createDatabase.kt">
+        <error line="1" column="1" source="standard:filename" />
+        <error line="37" column="1" source="standard:no-blank-line-before-rbrace" />
+        <error line="42" column="5" source="standard:blank-line-before-declaration" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/sqldelight/di/SqlDelightDaoInjector.kt">
+        <error line="3" column="1" source="standard:import-ordering" />
+        <error line="22" column="1" source="standard:no-consecutive-blank-lines" />
+    </file>
+    <file name="src/jsMain/kotlin/io/writeopia/sqldelight/database/driver/DriverFactory.js.kt">
+        <error line="17" column="1" source="standard:indent" />
+    </file>
+    <file name="src/jvmMain/kotlin/io/writeopia/sqldelight/database/driver/DriverFactory.kt">
+        <error line="3" column="1" source="standard:no-unused-imports" />
+    </file>
+</baseline>

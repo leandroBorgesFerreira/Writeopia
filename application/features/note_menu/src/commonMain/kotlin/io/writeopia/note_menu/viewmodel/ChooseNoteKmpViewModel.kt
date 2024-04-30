@@ -24,6 +24,7 @@ internal class ChooseNoteKmpViewModel(
     private val notesUseCase: NotesUseCase,
     private val notesConfig: ConfigurationRepository,
     private val authManager: AuthManager,
+    private val selectionState: StateFlow<Boolean>,
     private val previewParser: PreviewParser = PreviewParser(),
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
     private val documentToJson: DocumentToJson = DocumentToJson(),
@@ -118,6 +119,20 @@ internal class ChooseNoteKmpViewModel(
             }
         } catch (error: Exception) {
 //            Log.d("ChooseNoteViewModel", "Error fetching user attributes. Error: $error")
+        }
+    }
+
+    override fun handleNoteTap(id: String): Boolean {
+        return if (selectionState.value) {
+            if (_selectedNotes.value.contains(id)) {
+                _selectedNotes.value -= id
+            } else {
+                _selectedNotes.value += id
+            }
+
+            true
+        } else {
+            false
         }
     }
 

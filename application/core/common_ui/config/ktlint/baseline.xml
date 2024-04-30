@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<baseline version="1.0">
+    <file name="build/generated/compose/resourceGenerator/kotlin/writeopia/application/core/common_ui/generated/resources/Res.kt">
+        <error line="2" column="1" source="standard:indent" />
+        <error line="3" column="1" source="standard:indent" />
+        <error line="6" column="9" source="standard:package-name" />
+        <error line="8" column="1" source="standard:import-ordering" />
+        <error line="16" column="1" source="standard:indent" />
+        <error line="17" column="1" source="standard:indent" />
+        <error line="18" column="1" source="standard:indent" />
+        <error line="19" column="1" source="standard:indent" />
+        <error line="20" column="1" source="standard:indent" />
+        <error line="21" column="1" source="standard:indent" />
+        <error line="22" column="1" source="standard:indent" />
+        <error line="23" column="1" source="standard:indent" />
+        <error line="24" column="1" source="standard:indent" />
+        <error line="26" column="1" source="standard:indent" />
+        <error line="26" column="17" source="standard:class-naming" />
+        <error line="28" column="1" source="standard:indent" />
+        <error line="28" column="17" source="standard:class-naming" />
+        <error line="30" column="1" source="standard:indent" />
+        <error line="30" column="17" source="standard:class-naming" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/common_ui/SlideInBox.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+</baseline>
