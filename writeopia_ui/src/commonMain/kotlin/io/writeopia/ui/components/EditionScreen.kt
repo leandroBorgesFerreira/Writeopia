@@ -15,10 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 
-//Here
-@Composable
+// Here
 // This screen could live in a module for extra Composables. In the future there will be more
 // buttons here
+@Composable
 fun EditionScreen(
     modifier: Modifier = Modifier,
     onDelete: () -> Unit = {}

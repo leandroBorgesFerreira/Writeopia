@@ -8,7 +8,7 @@ import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
-import io.writeopia.sdk.shared_edition.SharedEditionManager
+import io.writeopia.sdk.sharededition.SharedEditionManager
 import kotlinx.coroutines.Dispatchers
 
 class EditorKmpInjector(

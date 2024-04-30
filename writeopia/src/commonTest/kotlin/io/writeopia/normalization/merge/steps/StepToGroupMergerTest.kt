@@ -1,8 +1,8 @@
 package io.writeopia.normalization.merge.steps
 
 import io.writeopia.sdk.models.id.GenerateId
-import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.normalization.merge.steps.StepToGroupMerger
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -83,7 +83,6 @@ class StepToGroupMergerTest {
                     )
                 )
             )
-
 
         val result = merger.merge(group1, group2, StoryTypes.GROUP_IMAGE.type)
 

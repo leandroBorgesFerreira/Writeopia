@@ -16,11 +16,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.model.draw.DrawInfo
-import io.writeopia.sdk.models.story.StoryStep
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.request.videoFrameMillis
+import io.writeopia.sdk.model.draw.DrawInfo
+import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.drawer.StoryStepDrawer
 
 /**
@@ -30,7 +30,6 @@ class VideoDrawer(private val containerModifier: Modifier? = null) : StoryStepDr
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
-
         Box(modifier = Modifier.padding(vertical = 3.dp, horizontal = 8.dp)) {
             Box(
                 modifier = containerModifier ?: Modifier

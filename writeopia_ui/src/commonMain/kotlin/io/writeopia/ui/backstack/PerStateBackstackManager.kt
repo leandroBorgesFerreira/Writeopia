@@ -54,7 +54,7 @@ internal class PerStateBackstackManager(
                 revertDelete(state, action.storyStep, action.position)
             }
 
-            is BackstackAction.Merge -> state //Todo
+            is BackstackAction.Merge -> state // Todo
 
             is BackstackAction.Move -> {
                 forwardStack.add(action)
@@ -242,7 +242,8 @@ internal class PerStateBackstackManager(
     }
 
     private fun revertBulkDelete(storyState: StoryState, action: BackstackAction.BulkDelete) =
-        contentHandler.addNewContentBulk(storyState.stories,
+        contentHandler.addNewContentBulk(
+            storyState.stories,
             action.deletedUnits
         ).let { newStories ->
             StoryState(

@@ -7,6 +7,7 @@ import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.*
@@ -29,7 +30,12 @@ class ChooseNoteViewModelTest {
         try {
             coEvery { notesUseCase.deleteNotes(any()) } returns Unit
 
-            val viewModel = ChooseNoteKmpViewModel(notesUseCase, notesConfig, authManager).apply {
+            val viewModel = ChooseNoteKmpViewModel(
+                notesUseCase,
+                notesConfig,
+                authManager,
+                MutableStateFlow(false)
+            ).apply {
                 initCoroutine(this@runTest)
             }
 

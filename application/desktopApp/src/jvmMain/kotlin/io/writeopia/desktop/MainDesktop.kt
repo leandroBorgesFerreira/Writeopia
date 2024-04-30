@@ -3,11 +3,9 @@ package io.writeopia.desktop
 import androidx.compose.material.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.awtEventOrNull
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isMetaPressed
-import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -20,7 +18,9 @@ import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.drawer.factory.DefaultDrawersDesktop
+import kotlinx.coroutines.flow.MutableStateFlow
 import java.awt.event.KeyEvent
+import androidx.compose.ui.input.key.KeyEvent as AndroidKeyEvent
 
 fun main() = application {
     val databaseStateFlow = DatabaseFactory.createDatabaseAsState(
@@ -29,10 +29,21 @@ fun main() = application {
         rememberCoroutineScope()
     )
 
+    val selectionState = MutableStateFlow(false)
+
     Window(
         onCloseRequest = ::exitApplication,
         title = "Writeopia for Desktop",
-        state = rememberWindowState(width = 1100.dp, height = 800.dp)
+        state = rememberWindowState(width = 1100.dp, height = 800.dp),
+        onKeyEvent = { keyEvent ->
+            if (isSelectionKeyEventStart(keyEvent)) {
+                selectionState.value = true
+            } else if (isSelectionKeyEventStop(keyEvent)) {
+                selectionState.value = false
+            }
+
+            false
+        }
     ) {
         when (val databaseState = databaseStateFlow.collectAsState().value) {
             is DatabaseCreation.Complete -> {
@@ -42,20 +53,8 @@ fun main() = application {
                     notesConfigurationInjector = NotesConfigurationInjector(database),
                     repositoryInjection = SqlDelightDaoInjector(database),
                     DefaultDrawersDesktop,
-                    editorModifier = { writeopiaStateManager ->
-                        Modifier.onPreviewKeyEvent { keyEvent ->
-                            val shouldHandle = keyEvent.isMetaPressed &&
-                                    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_Z &&
-                                    keyEvent.type == KeyEventType.KeyDown
-
-                            if (shouldHandle) {
-                                writeopiaStateManager.undo()
-                                true
-                            } else {
-                                false
-                            }
-                        }
-                    }
+                    isUndoKeyEvent = ::isUndoKeyboardEvent,
+                    selectionState = selectionState
                 )
             }
 
@@ -65,3 +64,16 @@ fun main() = application {
         }
     }
 }
+
+private fun isUndoKeyboardEvent(keyEvent: AndroidKeyEvent) =
+    keyEvent.isMetaPressed &&
+        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_Z &&
+        keyEvent.type == KeyEventType.KeyDown
+
+private fun isSelectionKeyEventStart(keyEvent: AndroidKeyEvent) =
+    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_META &&
+        keyEvent.type == KeyEventType.KeyDown
+
+private fun isSelectionKeyEventStop(keyEvent: AndroidKeyEvent) =
+    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_META &&
+        keyEvent.type == KeyEventType.KeyUp

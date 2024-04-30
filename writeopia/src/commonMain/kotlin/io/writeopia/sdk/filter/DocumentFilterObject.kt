@@ -6,7 +6,7 @@ import io.writeopia.sdk.utils.extensions.associateWithPosition
 /**
  * Default implementation of [DocumentFilter]
  */
-object DocumentFilterObject: DocumentFilter {
+object DocumentFilterObject : DocumentFilter {
 
     override fun removeTypesFromDocument(
         documentContent: DocumentContent,

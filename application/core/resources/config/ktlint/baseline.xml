@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<baseline version="1.0">
+    <file name="build.gradle.kts">
+        <error line="37" column="7" source="standard:curly-spacing" />
+    </file>
+</baseline>

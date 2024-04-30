@@ -21,7 +21,7 @@ class PreviewParser(
         var acc = 0
 
         return stories.asSequence()
-            .filter { storyStep -> acceptedTypes.contains(storyStep.type.number)  }
+            .filter { storyStep -> acceptedTypes.contains(storyStep.type.number) }
             .takeWhile { acc++ < maxSize }
             .toList()
     }

@@ -53,6 +53,5 @@ class HeaderPreviewDrawer(
                 color = MaterialTheme.colorScheme.onBackground,
             )
         }
-
     }
 }

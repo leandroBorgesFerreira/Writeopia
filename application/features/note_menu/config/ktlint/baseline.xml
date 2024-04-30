@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<baseline version="1.0">
+    <file name="build.gradle.kts">
+        <error line="1" column="1" source="standard:no-unused-imports" />
+        <error line="61" column="1" source="standard:no-blank-line-before-rbrace" />
+        <error line="107" column="7" source="standard:curly-spacing" />
+    </file>
+    <file name="build/generated/compose/resourceGenerator/kotlin/writeopia/application/features/note_menu/generated/resources/Res.kt">
+        <error line="2" column="1" source="standard:indent" />
+        <error line="3" column="1" source="standard:indent" />
+        <error line="6" column="9" source="standard:package-name" />
+        <error line="8" column="1" source="standard:import-ordering" />
+        <error line="16" column="1" source="standard:indent" />
+        <error line="17" column="1" source="standard:indent" />
+        <error line="18" column="1" source="standard:indent" />
+        <error line="19" column="1" source="standard:indent" />
+        <error line="20" column="1" source="standard:indent" />
+        <error line="21" column="1" source="standard:indent" />
+        <error line="22" column="1" source="standard:indent" />
+        <error line="23" column="1" source="standard:indent" />
+        <error line="24" column="1" source="standard:indent" />
+        <error line="26" column="1" source="standard:indent" />
+        <error line="26" column="17" source="standard:class-naming" />
+        <error line="28" column="1" source="standard:indent" />
+        <error line="28" column="17" source="standard:class-naming" />
+        <error line="30" column="1" source="standard:indent" />
+        <error line="30" column="17" source="standard:class-naming" />
+    </file>
+    <file name="src/androidMain/kotlin/io/writeopia/note_menu/data/repository/ConfigurationRoomRepository.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="49" column="1" source="standard:no-blank-line-before-rbrace" />
+        <error line="49" column="1" source="standard:no-empty-first-line-in-method-block" />
+    </file>
+    <file name="src/androidMain/kotlin/io/writeopia/note_menu/di/NotesConfigurationInjector.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/androidMain/kotlin/io/writeopia/note_menu/di/NotesMenuAndroidInjection.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/androidMain/kotlin/io/writeopia/note_menu/navigation/NotesMenuNavigation.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="3" column="1" source="standard:import-ordering" />
+        <error line="6" column="1" source="standard:no-unused-imports" />
+        <error line="19" column="1" source="standard:no-empty-first-line-in-method-block" />
+    </file>
+    <file name="src/androidMain/kotlin/io/writeopia/note_menu/ui/screen/file/FileChooser.android.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/androidMain/kotlin/io/writeopia/note_menu/ui/screen/file/FileChooserLoad.android.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/androidMain/kotlin/io/writeopia/note_menu/ui/screen/menu/ChooseNoteScreen.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="3" column="1" source="standard:comment-spacing" />
+        <error line="7" column="1" source="standard:no-wildcard-imports" />
+        <error line="13" column="1" source="standard:no-wildcard-imports" />
+        <error line="109" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="111" column="1" source="standard:comment-spacing" />
+        <error line="126" column="1" source="standard:no-empty-first-line-in-method-block" />
+    </file>
+    <file name="src/androidMain/kotlin/io/writeopia/note_menu/viewmodel/ChooseNoteAndroidViewModel.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/data/NotesArrangement.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="8" column="19" source="standard:enum-wrapping" />
+        <error line="9" column="1" source="standard:enum-wrapping" />
+        <error line="9" column="5" source="standard:blank-line-before-declaration" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/data/repository/ConfigurationRepository.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/data/repository/ConfigurationSqlDelightRepository.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/data/repository/InMemoryConfigurationRepository.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="6" column="60" source="standard:colon-spacing" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/data/usecase/NotesUseCase.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="3" column="1" source="standard:import-ordering" />
+        <error line="25" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="44" column="17" source="standard:wrapping" />
+        <error line="44" column="18" source="standard:argument-list-wrapping" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/di/NotesConfigurationInjector.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/di/NotesMenunjection.kt">
+        <error line="1" column="1" source="standard:filename" />
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="3" column="1" source="standard:import-ordering" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/extensions/DocumentExtensions.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/ui/dto/DocumentUi.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="13" column="1" source="standard:no-consecutive-blank-lines" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/ui/dto/NotesUi.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/ui/screen/DesktopNotesMenu.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="4" column="1" source="standard:no-unused-imports" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/ui/screen/actions/DesktopNoteActionsMenu.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="91" column="24" source="standard:argument-list-wrapping" />
+        <error line="105" column="24" source="standard:argument-list-wrapping" />
+        <error line="119" column="24" source="standard:argument-list-wrapping" />
+        <error line="145" column="24" source="standard:argument-list-wrapping" />
+        <error line="158" column="24" source="standard:argument-list-wrapping" />
+        <error line="203" column="1" source="standard:no-consecutive-blank-lines" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/ui/screen/configuration/ConfigurationsMenu.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="3" column="1" source="standard:comment-spacing" />
+        <error line="140" column="17" source="standard:wrapping" />
+        <error line="140" column="17" source="standard:argument-list-wrapping" />
+        <error line="198" column="1" source="standard:comment-spacing" />
+        <error line="199" column="1" source="standard:comment-spacing" />
+        <error line="200" column="1" source="standard:comment-spacing" />
+        <error line="206" column="1" source="standard:comment-spacing" />
+        <error line="208" column="1" source="standard:comment-spacing" />
+        <error line="209" column="1" source="standard:comment-spacing" />
+        <error line="210" column="1" source="standard:comment-spacing" />
+        <error line="212" column="1" source="standard:comment-spacing" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/ui/screen/configuration/NotesSelectionMenu.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="3" column="1" source="standard:comment-spacing" />
+        <error line="9" column="1" source="standard:no-wildcard-imports" />
+        <error line="101" column="1" source="standard:comment-spacing" />
+        <error line="102" column="1" source="standard:comment-spacing" />
+        <error line="103" column="1" source="standard:comment-spacing" />
+        <error line="107" column="1" source="standard:comment-spacing" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/ui/screen/configuration/WorkspaceConfigurationDialog.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="32" column="1" source="standard:no-unused-imports" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/ui/screen/file/FileChooserLoad.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/ui/screen/file/FileChooserSave.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="5" column="1" source="standard:no-consecutive-blank-lines" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/ui/screen/list/NoteItems.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="3" column="1" source="standard:comment-spacing" />
+        <error line="6" column="1" source="standard:no-wildcard-imports" />
+        <error line="86" column="37" source="standard:comment-spacing" />
+        <error line="86" column="37" source="standard:discouraged-comment-location" />
+        <error line="196" column="1" source="standard:comment-spacing" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/viewmodel/ChooseNoteKmpViewModel.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="17" column="1" source="standard:no-wildcard-imports" />
+        <error line="20" column="1" source="standard:no-wildcard-imports" />
+        <error line="38" column="17" source="standard:property-naming" />
+        <error line="48" column="17" source="standard:property-naming" />
+        <error line="60" column="17" source="standard:property-naming" />
+        <error line="85" column="1" source="standard:no-blank-line-before-rbrace" />
+        <error line="199" column="9" source="standard:comment-spacing" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/note_menu/viewmodel/ChooseNoteViewModel.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="76" column="5" source="standard:blank-line-before-declaration" />
+        <error line="77" column="5" source="standard:blank-line-before-declaration" />
+        <error line="78" column="5" source="standard:blank-line-before-declaration" />
+        <error line="79" column="5" source="standard:blank-line-before-declaration" />
+        <error line="107" column="12" source="standard:enum-wrapping" />
+        <error line="107" column="24" source="standard:enum-wrapping" />
+    </file>
+    <file name="src/jsMain/kotlin/io/writeopia/note_menu/di/NotesConfigurationInjector.js.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="4" column="1" source="standard:no-unused-imports" />
+        <error line="6" column="1" source="standard:no-unused-imports" />
+        <error line="7" column="1" source="standard:no-unused-imports" />
+        <error line="16" column="1" source="standard:no-consecutive-blank-lines" />
+    </file>
+    <file name="src/jsMain/kotlin/io/writeopia/note_menu/ui/screen/file/FileChooserLoad.js.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/jsMain/kotlin/io/writeopia/note_menu/ui/screen/file/FileChooserSave.js.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/jvmMain/kotlin/io/writeopia/note_menu/di/NotesConfigurationInjector.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/jvmMain/kotlin/io/writeopia/note_menu/ui/screen/file/FileChooserLoad.jvm.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/jvmMain/kotlin/io/writeopia/note_menu/ui/screen/file/FileChooserSave.jvm.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/jvmTest/kotlin/io/writeopia/note_menu/viewmodel/ChooseNoteViewModelTest.kt">
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="12" column="1" source="standard:no-wildcard-imports" />
+        <error line="13" column="1" source="standard:no-wildcard-imports" />
+        <error line="56" column="1" source="standard:no-blank-line-before-rbrace" />
+    </file>
+</baseline>

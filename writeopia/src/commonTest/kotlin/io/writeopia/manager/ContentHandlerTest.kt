@@ -9,8 +9,8 @@ import io.writeopia.sdk.models.command.TypeInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
-import io.writeopia.utils.MapStoryData
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
+import io.writeopia.utils.MapStoryData
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

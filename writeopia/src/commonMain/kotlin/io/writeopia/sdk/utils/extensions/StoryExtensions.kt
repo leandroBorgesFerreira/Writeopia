@@ -15,8 +15,8 @@ fun Map<Int, StoryStep>.noContent(): Boolean =
     this.values.all { storyStep ->
         storyStep.run {
             url.isNullOrBlank() &&
-                    path.isNullOrBlank() &&
-                    text.isNullOrBlank() &&
-                    steps.isEmpty()
+                path.isNullOrBlank() &&
+                text.isNullOrBlank() &&
+                steps.isEmpty()
         }
     }

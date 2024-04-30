@@ -1,8 +1,5 @@
 package io.writeopia.ui.manager
 
-import io.writeopia.ui.backstack.BackstackHandler
-import io.writeopia.ui.backstack.BackstackInform
-import io.writeopia.ui.backstack.BackstackManager
 import io.writeopia.sdk.manager.ContentHandler
 import io.writeopia.sdk.manager.DocumentTracker
 import io.writeopia.sdk.manager.MovementHandler
@@ -17,15 +14,18 @@ import io.writeopia.sdk.model.story.DrawStory
 import io.writeopia.sdk.model.story.LastEdit
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.command.CommandInfo
+import io.writeopia.sdk.models.command.TypeInfo
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
-import io.writeopia.sdk.shared_edition.SharedEditionManager
+import io.writeopia.sdk.sharededition.SharedEditionManager
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.toEditState
-import io.writeopia.sdk.models.command.TypeInfo
+import io.writeopia.ui.backstack.BackstackHandler
+import io.writeopia.ui.backstack.BackstackInform
+import io.writeopia.ui.backstack.BackstackManager
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
@@ -79,8 +79,8 @@ class WriteopiaStateManager(
 
     val currentDocument: Flow<Document?> = combine(_documentInfo, _currentStory) { info, state ->
         val titleFromContent = state.stories.values.firstOrNull { storyStep ->
-            //Todo: Change the type of change to allow different types. The client code should decide what is a title
-            //It is also interesting to inv
+            // Todo: Change the type of change to allow different types. The client code should decide what is a title
+            // It is also interesting to inv
             storyStep.type == StoryTypes.TITLE.type
         }?.text
 
@@ -120,7 +120,6 @@ class WriteopiaStateManager(
 
     private val isOnSelection: Boolean
         get() = _positionsOnEdit.value.isNotEmpty()
-
 
     /**
      * Saves the document automatically as it is changed. It uses the [DocumentTracker] passed
@@ -189,7 +188,7 @@ class WriteopiaStateManager(
      *
      * @param position Int
      */
-    //Todo: Add unit tests
+    // Todo: Add unit tests
     fun nextFocusOrCreate(position: Int) {
         coroutineScope.launch(dispatcher) {
             _currentStory.value =
@@ -210,7 +209,7 @@ class WriteopiaStateManager(
 
         _currentStory.value = writeopiaManager.mergeRequest(info, _currentStory.value)
 
-        //Todo: Add to backstack
+        // Todo: Add to backstack
     }
 
     /**
@@ -380,7 +379,6 @@ class WriteopiaStateManager(
         }
     }
 
-
     /**
      * Redo the last undone action.
      */
@@ -475,4 +473,3 @@ class WriteopiaStateManager(
         )
     }
 }
-

@@ -10,8 +10,8 @@ import io.writeopia.sdk.models.story.StoryTypes
 class FocusHandler(
     private val isMessageFn: (Int) -> Boolean = { typeNumber ->
         typeNumber == StoryTypes.TEXT.type.number ||
-                typeNumber == StoryTypes.TEXT_BOX.type.number ||
-                typeNumber == StoryTypes.CHECK_ITEM.type.number
+            typeNumber == StoryTypes.TEXT_BOX.type.number ||
+            typeNumber == StoryTypes.CHECK_ITEM.type.number
     }
 ) {
 

@@ -72,4 +72,3 @@ class StepsMapNormalizationBuilder {
     ): UnitsMapTransformation =
         normalizations.reduce { fn, gn -> { stories -> gn(fn(stories)) } }
 }
-

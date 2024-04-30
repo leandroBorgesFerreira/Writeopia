@@ -26,6 +26,8 @@ interface ChooseNoteViewModel {
 
     fun requestDocuments(force: Boolean)
 
+    fun handleNoteTap(id: String): Boolean
+
     suspend fun requestUser()
 
     fun showEditMenu()

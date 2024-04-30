@@ -34,10 +34,10 @@ import io.writeopia.note_menu.viewmodel.getPath
 
 @Composable
 fun DesktopNotesMenu(
-    modifier: Modifier = Modifier,
     chooseNoteViewModel: ChooseNoteViewModel,
     onNewNoteClick: () -> Unit,
-    onNoteClick: (String, String) -> Unit
+    onNoteClick: (String, String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     LaunchedEffect(
         key1 = "refresh",

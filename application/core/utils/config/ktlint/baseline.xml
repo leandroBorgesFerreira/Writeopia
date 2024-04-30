@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<baseline version="1.0">
+    <file name="src/commonMain/kotlin/io/writeopia/utils_module/Destinations.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/utils_module/KmpViewModel.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/utils_module/Result.kt">
+        <error line="1" column="1" source="standard:filename" />
+        <error line="1" column="9" source="standard:package-name" />
+        <error line="4" column="18" source="standard:colon-spacing" />
+        <error line="5" column="5" source="standard:blank-line-before-declaration" />
+        <error line="6" column="5" source="standard:blank-line-before-declaration" />
+        <error line="6" column="40" source="standard:colon-spacing" />
+        <error line="7" column="5" source="standard:blank-line-before-declaration" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/utils_module/UserConstants.kt">
+        <error line="1" column="9" source="standard:package-name" />
+    </file>
+</baseline>

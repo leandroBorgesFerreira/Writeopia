@@ -7,12 +7,14 @@ import io.writeopia.sdk.models.story.StoryStep
  */
 sealed class Action {
     data class DeleteStory(val storyStep: StoryStep, val position: Int) : Action()
+
     data class BulkDelete(val deletedUnits: Map<Int, StoryStep>) : Action()
 
     data class LineBreak(val storyStep: StoryStep, val position: Int) : Action()
+
     data class Move(val storyStep: StoryStep, val positionFrom: Int, val positionTo: Int) : Action()
 
-    data class StoryStateChange(val storyStep: StoryStep, val position: Int): Action()
+    data class StoryStateChange(val storyStep: StoryStep, val position: Int) : Action()
 
     data class Merge(
         val receiver: StoryStep,
@@ -20,5 +22,4 @@ sealed class Action {
         val positionFrom: Int,
         val positionTo: Int
     ) : Action()
-
 }

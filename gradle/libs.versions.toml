@@ -11,6 +11,7 @@ kotlinxCoroutines = "1.8.0"
 kotlinxDatetime = "0.5.0"
 kotlinxSerializationJson = "1.6.3"
 ktor = "2.3.9"
+ktlint = "12.1.0"
 ktx = "1.13.0"
 appCompat = "1.6.1"
 material = "1.11.0"
@@ -114,3 +115,4 @@ spring-kotlin = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotl
 spring-dependencyManagement = { id = "io.spring.dependency-management", version.ref = "sprint-dependencyManagement" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 ktor-framework = { id = "io.ktor.plugin", version.ref = "ktor" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint"}

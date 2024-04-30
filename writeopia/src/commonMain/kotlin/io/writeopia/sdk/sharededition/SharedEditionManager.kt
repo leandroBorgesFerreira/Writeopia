@@ -1,4 +1,4 @@
-package io.writeopia.sdk.shared_edition
+package io.writeopia.sdk.sharededition
 
 import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.model.story.StoryState

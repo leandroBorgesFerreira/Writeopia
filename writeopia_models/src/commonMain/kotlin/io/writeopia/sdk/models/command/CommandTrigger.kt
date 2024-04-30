@@ -5,5 +5,6 @@ package io.writeopia.sdk.models.command
  * [CLICKED] are commands called by a button in the UI of an app.
  */
 enum class CommandTrigger {
-    WRITTEN, CLICKED
+    WRITTEN,
+    CLICKED
 }

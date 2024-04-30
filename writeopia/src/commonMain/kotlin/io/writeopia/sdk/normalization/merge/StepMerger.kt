@@ -6,5 +6,4 @@ import io.writeopia.sdk.models.story.StoryType
 interface StepMerger {
 
     fun merge(step1: StoryStep, step2: StoryStep, type: StoryType): StoryStep
-
 }

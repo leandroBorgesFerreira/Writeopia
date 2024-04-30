@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Sort
+import androidx.compose.material.icons.automirrored.outlined.Sort
 import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.Folder
@@ -15,6 +16,12 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.outlined.AttachFile
+import androidx.compose.material.icons.outlined.FileDownload
+import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.Save
+import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -55,7 +62,7 @@ fun DesktopNoteActionsMenu(
 
         LoadingBox(showSyncLoading == SyncState.LoadingWrite) {
             Icon(
-                imageVector = Icons.Default.Save,
+                imageVector = Icons.Outlined.Save,
                 contentDescription = "Save",
                 modifier = Modifier.icon(onWriteLocallySelected)
                     .testTag("writeWorkspaceLocally"),
@@ -65,7 +72,7 @@ fun DesktopNoteActionsMenu(
 
         LoadingBox(showSyncLoading == SyncState.LoadingSync) {
             Icon(
-                imageVector = Icons.Default.Sync,
+                imageVector = Icons.Outlined.Sync,
                 contentDescription = "Save",
                 modifier = Modifier.icon(onSyncLocallySelected)
                     .testTag("syncWorkspaceLocally"),
@@ -75,7 +82,7 @@ fun DesktopNoteActionsMenu(
 
         Box {
             Icon(
-                imageVector = Icons.AutoMirrored.Default.Sort,
+                imageVector = Icons.AutoMirrored.Outlined.Sort,
                 contentDescription = "Sort Options",
                 modifier = Modifier.icon(showSortOptionsRequest),
                 tint = MaterialTheme.colorScheme.onBackground
@@ -85,42 +92,48 @@ fun DesktopNoteActionsMenu(
                 DropdownMenuItem(
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Default.Folder,
-                            contentDescription = "Sort by name"
+                            imageVector = Icons.Outlined.Folder,
+                            contentDescription = "Sort by name",
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     }, onClick = {
                         selectSortOption(OrderBy.NAME)
                     },
                     text = {
-                        Text("Sort by name")
+                        Text("Sort by name", color = MaterialTheme.colorScheme.onPrimary)
                     }
                 )
 
                 DropdownMenuItem(
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Default.Folder,
-                            contentDescription = "Sort by creation"
+                            imageVector = Icons.Outlined.Folder,
+                            contentDescription = "Sort by creation",
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     }, onClick = {
                         selectSortOption(OrderBy.CREATE)
                     },
                     text = {
-                        Text("Sort by creation")
+                        Text("Sort by creation", color = MaterialTheme.colorScheme.onPrimary)
                     }
                 )
 
                 DropdownMenuItem(
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Default.Folder,
-                            contentDescription = "Sort by last update"
+                            imageVector = Icons.Outlined.Folder,
+                            contentDescription = "Sort by last update",
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     }, onClick = {
                         selectSortOption(OrderBy.UPDATE)
                     },
                     text = {
-                        Text("Sort by last update")
+                        Text(
+                            "Sort by last update",
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
                     }
                 )
             }
@@ -128,7 +141,7 @@ fun DesktopNoteActionsMenu(
 
         Box {
             Icon(
-                imageVector = Icons.Default.MoreVert,
+                imageVector = Icons.Outlined.MoreVert,
                 contentDescription = "Export",
                 modifier = Modifier.icon(showExtraOptionsRequest),
                 tint = MaterialTheme.colorScheme.onBackground
@@ -138,40 +151,43 @@ fun DesktopNoteActionsMenu(
                 DropdownMenuItem(
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Default.Folder,
+                            imageVector = Icons.Outlined.Folder,
                             contentDescription = "Configure directory",
                             tint = MaterialTheme.colorScheme.onBackground
                         )
                     }, onClick = configureDirectory,
                     text = {
-                        Text("Configure directory")
+                        Text(
+                            "Configure directory",
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
                     }
                 )
 
                 DropdownMenuItem(
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Default.AttachFile,
+                            imageVector = Icons.Outlined.AttachFile,
                             contentDescription = "Export",
                             tint = MaterialTheme.colorScheme.onBackground
                         )
                     }, onClick = exportAsMarkdownClick,
                     text = {
-                        Text("Export as Markdown")
+                        Text("Export as Markdown", color = MaterialTheme.colorScheme.onPrimary)
                     }
                 )
 
                 DropdownMenuItem(
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Default.FileDownload,
+                            imageVector = Icons.Outlined.FileDownload,
                             contentDescription = "Export",
                             tint = MaterialTheme.colorScheme.onBackground
                         )
                     },
                     onClick = importClick,
                     text = {
-                        Text("Import file")
+                        Text("Import file", color = MaterialTheme.colorScheme.onPrimary)
                     }
                 )
             }

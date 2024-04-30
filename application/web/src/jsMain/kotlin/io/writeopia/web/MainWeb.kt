@@ -2,10 +2,9 @@ package io.writeopia.web
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isMetaPressed
-import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.window.CanvasBasedWindow
 import io.writeopia.note_menu.di.NotesConfigurationInjector
@@ -30,20 +29,11 @@ fun CreateAppInMemory(repositoryInjection: SqlDelightDaoInjector) {
         notesConfigurationInjector = NotesConfigurationInjector.noop(),
         repositoryInjection = repositoryInjection,
         drawersFactory = DefaultDrawersJs,
-        editorModifier = { writeopiaStateManager ->
-            Modifier.onPreviewKeyEvent { keyEvent ->
-                val shouldHandle = keyEvent.isMetaPressed &&
-                        keyEvent.nativeKeyEvent.key == SkikoKey.KEY_Z &&
-                        keyEvent.type == KeyEventType.KeyDown
-
-                if (shouldHandle) {
-                    writeopiaStateManager.undo()
-                    true
-                } else {
-                    false
-                }
-            }
-        }
+        isUndoKeyEvent = ::isUndoKeyboardEvent,
     )
 }
 
+private fun isUndoKeyboardEvent(keyEvent: KeyEvent) =
+    keyEvent.isMetaPressed &&
+        keyEvent.nativeKeyEvent.key == SkikoKey.KEY_Z &&
+        keyEvent.type == KeyEventType.KeyDown

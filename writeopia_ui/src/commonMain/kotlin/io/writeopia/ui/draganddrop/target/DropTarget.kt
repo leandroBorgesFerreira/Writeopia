@@ -17,17 +17,18 @@ fun DropTarget(
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.(inBound: Boolean, data: DropInfo?) -> Unit
 ) {
-
     val dragInfo: DragTargetInfo = LocalDragTargetInfo.current
     val dragPosition = dragInfo.dragPosition
     val dragOffset = dragInfo.dragOffset
     var isCurrentDropTarget by remember { mutableStateOf(false) }
 
-    Box(modifier = modifier.onGloballyPositioned { layoutCoordinates ->
-        layoutCoordinates.boundsInWindow().let { rect ->
-            isCurrentDropTarget = rect.contains(dragPosition + dragOffset)
+    Box(
+        modifier = modifier.onGloballyPositioned { layoutCoordinates ->
+            layoutCoordinates.boundsInWindow().let { rect ->
+                isCurrentDropTarget = rect.contains(dragPosition + dragOffset)
+            }
         }
-    }) {
+    ) {
         val data =
             if (isCurrentDropTarget && !dragInfo.isDragging) dragInfo.dataToDrop else null
 
@@ -35,7 +36,7 @@ fun DropTarget(
             content(isCurrentDropTarget, data)
             dragInfo.dataToDrop = null
         } else {
-            content(isCurrentDropTarget,null)
+            content(isCurrentDropTarget, null)
         }
     }
 }
