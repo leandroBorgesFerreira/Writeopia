@@ -24,7 +24,7 @@ jobs:
           distribution: adopt
           java-version: '21'
       - name: Ktlint
-        run: ./gradlew ktlintCheck
+        run: ./gradlew ktlintCheck --no-daemon
   ui_jvm_tests:
     name: Jvm UI Compose tests
     runs-on: ubuntu-22.04
@@ -43,7 +43,7 @@ jobs:
           distribution: adopt
           java-version: '21'
       - name: JVM tests
-        run: ./gradlew jvmTest
+        run: ./gradlew jvmTest --no-daemon
       - name: upload results
         uses: actions/upload-artifact@v2  
         if: failure()
@@ -64,7 +64,7 @@ jobs:
           distribution: adopt
           java-version: '21'
       - name: Build debug 
-        run: ./gradlew assembleDebug testDebug
+        run: ./gradlew assembleDebug testDebug --no-daemon
   backend_build_and_test:
     name: Backend - build
     runs-on: ubuntu-22.04
@@ -83,7 +83,7 @@ jobs:
           distribution: adopt
           java-version: '21'
       - name: Build backend
-        run: ./gradlew backend:documents:documents_spring:assemble backend:editor:api_editor:assemble backend:editor:api_editor:test backend:editor:api_editor_socket:assemble backend:editor:api_editor_socket:test
+        run: ./gradlew backend:documents:documents_spring:assemble backend:editor:api_editor:assemble backend:editor:api_editor:test backend:editor:api_editor_socket:assemble backend:editor:api_editor_socket:test --no-daemon
       - name: upload results
         uses: actions/upload-artifact@v2  
         if: failure()
