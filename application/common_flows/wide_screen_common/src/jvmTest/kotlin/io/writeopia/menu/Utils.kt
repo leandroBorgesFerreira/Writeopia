@@ -8,6 +8,7 @@ import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.drawer.factory.DefaultDrawersDesktop
+import kotlinx.coroutines.flow.MutableStateFlow
 
 suspend fun startApp(
     composeTestRule: ComposeContentTestRule,
@@ -21,7 +22,9 @@ suspend fun startApp(
             notesConfigurationInjector = NotesConfigurationInjector(database),
             repositoryInjection = SqlDelightDaoInjector(database),
             drawersFactory = DefaultDrawersDesktop,
-            disableWebsocket = true
+            disableWebsocket = true,
+            isUndoKeyEvent = { false },
+            selectionState = MutableStateFlow(false)
         )
     }
 }
