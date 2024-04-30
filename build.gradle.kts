@@ -12,7 +12,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.jvm) apply false
     alias(libs.plugins.compose.multiplatform) apply false
     alias(libs.plugins.google.services) apply false
-    alias(libs.plugins.ktlint)
+//    alias(libs.plugins.ktlint)
 }
 
 apply(from = "$rootDir/scripts/publish-root.gradle")
@@ -23,11 +23,11 @@ dagCommand {
     printModulesInfo = true
 }
 
-subprojects {
-    apply(plugin = "org.jlleitschuh.gradle.ktlint") // Version should be inherited from parent
-
-    repositories {
-        // Required to download KtLint
-        mavenCentral()
-    }
-}
+//subprojects {
+//    apply(plugin = "org.jlleitschuh.gradle.ktlint") // Version should be inherited from parent
+//
+//    repositories {
+//        // Required to download KtLint
+//        mavenCentral()
+//    }
+//}
