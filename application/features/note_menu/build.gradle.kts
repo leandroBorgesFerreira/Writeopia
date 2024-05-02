@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     alias(libs.plugins.androidLibrary)
     kotlin("multiplatform")
@@ -38,7 +36,9 @@ kotlin {
                 implementation(compose.materialIconsExtended)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
                 implementation(libs.kotlinx.serialization.json)
+
             }
         }
 
@@ -53,12 +53,13 @@ kotlin {
                 implementation(libs.compose.shimmer)
 
                 implementation(project.dependencies.platform(libs.androidx.compose.bom))
+                implementation(libs.androidx.ui.tooling.preview.android)
             }
         }
 
         val jvmMain by getting {
             dependencies {
-
+                implementation(libs.androidx.ui.tooling.preview.android)
             }
         }
 

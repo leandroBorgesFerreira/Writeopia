@@ -36,7 +36,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(libs.firebase.auth)
-                implementation(platform(libs.firebase.bom.get()))
+                implementation(project.dependencies.platform(libs.firebase.bom.get()))
             }
         }
     }

@@ -33,9 +33,9 @@ fun main() = application {
 
     Window(
         onCloseRequest = ::exitApplication,
-        title = "Writeopia for Desktop",
+        title = "Writeopia",
         state = rememberWindowState(width = 1100.dp, height = 800.dp),
-        onKeyEvent = { keyEvent ->
+        onPreviewKeyEvent = { keyEvent ->
             if (isSelectionKeyEventStart(keyEvent)) {
                 selectionState.value = true
             } else if (isSelectionKeyEventStop(keyEvent)) {

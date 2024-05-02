@@ -1,6 +1,5 @@
 package io.writeopia.note_menu.ui.screen.configuration
 
-//import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
@@ -22,6 +21,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import io.writeopia.common_ui.SlideInBox
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun NotesSelectionMenu(
@@ -98,10 +98,10 @@ internal fun NotesSelectionMenu(
     }
 }
 
-//@Preview
-//@Composable
-//internal fun NotesSelectionMenuPreview() {
-//    Box(modifier = Modifier.fillMaxSize()) {
-//        NotesSelectionMenu(visibilityState = true, onDelete = {}, onCopy = {}, onFavorite = {})
-//    }
-//}
+@Preview
+@Composable
+internal fun NotesSelectionMenuPreview() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        NotesSelectionMenu(visibilityState = true, onDelete = {}, onCopy = {}, onFavorite = {})
+    }
+}
