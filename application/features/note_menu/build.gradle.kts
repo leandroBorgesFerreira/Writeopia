@@ -53,13 +53,11 @@ kotlin {
                 implementation(libs.compose.shimmer)
 
                 implementation(project.dependencies.platform(libs.androidx.compose.bom))
-                implementation(libs.androidx.ui.tooling.preview.android)
             }
         }
 
         val jvmMain by getting {
             dependencies {
-                implementation(libs.androidx.ui.tooling.preview.android)
             }
         }
 
