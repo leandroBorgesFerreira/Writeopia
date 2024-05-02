@@ -25,6 +25,7 @@ import io.writeopia.note_menu.data.NotesArrangement
 import io.writeopia.note_menu.ui.dto.DocumentUi
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.model.draw.DrawInfo
+import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.components.SwipeBox
 import io.writeopia.ui.drawer.StoryStepDrawer
@@ -33,6 +34,7 @@ import io.writeopia.ui.drawer.preview.HeaderPreviewDrawer
 import io.writeopia.ui.drawer.preview.TextPreviewDrawer
 import io.writeopia.ui.drawer.preview.UnOrderedListItemPreviewDrawer
 import io.writeopia.utils_module.ResultData
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 const val DOCUMENT_ITEM_TEST_TAG = "DocumentItem_"
 const val ADD_NOTE_TEST_TAG = "addNote"
@@ -193,7 +195,59 @@ private fun DocumentItem(
     }
 }
 
-//@Preview
+@Preview
+@Composable
+fun DocumentItemPreview() {
+    val documentUi = DocumentUi(
+        documentId = "documentId",
+        title = "title",
+        lastEdit = "lastEdit",
+        preview = listOf(
+            StoryStep(type = StoryTypes.TITLE.type, text = "Title"),
+            StoryStep(type = StoryTypes.TEXT.type, text = "some text"),
+            StoryStep(type = StoryTypes.CHECK_ITEM.type, text = "some text"),
+            StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type, text = "some text")
+        ),
+        selected = false,
+    )
+
+    DocumentItem(
+        documentUi = documentUi,
+        documentClick = { _, _ -> },
+        selectionListener = { _, _ -> },
+        drawers = previewDrawers(),
+        modifier = Modifier.padding(10.dp)
+    )
+}
+
+
+@Preview
+@Composable
+fun DocumentItemSelectedPreview() {
+    val documentUi = DocumentUi(
+        documentId = "documentId",
+        title = "title",
+        lastEdit = "lastEdit",
+        preview = listOf(
+            StoryStep(type = StoryTypes.TITLE.type, text = "Title"),
+            StoryStep(type = StoryTypes.TEXT.type, text = "some text"),
+            StoryStep(type = StoryTypes.CHECK_ITEM.type, text = "some text"),
+            StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type, text = "some text")
+        ),
+        selected = true,
+    )
+
+    DocumentItem(
+        documentUi = documentUi,
+        documentClick = { _, _ -> },
+        selectionListener = { _, _ -> },
+        drawers = previewDrawers(),
+        modifier = Modifier.padding(10.dp)
+    )
+}
+
+
+@Preview
 @Composable
 private fun NoNotesScreen() {
     Box(modifier = Modifier.fillMaxSize()) {

@@ -23,10 +23,12 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.utils.defaultTextStyle
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
  * Simple message drawer intended to be used as a component for more complex drawers.
@@ -114,4 +116,16 @@ class TextDrawer(
             decorationBox = decorationBox,
         )
     }
+}
+
+@Preview
+@Composable
+fun DesktopMessageDrawerPreview() {
+    TextDrawer().Text(
+        step = StoryStep(text = "Some text", type = StoryTypes.TEXT.type),
+        drawInfo = DrawInfo(),
+        interactionSource = remember { MutableInteractionSource() },
+        focusRequester = FocusRequester(),
+        decorationBox = @Composable { innerTextField -> innerTextField() }
+    )
 }

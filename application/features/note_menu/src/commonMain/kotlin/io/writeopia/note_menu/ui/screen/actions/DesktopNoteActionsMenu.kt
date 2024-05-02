@@ -7,27 +7,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.automirrored.outlined.Sort
-import androidx.compose.material.icons.filled.AttachFile
-import androidx.compose.material.icons.filled.FileDownload
-import androidx.compose.material.icons.filled.Folder
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Save
-import androidx.compose.material.icons.filled.Sort
-import androidx.compose.material.icons.filled.Sync
-import androidx.compose.material.icons.outlined.AttachFile
-import androidx.compose.material.icons.outlined.FileDownload
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material.icons.outlined.Save
-import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.outlined.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -38,7 +20,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.writeopia.note_menu.viewmodel.SyncState
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun DesktopNoteActionsMenu(
@@ -216,3 +200,24 @@ private fun Modifier.icon(onClick: () -> Unit): Modifier =
         .size(36.dp)
         .padding(6.dp)
 
+
+@Preview
+@Composable
+private fun DesktopNoteActionsMenuPreview() {
+    DesktopNoteActionsMenu(
+        modifier = Modifier,
+        showSortingOption = false,
+        showSortOptionsRequest = {},
+        hideSortOptionsRequest = {},
+        selectSortOption = {},
+        showExtraOptions = true,
+        showExtraOptionsRequest = {},
+        hideExtraOptionsRequest = {},
+        configureDirectory = {},
+        exportAsMarkdownClick = {},
+        importClick = {},
+        syncInProgressState = MutableStateFlow(SyncState.Idle),
+        onSyncLocallySelected = {},
+        onWriteLocallySelected = {},
+    )
+}

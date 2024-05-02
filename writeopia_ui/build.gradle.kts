@@ -40,6 +40,7 @@ kotlin {
                 implementation(compose.materialIconsExtended)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
             }
         }
 
@@ -67,7 +68,7 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation(compose.preview)
+
             }
         }
     }

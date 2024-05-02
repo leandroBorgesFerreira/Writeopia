@@ -78,7 +78,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     debugImplementation("androidx.compose.ui:ui-tooling")
 
-    implementation(platform(libs.androidx.compose.bom))
+    implementation(project.dependencies.platform(libs.androidx.compose.bom))
 
     testImplementation(libs.kotlin.test)
 
