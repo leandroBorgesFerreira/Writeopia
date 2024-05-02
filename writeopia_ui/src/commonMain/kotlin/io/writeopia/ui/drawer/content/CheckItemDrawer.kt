@@ -16,9 +16,11 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
  * Check item drawer. Draws a checkbox followed by a text.
@@ -76,3 +78,15 @@ fun checkItemDrawer(
         messageDrawer()
     },
 )
+
+@Preview
+@Composable
+fun CheckItemDrawerStepPreview() {
+    checkItemDrawer(messageDrawer = { TextDrawer() }).Step(
+        step = StoryStep(
+            type = StoryTypes.CHECK_ITEM.type,
+            text = "This is a check item"
+        ),
+        drawInfo = DrawInfo()
+    )
+}

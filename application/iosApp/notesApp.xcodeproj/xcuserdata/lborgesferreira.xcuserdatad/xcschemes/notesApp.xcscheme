@@ -17,9 +17,9 @@
    </BuildAction>
    <LaunchAction
       useCustomWorkingDirectory = "YES"
+      customWorkingDirectory = "/Users/lborgesferreira/Personal/WriteopiaProject/Writeopia"
       buildConfiguration = "Debug"
-      allowLocationSimulation = "YES"
-      customWorkingDirectory = "/Users/lborgesferreira/Personal/WriteopiaProject/Writeopia">
+      allowLocationSimulation = "YES">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
