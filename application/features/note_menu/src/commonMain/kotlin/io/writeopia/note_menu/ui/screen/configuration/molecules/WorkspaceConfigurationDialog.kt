@@ -106,19 +106,3 @@ private fun WorkspaceConfigurationDialogPreview() {
     }
 
 }
-
-
-@Preview
-@Composable
-private fun WorkspaceConfigurationDialogPreview() {
-    Box(modifier = Modifier.size(500.dp)) {
-        WorkspaceConfigurationDialog(
-            currentPath = "current/path",
-            pathChange = {},
-            onDismissRequest = {},
-            onConfirmation = {},
-            modifier = Modifier.align(Alignment.Center)
-        )
-    }
-
-}
