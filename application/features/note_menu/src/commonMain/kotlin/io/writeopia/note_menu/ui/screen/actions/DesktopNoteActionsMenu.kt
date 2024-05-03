@@ -164,24 +164,3 @@ private fun DesktopNoteActionsMenuPreview() {
         onWriteLocallySelected = {},
     )
 }
-
-@Preview
-@Composable
-private fun DesktopNoteActionsMenuPreview() {
-    DesktopNoteActionsMenu(
-        modifier = Modifier,
-        showSortingOption = false,
-        showSortOptionsRequest = {},
-        hideSortOptionsRequest = {},
-        selectSortOption = {},
-        showExtraOptions = true,
-        showExtraOptionsRequest = {},
-        hideExtraOptionsRequest = {},
-        configureDirectory = {},
-        exportAsMarkdownClick = {},
-        importClick = {},
-        syncInProgressState = MutableStateFlow(SyncState.Idle),
-        onSyncLocallySelected = {},
-        onWriteLocallySelected = {},
-    )
-}
