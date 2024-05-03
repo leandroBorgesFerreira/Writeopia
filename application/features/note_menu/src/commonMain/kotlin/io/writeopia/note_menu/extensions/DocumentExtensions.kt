@@ -6,12 +6,13 @@ import io.writeopia.sdk.preview.PreviewParser
 
 internal fun Document.toUiCard(
     previewParser: PreviewParser,
-    selected: Boolean = false
+    selected: Boolean = false,
+    limit: Int
 ): DocumentUi =
     DocumentUi(
         documentId = id,
         title = title,
         lastEdit = "",
-        preview = content.values.let(previewParser::preview),
+        preview = content.values.let { previewParser.preview(it, limit) },
         selected = selected
     )

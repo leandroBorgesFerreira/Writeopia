@@ -1,4 +1,4 @@
-package io.writeopia.note_menu.ui.screen.configuration
+package io.writeopia.note_menu.ui.screen.configuration.molecules
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

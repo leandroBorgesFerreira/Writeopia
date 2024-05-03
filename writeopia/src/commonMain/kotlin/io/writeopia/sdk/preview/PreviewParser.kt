@@ -17,7 +17,7 @@ class PreviewParser(
     /**
      * Returns the filtered List of StoryStep
      */
-    fun preview(stories: Iterable<StoryStep>, maxSize: Int = 4): List<StoryStep> {
+    fun preview(stories: Iterable<StoryStep>, maxSize: Int = 10): List<StoryStep> {
         var acc = 0
 
         return stories.asSequence()

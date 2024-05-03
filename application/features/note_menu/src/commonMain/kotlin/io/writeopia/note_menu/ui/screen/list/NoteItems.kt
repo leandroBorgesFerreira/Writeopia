@@ -5,6 +5,9 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -48,7 +51,7 @@ fun NotesCards(
 ) {
     when (documents) {
         is ResultData.Complete -> {
-            Column(modifier = modifier.fillMaxWidth()) {
+            Column(modifier = modifier) {
                 val notesUi: NotesUi = documents.data
 
                 if (notesUi.documentUiList.isEmpty()) {
@@ -57,6 +60,14 @@ fun NotesCards(
                     val documentsUiList = notesUi.documentUiList
 
                     when (notesUi.notesArrangement) {
+                        NotesArrangement.STAGGERED_GRID -> {
+                            LazyStaggeredGridNotes(
+                                documentsUiList,
+                                selectionListener = selectionListener,
+                                onDocumentClick = loadNote
+                            )
+                        }
+
                         NotesArrangement.GRID -> {
                             LazyGridNotes(
                                 documentsUiList,
@@ -100,7 +111,7 @@ fun NotesCards(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun LazyGridNotes(
+private fun LazyStaggeredGridNotes(
     documents: List<DocumentUi>,
     onDocumentClick: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
@@ -108,6 +119,34 @@ private fun LazyGridNotes(
     LazyVerticalStaggeredGrid(
         modifier = Modifier.padding(6.dp),
         columns = StaggeredGridCells.Adaptive(minSize = 150.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        content = {
+            items(
+                documents,
+                key = { document -> document.hashCode() }
+            ) { document ->
+                DocumentItem(
+                    document,
+                    onDocumentClick,
+                    selectionListener,
+                    previewDrawers(),
+                    modifier = Modifier.animateItemPlacement()
+                )
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun LazyGridNotes(
+    documents: List<DocumentUi>,
+    onDocumentClick: (String, String) -> Unit,
+    selectionListener: (String, Boolean) -> Unit,
+) {
+    LazyVerticalGrid(
+        modifier = Modifier.padding(6.dp),
+        columns = GridCells.Adaptive(minSize = 150.dp),
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         content = {
             items(

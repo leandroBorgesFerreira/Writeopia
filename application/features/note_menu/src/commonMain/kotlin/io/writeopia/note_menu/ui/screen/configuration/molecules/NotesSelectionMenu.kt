@@ -1,4 +1,4 @@
-package io.writeopia.note_menu.ui.screen.configuration
+package io.writeopia.note_menu.ui.screen.configuration.molecules
 
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.VisibilityThreshold

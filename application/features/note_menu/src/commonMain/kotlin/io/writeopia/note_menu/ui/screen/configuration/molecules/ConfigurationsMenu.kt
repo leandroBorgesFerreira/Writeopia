@@ -1,21 +1,21 @@
-package io.writeopia.note_menu.ui.screen.configuration
+package io.writeopia.note_menu.ui.screen.configuration.molecules
 
-//import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.outlined.Dashboard
+import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,24 +23,32 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.writeopia.common_ui.HorizontalOptions
 import io.writeopia.common_ui.SlideInBox
+import io.writeopia.note_menu.ui.screen.configuration.modifier.orderConfigModifierHorizontal
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val INNER_PADDING = 3
 
 @Composable
 internal fun BoxScope.MobileConfigurationsMenu(
-    modifier: Modifier = Modifier,
+    selected: Flow<Int>,
     visibilityState: Boolean,
     outsideClick: () -> Unit,
-    listOptionClick: () -> Unit,
+    staggeredGridOptionClick: () -> Unit,
     gridOptionClick: () -> Unit,
+    listOptionClick: () -> Unit,
     sortingSelected: (OrderBy) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     SlideInBox(
         modifier = modifier.align(Alignment.BottomCenter),
@@ -65,7 +73,7 @@ internal fun BoxScope.MobileConfigurationsMenu(
                 .background(MaterialTheme.colorScheme.surface)
                 .padding(16.dp),
         ) {
-            ArrangementSection(listOptionClick, gridOptionClick)
+            ArrangementSection(selected, staggeredGridOptionClick, gridOptionClick, listOptionClick)
 
             SortingSection(sortingSelected = sortingSelected)
 
@@ -90,38 +98,62 @@ private fun SectionText(text: String) {
 }
 
 @Composable
-private fun ArrangementOptions(listOptionClick: () -> Unit, gridOptionClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(INNER_PADDING.dp)
-    ) {
-        Icon(
-            modifier = Modifier
-                .orderConfigModifier(clickable = gridOptionClick)
-                .weight(1F),
-            imageVector = Icons.Outlined.Dashboard,
-            contentDescription = "staggered card",
-//            stringResource(R.string.staggered_card),
-            tint = MaterialTheme.colorScheme.onPrimary
-        )
-
-        Spacer(modifier = Modifier.width(8.dp))
-
-        Icon(
-            modifier = Modifier
-                .orderConfigModifier(clickable = listOptionClick)
-                .weight(1F),
-            imageVector = Icons.AutoMirrored.Outlined.List,
-            contentDescription = "note list",
-//            stringResource(R.string.note_list),
-            tint = MaterialTheme.colorScheme.onPrimary
-        )
-    }
+fun ArrangementOptions(
+    selected: Flow<Int>,
+    staggeredGridOptionClick: () -> Unit,
+    gridOptionClick: () -> Unit,
+    listOptionClick: () -> Unit,
+    height: Dp = 42.dp,
+) {
+    HorizontalOptions(
+        selectedState = selected,
+        options = listOf<Pair<() -> Unit, @Composable RowScope.() -> Unit>>(
+            staggeredGridOptionClick to {
+                Icon(
+                    modifier = Modifier
+                        .orderConfigModifierHorizontal(clickable = gridOptionClick)
+                        .weight(1F),
+                    imageVector = Icons.Outlined.Dashboard,
+                    contentDescription = "staggered card",
+                    //            stringResource(R.string.staggered_card),
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            },
+            gridOptionClick to {
+                Icon(
+                    modifier = Modifier
+                        .orderConfigModifierHorizontal(clickable = gridOptionClick)
+                        .weight(1F),
+                    imageVector = Icons.Outlined.GridView,
+                    contentDescription = "staggered card",
+                    //            stringResource(R.string.staggered_card),
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            },
+            listOptionClick to {
+                Icon(
+                    modifier = Modifier
+                        .orderConfigModifierHorizontal(clickable = listOptionClick)
+                        .weight(1F),
+                    imageVector = Icons.AutoMirrored.Outlined.List,
+                    contentDescription = "note list",
+                    //            stringResource(R.string.note_list),
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        ),
+        modifier = Modifier.fillMaxWidth().padding(INNER_PADDING.dp),
+        height = height
+    )
 }
 
 @Composable
-private fun ArrangementSection(listOptionClick: () -> Unit, gridOptionClick: () -> Unit) {
+private fun ArrangementSection(
+    selected: Flow<Int>,
+    staggeredGridOptionClick: () -> Unit,
+    gridOptionClick: () -> Unit,
+    listOptionClick: () -> Unit
+) {
     SectionText(
         text = "Arrangement"
 //        stringResource(
@@ -130,14 +162,17 @@ private fun ArrangementSection(listOptionClick: () -> Unit, gridOptionClick: () 
     )
 
     ArrangementOptions(
-        listOptionClick = listOptionClick,
+        selected = selected,
+        staggeredGridOptionClick = staggeredGridOptionClick,
         gridOptionClick = gridOptionClick,
+        listOptionClick = listOptionClick,
     )
 }
 
 @Composable
 private fun SortingSection(sortingSelected: (OrderBy) -> Unit) {
-    SectionText(text = "Sorting"
+    SectionText(
+        text = "Sorting"
 //    stringResource(R.string.sorting)
     )
     val optionStyle = MaterialTheme.typography.bodyMedium.copy(
@@ -150,7 +185,7 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit) {
             .fillMaxWidth()
             .padding(horizontal = INNER_PADDING.dp)
             .clip(RoundedCornerShape(6.dp))
-            .background(MaterialTheme.colorScheme.secondary)
+            .background(MaterialTheme.colorScheme.inverseSurface)
     ) {
         Text(
             modifier = Modifier
@@ -187,26 +222,21 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit) {
 
 private fun Modifier.sortingOptionModifier(): Modifier = fillMaxWidth().padding(12.dp)
 
-private fun Modifier.orderConfigModifier(clickable: () -> Unit): Modifier =
-    composed {
-        clip(RoundedCornerShape(6.dp))
-            .background(MaterialTheme.colorScheme.secondary)
-            .clickable(onClick = clickable)
-            .padding(6.dp)
-    }
 
-//@Preview
-//@Composable
-//private fun ConfigurationsMenu_Preview() {
-//    Box(modifier = Modifier
-//        .fillMaxWidth()
-//        .background(Color.White)) {
-//        ConfigurationsMenu(Modifier, true, {}, {}, {}, {})
-//    }
-//}
-//
-//@Preview
-//@Composable
-//private fun ArrangementOptions_Preview() {
-//    ArrangementOptions({}, {})
-//}
+@Preview
+@Composable
+private fun ConfigurationsMenu_Preview() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+    ) {
+        MobileConfigurationsMenu(MutableStateFlow(1), true, {}, {}, {}, {}, {}, Modifier)
+    }
+}
+
+@Preview
+@Composable
+private fun ArrangementOptions_Preview() {
+    ArrangementOptions(MutableStateFlow(1), {}, {}, {})
+}

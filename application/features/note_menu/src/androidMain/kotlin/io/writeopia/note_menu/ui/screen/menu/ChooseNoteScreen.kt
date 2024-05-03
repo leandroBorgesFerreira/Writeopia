@@ -28,12 +28,13 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.valentinilk.shimmer.shimmer
-import io.writeopia.note_menu.ui.screen.configuration.MobileConfigurationsMenu
-import io.writeopia.note_menu.ui.screen.configuration.NotesSelectionMenu
+import io.writeopia.note_menu.ui.screen.configuration.molecules.MobileConfigurationsMenu
+import io.writeopia.note_menu.ui.screen.configuration.molecules.NotesSelectionMenu
 import io.writeopia.note_menu.ui.screen.list.ADD_NOTE_TEST_TAG
 import io.writeopia.note_menu.ui.screen.list.NotesCards
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.note_menu.viewmodel.UserState
+import io.writeopia.note_menu.viewmodel.toNumberDesktop
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -95,11 +96,15 @@ internal fun ChooseNoteScreen(
                 onFavorite = chooseNoteViewModel::favoriteSelectedNotes,
             )
 
+            val selected = chooseNoteViewModel.notesArrangement.toNumberDesktop()
+
             MobileConfigurationsMenu(
+                selected = selected,
                 visibilityState = editState,
                 outsideClick = chooseNoteViewModel::cancelEditMenu,
-                listOptionClick = chooseNoteViewModel::listArrangementSelected,
+                staggeredGridOptionClick = chooseNoteViewModel::staggeredGridArrangementSelected,
                 gridOptionClick = chooseNoteViewModel::gridArrangementSelected,
+                listOptionClick = chooseNoteViewModel::listArrangementSelected,
                 sortingSelected = chooseNoteViewModel::sortingSelected
             )
         }

@@ -5,6 +5,7 @@ import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.utils_module.ResultData
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 
 interface ChooseNoteViewModel {
 
@@ -14,7 +15,7 @@ interface ChooseNoteViewModel {
 
     val documentsState: StateFlow<ResultData<NotesUi>>
 
-    val notesArrangement: StateFlow<NotesArrangement?>
+    val notesArrangement: StateFlow<NotesArrangement>
 
     val editState: StateFlow<Boolean>
 
@@ -55,6 +56,8 @@ interface ChooseNoteViewModel {
     fun listArrangementSelected()
 
     fun gridArrangementSelected()
+
+    fun staggeredGridArrangementSelected()
 
     fun sortingSelected(orderBy: OrderBy)
 
@@ -123,4 +126,13 @@ fun ConfigState.getSyncRequest(): SyncRequest? =
     when (this) {
         is ConfigState.Configure -> syncRequest
         ConfigState.Idle -> null
+    }
+
+fun StateFlow<NotesArrangement>.toNumberDesktop() =
+    map { notesArrangement ->
+        when(notesArrangement) {
+            NotesArrangement.STAGGERED_GRID -> 0
+            NotesArrangement.GRID -> 1
+            NotesArrangement.LIST -> 2
+        }
     }
