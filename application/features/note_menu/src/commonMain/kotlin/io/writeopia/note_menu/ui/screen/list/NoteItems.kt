@@ -5,6 +5,9 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -25,6 +28,7 @@ import io.writeopia.note_menu.data.NotesArrangement
 import io.writeopia.note_menu.ui.dto.DocumentUi
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.model.draw.DrawInfo
+import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.components.SwipeBox
 import io.writeopia.ui.drawer.StoryStepDrawer
@@ -33,6 +37,7 @@ import io.writeopia.ui.drawer.preview.HeaderPreviewDrawer
 import io.writeopia.ui.drawer.preview.TextPreviewDrawer
 import io.writeopia.ui.drawer.preview.UnOrderedListItemPreviewDrawer
 import io.writeopia.utils_module.ResultData
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 const val DOCUMENT_ITEM_TEST_TAG = "DocumentItem_"
 const val ADD_NOTE_TEST_TAG = "addNote"
@@ -46,7 +51,7 @@ fun NotesCards(
 ) {
     when (documents) {
         is ResultData.Complete -> {
-            Column(modifier = modifier.fillMaxWidth()) {
+            Column(modifier = modifier) {
                 val notesUi: NotesUi = documents.data
 
                 if (notesUi.documentUiList.isEmpty()) {
@@ -55,6 +60,14 @@ fun NotesCards(
                     val documentsUiList = notesUi.documentUiList
 
                     when (notesUi.notesArrangement) {
+                        NotesArrangement.STAGGERED_GRID -> {
+                            LazyStaggeredGridNotes(
+                                documentsUiList,
+                                selectionListener = selectionListener,
+                                onDocumentClick = loadNote
+                            )
+                        }
+
                         NotesArrangement.GRID -> {
                             LazyGridNotes(
                                 documentsUiList,
@@ -98,7 +111,7 @@ fun NotesCards(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun LazyGridNotes(
+private fun LazyStaggeredGridNotes(
     documents: List<DocumentUi>,
     onDocumentClick: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
@@ -106,6 +119,34 @@ private fun LazyGridNotes(
     LazyVerticalStaggeredGrid(
         modifier = Modifier.padding(6.dp),
         columns = StaggeredGridCells.Adaptive(minSize = 150.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        content = {
+            items(
+                documents,
+                key = { document -> document.hashCode() }
+            ) { document ->
+                DocumentItem(
+                    document,
+                    onDocumentClick,
+                    selectionListener,
+                    previewDrawers(),
+                    modifier = Modifier.animateItemPlacement()
+                )
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun LazyGridNotes(
+    documents: List<DocumentUi>,
+    onDocumentClick: (String, String) -> Unit,
+    selectionListener: (String, Boolean) -> Unit,
+) {
+    LazyVerticalGrid(
+        modifier = Modifier.padding(6.dp),
+        columns = GridCells.Adaptive(minSize = 150.dp),
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         content = {
             items(
@@ -193,7 +234,59 @@ private fun DocumentItem(
     }
 }
 
-//@Preview
+@Preview
+@Composable
+fun DocumentItemPreview() {
+    val documentUi = DocumentUi(
+        documentId = "documentId",
+        title = "title",
+        lastEdit = "lastEdit",
+        preview = listOf(
+            StoryStep(type = StoryTypes.TITLE.type, text = "Title"),
+            StoryStep(type = StoryTypes.TEXT.type, text = "some text"),
+            StoryStep(type = StoryTypes.CHECK_ITEM.type, text = "some text"),
+            StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type, text = "some text")
+        ),
+        selected = false,
+    )
+
+    DocumentItem(
+        documentUi = documentUi,
+        documentClick = { _, _ -> },
+        selectionListener = { _, _ -> },
+        drawers = previewDrawers(),
+        modifier = Modifier.padding(10.dp)
+    )
+}
+
+
+@Preview
+@Composable
+fun DocumentItemSelectedPreview() {
+    val documentUi = DocumentUi(
+        documentId = "documentId",
+        title = "title",
+        lastEdit = "lastEdit",
+        preview = listOf(
+            StoryStep(type = StoryTypes.TITLE.type, text = "Title"),
+            StoryStep(type = StoryTypes.TEXT.type, text = "some text"),
+            StoryStep(type = StoryTypes.CHECK_ITEM.type, text = "some text"),
+            StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type, text = "some text")
+        ),
+        selected = true,
+    )
+
+    DocumentItem(
+        documentUi = documentUi,
+        documentClick = { _, _ -> },
+        selectionListener = { _, _ -> },
+        drawers = previewDrawers(),
+        modifier = Modifier.padding(10.dp)
+    )
+}
+
+
+@Preview
 @Composable
 private fun NoNotesScreen() {
     Box(modifier = Modifier.fillMaxSize()) {

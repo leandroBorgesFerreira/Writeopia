@@ -11,13 +11,14 @@ import io.writeopia.note_menu.di.NotesConfigurationInjector
 import io.writeopia.notes.desktop.components.App
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.drawer.factory.DefaultDrawersJs
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.jetbrains.skiko.SkikoKey
 import org.jetbrains.skiko.wasm.onWasmReady
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     onWasmReady {
-        CanvasBasedWindow("Writeopia") {
+        CanvasBasedWindow(title = "Writeopia") {
             CreateAppInMemory(repositoryInjection = SqlDelightDaoInjector.noop())
         }
     }
@@ -25,11 +26,14 @@ fun main() {
 
 @Composable
 fun CreateAppInMemory(repositoryInjection: SqlDelightDaoInjector) {
+val selectionState = MutableStateFlow(false)
+
     App(
         notesConfigurationInjector = NotesConfigurationInjector.noop(),
         repositoryInjection = repositoryInjection,
         drawersFactory = DefaultDrawersJs,
         isUndoKeyEvent = ::isUndoKeyboardEvent,
+        selectionState = selectionState
     )
 }
 
@@ -37,3 +41,13 @@ private fun isUndoKeyboardEvent(keyEvent: KeyEvent) =
     keyEvent.isMetaPressed &&
         keyEvent.nativeKeyEvent.key == SkikoKey.KEY_Z &&
         keyEvent.type == KeyEventType.KeyDown
+
+private fun isSelectionKeyEventStart(keyEvent: KeyEvent) =
+    (keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META ||
+     keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META) &&
+        keyEvent.type == KeyEventType.KeyDown
+
+private fun isSelectionKeyEventStop(keyEvent: KeyEvent) =
+    (keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META ||
+    keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META) &&
+        keyEvent.type == KeyEventType.KeyUp

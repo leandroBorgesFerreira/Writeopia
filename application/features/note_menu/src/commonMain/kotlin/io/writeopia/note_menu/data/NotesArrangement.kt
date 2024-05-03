@@ -5,7 +5,7 @@ package io.writeopia.note_menu.data
  * changing the way notes present themselves in the menu
  */
 enum class NotesArrangement(val type: String) {
-    LIST("list"), GRID("grid");
+    LIST("list"), GRID("grid"), STAGGERED_GRID("staggered_grid");
     companion object {
         fun fromString(string: String): NotesArrangement =
             entries.firstOrNull { notesArrangement ->

@@ -75,10 +75,21 @@ internal class ChooseNoteKmpViewModel(
             _documentsState,
             notesArrangement
         ) { selectedNoteIds, resultData, arrangement ->
+            val previewLimit = when (arrangement) {
+                NotesArrangement.LIST -> 4
+                NotesArrangement.GRID -> 4
+                NotesArrangement.STAGGERED_GRID -> 10
+            }
+
+
             resultData.map { documentList ->
                 NotesUi(
                     documentUiList = documentList.map { document ->
-                        document.toUiCard(previewParser, selectedNoteIds.contains(document.id))
+                        document.toUiCard(
+                            previewParser,
+                            selectedNoteIds.contains(document.id),
+                            previewLimit
+                        )
                     },
                     notesArrangement = arrangement
                 )
@@ -168,6 +179,13 @@ internal class ChooseNoteKmpViewModel(
         coroutineScope.launch {
             notesConfig.saveDocumentArrangementPref(NotesArrangement.GRID, getUserId())
             _notesArrangement.value = NotesArrangement.GRID
+        }
+    }
+
+    override fun staggeredGridArrangementSelected() {
+        coroutineScope.launch {
+            notesConfig.saveDocumentArrangementPref(NotesArrangement.STAGGERED_GRID, getUserId())
+            _notesArrangement.value = NotesArrangement.STAGGERED_GRID
         }
     }
 

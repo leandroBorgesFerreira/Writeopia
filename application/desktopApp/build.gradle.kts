@@ -39,9 +39,9 @@ compose.desktop {
             packageName = "Writeopia"
             packageVersion = "1.0.0"
 
-            jvmArgs(
-                "-Dapple.awt.application.appearance=system"
-            )
+            macOS {
+                jvmArgs("-Dapple.awt.application.appearance=system")
+            }
         }
     }
 }

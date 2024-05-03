@@ -1,9 +1,7 @@
 package io.writeopia.ui.drawer.content
 
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,9 +11,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
  * Drawer for a unordered list. This type of item it just a normal message with some decoration
@@ -61,3 +61,21 @@ fun unOrderedListItemDrawer(
         startContent,
         messageDrawer
     )
+
+@Preview
+@Composable
+private fun UnOrderedListItemPreview() {
+    val modifier = Modifier
+        .background(Color.White)
+        .padding(vertical = 4.dp, horizontal = 6.dp)
+        .fillMaxWidth()
+
+    unOrderedListItemDrawer(
+        modifier,
+        messageDrawer = { TextDrawer() }
+    ).Step(
+        StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type, text = "Item1"),
+        DrawInfo()
+    )
+}
+
