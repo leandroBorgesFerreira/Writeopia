@@ -13,4 +13,3 @@ internal fun Modifier.icon(onClick: () -> Unit): Modifier =
         .clickable(onClick = onClick)
         .size(36.dp)
         .padding(6.dp)
-

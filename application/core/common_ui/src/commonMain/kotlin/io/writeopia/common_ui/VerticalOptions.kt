@@ -68,7 +68,6 @@ fun VerticalOptions(
                     Box(
                         modifier = Modifier
                             .width(width)
-//                            .padding(start = 3.dp, end = 3.dp, top = 3.dp, bottom = 3.dp)
                             .animateItemPlacement()
                             .background(
                                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.25F),

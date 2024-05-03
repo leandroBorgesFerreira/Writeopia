@@ -81,7 +81,6 @@ internal class ChooseNoteKmpViewModel(
                 NotesArrangement.STAGGERED_GRID -> 10
             }
 
-
             resultData.map { documentList ->
                 NotesUi(
                     documentUiList = documentList.map { document ->

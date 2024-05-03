@@ -61,5 +61,3 @@ fun ArrangementOptionsMenu(
         )
     }
 }
-
-
