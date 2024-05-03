@@ -45,7 +45,7 @@ jobs:
       - name: JVM tests
         run: ./gradlew jvmTest --no-daemon
       - name: upload results
-        uses: actions/upload-artifact@v2  
+        uses: actions/upload-artifact@v2
         if: failure()
         with:
           name: test-results-jvm
@@ -63,8 +63,8 @@ jobs:
         with:
           distribution: adopt
           java-version: '21'
-      - name: Build debug 
-        run: ./gradlew assembleDebug testDebug --no-daemon
+      - name: Build debug
+        run: ./gradlew assembleDebug test --no-daemon
   backend_build_and_test:
     name: Backend - build
     runs-on: ubuntu-22.04
@@ -85,7 +85,7 @@ jobs:
       - name: Build backend
         run: ./gradlew backend:documents:documents_spring:assemble backend:editor:api_editor:assemble backend:editor:api_editor:test backend:editor:api_editor_socket:assemble backend:editor:api_editor_socket:test --no-daemon
       - name: upload results
-        uses: actions/upload-artifact@v2  
+        uses: actions/upload-artifact@v2
         if: failure()
         with:
           name: test-results-backend
@@ -106,4 +106,3 @@ jobs:
       - name: Test build website
         working-directory: ./documentation/writeopia_docs
         run: yarn build
-        
