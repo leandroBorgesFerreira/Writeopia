@@ -25,7 +25,7 @@ jobs:
       - name: Build debug and test
         run: ./gradlew assemble test
       - name: Upload JS webpack
-      - uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: writeopia-js-webpack
           path: ./application/web/build/dist/js/productionExecutable
