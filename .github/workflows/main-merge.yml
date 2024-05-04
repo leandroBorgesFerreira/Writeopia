@@ -22,5 +22,5 @@ jobs:
         with:
           distribution: adopt
           java-version: '21'
-      - name: Build debug and test 
-        run: ./gradlew buildDebug test
+      - name: Build debug and test
+        run: ./gradlew assemble test
