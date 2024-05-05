@@ -57,7 +57,7 @@ fun App(
         notesConfigurationInjector = notesConfigurationInjector,
         authCoreInjection = authCoreInjection,
         repositoryInjection = repositoryInjection,
-        selectionState
+        selectionState = selectionState,
     )
 
     val navigationViewModel = NavigationViewModel()
@@ -70,9 +70,8 @@ fun App(
             when (state) {
                 NavigationPage.NoteMenu -> {
                     val coroutineScope = rememberCoroutineScope()
-                    val chooseNoteViewModel = remember {
+                    val chooseNoteViewModel =
                         notesMenuInjection.provideChooseNoteViewModel(coroutineScope)
-                    }
 
                     DesktopNotesMenu(
                         chooseNoteViewModel = chooseNoteViewModel,

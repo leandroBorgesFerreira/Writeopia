@@ -10,7 +10,7 @@ import io.writeopia.common.uitests.tests.editor.EditorCommonTests
 import io.writeopia.navigation.NavigationGraph
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.robots.AndroidDocumentEditPageRobot
-import io.writeopia.utils_module.Destinations
+import io.writeopia.navigation.Destinations
 import org.junit.Rule
 import org.junit.Test
 

@@ -9,14 +9,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import io.writeopia.editor.di.EditorInjector
 import io.writeopia.editor.ui.NoteEditorScreen
-import io.writeopia.utils_module.Destinations
+import io.writeopia.navigation.Destinations
 
 fun NavGraphBuilder.editorNavigation(
     editorInjector: EditorInjector,
     navigateToNoteMenu: () -> Unit
 ) {
     composable(
-        route = "${Destinations.EDITOR.id}/{noteId}/{noteTitle}",
+        route = "${io.writeopia.navigation.Destinations.EDITOR.id}/{noteId}/{noteTitle}",
         arguments = listOf(navArgument("noteId") { type = NavType.StringType }),
         enterTransition = {
             slideInHorizontally(
@@ -46,7 +46,7 @@ fun NavGraphBuilder.editorNavigation(
         }
     }
 
-    composable(route = Destinations.EDITOR.id) {
+    composable(route = io.writeopia.navigation.Destinations.EDITOR.id) {
         val notesDetailsViewModel = viewModel(initializer = { editorInjector.provideNoteDetailsViewModel() })
 
         NoteEditorScreen(

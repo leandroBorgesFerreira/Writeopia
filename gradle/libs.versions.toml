@@ -40,6 +40,7 @@ google-services = "4.4.1"
 logback-classic = "1.5.0"
 hikaricp = "5.1.0"
 postgresql = "42.6.0"
+compose-navigation = "2.7.0-alpha04"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
@@ -96,6 +97,8 @@ kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.re
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback-classic" }
 database-hikaricp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikaricp" }
 database-postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
+compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "compose-navigation" }
+
 
 [plugins]
 application = { id = "com.android.application", version.ref = "agp" }

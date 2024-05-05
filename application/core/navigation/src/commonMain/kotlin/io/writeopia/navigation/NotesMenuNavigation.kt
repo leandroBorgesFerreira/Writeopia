@@ -1,4 +1,4 @@
-package io.writeopia.note_menu.navigation
+package io.writeopia.navigation
 
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInHorizontally
@@ -6,11 +6,11 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import io.writeopia.note_menu.di.NotesMenuAndroidInjection
-import io.writeopia.note_menu.ui.screen.menu.ChooseNoteScreen
+//import io.writeopia.note_menu.ui.screen.menu.ChooseNoteScreen
 import io.writeopia.navigation.Destinations
 
 fun NavGraphBuilder.notesMenuNavigation(
-    notesMenuInjection: NotesMenuAndroidInjection,
+//    notesMenuInjection: NotesMenuAndroidInjection,
     navigateToNote: (String, String) -> Unit,
     navigateToNewNote: () -> Unit,
     navigateToAccount: () -> Unit,
@@ -33,13 +33,13 @@ fun NavGraphBuilder.notesMenuNavigation(
             slideOutHorizontally(targetOffsetX = { intSize -> -intSize })
         }
     ) {
-        val chooseNoteViewModel = notesMenuInjection.provideChooseNoteViewModel()
+//        val chooseNoteViewModel = notesMenuInjection.provideChooseNoteViewModel()
 
-        ChooseNoteScreen(
-            chooseNoteViewModel = chooseNoteViewModel,
-            navigateToNote = navigateToNote,
-            navigateToAccount = navigateToAccount,
-            newNote = navigateToNewNote,
-        )
+//        ChooseNoteScreen(
+//            chooseNoteViewModel = chooseNoteViewModel,
+//            navigateToNote = navigateToNote,
+//            navigateToAccount = navigateToAccount,
+//            newNote = navigateToNewNote,
+//        )
     }
 }

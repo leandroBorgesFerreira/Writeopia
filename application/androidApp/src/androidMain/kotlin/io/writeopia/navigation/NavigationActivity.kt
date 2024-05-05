@@ -29,7 +29,6 @@ import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 import io.writeopia.persistence.room.injection.RoomRespositoryInjection
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.theme.WrieopiaTheme
-import io.writeopia.utils_module.Destinations
 
 class NavigationActivity : AppCompatActivity() {
 
