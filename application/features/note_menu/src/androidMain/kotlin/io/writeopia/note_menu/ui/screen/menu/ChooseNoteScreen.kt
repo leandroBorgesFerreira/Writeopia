@@ -42,8 +42,9 @@ import kotlinx.coroutines.flow.StateFlow
 internal fun ChooseNoteScreen(
     chooseNoteViewModel: ChooseNoteViewModel,
     navigateToNote: (String, String) -> Unit,
-    navigateToAccount: () -> Unit,
     newNote: () -> Unit,
+    navigateToAccount: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     LaunchedEffect(key1 = "refresh", block = {
         chooseNoteViewModel.requestUser()
@@ -66,48 +67,46 @@ internal fun ChooseNoteScreen(
         }
     }
 
-    MaterialTheme {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Scaffold(
-                topBar = {
-                    TopBar(
-                        titleState = chooseNoteViewModel.userName,
-                        accountClick = navigateToAccount,
-                        menuClick = chooseNoteViewModel::showEditMenu
-                    )
-                },
-                floatingActionButton = {
-                    FloatingActionButton(newNoteClick = newNote)
-                }
-            ) { paddingValues ->
-                Content(
-                    chooseNoteViewModel = chooseNoteViewModel,
-                    loadNote = navigateToNote,
-                    selectionListener = chooseNoteViewModel::onDocumentSelected,
-                    paddingValues = paddingValues,
+    Box(modifier = modifier.fillMaxSize()) {
+        Scaffold(
+            topBar = {
+                TopBar(
+                    titleState = chooseNoteViewModel.userName,
+                    accountClick = navigateToAccount,
+                    menuClick = chooseNoteViewModel::showEditMenu
                 )
+            },
+            floatingActionButton = {
+                FloatingActionButton(newNoteClick = newNote)
             }
-
-            NotesSelectionMenu(
-                modifier = Modifier.align(Alignment.BottomCenter),
-                visibilityState = hasSelectedNotes,
-                onDelete = chooseNoteViewModel::deleteSelectedNotes,
-                onCopy = chooseNoteViewModel::copySelectedNotes,
-                onFavorite = chooseNoteViewModel::favoriteSelectedNotes,
-            )
-
-            val selected = chooseNoteViewModel.notesArrangement.toNumberDesktop()
-
-            MobileConfigurationsMenu(
-                selected = selected,
-                visibilityState = editState,
-                outsideClick = chooseNoteViewModel::cancelEditMenu,
-                staggeredGridOptionClick = chooseNoteViewModel::staggeredGridArrangementSelected,
-                gridOptionClick = chooseNoteViewModel::gridArrangementSelected,
-                listOptionClick = chooseNoteViewModel::listArrangementSelected,
-                sortingSelected = chooseNoteViewModel::sortingSelected
+        ) { paddingValues ->
+            Content(
+                chooseNoteViewModel = chooseNoteViewModel,
+                loadNote = navigateToNote,
+                selectionListener = chooseNoteViewModel::onDocumentSelected,
+                paddingValues = paddingValues,
             )
         }
+
+        NotesSelectionMenu(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            visibilityState = hasSelectedNotes,
+            onDelete = chooseNoteViewModel::deleteSelectedNotes,
+            onCopy = chooseNoteViewModel::copySelectedNotes,
+            onFavorite = chooseNoteViewModel::favoriteSelectedNotes,
+        )
+
+        val selected = chooseNoteViewModel.notesArrangement.toNumberDesktop()
+
+        MobileConfigurationsMenu(
+            selected = selected,
+            visibilityState = editState,
+            outsideClick = chooseNoteViewModel::cancelEditMenu,
+            staggeredGridOptionClick = chooseNoteViewModel::staggeredGridArrangementSelected,
+            gridOptionClick = chooseNoteViewModel::gridArrangementSelected,
+            listOptionClick = chooseNoteViewModel::listArrangementSelected,
+            sortingSelected = chooseNoteViewModel::sortingSelected
+        )
     }
 }
 

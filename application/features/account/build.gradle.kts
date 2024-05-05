@@ -15,7 +15,6 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":application:core:utils"))
-                implementation(project(":application:core:navigation"))
                 implementation(project(":application:core:auth_core"))
 
                 implementation(libs.kotlinx.datetime)

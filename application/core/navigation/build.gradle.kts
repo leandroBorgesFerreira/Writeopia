@@ -16,6 +16,8 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(libs.compose.navigation)
+                implementation(project(":application:features:note_menu"))
+                implementation(project(":application:core:utils"))
             }
         }
     }

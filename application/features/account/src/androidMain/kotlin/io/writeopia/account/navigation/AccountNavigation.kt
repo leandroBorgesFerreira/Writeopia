@@ -7,7 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import io.writeopia.account.di.AccountMenuInjector
 import io.writeopia.account.ui.AccountMenuScreen
-import io.writeopia.navigation.Destinations
+import io.writeopia.utils_module.Destinations
 
 fun NavGraphBuilder.accountMenuNavigation(
     accountMenuInjector: AccountMenuInjector,

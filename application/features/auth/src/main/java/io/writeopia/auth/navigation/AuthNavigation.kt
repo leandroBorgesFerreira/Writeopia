@@ -10,7 +10,7 @@ import io.writeopia.auth.login.LoginScreenBinding
 import io.writeopia.auth.menu.AuthMenuScreen
 import io.writeopia.auth.menu.AuthMenuViewModel
 import io.writeopia.auth.register.RegisterScreen
-import io.writeopia.navigation.Destinations
+import io.writeopia.utils_module.Destinations
 
 fun NavGraphBuilder.authNavigation(
     navController: NavController,
@@ -18,10 +18,10 @@ fun NavGraphBuilder.authNavigation(
     toAppNavigation: () -> Unit
 ) {
     navigation(
-        startDestination = io.writeopia.navigation.Destinations.AUTH_MENU.id,
-        route = io.writeopia.navigation.Destinations.AUTH_MENU_INNER_NAVIGATION.id
+        startDestination = Destinations.AUTH_MENU.id,
+        route = Destinations.AUTH_MENU_INNER_NAVIGATION.id
     ) {
-        composable(io.writeopia.navigation.Destinations.AUTH_MENU.id) {
+        composable(Destinations.AUTH_MENU.id) {
             val authMenuViewModel: AuthMenuViewModel = authInjection.provideAuthMenuViewModel()
 
             LaunchedEffect(key1 = true, block = {
@@ -37,7 +37,7 @@ fun NavGraphBuilder.authNavigation(
             )
         }
 
-        composable(io.writeopia.navigation.Destinations.AUTH_REGISTER.id) {
+        composable(Destinations.AUTH_REGISTER.id) {
             val registerViewModel = authInjection.provideRegisterViewModel()
 
             RegisterScreen(
@@ -53,7 +53,7 @@ fun NavGraphBuilder.authNavigation(
             )
         }
 
-        composable(io.writeopia.navigation.Destinations.AUTH_LOGIN.id) {
+        composable(Destinations.AUTH_LOGIN.id) {
             val loginViewModel = authInjection.provideLoginViewModel()
             LoginScreenBinding(loginViewModel, toAppNavigation)
         }
@@ -61,13 +61,13 @@ fun NavGraphBuilder.authNavigation(
 }
 
 internal fun NavController.navigateAuthRegister() {
-    navigate(io.writeopia.navigation.Destinations.AUTH_REGISTER.id)
+    navigate(Destinations.AUTH_REGISTER.id)
 }
 
 internal fun NavController.navigateAuthLogin() {
-    navigate(io.writeopia.navigation.Destinations.AUTH_LOGIN.id)
+    navigate(Destinations.AUTH_LOGIN.id)
 }
 
 fun NavController.navigateToAuthMenu() {
-    navigate(io.writeopia.navigation.Destinations.AUTH_MENU.id)
+    navigate(Destinations.AUTH_MENU.id)
 }

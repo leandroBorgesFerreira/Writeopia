@@ -21,6 +21,9 @@ import io.writeopia.auth.navigation.authNavigation
 import io.writeopia.auth.navigation.navigateToAuthMenu
 import io.writeopia.editor.di.EditorInjector
 import io.writeopia.editor.navigation.editorNavigation
+import io.writeopia.navigation.notes.navigateToAccount
+import io.writeopia.navigation.notes.navigateToNewNote
+import io.writeopia.navigation.notes.navigateToNote
 import io.writeopia.note_menu.di.NotesConfigurationInjector
 import io.writeopia.note_menu.di.NotesMenuAndroidInjection
 import io.writeopia.note_menu.navigation.notesMenuNavigation
@@ -29,6 +32,7 @@ import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 import io.writeopia.persistence.room.injection.RoomRespositoryInjection
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.theme.WrieopiaTheme
+import io.writeopia.utils_module.Destinations
 
 class NavigationActivity : AppCompatActivity() {
 

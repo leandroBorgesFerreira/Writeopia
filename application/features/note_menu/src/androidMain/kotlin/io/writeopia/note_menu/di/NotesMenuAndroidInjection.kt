@@ -7,17 +7,19 @@ import io.writeopia.note_menu.viewmodel.ChooseNoteAndroidViewModel
 import io.writeopia.note_menu.viewmodel.ChooseNoteKmpViewModel
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class NotesMenuAndroidInjection(
     private val notesMenuKmpInjection: NotesMenuKmpInjection
-) {
+) : NotesMenuInjection {
 
     @Composable
-    internal fun provideChooseNoteViewModel(
-        chooseNoteKmpViewModel: ChooseNoteKmpViewModel =
-            notesMenuKmpInjection.provideChooseKmpNoteViewModel()
-    ): ChooseNoteViewModel = viewModel { ChooseNoteAndroidViewModel(chooseNoteKmpViewModel) }
+    override fun provideChooseNoteViewModel(
+        coroutineScope: CoroutineScope?
+    ): ChooseNoteViewModel = viewModel {
+        ChooseNoteAndroidViewModel(notesMenuKmpInjection.provideChooseKmpNoteViewModel())
+    }
 
     companion object {
         fun create(

@@ -1,4 +1,4 @@
-package io.writeopia.navigation
+package io.writeopia.utils_module
 
 enum class Destinations(val id: String) {
     EDITOR("note_details"),

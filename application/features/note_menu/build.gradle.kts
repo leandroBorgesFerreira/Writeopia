@@ -23,7 +23,6 @@ kotlin {
 
 //                implementation(project(":application:core:resources"))
                 implementation(project(":application:core:utils"))
-                implementation(project(":application:core:navigation"))
                 implementation(project(":application:core:common_ui"))
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:persistence_bridge"))
@@ -50,7 +49,6 @@ kotlin {
 
                 implementation(libs.coil.compose)
                 implementation(libs.viewmodel.compose)
-                implementation(libs.navigation.compose)
 
                 implementation(libs.compose.shimmer)
 
