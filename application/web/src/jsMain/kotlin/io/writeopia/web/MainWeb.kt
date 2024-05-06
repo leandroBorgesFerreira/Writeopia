@@ -26,14 +26,13 @@ fun main() {
 
 @Composable
 fun CreateAppInMemory(repositoryInjection: SqlDelightDaoInjector) {
-val selectionState = MutableStateFlow(false)
+    val selectionState = MutableStateFlow(false)
 
     App(
         notesConfigurationInjector = NotesConfigurationInjector.noop(),
         repositoryInjection = repositoryInjection,
-        drawersFactory = DefaultDrawersJs,
-        isUndoKeyEvent = ::isUndoKeyboardEvent,
-        selectionState = selectionState
+        selectionState = selectionState,
+        isUndoKeyEvent = ::isUndoKeyboardEvent
     )
 }
 
@@ -44,10 +43,10 @@ private fun isUndoKeyboardEvent(keyEvent: KeyEvent) =
 
 private fun isSelectionKeyEventStart(keyEvent: KeyEvent) =
     (keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META ||
-     keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META) &&
+        keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META) &&
         keyEvent.type == KeyEventType.KeyDown
 
 private fun isSelectionKeyEventStop(keyEvent: KeyEvent) =
     (keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META ||
-    keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META) &&
+        keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META) &&
         keyEvent.type == KeyEventType.KeyUp

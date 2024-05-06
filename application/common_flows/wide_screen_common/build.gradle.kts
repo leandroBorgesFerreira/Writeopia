@@ -27,8 +27,10 @@ kotlin {
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:utils"))
                 implementation(project(":application:core:theme"))
+                implementation(project(":application:core:navigation"))
                 implementation(project(":application:features:editor"))
                 implementation(project(":application:features:note_menu"))
+                implementation(project(":application:features:account"))
 
                 implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.client.core)
@@ -37,6 +39,8 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.materialIconsExtended)
+
+                implementation(libs.compose.navigation)
             }
         }
 

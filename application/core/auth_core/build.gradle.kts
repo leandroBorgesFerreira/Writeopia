@@ -11,6 +11,7 @@ kotlin {
 
     js(IR) {
         browser()
+        binaries.library()
     }
 
     sourceSets {

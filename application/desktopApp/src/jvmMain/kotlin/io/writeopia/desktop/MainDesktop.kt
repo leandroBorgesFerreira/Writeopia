@@ -17,6 +17,7 @@ import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
+import io.writeopia.theme.WrieopiaTheme
 import io.writeopia.ui.drawer.factory.DefaultDrawersDesktop
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.awt.event.KeyEvent
@@ -45,24 +46,23 @@ fun main() = application {
             false
         }
     ) {
-        when (val databaseState = databaseStateFlow.collectAsState().value) {
-            is DatabaseCreation.Complete -> {
-                val database = databaseState.writeopiaDb
+            when (val databaseState = databaseStateFlow.collectAsState().value) {
+                is DatabaseCreation.Complete -> {
+                    val database = databaseState.writeopiaDb
 
-                App(
-                    notesConfigurationInjector = NotesConfigurationInjector(database),
-                    repositoryInjection = SqlDelightDaoInjector(database),
-                    DefaultDrawersDesktop,
-                    isUndoKeyEvent = ::isUndoKeyboardEvent,
-                    selectionState = selectionState
-                )
-            }
+                    App(
+                        notesConfigurationInjector = NotesConfigurationInjector(database),
+                        repositoryInjection = SqlDelightDaoInjector(database),
+                        selectionState = selectionState,
+                        isUndoKeyEvent = ::isUndoKeyboardEvent
+                    )
+                }
 
-            DatabaseCreation.Loading -> {
-                Text("Loading")
+                DatabaseCreation.Loading -> {
+                    Text("Loading")
+                }
             }
         }
-    }
 }
 
 private fun isUndoKeyboardEvent(keyEvent: AndroidKeyEvent) =

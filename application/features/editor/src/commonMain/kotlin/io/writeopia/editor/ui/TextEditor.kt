@@ -18,7 +18,7 @@ import io.writeopia.ui.edition.TextCommandHandler
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun TextEditor(
+internal fun TextEditor(
     noteEditorViewModel: NoteEditorViewModel,
     drawersFactory: DrawersFactory,
     modifier: Modifier = Modifier,

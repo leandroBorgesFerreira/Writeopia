@@ -26,7 +26,7 @@ fun NavGraphBuilder.accountMenuNavigation(
             )
         }
     ) {
-        val accountMenuViewModel = accountMenuInjector.provideAccountMenuAndroidViewModel()
+        val accountMenuViewModel = accountMenuInjector.provideAccountMenuViewModel()
 
         LaunchedEffect(key1 = "start") {
             accountMenuViewModel.checkLoggedIn()

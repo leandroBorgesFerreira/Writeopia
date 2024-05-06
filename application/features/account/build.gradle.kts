@@ -25,6 +25,7 @@ kotlin {
                 implementation(compose.materialIconsExtended)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+                implementation(libs.compose.navigation)
             }
         }
 
@@ -32,7 +33,7 @@ kotlin {
             dependencies {
                 implementation(libs.appCompat)
 
-                implementation("androidx.activity:activity-compose")
+                implementation(libs.androidx.activity.compose)
 
                 implementation(libs.viewmodel.compose)
                 implementation(libs.navigation.compose)

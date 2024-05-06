@@ -1,4 +1,4 @@
-package io.writeopia.editor.ui
+package io.writeopia.editor.ui.screen
 
 //import androidx.compose.ui.tooling.preview.Preview
 //import io.writeopia.appresourcers.R
@@ -33,6 +33,7 @@ import io.writeopia.editor.configuration.ui.HeaderEdition
 import io.writeopia.editor.configuration.ui.NoteGlobalActionsMenu
 import io.writeopia.editor.input.InputScreen
 import io.writeopia.editor.model.EditState
+import io.writeopia.editor.ui.TextEditor
 import io.writeopia.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.editor.viewmodel.ShareDocument
 import io.writeopia.ui.drawer.factory.DefaultDrawersAndroid

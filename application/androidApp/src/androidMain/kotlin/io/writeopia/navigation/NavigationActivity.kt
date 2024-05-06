@@ -12,7 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import io.writeopia.AndroidLogger
 import io.writeopia.BuildConfig
-import io.writeopia.account.di.AccountMenuInjector
+import io.writeopia.account.di.AndroidAccountMenuInjector
 import io.writeopia.account.navigation.accountMenuNavigation
 import io.writeopia.auth.core.di.AndroidAuthCoreInjection
 import io.writeopia.auth.core.token.FirebaseTokenHandler
@@ -75,7 +75,7 @@ fun NavigationGraph(
     val authInjection = AuthInjection(authCoreInjection, connectionInjector, repositoryInjection)
     val editorInjector =
         EditorInjector.create(authCoreInjection, repositoryInjection, connectionInjector)
-    val accountMenuInjector = AccountMenuInjector.create(authCoreInjection)
+    val accountMenuInjector = AndroidAccountMenuInjector.create(authCoreInjection)
     val notesMenuInjection = NotesMenuAndroidInjection.create(
         notesConfigurationInjector,
         authCoreInjection,
@@ -83,25 +83,15 @@ fun NavigationGraph(
     )
 
     WrieopiaTheme {
-        NavHost(navController = navController, startDestination = startDestination) {
+        Navigation(
+            notesMenuInjection = notesMenuInjection,
+            navController = navController,
+            editorInjector = editorInjector,
+            accountMenuInjector = accountMenuInjector,
+            startDestination = startDestination,
+            isUndoKeyEvent = { false }
+        ) {
             authNavigation(navController, authInjection, navController::navigateToMainMenu)
-
-            notesMenuNavigation(
-                notesMenuInjection = notesMenuInjection,
-                navigateToNote = navController::navigateToNote,
-                navigateToAccount = navController::navigateToAccount,
-                navigateToNewNote = navController::navigateToNewNote
-            )
-
-            editorNavigation(
-                editorInjector = editorInjector,
-                navigateToNoteMenu = navController::navigateToNoteMenu
-            )
-
-            accountMenuNavigation(
-                accountMenuInjector = accountMenuInjector,
-                navController::navigateToAuthMenu
-            )
         }
     }
 }
