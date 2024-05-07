@@ -11,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.common_ui.VerticalOptions
 import io.writeopia.note_menu.ui.screen.configuration.modifier.orderConfigModifierVertical
@@ -22,10 +23,12 @@ fun ArrangementOptionsMenu(
     staggeredGridSelected: () -> Unit,
     gridSelected: () -> Unit,
     listSelected: () -> Unit,
+    width: Dp,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         VerticalOptions(
+            width = width,
             selectedState = selectedState,
             options = listOf<Pair<() -> Unit, @Composable ColumnScope.() -> Unit>>(
                 staggeredGridSelected to {
