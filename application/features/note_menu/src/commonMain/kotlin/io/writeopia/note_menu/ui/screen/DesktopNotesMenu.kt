@@ -82,12 +82,7 @@ fun DesktopNotesMenu(
                     modifier = Modifier.weight(1F).fillMaxHeight()
                 )
 
-                Column(
-                    modifier = Modifier.padding(10.dp).background(
-                        MaterialTheme.colorScheme.surfaceVariant,
-                        shape = RoundedCornerShape(8.dp)
-                    ),
-                ) {
+                Column {
                     NotesConfigurationMenu(
                         showSortingOption = chooseNoteViewModel.showSortMenuState,
                         selectedState = chooseNoteViewModel.notesArrangement.toNumberDesktop(),

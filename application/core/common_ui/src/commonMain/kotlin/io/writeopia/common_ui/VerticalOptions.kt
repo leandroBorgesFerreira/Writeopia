@@ -78,7 +78,7 @@ fun VerticalOptions(
                     Spacer(
                         modifier = Modifier
                             .width(width)
-                            .clip(CircleShape)
+                            .clip(shape)
                             .clickable {
                                 options[i].first.invoke()
                             }
