@@ -21,7 +21,6 @@ suspend fun startApp(
         App(
             notesConfigurationInjector = NotesConfigurationInjector(database),
             repositoryInjection = SqlDelightDaoInjector(database),
-            drawersFactory = DefaultDrawersDesktop,
             disableWebsocket = true,
             isUndoKeyEvent = { false },
             selectionState = MutableStateFlow(false)

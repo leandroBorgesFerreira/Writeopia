@@ -10,6 +10,7 @@ kotlin {
     jvm()
     js(IR) {
         browser()
+        binaries.library()
     }
 
     sourceSets {
@@ -38,6 +39,7 @@ kotlin {
                 implementation(compose.materialIconsExtended)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+                implementation(libs.compose.navigation)
             }
         }
 
@@ -49,7 +51,6 @@ kotlin {
                 implementation(libs.accompanist.systemuicontroller)
 
                 implementation(libs.viewmodel.compose)
-                implementation(libs.navigation.compose)
 
                 implementation(project.dependencies.platform(libs.androidx.compose.bom))
             }

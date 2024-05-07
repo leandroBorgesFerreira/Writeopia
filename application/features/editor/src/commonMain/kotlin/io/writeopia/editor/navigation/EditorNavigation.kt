@@ -2,18 +2,23 @@ package io.writeopia.editor.navigation
 
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.KeyEvent
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import io.writeopia.editor.di.EditorInjector
-import io.writeopia.editor.ui.NoteEditorScreen
+import io.writeopia.editor.di.TextEditorInjector
+import io.writeopia.editor.ui.screen.TextEditorScreen
 import io.writeopia.utils_module.Destinations
 
 fun NavGraphBuilder.editorNavigation(
-    editorInjector: EditorInjector,
-    navigateToNoteMenu: () -> Unit
+    editorInjector: TextEditorInjector,
+    navigateToNoteMenu: () -> Unit,
+    isUndoKeyEvent: (KeyEvent) -> Boolean
 ) {
     composable(
         route = "${Destinations.EDITOR.id}/{noteId}/{noteTitle}",
@@ -35,10 +40,11 @@ fun NavGraphBuilder.editorNavigation(
         if (noteId != null && noteTitle != null) {
             val noteDetailsViewModel = editorInjector.provideNoteDetailsViewModel()
 
-            NoteEditorScreen(
+            TextEditorScreen(
                 noteId.takeIf { it != "null" },
                 noteTitle.takeIf { it != "null" },
                 noteDetailsViewModel,
+                isUndoKeyEvent = isUndoKeyEvent,
                 navigateBack = navigateToNoteMenu
             )
         } else {
@@ -47,13 +53,15 @@ fun NavGraphBuilder.editorNavigation(
     }
 
     composable(route = Destinations.EDITOR.id) {
-        val notesDetailsViewModel = viewModel(initializer = { editorInjector.provideNoteDetailsViewModel() })
+        val notesDetailsViewModel = editorInjector.provideNoteDetailsViewModel()
 
-        NoteEditorScreen(
+        TextEditorScreen(
             documentId = null,
             title = null,
             noteEditorViewModel = notesDetailsViewModel,
-            navigateBack = navigateToNoteMenu
+            isUndoKeyEvent = isUndoKeyEvent,
+            navigateBack = navigateToNoteMenu,
+            modifier = Modifier
         )
     }
 }

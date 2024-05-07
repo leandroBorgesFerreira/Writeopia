@@ -19,13 +19,13 @@ kotlin {
 
                 implementation(libs.kotlinx.datetime)
 
-
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.materialIconsExtended)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+                implementation(libs.compose.navigation)
             }
         }
 
@@ -33,7 +33,7 @@ kotlin {
             dependencies {
                 implementation(libs.appCompat)
 
-                implementation("androidx.activity:activity-compose")
+                implementation(libs.androidx.activity.compose)
 
                 implementation(libs.viewmodel.compose)
                 implementation(libs.navigation.compose)

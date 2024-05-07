@@ -3,15 +3,19 @@ package io.writeopia.note_menu.navigation
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import io.writeopia.note_menu.di.NotesMenuKmpInjection
+import androidx.compose.foundation.background
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import io.writeopia.note_menu.di.NotesMenuAndroidInjection
-import io.writeopia.note_menu.ui.screen.menu.ChooseNoteScreen
+import io.writeopia.note_menu.di.NotesMenuInjection
+import io.writeopia.note_menu.ui.screen.menu.NotesMenuScreen
 import io.writeopia.utils_module.Destinations
 
 fun NavGraphBuilder.notesMenuNavigation(
-    notesMenuInjection: NotesMenuAndroidInjection,
+    notesMenuInjection: NotesMenuInjection,
     navigateToNote: (String, String) -> Unit,
     navigateToNewNote: () -> Unit,
     navigateToAccount: () -> Unit,
@@ -34,13 +38,15 @@ fun NavGraphBuilder.notesMenuNavigation(
             slideOutHorizontally(targetOffsetX = { intSize -> -intSize })
         }
     ) {
-        val chooseNoteViewModel = notesMenuInjection.provideChooseNoteViewModel()
+        val chooseNoteViewModel =
+            notesMenuInjection.provideChooseNoteViewModel(coroutineScope = rememberCoroutineScope())
 
-        ChooseNoteScreen(
+        NotesMenuScreen(
             chooseNoteViewModel = chooseNoteViewModel,
-            navigateToNote = navigateToNote,
-            navigateToAccount = navigateToAccount,
-            newNote = navigateToNewNote,
+            onNewNoteClick = navigateToNewNote,
+            onNoteClick = navigateToNote,
+            onAccountClick = navigateToAccount,
+            modifier = Modifier.background(MaterialTheme.colorScheme.background)
         )
     }
 }

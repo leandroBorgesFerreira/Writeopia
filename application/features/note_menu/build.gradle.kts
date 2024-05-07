@@ -9,6 +9,7 @@ kotlin {
     jvm()
     js(IR) {
         browser()
+        binaries.library()
     }
 
     sourceSets {
@@ -38,6 +39,7 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.kotlinx.serialization.json)
+                implementation(libs.compose.navigation)
 
             }
         }
@@ -48,7 +50,6 @@ kotlin {
 
                 implementation(libs.coil.compose)
                 implementation(libs.viewmodel.compose)
-                implementation(libs.navigation.compose)
 
                 implementation(libs.compose.shimmer)
 

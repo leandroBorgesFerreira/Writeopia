@@ -1,16 +1,16 @@
-package io.writeopia.navigation
+package io.writeopia.navigation.notes
 
 import androidx.navigation.NavController
 import io.writeopia.utils_module.Destinations
 
-internal fun NavController.navigateToNewNote() {
+fun NavController.navigateToNewNote() {
     navigate(Destinations.EDITOR.id)
 }
 
-internal fun NavController.navigateToNote(id: String, title: String) {
+fun NavController.navigateToNote(id: String, title: String) {
     navigate("${Destinations.EDITOR.id}/$id/$title")
 }
 
-internal fun NavController.navigateToAccount() {
+fun NavController.navigateToAccount() {
     navigate(Destinations.ACCOUNT.id)
 }

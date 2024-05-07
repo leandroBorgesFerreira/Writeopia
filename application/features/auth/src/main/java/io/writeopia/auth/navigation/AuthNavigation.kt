@@ -60,11 +60,11 @@ fun NavGraphBuilder.authNavigation(
     }
 }
 
-internal fun NavController.navigateAuthRegister() {
+fun NavController.navigateAuthRegister() {
     navigate(Destinations.AUTH_REGISTER.id)
 }
 
-internal fun NavController.navigateAuthLogin() {
+fun NavController.navigateAuthLogin() {
     navigate(Destinations.AUTH_LOGIN.id)
 }
 
