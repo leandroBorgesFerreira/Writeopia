@@ -13,7 +13,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.ArrowForward
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -34,6 +37,7 @@ import io.writeopia.note_menu.ui.screen.configuration.molecules.WorkspaceConfigu
 import io.writeopia.note_menu.ui.screen.file.fileChooserLoad
 import io.writeopia.note_menu.ui.screen.file.fileChooserSave
 import io.writeopia.note_menu.ui.screen.list.NotesCards
+import io.writeopia.note_menu.ui.screen.menu.SideGlobalMenu
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.note_menu.viewmodel.ConfigState
 import io.writeopia.note_menu.viewmodel.getPath
@@ -54,60 +58,76 @@ fun DesktopNotesMenu(
         }
     )
 
-    Box(modifier = modifier.fillMaxSize().padding(horizontal = 12.dp)) {
-        Column(modifier = Modifier.padding(top = 8.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    modifier = Modifier.icon { },
-                    imageVector = Icons.Outlined.Settings,
-                    contentDescription = "Settings",
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
+    Box(modifier = modifier.fillMaxSize().padding(end = 12.dp)) {
+        Row {
+            SideGlobalMenu(
+                modifier = Modifier.width(250.dp).fillMaxHeight(),
+                background = MaterialTheme.colorScheme.surfaceVariant
+            )
 
-                Spacer(Modifier.weight(1F))
+            Spacer(modifier = Modifier.width(8.dp))
 
-                DesktopNoteActionsMenu(
-                    showExtraOptions = chooseNoteViewModel.editState,
-                    showExtraOptionsRequest = chooseNoteViewModel::showEditMenu,
-                    hideExtraOptionsRequest = chooseNoteViewModel::cancelEditMenu,
-                    configureDirectory = chooseNoteViewModel::configureDirectory,
-                    exportAsMarkdownClick = {
-                        fileChooserSave("")?.let(chooseNoteViewModel::directoryFilesAsMarkdown)
-                    },
-                    importClick = {
-                        chooseNoteViewModel.loadFiles(fileChooserLoad(""))
-                    },
-                    syncInProgressState = chooseNoteViewModel.syncInProgress,
-                    onSyncLocallySelected = chooseNoteViewModel::onSyncLocallySelected,
-                    onWriteLocallySelected = chooseNoteViewModel::onWriteLocallySelected,
-                )
-            }
+            Column(modifier = Modifier.padding(top = 8.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        modifier = Modifier.icon { },
+                        imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+                        contentDescription = "Settings",
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(start = 40.dp)
-            ) {
-                NotesCards(
-                    documents = chooseNoteViewModel.documentsState.collectAsState().value,
-                    loadNote = onNoteClick,
-                    selectionListener = chooseNoteViewModel::onDocumentSelected,
-                    modifier = Modifier.weight(1F).fillMaxHeight()
-                )
+                    Icon(
+                        modifier = Modifier.icon { },
+                        imageVector = Icons.AutoMirrored.Outlined.ArrowForward,
+                        contentDescription = "Settings",
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
 
-                Spacer(modifier = Modifier.width(40.dp))
+                    Spacer(Modifier.weight(1F))
 
-                NotesConfigurationMenu(
-                    modifier = Modifier.padding(end = 8.dp),
-                    showSortingOption = chooseNoteViewModel.showSortMenuState,
-                    selectedState = chooseNoteViewModel.notesArrangement.toNumberDesktop(),
-                    showSortOptionsRequest = chooseNoteViewModel::showSortMenu,
-                    hideSortOptionsRequest = chooseNoteViewModel::cancelSortMenu,
-                    staggeredGridSelected =
-                    chooseNoteViewModel::staggeredGridArrangementSelected,
-                    gridSelected = chooseNoteViewModel::gridArrangementSelected,
-                    listSelected = chooseNoteViewModel::listArrangementSelected,
-                    selectSortOption = chooseNoteViewModel::sortingSelected,
-                )
+                    DesktopNoteActionsMenu(
+                        showExtraOptions = chooseNoteViewModel.editState,
+                        showExtraOptionsRequest = chooseNoteViewModel::showEditMenu,
+                        hideExtraOptionsRequest = chooseNoteViewModel::cancelEditMenu,
+                        configureDirectory = chooseNoteViewModel::configureDirectory,
+                        exportAsMarkdownClick = {
+                            fileChooserSave("")?.let(chooseNoteViewModel::directoryFilesAsMarkdown)
+                        },
+                        importClick = {
+                            chooseNoteViewModel.loadFiles(fileChooserLoad(""))
+                        },
+                        syncInProgressState = chooseNoteViewModel.syncInProgress,
+                        onSyncLocallySelected = chooseNoteViewModel::onSyncLocallySelected,
+                        onWriteLocallySelected = chooseNoteViewModel::onWriteLocallySelected,
+                    )
+                }
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(start = 40.dp)
+                ) {
+                    NotesCards(
+                        documents = chooseNoteViewModel.documentsState.collectAsState().value,
+                        loadNote = onNoteClick,
+                        selectionListener = chooseNoteViewModel::onDocumentSelected,
+                        modifier = Modifier.weight(1F).fillMaxHeight()
+                    )
+
+                    Spacer(modifier = Modifier.width(40.dp))
+
+                    NotesConfigurationMenu(
+                        modifier = Modifier.padding(end = 8.dp),
+                        showSortingOption = chooseNoteViewModel.showSortMenuState,
+                        selectedState = chooseNoteViewModel.notesArrangement.toNumberDesktop(),
+                        showSortOptionsRequest = chooseNoteViewModel::showSortMenu,
+                        hideSortOptionsRequest = chooseNoteViewModel::cancelSortMenu,
+                        staggeredGridSelected =
+                        chooseNoteViewModel::staggeredGridArrangementSelected,
+                        gridSelected = chooseNoteViewModel::gridArrangementSelected,
+                        listSelected = chooseNoteViewModel::listArrangementSelected,
+                        selectSortOption = chooseNoteViewModel::sortingSelected,
+                    )
+                }
             }
         }
 
