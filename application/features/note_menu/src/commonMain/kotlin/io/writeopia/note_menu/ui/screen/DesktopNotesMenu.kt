@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,7 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.writeopia.note_menu.ui.screen.actions.DesktopNoteActionsMenu
+import io.writeopia.note_menu.ui.screen.configuration.modifier.icon
 import io.writeopia.note_menu.ui.screen.configuration.molecules.NotesConfigurationMenu
 import io.writeopia.note_menu.ui.screen.configuration.molecules.NotesSelectionMenu
 import io.writeopia.note_menu.ui.screen.configuration.molecules.WorkspaceConfigurationDialog
@@ -51,30 +54,39 @@ fun DesktopNotesMenu(
         }
     )
 
-    Box(
-        modifier = modifier
-            .padding(start = 40.dp, end = 10.dp, bottom = 40.dp, top = 12.dp)
-            .fillMaxSize()
-    ) {
-        Column {
-            DesktopNoteActionsMenu(
-                modifier = Modifier.align(Alignment.End),
-                showExtraOptions = chooseNoteViewModel.editState,
-                showExtraOptionsRequest = chooseNoteViewModel::showEditMenu,
-                hideExtraOptionsRequest = chooseNoteViewModel::cancelEditMenu,
-                configureDirectory = chooseNoteViewModel::configureDirectory,
-                exportAsMarkdownClick = {
-                    fileChooserSave("")?.let(chooseNoteViewModel::directoryFilesAsMarkdown)
-                },
-                importClick = {
-                    chooseNoteViewModel.loadFiles(fileChooserLoad(""))
-                },
-                syncInProgressState = chooseNoteViewModel.syncInProgress,
-                onSyncLocallySelected = chooseNoteViewModel::onSyncLocallySelected,
-                onWriteLocallySelected = chooseNoteViewModel::onWriteLocallySelected,
-            )
-
+    Box(modifier = modifier.fillMaxSize().padding(horizontal = 12.dp)) {
+        Column(modifier = Modifier.padding(top = 8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    modifier = Modifier.icon { },
+                    imageVector = Icons.Outlined.Settings,
+                    contentDescription = "Settings",
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+
+                Spacer(Modifier.weight(1F))
+
+                DesktopNoteActionsMenu(
+                    showExtraOptions = chooseNoteViewModel.editState,
+                    showExtraOptionsRequest = chooseNoteViewModel::showEditMenu,
+                    hideExtraOptionsRequest = chooseNoteViewModel::cancelEditMenu,
+                    configureDirectory = chooseNoteViewModel::configureDirectory,
+                    exportAsMarkdownClick = {
+                        fileChooserSave("")?.let(chooseNoteViewModel::directoryFilesAsMarkdown)
+                    },
+                    importClick = {
+                        chooseNoteViewModel.loadFiles(fileChooserLoad(""))
+                    },
+                    syncInProgressState = chooseNoteViewModel.syncInProgress,
+                    onSyncLocallySelected = chooseNoteViewModel::onSyncLocallySelected,
+                    onWriteLocallySelected = chooseNoteViewModel::onWriteLocallySelected,
+                )
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(start = 40.dp)
+            ) {
                 NotesCards(
                     documents = chooseNoteViewModel.documentsState.collectAsState().value,
                     loadNote = onNoteClick,
@@ -82,31 +94,33 @@ fun DesktopNotesMenu(
                     modifier = Modifier.weight(1F).fillMaxHeight()
                 )
 
-                Column {
-                    NotesConfigurationMenu(
-                        showSortingOption = chooseNoteViewModel.showSortMenuState,
-                        selectedState = chooseNoteViewModel.notesArrangement.toNumberDesktop(),
-                        showSortOptionsRequest = chooseNoteViewModel::showSortMenu,
-                        hideSortOptionsRequest = chooseNoteViewModel::cancelSortMenu,
-                        staggeredGridSelected =
-                        chooseNoteViewModel::staggeredGridArrangementSelected,
-                        gridSelected = chooseNoteViewModel::gridArrangementSelected,
-                        listSelected = chooseNoteViewModel::listArrangementSelected,
-                        selectSortOption = chooseNoteViewModel::sortingSelected,
-                    )
-                }
+                Spacer(modifier = Modifier.width(40.dp))
+
+                NotesConfigurationMenu(
+                    modifier = Modifier.padding(end = 8.dp),
+                    showSortingOption = chooseNoteViewModel.showSortMenuState,
+                    selectedState = chooseNoteViewModel.notesArrangement.toNumberDesktop(),
+                    showSortOptionsRequest = chooseNoteViewModel::showSortMenu,
+                    hideSortOptionsRequest = chooseNoteViewModel::cancelSortMenu,
+                    staggeredGridSelected =
+                    chooseNoteViewModel::staggeredGridArrangementSelected,
+                    gridSelected = chooseNoteViewModel::gridArrangementSelected,
+                    listSelected = chooseNoteViewModel::listArrangementSelected,
+                    selectSortOption = chooseNoteViewModel::sortingSelected,
+                )
             }
         }
 
         FloatingActionButton(
             modifier = Modifier.align(Alignment.BottomEnd)
-                .padding(horizontal = 22.dp)
+                .padding(40.dp)
                 .testTag("addNote"),
             onClick = onNewNoteClick,
             content = {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "New note",
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             },
             containerColor = MaterialTheme.colorScheme.primary

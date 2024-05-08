@@ -3,6 +3,7 @@ package io.writeopia.note_menu.ui.screen.configuration.atoms
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.outlined.Dashboard
@@ -11,6 +12,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.common_ui.VerticalOptions
@@ -25,6 +27,7 @@ fun ArrangementOptionsMenu(
     listSelected: () -> Unit,
     width: Dp,
     modifier: Modifier = Modifier,
+    selectorShape: Shape = RoundedCornerShape(6.dp)
 ) {
     Column(modifier = modifier) {
         VerticalOptions(
