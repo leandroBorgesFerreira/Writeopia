@@ -66,7 +66,6 @@ fun SideGlobalMenu(modifier: Modifier = Modifier, background: Color) {
                 .height(60.dp)
                 .width(40.dp)
                 .clickable {
-                    println("showOptions: $showOptions")
                     showOptions = !showOptions
                 },
         ) {
