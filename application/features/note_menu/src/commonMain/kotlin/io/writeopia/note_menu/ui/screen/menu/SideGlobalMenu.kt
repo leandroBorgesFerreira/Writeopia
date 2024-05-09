@@ -1,6 +1,6 @@
 package io.writeopia.note_menu.ui.screen.menu
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -17,62 +17,66 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+private const val finalWidth = 300
+
 @Composable
-fun SideGlobalMenu(modifier: Modifier = Modifier, background: Color) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        var showOptions by remember { mutableStateOf(true) }
+fun SideGlobalMenu(
+    modifier: Modifier = Modifier,
+    background: Color,
+    showOptions: Boolean,
+    width: Dp = finalWidth.dp
+) {
+    val widthState by derivedStateOf {
+        if (showOptions) width else 0.dp
+    }
 
-        AnimatedVisibility(showOptions, modifier = Modifier.fillMaxHeight().weight(1F)) {
-            Column(Modifier.fillMaxHeight().background(background)) {
-                Spacer(Modifier.height(100.dp))
+    val widthAnimatedState by animateDpAsState(widthState)
+    val showContent by derivedStateOf {
+        widthState > width * 0.5F
+    }
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.clickable { }.padding(horizontal = 20.dp, vertical = 10.dp)
-                        .fillMaxWidth()
-                ) {
-                    Icon(
-                        modifier = Modifier,
-                        imageVector = Icons.Outlined.Settings,
-                        contentDescription = "Settings",
-                        tint = MaterialTheme.colorScheme.onBackground
-                    )
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(modifier = Modifier.width(widthAnimatedState).fillMaxHeight()) {
+            if (showContent) {
+                Column(Modifier.fillMaxHeight().background(background)) {
+                    Spacer(Modifier.height(100.dp))
 
-                    Spacer(modifier = Modifier.width(10.dp))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.clickable { }
+                            .padding(horizontal = 20.dp, vertical = 10.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Icon(
+                            modifier = Modifier,
+                            imageVector = Icons.Outlined.Settings,
+                            contentDescription = "Settings",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
 
-                    Text(
-                        "Settings",
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
-                    )
+                        Spacer(modifier = Modifier.width(10.dp))
+
+                        Text(
+                            "Settings",
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                        )
+                    }
                 }
             }
-        }
-
-        Box(
-            modifier = Modifier
-                .height(60.dp)
-                .width(40.dp)
-                .clickable {
-                    showOptions = !showOptions
-                },
-        ) {
-            VerticalDivider(
-                modifier = Modifier.height(60.dp).align(Alignment.Center),
-                thickness = 3.dp
-            )
         }
     }
 }
