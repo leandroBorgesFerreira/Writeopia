@@ -75,10 +75,9 @@ fun DesktopNotesMenu(
             SideGlobalMenu(
                 modifier = Modifier.fillMaxHeight(),
                 background = MaterialTheme.colorScheme.surfaceVariant,
-                showOptions = showOptions
+                showOptions = showOptions,
+                width = 280.dp
             )
-
-//            Spacer(modifier = Modifier.width(8.dp))
 
             Box {
                 Box(
@@ -145,7 +144,7 @@ fun DesktopNotesMenu(
                             modifier = Modifier.weight(1F).fillMaxHeight()
                         )
 
-                        Spacer(modifier = Modifier.width(40.dp))
+                        Spacer(modifier = Modifier.width(20.dp))
 
                         NotesConfigurationMenu(
                             modifier = Modifier.padding(end = borderPadding),
@@ -166,7 +165,7 @@ fun DesktopNotesMenu(
 
         FloatingActionButton(
             modifier = Modifier.align(Alignment.BottomEnd)
-                .padding(40.dp)
+                .padding(horizontal = 40.dp - borderPadding, vertical = 40.dp)
                 .testTag("addNote"),
             onClick = onNewNoteClick,
             content = {
