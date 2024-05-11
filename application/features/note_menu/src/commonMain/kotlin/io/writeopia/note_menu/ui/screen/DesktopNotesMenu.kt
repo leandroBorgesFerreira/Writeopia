@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import io.writeopia.note_menu.ui.screen.actions.DesktopNoteActionsMenu
 import io.writeopia.note_menu.ui.screen.configuration.modifier.icon
 import io.writeopia.note_menu.ui.screen.configuration.molecules.NotesConfigurationMenu
@@ -54,6 +55,7 @@ import io.writeopia.note_menu.viewmodel.toNumberDesktop
 @Composable
 fun DesktopNotesMenu(
     chooseNoteViewModel: ChooseNoteViewModel,
+    navigationController: NavController,
     onNewNoteClick: () -> Unit,
     onNoteClick: (String, String) -> Unit,
     modifier: Modifier = Modifier,
@@ -101,16 +103,18 @@ fun DesktopNotesMenu(
                         Spacer(modifier = Modifier.width(borderPadding))
 
                         Icon(
-                            modifier = Modifier.icon { },
+                            modifier = Modifier.icon {
+                                navigationController.navigateUp()
+                            },
                             imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
-                            contentDescription = "Settings",
+                            contentDescription = "Navigate back",
                             tint = MaterialTheme.colorScheme.onBackground
                         )
 
                         Icon(
                             modifier = Modifier.icon { },
                             imageVector = Icons.AutoMirrored.Outlined.ArrowForward,
-                            contentDescription = "Settings",
+                            contentDescription = "Navigate forward",
                             tint = MaterialTheme.colorScheme.onBackground
                         )
 
@@ -139,7 +143,12 @@ fun DesktopNotesMenu(
                     ) {
                         NotesCards(
                             documents = chooseNoteViewModel.documentsState.collectAsState().value,
-                            loadNote = onNoteClick,
+                            loadNote = { id, title ->
+                                val handled = chooseNoteViewModel.handleNoteTap(id)
+                                if (!handled) {
+                                    onNoteClick(id, title)
+                                }
+                            } ,
                             selectionListener = chooseNoteViewModel::onDocumentSelected,
                             modifier = Modifier.weight(1F).fillMaxHeight()
                         )

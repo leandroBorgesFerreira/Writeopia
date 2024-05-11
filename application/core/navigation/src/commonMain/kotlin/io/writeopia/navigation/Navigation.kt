@@ -31,6 +31,7 @@ fun Navigation(
     NavHost(navController = navController, startDestination = startDestination) {
         notesMenuNavigation(
             notesMenuInjection = notesMenuInjection,
+            navigationController = navController,
             navigateToNote = navController::navigateToNote,
             navigateToAccount = navController::navigateToAccount,
             navigateToNewNote = navController::navigateToNewNote

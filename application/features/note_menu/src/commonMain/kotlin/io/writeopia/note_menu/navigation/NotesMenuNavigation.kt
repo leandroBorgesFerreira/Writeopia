@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import io.writeopia.note_menu.di.NotesMenuInjection
@@ -16,6 +17,7 @@ import io.writeopia.utils_module.Destinations
 
 fun NavGraphBuilder.notesMenuNavigation(
     notesMenuInjection: NotesMenuInjection,
+    navigationController: NavController,
     navigateToNote: (String, String) -> Unit,
     navigateToNewNote: () -> Unit,
     navigateToAccount: () -> Unit,
@@ -43,6 +45,7 @@ fun NavGraphBuilder.notesMenuNavigation(
 
         NotesMenuScreen(
             chooseNoteViewModel = chooseNoteViewModel,
+            navigationController = navigationController,
             onNewNoteClick = navigateToNewNote,
             onNoteClick = navigateToNote,
             onAccountClick = navigateToAccount,
