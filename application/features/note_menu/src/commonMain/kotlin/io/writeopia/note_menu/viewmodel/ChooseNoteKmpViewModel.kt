@@ -4,6 +4,7 @@ import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.note_menu.data.NotesArrangement
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
+import io.writeopia.note_menu.data.repository.UiConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
 import io.writeopia.note_menu.ui.dto.NotesUi
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 internal class ChooseNoteKmpViewModel(
     private val notesUseCase: NotesUseCase,
     private val notesConfig: ConfigurationRepository,
+    private val uiConfigurationRepo: UiConfigurationRepository,
     private val authManager: AuthManager,
     private val selectionState: StateFlow<Boolean>,
     private val previewParser: PreviewParser = PreviewParser(),
@@ -68,6 +70,12 @@ internal class ChooseNoteKmpViewModel(
 
     private val _showSortMenuState = MutableStateFlow(false)
     override val showSortMenuState: StateFlow<Boolean> = _showSortMenuState.asStateFlow()
+
+    override val showSideMenu: StateFlow<Boolean> by lazy {
+        uiConfigurationRepo.listenForColorTheme(::getUserId, coroutineScope).map { configuration ->
+            configuration.showSideMenu
+        }.stateIn(coroutineScope, SharingStarted.Lazily, false)
+    }
 
     override val documentsState: StateFlow<ResultData<NotesUi>> by lazy {
         combine(
@@ -296,6 +304,16 @@ internal class ChooseNoteKmpViewModel(
 
     override fun onWriteLocallySelected() {
         handleStorage(::writeWorkspace, SyncRequest.WRITE)
+    }
+
+    override fun toggleSideMenu() {
+        setShowSideMenu(!showSideMenu.value)
+    }
+
+    private fun setShowSideMenu(enabled: Boolean) {
+        coroutineScope.launch(Dispatchers.Default) {
+            uiConfigurationRepo.updateShowSideMenu(userId = getUserId(), showSideMenu = enabled)
+        }
     }
 
     private fun handleStorage(workspaceFunc: suspend (String) -> Unit, syncRequest: SyncRequest) {

@@ -1,4 +1,4 @@
-CREATE TABLE uiConfiguration (
+CREATE TABLE uiConfigurationEntity (
   user_id TEXT PRIMARY KEY,
   show_side_menu INTEGER DEFAULT 0,
   color_theme_option TEXT
@@ -6,11 +6,11 @@ CREATE TABLE uiConfiguration (
 
 selectConfigurationByUserId:
 SELECT *
-FROM uiConfiguration
-WHERE uiConfiguration.user_id = ?;
+FROM uiConfigurationEntity
+WHERE uiConfigurationEntity.user_id = ?;
 
 insert:
-INSERT INTO uiConfiguration(user_id, show_side_menu, color_theme_option)
+INSERT INTO uiConfigurationEntity(user_id, show_side_menu, color_theme_option)
 VALUES (?, ?, ?)
 ON CONFLICT(user_id) DO
 UPDATE SET user_id=excluded.user_id, show_side_menu=excluded.show_side_menu, color_theme_option=excluded.color_theme_option;

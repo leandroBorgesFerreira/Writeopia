@@ -25,6 +25,7 @@ agp = "8.4.0"
 kotlin = "1.9.23"
 compose-compiler = "1.5.13"
 composeTest = "1.6.7"
+webWorkerDriver = "2.0.0"
 writeopia = "0.4.1"
 mockk = "1.13.8"
 sqldelight = "2.0.0"
@@ -99,6 +100,7 @@ logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.
 database-hikaricp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikaricp" }
 database-postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
 compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "compose-navigation" }
+sqldelight-web-driver = { module = "app.cash.sqldelight:web-worker-driver", version.ref = "webWorkerDriver" }
 
 
 [plugins]

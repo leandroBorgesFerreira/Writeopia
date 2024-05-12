@@ -24,6 +24,7 @@ import io.writeopia.editor.ui.desktop.EditorScaffold
 import io.writeopia.navigation.Navigation
 import io.writeopia.note_menu.di.NotesConfigurationInjector
 import io.writeopia.note_menu.di.NotesMenuKmpInjection
+import io.writeopia.note_menu.di.UiConfigurationInjector
 import io.writeopia.note_menu.ui.screen.DesktopNotesMenu
 import io.writeopia.notes.desktop.components.navigation.NavigationPage
 import io.writeopia.notes.desktop.components.navigation.NavigationViewModel
@@ -38,6 +39,7 @@ import kotlinx.coroutines.flow.StateFlow
 fun App(
     notesConfigurationInjector: NotesConfigurationInjector,
     repositoryInjection: RepositoryInjector,
+    uiConfigurationInjector: UiConfigurationInjector,
     disableWebsocket: Boolean = false,
     selectionState: StateFlow<Boolean>,
     isUndoKeyEvent: (KeyEvent) -> Boolean
@@ -49,19 +51,18 @@ fun App(
             baseUrl = "https://writeopia.io/api",
             disableWebsocket = disableWebsocket
         )
-
     val editorInjector = EditorKmpInjector(
         authCoreInjection = authCoreInjection,
         repositoryInjection = repositoryInjection,
         connectionInjection = connectionInjection
     )
-
     val accountInjector = AccountMenuKmpInjector(authCoreInjection)
 
     val notesMenuInjection = NotesMenuKmpInjection(
         notesConfigurationInjector = notesConfigurationInjector,
         authCoreInjection = authCoreInjection,
         repositoryInjection = repositoryInjection,
+        uiConfigurationInjector = uiConfigurationInjector,
         selectionState = selectionState,
     )
 

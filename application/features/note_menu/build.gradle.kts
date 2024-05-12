@@ -27,6 +27,8 @@ kotlin {
                 implementation(project(":application:core:common_ui"))
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:persistence_bridge"))
+                implementation(project(":application:core:theme"))
+
                 implementation(project(":application:features:account"))
 
                 implementation(libs.kotlinx.datetime)

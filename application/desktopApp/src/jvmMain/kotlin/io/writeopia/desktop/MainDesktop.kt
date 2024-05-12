@@ -12,6 +12,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import io.writeopia.note_menu.di.NotesConfigurationInjector
+import io.writeopia.note_menu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.App
 import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory
@@ -53,6 +54,7 @@ fun main() = application {
                     App(
                         notesConfigurationInjector = NotesConfigurationInjector(database),
                         repositoryInjection = SqlDelightDaoInjector(database),
+                        uiConfigurationInjector = UiConfigurationInjector(database),
                         selectionState = selectionState,
                         isUndoKeyEvent = ::isUndoKeyboardEvent
                     )

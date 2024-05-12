@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
+import io.writeopia.note_menu.data.repository.UiConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.viewmodel.ChooseNoteKmpViewModel
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
@@ -15,6 +16,7 @@ class NotesMenuKmpInjection(
     private val notesConfigurationInjector: NotesConfigurationInjector,
     private val authCoreInjection: AuthCoreInjection,
     private val repositoryInjection: RepositoryInjector,
+    private val uiConfigurationInjector: UiConfigurationInjector,
     private val selectionState: StateFlow<Boolean>
 ) : NotesMenuInjection {
 
@@ -32,11 +34,14 @@ class NotesMenuKmpInjection(
     internal fun provideChooseKmpNoteViewModel(
         notesUseCase: NotesUseCase = provideNotesUseCase(),
         notesConfig: ConfigurationRepository =
-            notesConfigurationInjector.provideNotesConfigurationRepository()
+            notesConfigurationInjector.provideNotesConfigurationRepository(),
+        uiConfigurationRepo: UiConfigurationRepository =
+            uiConfigurationInjector.provideUiConfigurationRepository()
     ): ChooseNoteKmpViewModel =
         ChooseNoteKmpViewModel(
-            notesUseCase,
-            notesConfig,
+            notesUseCase = notesUseCase,
+            notesConfig = notesConfig,
+            uiConfigurationRepo = uiConfigurationRepo,
             authCoreInjection.provideAccountManager(),
             selectionState
         )

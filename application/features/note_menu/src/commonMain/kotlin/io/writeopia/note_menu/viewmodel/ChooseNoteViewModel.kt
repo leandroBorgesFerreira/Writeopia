@@ -25,9 +25,13 @@ interface ChooseNoteViewModel {
 
     val syncInProgress: StateFlow<SyncState>
 
+    val showSideMenu: StateFlow<Boolean>
+
     fun requestDocuments(force: Boolean)
 
     fun handleNoteTap(id: String): Boolean
+
+    fun toggleSideMenu()
 
     suspend fun requestUser()
 

@@ -88,7 +88,7 @@ fun DesktopNotesMenu(
                         .width(16.dp)
                         .align(alignment = Alignment.CenterStart)
                         .clip(RoundedCornerShape(100))
-                        .clickable { showOptions = !showOptions }
+                        .clickable(onClick = chooseNoteViewModel::toggleSideMenu)
                         .padding(vertical = 6.dp),
                 ) {
                     RoundedVerticalDivider(
