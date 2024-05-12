@@ -71,7 +71,7 @@ fun DesktopNotesMenu(
     val borderPadding = 8.dp
 
     Box(modifier = modifier.fillMaxSize().padding(end = 12.dp)) {
-        var showOptions by remember { mutableStateOf(true) }
+        val showOptions by chooseNoteViewModel.showSideMenu.collectAsState()
 
         Row {
             SideGlobalMenu(

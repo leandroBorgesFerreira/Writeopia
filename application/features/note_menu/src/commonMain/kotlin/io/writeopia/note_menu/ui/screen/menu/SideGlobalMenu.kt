@@ -72,7 +72,10 @@ fun SideGlobalMenu(
                         Text(
                             "Settings",
                             color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                            maxLines = 1
                         )
                     }
                 }
