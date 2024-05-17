@@ -40,7 +40,7 @@ fun ArrangementOptionsMenu(
                         imageVector = Icons.Outlined.Dashboard,
                         contentDescription = "staggered card",
                         //            stringResource(R.string.staggered_card),
-                        tint = MaterialTheme.colorScheme.onPrimary
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 },
                 gridSelected to {
@@ -49,7 +49,7 @@ fun ArrangementOptionsMenu(
                         imageVector = Icons.Outlined.GridView,
                         contentDescription = "staggered card",
                         //            stringResource(R.string.staggered_card),
-                        tint = MaterialTheme.colorScheme.onPrimary
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 },
                 listSelected to {
@@ -58,7 +58,7 @@ fun ArrangementOptionsMenu(
                         imageVector = Icons.AutoMirrored.Outlined.List,
                         contentDescription = "staggered card",
                         //            stringResource(R.string.staggered_card),
-                        tint = MaterialTheme.colorScheme.onPrimary
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 },
             ),
