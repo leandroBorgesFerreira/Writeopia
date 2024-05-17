@@ -1,12 +1,14 @@
 package io.writeopia.note_menu.ui.screen.settings
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DarkMode
@@ -65,71 +67,134 @@ private fun ColorThemeOptions(
     val typography = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
     val color = MaterialTheme.colorScheme.onBackground
 
-    HorizontalOptions(
-        modifier = Modifier,
-        selectedState = selectedThemePosition,
-        options = listOf<Pair<() -> Unit, @Composable RowScope.() -> Unit>>(
-            { selectColorTheme(ColorThemeOption.LIGHT) } to {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .orderConfigModifierHorizontal {}
-                        .weight(1F)
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .weight(1F),
-                        imageVector = Icons.Outlined.LightMode,
-                        contentDescription = "staggered card",
-                        //            stringResource(R.string.staggered_card),
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
+    val spaceWidth = 10.dp
 
-                    Text("Light", style = typography, color = color)
+    Row(modifier = Modifier.fillMaxWidth().height(90.dp)) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .orderConfigModifierHorizontal {
+                    println("selecting light color theme!!")
+                    selectColorTheme(ColorThemeOption.LIGHT)
                 }
-            },
-            { selectColorTheme(ColorThemeOption.DARK) } to {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .orderConfigModifierHorizontal {}
-                        .weight(1F)
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .orderConfigModifierHorizontal {}
-                            .weight(1F),
-                        imageVector = Icons.Outlined.DarkMode,
-                        contentDescription = "staggered card",
-                        //            stringResource(R.string.staggered_card),
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
+                .weight(1F)
+        ) {
+            Icon(
+                modifier = Modifier.weight(1F),
+                imageVector = Icons.Outlined.LightMode,
+                contentDescription = "staggered card",
+                //            stringResource(R.string.staggered_card),
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
 
-                    Text("Dark", style = typography, color = color)
-                }
-            },
-            { selectColorTheme(ColorThemeOption.SYSTEM) } to {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .orderConfigModifierHorizontal {}
-                        .weight(1F)
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .orderConfigModifierHorizontal {}
-                            .weight(1F),
-                        imageVector = Icons.Outlined.SystemUpdate,
-                        contentDescription = "note list",
-                        //            stringResource(R.string.note_list),
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
+            Text("Light", style = typography, color = color)
+        }
 
-                    Text("System", style = typography, color = color)
+        Spacer(modifier = Modifier.width(spaceWidth))
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .orderConfigModifierHorizontal {
+                    println("selecting light color theme!!")
+                    selectColorTheme(ColorThemeOption.DARK)
                 }
-            }
-        ),
-        height = 90.dp
-    )
+                .weight(1F)
+        ) {
+            Icon(
+                modifier = Modifier.weight(1F),
+                imageVector = Icons.Outlined.DarkMode,
+                contentDescription = "staggered card",
+                //            stringResource(R.string.staggered_card),
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
+
+            Text("Dark", style = typography, color = color)
+        }
+
+        Spacer(modifier = Modifier.width(spaceWidth))
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .orderConfigModifierHorizontal {
+                    println("selecting light color theme!!")
+                    selectColorTheme(ColorThemeOption.SYSTEM)
+                }
+                .weight(1F)
+        ) {
+            Icon(
+                modifier = Modifier.weight(1F),
+                imageVector = Icons.Outlined.SystemUpdate,
+                contentDescription = "note list",
+                //            stringResource(R.string.note_list),
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
+
+            Text("System", style = typography, color = color)
+        }
+    }
+
+//    HorizontalOptions(
+//        modifier = Modifier,
+//        selectedState = selectedThemePosition,
+//        options = listOf<Pair<() -> Unit, @Composable RowScope.() -> Unit>>(
+//            {
+//                println("selecting light color theme!!")
+//                selectColorTheme(ColorThemeOption.LIGHT)
+//            } to {
+//                Column(
+//                    horizontalAlignment = Alignment.CenterHorizontally,
+//                    modifier = Modifier.weight(1F)
+//                ) {
+//                    Icon(
+//                        modifier = Modifier.weight(1F),
+//                        imageVector = Icons.Outlined.LightMode,
+//                        contentDescription = "staggered card",
+//                        //            stringResource(R.string.staggered_card),
+//                        tint = MaterialTheme.colorScheme.onPrimary
+//                    )
+//
+//                    Text("Light", style = typography, color = color)
+//                }
+//            },
+//            { selectColorTheme(ColorThemeOption.DARK) } to {
+//                Column(
+//                    horizontalAlignment = Alignment.CenterHorizontally,
+//                    modifier = Modifier
+//                        .orderConfigModifierHorizontal {}
+//                        .weight(1F)
+//                ) {
+//                    Icon(
+//                        modifier = Modifier.weight(1F),
+//                        imageVector = Icons.Outlined.DarkMode,
+//                        contentDescription = "staggered card",
+//                        //            stringResource(R.string.staggered_card),
+//                        tint = MaterialTheme.colorScheme.onPrimary
+//                    )
+//
+//                    Text("Dark", style = typography, color = color)
+//                }
+//            },
+//            { selectColorTheme(ColorThemeOption.SYSTEM) } to {
+//                Column(
+//                    horizontalAlignment = Alignment.CenterHorizontally,
+//                    modifier = Modifier
+//                        .orderConfigModifierHorizontal {}
+//                        .weight(1F)
+//                ) {
+//                    Icon(
+//                        modifier = Modifier.weight(1F),
+//                        imageVector = Icons.Outlined.SystemUpdate,
+//                        contentDescription = "note list",
+//                        //            stringResource(R.string.note_list),
+//                        tint = MaterialTheme.colorScheme.onPrimary
+//                    )
+//
+//                    Text("System", style = typography, color = color)
+//                }
+//            }
+//        ),
+//        height = 90.dp
+//    )
 }

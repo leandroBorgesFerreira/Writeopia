@@ -16,7 +16,7 @@ enum class ColorThemeOption(val theme: String) {
 @Composable
 fun ColorThemeOption.darkTheme(): Boolean =
     when (this) {
-        ColorThemeOption.LIGHT -> true
-        ColorThemeOption.DARK -> false
+        ColorThemeOption.LIGHT -> false
+        ColorThemeOption.DARK -> true
         ColorThemeOption.SYSTEM -> isSystemInDarkTheme()
     }
