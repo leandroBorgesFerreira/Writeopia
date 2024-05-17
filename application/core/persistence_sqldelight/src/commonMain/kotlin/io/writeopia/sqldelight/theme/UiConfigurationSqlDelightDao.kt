@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class UiConfigurationSqlDelightDao(database: WriteopiaDb?) {
@@ -40,14 +41,14 @@ class UiConfigurationSqlDelightDao(database: WriteopiaDb?) {
     fun listenForConfigurationByUserId(
         getUserId: suspend () -> String,
         coroutineScope: CoroutineScope
-    ): Flow<UiConfigurationEntity> {
+    ): Flow<UiConfigurationEntity?> {
         coroutineScope.launch(Dispatchers.Default) {
             val id = getUserId()
             userId = id
             configurationState.value = getConfigurationByUserId(id)
         }
 
-        return configurationState.filterNotNull()
+        return configurationState
     }
 
 }

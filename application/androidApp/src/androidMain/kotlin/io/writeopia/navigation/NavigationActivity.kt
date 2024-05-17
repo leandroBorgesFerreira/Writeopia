@@ -26,6 +26,7 @@ import io.writeopia.navigation.notes.navigateToNewNote
 import io.writeopia.navigation.notes.navigateToNote
 import io.writeopia.note_menu.di.NotesConfigurationInjector
 import io.writeopia.note_menu.di.NotesMenuAndroidInjection
+import io.writeopia.note_menu.di.UiConfigurationInjector
 import io.writeopia.note_menu.navigation.notesMenuNavigation
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
@@ -76,10 +77,12 @@ fun NavigationGraph(
     val editorInjector =
         EditorInjector.create(authCoreInjection, repositoryInjection, connectionInjector)
     val accountMenuInjector = AndroidAccountMenuInjector.create(authCoreInjection)
+    val uiConfigurationInjector = UiConfigurationInjector()
     val notesMenuInjection = NotesMenuAndroidInjection.create(
         notesConfigurationInjector,
         authCoreInjection,
-        repositoryInjection
+        repositoryInjection,
+        uiConfigurationInjector
     )
 
     WrieopiaTheme {

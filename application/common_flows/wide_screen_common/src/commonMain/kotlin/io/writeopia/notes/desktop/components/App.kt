@@ -1,37 +1,20 @@
 package io.writeopia.notes.desktop.components
 
-import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.KeyEvent
-import androidx.compose.ui.input.key.onPreviewKeyEvent
-import androidx.compose.ui.unit.dp
-import io.writeopia.account.di.AccountMenuInjector
 import io.writeopia.account.di.AccountMenuKmpInjector
 import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
 import io.writeopia.editor.di.EditorKmpInjector
-import io.writeopia.editor.ui.desktop.AppTextEditor
-import io.writeopia.editor.ui.desktop.EditorScaffold
+import io.writeopia.model.ColorThemeOption
+import io.writeopia.model.darkTheme
 import io.writeopia.navigation.Navigation
 import io.writeopia.note_menu.di.NotesConfigurationInjector
 import io.writeopia.note_menu.di.NotesMenuKmpInjection
 import io.writeopia.note_menu.di.UiConfigurationInjector
-import io.writeopia.note_menu.ui.screen.DesktopNotesMenu
-import io.writeopia.notes.desktop.components.navigation.NavigationPage
-import io.writeopia.notes.desktop.components.navigation.NavigationViewModel
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.theme.WrieopiaTheme
-import io.writeopia.ui.drawer.factory.DrawersFactory
 import io.writeopia.utils_module.Destinations
 import kotlinx.coroutines.flow.StateFlow
 
@@ -42,7 +25,9 @@ fun App(
     uiConfigurationInjector: UiConfigurationInjector,
     disableWebsocket: Boolean = false,
     selectionState: StateFlow<Boolean>,
-    isUndoKeyEvent: (KeyEvent) -> Boolean
+    colorThemeOption: ColorThemeOption,
+    isUndoKeyEvent: (KeyEvent) -> Boolean,
+    selectColorTheme: (ColorThemeOption) -> Unit,
 ) {
     val authCoreInjection = KmpAuthCoreInjection()
     val connectionInjection =
@@ -66,13 +51,14 @@ fun App(
         selectionState = selectionState,
     )
 
-    WrieopiaTheme {
+    WrieopiaTheme(darkTheme = colorThemeOption.darkTheme()) {
         Navigation(
             startDestination = Destinations.CHOOSE_NOTE.id,
             notesMenuInjection = notesMenuInjection,
             accountMenuInjector = accountInjector,
             editorInjector = editorInjector,
             isUndoKeyEvent = isUndoKeyEvent,
+            selectColorTheme = selectColorTheme
         ) {
 
         }

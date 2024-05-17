@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import io.writeopia.model.ColorThemeOption
 import io.writeopia.note_menu.di.NotesMenuInjection
 import io.writeopia.note_menu.ui.screen.menu.NotesMenuScreen
 import io.writeopia.utils_module.Destinations
@@ -18,6 +19,7 @@ import io.writeopia.utils_module.Destinations
 fun NavGraphBuilder.notesMenuNavigation(
     notesMenuInjection: NotesMenuInjection,
     navigationController: NavController,
+    selectColorTheme: (ColorThemeOption) -> Unit,
     navigateToNote: (String, String) -> Unit,
     navigateToNewNote: () -> Unit,
     navigateToAccount: () -> Unit,
@@ -49,6 +51,7 @@ fun NavGraphBuilder.notesMenuNavigation(
             onNewNoteClick = navigateToNewNote,
             onNoteClick = navigateToNote,
             onAccountClick = navigateToAccount,
+            selectColorTheme = selectColorTheme,
             modifier = Modifier.background(MaterialTheme.colorScheme.background)
         )
     }

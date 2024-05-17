@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class NotesMenuAndroidInjection(
-    private val notesMenuKmpInjection: NotesMenuKmpInjection
+    private val notesMenuKmpInjection: NotesMenuKmpInjection,
 ) : NotesMenuInjection {
 
     @Composable
@@ -25,13 +25,15 @@ class NotesMenuAndroidInjection(
         fun create(
             notesConfigurationInjector: NotesConfigurationInjector,
             authCoreInjection: AuthCoreInjection,
-            repositoryInjection: RepositoryInjector
+            repositoryInjection: RepositoryInjector,
+            uiConfigurationInjector: UiConfigurationInjector,
         ) = NotesMenuAndroidInjection(
             NotesMenuKmpInjection(
-                notesConfigurationInjector,
-                authCoreInjection,
-                repositoryInjection,
-                MutableStateFlow(false)
+                notesConfigurationInjector = notesConfigurationInjector,
+                authCoreInjection = authCoreInjection,
+                repositoryInjection = repositoryInjection,
+                uiConfigurationInjector = uiConfigurationInjector,
+                selectionState = MutableStateFlow(false)
             )
         )
     }

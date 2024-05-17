@@ -10,6 +10,7 @@ import io.writeopia.account.di.AccountMenuInjector
 import io.writeopia.account.navigation.accountMenuNavigation
 import io.writeopia.editor.di.TextEditorInjector
 import io.writeopia.editor.navigation.editorNavigation
+import io.writeopia.model.ColorThemeOption
 import io.writeopia.navigation.notes.navigateToAccount
 import io.writeopia.navigation.notes.navigateToNewNote
 import io.writeopia.navigation.notes.navigateToNote
@@ -26,12 +27,14 @@ fun Navigation(
     editorInjector: TextEditorInjector,
     accountMenuInjector: AccountMenuInjector,
     isUndoKeyEvent: (KeyEvent) -> Boolean,
+    selectColorTheme: (ColorThemeOption) -> Unit,
     builder: NavGraphBuilder.() -> Unit
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
         notesMenuNavigation(
             notesMenuInjection = notesMenuInjection,
             navigationController = navController,
+            selectColorTheme = selectColorTheme,
             navigateToNote = navController::navigateToNote,
             navigateToAccount = navController::navigateToAccount,
             navigateToNewNote = navController::navigateToNewNote

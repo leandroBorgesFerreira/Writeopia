@@ -23,12 +23,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import io.writeopia.common_ui.HorizontalOptions
+import io.writeopia.model.ColorThemeOption
 import io.writeopia.note_menu.ui.screen.configuration.modifier.orderConfigModifierHorizontal
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun SettingsDialog(
+    selectedThemePosition: StateFlow<Int>,
     onDismissRequest: () -> Unit,
+    selectColorTheme: (ColorThemeOption) -> Unit,
 ) {
     val titleStyle = MaterialTheme.typography.titleLarge
     val titleColor = MaterialTheme.colorScheme.onBackground
@@ -45,22 +48,28 @@ fun SettingsDialog(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                ColorThemeOptions()
+                ColorThemeOptions(
+                    selectedThemePosition = selectedThemePosition,
+                    selectColorTheme = selectColorTheme
+                )
             }
         }
     }
 }
 
 @Composable
-private fun ColorThemeOptions() {
+private fun ColorThemeOptions(
+    selectedThemePosition: StateFlow<Int>,
+    selectColorTheme: (ColorThemeOption) -> Unit
+) {
     val typography = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
     val color = MaterialTheme.colorScheme.onBackground
 
     HorizontalOptions(
         modifier = Modifier,
-        selectedState = MutableStateFlow(0),
+        selectedState = selectedThemePosition,
         options = listOf<Pair<() -> Unit, @Composable RowScope.() -> Unit>>(
-            { } to {
+            { selectColorTheme(ColorThemeOption.LIGHT) } to {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
@@ -80,7 +89,7 @@ private fun ColorThemeOptions() {
                     Text("Light", style = typography, color = color)
                 }
             },
-            { } to {
+            { selectColorTheme(ColorThemeOption.DARK) } to {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
@@ -100,7 +109,7 @@ private fun ColorThemeOptions() {
                     Text("Dark", style = typography, color = color)
                 }
             },
-            { } to {
+            { selectColorTheme(ColorThemeOption.SYSTEM) } to {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier

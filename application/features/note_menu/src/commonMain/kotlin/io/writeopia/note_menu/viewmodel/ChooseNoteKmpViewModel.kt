@@ -31,11 +31,9 @@ internal class ChooseNoteKmpViewModel(
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
     private val documentToJson: DocumentToJson = DocumentToJson(),
     private val writeopiaJsonParser: WriteopiaJsonParser = WriteopiaJsonParser()
-) : ChooseNoteViewModel, KmpViewModel {
+) : ChooseNoteViewModel, KmpViewModel() {
 
     private var localUserId: String? = null
-
-    private lateinit var coroutineScope: CoroutineScope
 
     private val _selectedNotes = MutableStateFlow(setOf<String>())
     override val hasSelectedNotes: StateFlow<Boolean> by lazy {
@@ -76,7 +74,7 @@ internal class ChooseNoteKmpViewModel(
 
     override val showSideMenu: StateFlow<Boolean> by lazy {
         uiConfigurationRepo.listenForUiConfiguration(::getUserId, coroutineScope).map { configuration ->
-            configuration.showSideMenu
+            configuration?.showSideMenu ?: true
         }.stateIn(coroutineScope, SharingStarted.Lazily, false)
     }
 
@@ -112,10 +110,6 @@ internal class ChooseNoteKmpViewModel(
         localUserId ?: authManager.getUser().id.also { id ->
             localUserId = id
         }
-
-    override fun initCoroutine(coroutineScope: CoroutineScope) {
-        this.coroutineScope = coroutineScope
-    }
 
     override fun requestDocuments(force: Boolean) {
         if (documentsState.value !is ResultData.Complete || force) {

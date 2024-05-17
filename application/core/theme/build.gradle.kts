@@ -3,7 +3,6 @@ plugins {
     id("org.jetbrains.compose")
 }
 
-
 kotlin {
     jvm {}
 
@@ -15,7 +14,9 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":application:core:persistence_sqldelight"))
+                implementation(project(":application:core:persistence_sqldelight"))
+                implementation(project(":application:core:utils"))
+
                 implementation(compose.material3)
             }
         }

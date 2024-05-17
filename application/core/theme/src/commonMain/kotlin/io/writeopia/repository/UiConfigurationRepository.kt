@@ -52,6 +52,6 @@ class UiConfigurationRepository(private val uiConfigurationDao: UiConfigurationS
 
     fun listenForUiConfiguration(getUserId: suspend () -> String, coroutineScope: CoroutineScope) =
         uiConfigurationDao.listenForConfigurationByUserId(getUserId, coroutineScope).map { entity ->
-            entity.toModel()
+            entity?.toModel()
         }
 }

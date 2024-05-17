@@ -32,10 +32,8 @@ class NoteEditorKmpViewModel(
     private val documentRepository: DocumentRepository,
     private val documentFilter: DocumentFilter = DocumentFilterObject,
     private val sharedEditionManager: SharedEditionManager
-) : NoteEditorViewModel, KmpViewModel, BackstackInform by writeopiaManager,
+) : NoteEditorViewModel, KmpViewModel(), BackstackInform by writeopiaManager,
     BackstackHandler by writeopiaManager {
-
-    private lateinit var coroutineScope: CoroutineScope
 
     private val _isEditableState = MutableStateFlow(true)
 
@@ -81,10 +79,6 @@ class NoteEditorKmpViewModel(
     }
     private val _documentToShareInfo = MutableStateFlow<ShareDocument?>(null)
     override val documentToShareInfo: StateFlow<ShareDocument?> = _documentToShareInfo.asStateFlow()
-
-    override fun initCoroutine(coroutineScope: CoroutineScope) {
-        this.coroutineScope = coroutineScope
-    }
 
     override fun deleteSelection() {
         writeopiaManager.deleteSelection()

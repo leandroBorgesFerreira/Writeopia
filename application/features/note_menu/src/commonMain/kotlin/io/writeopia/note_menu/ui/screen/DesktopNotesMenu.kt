@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import io.writeopia.model.ColorThemeOption
 import io.writeopia.note_menu.ui.screen.actions.DesktopNoteActionsMenu
 import io.writeopia.note_menu.ui.screen.configuration.modifier.icon
 import io.writeopia.note_menu.ui.screen.configuration.molecules.NotesConfigurationMenu
@@ -52,6 +53,7 @@ import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.note_menu.viewmodel.ConfigState
 import io.writeopia.note_menu.viewmodel.getPath
 import io.writeopia.note_menu.viewmodel.toNumberDesktop
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun DesktopNotesMenu(
@@ -59,6 +61,7 @@ fun DesktopNotesMenu(
     navigationController: NavController,
     onNewNoteClick: () -> Unit,
     onNoteClick: (String, String) -> Unit,
+    selectColorTheme: (ColorThemeOption) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LaunchedEffect(
@@ -216,7 +219,11 @@ fun DesktopNotesMenu(
         val showSettingsState by chooseNoteViewModel.showSettingsState.collectAsState()
 
         if (showSettingsState) {
-            SettingsDialog(chooseNoteViewModel::hideSettings)
+            SettingsDialog(
+                selectedThemePosition = MutableStateFlow(2),
+                onDismissRequest = chooseNoteViewModel::hideSettings,
+                selectColorTheme = selectColorTheme
+            )
         }
     }
 }
