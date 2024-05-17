@@ -1,4 +1,4 @@
-package io.writeopia.note_menu.extensions
+package io.writeopia.extensions
 
 import io.writeopia.app.sql.UiConfigurationEntity
 import io.writeopia.model.ColorThemeOption

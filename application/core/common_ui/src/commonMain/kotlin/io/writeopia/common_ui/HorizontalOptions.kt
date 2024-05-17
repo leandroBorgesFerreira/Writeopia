@@ -32,8 +32,8 @@ fun HorizontalOptions(
     selectedState: Flow<Int>,
     options: List<Pair<() -> Unit, @Composable RowScope.() -> Unit>>,
     height: Dp = 42.dp,
-    modifier: Modifier = Modifier,
     spaceWidth: Dp = 9.dp,
+    modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier.height(height)) {
         Row {

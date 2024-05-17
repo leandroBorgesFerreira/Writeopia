@@ -4,7 +4,7 @@ import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.note_menu.data.NotesArrangement
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
-import io.writeopia.note_menu.data.repository.UiConfigurationRepository
+import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
 import io.writeopia.note_menu.ui.dto.NotesUi
@@ -71,8 +71,11 @@ internal class ChooseNoteKmpViewModel(
     private val _showSortMenuState = MutableStateFlow(false)
     override val showSortMenuState: StateFlow<Boolean> = _showSortMenuState.asStateFlow()
 
+    private val _showSettingsState = MutableStateFlow(false)
+    override val showSettingsState: StateFlow<Boolean> = _showSettingsState.asStateFlow()
+
     override val showSideMenu: StateFlow<Boolean> by lazy {
-        uiConfigurationRepo.listenForColorTheme(::getUserId, coroutineScope).map { configuration ->
+        uiConfigurationRepo.listenForUiConfiguration(::getUserId, coroutineScope).map { configuration ->
             configuration.showSideMenu
         }.stateIn(coroutineScope, SharingStarted.Lazily, false)
     }
@@ -308,6 +311,14 @@ internal class ChooseNoteKmpViewModel(
 
     override fun toggleSideMenu() {
         setShowSideMenu(!showSideMenu.value)
+    }
+
+    override fun showSettings() {
+        _showSettingsState.value = true
+    }
+
+    override fun hideSettings() {
+        _showSettingsState.value = false
     }
 
     private fun setShowSideMenu(enabled: Boolean) {

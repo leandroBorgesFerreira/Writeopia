@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
-import io.writeopia.note_menu.data.repository.UiConfigurationRepository
+import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.viewmodel.ChooseNoteKmpViewModel
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel

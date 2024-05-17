@@ -34,7 +34,8 @@ fun SideGlobalMenu(
     modifier: Modifier = Modifier,
     background: Color,
     showOptions: Boolean,
-    width: Dp = finalWidth.dp
+    width: Dp = finalWidth.dp,
+    settingsClick: () -> Unit,
 ) {
     val widthState by derivedStateOf {
         if (showOptions) width else 0.dp
@@ -42,7 +43,7 @@ fun SideGlobalMenu(
 
     val widthAnimatedState by animateDpAsState(widthState)
     val showContent by derivedStateOf {
-        widthState > width * 0.5F
+        widthState > width * 0.3F
     }
 
     Row(
@@ -56,7 +57,7 @@ fun SideGlobalMenu(
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.clickable { }
+                        modifier = Modifier.clickable(onClick = settingsClick)
                             .padding(horizontal = 20.dp, vertical = 10.dp)
                             .fillMaxWidth()
                     ) {

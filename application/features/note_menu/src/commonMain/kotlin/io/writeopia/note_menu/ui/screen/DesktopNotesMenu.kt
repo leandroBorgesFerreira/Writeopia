@@ -47,6 +47,7 @@ import io.writeopia.note_menu.ui.screen.file.fileChooserSave
 import io.writeopia.note_menu.ui.screen.list.NotesCards
 import io.writeopia.note_menu.ui.screen.menu.RoundedVerticalDivider
 import io.writeopia.note_menu.ui.screen.menu.SideGlobalMenu
+import io.writeopia.note_menu.ui.screen.settings.SettingsDialog
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.note_menu.viewmodel.ConfigState
 import io.writeopia.note_menu.viewmodel.getPath
@@ -78,7 +79,8 @@ fun DesktopNotesMenu(
                 modifier = Modifier.fillMaxHeight(),
                 background = MaterialTheme.colorScheme.surfaceVariant,
                 showOptions = showOptions,
-                width = 280.dp
+                width = 280.dp,
+                settingsClick = chooseNoteViewModel::showSettings
             )
 
             Box {
@@ -210,5 +212,11 @@ fun DesktopNotesMenu(
             exitAnimationOffset = 2.3F,
             animationSpec = spring(dampingRatio = 0.6F)
         )
+
+        val showSettingsState by chooseNoteViewModel.showSettingsState.collectAsState()
+
+        if (showSettingsState) {
+            SettingsDialog(chooseNoteViewModel::hideSettings)
+        }
     }
 }

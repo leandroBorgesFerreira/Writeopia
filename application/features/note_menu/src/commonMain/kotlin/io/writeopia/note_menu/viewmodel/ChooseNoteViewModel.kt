@@ -27,6 +27,8 @@ interface ChooseNoteViewModel {
 
     val showSideMenu: StateFlow<Boolean>
 
+    val showSettingsState: StateFlow<Boolean>
+
     fun requestDocuments(force: Boolean)
 
     fun handleNoteTap(id: String): Boolean
@@ -76,6 +78,10 @@ interface ChooseNoteViewModel {
     fun pathSelected(path: String)
 
     fun confirmWorkplacePath()
+
+    fun showSettings()
+
+    fun hideSettings()
 }
 
 sealed interface UserState<T> {

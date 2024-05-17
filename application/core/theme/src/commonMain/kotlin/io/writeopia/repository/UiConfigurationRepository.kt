@@ -1,10 +1,10 @@
-package io.writeopia.note_menu.data.repository
+package io.writeopia.repository
 
 import io.writeopia.app.sql.UiConfigurationEntity
+import io.writeopia.extensions.toEntity
+import io.writeopia.extensions.toModel
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.model.UiConfiguration
-import io.writeopia.note_menu.extensions.toEntity
-import io.writeopia.note_menu.extensions.toModel
 import io.writeopia.sqldelight.theme.UiConfigurationSqlDelightDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
@@ -50,7 +50,7 @@ class UiConfigurationRepository(private val uiConfigurationDao: UiConfigurationS
         }
     }
 
-    fun listenForColorTheme(getUserId: suspend () -> String, coroutineScope: CoroutineScope) =
+    fun listenForUiConfiguration(getUserId: suspend () -> String, coroutineScope: CoroutineScope) =
         uiConfigurationDao.listenForConfigurationByUserId(getUserId, coroutineScope).map { entity ->
             entity.toModel()
         }
