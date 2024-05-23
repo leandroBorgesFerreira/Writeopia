@@ -38,7 +38,6 @@ fun main() = application {
 
     val selectionState = MutableStateFlow(false)
 
-
     Window(
         onCloseRequest = ::exitApplication,
         title = "Writeopia",
@@ -62,23 +61,17 @@ fun main() = application {
 
                 val colorTheme =
                     uiConfigurationViewModel.listenForColorTheme { "user_offline" }
-                        .collectAsState()
-                        .value
 
-                if (colorTheme != null) {
-                    App(
-                        notesConfigurationInjector = NotesConfigurationInjector(database),
-                        repositoryInjection = SqlDelightDaoInjector(database),
-                        uiConfigurationInjector = UiConfigurationInjector(database),
-                        selectionState = selectionState,
-                        isUndoKeyEvent = ::isUndoKeyboardEvent,
-                        colorThemeOption = colorTheme,
-                        selectColorTheme = uiConfigurationViewModel::changeColorTheme
-                    )
-                } else {
-                    ScreenLoading()
-                }
-
+                App(
+                    notesConfigurationInjector = NotesConfigurationInjector(database),
+                    repositoryInjection = SqlDelightDaoInjector(database),
+                    uiConfigurationInjector = UiConfigurationInjector(database),
+                    selectionState = selectionState,
+                    coroutineScope = coroutineScope,
+                    isUndoKeyEvent = ::isUndoKeyboardEvent,
+                    colorThemeOption = colorTheme,
+                    selectColorTheme = uiConfigurationViewModel::changeColorTheme
+                )
             }
 
             DatabaseCreation.Loading -> {

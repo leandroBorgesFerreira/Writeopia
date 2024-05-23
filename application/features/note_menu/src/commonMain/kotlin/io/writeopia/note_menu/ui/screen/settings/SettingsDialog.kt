@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Contrast
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.SystemUpdate
@@ -72,7 +73,6 @@ private fun ColorThemeOptions(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .orderConfigModifierHorizontal {
-                    println("selecting light color theme!!")
                     selectColorTheme(ColorThemeOption.LIGHT)
                 }
                 .weight(1F)
@@ -94,7 +94,6 @@ private fun ColorThemeOptions(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .orderConfigModifierHorizontal {
-                    println("selecting light color theme!!")
                     selectColorTheme(ColorThemeOption.DARK)
                 }
                 .weight(1F)
@@ -116,14 +115,13 @@ private fun ColorThemeOptions(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .orderConfigModifierHorizontal {
-                    println("selecting light color theme!!")
                     selectColorTheme(ColorThemeOption.SYSTEM)
                 }
                 .weight(1F)
         ) {
             Icon(
                 modifier = Modifier.weight(1F),
-                imageVector = Icons.Outlined.SystemUpdate,
+                imageVector = Icons.Outlined.Contrast,
                 contentDescription = "note list",
                 //            stringResource(R.string.note_list),
                 tint = MaterialTheme.colorScheme.onPrimary

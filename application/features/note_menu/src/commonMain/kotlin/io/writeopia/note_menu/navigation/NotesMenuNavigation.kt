@@ -15,10 +15,12 @@ import io.writeopia.model.ColorThemeOption
 import io.writeopia.note_menu.di.NotesMenuInjection
 import io.writeopia.note_menu.ui.screen.menu.NotesMenuScreen
 import io.writeopia.utils_module.Destinations
+import kotlinx.coroutines.CoroutineScope
 
 fun NavGraphBuilder.notesMenuNavigation(
     notesMenuInjection: NotesMenuInjection,
     navigationController: NavController,
+    coroutineScope: CoroutineScope,
     selectColorTheme: (ColorThemeOption) -> Unit,
     navigateToNote: (String, String) -> Unit,
     navigateToNewNote: () -> Unit,
@@ -43,7 +45,7 @@ fun NavGraphBuilder.notesMenuNavigation(
         }
     ) {
         val chooseNoteViewModel =
-            notesMenuInjection.provideChooseNoteViewModel(coroutineScope = rememberCoroutineScope())
+            notesMenuInjection.provideChooseNoteViewModel(coroutineScope = coroutineScope)
 
         NotesMenuScreen(
             chooseNoteViewModel = chooseNoteViewModel,

@@ -21,10 +21,10 @@ fun Modifier.orderConfigModifierHorizontal(clickable: () -> Unit): Modifier =
             .fillMaxHeight()
     }
 
-fun Modifier.orderConfigModifierVertical(clickable: () -> Unit): Modifier =
+fun Modifier.orderConfigModifierVertical(onClick: () -> Unit): Modifier =
     composed {
         clip(RoundedCornerShape(6.dp))
-            .clickable(onClick = clickable)
+            .clickable(onClick = onClick)
             .padding(6.dp)
             .fillMaxWidth()
     }

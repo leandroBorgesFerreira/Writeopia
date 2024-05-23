@@ -18,6 +18,7 @@ import io.writeopia.navigation.notes.navigateToNoteMenu
 import io.writeopia.note_menu.di.NotesMenuInjection
 import io.writeopia.note_menu.navigation.notesMenuNavigation
 import io.writeopia.utils_module.Destinations
+import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun Navigation(
@@ -28,6 +29,7 @@ fun Navigation(
     accountMenuInjector: AccountMenuInjector,
     isUndoKeyEvent: (KeyEvent) -> Boolean,
     selectColorTheme: (ColorThemeOption) -> Unit,
+    coroutineScope: CoroutineScope,
     builder: NavGraphBuilder.() -> Unit
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
@@ -35,6 +37,7 @@ fun Navigation(
             notesMenuInjection = notesMenuInjection,
             navigationController = navController,
             selectColorTheme = selectColorTheme,
+            coroutineScope = coroutineScope,
             navigateToNote = navController::navigateToNote,
             navigateToAccount = navController::navigateToAccount,
             navigateToNewNote = navController::navigateToNewNote

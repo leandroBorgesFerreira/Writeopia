@@ -36,7 +36,7 @@ fun ArrangementOptionsMenu(
             options = listOf<Pair<() -> Unit, @Composable ColumnScope.() -> Unit>>(
                 staggeredGridSelected to {
                     Icon(
-                        modifier = Modifier.orderConfigModifierVertical(clickable = { } ),
+                        modifier = Modifier.orderConfigModifierVertical(onClick = {}),
                         imageVector = Icons.Outlined.Dashboard,
                         contentDescription = "staggered card",
                         //            stringResource(R.string.staggered_card),
@@ -45,7 +45,7 @@ fun ArrangementOptionsMenu(
                 },
                 gridSelected to {
                     Icon(
-                        modifier = Modifier.orderConfigModifierVertical(clickable = { } ),
+                        modifier = Modifier.orderConfigModifierVertical(onClick = {}),
                         imageVector = Icons.Outlined.GridView,
                         contentDescription = "staggered card",
                         //            stringResource(R.string.staggered_card),
@@ -54,7 +54,7 @@ fun ArrangementOptionsMenu(
                 },
                 listSelected to {
                     Icon(
-                        modifier = Modifier.orderConfigModifierVertical(clickable = { } ),
+                        modifier = Modifier.orderConfigModifierVertical(onClick = {}),
                         imageVector = Icons.AutoMirrored.Outlined.List,
                         contentDescription = "staggered card",
                         //            stringResource(R.string.staggered_card),
@@ -63,7 +63,8 @@ fun ArrangementOptionsMenu(
                 },
             ),
             modifier = Modifier.height(110.dp),
-            spaceHeight = 2.dp
+            spaceHeight = 2.dp,
+            selectorShape = selectorShape
         )
     }
 }

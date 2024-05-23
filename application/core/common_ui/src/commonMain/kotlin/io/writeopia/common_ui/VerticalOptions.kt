@@ -63,7 +63,7 @@ fun VerticalOptions(
             items(
                 options.size,
                 key = { index ->
-                    if (index == selected) "ha" else Random.nextInt().toString()
+                    if (index == selected) "ha" else index
                 }
             ) { i ->
                 if (i == selected) {
