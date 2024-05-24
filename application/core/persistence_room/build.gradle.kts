@@ -48,7 +48,8 @@ dependencies {
     implementation(project(":writeopia_models"))
     implementation(project(":plugins:writeopia_persistence_room"))
     implementation(project(":plugins:writeopia_persistence_core"))
-    
+    implementation(project(":application:core:theme"))
+
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     implementation(libs.room.paging)

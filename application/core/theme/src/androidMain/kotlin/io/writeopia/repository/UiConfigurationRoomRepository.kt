@@ -5,21 +5,22 @@ import io.writeopia.extensions.toEntity
 import io.writeopia.extensions.toModel
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.model.UiConfiguration
-import io.writeopia.sqldelight.theme.UiConfigurationSqlDelightDao
+import io.writeopia.repository.extensions.toModel
+import io.writeopia.repository.extensions.toRoomEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UiConfigurationSqlDelightRepository(
-    private val uiConfigurationDao: UiConfigurationSqlDelightDao
+class UiConfigurationRoomRepository(
+    private val uiConfigurationRoomDao: UiConfigurationRoomDao
 ) : UiConfigurationRepository {
-
     override suspend fun insertUiConfiguration(uiConfiguration: UiConfiguration) {
-        uiConfigurationDao.saveUiConfiguration(uiConfiguration.toEntity())
+        uiConfigurationRoomDao.saveUiConfiguration(uiConfiguration.toRoomEntity())
     }
 
-    override suspend fun getUiConfigurationEntity(userId: String): UiConfigurationEntity? =
-        uiConfigurationDao.getConfigurationByUserId(userId)
+    override suspend fun getUiConfigurationEntity(userId: String): UiConfigurationEntity? {
+        uiConfigurationRoomDao.getConfigurationByUserId(userId)
+    }
 
     override suspend fun updateShowSideMenu(userId: String, showSideMenu: Boolean) {
         val entity = getUiConfigurationEntity(userId)
@@ -57,7 +58,7 @@ class UiConfigurationSqlDelightRepository(
         getUserId: suspend () -> String,
         coroutineScope: CoroutineScope
     ): Flow<UiConfiguration?> =
-        uiConfigurationDao.listenForConfigurationByUserId(getUserId, coroutineScope)
+        uiConfigurationRoomDao.listenForConfigurationByUserId(getUserId, coroutineScope)
             .map { entity ->
                 entity?.toModel()
             }

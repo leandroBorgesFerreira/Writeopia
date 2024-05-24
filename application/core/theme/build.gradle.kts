@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -36,6 +37,12 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.test)
             }
         }
+
+        val androidMain by getting {
+            dependencies {
+
+            }
+        }
     }
 }
 
@@ -63,5 +70,12 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    dependencies {
+        implementation(libs.room.runtime)
+        implementation(libs.room.ktx)
+        ksp(libs.room.compiler)
+        implementation(libs.room.paging)
     }
 }
