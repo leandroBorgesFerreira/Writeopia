@@ -36,14 +36,6 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.test)
             }
         }
-
-        val androidInstrumentedTest by getting {
-            dependencies {
-                dependsOn(commonTest)
-                implementation(libs.kotlin.test)
-                implementation(libs.kotlinx.coroutines.test)
-            }
-        }
     }
 }
 

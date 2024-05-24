@@ -13,6 +13,7 @@ kotlin {
         val androidInstrumentedTest by getting {
             dependencies {
                 implementation(project(":application:core:common_ui_tests"))
+                implementation(project(":application:core:theme"))
 
                 implementation(libs.kotlin.test)
                 implementation(libs.androidx.espresso.core)
@@ -46,10 +47,10 @@ kotlin {
 
                 implementation(libs.ktor.client.logging)
 
-                implementation("androidx.lifecycle:lifecycle-runtime-compose")
+                implementation(libs.androidx.lifecycle.runtime.compose)
                 implementation(libs.navigation.compose)
 
-                implementation("androidx.compose.material3:material3")
+                implementation(libs.androidx.material3)
                 implementation(project.dependencies.platform(libs.androidx.compose.bom))
             }
         }
