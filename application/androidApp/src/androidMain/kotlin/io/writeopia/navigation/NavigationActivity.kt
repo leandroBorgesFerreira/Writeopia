@@ -92,6 +92,7 @@ fun NavigationGraph(
             editorInjector = editorInjector,
             accountMenuInjector = accountMenuInjector,
             startDestination = startDestination,
+            selectColorTheme = {},
             isUndoKeyEvent = { false }
         ) {
             authNavigation(navController, authInjection, navController::navigateToMainMenu)

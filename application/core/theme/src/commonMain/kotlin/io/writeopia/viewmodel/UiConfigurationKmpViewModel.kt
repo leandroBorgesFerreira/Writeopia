@@ -11,20 +11,20 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class UiConfigurationKmpViewModel(
-    private val uiConfigurationRepository: UiConfigurationRepository
+    private val uiConfigurationSqlDelightRepository: UiConfigurationRepository
 ) : KmpViewModel(), UiConfigurationViewModel {
 
     override fun listenForColorTheme(
         getUserId: suspend () -> String
     ): StateFlow<ColorThemeOption?> =
-        uiConfigurationRepository.listenForUiConfiguration(getUserId, coroutineScope)
+        uiConfigurationSqlDelightRepository.listenForUiConfiguration(getUserId, coroutineScope)
             .map { uiConfiguration ->
                 uiConfiguration?.colorThemeOption ?: ColorThemeOption.SYSTEM
             }.stateIn(coroutineScope, SharingStarted.Lazily, null)
 
     override fun changeColorTheme(colorThemeOption: ColorThemeOption) {
         coroutineScope.launch(Dispatchers.Default) {
-            uiConfigurationRepository.updateColorTheme(
+            uiConfigurationSqlDelightRepository.updateColorTheme(
                 "user_offline",
                 colorThemeOption = colorThemeOption
             )

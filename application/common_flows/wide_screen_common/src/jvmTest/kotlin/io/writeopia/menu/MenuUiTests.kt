@@ -15,7 +15,7 @@ class MenuUiTests {
     @Test
     @Ignore("it should be possible to sync the menu even without notes")
     fun `it should be possible to sync the menu even without notes`() = runTest {
-        startApp(composeTestRule) { database ->
+        startApp(composeTestRule, this) { database ->
             database.workspaceConfigurationEntityQueries.insert("disconnected_user", "./")
         }
 

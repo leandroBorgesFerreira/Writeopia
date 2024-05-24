@@ -5,6 +5,7 @@ import io.mockk.mockk
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
+import io.writeopia.repository.UiConfigurationSqlDelightRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +21,7 @@ class ChooseNoteViewModelTest {
     private val notesUseCase: NotesUseCase = mockk()
     private val notesConfig: ConfigurationRepository = mockk()
     private val authManager: AuthManager = mockk()
+    private val uiConfigurationSqlDelightRepository: UiConfigurationSqlDelightRepository = mockk()
 
     @Test
     @Ignore("Todo: Fix")
@@ -33,6 +35,7 @@ class ChooseNoteViewModelTest {
             val viewModel = ChooseNoteKmpViewModel(
                 notesUseCase,
                 notesConfig,
+                uiConfigurationSqlDelightRepository,
                 authManager,
                 MutableStateFlow(false)
             ).apply {

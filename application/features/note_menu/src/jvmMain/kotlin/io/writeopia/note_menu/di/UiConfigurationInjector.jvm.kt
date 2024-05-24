@@ -1,6 +1,7 @@
 package io.writeopia.note_menu.di
 
 import io.writeopia.repository.UiConfigurationRepository
+import io.writeopia.repository.UiConfigurationSqlDelightRepository
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.theme.UiConfigurationSqlDelightDao
 import io.writeopia.viewmodel.UiConfigurationKmpViewModel
@@ -13,15 +14,15 @@ actual class UiConfigurationInjector(private val writeopiaDb: WriteopiaDb?) {
         UiConfigurationSqlDelightDao(writeopiaDb)
 
     actual fun provideUiConfigurationRepository(): UiConfigurationRepository =
-        UiConfigurationRepository(provideUiConfigurationSqlDelightDao())
+        UiConfigurationSqlDelightRepository(provideUiConfigurationSqlDelightDao())
 
     //Todo: Check if the code can be merged into the same implementation,
     // only the repository needs to change
     fun provideUiConfigurationViewModel(
-        uiConfigurationRepository: UiConfigurationRepository = provideUiConfigurationRepository(),
+        uiConfigurationSqlDelightRepository: UiConfigurationRepository = provideUiConfigurationRepository(),
         coroutineScope: CoroutineScope? = null
     ): UiConfigurationViewModel =
-        UiConfigurationKmpViewModel(uiConfigurationRepository).apply {
+        UiConfigurationKmpViewModel(uiConfigurationSqlDelightRepository).apply {
             if (coroutineScope != null) {
                 initCoroutine(coroutineScope = coroutineScope)
             }

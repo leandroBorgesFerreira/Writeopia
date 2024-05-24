@@ -4,10 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
-import io.writeopia.repository.UiConfigurationRepository
+import io.writeopia.repository.UiConfigurationSqlDelightRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.viewmodel.ChooseNoteKmpViewModel
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
+import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import kotlinx.coroutines.CoroutineScope

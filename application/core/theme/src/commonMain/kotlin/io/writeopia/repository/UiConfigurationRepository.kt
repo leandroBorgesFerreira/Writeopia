@@ -1,57 +1,21 @@
 package io.writeopia.repository
 
 import io.writeopia.app.sql.UiConfigurationEntity
-import io.writeopia.extensions.toEntity
-import io.writeopia.extensions.toModel
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.model.UiConfiguration
-import io.writeopia.sqldelight.theme.UiConfigurationSqlDelightDao
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.Flow
 
-class UiConfigurationRepository(private val uiConfigurationDao: UiConfigurationSqlDelightDao) {
+interface UiConfigurationRepository {
+    suspend fun insertUiConfiguration(uiConfiguration: UiConfiguration)
 
-    private suspend fun insertUiConfiguration(uiConfiguration: UiConfiguration) {
-        uiConfigurationDao.saveUiConfiguration(uiConfiguration.toEntity())
-    }
+    suspend fun getUiConfigurationEntity(userId: String): UiConfigurationEntity?
 
-    private suspend fun getUiConfigurationEntity(userId: String): UiConfigurationEntity? =
-        uiConfigurationDao.getConfigurationByUserId(userId)
+    suspend fun updateShowSideMenu(userId: String, showSideMenu: Boolean)
 
-    suspend fun updateShowSideMenu(userId: String, showSideMenu: Boolean) {
-        val entity = getUiConfigurationEntity(userId)
-
-        if (entity != null) {
-            insertUiConfiguration(entity.toModel().copy(showSideMenu = showSideMenu))
-        } else {
-            insertUiConfiguration(
-                UiConfiguration(
-                    userId = userId,
-                    showSideMenu = showSideMenu,
-                    colorThemeOption = ColorThemeOption.SYSTEM,
-                )
-            )
-        }
-    }
-
-    suspend fun updateColorTheme(userId: String, colorThemeOption: ColorThemeOption) {
-        val entity = getUiConfigurationEntity(userId)
-
-        if (entity != null) {
-            insertUiConfiguration(entity.toModel().copy(colorThemeOption = colorThemeOption))
-        } else {
-            insertUiConfiguration(
-                UiConfiguration(
-                    userId = userId,
-                    showSideMenu = true,
-                    colorThemeOption = colorThemeOption,
-                )
-            )
-        }
-    }
-
-    fun listenForUiConfiguration(getUserId: suspend () -> String, coroutineScope: CoroutineScope) =
-        uiConfigurationDao.listenForConfigurationByUserId(getUserId, coroutineScope).map { entity ->
-            entity?.toModel()
-        }
+    suspend fun updateColorTheme(userId: String, colorThemeOption: ColorThemeOption)
+    fun listenForUiConfiguration(
+        getUserId: suspend () -> String,
+        coroutineScope: CoroutineScope
+    ): Flow<UiConfiguration?>
 }

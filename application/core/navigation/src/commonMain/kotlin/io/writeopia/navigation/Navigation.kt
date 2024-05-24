@@ -29,7 +29,7 @@ fun Navigation(
     accountMenuInjector: AccountMenuInjector,
     isUndoKeyEvent: (KeyEvent) -> Boolean,
     selectColorTheme: (ColorThemeOption) -> Unit,
-    coroutineScope: CoroutineScope,
+    coroutineScope: CoroutineScope? = null,
     builder: NavGraphBuilder.() -> Unit
 ) {
     NavHost(navController = navController, startDestination = startDestination) {

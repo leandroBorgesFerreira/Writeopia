@@ -20,7 +20,7 @@ import kotlinx.coroutines.CoroutineScope
 fun NavGraphBuilder.notesMenuNavigation(
     notesMenuInjection: NotesMenuInjection,
     navigationController: NavController,
-    coroutineScope: CoroutineScope,
+    coroutineScope: CoroutineScope?,
     selectColorTheme: (ColorThemeOption) -> Unit,
     navigateToNote: (String, String) -> Unit,
     navigateToNewNote: () -> Unit,
