@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface UiConfigurationRepository {
     suspend fun insertUiConfiguration(uiConfiguration: UiConfiguration)
 
-    suspend fun getUiConfigurationEntity(userId: String): UiConfigurationEntity?
+    suspend fun getUiConfigurationEntity(userId: String): UiConfiguration?
 
     suspend fun updateShowSideMenu(userId: String, showSideMenu: Boolean)
 

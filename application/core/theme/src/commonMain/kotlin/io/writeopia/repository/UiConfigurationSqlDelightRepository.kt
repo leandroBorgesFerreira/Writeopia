@@ -18,14 +18,14 @@ class UiConfigurationSqlDelightRepository(
         uiConfigurationDao.saveUiConfiguration(uiConfiguration.toEntity())
     }
 
-    override suspend fun getUiConfigurationEntity(userId: String): UiConfigurationEntity? =
-        uiConfigurationDao.getConfigurationByUserId(userId)
+    override suspend fun getUiConfigurationEntity(userId: String): UiConfiguration? =
+        uiConfigurationDao.getConfigurationByUserId(userId)?.toModel()
 
     override suspend fun updateShowSideMenu(userId: String, showSideMenu: Boolean) {
         val entity = getUiConfigurationEntity(userId)
 
         if (entity != null) {
-            insertUiConfiguration(entity.toModel().copy(showSideMenu = showSideMenu))
+            insertUiConfiguration(entity.copy(showSideMenu = showSideMenu))
         } else {
             insertUiConfiguration(
                 UiConfiguration(
@@ -41,7 +41,7 @@ class UiConfigurationSqlDelightRepository(
         val entity = getUiConfigurationEntity(userId)
 
         if (entity != null) {
-            insertUiConfiguration(entity.toModel().copy(colorThemeOption = colorThemeOption))
+            insertUiConfiguration(entity.copy(colorThemeOption = colorThemeOption))
         } else {
             insertUiConfiguration(
                 UiConfiguration(

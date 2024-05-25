@@ -1,8 +1,5 @@
 package io.writeopia.repository
 
-import io.writeopia.app.sql.UiConfigurationEntity
-import io.writeopia.extensions.toEntity
-import io.writeopia.extensions.toModel
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.model.UiConfiguration
 import io.writeopia.repository.extensions.toModel
@@ -18,15 +15,14 @@ class UiConfigurationRoomRepository(
         uiConfigurationRoomDao.saveUiConfiguration(uiConfiguration.toRoomEntity())
     }
 
-    override suspend fun getUiConfigurationEntity(userId: String): UiConfigurationEntity? {
-        uiConfigurationRoomDao.getConfigurationByUserId(userId)
-    }
+    override suspend fun getUiConfigurationEntity(userId: String): UiConfiguration? =
+        uiConfigurationRoomDao.getConfigurationByUserId(userId)?.toModel()
 
     override suspend fun updateShowSideMenu(userId: String, showSideMenu: Boolean) {
         val entity = getUiConfigurationEntity(userId)
 
         if (entity != null) {
-            insertUiConfiguration(entity.toModel().copy(showSideMenu = showSideMenu))
+            insertUiConfiguration(entity.copy(showSideMenu = showSideMenu))
         } else {
             insertUiConfiguration(
                 UiConfiguration(
@@ -42,7 +38,7 @@ class UiConfigurationRoomRepository(
         val entity = getUiConfigurationEntity(userId)
 
         if (entity != null) {
-            insertUiConfiguration(entity.toModel().copy(colorThemeOption = colorThemeOption))
+            insertUiConfiguration(entity.copy(colorThemeOption = colorThemeOption))
         } else {
             insertUiConfiguration(
                 UiConfiguration(
@@ -58,8 +54,9 @@ class UiConfigurationRoomRepository(
         getUserId: suspend () -> String,
         coroutineScope: CoroutineScope
     ): Flow<UiConfiguration?> =
-        uiConfigurationRoomDao.listenForConfigurationByUserId(getUserId, coroutineScope)
+        uiConfigurationRoomDao.listenForConfigurationByUserId("")
             .map { entity ->
                 entity?.toModel()
             }
+
 }
