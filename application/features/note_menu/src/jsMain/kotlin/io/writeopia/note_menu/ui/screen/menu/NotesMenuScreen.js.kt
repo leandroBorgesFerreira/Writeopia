@@ -22,6 +22,7 @@ actual fun NotesMenuScreen(
         navigationController = navigationController,
         onNewNoteClick = onNewNoteClick,
         onNoteClick = onNoteClick,
+        selectColorTheme = selectColorTheme,
         modifier = modifier,
     )
 }

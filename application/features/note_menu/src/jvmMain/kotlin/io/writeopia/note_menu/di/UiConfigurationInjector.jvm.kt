@@ -16,8 +16,6 @@ actual class UiConfigurationInjector(private val writeopiaDb: WriteopiaDb?) {
     actual fun provideUiConfigurationRepository(): UiConfigurationRepository =
         UiConfigurationSqlDelightRepository(provideUiConfigurationSqlDelightDao())
 
-    //Todo: Check if the code can be merged into the same implementation,
-    // only the repository needs to change
     fun provideUiConfigurationViewModel(
         uiConfigurationSqlDelightRepository: UiConfigurationRepository = provideUiConfigurationRepository(),
         coroutineScope: CoroutineScope? = null
