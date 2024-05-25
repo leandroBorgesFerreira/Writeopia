@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.jvm) apply false
     alias(libs.plugins.compose.multiplatform) apply false
     alias(libs.plugins.google.services) apply false
+//    id("androidx.room") version "2.7.0-alpha02" apply false
 //    alias(libs.plugins.ktlint)
 }
 

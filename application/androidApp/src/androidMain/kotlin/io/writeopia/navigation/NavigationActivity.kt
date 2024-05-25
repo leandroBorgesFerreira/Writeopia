@@ -69,7 +69,7 @@ fun NavigationGraph(
     val editorInjector =
         EditorInjector.create(authCoreInjection, repositoryInjection, connectionInjector)
     val accountMenuInjector = AndroidAccountMenuInjector.create(authCoreInjection)
-    val uiConfigurationInjector = UiConfigurationInjector()
+    val uiConfigurationInjector = UiConfigurationInjector(database)
     val notesMenuInjection = NotesMenuAndroidInjection.create(
         notesConfigurationInjector,
         authCoreInjection,

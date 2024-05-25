@@ -21,7 +21,7 @@ private const val DATABASE_NAME = "WriteopiaDatabase"
         DocumentEntity::class,
         StoryStepEntity::class,
         NotesConfigurationEntity::class,
-        UiConfigurationRoomEntity::class
+//        UiConfigurationRoomEntity::class
     ],
     version = 6,
     exportSchema = false

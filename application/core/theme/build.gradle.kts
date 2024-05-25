@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.compose")
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.ksp)
+//    id("androidx.room")
 }
 
 kotlin {
