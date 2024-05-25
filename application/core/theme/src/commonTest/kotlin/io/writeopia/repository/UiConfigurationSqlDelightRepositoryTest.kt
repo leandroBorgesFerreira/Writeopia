@@ -16,7 +16,7 @@ object UiConfigurationRepositoryCommonTest {
 
             assertEquals(
                 colorTheme,
-                this.getUiConfigurationEntity(userId)!!.toModel().colorThemeOption
+                this.getUiConfigurationEntity(userId)!!.colorThemeOption
             )
         }
     }
@@ -26,7 +26,7 @@ object UiConfigurationRepositoryCommonTest {
         val userId = "userId"
         repository.run {
             updateShowSideMenu(userId, true)
-            assertTrue(getUiConfigurationEntity(userId)!!.toModel().showSideMenu)
+            assertTrue(getUiConfigurationEntity(userId)!!.showSideMenu)
         }
     }
 
