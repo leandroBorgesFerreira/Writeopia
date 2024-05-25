@@ -6,6 +6,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.persistence.core.extensions.sortWithOrderBy
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
+import io.writeopia.sdk.persistence.sqldelight.toLong
 import io.writeopia.sdk.sql.DocumentEntityQueries
 import io.writeopia.sdk.sql.StoryStepEntityQueries
 import kotlinx.datetime.Instant
@@ -43,11 +44,11 @@ class DocumentSqlDao(
                 url = url,
                 path = path,
                 text = text,
-                checked = checked.let { if (it == true) 1 else 0 },
+                checked = checked.toLong(),
                 position = position,
                 document_id = documentId,
-                is_group = isGroup.let { if (it) 1 else 0 },
-                has_inner_steps = steps.isNotEmpty().let { if (it) 1 else 0 },
+                is_group = isGroup.toLong(),
+                has_inner_steps = steps.isNotEmpty().toLong(),
                 background_color = decoration.backgroundColor?.toLong(),
             )
         }

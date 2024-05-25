@@ -18,6 +18,7 @@ kotlin {
                 implementation(compose.materialIconsExtended)
 
                 implementation(project(":application:core:persistence_sqldelight"))
+                implementation(project(":application:core:theme"))
                 implementation(project(":application:common_flows:wide_screen_common"))
                 implementation(project(":application:features:note_menu"))
                 implementation(project(":writeopia_ui"))

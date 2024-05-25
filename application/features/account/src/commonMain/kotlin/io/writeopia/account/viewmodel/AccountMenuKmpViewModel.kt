@@ -5,7 +5,6 @@ import io.writeopia.auth.core.repository.AuthRepository
 import io.writeopia.utils_module.KmpViewModel
 import io.writeopia.utils_module.ResultData
 import io.writeopia.utils_module.toBoolean
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,15 +13,9 @@ import kotlinx.coroutines.launch
 internal class AccountMenuKmpViewModel(
     private val authManager: AuthManager,
     private val authRepository: AuthRepository,
-): AccountMenuViewModel, KmpViewModel {
-    private lateinit var coroutineScope: CoroutineScope
-
+): AccountMenuViewModel, KmpViewModel() {
     private val _isLoggedIn: MutableStateFlow<ResultData<Boolean>> by lazy { MutableStateFlow(ResultData.Idle()) }
     override val isLoggedIn: StateFlow<ResultData<Boolean>> by lazy { _isLoggedIn.asStateFlow() }
-
-    override fun initCoroutine(coroutineScope: CoroutineScope) {
-        this.coroutineScope = coroutineScope
-    }
 
     override fun checkLoggedIn() {
         coroutineScope.launch {

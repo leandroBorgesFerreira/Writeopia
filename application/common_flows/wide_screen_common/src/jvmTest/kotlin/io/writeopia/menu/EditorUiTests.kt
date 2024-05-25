@@ -25,7 +25,7 @@ class EditorUiTests {
     @Test
     @Ignore("Library of compose navigation somehow breaks this test. This should be added later")
     fun itShouldBePossibleToWriteATitleAndSomeContent() = runTest {
-        startApp(composeTestRule)
+        startApp(composeTestRule, this)
 
         EditorCommonTests.testAddTitleAndContent(
             DocumentsMenuRobot(composeTestRule),
@@ -36,7 +36,7 @@ class EditorUiTests {
     @Test
     @Ignore("Library of compose navigation somehow breaks this test. This should be added later")
     fun itShouldBePossibleToSaveNoteWithTitle() = runTest {
-        startApp(composeTestRule)
+        startApp(composeTestRule, this)
 
         EditorCommonTests.saveNoteWithTitle(
             DocumentsMenuRobot(composeTestRule),
@@ -47,7 +47,7 @@ class EditorUiTests {
     @Test
     @Ignore("Library of compose navigation somehow breaks this test. This should be added later")
     fun itShouldBePossibleToOpenANoteWithoutTitle() = runTest {
-        startApp(composeTestRule)
+        startApp(composeTestRule, this)
 
         EditorCommonTests.editNoteLineWithoutTitle(
             DocumentsMenuRobot(composeTestRule),
@@ -58,7 +58,7 @@ class EditorUiTests {
     @Test
     @Ignore("Library of compose navigation somehow breaks this test. This should be added later")
     fun theBottomBoxShouldInitializeVisible() = runTest {
-        startApp(composeTestRule)
+        startApp(composeTestRule, this)
 
         DocumentsMenuRobot(composeTestRule).goToEditNote()
         composeTestRule.onNodeWithTag("EditorBottomContent").assertIsDisplayed()

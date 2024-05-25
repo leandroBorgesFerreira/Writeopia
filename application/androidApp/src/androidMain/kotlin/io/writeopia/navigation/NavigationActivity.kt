@@ -8,25 +8,18 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import io.writeopia.AndroidLogger
 import io.writeopia.BuildConfig
 import io.writeopia.account.di.AndroidAccountMenuInjector
-import io.writeopia.account.navigation.accountMenuNavigation
 import io.writeopia.auth.core.di.AndroidAuthCoreInjection
 import io.writeopia.auth.core.token.FirebaseTokenHandler
 import io.writeopia.auth.di.AuthInjection
 import io.writeopia.auth.navigation.authNavigation
-import io.writeopia.auth.navigation.navigateToAuthMenu
 import io.writeopia.editor.di.EditorInjector
-import io.writeopia.editor.navigation.editorNavigation
-import io.writeopia.navigation.notes.navigateToAccount
-import io.writeopia.navigation.notes.navigateToNewNote
-import io.writeopia.navigation.notes.navigateToNote
 import io.writeopia.note_menu.di.NotesConfigurationInjector
 import io.writeopia.note_menu.di.NotesMenuAndroidInjection
-import io.writeopia.note_menu.navigation.notesMenuNavigation
+import io.writeopia.note_menu.di.UiConfigurationInjector
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 import io.writeopia.persistence.room.injection.RoomRespositoryInjection
@@ -76,10 +69,12 @@ fun NavigationGraph(
     val editorInjector =
         EditorInjector.create(authCoreInjection, repositoryInjection, connectionInjector)
     val accountMenuInjector = AndroidAccountMenuInjector.create(authCoreInjection)
+    val uiConfigurationInjector = UiConfigurationInjector(database)
     val notesMenuInjection = NotesMenuAndroidInjection.create(
         notesConfigurationInjector,
         authCoreInjection,
-        repositoryInjection
+        repositoryInjection,
+        uiConfigurationInjector
     )
 
     WrieopiaTheme {
@@ -89,6 +84,7 @@ fun NavigationGraph(
             editorInjector = editorInjector,
             accountMenuInjector = accountMenuInjector,
             startDestination = startDestination,
+            selectColorTheme = {},
             isUndoKeyEvent = { false }
         ) {
             authNavigation(navController, authInjection, navController::navigateToMainMenu)

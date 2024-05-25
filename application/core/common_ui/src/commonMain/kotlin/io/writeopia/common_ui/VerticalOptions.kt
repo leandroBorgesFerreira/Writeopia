@@ -20,11 +20,13 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.Flow
@@ -38,6 +40,7 @@ fun VerticalOptions(
     width: Dp = 42.dp,
     modifier: Modifier = Modifier,
     spaceHeight: Dp = 9.dp,
+    selectorShape: Shape = RoundedCornerShape(6.dp)
 ) {
     Box(modifier = modifier.width(width)) {
         Column {
@@ -51,7 +54,6 @@ fun VerticalOptions(
         }
 
         val selected by selectedState.collectAsState(0)
-        val shape = RoundedCornerShape(6.dp)
 
         LazyHorizontalGrid(
             rows = GridCells.Fixed(options.size),
@@ -61,7 +63,7 @@ fun VerticalOptions(
             items(
                 options.size,
                 key = { index ->
-                    if (index == selected) "ha" else Random.nextInt().toString()
+                    if (index == selected) "ha" else index
                 }
             ) { i ->
                 if (i == selected) {
@@ -71,14 +73,14 @@ fun VerticalOptions(
                             .animateItemPlacement()
                             .background(
                                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.25F),
-                                shape = shape
+                                shape = selectorShape
                             )
                     )
                 } else {
                     Spacer(
                         modifier = Modifier
                             .width(width)
-                            .clip(shape)
+                            .clip(selectorShape)
                             .clickable {
                                 options[i].first.invoke()
                             }

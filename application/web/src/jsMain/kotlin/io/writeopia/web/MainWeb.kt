@@ -1,6 +1,7 @@
 package io.writeopia.web
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.KeyEventType
@@ -8,6 +9,7 @@ import androidx.compose.ui.input.key.isMetaPressed
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.window.CanvasBasedWindow
 import io.writeopia.note_menu.di.NotesConfigurationInjector
+import io.writeopia.note_menu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.App
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.drawer.factory.DefaultDrawersJs
@@ -26,13 +28,24 @@ fun main() {
 
 @Composable
 fun CreateAppInMemory(repositoryInjection: SqlDelightDaoInjector) {
+    val coroutineScope = rememberCoroutineScope()
     val selectionState = MutableStateFlow(false)
+
+    val uiConfigurationViewModel = UiConfigurationInjector()
+        .provideUiConfigurationViewModel(coroutineScope = coroutineScope)
+
+    val colorTheme =
+        uiConfigurationViewModel.listenForColorTheme { "user_offline" }
 
     App(
         notesConfigurationInjector = NotesConfigurationInjector.noop(),
         repositoryInjection = repositoryInjection,
+        uiConfigurationInjector = UiConfigurationInjector(),
         selectionState = selectionState,
-        isUndoKeyEvent = ::isUndoKeyboardEvent
+        isUndoKeyEvent = ::isUndoKeyboardEvent,
+        colorThemeOption = colorTheme,
+        selectColorTheme = uiConfigurationViewModel::changeColorTheme,
+        coroutineScope = coroutineScope
     )
 }
 

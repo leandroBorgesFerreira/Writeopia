@@ -9,7 +9,7 @@ import io.writeopia.common.uitests.robots.DocumentsMenuRobot
 import io.writeopia.common.uitests.tests.editor.EditorCommonTests
 import io.writeopia.navigation.NavigationGraph
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
-import io.writeopia.navigation.Destinations
+import io.writeopia.utils_module.Destinations
 import org.junit.Rule
 import org.junit.Test
 

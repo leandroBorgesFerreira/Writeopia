@@ -8,14 +8,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import io.writeopia.model.ColorThemeOption
 import io.writeopia.note_menu.di.NotesMenuInjection
 import io.writeopia.note_menu.ui.screen.menu.NotesMenuScreen
 import io.writeopia.utils_module.Destinations
+import kotlinx.coroutines.CoroutineScope
 
 fun NavGraphBuilder.notesMenuNavigation(
     notesMenuInjection: NotesMenuInjection,
+    navigationController: NavController,
+    coroutineScope: CoroutineScope?,
+    selectColorTheme: (ColorThemeOption) -> Unit,
     navigateToNote: (String, String) -> Unit,
     navigateToNewNote: () -> Unit,
     navigateToAccount: () -> Unit,
@@ -39,13 +45,15 @@ fun NavGraphBuilder.notesMenuNavigation(
         }
     ) {
         val chooseNoteViewModel =
-            notesMenuInjection.provideChooseNoteViewModel(coroutineScope = rememberCoroutineScope())
+            notesMenuInjection.provideChooseNoteViewModel(coroutineScope = coroutineScope)
 
         NotesMenuScreen(
             chooseNoteViewModel = chooseNoteViewModel,
+            navigationController = navigationController,
             onNewNoteClick = navigateToNewNote,
             onNoteClick = navigateToNote,
             onAccountClick = navigateToAccount,
+            selectColorTheme = selectColorTheme,
             modifier = Modifier.background(MaterialTheme.colorScheme.background)
         )
     }

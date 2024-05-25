@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
@@ -33,7 +34,8 @@ fun NotesConfigurationMenu(
     listSelected: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val width = 36.dp
+    val width = 40.dp
+    val shape = RoundedCornerShape(8.dp)
 
     Column(
         modifier = modifier.width(IntrinsicSize.Min),
@@ -47,8 +49,9 @@ fun NotesConfigurationMenu(
             width = width,
             modifier = Modifier.background(
                 MaterialTheme.colorScheme.surfaceVariant,
-                shape = RoundedCornerShape(8.dp)
-            )
+                shape = shape
+            ),
+            selectorShape = shape
         )
 
         Spacer(modifier = Modifier.height(4.dp))
@@ -60,8 +63,8 @@ fun NotesConfigurationMenu(
             selectSortOption,
             modifier = Modifier.background(
                 MaterialTheme.colorScheme.surfaceVariant,
-                shape = RoundedCornerShape(8.dp)
-            ).width(width)
+                shape = shape
+            ).size(width)
         )
     }
 }

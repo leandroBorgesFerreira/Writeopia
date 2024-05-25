@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import io.writeopia.persistence.room.data.daos.NotesConfigurationRoomDao
 import io.writeopia.persistence.room.data.entities.NotesConfigurationEntity
+import io.writeopia.repository.entity.UiConfigurationRoomEntity
 import io.writeopia.sdk.persistence.converter.IdListConverter
 import io.writeopia.sdk.persistence.dao.DocumentEntityDao
 import io.writeopia.sdk.persistence.dao.StoryUnitEntityDao
@@ -19,7 +20,8 @@ private const val DATABASE_NAME = "WriteopiaDatabase"
     entities = [
         DocumentEntity::class,
         StoryStepEntity::class,
-        NotesConfigurationEntity::class
+        NotesConfigurationEntity::class,
+//        UiConfigurationRoomEntity::class
     ],
     version = 6,
     exportSchema = false

@@ -1,8 +1,14 @@
 package io.writeopia.desktop
 
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.awtEventOrNull
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isMetaPressed
@@ -12,22 +18,22 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import io.writeopia.note_menu.di.NotesConfigurationInjector
+import io.writeopia.note_menu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.App
 import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
-import io.writeopia.theme.WrieopiaTheme
-import io.writeopia.ui.drawer.factory.DefaultDrawersDesktop
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.awt.event.KeyEvent
 import androidx.compose.ui.input.key.KeyEvent as AndroidKeyEvent
 
 fun main() = application {
+    val coroutineScope = rememberCoroutineScope()
     val databaseStateFlow = DatabaseFactory.createDatabaseAsState(
         DriverFactory(),
         url = "jdbc:sqlite:writeopia.db_1",
-        rememberCoroutineScope()
+        coroutineScope = coroutineScope
     )
 
     val selectionState = MutableStateFlow(false)
@@ -46,23 +52,40 @@ fun main() = application {
             false
         }
     ) {
-            when (val databaseState = databaseStateFlow.collectAsState().value) {
-                is DatabaseCreation.Complete -> {
-                    val database = databaseState.writeopiaDb
+        when (val databaseState = databaseStateFlow.collectAsState().value) {
+            is DatabaseCreation.Complete -> {
+                val database = databaseState.writeopiaDb
 
-                    App(
-                        notesConfigurationInjector = NotesConfigurationInjector(database),
-                        repositoryInjection = SqlDelightDaoInjector(database),
-                        selectionState = selectionState,
-                        isUndoKeyEvent = ::isUndoKeyboardEvent
-                    )
-                }
+                val uiConfigurationViewModel = UiConfigurationInjector(database)
+                    .provideUiConfigurationViewModel(coroutineScope = coroutineScope)
 
-                DatabaseCreation.Loading -> {
-                    Text("Loading")
-                }
+                val colorTheme =
+                    uiConfigurationViewModel.listenForColorTheme { "user_offline" }
+
+                App(
+                    notesConfigurationInjector = NotesConfigurationInjector(database),
+                    repositoryInjection = SqlDelightDaoInjector(database),
+                    uiConfigurationInjector = UiConfigurationInjector(database),
+                    selectionState = selectionState,
+                    coroutineScope = coroutineScope,
+                    isUndoKeyEvent = ::isUndoKeyboardEvent,
+                    colorThemeOption = colorTheme,
+                    selectColorTheme = uiConfigurationViewModel::changeColorTheme
+                )
+            }
+
+            DatabaseCreation.Loading -> {
+                ScreenLoading()
             }
         }
+    }
+}
+
+@Composable
+private fun ScreenLoading() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+    }
 }
 
 private fun isUndoKeyboardEvent(keyEvent: AndroidKeyEvent) =

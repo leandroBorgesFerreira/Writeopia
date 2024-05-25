@@ -10,6 +10,7 @@ import io.writeopia.account.di.AccountMenuInjector
 import io.writeopia.account.navigation.accountMenuNavigation
 import io.writeopia.editor.di.TextEditorInjector
 import io.writeopia.editor.navigation.editorNavigation
+import io.writeopia.model.ColorThemeOption
 import io.writeopia.navigation.notes.navigateToAccount
 import io.writeopia.navigation.notes.navigateToNewNote
 import io.writeopia.navigation.notes.navigateToNote
@@ -17,6 +18,7 @@ import io.writeopia.navigation.notes.navigateToNoteMenu
 import io.writeopia.note_menu.di.NotesMenuInjection
 import io.writeopia.note_menu.navigation.notesMenuNavigation
 import io.writeopia.utils_module.Destinations
+import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun Navigation(
@@ -26,11 +28,16 @@ fun Navigation(
     editorInjector: TextEditorInjector,
     accountMenuInjector: AccountMenuInjector,
     isUndoKeyEvent: (KeyEvent) -> Boolean,
+    selectColorTheme: (ColorThemeOption) -> Unit,
+    coroutineScope: CoroutineScope? = null,
     builder: NavGraphBuilder.() -> Unit
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
         notesMenuNavigation(
             notesMenuInjection = notesMenuInjection,
+            navigationController = navController,
+            selectColorTheme = selectColorTheme,
+            coroutineScope = coroutineScope,
             navigateToNote = navController::navigateToNote,
             navigateToAccount = navController::navigateToAccount,
             navigateToNewNote = navController::navigateToNewNote

@@ -7,6 +7,7 @@ import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
 import io.writeopia.note_menu.ui.dto.NotesUi
+import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.export.DocumentToJson
 import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.export.DocumentWriter
@@ -15,7 +16,6 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.utils_module.*
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -23,17 +23,16 @@ import kotlinx.coroutines.launch
 internal class ChooseNoteKmpViewModel(
     private val notesUseCase: NotesUseCase,
     private val notesConfig: ConfigurationRepository,
+    private val uiConfigurationRepo: UiConfigurationRepository,
     private val authManager: AuthManager,
     private val selectionState: StateFlow<Boolean>,
     private val previewParser: PreviewParser = PreviewParser(),
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
     private val documentToJson: DocumentToJson = DocumentToJson(),
     private val writeopiaJsonParser: WriteopiaJsonParser = WriteopiaJsonParser()
-) : ChooseNoteViewModel, KmpViewModel {
+) : ChooseNoteViewModel, KmpViewModel() {
 
     private var localUserId: String? = null
-
-    private lateinit var coroutineScope: CoroutineScope
 
     private val _selectedNotes = MutableStateFlow(setOf<String>())
     override val hasSelectedNotes: StateFlow<Boolean> by lazy {
@@ -69,6 +68,15 @@ internal class ChooseNoteKmpViewModel(
     private val _showSortMenuState = MutableStateFlow(false)
     override val showSortMenuState: StateFlow<Boolean> = _showSortMenuState.asStateFlow()
 
+    private val _showSettingsState = MutableStateFlow(false)
+    override val showSettingsState: StateFlow<Boolean> = _showSettingsState.asStateFlow()
+
+    override val showSideMenu: StateFlow<Boolean> by lazy {
+        uiConfigurationRepo.listenForUiConfiguration(::getUserId, coroutineScope).map { configuration ->
+            configuration?.showSideMenu ?: true
+        }.stateIn(coroutineScope, SharingStarted.Lazily, false)
+    }
+
     override val documentsState: StateFlow<ResultData<NotesUi>> by lazy {
         combine(
             _selectedNotes,
@@ -101,10 +109,6 @@ internal class ChooseNoteKmpViewModel(
         localUserId ?: authManager.getUser().id.also { id ->
             localUserId = id
         }
-
-    override fun initCoroutine(coroutineScope: CoroutineScope) {
-        this.coroutineScope = coroutineScope
-    }
 
     override fun requestDocuments(force: Boolean) {
         if (documentsState.value !is ResultData.Complete || force) {
@@ -296,6 +300,24 @@ internal class ChooseNoteKmpViewModel(
 
     override fun onWriteLocallySelected() {
         handleStorage(::writeWorkspace, SyncRequest.WRITE)
+    }
+
+    override fun toggleSideMenu() {
+        setShowSideMenu(!showSideMenu.value)
+    }
+
+    override fun showSettings() {
+        _showSettingsState.value = true
+    }
+
+    override fun hideSettings() {
+        _showSettingsState.value = false
+    }
+
+    private fun setShowSideMenu(enabled: Boolean) {
+        coroutineScope.launch(Dispatchers.Default) {
+            uiConfigurationRepo.updateShowSideMenu(userId = getUserId(), showSideMenu = enabled)
+        }
     }
 
     private fun handleStorage(workspaceFunc: suspend (String) -> Unit, syncRequest: SyncRequest) {
