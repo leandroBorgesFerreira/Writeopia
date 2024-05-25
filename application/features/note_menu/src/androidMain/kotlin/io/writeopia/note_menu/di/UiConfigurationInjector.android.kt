@@ -6,8 +6,6 @@ import io.writeopia.repository.UiConfigurationRoomRepository
 
 actual class UiConfigurationInjector(private val database: WriteopiaApplicationDatabase) {
 
-
-
     actual fun provideUiConfigurationRepository(): UiConfigurationRepository =
         UiConfigurationRoomRepository(null)
 }
