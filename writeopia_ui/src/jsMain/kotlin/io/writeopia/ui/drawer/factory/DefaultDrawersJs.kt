@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.manager.WriteopiaStateManager
-import org.jetbrains.skiko.SkikoKey
+//import org.jetbrains.skiko.SkikoKey
 
 private const val LARGE_START_PADDING = 26
 private const val MEDIUM_START_PADDING = 12
@@ -43,10 +43,11 @@ object DefaultDrawersJs : DrawersFactory {
         )
 
     private fun emptyErase(keyEvent: KeyEvent, input: TextFieldValue): Boolean =
-        keyEvent.nativeKeyEvent.key == SkikoKey.KEY_BACKSPACE && input.selection.start == 0
+        false
+//        keyEvent.nativeKeyEvent.key == SkikoKey.KEY_BACKSPACE && input.selection.start == 0
 
-    private fun isLineBreak(keyEvent: KeyEvent): Boolean =
-        (keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER).also {
-            println("isLineBreak: $it")
-        }
+    private fun isLineBreak(keyEvent: KeyEvent): Boolean = false
+//        (keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER).also {
+//            println("isLineBreak: $it")
+//        }
 }

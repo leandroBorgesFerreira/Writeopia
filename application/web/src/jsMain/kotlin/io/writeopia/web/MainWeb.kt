@@ -14,7 +14,7 @@ import io.writeopia.notes.desktop.components.App
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.drawer.factory.DefaultDrawersJs
 import kotlinx.coroutines.flow.MutableStateFlow
-import org.jetbrains.skiko.SkikoKey
+//import org.jetbrains.skiko.SkikoKey
 import org.jetbrains.skiko.wasm.onWasmReady
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -49,17 +49,17 @@ fun CreateAppInMemory(repositoryInjection: SqlDelightDaoInjector) {
     )
 }
 
-private fun isUndoKeyboardEvent(keyEvent: KeyEvent) =
-    keyEvent.isMetaPressed &&
-        keyEvent.nativeKeyEvent.key == SkikoKey.KEY_Z &&
-        keyEvent.type == KeyEventType.KeyDown
+private fun isUndoKeyboardEvent(keyEvent: KeyEvent): Boolean = false
+//    keyEvent.isMetaPressed &&
+//        keyEvent.nativeKeyEvent.key == SkikoKey.KEY_Z &&
+//        keyEvent.type == KeyEventType.KeyDown
 
-private fun isSelectionKeyEventStart(keyEvent: KeyEvent) =
-    (keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META ||
-        keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META) &&
-        keyEvent.type == KeyEventType.KeyDown
+private fun isSelectionKeyEventStart(keyEvent: KeyEvent): Boolean = false
+//    (keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META ||
+//        keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META) &&
+//        keyEvent.type == KeyEventType.KeyDown
 
-private fun isSelectionKeyEventStop(keyEvent: KeyEvent) =
-    (keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META ||
-        keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META) &&
-        keyEvent.type == KeyEventType.KeyUp
+private fun isSelectionKeyEventStop(keyEvent: KeyEvent): Boolean = false
+//    (keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META ||
+//        keyEvent.nativeKeyEvent.key == SkikoKey.KEY_LEFT_META) &&
+//        keyEvent.type == KeyEventType.KeyUp

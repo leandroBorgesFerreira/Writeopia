@@ -33,11 +33,3 @@ dependencies {
     implementation(libs.androidx.ktx)
     implementation(libs.appCompat)
 }
-
-kotlin{
-    sourceSets.all {
-        languageSettings {
-            languageVersion = "1.9"
-        }
-    }
-}
