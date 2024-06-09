@@ -1,8 +1,9 @@
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.compose")
+//    id("kotlin-parcelize")
+    alias(libs.plugins.compose.multiplatform)
+    alias(libs.plugins.compose.multiplatform.compiler)
     alias(libs.plugins.application)
-    id("kotlin-parcelize")
     alias(libs.plugins.google.services)
 }
 
@@ -100,7 +101,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+//        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
     testOptions {

@@ -1,8 +1,9 @@
 import org.jetbrains.compose.compose
 
 plugins {
-    id("org.jetbrains.compose")
     kotlin("multiplatform")
+    alias(libs.plugins.compose.multiplatform)
+    alias(libs.plugins.compose.multiplatform.compiler)
 }
 
 kotlin {

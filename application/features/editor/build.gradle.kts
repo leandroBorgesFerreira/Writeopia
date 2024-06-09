@@ -1,8 +1,9 @@
 plugins {
+    kotlin("multiplatform")
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinSerialization)
-    kotlin("multiplatform")
-    id("org.jetbrains.compose")
+    alias(libs.plugins.compose.multiplatform)
+    alias(libs.plugins.compose.multiplatform.compiler)
 }
 
 kotlin {
@@ -92,6 +93,6 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+//        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 }

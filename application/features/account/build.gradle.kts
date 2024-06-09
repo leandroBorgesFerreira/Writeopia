@@ -1,7 +1,8 @@
 plugins {
-    alias(libs.plugins.androidLibrary)
     kotlin("multiplatform")
-    id("org.jetbrains.compose")
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.compose.multiplatform)
+    alias(libs.plugins.compose.multiplatform.compiler)
 }
 
 kotlin {
@@ -80,14 +81,6 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
-}
-
-kotlin{
-    sourceSets.all {
-        languageSettings {
-            languageVersion = "1.9"
-        }
+//        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 }
