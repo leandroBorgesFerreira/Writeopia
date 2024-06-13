@@ -1,6 +1,8 @@
 package io.writeopia.ui.drawer.factory
 
+import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.key
 import androidx.compose.ui.text.input.TextFieldValue
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.models.command.TypeInfo
@@ -13,7 +15,6 @@ object KeyEventListenerFactory {
 
     fun desktop(
         manager: WriteopiaStateManager,
-        isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
     ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean {
         return { keyEvent, inputText, step, position, onEmptyErase ->
             when {
@@ -67,8 +68,6 @@ object KeyEventListenerFactory {
 
     fun js(
         manager: WriteopiaStateManager,
-        isLineBreak: (KeyEvent) -> Boolean,
-        isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
     ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean {
         return { keyEvent, inputText, step, position, onEmptyErase ->
             when {
@@ -97,4 +96,11 @@ object KeyEventListenerFactory {
             }
         }
     }
+
+    private fun isEmptyErase(
+        keyEvent: KeyEvent,
+        input: TextFieldValue
+    ): Boolean = keyEvent.key == Key.Backspace && input.selection.start == 0
+
+    private fun isLineBreak(keyEvent: KeyEvent): Boolean = keyEvent.key == Key.Enter
 }

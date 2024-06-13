@@ -3,13 +3,10 @@ package io.writeopia.ui.drawer.factory
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.input.key.KeyEvent
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.manager.WriteopiaStateManager
-//import org.jetbrains.skiko.SkikoKey
 
 private const val LARGE_START_PADDING = 26
 private const val MEDIUM_START_PADDING = 12
@@ -35,19 +32,6 @@ object DefaultDrawersJs : DrawersFactory {
             onHeaderClick,
             dragIconWidth = 16.dp,
             lineBreakByContent = false,
-            eventListener = KeyEventListenerFactory.js(
-                manager = manager,
-                isLineBreak = ::isLineBreak,
-                isEmptyErase = ::emptyErase,
-            ),
+            eventListener = KeyEventListenerFactory.js(manager),
         )
-
-    private fun emptyErase(keyEvent: KeyEvent, input: TextFieldValue): Boolean =
-        false
-//        keyEvent.nativeKeyEvent.key == SkikoKey.KEY_BACKSPACE && input.selection.start == 0
-
-    private fun isLineBreak(keyEvent: KeyEvent): Boolean = false
-//        (keyEvent.nativeKeyEvent.key == SkikoKey.KEY_ENTER).also {
-//            println("isLineBreak: $it")
-//        }
 }
