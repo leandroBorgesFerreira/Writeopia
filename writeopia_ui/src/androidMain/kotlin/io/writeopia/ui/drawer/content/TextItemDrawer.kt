@@ -37,7 +37,7 @@ actual class TextItemDrawer actual constructor(
 ) : StoryStepDrawer {
 
     @Composable
-    override fun Step(step: StoryStep, drawInfo: DrawInfo) {
+    actual override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         val focusRequester = remember { FocusRequester() }
         val dropInfo = DropInfo(step, drawInfo.position)
         var showDragIcon by remember { mutableStateOf(false) }

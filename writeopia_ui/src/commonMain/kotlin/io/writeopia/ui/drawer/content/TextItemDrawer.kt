@@ -23,4 +23,8 @@ expect class TextItemDrawer(
     dragIconWidth: Dp = 16.dp,
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
-) : StoryStepDrawer
+) : StoryStepDrawer {
+
+    @Composable
+    override fun Step(step: StoryStep, drawInfo: DrawInfo)
+}
