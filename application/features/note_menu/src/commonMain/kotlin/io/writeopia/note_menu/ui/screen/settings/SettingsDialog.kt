@@ -53,6 +53,10 @@ fun SettingsDialog(
                     selectedThemePosition = selectedThemePosition,
                     selectColorTheme = selectColorTheme
                 )
+
+                Spacer(modifier = Modifier.weight(1F))
+
+                Text("Release version: 2024-06-14", style = MaterialTheme.typography.bodySmall)
             }
         }
     }
