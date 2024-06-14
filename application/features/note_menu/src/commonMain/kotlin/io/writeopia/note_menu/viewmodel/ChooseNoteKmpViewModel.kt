@@ -2,7 +2,7 @@ package io.writeopia.note_menu.viewmodel
 
 import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
-import io.writeopia.note_menu.data.NotesArrangement
+import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard

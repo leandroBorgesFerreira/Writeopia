@@ -1,4 +1,4 @@
-package io.writeopia.note_menu.data
+package io.writeopia.note_menu.data.model
 
 /**
  * The possible arrangement for notes. The user is able to choose between the variants of the enum
