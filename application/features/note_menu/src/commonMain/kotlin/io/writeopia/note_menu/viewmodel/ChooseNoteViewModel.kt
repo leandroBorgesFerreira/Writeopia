@@ -1,6 +1,6 @@
 package io.writeopia.note_menu.viewmodel
 
-import io.writeopia.note_menu.data.NotesArrangement
+import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.utils_module.ResultData

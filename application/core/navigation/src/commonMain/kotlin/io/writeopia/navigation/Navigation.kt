@@ -14,7 +14,6 @@ import io.writeopia.model.ColorThemeOption
 import io.writeopia.navigation.notes.navigateToAccount
 import io.writeopia.navigation.notes.navigateToNewNote
 import io.writeopia.navigation.notes.navigateToNote
-import io.writeopia.navigation.notes.navigateToNoteMenu
 import io.writeopia.note_menu.di.NotesMenuInjection
 import io.writeopia.note_menu.navigation.notesMenuNavigation
 import io.writeopia.utils_module.Destinations
@@ -45,7 +44,7 @@ fun Navigation(
 
         editorNavigation(
             editorInjector = editorInjector,
-            navigateToNoteMenu = navController::navigateToNoteMenu,
+            navigateToNoteMenu = navController::navigateUp,
             isUndoKeyEvent = isUndoKeyEvent,
         )
 

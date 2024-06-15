@@ -16,6 +16,8 @@ import io.writeopia.editor.di.EditorKmpInjector
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.model.darkTheme
 import io.writeopia.navigation.Navigation
+import io.writeopia.note_menu.data.model.NotesNavigation
+import io.writeopia.note_menu.data.model.NotesNavigationType
 import io.writeopia.note_menu.di.NotesConfigurationInjector
 import io.writeopia.note_menu.di.NotesMenuKmpInjection
 import io.writeopia.note_menu.di.UiConfigurationInjector
@@ -25,6 +27,7 @@ import io.writeopia.theme.WrieopiaTheme
 import io.writeopia.utils_module.Destinations
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
+
 
 @Composable
 fun App(
@@ -71,7 +74,7 @@ fun App(
     if (colorTheme != null) {
         WrieopiaTheme(darkTheme = colorThemeOption.collectAsState().value?.darkTheme() ?: false) {
             Navigation(
-                startDestination = Destinations.CHOOSE_NOTE.id,
+                startDestination = startDestination(),
                 notesMenuInjection = notesMenuInjection,
                 accountMenuInjector = accountInjector,
                 coroutineScope = coroutineScope,
@@ -88,3 +91,6 @@ fun App(
         }
     }
 }
+
+private fun startDestination() =
+    "${Destinations.CHOOSE_NOTE.id}/${NotesNavigationType.ROOT.type}/path"

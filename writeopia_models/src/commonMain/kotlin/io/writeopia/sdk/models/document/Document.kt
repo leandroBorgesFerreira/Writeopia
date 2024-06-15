@@ -11,4 +11,5 @@ data class Document(
     val createdAt: Instant,
     val lastUpdatedAt: Instant,
     val userId: String,
+    val favorite: Boolean = false
 )

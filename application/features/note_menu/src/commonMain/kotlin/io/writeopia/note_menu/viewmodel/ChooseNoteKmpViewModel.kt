@@ -3,6 +3,8 @@ package io.writeopia.note_menu.viewmodel
 import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.note_menu.data.model.NotesArrangement
+import io.writeopia.note_menu.data.model.NotesNavigation
+import io.writeopia.note_menu.data.model.NotesNavigationType
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
@@ -29,7 +31,8 @@ internal class ChooseNoteKmpViewModel(
     private val previewParser: PreviewParser = PreviewParser(),
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
     private val documentToJson: DocumentToJson = DocumentToJson(),
-    private val writeopiaJsonParser: WriteopiaJsonParser = WriteopiaJsonParser()
+    private val writeopiaJsonParser: WriteopiaJsonParser = WriteopiaJsonParser(),
+    private val notesNavigation: NotesNavigation
 ) : ChooseNoteViewModel, KmpViewModel() {
 
     private var localUserId: String? = null
@@ -384,8 +387,8 @@ internal class ChooseNoteKmpViewModel(
 
         try {
             val userId = getUserId()
+            val data = getNotes(userId)
 
-            val data = notesUseCase.loadDocumentsForUser(userId)
             _notesArrangement.value =
                 NotesArrangement.fromString(notesConfig.arrangementPref(userId))
             _documentsState.value = ResultData.Complete(data)
@@ -393,4 +396,11 @@ internal class ChooseNoteKmpViewModel(
             _documentsState.value = ResultData.Error(e)
         }
     }
+
+    private suspend fun getNotes(userId: String): List<Document> =
+        if (notesNavigation.navigationType == NotesNavigationType.FAVORITES) {
+            notesUseCase.loadFavDocumentsForUser(userId)
+        } else {
+            notesUseCase.loadDocumentsForUser(userId)
+        }
 }

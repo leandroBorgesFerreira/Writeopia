@@ -22,6 +22,13 @@ internal class NotesUseCase(
             }
     }
 
+    suspend fun loadFavDocumentsForUser(userId: String): List<Document> {
+        return notesConfig.getOrderPreference(userId)
+            .let { orderBy ->
+                documentRepository.loadFavDocumentsForUser(orderBy, userId)
+            }
+    }
+
 
     suspend fun loadDocumentsForUserAfterTime(userId: String, time: Instant): List<Document> =
         notesConfig.getOrderPreference(userId)

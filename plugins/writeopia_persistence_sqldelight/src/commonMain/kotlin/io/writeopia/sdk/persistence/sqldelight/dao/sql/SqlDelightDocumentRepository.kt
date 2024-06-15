@@ -10,9 +10,11 @@ class SqlDelightDocumentRepository(
     private val documentSqlDao: DocumentSqlDao
 ) : DocumentRepository {
 
-    override suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document> {
-        return documentSqlDao.loadDocumentsWithContentByUserId(orderBy, userId)
-    }
+    override suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document> =
+        documentSqlDao.loadDocumentsWithContentByUserId(orderBy, userId)
+
+    override suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> =
+        documentSqlDao.loadFavDocumentsWithContentByUserId(orderBy, userId)
 
     override suspend fun loadDocumentsForUserAfterTime(
         orderBy: String,

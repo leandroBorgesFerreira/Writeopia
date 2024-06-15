@@ -3,7 +3,8 @@ CREATE TABLE documentEntity (
   title TEXT NOT NULL,
   created_at INTEGER NOT NULL,
   last_updated_at INTEGER NOT NULL,
-  user_id TEXT NOT NULL
+  user_id TEXT NOT NULL,
+  favorite INTEGER NOT NULL
 );
 
 selectAll:
@@ -30,6 +31,13 @@ LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
 WHERE documentEntity.user_id = ?
 ORDER BY position;
 
+selectFavoritesWithContentByUserId:
+SELECT *
+FROM documentEntity
+LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
+WHERE documentEntity.user_id = ? AND documentEntity.favorite = 1
+ORDER BY position;
+
 selectWithContentByUserIdAfterTime:
 SELECT *
 FROM documentEntity
@@ -45,11 +53,11 @@ WHERE documentEntity.id = ?
 ORDER BY position;
 
 insert:
-INSERT INTO documentEntity(id, title, created_at, last_updated_at, user_id)
-VALUES (?, ?, ?, ?, ?)
+INSERT INTO documentEntity(id, title, created_at, last_updated_at, user_id, favorite)
+VALUES (?, ?, ?, ?, ?, ?)
 ON CONFLICT(id) DO
 UPDATE SET id=excluded.id, title=excluded.title, created_at=excluded.created_at,
-last_updated_at=excluded.last_updated_at, user_id=excluded.user_id;
+last_updated_at=excluded.last_updated_at, user_id=excluded.user_id, favorite=excluded.favorite;
 
 delete:
 DELETE FROM documentEntity WHERE id = ?;

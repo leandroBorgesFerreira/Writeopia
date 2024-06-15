@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import io.writeopia.model.ColorThemeOption
+import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.ui.screen.actions.DesktopNoteActionsMenu
 import io.writeopia.note_menu.ui.screen.configuration.modifier.icon
 import io.writeopia.note_menu.ui.screen.configuration.molecules.NotesConfigurationMenu
@@ -55,7 +56,7 @@ fun DesktopNotesMenu(
     onNewNoteClick: () -> Unit,
     onNoteClick: (String, String) -> Unit,
     selectColorTheme: (ColorThemeOption) -> Unit,
-    navigateToNotes: () -> Unit,
+    navigateToNotes: (NotesNavigation) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LaunchedEffect(
@@ -77,8 +78,9 @@ fun DesktopNotesMenu(
                 background = MaterialTheme.colorScheme.surfaceVariant,
                 showOptions = showOptions,
                 width = 280.dp,
-                settingsClick = chooseNoteViewModel::showSettings,
-                favoritesClick = {}
+                folderClick = { navigateToNotes(NotesNavigation.Root) },
+                favoritesClick = { navigateToNotes(NotesNavigation.Favorites) },
+                settingsClick = chooseNoteViewModel::showSettings
             )
 
             Box {

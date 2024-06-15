@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -37,8 +38,9 @@ fun SideGlobalMenu(
     background: Color,
     showOptions: Boolean,
     width: Dp = finalWidth.dp,
-    settingsClick: () -> Unit,
+    folderClick: () -> Unit,
     favoritesClick: () -> Unit,
+    settingsClick: () -> Unit,
 ) {
     val widthState by derivedStateOf {
         if (showOptions) width else 0.dp
@@ -59,10 +61,10 @@ fun SideGlobalMenu(
                     Spacer(Modifier.height(100.dp))
 
                     settingsOptions(
-                        iconVector = Icons.Outlined.Settings,
-                        contentDescription = "Settings",
-                        text = "Settings",
-                        click = settingsClick
+                        iconVector = Icons.Outlined.Folder,
+                        contentDescription = "Folder",
+                        text = "Folder",
+                        click = favoritesClick
                     )
 
                     settingsOptions(
@@ -70,6 +72,13 @@ fun SideGlobalMenu(
                         contentDescription = "Favorites",
                         text = "Favorites",
                         click = favoritesClick
+                    )
+
+                    settingsOptions(
+                        iconVector = Icons.Outlined.Settings,
+                        contentDescription = "Settings",
+                        text = "Settings",
+                        click = settingsClick
                     )
                 }
             }
