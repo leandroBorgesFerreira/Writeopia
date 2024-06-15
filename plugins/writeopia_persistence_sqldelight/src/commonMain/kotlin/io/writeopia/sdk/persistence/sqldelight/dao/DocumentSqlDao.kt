@@ -264,6 +264,14 @@ class DocumentSqlDao(
     suspend fun deleteDocumentsByUserId(userId: String) {
         documentQueries?.deleteByUserId(userId)
     }
+
+    suspend fun favoriteById(documentId: String) {
+        documentQueries?.favoriteById(documentId)
+    }
+
+    suspend fun unFavoriteById(documentId: String) {
+        documentQueries?.unFavoriteById(documentId)
+    }
 }
 
 

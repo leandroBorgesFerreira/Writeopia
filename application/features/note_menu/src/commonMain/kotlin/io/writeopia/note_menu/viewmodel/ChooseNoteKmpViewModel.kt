@@ -220,7 +220,11 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun favoriteSelectedNotes() {
-        //Todo: Implement!
+        val selected = _selectedNotes.value
+
+        coroutineScope.launch(Dispatchers.Default) {
+            notesUseCase.favoriteNotes(selected)
+        }
     }
 
     override fun showSortMenu() {

@@ -60,6 +60,12 @@ class SqlDelightDocumentRepository(
         documentSqlDao.deleteDocumentsByUserId(userId)
     }
 
+    override suspend fun favoriteDocumentByIds(ids: Set<String>) {
+        ids.forEach { id ->
+            documentSqlDao.favoriteById(id)
+        }
+    }
+
     override suspend fun moveDocumentsToNewUser(oldUserId: String, newUserId: String) {
         TODO("Not yet implemented")
     }

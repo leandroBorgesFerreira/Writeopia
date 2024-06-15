@@ -69,4 +69,12 @@ class InMemoryDocumentRepository : DocumentRepository {
     override suspend fun updateStoryStep(storyStep: StoryStep, position: Int, documentId: String) {
 
     }
+
+    override suspend fun favoriteDocumentByIds(ids: Set<String>) {
+        ids.forEach { id ->
+            documentsMap[id]?.copy(favorite = true)?.let { document ->
+                documentsMap[id] = document
+            }
+        }
+    }
 }

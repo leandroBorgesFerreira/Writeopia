@@ -67,3 +67,9 @@ DELETE FROM documentEntity WHERE id IN ?;
 
 deleteByUserId:
 DELETE FROM documentEntity WHERE user_id = ?;
+
+favoriteById:
+UPDATE documentEntity SET favorite = 1 WHERE id = ?;
+
+unFavoriteById:
+UPDATE documentEntity SET favorite = 0 WHERE id = ?;

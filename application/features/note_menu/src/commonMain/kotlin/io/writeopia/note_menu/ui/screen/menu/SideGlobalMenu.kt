@@ -64,7 +64,7 @@ fun SideGlobalMenu(
                         iconVector = Icons.Outlined.Folder,
                         contentDescription = "Folder",
                         text = "Folder",
-                        click = favoritesClick
+                        click = folderClick
                     )
 
                     settingsOptions(

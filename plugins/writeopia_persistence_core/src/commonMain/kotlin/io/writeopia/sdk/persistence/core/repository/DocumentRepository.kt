@@ -22,9 +22,6 @@ interface DocumentRepository : DocumentUpdate {
         instant: Instant
     ): List<Document>
 
-
-
-
     suspend fun loadDocumentById(id: String): Document?
 
     suspend fun loadDocumentsWithContentByIds(ids: List<String>, orderBy: String): List<Document>
@@ -46,6 +43,8 @@ interface DocumentRepository : DocumentUpdate {
     suspend fun deleteDocument(document: Document)
 
     suspend fun deleteDocumentByIds(ids: Set<String>)
+
+    suspend fun favoriteDocumentByIds(ids: Set<String>)
 
     /**
      * Deleted all the documents of a User
