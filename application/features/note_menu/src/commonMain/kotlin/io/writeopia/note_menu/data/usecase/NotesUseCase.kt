@@ -63,6 +63,6 @@ internal class NotesUseCase(
     }
 
      suspend fun favoriteNotes(ids: Set<String>) {
-        documentRepository.deleteDocumentByIds(ids)
+        documentRepository.favoriteDocumentByIds(ids)
     }
 }
