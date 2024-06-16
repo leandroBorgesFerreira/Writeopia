@@ -28,11 +28,11 @@ internal class ChooseNoteKmpViewModel(
     private val uiConfigurationRepo: UiConfigurationRepository,
     private val authManager: AuthManager,
     private val selectionState: StateFlow<Boolean>,
+    private val notesNavigation: NotesNavigation = NotesNavigation.Root,
     private val previewParser: PreviewParser = PreviewParser(),
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
     private val documentToJson: DocumentToJson = DocumentToJson(),
-    private val writeopiaJsonParser: WriteopiaJsonParser = WriteopiaJsonParser(),
-    private val notesNavigation: NotesNavigation
+    private val writeopiaJsonParser: WriteopiaJsonParser = WriteopiaJsonParser()
 ) : ChooseNoteViewModel, KmpViewModel() {
 
     private var localUserId: String? = null
