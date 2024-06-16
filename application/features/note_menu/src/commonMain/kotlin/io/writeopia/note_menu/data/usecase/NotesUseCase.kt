@@ -62,7 +62,11 @@ internal class NotesUseCase(
         documentRepository.deleteDocumentByIds(ids)
     }
 
-     suspend fun favoriteNotes(ids: Set<String>) {
+    suspend fun favoriteNotes(ids: Set<String>) {
         documentRepository.favoriteDocumentByIds(ids)
+    }
+
+    suspend fun unFavoriteNotes(ids: Set<String>) {
+        documentRepository.unFavoriteDocumentByIds(ids)
     }
 }

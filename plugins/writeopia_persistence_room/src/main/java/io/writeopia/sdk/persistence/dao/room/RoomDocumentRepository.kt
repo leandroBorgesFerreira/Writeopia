@@ -31,11 +31,29 @@ class RoomDocumentRepository(
         throw IllegalStateException("This method is not supported")
     }
 
-    override suspend fun loadDocumentById(id: String): Document? {
-        val documentEntity = documentEntityDao.loadDocumentById(id)
-        val content = loadInnerSteps(storyUnitEntityDao.loadDocumentContent(id))
-        return documentEntity?.toModel(content)
+    override suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> {
+        TODO("Not yet implemented")
     }
+
+    override suspend fun favoriteDocumentByIds(ids: Set<String>) {
+        setFavorite(ids, true)
+    }
+
+    override suspend fun unFavoriteDocumentByIds(ids: Set<String>) {
+        setFavorite(ids, false)
+    }
+
+    override suspend fun loadDocumentById(id: String): Document? =
+        documentEntityDao.loadDocumentById(id)?.let { documentEntity ->
+            val content = loadInnerSteps(storyUnitEntityDao.loadDocumentContent(documentEntity.id))
+            documentEntity.toModel(content)
+        }
+
+    override suspend fun loadDocumentByIds(ids: List<String>): List<Document> =
+        documentEntityDao.loadDocumentByIds(ids).map { documentEntity ->
+            val content = loadInnerSteps(storyUnitEntityDao.loadDocumentContent(documentEntity.id))
+            documentEntity.toModel(content)
+        }
 
     override suspend fun loadDocumentsWithContentByIds(ids: List<String>, orderBy: String): List<Document> =
         documentEntityDao.loadDocumentWithContentByIds(ids, orderBy)
@@ -75,6 +93,14 @@ class RoomDocumentRepository(
         storyUnitEntityDao.updateStoryStep(storyStep.toEntity(position, documentId))
     }
 
+    override suspend fun deleteByUserId(userId: String) {
+        documentEntityDao.deleteDocumentsByUserId(userId)
+    }
+
+    override suspend fun moveDocumentsToNewUser(oldUserId: String, newUserId: String) {
+        documentEntityDao.moveDocumentsToNewUser(oldUserId, newUserId)
+    }
+
     /**
      * This method removes the story units that are not in the root level (they don't have parents)
      * and loads the inner steps of the steps that have children.
@@ -92,11 +118,11 @@ class RoomDocumentRepository(
                 }
             }
 
-    override suspend fun deleteByUserId(userId: String) {
-        documentEntityDao.deleteDocumentsByUserId(userId)
-    }
-
-    override suspend fun moveDocumentsToNewUser(oldUserId: String, newUserId: String) {
-        documentEntityDao.moveDocumentsToNewUser(oldUserId, newUserId)
+    private suspend fun setFavorite(ids: Set<String>, isFavorite: Boolean) {
+        ids.mapNotNull { id ->
+            loadDocumentById(id)
+        }.forEach { document ->
+            documentEntityDao.updateDocument(document.copy(favorite = isFavorite).toEntity())
+        }
     }
 }

@@ -20,4 +20,5 @@ fun Document.toEntity() = DocumentEntity(
     createdAt = createdAt.toEpochMilliseconds(),
     lastUpdatedAt = lastUpdatedAt.toEpochMilliseconds(),
     userId = userId,
+    favorite = favorite,
 )

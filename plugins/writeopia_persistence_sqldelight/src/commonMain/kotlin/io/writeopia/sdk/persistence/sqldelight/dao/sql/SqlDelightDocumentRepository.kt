@@ -30,6 +30,11 @@ class SqlDelightDocumentRepository(
     override suspend fun loadDocumentById(id: String): Document? =
         documentSqlDao.loadDocumentWithContentById(id)
 
+    override suspend fun loadDocumentByIds(ids: List<String>): List<Document> =
+        ids.mapNotNull { id ->
+            loadDocumentById(id)
+        }
+
     override suspend fun loadDocumentsWithContentByIds(
         ids: List<String>,
         orderBy: String
@@ -63,6 +68,12 @@ class SqlDelightDocumentRepository(
     override suspend fun favoriteDocumentByIds(ids: Set<String>) {
         ids.forEach { id ->
             documentSqlDao.favoriteById(id)
+        }
+    }
+
+    override suspend fun unFavoriteDocumentByIds(ids: Set<String>) {
+        ids.forEach { id ->
+            documentSqlDao.unFavoriteById(id)
         }
     }
 

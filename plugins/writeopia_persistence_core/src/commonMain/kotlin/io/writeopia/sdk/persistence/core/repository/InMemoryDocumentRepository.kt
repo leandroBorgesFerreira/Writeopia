@@ -22,7 +22,11 @@ class InMemoryDocumentRepository : DocumentRepository {
         instant: Instant
     ): List<Document> = documentsMap.values.toList()
 
-    override suspend fun loadDocumentById(id: String): Document? = documentsMap.values.firstOrNull()
+    override suspend fun loadDocumentById(id: String): Document? = documentsMap[id]
+    override suspend fun loadDocumentByIds(ids: List<String>): List<Document> =
+        ids.mapNotNull { id ->
+            documentsMap[id]
+        }
 
     override suspend fun loadDocumentsWithContentByIds(
         ids: List<String>,
@@ -71,8 +75,16 @@ class InMemoryDocumentRepository : DocumentRepository {
     }
 
     override suspend fun favoriteDocumentByIds(ids: Set<String>) {
+        setFavorite(ids, true)
+    }
+
+    override suspend fun unFavoriteDocumentByIds(ids: Set<String>) {
+        setFavorite(ids, false)
+    }
+
+    private fun setFavorite(ids: Set<String>, isFavorite: Boolean) {
         ids.forEach { id ->
-            documentsMap[id]?.copy(favorite = true)?.let { document ->
+            documentsMap[id]?.copy(favorite = isFavorite)?.let { document ->
                 documentsMap[id] = document
             }
         }
