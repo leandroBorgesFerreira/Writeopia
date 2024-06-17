@@ -75,9 +75,10 @@ internal class ChooseNoteKmpViewModel(
     override val showSettingsState: StateFlow<Boolean> = _showSettingsState.asStateFlow()
 
     override val showSideMenu: StateFlow<Boolean> by lazy {
-        uiConfigurationRepo.listenForUiConfiguration(::getUserId, coroutineScope).map { configuration ->
-            configuration?.showSideMenu ?: true
-        }.stateIn(coroutineScope, SharingStarted.Lazily, false)
+        uiConfigurationRepo.listenForUiConfiguration(::getUserId, coroutineScope)
+            .map { configuration ->
+                configuration?.showSideMenu ?: true
+            }.stateIn(coroutineScope, SharingStarted.Lazily, false)
     }
 
     override val documentsState: StateFlow<ResultData<NotesUi>> by lazy {
@@ -220,10 +221,26 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun favoriteSelectedNotes() {
-        val selected = _selectedNotes.value
+        val selectedIds = _selectedNotes.value
+
+        val allFavorites = (_documentsState.value as? ResultData.Complete<List<Document>>)
+            ?.data
+            ?.filter { document ->
+                selectedIds.contains(document.id)
+            }
+            ?.all { document -> document.favorite }
+            ?: false
 
         coroutineScope.launch(Dispatchers.Default) {
-            notesUseCase.favoriteNotes(selected)
+            if (allFavorites) {
+                println("unFavoriteNotes")
+                notesUseCase.unFavoriteNotes(selectedIds)
+            } else {
+                println("favoriteNotes")
+                notesUseCase.favoriteNotes(selectedIds)
+            }
+
+            refreshNotes()
         }
     }
 

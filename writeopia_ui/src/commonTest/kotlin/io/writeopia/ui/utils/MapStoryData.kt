@@ -1,4 +1,4 @@
-package io.writeopia.utils
+package io.writeopia.ui.utils
 
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep

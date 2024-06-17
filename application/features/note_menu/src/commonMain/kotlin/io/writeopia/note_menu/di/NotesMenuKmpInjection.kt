@@ -12,6 +12,7 @@ import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.StateFlow
 
 class NotesMenuKmpInjection(
@@ -34,7 +35,7 @@ class NotesMenuKmpInjection(
     }
 
     internal fun provideChooseKmpNoteViewModel(
-        notesNavigation: NotesNavigation,
+        notesNavigation: NotesNavigation = NotesNavigation.Root,
         notesUseCase: NotesUseCase = provideNotesUseCase(),
         notesConfig: ConfigurationRepository =
             notesConfigurationInjector.provideNotesConfigurationRepository(),

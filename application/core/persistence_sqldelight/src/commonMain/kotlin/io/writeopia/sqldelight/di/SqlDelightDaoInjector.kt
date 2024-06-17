@@ -9,14 +9,20 @@ import io.writeopia.sql.WriteopiaDb
 
 class SqlDelightDaoInjector(private val database: WriteopiaDb?) : RepositoryInjector {
 
+    private var documentSqlDao: DocumentSqlDao? = null
+
     private val inMemoryDocumentRepository = InMemoryDocumentRepository()
 
     private fun provideDocumentSqlDao(): DocumentSqlDao? =
         database?.run {
-            DocumentSqlDao(
-                documentEntityQueries,
-                storyStepEntityQueries
-            )
+            documentSqlDao ?: kotlin.run {
+                documentSqlDao = DocumentSqlDao(
+                    documentEntityQueries,
+                    storyStepEntityQueries
+                )
+
+                documentSqlDao
+            }
         }
 
 
