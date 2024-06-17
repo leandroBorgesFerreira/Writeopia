@@ -233,10 +233,8 @@ internal class ChooseNoteKmpViewModel(
 
         coroutineScope.launch(Dispatchers.Default) {
             if (allFavorites) {
-                println("unFavoriteNotes")
                 notesUseCase.unFavoriteNotes(selectedIds)
             } else {
-                println("favoriteNotes")
                 notesUseCase.favoriteNotes(selectedIds)
             }
 
@@ -285,24 +283,19 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun confirmWorkplacePath() {
-        println("confirmWorkplacePath")
 
         val path = _showLocalSyncConfig.value.getPath()
 
         if (path != null) {
-            println("path != null")
             coroutineScope.launch(Dispatchers.Default) {
-                println("launch")
                 notesConfig.saveWorkspacePath(path = path, userId = getUserId())
 
                 when (_showLocalSyncConfig.value.getSyncRequest()) {
                     SyncRequest.WRITE -> {
-                        println("writeWorkspace")
                         writeWorkspace(path)
                     }
 
                     SyncRequest.READ_WRITE -> {
-                        println("syncWorkplace")
                         syncWorkplace(path)
                     }
 

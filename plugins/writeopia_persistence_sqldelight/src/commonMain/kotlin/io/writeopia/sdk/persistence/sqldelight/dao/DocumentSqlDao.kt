@@ -93,6 +93,7 @@ class DocumentSqlDao(
                         createdAt = Instant.fromEpochMilliseconds(document.created_at),
                         lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
                         userId = document.user_id,
+                        favorite = document.favorite == 1L
                     )
                 }
             } ?: emptyList()
@@ -129,6 +130,7 @@ class DocumentSqlDao(
                         createdAt = Instant.fromEpochMilliseconds(document.created_at),
                         lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
                         userId = document.user_id,
+                        favorite = document.favorite == 1L
                     )
                 }
             }
@@ -168,6 +170,7 @@ class DocumentSqlDao(
                         createdAt = Instant.fromEpochMilliseconds(document.created_at),
                         lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
                         userId = document.user_id,
+                        favorite = document.favorite == 1L
                     )
                 }
             }
@@ -211,6 +214,7 @@ class DocumentSqlDao(
                         createdAt = Instant.fromEpochMilliseconds(document.created_at),
                         lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
                         userId = document.user_id,
+                        favorite = document.favorite == 1L
                     )
                 }
             } ?: emptyList()
