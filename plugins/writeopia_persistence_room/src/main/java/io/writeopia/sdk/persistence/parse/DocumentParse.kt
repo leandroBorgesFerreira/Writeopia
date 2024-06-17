@@ -11,7 +11,8 @@ fun DocumentEntity.toModel(content: Map<Int, StoryStep> = emptyMap()) = Document
     content = content,
     createdAt = Instant.fromEpochMilliseconds(createdAt),
     lastUpdatedAt = Instant.fromEpochMilliseconds(lastUpdatedAt),
-    userId = userId
+    userId = userId,
+    favorite = favorite,
 )
 
 fun Document.toEntity() = DocumentEntity(
