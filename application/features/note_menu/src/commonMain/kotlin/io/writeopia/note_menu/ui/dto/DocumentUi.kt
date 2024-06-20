@@ -8,5 +8,6 @@ data class DocumentUi(
     val lastEdit: String,
     val preview: List<StoryStep>,
     val selected: Boolean,
+    val isFavorite: Boolean
 )
 
