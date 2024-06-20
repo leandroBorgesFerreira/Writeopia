@@ -3,6 +3,7 @@ package io.writeopia.sdk.persistence.sqldelight.dao.sql
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
+import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import kotlinx.datetime.Instant
 
@@ -10,11 +11,22 @@ class SqlDelightDocumentRepository(
     private val documentSqlDao: DocumentSqlDao
 ) : DocumentRepository {
 
-    override suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document> =
-        documentSqlDao.loadDocumentsWithContentByUserId(orderBy, userId)
+    override suspend fun loadDocumentsForUser(userId: String): List<Document> =
+        documentSqlDao.loadDocumentsWithContentByUserId(OrderBy.NAME.type, userId)
 
-    override suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> =
-        documentSqlDao.loadFavDocumentsWithContentByUserId(orderBy, userId)
+    override suspend fun loadDocumentsForFolder(folderId: String): List<Document> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun loadFavDocumentsForUser(userId: String): List<Document> {
+        TODO("Not yet implemented")
+    }
+
+//    override suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document> =
+//        documentSqlDao.loadDocumentsWithContentByUserId(orderBy, userId)
+//
+//    override suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> =
+//        documentSqlDao.loadFavDocumentsWithContentByUserId(orderBy, userId)
 
     override suspend fun loadDocumentsForUserAfterTime(
         orderBy: String,

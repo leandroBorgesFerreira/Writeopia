@@ -23,6 +23,7 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
             createdAt = now,
             lastUpdatedAt = now,
             userId = "userId",
+            parentId = "root"
         )
 
         documentRepository.saveDocument(document)
@@ -42,6 +43,7 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
             createdAt = now,
             lastUpdatedAt = now,
             userId = "userId",
+            parentId = "root"
         )
 
         documentRepository.saveDocument(document)
@@ -61,6 +63,7 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
             createdAt = now,
             lastUpdatedAt = now,
             userId = "userId",
+            parentId = "root"
         )
 
         documentRepository.saveDocument(document)
@@ -80,6 +83,7 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
             createdAt = now,
             lastUpdatedAt = now,
             userId = "userId",
+            parentId = "root"
         )
 
         documentRepository.saveDocument(document)
@@ -100,6 +104,7 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
             createdAt = now,
             lastUpdatedAt = now,
             userId = "userId",
+            parentId = "root"
         )
 
         documentRepository.saveDocument(document)
@@ -119,7 +124,8 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
             createdAt = now,
             lastUpdatedAt = now,
             userId = "userIdasd",
-            favorite = false
+            favorite = false,
+            parentId = "parentId"
         )
 
         documentRepository.saveDocument(document)

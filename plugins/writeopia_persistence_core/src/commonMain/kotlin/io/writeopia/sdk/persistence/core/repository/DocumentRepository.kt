@@ -14,6 +14,8 @@ interface DocumentRepository : DocumentUpdate {
 
     suspend fun loadDocumentsForFolder(folderId: String): List<Document>
 
+    suspend fun loadDocumentsForUser(userId: String): List<Document>
+
     suspend fun loadFavDocumentsForUser(userId: String): List<Document>
 
     suspend fun loadDocumentsForUserAfterTime(

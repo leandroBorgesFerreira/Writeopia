@@ -1,9 +1,10 @@
 package io.writeopia.note_menu.di
 
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
+import io.writeopia.note_menu.data.repository.FolderRepository
 import io.writeopia.note_menu.data.repository.InMemoryConfigurationRepository
 
-actual class NotesConfigurationInjector(
+actual class NotesInjector(
 //    private val writeopiaDb: WriteopiaDb?
 ) {
 
@@ -14,7 +15,11 @@ actual class NotesConfigurationInjector(
     actual fun provideNotesConfigurationRepository(): ConfigurationRepository =
         InMemoryConfigurationRepository.singleton()
 
+    actual fun provideFoldersRepository(): FolderRepository {
+
+    }
+
     companion object {
-        fun noop() = NotesConfigurationInjector()
+        fun noop() = NotesInjector()
     }
 }

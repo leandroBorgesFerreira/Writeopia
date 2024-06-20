@@ -16,9 +16,8 @@ import io.writeopia.editor.di.EditorKmpInjector
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.model.darkTheme
 import io.writeopia.navigation.Navigation
-import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.data.model.NotesNavigationType
-import io.writeopia.note_menu.di.NotesConfigurationInjector
+import io.writeopia.note_menu.di.NotesInjector
 import io.writeopia.note_menu.di.NotesMenuKmpInjection
 import io.writeopia.note_menu.di.UiConfigurationInjector
 import io.writeopia.sdk.network.injector.ConnectionInjector
@@ -31,7 +30,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun App(
-    notesConfigurationInjector: NotesConfigurationInjector,
+    notesInjector: NotesInjector,
     repositoryInjection: RepositoryInjector,
     uiConfigurationInjector: UiConfigurationInjector,
     disableWebsocket: Boolean = false,
@@ -61,7 +60,7 @@ fun App(
 
     val notesMenuInjection = remember {
         NotesMenuKmpInjection(
-            notesConfigurationInjector = notesConfigurationInjector,
+            notesInjector = notesInjector,
             authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,
             uiConfigurationInjector = uiConfigurationInjector,

@@ -11,4 +11,5 @@ data class DocumentApi(
     val createdAt: Long = Clock.System.now().toEpochMilliseconds(),
     val lastUpdatedAt: Long = Clock.System.now().toEpochMilliseconds(),
     val userId: String,
+    val parentId: String,
 )
