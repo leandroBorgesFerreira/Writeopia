@@ -12,9 +12,9 @@ import kotlinx.datetime.Instant
  */
 interface DocumentRepository : DocumentUpdate {
 
-    suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document>
+    suspend fun loadDocumentsForFolder(folderId: String): List<Document>
 
-    suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document>
+    suspend fun loadFavDocumentsForUser(userId: String): List<Document>
 
     suspend fun loadDocumentsForUserAfterTime(
         orderBy: String,

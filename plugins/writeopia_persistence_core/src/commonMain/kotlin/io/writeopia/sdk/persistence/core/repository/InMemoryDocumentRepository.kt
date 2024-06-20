@@ -9,12 +9,11 @@ import kotlinx.datetime.Instant
 class InMemoryDocumentRepository : DocumentRepository {
 
     private val documentsMap: MutableMap<String, Document> = mutableMapOf()
+    override suspend fun loadDocumentsForFolder(folderId: String): List<Document> =
+        documentsMap.values.toList()
 
-    override suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document> =
-        documentsMap.values.toList().sortWithOrderBy(OrderBy.fromString(orderBy))
-
-    override suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> =
-        loadDocumentsForUser(orderBy, userId).filter { document -> document.favorite }
+    override suspend fun loadFavDocumentsForUser(userId: String): List<Document> =
+        documentsMap.values.filter { document -> document.favorite }
 
     override suspend fun loadDocumentsForUserAfterTime(
         orderBy: String,

@@ -1,8 +1,11 @@
 package io.writeopia.note_menu.data.usecase
 
+import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
+import io.writeopia.note_menu.data.repository.FolderRepository
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
 import kotlinx.datetime.Instant
 
@@ -12,21 +15,25 @@ import kotlinx.datetime.Instant
  */
 internal class NotesUseCase(
     private val documentRepository: DocumentRepository,
-    private val notesConfig: ConfigurationRepository
+    private val notesConfig: ConfigurationRepository,
+    private val folderRepository: FolderRepository
 ) {
 
-    suspend fun loadDocumentsForUser(userId: String): List<Document> {
-        return notesConfig.getOrderPreference(userId)
-            .let { orderBy ->
-                documentRepository.loadDocumentsForUser(orderBy, userId)
-            }
+    suspend fun loadRootContent(userId: String): List<MenuItem> {
+        loadRootFoldersForUser(userId)
+
+        return emptyList()
+    }
+
+    private suspend fun loadRootFoldersForUser(userId: String): List<Folder> =
+        folderRepository.getRootFolders(userId)
+
+    suspend fun loadDocumentsForFolder(userId: String): List<Document> {
+        return documentRepository.loadDocumentsForFolder(userId)
     }
 
     suspend fun loadFavDocumentsForUser(userId: String): List<Document> {
-        return notesConfig.getOrderPreference(userId)
-            .let { orderBy ->
-                documentRepository.loadFavDocumentsForUser(orderBy, userId)
-            }
+        return documentRepository.loadFavDocumentsForUser(userId)
     }
 
 
