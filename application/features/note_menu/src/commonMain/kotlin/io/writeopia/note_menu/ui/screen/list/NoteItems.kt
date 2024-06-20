@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -238,10 +239,10 @@ private fun DocumentItem(
 
         if (documentUi.isFavorite) {
             Icon(
-                modifier = Modifier.align(Alignment.TopEnd).padding(4.dp),
+                modifier = Modifier.align(Alignment.TopEnd).size(40.dp).padding(12.dp),
                 imageVector = Icons.Outlined.Favorite,
                 contentDescription = "Favorite",
-                tint = Color.Red
+                tint = MaterialTheme.colorScheme.onPrimary
             )
         }
     }
