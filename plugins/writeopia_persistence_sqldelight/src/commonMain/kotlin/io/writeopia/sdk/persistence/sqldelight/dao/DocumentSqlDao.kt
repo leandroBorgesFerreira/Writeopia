@@ -31,6 +31,7 @@ class DocumentSqlDao(
             created_at = document.createdAt.toEpochMilliseconds(),
             last_updated_at = document.lastUpdatedAt.toEpochMilliseconds(),
             user_id = document.userId,
+            favorite = document.favorite.toLong(),
         )
     }
 
@@ -92,6 +93,7 @@ class DocumentSqlDao(
                         createdAt = Instant.fromEpochMilliseconds(document.created_at),
                         lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
                         userId = document.user_id,
+                        favorite = document.favorite == 1L
                     )
                 }
             } ?: emptyList()
@@ -128,6 +130,47 @@ class DocumentSqlDao(
                         createdAt = Instant.fromEpochMilliseconds(document.created_at),
                         lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
                         userId = document.user_id,
+                        favorite = document.favorite == 1L
+                    )
+                }
+            }
+            ?.sortWithOrderBy(OrderBy.fromString(orderBy))
+            ?: emptyList()
+    }
+
+    suspend fun loadFavDocumentsWithContentByUserId(orderBy: String, userId: String): List<Document> {
+        return documentQueries?.selectFavoritesWithContentByUserId(userId)
+            ?.awaitAsList()
+            ?.groupBy { it.id }
+            ?.mapNotNull { (documentId, content) ->
+                content.firstOrNull()?.let { document ->
+                    val innerContent = content.filter { innerContent ->
+                        !innerContent.id_.isNullOrEmpty()
+                    }.associate { innerContent ->
+                        val storyStep = StoryStep(
+                            id = innerContent.id_!!,
+                            localId = innerContent.local_id!!,
+                            type = StoryTypes.fromNumber(innerContent.type!!.toInt()).type,
+                            parentId = innerContent.parent_id,
+                            url = innerContent.url,
+                            path = innerContent.path,
+                            text = innerContent.text,
+                            checked = innerContent.checked == 1L,
+//                                steps = emptyList(), // Todo: Fix!
+//                                decoration = decoration, // Todo: Fix!
+                        )
+
+                        innerContent.position!!.toInt() to storyStep
+                    }
+
+                    Document(
+                        id = documentId,
+                        title = document.title,
+                        content = innerContent,
+                        createdAt = Instant.fromEpochMilliseconds(document.created_at),
+                        lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
+                        userId = document.user_id,
+                        favorite = document.favorite == 1L
                     )
                 }
             }
@@ -171,6 +214,7 @@ class DocumentSqlDao(
                         createdAt = Instant.fromEpochMilliseconds(document.created_at),
                         lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
                         userId = document.user_id,
+                        favorite = document.favorite == 1L
                     )
                 }
             } ?: emptyList()
@@ -216,6 +260,7 @@ class DocumentSqlDao(
                         createdAt = Instant.fromEpochMilliseconds(document.created_at),
                         lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
                         userId = document.user_id,
+                        favorite = document.favorite == 1L
                     )
                 }
             }
@@ -223,6 +268,14 @@ class DocumentSqlDao(
 
     suspend fun deleteDocumentsByUserId(userId: String) {
         documentQueries?.deleteByUserId(userId)
+    }
+
+    suspend fun favoriteById(documentId: String) {
+        documentQueries?.favoriteById(documentId)
+    }
+
+    suspend fun unFavoriteById(documentId: String) {
+        documentQueries?.unFavoriteById(documentId)
     }
 }
 

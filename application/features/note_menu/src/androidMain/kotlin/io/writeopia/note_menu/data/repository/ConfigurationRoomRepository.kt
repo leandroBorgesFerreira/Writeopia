@@ -1,6 +1,6 @@
 package io.writeopia.note_menu.data.repository
 
-import io.writeopia.note_menu.data.NotesArrangement
+import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.persistence.room.data.daos.NotesConfigurationRoomDao
 import io.writeopia.persistence.room.data.entities.NotesConfigurationEntity
 import io.writeopia.sdk.persistence.core.extensions.toEntityField

@@ -14,5 +14,6 @@ internal fun Document.toUiCard(
         title = title,
         lastEdit = "",
         preview = content.values.let { previewParser.preview(it, limit) },
-        selected = selected
+        selected = selected,
+        isFavorite = favorite
     )

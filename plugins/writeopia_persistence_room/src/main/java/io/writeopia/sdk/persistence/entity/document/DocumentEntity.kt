@@ -13,11 +13,12 @@ data class DocumentEntity(
     @ColumnInfo(CREATED_AT) val createdAt: Long,
     @ColumnInfo(LAST_UPDATED_AT) val lastUpdatedAt: Long,
     @ColumnInfo(USER_ID) val userId: String,
+    @ColumnInfo(FAVORITE) val favorite: Boolean,
 ) {
     companion object {
         fun createById(id: String, userId: String): DocumentEntity {
             val now = Clock.System.now().toEpochMilliseconds()
-            return DocumentEntity(id, "", now, now, userId)
+            return DocumentEntity(id, "", now, now, userId, favorite = false)
         }
     }
 }

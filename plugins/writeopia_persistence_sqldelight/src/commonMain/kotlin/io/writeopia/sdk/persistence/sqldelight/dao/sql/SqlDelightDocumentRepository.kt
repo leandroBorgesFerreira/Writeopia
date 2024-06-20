@@ -10,9 +10,11 @@ class SqlDelightDocumentRepository(
     private val documentSqlDao: DocumentSqlDao
 ) : DocumentRepository {
 
-    override suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document> {
-        return documentSqlDao.loadDocumentsWithContentByUserId(orderBy, userId)
-    }
+    override suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document> =
+        documentSqlDao.loadDocumentsWithContentByUserId(orderBy, userId)
+
+    override suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> =
+        documentSqlDao.loadFavDocumentsWithContentByUserId(orderBy, userId)
 
     override suspend fun loadDocumentsForUserAfterTime(
         orderBy: String,
@@ -27,6 +29,11 @@ class SqlDelightDocumentRepository(
 
     override suspend fun loadDocumentById(id: String): Document? =
         documentSqlDao.loadDocumentWithContentById(id)
+
+    override suspend fun loadDocumentByIds(ids: List<String>): List<Document> =
+        ids.mapNotNull { id ->
+            loadDocumentById(id)
+        }
 
     override suspend fun loadDocumentsWithContentByIds(
         ids: List<String>,
@@ -56,6 +63,18 @@ class SqlDelightDocumentRepository(
 
     override suspend fun deleteByUserId(userId: String) {
         documentSqlDao.deleteDocumentsByUserId(userId)
+    }
+
+    override suspend fun favoriteDocumentByIds(ids: Set<String>) {
+        ids.forEach { id ->
+            documentSqlDao.favoriteById(id)
+        }
+    }
+
+    override suspend fun unFavoriteDocumentByIds(ids: Set<String>) {
+        ids.forEach { id ->
+            documentSqlDao.unFavoriteById(id)
+        }
     }
 
     override suspend fun moveDocumentsToNewUser(oldUserId: String, newUserId: String) {

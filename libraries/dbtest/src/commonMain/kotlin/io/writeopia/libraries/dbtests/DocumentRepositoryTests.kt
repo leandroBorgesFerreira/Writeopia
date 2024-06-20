@@ -107,6 +107,34 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
 
         assertEquals(document, loadedDocument)
     }
+
+    suspend fun favoriteAndUnFavoriteDocumentById() {
+        val now = now()
+
+        val id = GenerateId.generate()
+        val document = Document(
+            id = id,
+            title = "Document1",
+            content = imageGroup(),
+            createdAt = now,
+            lastUpdatedAt = now,
+            userId = "userIdasd",
+            favorite = false
+        )
+
+        documentRepository.saveDocument(document)
+
+        val loadedDocument0 = documentRepository.loadDocumentById(id)
+        assertTrue(loadedDocument0?.favorite == false)
+
+        documentRepository.favoriteDocumentByIds(setOf(id))
+        val loadedDocument1 = documentRepository.loadDocumentById(id)
+        assertTrue(loadedDocument1?.favorite == true)
+
+        documentRepository.unFavoriteDocumentByIds(setOf(id))
+        val loadedDocument2 = documentRepository.loadDocumentById(id)
+        assertTrue(loadedDocument2?.favorite == false)
+    }
 }
 
 private fun now() = Instant.fromEpochMilliseconds(Clock.System.now().toEpochMilliseconds())

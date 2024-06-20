@@ -90,4 +90,9 @@ class DocumentRoomRepositoryTest {
     fun savingAndLoadingDocumentOneImageGroupInRepository() = runTest {
         documentRepositoryTests.savingAndLoadingDocumentOneImageGroupInRepository()
     }
+
+    @Test
+    fun favoriteDocumentById() = runTest {
+        documentRepositoryTests.favoriteAndUnFavoriteDocumentById()
+    }
 }

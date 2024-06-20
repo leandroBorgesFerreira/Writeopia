@@ -5,17 +5,22 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import io.writeopia.model.ColorThemeOption
+import io.writeopia.note_menu.data.model.NotesNavigation
+import io.writeopia.note_menu.data.model.NotesNavigationType
 import io.writeopia.note_menu.di.NotesMenuInjection
 import io.writeopia.note_menu.ui.screen.menu.NotesMenuScreen
 import io.writeopia.utils_module.Destinations
 import kotlinx.coroutines.CoroutineScope
+
+private const val NAVIGATION_TYPE = "type"
+private const val NAVIGATION_PATH = "path"
 
 fun NavGraphBuilder.notesMenuNavigation(
     notesMenuInjection: NotesMenuInjection,
@@ -28,7 +33,17 @@ fun NavGraphBuilder.notesMenuNavigation(
 ) {
 
     composable(
-        Destinations.CHOOSE_NOTE.id,
+        route = "${Destinations.CHOOSE_NOTE.id}/{$NAVIGATION_TYPE}/{$NAVIGATION_PATH}",
+        arguments = listOf(
+            navArgument(NAVIGATION_TYPE) {
+                type = NavType.StringType
+                defaultValue = NotesNavigationType.ROOT.type
+            },
+            navArgument(NAVIGATION_PATH) {
+                type = NavType.StringType
+                defaultValue = ""
+            },
+        ),
         enterTransition = {
             val isFirstScreen = this.initialState.destination
                 .route
@@ -43,9 +58,16 @@ fun NavGraphBuilder.notesMenuNavigation(
         exitTransition = {
             slideOutHorizontally(targetOffsetX = { intSize -> -intSize })
         }
-    ) {
-        val chooseNoteViewModel =
-            notesMenuInjection.provideChooseNoteViewModel(coroutineScope = coroutineScope)
+    ) { backStackEntry ->
+        val notesNavigation = backStackEntry.arguments?.getString(NAVIGATION_TYPE)?.let { type ->
+            println("navigation type: $type")
+            NotesNavigation.fromType(NotesNavigationType.fromType(type), "")
+        } ?: NotesNavigation.Root
+
+        val chooseNoteViewModel = notesMenuInjection.provideChooseNoteViewModel(
+            coroutineScope = coroutineScope,
+            notesNavigation = notesNavigation
+        )
 
         NotesMenuScreen(
             chooseNoteViewModel = chooseNoteViewModel,
@@ -54,6 +76,11 @@ fun NavGraphBuilder.notesMenuNavigation(
             onNoteClick = navigateToNote,
             onAccountClick = navigateToAccount,
             selectColorTheme = selectColorTheme,
+            navigateToNotes = { navigation ->
+                navigationController.navigate(
+                    "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/path",
+                )
+            },
             modifier = Modifier.background(MaterialTheme.colorScheme.background)
         )
     }

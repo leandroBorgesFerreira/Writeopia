@@ -12,7 +12,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,11 +23,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import io.writeopia.note_menu.data.NotesArrangement
+import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.note_menu.ui.dto.DocumentUi
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.model.draw.DrawInfo
@@ -231,6 +235,15 @@ private fun DocumentItem(
 
             Spacer(modifier = Modifier.height(16.dp))
         }
+
+        if (documentUi.isFavorite) {
+            Icon(
+                modifier = Modifier.align(Alignment.TopEnd).padding(4.dp),
+                imageVector = Icons.Outlined.Favorite,
+                contentDescription = "Favorite",
+                tint = Color.Red
+            )
+        }
     }
 }
 
@@ -248,6 +261,7 @@ fun DocumentItemPreview() {
             StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type, text = "some text")
         ),
         selected = false,
+        isFavorite = true
     )
 
     DocumentItem(
@@ -274,6 +288,7 @@ fun DocumentItemSelectedPreview() {
             StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type, text = "some text")
         ),
         selected = true,
+        isFavorite = true
     )
 
     DocumentItem(

@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import io.writeopia.sdk.persistence.core.CREATED_AT
 import io.writeopia.sdk.persistence.core.DOCUMENT_ENTITY
 import io.writeopia.sdk.persistence.core.LAST_UPDATED_AT
@@ -20,6 +21,9 @@ interface DocumentEntityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDocuments(vararg documents: DocumentEntity)
 
+    @Update
+    suspend fun updateDocument(vararg documents: DocumentEntity)
+
     @Delete
     suspend fun deleteDocuments(vararg documents: DocumentEntity)
 
@@ -28,6 +32,9 @@ interface DocumentEntityDao {
 
     @Query("SELECT * FROM $DOCUMENT_ENTITY WHERE $DOCUMENT_ENTITY.id = :id")
     suspend fun loadDocumentById(id: String): DocumentEntity?
+
+    @Query("SELECT * FROM $DOCUMENT_ENTITY WHERE $DOCUMENT_ENTITY.id in (:ids)")
+    suspend fun loadDocumentByIds(ids: List<String>): List<DocumentEntity>
 
     @Query("SELECT * FROM $DOCUMENT_ENTITY")
     suspend fun loadAllDocuments(): List<DocumentEntity>

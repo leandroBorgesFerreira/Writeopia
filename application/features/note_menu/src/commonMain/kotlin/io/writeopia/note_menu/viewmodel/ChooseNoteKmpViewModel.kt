@@ -2,7 +2,9 @@ package io.writeopia.note_menu.viewmodel
 
 import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
-import io.writeopia.note_menu.data.NotesArrangement
+import io.writeopia.note_menu.data.model.NotesArrangement
+import io.writeopia.note_menu.data.model.NotesNavigation
+import io.writeopia.note_menu.data.model.NotesNavigationType
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
@@ -26,6 +28,7 @@ internal class ChooseNoteKmpViewModel(
     private val uiConfigurationRepo: UiConfigurationRepository,
     private val authManager: AuthManager,
     private val selectionState: StateFlow<Boolean>,
+    private val notesNavigation: NotesNavigation = NotesNavigation.Root,
     private val previewParser: PreviewParser = PreviewParser(),
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
     private val documentToJson: DocumentToJson = DocumentToJson(),
@@ -72,9 +75,10 @@ internal class ChooseNoteKmpViewModel(
     override val showSettingsState: StateFlow<Boolean> = _showSettingsState.asStateFlow()
 
     override val showSideMenu: StateFlow<Boolean> by lazy {
-        uiConfigurationRepo.listenForUiConfiguration(::getUserId, coroutineScope).map { configuration ->
-            configuration?.showSideMenu ?: true
-        }.stateIn(coroutineScope, SharingStarted.Lazily, false)
+        uiConfigurationRepo.listenForUiConfiguration(::getUserId, coroutineScope)
+            .map { configuration ->
+                configuration?.showSideMenu ?: true
+            }.stateIn(coroutineScope, SharingStarted.Lazily, false)
     }
 
     override val documentsState: StateFlow<ResultData<NotesUi>> by lazy {
@@ -217,7 +221,25 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun favoriteSelectedNotes() {
-        //Todo: Implement!
+        val selectedIds = _selectedNotes.value
+
+        val allFavorites = (_documentsState.value as? ResultData.Complete<List<Document>>)
+            ?.data
+            ?.filter { document ->
+                selectedIds.contains(document.id)
+            }
+            ?.all { document -> document.favorite }
+            ?: false
+
+        coroutineScope.launch(Dispatchers.Default) {
+            if (allFavorites) {
+                notesUseCase.unFavoriteNotes(selectedIds)
+            } else {
+                notesUseCase.favoriteNotes(selectedIds)
+            }
+
+            refreshNotes()
+        }
     }
 
     override fun showSortMenu() {
@@ -261,24 +283,19 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun confirmWorkplacePath() {
-        println("confirmWorkplacePath")
 
         val path = _showLocalSyncConfig.value.getPath()
 
         if (path != null) {
-            println("path != null")
             coroutineScope.launch(Dispatchers.Default) {
-                println("launch")
                 notesConfig.saveWorkspacePath(path = path, userId = getUserId())
 
                 when (_showLocalSyncConfig.value.getSyncRequest()) {
                     SyncRequest.WRITE -> {
-                        println("writeWorkspace")
                         writeWorkspace(path)
                     }
 
                     SyncRequest.READ_WRITE -> {
-                        println("syncWorkplace")
                         syncWorkplace(path)
                     }
 
@@ -384,8 +401,8 @@ internal class ChooseNoteKmpViewModel(
 
         try {
             val userId = getUserId()
+            val data = getNotes(userId)
 
-            val data = notesUseCase.loadDocumentsForUser(userId)
             _notesArrangement.value =
                 NotesArrangement.fromString(notesConfig.arrangementPref(userId))
             _documentsState.value = ResultData.Complete(data)
@@ -393,4 +410,11 @@ internal class ChooseNoteKmpViewModel(
             _documentsState.value = ResultData.Error(e)
         }
     }
+
+    private suspend fun getNotes(userId: String): List<Document> =
+        if (notesNavigation.navigationType == NotesNavigationType.FAVORITES) {
+            notesUseCase.loadFavDocumentsForUser(userId)
+        } else {
+            notesUseCase.loadDocumentsForUser(userId)
+        }
 }
