@@ -238,7 +238,7 @@ private fun DocumentItem(
 
         if (documentUi.isFavorite) {
             Icon(
-                modifier = Modifier.align(Alignment.TopEnd).padding(8.dp),
+                modifier = Modifier.align(Alignment.TopEnd).padding(4.dp),
                 imageVector = Icons.Outlined.Favorite,
                 contentDescription = "Favorite",
                 tint = Color.Red
