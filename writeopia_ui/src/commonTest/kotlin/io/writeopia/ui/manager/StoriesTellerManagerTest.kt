@@ -78,7 +78,8 @@ class WriteopiaManagerTest {
                         content = input,
                         userId = "",
                         createdAt = now,
-                        lastUpdatedAt = now
+                        lastUpdatedAt = now,
+                        parentId = "root"
                     )
                 )
             }
@@ -123,7 +124,8 @@ class WriteopiaManagerTest {
                         content = input,
                         userId = "",
                         createdAt = now,
-                        lastUpdatedAt = now
+                        lastUpdatedAt = now,
+                        parentId = "root"
                     )
                 )
             }
@@ -159,7 +161,8 @@ class WriteopiaManagerTest {
                 content = imagesInLineRepo.history(),
                 userId = "",
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                parentId = "root"
             )
         )
 
@@ -211,7 +214,8 @@ class WriteopiaManagerTest {
                 content = imagesInLineRepo.history(),
                 userId = "",
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                parentId = "root"
             )
         )
 
@@ -255,7 +259,8 @@ class WriteopiaManagerTest {
                 content = imagesInLineRepo.history(),
                 userId = "",
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                parentId = "root"
             )
         )
 
@@ -334,7 +339,8 @@ class WriteopiaManagerTest {
                 content = imageGroupRepo.history(),
                 userId = "",
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                parentId = "root"
             )
         )
 
@@ -379,7 +385,8 @@ class WriteopiaManagerTest {
                 content = imageGroupRepo.history(),
                 userId = "",
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                parentId = "root"
             )
         )
         val positionTo = 1
@@ -427,7 +434,8 @@ class WriteopiaManagerTest {
                 content = imageGroupRepo.history(),
                 userId = "",
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                parentId = "root"
             )
         )
 
@@ -490,7 +498,8 @@ class WriteopiaManagerTest {
                 content = simpleMessagesRepo.history(),
                 userId = "",
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                parentId = "root"
             )
         )
 
@@ -531,7 +540,8 @@ class WriteopiaManagerTest {
                 content = simpleMessagesRepo.history(),
                 userId = "",
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                parentId = "root"
             )
         )
 
@@ -566,7 +576,8 @@ class WriteopiaManagerTest {
                 content = imageGroupRepo.history(),
                 userId = "",
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                parentId = "root"
             )
         )
         val groupPosition = 0
@@ -619,7 +630,8 @@ class WriteopiaManagerTest {
                 content = messagesRepo.history(),
                 userId = "",
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                parentId = "root"
             )
         )
 
@@ -656,7 +668,8 @@ class WriteopiaManagerTest {
                     content = singleMessageRepo.history(),
                     userId = "",
                     createdAt = now,
-                    lastUpdatedAt = now
+                    lastUpdatedAt = now,
+                    parentId = "root"
                 )
             )
 
@@ -688,7 +701,8 @@ class WriteopiaManagerTest {
                     content = messagesRepo.history(),
                     userId = "",
                     createdAt = now,
-                    lastUpdatedAt = now
+                    lastUpdatedAt = now,
+                    parentId = "root"
                 )
             )
 
@@ -730,7 +744,8 @@ class WriteopiaManagerTest {
                 content = complexMessagesRepository.history(),
                 userId = "",
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                parentId = "root"
             )
         )
 
@@ -814,7 +829,8 @@ class WriteopiaManagerTest {
                 content = input,
                 userId = "",
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                parentId = "root"
             )
         )
         val currentStory = storyManager.currentStory.value.stories
@@ -843,7 +859,8 @@ class WriteopiaManagerTest {
                 content = input,
                 userId = "",
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                parentId = "root"
             )
         )
         val currentStory = storyManager.currentStory.value.stories
@@ -890,7 +907,8 @@ class WriteopiaManagerTest {
                 content = complexMessagesRepository.history(),
                 userId = "",
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                parentId = "root"
             )
         )
 
@@ -916,7 +934,8 @@ class WriteopiaManagerTest {
                 content = messagesRepo.history(),
                 userId = "",
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                parentId = "root"
             )
         )
 
@@ -971,7 +990,8 @@ class WriteopiaManagerTest {
                 content = messagesRepo.history(),
                 userId = "",
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                parentId = "root"
             )
         )
 
@@ -1031,7 +1051,8 @@ class WriteopiaManagerTest {
                 content = imagesInLineRepo.history(),
                 userId = "",
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                parentId = "root"
             )
         )
 

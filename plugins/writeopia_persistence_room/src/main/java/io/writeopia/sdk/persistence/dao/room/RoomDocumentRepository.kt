@@ -20,7 +20,7 @@ class RoomDocumentRepository(
         TODO("Not yet implemented")
     }
 
-    override suspend fun loadFavDocumentsForUser(userId: String): List<Document> {
+    override suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> {
         TODO("Not yet implemented")
     }
 
