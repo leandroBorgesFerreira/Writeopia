@@ -3,7 +3,15 @@ package io.writeopia.note_menu.ui.screen.list
 //import io.writeopia.appresourcers.R
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -14,7 +22,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,13 +31,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.writeopia.note_menu.data.model.NotesArrangement
-import io.writeopia.note_menu.ui.dto.DocumentUi
+import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
@@ -117,7 +123,7 @@ fun NotesCards(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun LazyStaggeredGridNotes(
-    documents: List<DocumentUi>,
+    documents: List<MenuItemUi>,
     onDocumentClick: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
 ) {
@@ -145,7 +151,7 @@ private fun LazyStaggeredGridNotes(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun LazyGridNotes(
-    documents: List<DocumentUi>,
+    documents: List<MenuItemUi>,
     onDocumentClick: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
 ) {
@@ -173,7 +179,7 @@ private fun LazyGridNotes(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun LazyColumnNotes(
-    documents: List<DocumentUi>,
+    documents: List<MenuItemUi>,
     onDocumentClick: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit
 ) {
@@ -196,7 +202,7 @@ private fun LazyColumnNotes(
 
 @Composable
 private fun DocumentItem(
-    documentUi: DocumentUi,
+    documentUi: MenuItemUi,
     documentClick: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
     drawers: Map<Int, StoryStepDrawer>,
@@ -227,11 +233,14 @@ private fun DocumentItem(
         defaultColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
         Column {
-            documentUi.preview.forEachIndexed { i, storyStep ->
-                drawers[storyStep.type.number]?.Step(
-                    step = storyStep,
-                    drawInfo = DrawInfo(editable = false, position = i)
-                )
+
+            if (documentUi is MenuItemUi.DocumentUi) {
+                documentUi.preview.forEachIndexed { i, storyStep ->
+                    drawers[storyStep.type.number]?.Step(
+                        step = storyStep,
+                        drawInfo = DrawInfo(editable = false, position = i)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -251,7 +260,7 @@ private fun DocumentItem(
 @Preview
 @Composable
 fun DocumentItemPreview() {
-    val documentUi = DocumentUi(
+    val documentUi = MenuItemUi.DocumentUi(
         documentId = "documentId",
         title = "title",
         lastEdit = "lastEdit",
@@ -278,7 +287,7 @@ fun DocumentItemPreview() {
 @Preview
 @Composable
 fun DocumentItemSelectedPreview() {
-    val documentUi = DocumentUi(
+    val documentUi = MenuItemUi.DocumentUi(
         documentId = "documentId",
         title = "title",
         lastEdit = "lastEdit",

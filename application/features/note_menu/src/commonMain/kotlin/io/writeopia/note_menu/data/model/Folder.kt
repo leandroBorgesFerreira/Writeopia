@@ -5,7 +5,7 @@ import io.writeopia.sdk.models.document.MenuItem
 import kotlinx.datetime.Instant
 
 data class Folder(
-    val id: String,
+    override val id: String,
     override val parentId: String,
     override val title: String,
     override val createdAt: Instant,

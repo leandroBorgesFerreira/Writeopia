@@ -16,12 +16,21 @@ class RoomDocumentRepository(
     private val storyUnitEntityDao: StoryUnitEntityDao
 ) : DocumentRepository {
 
-    override suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document> =
-        documentEntityDao.loadDocumentsWithContentForUser(orderBy, userId)
+    override suspend fun loadDocumentsForFolder(folderId: String): List<Document> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun loadFavDocumentsForUser(userId: String): List<Document> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun loadDocumentsForUser(userId: String): List<Document> {
+        return documentEntityDao.loadDocumentsWithContentForUser(userId)
             ?.map { (documentEntity, storyEntity) ->
                 val content = loadInnerSteps(storyEntity)
                 documentEntity.toModel(content)
             } ?: emptyList()
+    }
 
     override suspend fun loadDocumentsForUserAfterTime(
         orderBy: String,
@@ -31,9 +40,6 @@ class RoomDocumentRepository(
         throw IllegalStateException("This method is not supported")
     }
 
-    override suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> {
-        TODO("Not yet implemented")
-    }
 
     override suspend fun favoriteDocumentByIds(ids: Set<String>) {
         setFavorite(ids, true)
@@ -55,7 +61,10 @@ class RoomDocumentRepository(
             documentEntity.toModel(content)
         }
 
-    override suspend fun loadDocumentsWithContentByIds(ids: List<String>, orderBy: String): List<Document> =
+    override suspend fun loadDocumentsWithContentByIds(
+        ids: List<String>,
+        orderBy: String
+    ): List<Document> =
         documentEntityDao.loadDocumentWithContentByIds(ids, orderBy)
             .entries
             .map { (documentEntity, storyEntity) ->
@@ -82,7 +91,13 @@ class RoomDocumentRepository(
 
     override suspend fun deleteDocumentByIds(ids: Set<String>) {
         // The user ID is not relevant in the way to delete documents
-        documentEntityDao.deleteDocuments(*ids.map { DocumentEntity.createById(it, "") }.toTypedArray())
+        documentEntityDao.deleteDocuments(*ids.map {
+            DocumentEntity.createById(
+                it,
+                "",
+                parentId = ""
+            )
+        }.toTypedArray())
     }
 
     override suspend fun saveStoryStep(storyStep: StoryStep, position: Int, documentId: String) {

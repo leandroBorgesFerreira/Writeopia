@@ -15,6 +15,7 @@ import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.export.DocumentWriter
 import io.writeopia.sdk.import_document.json.WriteopiaJsonParser
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.utils_module.*
@@ -44,7 +45,7 @@ internal class ChooseNoteKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, false)
     }
 
-    private val _documentsState: MutableStateFlow<ResultData<List<Document>>> =
+    private val _documentsState: MutableStateFlow<ResultData<List<MenuItem>>> =
         MutableStateFlow(ResultData.Idle())
 
     private val _user: MutableStateFlow<UserState<User>> = MutableStateFlow(UserState.Idle())
@@ -223,7 +224,7 @@ internal class ChooseNoteKmpViewModel(
     override fun favoriteSelectedNotes() {
         val selectedIds = _selectedNotes.value
 
-        val allFavorites = (_documentsState.value as? ResultData.Complete<List<Document>>)
+        val allFavorites = (_documentsState.value as? ResultData.Complete<List<MenuItem>>)
             ?.data
             ?.filter { document ->
                 selectedIds.contains(document.id)
@@ -283,7 +284,6 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun confirmWorkplacePath() {
-
         val path = _showLocalSyncConfig.value.getPath()
 
         if (path != null) {
@@ -413,7 +413,8 @@ internal class ChooseNoteKmpViewModel(
 
     private suspend fun getNotes(userId: String): List<Document> =
         if (notesNavigation.navigationType == NotesNavigationType.FAVORITES) {
-            notesUseCase.loadFavDocumentsForUser(userId)
+            val orderBy = notesConfig.getOrderPreference(userId)
+            notesUseCase.loadFavDocumentsForUser(orderBy, userId)
         } else {
             notesUseCase.loadDocumentsForUser(userId)
         }

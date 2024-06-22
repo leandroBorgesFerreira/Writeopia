@@ -13,7 +13,7 @@ class InMemoryDocumentRepository : DocumentRepository {
     override suspend fun loadDocumentsForFolder(folderId: String): List<Document> =
         documentsMap.values.toList()
 
-    override suspend fun loadFavDocumentsForUser(userId: String): List<Document> =
+    override suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> =
         documentsMap.values.filter { document -> document.favorite }
 
     override suspend fun loadDocumentsForUserAfterTime(

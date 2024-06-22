@@ -7,6 +7,7 @@ import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
+import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import kotlinx.datetime.Instant
 
 /**
@@ -19,24 +20,14 @@ internal class NotesUseCase(
     private val folderRepository: FolderRepository
 ) {
 
-    suspend fun loadRootContent(userId: String): List<MenuItem> {
-        loadRootFoldersForUser(userId)
-
-        return emptyList()
-    }
-
-    private suspend fun loadRootFoldersForUser(userId: String): List<Folder> =
-        folderRepository.getRootFolders(userId)
-
-    suspend fun loadDocumentsForFolder(userId: String): List<Document> {
-        return documentRepository.loadDocumentsForFolder(userId)
-    }
+    suspend fun loadRootContent(userId: String): List<MenuItem> =
+        loadRootFoldersForUser(userId) + loadDocumentsForFolder("root")
 
     suspend fun loadDocumentsForUser(userId: String): List<Document> =
         documentRepository.loadDocumentsForUser(userId)
 
-    suspend fun loadFavDocumentsForUser(userId: String): List<Document> {
-        return documentRepository.loadFavDocumentsForUser(userId)
+    suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> {
+        return documentRepository.loadFavDocumentsForUser(orderBy, userId)
     }
 
     suspend fun loadDocumentsForUserAfterTime(userId: String, time: Instant): List<Document> =
@@ -77,5 +68,12 @@ internal class NotesUseCase(
 
     suspend fun unFavoriteNotes(ids: Set<String>) {
         documentRepository.unFavoriteDocumentByIds(ids)
+    }
+
+    private suspend fun loadRootFoldersForUser(userId: String): List<Folder> =
+        folderRepository.getRootFolders(userId)
+
+    private suspend fun loadDocumentsForFolder(folderId: String): List<Document> {
+        return documentRepository.loadDocumentsForFolder(folderId)
     }
 }

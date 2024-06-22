@@ -5,7 +5,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import kotlinx.datetime.Instant
 
 data class Document(
-    val id: String = GenerateId.generate(),
+    override val id: String = GenerateId.generate(),
     override val title: String = "",
     val content: Map<Int, StoryStep> = emptyMap(),
     override val createdAt: Instant,

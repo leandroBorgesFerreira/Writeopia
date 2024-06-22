@@ -53,6 +53,13 @@ LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
 WHERE documentEntity.id = ?
 ORDER BY position;
 
+selectWithContentByParentId:
+SELECT *
+FROM documentEntity
+LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
+WHERE documentEntity.parent_document_id = ?
+ORDER BY position;
+
 insert:
 INSERT INTO documentEntity(id, title, created_at, last_updated_at, user_id, favorite, parent_document_id)
 VALUES (?, ?, ?, ?, ?, ?, ?)

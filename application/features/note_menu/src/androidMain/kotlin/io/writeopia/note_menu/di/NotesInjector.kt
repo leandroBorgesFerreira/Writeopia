@@ -11,6 +11,6 @@ actual class NotesInjector(private val appRoomDaosInjection: AppRoomDaosInjectio
         ConfigurationRoomRepository(appRoomDaosInjection.provideConfigurationDao())
 
     actual fun provideFoldersRepository(): FolderRepository {
-
+        return null!!
     }
 }

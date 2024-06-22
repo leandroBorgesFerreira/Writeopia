@@ -3,6 +3,7 @@ package io.writeopia.sdk.persistence.core.repository
 import io.writeopia.sdk.manager.DocumentUpdate
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import kotlinx.datetime.Instant
 
 /**
@@ -16,7 +17,7 @@ interface DocumentRepository : DocumentUpdate {
 
     suspend fun loadDocumentsForUser(userId: String): List<Document>
 
-    suspend fun loadFavDocumentsForUser(userId: String): List<Document>
+    suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document>
 
     suspend fun loadDocumentsForUserAfterTime(
         orderBy: String,
