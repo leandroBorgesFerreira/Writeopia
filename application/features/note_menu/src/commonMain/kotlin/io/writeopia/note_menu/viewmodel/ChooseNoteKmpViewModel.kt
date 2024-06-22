@@ -110,11 +110,6 @@ internal class ChooseNoteKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Idle())
     }
 
-    private suspend fun getUserId(): String =
-        localUserId ?: authManager.getUser().id.also { id ->
-            localUserId = id
-        }
-
     override fun requestDocuments(force: Boolean) {
         if (documentsState.value !is ResultData.Complete || force) {
             coroutineScope.launch(Dispatchers.Default) {
@@ -417,5 +412,11 @@ internal class ChooseNoteKmpViewModel(
             notesUseCase.loadFavDocumentsForUser(orderBy, userId)
         } else {
             notesUseCase.loadDocumentsForUser(userId)
+        }
+
+
+    private suspend fun getUserId(): String =
+        localUserId ?: authManager.getUser().id.also { id ->
+            localUserId = id
         }
 }
