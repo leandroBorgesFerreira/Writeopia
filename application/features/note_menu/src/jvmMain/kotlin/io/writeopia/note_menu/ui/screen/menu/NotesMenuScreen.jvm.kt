@@ -17,6 +17,7 @@ actual fun NotesMenuScreen(
     onAccountClick: () -> Unit,
     selectColorTheme: (ColorThemeOption) -> Unit,
     navigateToNotes: (NotesNavigation) -> Unit,
+    addFolder: () -> Unit,
     modifier: Modifier
 ) {
     DesktopNotesMenu(
@@ -26,6 +27,7 @@ actual fun NotesMenuScreen(
         onNoteClick = onNoteClick,
         selectColorTheme = selectColorTheme,
         navigateToNotes = navigateToNotes,
+        addFolder = addFolder,
         modifier = modifier,
     )
 }

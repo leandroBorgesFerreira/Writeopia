@@ -16,5 +16,6 @@ expect fun NotesMenuScreen(
     onAccountClick: () -> Unit,
     selectColorTheme: (ColorThemeOption) -> Unit,
     navigateToNotes: (NotesNavigation) -> Unit,
+    addFolder: () -> Unit,
     modifier: Modifier = Modifier,
 )

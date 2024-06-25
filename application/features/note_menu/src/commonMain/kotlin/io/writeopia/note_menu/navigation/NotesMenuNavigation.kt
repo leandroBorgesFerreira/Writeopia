@@ -81,6 +81,7 @@ fun NavGraphBuilder.notesMenuNavigation(
                     "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/path",
                 )
             },
+            addFolder = {},
             modifier = Modifier.background(MaterialTheme.colorScheme.background)
         )
     }

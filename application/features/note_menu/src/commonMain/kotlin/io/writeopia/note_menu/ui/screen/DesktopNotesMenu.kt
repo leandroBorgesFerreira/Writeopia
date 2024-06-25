@@ -57,6 +57,7 @@ fun DesktopNotesMenu(
     onNoteClick: (String, String) -> Unit,
     selectColorTheme: (ColorThemeOption) -> Unit,
     navigateToNotes: (NotesNavigation) -> Unit,
+    addFolder: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LaunchedEffect(
@@ -80,7 +81,8 @@ fun DesktopNotesMenu(
                 width = 280.dp,
                 folderClick = { navigateToNotes(NotesNavigation.Root) },
                 favoritesClick = { navigateToNotes(NotesNavigation.Favorites) },
-                settingsClick = chooseNoteViewModel::showSettings
+                settingsClick = chooseNoteViewModel::showSettings,
+                addFolder = addFolder
             )
 
             Box {

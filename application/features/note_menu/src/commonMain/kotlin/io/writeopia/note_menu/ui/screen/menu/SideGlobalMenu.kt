@@ -11,8 +11,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Settings
@@ -24,6 +27,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
@@ -41,6 +45,7 @@ fun SideGlobalMenu(
     folderClick: () -> Unit,
     favoritesClick: () -> Unit,
     settingsClick: () -> Unit,
+    addFolder: () -> Unit
 ) {
     val widthState by derivedStateOf {
         if (showOptions) width else 0.dp
@@ -64,7 +69,18 @@ fun SideGlobalMenu(
                         iconVector = Icons.Outlined.Folder,
                         contentDescription = "Folder",
                         text = "Folder",
-                        click = folderClick
+                        click = folderClick,
+                        trailingContent = {
+                            Icon(
+                                imageVector = Icons.Outlined.AddCircleOutline,
+                                contentDescription = "Add Folder",
+                                tint = MaterialTheme.colorScheme.onBackground,
+                                modifier = Modifier.size(50.dp)
+                                    .clip(CircleShape)
+                                    .clickable(onClick = addFolder)
+                                    .padding(16.dp)
+                            )
+                        }
                     )
 
                     settingsOptions(
@@ -78,7 +94,7 @@ fun SideGlobalMenu(
                         iconVector = Icons.Outlined.Settings,
                         contentDescription = "Settings",
                         text = "Settings",
-                        click = settingsClick
+                        click = settingsClick,
                     )
                 }
             }
@@ -91,12 +107,13 @@ private fun settingsOptions(
     iconVector: ImageVector,
     contentDescription: String,
     text: String,
-    click: () -> Unit
+    click: () -> Unit,
+    trailingContent: @Composable (() -> Unit)? = null
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.clickable(onClick = click)
-            .padding(horizontal = 20.dp, vertical = 10.dp)
+            .padding(start = 20.dp, end = 10.dp, top = 10.dp, bottom = 10.dp)
             .fillMaxWidth()
     ) {
 
@@ -117,5 +134,11 @@ private fun settingsOptions(
             ),
             maxLines = 1
         )
+
+        if (trailingContent != null) {
+            Spacer(modifier = Modifier.weight(1F))
+
+            trailingContent()
+        }
     }
 }
