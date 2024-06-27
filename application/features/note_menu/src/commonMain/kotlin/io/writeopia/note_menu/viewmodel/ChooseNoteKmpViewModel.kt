@@ -16,6 +16,7 @@ import io.writeopia.sdk.export.DocumentWriter
 import io.writeopia.sdk.import_document.json.WriteopiaJsonParser
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.utils_module.*
@@ -324,6 +325,12 @@ internal class ChooseNoteKmpViewModel(
 
     override fun hideSettings() {
         _showSettingsState.value = false
+    }
+
+    override fun addFolder() {
+        coroutineScope.launch(Dispatchers.Default) {
+            notesUseCase.createFolder("folder_${GenerateId.generate()}", getUserId())
+        }
     }
 
     private fun setShowSideMenu(enabled: Boolean) {

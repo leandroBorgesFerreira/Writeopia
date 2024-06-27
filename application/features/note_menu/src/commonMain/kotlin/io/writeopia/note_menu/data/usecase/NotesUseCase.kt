@@ -20,6 +20,14 @@ internal class NotesUseCase(
     private val folderRepository: FolderRepository
 ) {
 
+    suspend fun createFolder(name: String, userId: String) {
+        folderRepository.createFolder(Folder.fromName(name, userId))
+    }
+
+    suspend fun loadRootsFolders(userId: String) {
+        folderRepository.getRootFolders(userId)
+    }
+
     suspend fun loadRootContent(userId: String): List<MenuItem> =
         loadRootFoldersForUser(userId) + loadDocumentsForFolder("root")
 

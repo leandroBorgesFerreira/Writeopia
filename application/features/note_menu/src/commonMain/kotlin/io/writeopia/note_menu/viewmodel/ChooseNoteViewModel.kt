@@ -82,6 +82,8 @@ interface ChooseNoteViewModel {
     fun showSettings()
 
     fun hideSettings()
+
+    fun addFolder()
 }
 
 sealed interface UserState<T> {

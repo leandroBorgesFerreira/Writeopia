@@ -2,6 +2,8 @@ package io.writeopia.note_menu.data.model
 
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
+import io.writeopia.sdk.models.id.GenerateId
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 data class Folder(
@@ -11,6 +13,21 @@ data class Folder(
     override val createdAt: Instant,
     override val lastUpdatedAt: Instant,
     override val userId: String,
-    override val favorite: Boolean,
+    override val favorite: Boolean = false,
     val documentList: List<Document> = emptyList(),
-) : MenuItem
+) : MenuItem {
+    companion object {
+        fun fromName(name: String, userId: String): Folder {
+            val now = Clock.System.now()
+
+            return Folder(
+                id = GenerateId.generate(),
+                parentId = "",
+                title = name,
+                createdAt = now,
+                lastUpdatedAt = now,
+                userId = userId,
+            )
+        }
+    }
+}
