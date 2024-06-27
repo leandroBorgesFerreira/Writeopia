@@ -4,7 +4,6 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddCircleOutline
@@ -53,6 +51,7 @@ fun SideGlobalMenu(
     settingsClick: () -> Unit,
     addFolder: () -> Unit,
     foldersState: StateFlow<List<Folder>>,
+    navigateToFolder: (String) -> Unit
 ) {
     val widthState by derivedStateOf {
         if (showOptions) width else 0.dp
@@ -75,7 +74,7 @@ fun SideGlobalMenu(
                     item {
                         Spacer(Modifier.height(100.dp))
                     }
-                    
+
                     item {
                         settingsOptions(
                             iconVector = Icons.Outlined.Favorite,
@@ -96,7 +95,7 @@ fun SideGlobalMenu(
 
                     item {
                         settingsOptions(
-                            iconVector = Icons.Outlined.Folder,
+                            iconVector = null,
                             contentDescription = "Folder",
                             text = "Folder",
                             click = folderClick,
@@ -115,9 +114,29 @@ fun SideGlobalMenu(
                     }
 
                     items(folders) { folder ->
-                        Spacer(Modifier.height(10.dp))
+                        Row(
+                            modifier = Modifier.clickable {
+                                navigateToFolder(folder.id)
+                            }.padding(vertical = 8.dp, horizontal = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Folder,
+                                contentDescription = "Folder",
+                                tint = MaterialTheme.colorScheme.onBackground,
+                                modifier = Modifier.size(20.dp)
+                            )
 
-                        Text(text = folder.title, modifier = Modifier.fillMaxWidth())
+                            Spacer(modifier = Modifier.width(4.dp))
+
+                            Text(
+                                text = folder.title,
+                                modifier = Modifier.fillMaxWidth(),
+                                color = MaterialTheme.colorScheme.onBackground,
+                                style = MaterialTheme.typography.bodySmall
+                                    .copy(fontWeight = FontWeight.Bold)
+                            )
+                        }
                     }
 
                 }
@@ -128,25 +147,28 @@ fun SideGlobalMenu(
 
 @Composable
 private fun settingsOptions(
-    iconVector: ImageVector,
+    iconVector: ImageVector?,
     contentDescription: String,
     text: String,
     click: () -> Unit,
-    trailingContent: @Composable (() -> Unit)? = null
+    trailingContent: @Composable (() -> Unit)? = null,
+    modifier: Modifier = Modifier
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable(onClick = click)
+        modifier = modifier.clickable(onClick = click)
             .padding(start = 20.dp, end = 10.dp, top = 10.dp, bottom = 10.dp)
             .fillMaxWidth()
     ) {
 
-        Icon(
-            modifier = Modifier,
-            imageVector = iconVector,
-            contentDescription = contentDescription,
-            tint = MaterialTheme.colorScheme.onBackground
-        )
+        iconVector?.let { icon ->
+            Icon(
+                modifier = Modifier,
+                imageVector = icon,
+                contentDescription = contentDescription,
+                tint = MaterialTheme.colorScheme.onBackground
+            )
+        }
 
         Spacer(modifier = Modifier.width(10.dp))
 
