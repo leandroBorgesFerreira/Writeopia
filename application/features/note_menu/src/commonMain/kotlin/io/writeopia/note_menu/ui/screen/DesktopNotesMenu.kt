@@ -79,7 +79,7 @@ fun DesktopNotesMenu(
                 background = MaterialTheme.colorScheme.surfaceVariant,
                 showOptions = showOptions,
                 width = 280.dp,
-                folderClick = { navigateToNotes(NotesNavigation.Root) },
+                homeClick = { navigateToNotes(NotesNavigation.Root) },
                 favoritesClick = { navigateToNotes(NotesNavigation.Favorites) },
                 settingsClick = chooseNoteViewModel::showSettings,
                 addFolder = addFolder,

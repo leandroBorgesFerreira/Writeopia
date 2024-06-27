@@ -48,7 +48,7 @@ fun SideGlobalMenu(
     background: Color,
     showOptions: Boolean,
     width: Dp = finalWidth.dp,
-    folderClick: () -> Unit,
+    homeClick: () -> Unit,
     favoritesClick: () -> Unit,
     settingsClick: () -> Unit,
     addFolder: () -> Unit,
@@ -79,7 +79,7 @@ fun SideGlobalMenu(
                         iconVector = Icons.Outlined.Home,
                         contentDescription = "Home",
                         text = "Home",
-                        click = { }
+                        click = homeClick
                     )
 
                     settingsOptions(
@@ -96,11 +96,8 @@ fun SideGlobalMenu(
                         click = settingsClick,
                     )
 
-                    settingsOptions(
-                        iconVector = null,
-                        contentDescription = "Folder",
+                    title(
                         text = "Folder",
-                        click = folderClick,
                         trailingContent = {
                             Icon(
                                 imageVector = Icons.Outlined.AddCircleOutline,
@@ -119,24 +116,25 @@ fun SideGlobalMenu(
                             Row(
                                 modifier = Modifier.clickable {
                                     navigateToFolder(folder.id)
-                                }.padding(vertical = 8.dp, horizontal = 12.dp),
+                                }.padding(vertical = 8.dp, horizontal = 26.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
                                     imageVector = Icons.Outlined.Folder,
                                     contentDescription = "Folder",
                                     tint = MaterialTheme.colorScheme.onBackground,
-                                    modifier = Modifier.size(20.dp)
+                                    modifier = Modifier.size(16.dp)
                                 )
 
-                                Spacer(modifier = Modifier.width(4.dp))
+                                Spacer(modifier = Modifier.width(6.dp))
 
                                 Text(
                                     text = folder.title,
                                     modifier = Modifier.fillMaxWidth(),
                                     color = MaterialTheme.colorScheme.onBackground,
                                     style = MaterialTheme.typography.bodySmall
-                                        .copy(fontWeight = FontWeight.Bold)
+                                        .copy(fontWeight = FontWeight.Bold),
+                                    maxLines = 1
                                 )
                             }
                         }
@@ -153,13 +151,19 @@ private fun settingsOptions(
     iconVector: ImageVector?,
     contentDescription: String,
     text: String,
-    click: () -> Unit,
+    click: (() -> Unit)? = null,
     trailingContent: @Composable (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.clickable(onClick = click)
+        modifier = modifier.let { modifierLet ->
+            if (click != null) {
+                modifierLet.clickable(onClick = click)
+            } else {
+                modifierLet
+            }
+        }
             .padding(start = 20.dp, end = 10.dp, top = 10.dp, bottom = 10.dp)
             .fillMaxWidth()
     ) {
@@ -175,6 +179,42 @@ private fun settingsOptions(
 
         Spacer(modifier = Modifier.width(10.dp))
 
+        Text(
+            text = text,
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.bodySmall.copy(
+                fontWeight = FontWeight.Bold
+            ),
+            maxLines = 1
+        )
+
+        if (trailingContent != null) {
+            Spacer(modifier = Modifier.weight(1F))
+
+            trailingContent()
+        }
+    }
+}
+
+@Composable
+private fun title(
+    text: String,
+    click: (() -> Unit)? = null,
+    trailingContent: @Composable (() -> Unit)? = null,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier.let { modifierLet ->
+            if (click != null) {
+                modifierLet.clickable(onClick = click)
+            } else {
+                modifierLet
+            }
+        }
+            .padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 10.dp)
+            .fillMaxWidth()
+    ) {
         Text(
             text = text,
             color = MaterialTheme.colorScheme.onBackground,
