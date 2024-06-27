@@ -1,7 +1,9 @@
 package io.writeopia.note_menu.viewmodel
 
+import io.writeopia.app.sql.FolderEntity
 import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
+import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.data.model.NotesNavigationType
@@ -75,6 +77,11 @@ internal class ChooseNoteKmpViewModel(
 
     private val _showSettingsState = MutableStateFlow(false)
     override val showSettingsState: StateFlow<Boolean> = _showSettingsState.asStateFlow()
+
+    override val folders: StateFlow<List<Folder>> by lazy {
+        notesUseCase.listenForFolders()
+            .stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
+    }
 
     override val showSideMenu: StateFlow<Boolean> by lazy {
         uiConfigurationRepo.listenForUiConfiguration(::getUserId, coroutineScope)

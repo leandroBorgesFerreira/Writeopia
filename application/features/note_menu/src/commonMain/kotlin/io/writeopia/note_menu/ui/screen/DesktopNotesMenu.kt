@@ -82,7 +82,8 @@ fun DesktopNotesMenu(
                 folderClick = { navigateToNotes(NotesNavigation.Root) },
                 favoritesClick = { navigateToNotes(NotesNavigation.Favorites) },
                 settingsClick = chooseNoteViewModel::showSettings,
-                addFolder = addFolder
+                addFolder = addFolder,
+                foldersState = chooseNoteViewModel.folders
             )
 
             Box {

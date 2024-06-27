@@ -9,6 +9,10 @@ CREATE TABLE folderEntity (
   favorite INTEGER NOT NULL
 );
 
+selectAllFolders:
+SELECT *
+FROM folderEntity;
+
 selectChildrenFolder:
 SELECT *
 FROM folderEntity

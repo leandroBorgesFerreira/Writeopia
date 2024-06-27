@@ -13,7 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.Favorite
@@ -23,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -33,6 +37,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.writeopia.note_menu.data.model.Folder
+import kotlinx.coroutines.flow.StateFlow
 
 private const val finalWidth = 300
 
@@ -45,7 +51,8 @@ fun SideGlobalMenu(
     folderClick: () -> Unit,
     favoritesClick: () -> Unit,
     settingsClick: () -> Unit,
-    addFolder: () -> Unit
+    addFolder: () -> Unit,
+    foldersState: StateFlow<List<Folder>>
 ) {
     val widthState by derivedStateOf {
         if (showOptions) width else 0.dp
@@ -62,40 +69,56 @@ fun SideGlobalMenu(
     ) {
         Box(modifier = Modifier.width(widthAnimatedState).fillMaxHeight()) {
             if (showContent) {
-                Column(Modifier.fillMaxHeight().background(background)) {
-                    Spacer(Modifier.height(100.dp))
+                val folders by foldersState.collectAsState()
 
-                    settingsOptions(
-                        iconVector = Icons.Outlined.Folder,
-                        contentDescription = "Folder",
-                        text = "Folder",
-                        click = folderClick,
-                        trailingContent = {
-                            Icon(
-                                imageVector = Icons.Outlined.AddCircleOutline,
-                                contentDescription = "Add Folder",
-                                tint = MaterialTheme.colorScheme.onBackground,
-                                modifier = Modifier.size(50.dp)
-                                    .clip(CircleShape)
-                                    .clickable(onClick = addFolder)
-                                    .padding(16.dp)
-                            )
-                        }
-                    )
+                LazyColumn(Modifier.fillMaxHeight().background(background)) {
+                    item {
+                        Spacer(Modifier.height(100.dp))
+                    }
+                    
+                    item {
+                        settingsOptions(
+                            iconVector = Icons.Outlined.Folder,
+                            contentDescription = "Folder",
+                            text = "Folder",
+                            click = folderClick,
+                            trailingContent = {
+                                Icon(
+                                    imageVector = Icons.Outlined.AddCircleOutline,
+                                    contentDescription = "Add Folder",
+                                    tint = MaterialTheme.colorScheme.onBackground,
+                                    modifier = Modifier.size(42.dp)
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .clickable(onClick = addFolder)
+                                        .padding(12.dp)
+                                )
+                            }
+                        )
+                    }
 
-                    settingsOptions(
-                        iconVector = Icons.Outlined.Favorite,
-                        contentDescription = "Favorites",
-                        text = "Favorites",
-                        click = favoritesClick
-                    )
+                    items(folders) { folder ->
+                        Spacer(Modifier.height(10.dp))
 
-                    settingsOptions(
-                        iconVector = Icons.Outlined.Settings,
-                        contentDescription = "Settings",
-                        text = "Settings",
-                        click = settingsClick,
-                    )
+                        Text(text = folder.title)
+                    }
+
+                    item {
+                        settingsOptions(
+                            iconVector = Icons.Outlined.Favorite,
+                            contentDescription = "Favorites",
+                            text = "Favorites",
+                            click = favoritesClick
+                        )
+                    }
+
+                    item {
+                        settingsOptions(
+                            iconVector = Icons.Outlined.Settings,
+                            contentDescription = "Settings",
+                            text = "Settings",
+                            click = settingsClick,
+                        )
+                    }
                 }
             }
         }

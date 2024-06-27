@@ -8,6 +8,7 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
+import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 
 /**
@@ -27,6 +28,8 @@ internal class NotesUseCase(
     suspend fun loadRootsFolders(userId: String) {
         folderRepository.getRootFolders(userId)
     }
+
+    fun listenForFolders() = folderRepository.listenForAllFolders()
 
     suspend fun loadRootContent(userId: String): List<MenuItem> =
         loadRootFoldersForUser(userId) + loadDocumentsForFolder("root")

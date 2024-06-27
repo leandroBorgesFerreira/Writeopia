@@ -1,5 +1,6 @@
 package io.writeopia.note_menu.viewmodel
 
+import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
@@ -28,6 +29,8 @@ interface ChooseNoteViewModel {
     val showSideMenu: StateFlow<Boolean>
 
     val showSettingsState: StateFlow<Boolean>
+
+    val folders: StateFlow<List<Folder>>
 
     fun requestDocuments(force: Boolean)
 
