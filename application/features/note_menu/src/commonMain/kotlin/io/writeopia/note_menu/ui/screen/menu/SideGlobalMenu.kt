@@ -75,7 +75,7 @@ fun SideGlobalMenu(
                     item {
                         Spacer(Modifier.height(100.dp))
                     }
-                    
+
                     item {
                         settingsOptions(
                             iconVector = Icons.Outlined.Folder,
@@ -87,10 +87,10 @@ fun SideGlobalMenu(
                                     imageVector = Icons.Outlined.AddCircleOutline,
                                     contentDescription = "Add Folder",
                                     tint = MaterialTheme.colorScheme.onBackground,
-                                    modifier = Modifier.size(42.dp)
-                                        .clip(RoundedCornerShape(16.dp))
+                                    modifier = Modifier.size(30.dp)
+                                        .clip(RoundedCornerShape(8.dp))
                                         .clickable(onClick = addFolder)
-                                        .padding(12.dp)
+                                        .padding(6.dp)
                                 )
                             }
                         )
@@ -99,7 +99,7 @@ fun SideGlobalMenu(
                     items(folders) { folder ->
                         Spacer(Modifier.height(10.dp))
 
-                        Text(text = folder.title)
+                        Text(text = folder.title, modifier = Modifier.fillMaxWidth())
                     }
 
                     item {
