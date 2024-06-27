@@ -52,7 +52,7 @@ fun SideGlobalMenu(
     favoritesClick: () -> Unit,
     settingsClick: () -> Unit,
     addFolder: () -> Unit,
-    foldersState: StateFlow<List<Folder>>
+    foldersState: StateFlow<List<Folder>>,
 ) {
     val widthState by derivedStateOf {
         if (showOptions) width else 0.dp
