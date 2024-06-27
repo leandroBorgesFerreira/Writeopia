@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
@@ -83,7 +84,7 @@ fun SideGlobalMenu(
                     )
 
                     settingsOptions(
-                        iconVector = Icons.Outlined.Favorite,
+                        iconVector = Icons.Outlined.FavoriteBorder,
                         contentDescription = "Favorites",
                         text = "Favorites",
                         click = favoritesClick

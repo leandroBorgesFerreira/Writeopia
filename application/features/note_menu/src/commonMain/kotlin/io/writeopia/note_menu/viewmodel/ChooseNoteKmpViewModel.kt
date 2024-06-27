@@ -336,7 +336,7 @@ internal class ChooseNoteKmpViewModel(
 
     override fun addFolder() {
         coroutineScope.launch(Dispatchers.Default) {
-            notesUseCase.createFolder("folder_${GenerateId.generate()}", getUserId())
+            notesUseCase.createFolder("Untitled", getUserId())
         }
     }
 
