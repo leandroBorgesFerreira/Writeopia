@@ -4,6 +4,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -63,82 +65,83 @@ fun SideGlobalMenu(
     }
 
     Row(
-        modifier = modifier,
+        modifier = modifier.background(background),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(modifier = Modifier.width(widthAnimatedState).fillMaxHeight()) {
             if (showContent) {
                 val folders by foldersState.collectAsState()
 
-                LazyColumn(Modifier.fillMaxHeight().background(background)) {
-                    item {
-                        Spacer(Modifier.height(100.dp))
-                    }
+                Column {
+                    Spacer(modifier = Modifier.height(10.dp))
 
-                    item {
-                        settingsOptions(
-                            iconVector = Icons.Outlined.Favorite,
-                            contentDescription = "Favorites",
-                            text = "Favorites",
-                            click = favoritesClick
-                        )
-                    }
+                    settingsOptions(
+                        iconVector = Icons.Outlined.Home,
+                        contentDescription = "Home",
+                        text = "Home",
+                        click = { }
+                    )
 
-                    item {
-                        settingsOptions(
-                            iconVector = Icons.Outlined.Settings,
-                            contentDescription = "Settings",
-                            text = "Settings",
-                            click = settingsClick,
-                        )
-                    }
+                    settingsOptions(
+                        iconVector = Icons.Outlined.Favorite,
+                        contentDescription = "Favorites",
+                        text = "Favorites",
+                        click = favoritesClick
+                    )
 
-                    item {
-                        settingsOptions(
-                            iconVector = null,
-                            contentDescription = "Folder",
-                            text = "Folder",
-                            click = folderClick,
-                            trailingContent = {
-                                Icon(
-                                    imageVector = Icons.Outlined.AddCircleOutline,
-                                    contentDescription = "Add Folder",
-                                    tint = MaterialTheme.colorScheme.onBackground,
-                                    modifier = Modifier.size(30.dp)
-                                        .clip(RoundedCornerShape(8.dp))
-                                        .clickable(onClick = addFolder)
-                                        .padding(6.dp)
-                                )
-                            }
-                        )
-                    }
+                    settingsOptions(
+                        iconVector = Icons.Outlined.Settings,
+                        contentDescription = "Settings",
+                        text = "Settings",
+                        click = settingsClick,
+                    )
 
-                    items(folders) { folder ->
-                        Row(
-                            modifier = Modifier.clickable {
-                                navigateToFolder(folder.id)
-                            }.padding(vertical = 8.dp, horizontal = 12.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
+                    settingsOptions(
+                        iconVector = null,
+                        contentDescription = "Folder",
+                        text = "Folder",
+                        click = folderClick,
+                        trailingContent = {
                             Icon(
-                                imageVector = Icons.Outlined.Folder,
-                                contentDescription = "Folder",
+                                imageVector = Icons.Outlined.AddCircleOutline,
+                                contentDescription = "Add Folder",
                                 tint = MaterialTheme.colorScheme.onBackground,
-                                modifier = Modifier.size(20.dp)
-                            )
-
-                            Spacer(modifier = Modifier.width(4.dp))
-
-                            Text(
-                                text = folder.title,
-                                modifier = Modifier.fillMaxWidth(),
-                                color = MaterialTheme.colorScheme.onBackground,
-                                style = MaterialTheme.typography.bodySmall
-                                    .copy(fontWeight = FontWeight.Bold)
+                                modifier = Modifier.size(30.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .clickable(onClick = addFolder)
+                                    .padding(6.dp)
                             )
                         }
-                    }
+                    )
 
+                    LazyColumn(Modifier.weight(1F)) {
+                        items(folders) { folder ->
+                            Row(
+                                modifier = Modifier.clickable {
+                                    navigateToFolder(folder.id)
+                                }.padding(vertical = 8.dp, horizontal = 12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Folder,
+                                    contentDescription = "Folder",
+                                    tint = MaterialTheme.colorScheme.onBackground,
+                                    modifier = Modifier.size(20.dp)
+                                )
+
+                                Spacer(modifier = Modifier.width(4.dp))
+
+                                Text(
+                                    text = folder.title,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    style = MaterialTheme.typography.bodySmall
+                                        .copy(fontWeight = FontWeight.Bold)
+                                )
+                            }
+                        }
+
+                    }
                 }
             }
         }
@@ -163,7 +166,7 @@ private fun settingsOptions(
 
         iconVector?.let { icon ->
             Icon(
-                modifier = Modifier,
+                modifier = Modifier.size(22.dp),
                 imageVector = icon,
                 contentDescription = contentDescription,
                 tint = MaterialTheme.colorScheme.onBackground
@@ -175,7 +178,7 @@ private fun settingsOptions(
         Text(
             text = text,
             color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.bodyMedium.copy(
+            style = MaterialTheme.typography.bodySmall.copy(
                 fontWeight = FontWeight.Bold
             ),
             maxLines = 1
