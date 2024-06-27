@@ -75,6 +75,24 @@ fun SideGlobalMenu(
                     item {
                         Spacer(Modifier.height(100.dp))
                     }
+                    
+                    item {
+                        settingsOptions(
+                            iconVector = Icons.Outlined.Favorite,
+                            contentDescription = "Favorites",
+                            text = "Favorites",
+                            click = favoritesClick
+                        )
+                    }
+
+                    item {
+                        settingsOptions(
+                            iconVector = Icons.Outlined.Settings,
+                            contentDescription = "Settings",
+                            text = "Settings",
+                            click = settingsClick,
+                        )
+                    }
 
                     item {
                         settingsOptions(
@@ -102,23 +120,6 @@ fun SideGlobalMenu(
                         Text(text = folder.title, modifier = Modifier.fillMaxWidth())
                     }
 
-                    item {
-                        settingsOptions(
-                            iconVector = Icons.Outlined.Favorite,
-                            contentDescription = "Favorites",
-                            text = "Favorites",
-                            click = favoritesClick
-                        )
-                    }
-
-                    item {
-                        settingsOptions(
-                            iconVector = Icons.Outlined.Settings,
-                            contentDescription = "Settings",
-                            text = "Settings",
-                            click = settingsClick,
-                        )
-                    }
                 }
             }
         }
