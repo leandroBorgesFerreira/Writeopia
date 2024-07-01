@@ -78,6 +78,8 @@ internal class ChooseNoteKmpViewModel(
     private val _showSettingsState = MutableStateFlow(false)
     override val showSettingsState: StateFlow<Boolean> = _showSettingsState.asStateFlow()
 
+    private val _showEditFolderState = MutableStateFlow(false)
+
     override val folders: StateFlow<List<Folder>> by lazy {
         notesUseCase.listenForFolders()
             .stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
@@ -337,6 +339,12 @@ internal class ChooseNoteKmpViewModel(
     override fun addFolder() {
         coroutineScope.launch(Dispatchers.Default) {
             notesUseCase.createFolder("Untitled", getUserId())
+        }
+    }
+
+    override fun editFolder(id: String) {
+        coroutineScope.launch(Dispatchers.Default) {
+
         }
     }
 

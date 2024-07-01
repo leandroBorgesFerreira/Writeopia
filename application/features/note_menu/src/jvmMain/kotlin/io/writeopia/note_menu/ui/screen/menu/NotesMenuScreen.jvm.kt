@@ -18,6 +18,7 @@ actual fun NotesMenuScreen(
     selectColorTheme: (ColorThemeOption) -> Unit,
     navigateToNotes: (NotesNavigation) -> Unit,
     addFolder: () -> Unit,
+    editFolder: () -> Unit,
     modifier: Modifier
 ) {
     DesktopNotesMenu(
@@ -28,6 +29,7 @@ actual fun NotesMenuScreen(
         selectColorTheme = selectColorTheme,
         navigateToNotes = navigateToNotes,
         addFolder = addFolder,
+        editFolder = editFolder,
         modifier = modifier,
     )
 }

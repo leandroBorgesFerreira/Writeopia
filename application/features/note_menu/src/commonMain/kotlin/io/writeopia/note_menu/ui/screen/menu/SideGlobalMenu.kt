@@ -47,6 +47,7 @@ private const val finalWidth = 300
 @Composable
 fun SideGlobalMenu(
     modifier: Modifier = Modifier,
+    foldersState: StateFlow<List<Folder>>,
     background: Color,
     showOptions: Boolean,
     width: Dp = finalWidth.dp,
@@ -54,7 +55,7 @@ fun SideGlobalMenu(
     favoritesClick: () -> Unit,
     settingsClick: () -> Unit,
     addFolder: () -> Unit,
-    foldersState: StateFlow<List<Folder>>,
+    editFolder: () -> Unit,
     navigateToFolder: (String) -> Unit
 ) {
     val widthState by derivedStateOf {
@@ -147,7 +148,7 @@ fun SideGlobalMenu(
                                     tint = MaterialTheme.colorScheme.onBackground,
                                     modifier = Modifier
                                         .clip(RoundedCornerShape(6.dp))
-                                        .clickable { }
+                                        .clickable(onClick = editFolder)
                                         .size(26.dp)
                                         .padding(4.dp)
                                 )

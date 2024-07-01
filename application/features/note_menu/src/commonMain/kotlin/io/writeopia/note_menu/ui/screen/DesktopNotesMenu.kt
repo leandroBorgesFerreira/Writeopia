@@ -58,6 +58,7 @@ fun DesktopNotesMenu(
     selectColorTheme: (ColorThemeOption) -> Unit,
     navigateToNotes: (NotesNavigation) -> Unit,
     addFolder: () -> Unit,
+    editFolder: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LaunchedEffect(
@@ -76,6 +77,7 @@ fun DesktopNotesMenu(
         Row {
             SideGlobalMenu(
                 modifier = Modifier.fillMaxHeight(),
+                foldersState = chooseNoteViewModel.folders,
                 background = MaterialTheme.colorScheme.surfaceVariant,
                 showOptions = showOptions,
                 width = 280.dp,
@@ -83,7 +85,7 @@ fun DesktopNotesMenu(
                 favoritesClick = { navigateToNotes(NotesNavigation.Favorites) },
                 settingsClick = chooseNoteViewModel::showSettings,
                 addFolder = addFolder,
-                foldersState = chooseNoteViewModel.folders,
+                editFolder = editFolder,
                 navigateToFolder = { id -> navigateToNotes(NotesNavigation.Folder(id)) }
             )
 

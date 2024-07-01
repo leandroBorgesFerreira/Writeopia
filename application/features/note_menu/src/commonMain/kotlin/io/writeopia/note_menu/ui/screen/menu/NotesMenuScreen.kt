@@ -17,5 +17,6 @@ expect fun NotesMenuScreen(
     selectColorTheme: (ColorThemeOption) -> Unit,
     navigateToNotes: (NotesNavigation) -> Unit,
     addFolder: () -> Unit,
+    editFolder: () -> Unit,
     modifier: Modifier = Modifier,
 )
