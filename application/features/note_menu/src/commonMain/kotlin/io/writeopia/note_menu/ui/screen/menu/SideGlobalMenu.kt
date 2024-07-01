@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
@@ -112,12 +113,12 @@ fun SideGlobalMenu(
                         }
                     )
 
-                    LazyColumn(Modifier.weight(1F)) {
+                    LazyColumn(Modifier.fillMaxWidth()) {
                         items(folders) { folder ->
                             Row(
                                 modifier = Modifier.clickable {
                                     navigateToFolder(folder.id)
-                                }.padding(vertical = 8.dp, horizontal = 26.dp),
+                                }.padding(top = 8.dp, bottom = 8.dp, start = 26.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
@@ -131,12 +132,27 @@ fun SideGlobalMenu(
 
                                 Text(
                                     text = folder.title,
-                                    modifier = Modifier.fillMaxWidth(),
+                                    modifier = Modifier,
                                     color = MaterialTheme.colorScheme.onBackground,
                                     style = MaterialTheme.typography.bodySmall
                                         .copy(fontWeight = FontWeight.Bold),
                                     maxLines = 1
                                 )
+
+                                Spacer(modifier = Modifier.weight(1F))
+
+                                Icon(
+                                    imageVector = Icons.Default.MoreHoriz,
+                                    contentDescription = "More",
+                                    tint = MaterialTheme.colorScheme.onBackground,
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(6.dp))
+                                        .clickable { }
+                                        .size(26.dp)
+                                        .padding(4.dp)
+                                )
+
+                                Spacer(modifier = Modifier.width(6.dp))
                             }
                         }
 
