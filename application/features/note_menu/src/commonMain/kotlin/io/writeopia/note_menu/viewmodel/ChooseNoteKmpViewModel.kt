@@ -1,7 +1,9 @@
 package io.writeopia.note_menu.viewmodel
 
+import io.writeopia.app.sql.FolderEntity
 import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
+import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.data.model.NotesNavigationType
@@ -15,6 +17,8 @@ import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.export.DocumentWriter
 import io.writeopia.sdk.import_document.json.WriteopiaJsonParser
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.models.document.MenuItem
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.utils_module.*
@@ -44,7 +48,7 @@ internal class ChooseNoteKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, false)
     }
 
-    private val _documentsState: MutableStateFlow<ResultData<List<Document>>> =
+    private val _documentsState: MutableStateFlow<ResultData<List<MenuItem>>> =
         MutableStateFlow(ResultData.Idle())
 
     private val _user: MutableStateFlow<UserState<User>> = MutableStateFlow(UserState.Idle())
@@ -73,6 +77,13 @@ internal class ChooseNoteKmpViewModel(
 
     private val _showSettingsState = MutableStateFlow(false)
     override val showSettingsState: StateFlow<Boolean> = _showSettingsState.asStateFlow()
+
+    private val _showEditFolderState = MutableStateFlow(false)
+
+    override val folders: StateFlow<List<Folder>> by lazy {
+        notesUseCase.listenForFolders()
+            .stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
+    }
 
     override val showSideMenu: StateFlow<Boolean> by lazy {
         uiConfigurationRepo.listenForUiConfiguration(::getUserId, coroutineScope)
@@ -108,11 +119,6 @@ internal class ChooseNoteKmpViewModel(
             }
         }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Idle())
     }
-
-    private suspend fun getUserId(): String =
-        localUserId ?: authManager.getUser().id.also { id ->
-            localUserId = id
-        }
 
     override fun requestDocuments(force: Boolean) {
         if (documentsState.value !is ResultData.Complete || force) {
@@ -223,7 +229,7 @@ internal class ChooseNoteKmpViewModel(
     override fun favoriteSelectedNotes() {
         val selectedIds = _selectedNotes.value
 
-        val allFavorites = (_documentsState.value as? ResultData.Complete<List<Document>>)
+        val allFavorites = (_documentsState.value as? ResultData.Complete<List<MenuItem>>)
             ?.data
             ?.filter { document ->
                 selectedIds.contains(document.id)
@@ -283,7 +289,6 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun confirmWorkplacePath() {
-
         val path = _showLocalSyncConfig.value.getPath()
 
         if (path != null) {
@@ -329,6 +334,18 @@ internal class ChooseNoteKmpViewModel(
 
     override fun hideSettings() {
         _showSettingsState.value = false
+    }
+
+    override fun addFolder() {
+        coroutineScope.launch(Dispatchers.Default) {
+            notesUseCase.createFolder("Untitled", getUserId())
+        }
+    }
+
+    override fun editFolder(id: String) {
+        coroutineScope.launch(Dispatchers.Default) {
+
+        }
     }
 
     private fun setShowSideMenu(enabled: Boolean) {
@@ -413,8 +430,15 @@ internal class ChooseNoteKmpViewModel(
 
     private suspend fun getNotes(userId: String): List<Document> =
         if (notesNavigation.navigationType == NotesNavigationType.FAVORITES) {
-            notesUseCase.loadFavDocumentsForUser(userId)
+            val orderBy = notesConfig.getOrderPreference(userId)
+            notesUseCase.loadFavDocumentsForUser(orderBy, userId)
         } else {
             notesUseCase.loadDocumentsForUser(userId)
+        }
+
+
+    private suspend fun getUserId(): String =
+        localUserId ?: authManager.getUser().id.also { id ->
+            localUserId = id
         }
 }

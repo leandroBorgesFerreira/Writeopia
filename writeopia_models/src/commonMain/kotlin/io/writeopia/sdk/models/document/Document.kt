@@ -5,11 +5,12 @@ import io.writeopia.sdk.models.story.StoryStep
 import kotlinx.datetime.Instant
 
 data class Document(
-    val id: String = GenerateId.generate(),
-    val title: String = "",
+    override val id: String = GenerateId.generate(),
+    override val title: String = "",
     val content: Map<Int, StoryStep> = emptyMap(),
-    val createdAt: Instant,
-    val lastUpdatedAt: Instant,
-    val userId: String,
-    val favorite: Boolean = false
-)
+    override val createdAt: Instant,
+    override val lastUpdatedAt: Instant,
+    override val userId: String,
+    override val parentId: String,
+    override val favorite: Boolean = false
+) : MenuItem

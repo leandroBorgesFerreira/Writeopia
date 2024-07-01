@@ -14,11 +14,12 @@ data class DocumentEntity(
     @ColumnInfo(LAST_UPDATED_AT) val lastUpdatedAt: Long,
     @ColumnInfo(USER_ID) val userId: String,
     @ColumnInfo(FAVORITE) val favorite: Boolean,
+    @ColumnInfo(PARENT_ID) val parentId: String,
 ) {
     companion object {
-        fun createById(id: String, userId: String): DocumentEntity {
+        fun createById(id: String, userId: String, parentId: String): DocumentEntity {
             val now = Clock.System.now().toEpochMilliseconds()
-            return DocumentEntity(id, "", now, now, userId, favorite = false)
+            return DocumentEntity(id, "", now, now, userId, favorite = false, parentId = parentId)
         }
     }
 }

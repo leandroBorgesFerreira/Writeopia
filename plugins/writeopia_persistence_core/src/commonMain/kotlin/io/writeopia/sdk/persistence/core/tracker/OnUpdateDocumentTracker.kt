@@ -47,7 +47,8 @@ class OnUpdateDocumentTracker(
                             title = titleFromContent ?: documentInfo.title,
                             createdAt = documentInfo.createdAt,
                             lastUpdatedAt = Clock.System.now(),
-                            userId = userId
+                            userId = userId,
+                            parentId = documentInfo.parentId
                         )
                     )
                 }
@@ -68,7 +69,8 @@ class OnUpdateDocumentTracker(
                         content = documentFilter.removeTypesFromDocument(storyState.stories),
                         createdAt = documentInfo.createdAt,
                         lastUpdatedAt = Clock.System.now(),
-                        userId = userId
+                        userId = userId,
+                        parentId = documentInfo.parentId
                     )
 
                     documentUpdate.saveDocument(document)
@@ -88,7 +90,8 @@ class OnUpdateDocumentTracker(
                             title = titleFromContent ?: documentInfo.title,
                             createdAt = documentInfo.createdAt,
                             lastUpdatedAt = Clock.System.now(),
-                            userId = userId
+                            userId = userId,
+                            parentId = documentInfo.parentId
                         )
                     )
 

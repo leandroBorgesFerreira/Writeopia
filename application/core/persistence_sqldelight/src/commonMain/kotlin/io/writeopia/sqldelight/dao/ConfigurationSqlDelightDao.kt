@@ -1,4 +1,4 @@
-package io.writeopia.sqldelight
+package io.writeopia.sqldelight.dao
 
 import app.cash.sqldelight.async.coroutines.awaitAsOneOrNull
 import io.writeopia.app.sql.NotesConfiguration

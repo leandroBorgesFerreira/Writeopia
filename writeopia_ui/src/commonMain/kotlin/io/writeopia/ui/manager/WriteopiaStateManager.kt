@@ -92,7 +92,8 @@ class WriteopiaStateManager(
             lastUpdatedAt = info.lastUpdatedAt,
             userId = localUserId ?: userId.invoke().also { id ->
                 localUserId = id
-            }
+            },
+            parentId = info.parentId
         )
     }
 

@@ -1,5 +1,7 @@
 plugins {
     kotlin("multiplatform")
+    alias(libs.plugins.compose.multiplatform)
+    alias(libs.plugins.compose.multiplatform.compiler)
 }
 
 kotlin {
@@ -14,6 +16,9 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":writeopia_models"))
+
+                implementation(compose.foundation)
+                implementation(compose.material3)
 
                 implementation(libs.kotlinx.coroutines.core)
             }

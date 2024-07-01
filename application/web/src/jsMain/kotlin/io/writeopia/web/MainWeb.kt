@@ -10,11 +10,10 @@ import androidx.compose.ui.input.key.isMetaPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.window.CanvasBasedWindow
-import io.writeopia.note_menu.di.NotesConfigurationInjector
+import io.writeopia.note_menu.di.NotesInjector
 import io.writeopia.note_menu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.App
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
-import io.writeopia.ui.drawer.factory.DefaultDrawersJs
 import kotlinx.coroutines.flow.MutableStateFlow
 //import org.jetbrains.skiko.SkikoKey
 import org.jetbrains.skiko.wasm.onWasmReady
@@ -40,7 +39,7 @@ fun CreateAppInMemory(repositoryInjection: SqlDelightDaoInjector) {
         uiConfigurationViewModel.listenForColorTheme { "user_offline" }
 
     App(
-        notesConfigurationInjector = NotesConfigurationInjector.noop(),
+        notesInjector = NotesInjector.noop(),
         repositoryInjection = repositoryInjection,
         uiConfigurationInjector = UiConfigurationInjector(),
         selectionState = selectionState,

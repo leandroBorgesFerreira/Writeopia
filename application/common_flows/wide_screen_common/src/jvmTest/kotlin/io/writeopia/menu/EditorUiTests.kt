@@ -6,12 +6,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import io.writeopia.common.uitests.tests.editor.EditorCommonTests
 import io.writeopia.common.uitests.robots.DocumentEditRobot
 import io.writeopia.common.uitests.robots.DocumentsMenuRobot
-import io.writeopia.note_menu.di.NotesConfigurationInjector
-import io.writeopia.notes.desktop.components.App
-import io.writeopia.sqldelight.database.DatabaseFactory.createDatabase
-import io.writeopia.sqldelight.database.driver.DriverFactory
-import io.writeopia.sqldelight.di.SqlDelightDaoInjector
-import io.writeopia.ui.drawer.factory.DefaultDrawersDesktop
 import kotlinx.coroutines.test.runTest
 import org.junit.Ignore
 import org.junit.Rule

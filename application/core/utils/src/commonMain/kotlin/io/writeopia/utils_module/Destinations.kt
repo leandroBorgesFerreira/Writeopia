@@ -3,6 +3,7 @@ package io.writeopia.utils_module
 enum class Destinations(val id: String) {
     EDITOR("note_details"),
     CHOOSE_NOTE("choose_note"),
+    EDIT_FOLDER("edit_folder"),
     ACCOUNT("account"),
 
     AUTH_REGISTER("auth_register"),
