@@ -26,7 +26,7 @@ internal class NotesUseCase(
     }
 
     suspend fun updateFolder(folder: Folder) {
-        TODO()
+        folderRepository.updateFolder(folder)
     }
 
     suspend fun loadRootsFolders(userId: String) {

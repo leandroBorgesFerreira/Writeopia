@@ -19,7 +19,6 @@ fun FolderEntity.toModel() =
 
 fun Folder.toEntity() = FolderEntity(
     id = id,
-    name = title,
     parent_id = parentId,
     user_id = userId,
     title = title,

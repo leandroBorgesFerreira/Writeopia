@@ -88,8 +88,15 @@ internal class ChooseNoteKmpViewModel(
     private val _showSettingsState = MutableStateFlow(false)
     override val showSettingsState: StateFlow<Boolean> = _showSettingsState.asStateFlow()
 
-    private val _editFolderState = MutableStateFlow<FolderEdit?>(null)
-    override val editFolderState: StateFlow<FolderEdit?> = _editFolderState
+    private val _editingFolderId = MutableStateFlow<String?>(null)
+
+    override val editFolderState: StateFlow<FolderEdit?> by lazy {
+        combine(_editingFolderId, folders) { id, folders ->
+            if (id == null) null else folders[id]?.let { folder ->
+                FolderEdit(folder.id, folder.title)
+            }
+        }.stateIn(coroutineScope, SharingStarted.Lazily, null)
+    }
 
     override val folders: StateFlow<Map<String, Folder>> by lazy {
         notesUseCase.listenForFolders()
@@ -175,7 +182,7 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun showEditMenu() {
-        _editState.value = !editState.value
+        _editingFolderId.value = null
     }
 
     override fun cancelEditMenu() {
@@ -357,9 +364,10 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun editFolder(id: String) {
-        folders.value[id]?.let { folder ->
-            _editFolderState.value = FolderEdit(folder.id, folder.title)
-        }
+        _editingFolderId.value = id
+//        folders.value[id]?.let { folder ->
+//            _editFolderState.value = FolderEdit(folder.id, folder.title)
+//        }
     }
 
     override fun updateFolder(folderEdit: FolderEdit) {
@@ -378,7 +386,7 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun stopEditingFolder() {
-        _editFolderState.value = null
+        _editingFolderId.value = null
     }
 
     private fun setShowSideMenu(enabled: Boolean) {

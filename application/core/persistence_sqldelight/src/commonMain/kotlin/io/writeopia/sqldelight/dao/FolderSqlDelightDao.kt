@@ -18,7 +18,18 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
     suspend fun createFolder(folder: FolderEntity) {
         folderEntityQueries?.insert(
             id = folder.id,
-            name = folder.name,
+            parent_id = folder.parent_id,
+            user_id = folder.user_id,
+            title = folder.title,
+            created_at = folder.created_at,
+            last_updated_at = folder.last_updated_at,
+            favorite = folder.favorite,
+        ).also { refreshNotes() }
+    }
+
+    suspend fun updateFolder(folder: FolderEntity) {
+        folderEntityQueries?.insert(
+            id = folder.id,
             parent_id = folder.parent_id,
             user_id = folder.user_id,
             title = folder.title,

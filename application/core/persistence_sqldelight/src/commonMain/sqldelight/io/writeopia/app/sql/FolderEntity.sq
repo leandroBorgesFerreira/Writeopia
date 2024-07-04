@@ -1,6 +1,5 @@
 CREATE TABLE folderEntity (
   id TEXT PRIMARY KEY,
-  name TEXT NOT NULL,
   parent_id TEXT NOT NULL,
   user_id TEXT NOT NULL,
   title TEXT NOT NULL,
@@ -19,10 +18,13 @@ FROM folderEntity
 WHERE folderEntity.parent_id = ? AND folderEntity.user_id = ?;
 
 insert:
-INSERT INTO folderEntity(id, name, parent_id, user_id, title, created_at, last_updated_at, favorite)
-VALUES (?, ?, ?, ?,?, ?, ?, ?)
+INSERT INTO folderEntity(id, parent_id, user_id, title, created_at, last_updated_at, favorite)
+VALUES (?, ?, ?,?, ?, ?, ?)
 ON CONFLICT(id) DO
-UPDATE SET id=excluded.id, name=excluded.name, parent_id=excluded.parent_id, user_id=excluded.user_id, title=excluded.title, created_at=excluded.created_at, last_updated_at=excluded.last_updated_at, favorite=excluded.favorite;
+UPDATE SET id=excluded.id, parent_id=excluded.parent_id, user_id=excluded.user_id, title=excluded.title, created_at=excluded.created_at, last_updated_at=excluded.last_updated_at, favorite=excluded.favorite;
+
+-- update:
+-- UPDATE(title, parent_id, update_at): SET title=title, parent_id=parent_id, update_at=update_at;
 
 deleteFolder:
 DELETE FROM folderEntity WHERE id = ?;

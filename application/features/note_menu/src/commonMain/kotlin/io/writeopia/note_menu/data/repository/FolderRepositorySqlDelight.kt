@@ -16,6 +16,10 @@ class FolderRepositorySqlDelight(
         folderDao.createFolder(folder.toEntity())
     }
 
+    override suspend fun updateFolder(folder: Folder) {
+        folderDao.updateFolder(folder.toEntity())
+    }
+
     override suspend fun getRootFolders(userId: String): List<Folder> =
         folderDao.getRootFolders(userId).map { folderEntity ->
             folderEntity.toModel()
