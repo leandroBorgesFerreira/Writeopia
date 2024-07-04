@@ -71,6 +71,10 @@ class SqlDelightDocumentRepository(
         documentSqlDao.deleteDocumentByIds(ids)
     }
 
+    override suspend fun deleteDocumentByFolder(folderId: String) {
+        documentSqlDao.deleteDocumentsByFolderId(folderId)
+    }
+
     override suspend fun deleteByUserId(userId: String) {
         documentSqlDao.deleteDocumentsByUserId(userId)
     }

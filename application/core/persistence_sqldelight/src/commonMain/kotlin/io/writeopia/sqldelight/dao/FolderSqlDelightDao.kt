@@ -38,6 +38,11 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
     fun getChildrenFolders(parentId: String, userId: String): List<FolderEntity> =
         getFolders(parentId, userId)
 
+    suspend fun deleteFolder(folderId: String) {
+        folderEntityQueries?.deleteFolder(folderId)
+        refreshNotes()
+    }
+
     private fun getFolders(parentId: String, userId: String): List<FolderEntity> =
         folderEntityQueries?.selectChildrenFolder(parentId, userId)
             ?.executeAsList()

@@ -49,6 +49,8 @@ interface DocumentRepository : DocumentUpdate {
 
     suspend fun deleteDocumentByIds(ids: Set<String>)
 
+    suspend fun deleteDocumentByFolder(folderId: String)
+
     suspend fun favoriteDocumentByIds(ids: Set<String>)
 
     suspend fun unFavoriteDocumentByIds(ids: Set<String>)

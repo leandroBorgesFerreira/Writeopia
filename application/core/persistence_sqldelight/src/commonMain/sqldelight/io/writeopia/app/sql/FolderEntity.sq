@@ -23,3 +23,6 @@ INSERT INTO folderEntity(id, name, parent_id, user_id, title, created_at, last_u
 VALUES (?, ?, ?, ?,?, ?, ?, ?)
 ON CONFLICT(id) DO
 UPDATE SET id=excluded.id, name=excluded.name, parent_id=excluded.parent_id, user_id=excluded.user_id, title=excluded.title, created_at=excluded.created_at, last_updated_at=excluded.last_updated_at, favorite=excluded.favorite;
+
+deleteFolder:
+DELETE FROM folderEntity WHERE id = ?;

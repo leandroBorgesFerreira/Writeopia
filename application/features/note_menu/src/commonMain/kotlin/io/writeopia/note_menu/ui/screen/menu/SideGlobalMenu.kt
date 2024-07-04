@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.outlined.AddCircleOutline
-import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Home
@@ -47,7 +46,7 @@ private const val finalWidth = 300
 @Composable
 fun SideGlobalMenu(
     modifier: Modifier = Modifier,
-    foldersState: StateFlow<List<Folder>>,
+    foldersState: StateFlow<Map<String, Folder>>,
     background: Color,
     showOptions: Boolean,
     width: Dp = finalWidth.dp,
@@ -55,7 +54,7 @@ fun SideGlobalMenu(
     favoritesClick: () -> Unit,
     settingsClick: () -> Unit,
     addFolder: () -> Unit,
-    editFolder: () -> Unit,
+    editFolder: (String) -> Unit,
     navigateToFolder: (String) -> Unit
 ) {
     val widthState by derivedStateOf {
@@ -115,7 +114,7 @@ fun SideGlobalMenu(
                     )
 
                     LazyColumn(Modifier.fillMaxWidth()) {
-                        items(folders) { folder ->
+                        items(folders.values.toList()) { folder ->
                             Row(
                                 modifier = Modifier.clickable {
                                     navigateToFolder(folder.id)
@@ -148,7 +147,9 @@ fun SideGlobalMenu(
                                     tint = MaterialTheme.colorScheme.onBackground,
                                     modifier = Modifier
                                         .clip(RoundedCornerShape(6.dp))
-                                        .clickable(onClick = editFolder)
+                                        .clickable(onClick = {
+                                            editFolder(folder.id)
+                                        })
                                         .size(26.dp)
                                         .padding(4.dp)
                                 )
@@ -230,7 +231,7 @@ private fun title(
                 modifierLet
             }
         }
-            .padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 10.dp)
+            .padding(start = 16.dp, end = 6.dp, top = 10.dp, bottom = 10.dp)
             .fillMaxWidth()
     ) {
         Text(

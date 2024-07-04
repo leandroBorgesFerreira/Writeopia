@@ -1,6 +1,7 @@
 package io.writeopia.note_menu.ui.screen.menu
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import io.writeopia.model.ColorThemeOption
@@ -18,7 +19,7 @@ actual fun NotesMenuScreen(
     selectColorTheme: (ColorThemeOption) -> Unit,
     navigateToNotes: (NotesNavigation) -> Unit,
     addFolder: () -> Unit,
-    editFolder: () -> Unit,
+    editFolder: (String) -> Unit,
     modifier: Modifier
 ) {
     DesktopNotesMenu(
@@ -32,4 +33,15 @@ actual fun NotesMenuScreen(
         editFolder = editFolder,
         modifier = modifier,
     )
+
+    val folderEdit = chooseNoteViewModel.editFolderState.collectAsState().value
+
+    if (folderEdit != null) {
+        EditFileScreen(
+            folderEdit = folderEdit,
+            onDismissRequest = chooseNoteViewModel::stopEditingFolder,
+            deleteFolder = chooseNoteViewModel::deleteFolder,
+            editFolder = chooseNoteViewModel::updateFolder
+        )
+    }
 }

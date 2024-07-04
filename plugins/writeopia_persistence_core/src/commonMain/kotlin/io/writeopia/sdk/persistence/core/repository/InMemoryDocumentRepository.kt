@@ -7,6 +7,7 @@ import kotlinx.datetime.Instant
 class InMemoryDocumentRepository : DocumentRepository {
 
     private val documentsMap: MutableMap<String, Document> = mutableMapOf()
+
     override suspend fun loadDocumentsForUser(folderId: String): List<Document> =
         documentsMap.values.toList()
 
@@ -88,5 +89,9 @@ class InMemoryDocumentRepository : DocumentRepository {
                 documentsMap[id] = document
             }
         }
+    }
+
+    override suspend fun deleteDocumentByFolder(folderId: String) {
+
     }
 }

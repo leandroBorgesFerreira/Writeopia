@@ -25,6 +25,10 @@ internal class NotesUseCase(
         folderRepository.createFolder(Folder.fromName(name, userId))
     }
 
+    suspend fun updateFolder(folder: Folder) {
+        TODO()
+    }
+
     suspend fun loadRootsFolders(userId: String) {
         folderRepository.getRootFolders(userId)
     }
@@ -71,6 +75,13 @@ internal class NotesUseCase(
 
     suspend fun deleteNotes(ids: Set<String>) {
         documentRepository.deleteDocumentByIds(ids)
+    }
+
+    suspend fun deleteFolderById(folderId: String) {
+        documentRepository.deleteDocumentByFolder(folderId)
+        folderRepository.deleteFolderById(folderId)
+
+
     }
 
     suspend fun favoriteNotes(ids: Set<String>) {

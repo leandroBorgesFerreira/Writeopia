@@ -316,6 +316,10 @@ class DocumentSqlDao(
         documentQueries?.deleteByUserId(userId)
     }
 
+    suspend fun deleteDocumentsByFolderId(folderId: String) {
+        documentQueries?.deleteByFolderId(folderId)
+    }
+
     suspend fun favoriteById(documentId: String) {
         documentQueries?.favoriteById(documentId)
     }

@@ -83,6 +83,7 @@ fun NavGraphBuilder.notesMenuNavigation(
                 )
             },
             addFolder = chooseNoteViewModel::addFolder,
+            editFolder = chooseNoteViewModel::editFolder,
             modifier = Modifier.background(MaterialTheme.colorScheme.background)
         )
     }

@@ -2,6 +2,7 @@ package io.writeopia.note_menu.viewmodel
 
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesArrangement
+import io.writeopia.note_menu.ui.dto.FolderEdit
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.utils_module.ResultData
@@ -30,7 +31,9 @@ interface ChooseNoteViewModel {
 
     val showSettingsState: StateFlow<Boolean>
 
-    val folders: StateFlow<List<Folder>>
+    val folders: StateFlow<Map<String, Folder>>
+
+    val editFolderState : StateFlow<FolderEdit?>
 
     fun requestDocuments(force: Boolean)
 
@@ -89,6 +92,12 @@ interface ChooseNoteViewModel {
     fun addFolder()
 
     fun editFolder(id: String)
+
+    fun updateFolder(folderEdit: FolderEdit)
+
+    fun deleteFolder(id: String)
+
+    fun stopEditingFolder()
 }
 
 sealed interface UserState<T> {

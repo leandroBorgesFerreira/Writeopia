@@ -11,5 +11,7 @@ interface FolderRepository {
 
     suspend fun getChildrenFolders(userId: String, parentId: String): List<Folder>
 
+    suspend fun deleteFolderById(folderId: String)
+
     fun listenForAllFolders(): Flow<List<Folder>>
 }

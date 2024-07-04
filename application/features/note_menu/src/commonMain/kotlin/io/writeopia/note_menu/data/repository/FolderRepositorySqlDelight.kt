@@ -30,4 +30,8 @@ class FolderRepositorySqlDelight(
         .map { folderEntityList ->
             folderEntityList.map { folderEntity -> folderEntity.toModel() }
         }
+
+    override suspend fun deleteFolderById(folderId: String) {
+        folderDao.deleteFolder(folderId)
+    }
 }

@@ -1,6 +1,5 @@
 package io.writeopia.note_menu.viewmodel
 
-import io.writeopia.app.sql.FolderEntity
 import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.note_menu.data.model.Folder
@@ -10,6 +9,7 @@ import io.writeopia.note_menu.data.model.NotesNavigationType
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
+import io.writeopia.note_menu.ui.dto.FolderEdit
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.export.DocumentToJson
@@ -18,12 +18,22 @@ import io.writeopia.sdk.export.DocumentWriter
 import io.writeopia.sdk.import_document.json.WriteopiaJsonParser
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
-import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
-import io.writeopia.utils_module.*
+import io.writeopia.utils_module.DISCONNECTED_USER_ID
+import io.writeopia.utils_module.KmpViewModel
+import io.writeopia.utils_module.ResultData
+import io.writeopia.utils_module.map
+import io.writeopia.utils_module.toBoolean
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 internal class ChooseNoteKmpViewModel(
@@ -78,11 +88,15 @@ internal class ChooseNoteKmpViewModel(
     private val _showSettingsState = MutableStateFlow(false)
     override val showSettingsState: StateFlow<Boolean> = _showSettingsState.asStateFlow()
 
-    private val _showEditFolderState = MutableStateFlow(false)
+    private val _editFolderState = MutableStateFlow<FolderEdit?>(null)
+    override val editFolderState: StateFlow<FolderEdit?> = _editFolderState
 
-    override val folders: StateFlow<List<Folder>> by lazy {
+    override val folders: StateFlow<Map<String, Folder>> by lazy {
         notesUseCase.listenForFolders()
-            .stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
+            .map { folders ->
+                folders.associateBy { folder -> folder.id }
+            }
+            .stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
     }
 
     override val showSideMenu: StateFlow<Boolean> by lazy {
@@ -343,9 +357,28 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun editFolder(id: String) {
-        coroutineScope.launch(Dispatchers.Default) {
-
+        folders.value[id]?.let { folder ->
+            _editFolderState.value = FolderEdit(folder.id, folder.title)
         }
+    }
+
+    override fun updateFolder(folderEdit: FolderEdit) {
+        folders.value[folderEdit.id]?.let { folder ->
+            coroutineScope.launch(Dispatchers.Default) {
+                notesUseCase.updateFolder(folder.copy(title = folderEdit.title))
+            }
+        }
+    }
+
+    override fun deleteFolder(id: String) {
+        coroutineScope.launch(Dispatchers.Default) {
+            notesUseCase.deleteFolderById(id)
+            stopEditingFolder()
+        }
+    }
+
+    override fun stopEditingFolder() {
+        _editFolderState.value = null
     }
 
     private fun setShowSideMenu(enabled: Boolean) {
