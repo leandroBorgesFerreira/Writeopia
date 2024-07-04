@@ -41,7 +41,7 @@ internal fun EditFileScreen(
 
                 OutlinedTextField(
                     value = folderEdit.title,
-                    onValueChange = { title -> editFolder(folderEdit.copy(title = title)) }
+                    onValueChange = { title -> editFolder(folderEdit.copy(title = "$title ")) }
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
