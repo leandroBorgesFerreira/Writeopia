@@ -23,6 +23,10 @@ import kotlinx.coroutines.CoroutineScope
 private const val NAVIGATION_TYPE = "type"
 private const val NAVIGATION_PATH = "path"
 
+object NoteMenuDestiny {
+    fun noteMenu() = "${Destinations.CHOOSE_NOTE.id}/{$NAVIGATION_TYPE}/{$NAVIGATION_PATH}"
+}
+
 fun NavGraphBuilder.notesMenuNavigation(
     notesMenuInjection: NotesMenuInjection,
     navigationController: NavController,
@@ -34,7 +38,7 @@ fun NavGraphBuilder.notesMenuNavigation(
 ) {
 
     composable(
-        route = "${Destinations.CHOOSE_NOTE.id}/{$NAVIGATION_TYPE}/{$NAVIGATION_PATH}",
+        route = NoteMenuDestiny.noteMenu(),
         arguments = listOf(
             navArgument(NAVIGATION_TYPE) {
                 type = NavType.StringType

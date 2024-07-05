@@ -20,6 +20,7 @@ import io.writeopia.editor.di.EditorInjector
 import io.writeopia.note_menu.di.NotesInjector
 import io.writeopia.note_menu.di.NotesMenuAndroidInjection
 import io.writeopia.note_menu.di.UiConfigurationInjector
+import io.writeopia.note_menu.navigation.NoteMenuDestiny
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 import io.writeopia.persistence.room.injection.RoomRespositoryInjection
@@ -34,7 +35,7 @@ class NavigationActivity : AppCompatActivity() {
 
         setContent {
             val startDestination = if (BuildConfig.DEBUG) {
-                Destinations.CHOOSE_NOTE.id
+                NoteMenuDestiny.noteMenu()
             } else {
                 Destinations.AUTH_MENU_INNER_NAVIGATION.id
             }
