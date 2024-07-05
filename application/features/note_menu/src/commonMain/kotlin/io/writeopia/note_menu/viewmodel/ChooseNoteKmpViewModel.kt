@@ -365,9 +365,6 @@ internal class ChooseNoteKmpViewModel(
 
     override fun editFolder(id: String) {
         _editingFolderId.value = id
-//        folders.value[id]?.let { folder ->
-//            _editFolderState.value = FolderEdit(folder.id, folder.title)
-//        }
     }
 
     override fun updateFolder(folderEdit: FolderEdit) {

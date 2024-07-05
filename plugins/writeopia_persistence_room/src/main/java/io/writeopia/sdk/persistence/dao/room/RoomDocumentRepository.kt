@@ -24,6 +24,10 @@ class RoomDocumentRepository(
         TODO("Not yet implemented")
     }
 
+    override suspend fun deleteDocumentByFolder(folderId: String) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun loadDocumentsForUser(userId: String): List<Document> {
         return documentEntityDao.loadDocumentsWithContentForUser(userId)
             ?.map { (documentEntity, storyEntity) ->
