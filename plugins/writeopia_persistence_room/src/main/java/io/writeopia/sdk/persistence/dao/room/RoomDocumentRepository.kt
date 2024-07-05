@@ -16,16 +16,13 @@ class RoomDocumentRepository(
     private val storyUnitEntityDao: StoryUnitEntityDao
 ) : DocumentRepository {
 
-    override suspend fun loadDocumentsForFolder(folderId: String): List<Document> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun loadDocumentsForFolder(folderId: String): List<Document> = emptyList()
 
-    override suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> =
+        emptyList()
 
     override suspend fun deleteDocumentByFolder(folderId: String) {
-        TODO("Not yet implemented")
+
     }
 
     override suspend fun loadDocumentsForUser(userId: String): List<Document> {
