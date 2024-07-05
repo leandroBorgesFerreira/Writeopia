@@ -4,7 +4,7 @@ import io.writeopia.app.sql.NotesConfiguration
 import io.writeopia.app.sql.WorkspaceConfiguration
 import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
-import io.writeopia.sqldelight.ConfigurationSqlDelightDao
+import io.writeopia.sqldelight.dao.ConfigurationSqlDelightDao
 
 class ConfigurationSqlDelightRepository(
     private val configurationSqlDelightDao: ConfigurationSqlDelightDao

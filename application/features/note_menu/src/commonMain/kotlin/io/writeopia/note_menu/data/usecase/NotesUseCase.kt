@@ -1,9 +1,14 @@
 package io.writeopia.note_menu.data.usecase
 
+import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
+import io.writeopia.note_menu.data.repository.FolderRepository
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
+import io.writeopia.sdk.persistence.core.sorting.OrderBy
+import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 
 /**
@@ -12,23 +17,33 @@ import kotlinx.datetime.Instant
  */
 internal class NotesUseCase(
     private val documentRepository: DocumentRepository,
-    private val notesConfig: ConfigurationRepository
+    private val notesConfig: ConfigurationRepository,
+    private val folderRepository: FolderRepository
 ) {
 
-    suspend fun loadDocumentsForUser(userId: String): List<Document> {
-        return notesConfig.getOrderPreference(userId)
-            .let { orderBy ->
-                documentRepository.loadDocumentsForUser(orderBy, userId)
-            }
+    suspend fun createFolder(name: String, userId: String) {
+        folderRepository.createFolder(Folder.fromName(name, userId))
     }
 
-    suspend fun loadFavDocumentsForUser(userId: String): List<Document> {
-        return notesConfig.getOrderPreference(userId)
-            .let { orderBy ->
-                documentRepository.loadFavDocumentsForUser(orderBy, userId)
-            }
+    suspend fun updateFolder(folder: Folder) {
+        folderRepository.updateFolder(folder)
     }
 
+    suspend fun loadRootsFolders(userId: String) {
+        folderRepository.getRootFolders(userId)
+    }
+
+    fun listenForFolders() = folderRepository.listenForAllFolders()
+
+    suspend fun loadRootContent(userId: String): List<MenuItem> =
+        loadRootFoldersForUser(userId) + loadDocumentsForFolder("root")
+
+    suspend fun loadDocumentsForUser(userId: String): List<Document> =
+        documentRepository.loadDocumentsForUser(userId)
+
+    suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> {
+        return documentRepository.loadFavDocumentsForUser(orderBy, userId)
+    }
 
     suspend fun loadDocumentsForUserAfterTime(userId: String, time: Instant): List<Document> =
         notesConfig.getOrderPreference(userId)
@@ -62,11 +77,25 @@ internal class NotesUseCase(
         documentRepository.deleteDocumentByIds(ids)
     }
 
+    suspend fun deleteFolderById(folderId: String) {
+        documentRepository.deleteDocumentByFolder(folderId)
+        folderRepository.deleteFolderById(folderId)
+
+
+    }
+
     suspend fun favoriteNotes(ids: Set<String>) {
         documentRepository.favoriteDocumentByIds(ids)
     }
 
     suspend fun unFavoriteNotes(ids: Set<String>) {
         documentRepository.unFavoriteDocumentByIds(ids)
+    }
+
+    private suspend fun loadRootFoldersForUser(userId: String): List<Folder> =
+        folderRepository.getRootFolders(userId)
+
+    private suspend fun loadDocumentsForFolder(folderId: String): List<Document> {
+        return documentRepository.loadDocumentsForFolder(folderId)
     }
 }

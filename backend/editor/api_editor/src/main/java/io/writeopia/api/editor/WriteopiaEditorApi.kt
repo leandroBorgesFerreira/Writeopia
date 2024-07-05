@@ -34,6 +34,7 @@ class WriteopiaEditorApi(
             createdAt = now.toEpochMilliseconds(),
             lastUpdatedAt = now.toEpochMilliseconds(),
             userId = "null",
+            parentId = "" 
         ).let(::listOf)
     }
 

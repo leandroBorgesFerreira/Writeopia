@@ -2,19 +2,20 @@ package io.writeopia.sdk.persistence.core.repository
 
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.persistence.core.extensions.sortWithOrderBy
-import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import kotlinx.datetime.Instant
 
 class InMemoryDocumentRepository : DocumentRepository {
 
     private val documentsMap: MutableMap<String, Document> = mutableMapOf()
 
-    override suspend fun loadDocumentsForUser(orderBy: String, userId: String): List<Document> =
-        documentsMap.values.toList().sortWithOrderBy(OrderBy.fromString(orderBy))
+    override suspend fun loadDocumentsForUser(folderId: String): List<Document> =
+        documentsMap.values.toList()
+
+    override suspend fun loadDocumentsForFolder(folderId: String): List<Document> =
+        documentsMap.values.toList()
 
     override suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> =
-        loadDocumentsForUser(orderBy, userId).filter { document -> document.favorite }
+        documentsMap.values.filter { document -> document.favorite }
 
     override suspend fun loadDocumentsForUserAfterTime(
         orderBy: String,
@@ -88,5 +89,9 @@ class InMemoryDocumentRepository : DocumentRepository {
                 documentsMap[id] = document
             }
         }
+    }
+
+    override suspend fun deleteDocumentByFolder(folderId: String) {
+
     }
 }

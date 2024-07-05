@@ -4,7 +4,8 @@ CREATE TABLE documentEntity (
   created_at INTEGER NOT NULL,
   last_updated_at INTEGER NOT NULL,
   user_id TEXT NOT NULL,
-  favorite INTEGER NOT NULL
+  favorite INTEGER NOT NULL,
+  parent_document_id TEXT NOT NULL
 );
 
 selectAll:
@@ -52,12 +53,20 @@ LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
 WHERE documentEntity.id = ?
 ORDER BY position;
 
+selectWithContentByParentId:
+SELECT *
+FROM documentEntity
+LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
+WHERE documentEntity.parent_document_id = ?
+ORDER BY position;
+
 insert:
-INSERT INTO documentEntity(id, title, created_at, last_updated_at, user_id, favorite)
-VALUES (?, ?, ?, ?, ?, ?)
+INSERT INTO documentEntity(id, title, created_at, last_updated_at, user_id, favorite, parent_document_id)
+VALUES (?, ?, ?, ?, ?, ?, ?)
 ON CONFLICT(id) DO
 UPDATE SET id=excluded.id, title=excluded.title, created_at=excluded.created_at,
-last_updated_at=excluded.last_updated_at, user_id=excluded.user_id, favorite=excluded.favorite;
+last_updated_at=excluded.last_updated_at, user_id=excluded.user_id, favorite=excluded.favorite,
+parent_document_id=excluded.parent_document_id;
 
 delete:
 DELETE FROM documentEntity WHERE id = ?;
@@ -67,6 +76,9 @@ DELETE FROM documentEntity WHERE id IN ?;
 
 deleteByUserId:
 DELETE FROM documentEntity WHERE user_id = ?;
+
+deleteByFolderId:
+DELETE FROM documentEntity WHERE parent_document_id = ?;
 
 favoriteById:
 UPDATE documentEntity SET favorite = 1 WHERE id = ?;

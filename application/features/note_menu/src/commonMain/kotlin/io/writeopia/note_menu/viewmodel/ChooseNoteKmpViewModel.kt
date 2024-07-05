@@ -2,12 +2,14 @@ package io.writeopia.note_menu.viewmodel
 
 import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
+import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.data.model.NotesNavigationType
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
+import io.writeopia.note_menu.ui.dto.FolderEdit
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.export.DocumentToJson
@@ -15,11 +17,23 @@ import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.export.DocumentWriter
 import io.writeopia.sdk.import_document.json.WriteopiaJsonParser
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
-import io.writeopia.utils_module.*
+import io.writeopia.utils_module.DISCONNECTED_USER_ID
+import io.writeopia.utils_module.KmpViewModel
+import io.writeopia.utils_module.ResultData
+import io.writeopia.utils_module.map
+import io.writeopia.utils_module.toBoolean
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 internal class ChooseNoteKmpViewModel(
@@ -44,7 +58,7 @@ internal class ChooseNoteKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, false)
     }
 
-    private val _documentsState: MutableStateFlow<ResultData<List<Document>>> =
+    private val _documentsState: MutableStateFlow<ResultData<List<MenuItem>>> =
         MutableStateFlow(ResultData.Idle())
 
     private val _user: MutableStateFlow<UserState<User>> = MutableStateFlow(UserState.Idle())
@@ -73,6 +87,24 @@ internal class ChooseNoteKmpViewModel(
 
     private val _showSettingsState = MutableStateFlow(false)
     override val showSettingsState: StateFlow<Boolean> = _showSettingsState.asStateFlow()
+
+    private val _editingFolderId = MutableStateFlow<String?>(null)
+
+    override val editFolderState: StateFlow<FolderEdit?> by lazy {
+        combine(_editingFolderId, folders) { id, folders ->
+            if (id == null) null else folders[id]?.let { folder ->
+                FolderEdit(folder.id, folder.title)
+            }
+        }.stateIn(coroutineScope, SharingStarted.Lazily, null)
+    }
+
+    override val folders: StateFlow<Map<String, Folder>> by lazy {
+        notesUseCase.listenForFolders()
+            .map { folders ->
+                folders.associateBy { folder -> folder.id }
+            }
+            .stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
+    }
 
     override val showSideMenu: StateFlow<Boolean> by lazy {
         uiConfigurationRepo.listenForUiConfiguration(::getUserId, coroutineScope)
@@ -108,11 +140,6 @@ internal class ChooseNoteKmpViewModel(
             }
         }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Idle())
     }
-
-    private suspend fun getUserId(): String =
-        localUserId ?: authManager.getUser().id.also { id ->
-            localUserId = id
-        }
 
     override fun requestDocuments(force: Boolean) {
         if (documentsState.value !is ResultData.Complete || force) {
@@ -155,7 +182,7 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun showEditMenu() {
-        _editState.value = !editState.value
+        _editingFolderId.value = null
     }
 
     override fun cancelEditMenu() {
@@ -223,7 +250,7 @@ internal class ChooseNoteKmpViewModel(
     override fun favoriteSelectedNotes() {
         val selectedIds = _selectedNotes.value
 
-        val allFavorites = (_documentsState.value as? ResultData.Complete<List<Document>>)
+        val allFavorites = (_documentsState.value as? ResultData.Complete<List<MenuItem>>)
             ?.data
             ?.filter { document ->
                 selectedIds.contains(document.id)
@@ -283,7 +310,6 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun confirmWorkplacePath() {
-
         val path = _showLocalSyncConfig.value.getPath()
 
         if (path != null) {
@@ -329,6 +355,35 @@ internal class ChooseNoteKmpViewModel(
 
     override fun hideSettings() {
         _showSettingsState.value = false
+    }
+
+    override fun addFolder() {
+        coroutineScope.launch(Dispatchers.Default) {
+            notesUseCase.createFolder("Untitled", getUserId())
+        }
+    }
+
+    override fun editFolder(id: String) {
+        _editingFolderId.value = id
+    }
+
+    override fun updateFolder(folderEdit: FolderEdit) {
+        folders.value[folderEdit.id]?.let { folder ->
+            coroutineScope.launch(Dispatchers.Default) {
+                notesUseCase.updateFolder(folder.copy(title = folderEdit.title))
+            }
+        }
+    }
+
+    override fun deleteFolder(id: String) {
+        coroutineScope.launch(Dispatchers.Default) {
+            notesUseCase.deleteFolderById(id)
+            stopEditingFolder()
+        }
+    }
+
+    override fun stopEditingFolder() {
+        _editingFolderId.value = null
     }
 
     private fun setShowSideMenu(enabled: Boolean) {
@@ -413,8 +468,15 @@ internal class ChooseNoteKmpViewModel(
 
     private suspend fun getNotes(userId: String): List<Document> =
         if (notesNavigation.navigationType == NotesNavigationType.FAVORITES) {
-            notesUseCase.loadFavDocumentsForUser(userId)
+            val orderBy = notesConfig.getOrderPreference(userId)
+            notesUseCase.loadFavDocumentsForUser(orderBy, userId)
         } else {
             notesUseCase.loadDocumentsForUser(userId)
+        }
+
+
+    private suspend fun getUserId(): String =
+        localUserId ?: authManager.getUser().id.also { id ->
+            localUserId = id
         }
 }

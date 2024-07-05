@@ -13,6 +13,7 @@ data class DocumentInfo(
     val title: String = "",
     val createdAt: Instant,
     val lastUpdatedAt: Instant,
+    val parentId: String = "root"
 ) {
     companion object {
         fun empty(): DocumentInfo {

@@ -16,11 +16,16 @@ import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.data.model.NotesNavigationType
 import io.writeopia.note_menu.di.NotesMenuInjection
 import io.writeopia.note_menu.ui.screen.menu.NotesMenuScreen
+import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.utils_module.Destinations
 import kotlinx.coroutines.CoroutineScope
 
 private const val NAVIGATION_TYPE = "type"
 private const val NAVIGATION_PATH = "path"
+
+object NoteMenuDestiny {
+    fun noteMenu() = "${Destinations.CHOOSE_NOTE.id}/{$NAVIGATION_TYPE}/{$NAVIGATION_PATH}"
+}
 
 fun NavGraphBuilder.notesMenuNavigation(
     notesMenuInjection: NotesMenuInjection,
@@ -33,7 +38,7 @@ fun NavGraphBuilder.notesMenuNavigation(
 ) {
 
     composable(
-        route = "${Destinations.CHOOSE_NOTE.id}/{$NAVIGATION_TYPE}/{$NAVIGATION_PATH}",
+        route = NoteMenuDestiny.noteMenu(),
         arguments = listOf(
             navArgument(NAVIGATION_TYPE) {
                 type = NavType.StringType
@@ -60,14 +65,14 @@ fun NavGraphBuilder.notesMenuNavigation(
         }
     ) { backStackEntry ->
         val notesNavigation = backStackEntry.arguments?.getString(NAVIGATION_TYPE)?.let { type ->
-            println("navigation type: $type")
             NotesNavigation.fromType(NotesNavigationType.fromType(type), "")
         } ?: NotesNavigation.Root
 
-        val chooseNoteViewModel = notesMenuInjection.provideChooseNoteViewModel(
-            coroutineScope = coroutineScope,
-            notesNavigation = notesNavigation
-        )
+        val chooseNoteViewModel: ChooseNoteViewModel =
+            notesMenuInjection.provideChooseNoteViewModel(
+                coroutineScope = coroutineScope,
+                notesNavigation = notesNavigation
+            )
 
         NotesMenuScreen(
             chooseNoteViewModel = chooseNoteViewModel,
@@ -81,6 +86,8 @@ fun NavGraphBuilder.notesMenuNavigation(
                     "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/path",
                 )
             },
+            addFolder = chooseNoteViewModel::addFolder,
+            editFolder = chooseNoteViewModel::editFolder,
             modifier = Modifier.background(MaterialTheme.colorScheme.background)
         )
     }

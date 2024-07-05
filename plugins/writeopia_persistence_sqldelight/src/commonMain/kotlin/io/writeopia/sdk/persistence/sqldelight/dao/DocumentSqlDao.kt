@@ -32,6 +32,7 @@ class DocumentSqlDao(
             last_updated_at = document.lastUpdatedAt.toEpochMilliseconds(),
             user_id = document.userId,
             favorite = document.favorite.toLong(),
+            parent_document_id = document.parentId
         )
     }
 
@@ -93,7 +94,8 @@ class DocumentSqlDao(
                         createdAt = Instant.fromEpochMilliseconds(document.created_at),
                         lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
                         userId = document.user_id,
-                        favorite = document.favorite == 1L
+                        favorite = document.favorite == 1L,
+                        parentId = document.parent_document_id,
                     )
                 }
             } ?: emptyList()
@@ -130,7 +132,9 @@ class DocumentSqlDao(
                         createdAt = Instant.fromEpochMilliseconds(document.created_at),
                         lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
                         userId = document.user_id,
-                        favorite = document.favorite == 1L
+                        favorite = document.favorite == 1L,
+                        parentId = document.parent_document_id,
+
                     )
                 }
             }
@@ -170,7 +174,8 @@ class DocumentSqlDao(
                         createdAt = Instant.fromEpochMilliseconds(document.created_at),
                         lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
                         userId = document.user_id,
-                        favorite = document.favorite == 1L
+                        favorite = document.favorite == 1L,
+                        parentId = document.parent_document_id,
                     )
                 }
             }
@@ -214,7 +219,8 @@ class DocumentSqlDao(
                         createdAt = Instant.fromEpochMilliseconds(document.created_at),
                         lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
                         userId = document.user_id,
-                        favorite = document.favorite == 1L
+                        favorite = document.favorite == 1L,
+                        parentId = document.parent_document_id,
                     )
                 }
             } ?: emptyList()
@@ -260,14 +266,58 @@ class DocumentSqlDao(
                         createdAt = Instant.fromEpochMilliseconds(document.created_at),
                         lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
                         userId = document.user_id,
-                        favorite = document.favorite == 1L
+                        favorite = document.favorite == 1L,
+                        parentId = document.parent_document_id,
                     )
                 }
             }
             ?.firstOrNull()
 
+    suspend fun loadDocumentByParentId(parentId: String): List<Document> {
+        return documentQueries?.selectWithContentByParentId(parentId)
+            ?.awaitAsList()
+            ?.groupBy { it.id }
+            ?.mapNotNull { (documentId, content) ->
+                content.firstOrNull()?.let { document ->
+                    val innerContent = content.filter { innerContent ->
+                        !innerContent.id_.isNullOrEmpty()
+                    }.associate { innerContent ->
+                        val storyStep = StoryStep(
+                            id = innerContent.id_!!,
+                            localId = innerContent.local_id!!,
+                            type = StoryTypes.fromNumber(innerContent.type!!.toInt()).type,
+                            parentId = innerContent.parent_id,
+                            url = innerContent.url,
+                            path = innerContent.path,
+                            text = innerContent.text,
+                            checked = innerContent.checked == 1L,
+//                                steps = emptyList(), // Todo: Fix!
+//                                decoration = decoration, // Todo: Fix!
+                        )
+
+                        innerContent.position!!.toInt() to storyStep
+                    }
+
+                    Document(
+                        id = documentId,
+                        title = document.title,
+                        content = innerContent,
+                        createdAt = Instant.fromEpochMilliseconds(document.created_at),
+                        lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
+                        userId = document.user_id,
+                        favorite = document.favorite == 1L,
+                        parentId = document.parent_document_id,
+                    )
+                }
+            } ?: emptyList()
+    }
+
     suspend fun deleteDocumentsByUserId(userId: String) {
         documentQueries?.deleteByUserId(userId)
+    }
+
+    suspend fun deleteDocumentsByFolderId(folderId: String) {
+        documentQueries?.deleteByFolderId(folderId)
     }
 
     suspend fun favoriteById(documentId: String) {

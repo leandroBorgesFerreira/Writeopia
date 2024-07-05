@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import io.writeopia.note_menu.di.NotesConfigurationInjector
+import io.writeopia.note_menu.di.NotesInjector
 import io.writeopia.note_menu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.App
 import io.writeopia.sqldelight.database.DatabaseCreation
@@ -63,7 +62,7 @@ fun main() = application {
                     uiConfigurationViewModel.listenForColorTheme { "user_offline" }
 
                 App(
-                    notesConfigurationInjector = NotesConfigurationInjector(database),
+                    notesInjector = NotesInjector(database),
                     repositoryInjection = SqlDelightDaoInjector(database),
                     uiConfigurationInjector = UiConfigurationInjector(database),
                     selectionState = selectionState,
