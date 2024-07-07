@@ -243,6 +243,7 @@ private fun FolderItem(
 ) {
     Box(modifier = modifier.height(160.dp)
         .fillMaxWidth()
+        .padding(bottom = 6.dp)
         .clickable {
             folderClick(folderUi.documentId)
         }
@@ -251,7 +252,6 @@ private fun FolderItem(
             shape = MaterialTheme.shapes.large
         )
     ) {
-
         Column(
             modifier = Modifier.align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
