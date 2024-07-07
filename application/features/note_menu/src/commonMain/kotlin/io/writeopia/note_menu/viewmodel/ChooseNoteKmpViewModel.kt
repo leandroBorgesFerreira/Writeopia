@@ -466,14 +466,14 @@ internal class ChooseNoteKmpViewModel(
         }
     }
 
-    private suspend fun getNotes(userId: String): List<Document> =
+    private suspend fun getNotes(userId: String): List<MenuItem> =
         if (notesNavigation.navigationType == NotesNavigationType.FAVORITES) {
             val orderBy = notesConfig.getOrderPreference(userId)
             notesUseCase.loadFavDocumentsForUser(orderBy, userId)
         } else {
-            notesUseCase.loadDocumentsForUser(userId)
+            println("notesUseCase.loadContentForFolder")
+            notesUseCase.loadContentForFolder(userId, Folder.ROOT_PATH)
         }
-
 
     private suspend fun getUserId(): String =
         localUserId ?: authManager.getUser().id.also { id ->

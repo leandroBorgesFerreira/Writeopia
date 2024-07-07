@@ -29,14 +29,10 @@ internal class NotesUseCase(
         folderRepository.updateFolder(folder)
     }
 
-    suspend fun loadRootsFolders(userId: String) {
-        folderRepository.getRootFolders(userId)
-    }
-
     fun listenForFolders() = folderRepository.listenForAllFolders()
 
-    suspend fun loadRootContent(userId: String): List<MenuItem> =
-        loadRootFoldersForUser(userId) + loadDocumentsForFolder("root")
+    suspend fun loadContentForFolder(userId: String, folderId: String): List<MenuItem> =
+        loadFoldersByParent(userId = userId, parentId = folderId) + loadDocumentsForFolder(folderId)
 
     suspend fun loadDocumentsForUser(userId: String): List<Document> =
         documentRepository.loadDocumentsForUser(userId)
@@ -80,8 +76,6 @@ internal class NotesUseCase(
     suspend fun deleteFolderById(folderId: String) {
         documentRepository.deleteDocumentByFolder(folderId)
         folderRepository.deleteFolderById(folderId)
-
-
     }
 
     suspend fun favoriteNotes(ids: Set<String>) {
@@ -92,10 +86,9 @@ internal class NotesUseCase(
         documentRepository.unFavoriteDocumentByIds(ids)
     }
 
-    private suspend fun loadRootFoldersForUser(userId: String): List<Folder> =
-        folderRepository.getRootFolders(userId)
+    private suspend fun loadDocumentsForFolder(folderId: String): List<Document> =
+        documentRepository.loadDocumentsForFolder(folderId)
 
-    private suspend fun loadDocumentsForFolder(folderId: String): List<Document> {
-        return documentRepository.loadDocumentsForFolder(folderId)
-    }
+    private suspend fun loadFoldersByParent(userId: String, parentId: String): List<Folder> =
+        folderRepository.getChildrenFolders(userId = userId, parentId = parentId)
 }

@@ -26,7 +26,7 @@ class FolderRepositorySqlDelight(
         }
 
     override suspend fun getChildrenFolders(userId: String, parentId: String): List<Folder> =
-        folderDao.getChildrenFolders(userId, parentId).map { folderEntity ->
+        folderDao.getChildrenFolders(parentId = parentId, userId = userId).map { folderEntity ->
             folderEntity.toModel()
         }
 

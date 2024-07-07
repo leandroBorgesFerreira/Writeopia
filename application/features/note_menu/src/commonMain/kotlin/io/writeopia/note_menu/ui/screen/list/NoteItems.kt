@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -134,15 +135,26 @@ private fun LazyStaggeredGridNotes(
         content = {
             items(
                 documents,
-                key = { document -> document.hashCode() }
-            ) { document ->
-                DocumentItem(
-                    document,
-                    onDocumentClick,
-                    selectionListener,
-                    previewDrawers(),
-                    modifier = Modifier.animateItemPlacement()
-                )
+                key = { menuItem -> menuItem.hashCode() }
+            ) { menuItem ->
+                when (menuItem) {
+                    is MenuItemUi.DocumentUi -> {
+                        DocumentItem(
+                            menuItem,
+                            onDocumentClick,
+                            selectionListener,
+                            previewDrawers(),
+                            modifier = Modifier.animateItemPlacement()
+                        )
+                    }
+
+                    is MenuItemUi.FolderUi -> {
+                        FolderItem(
+                            menuItem,
+                            {},
+                        )
+                    }
+                }
             }
         }
     )
@@ -162,15 +174,26 @@ private fun LazyGridNotes(
         content = {
             items(
                 documents,
-                key = { document -> document.hashCode() }
-            ) { document ->
-                DocumentItem(
-                    document,
-                    onDocumentClick,
-                    selectionListener,
-                    previewDrawers(),
-                    modifier = Modifier.animateItemPlacement()
-                )
+                key = { menuItem -> menuItem.hashCode() }
+            ) { menuItem ->
+                when (menuItem) {
+                    is MenuItemUi.DocumentUi -> {
+                        DocumentItem(
+                            menuItem,
+                            onDocumentClick,
+                            selectionListener,
+                            previewDrawers(),
+                            modifier = Modifier.animateItemPlacement()
+                        )
+                    }
+
+                    is MenuItemUi.FolderUi -> {
+                        FolderItem(
+                            menuItem,
+                            {},
+                        )
+                    }
+                }
             }
         }
     )
@@ -187,22 +210,53 @@ private fun LazyColumnNotes(
         modifier = Modifier.padding(6.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp),
         content = {
-            items(documents, key = { document -> document.hashCode() }) { document ->
-                DocumentItem(
-                    document,
-                    onDocumentClick,
-                    selectionListener,
-                    previewDrawers(),
-                    modifier = Modifier.animateItemPlacement()
-                )
+            items(documents, key = { menuItem -> menuItem.hashCode() }) { menuItem ->
+                when (menuItem) {
+                    is MenuItemUi.DocumentUi -> {
+                        DocumentItem(
+                            menuItem,
+                            onDocumentClick,
+                            selectionListener,
+                            previewDrawers(),
+                            modifier = Modifier.animateItemPlacement()
+                        )
+                    }
+
+                    is MenuItemUi.FolderUi -> {
+                        FolderItem(
+                            menuItem,
+                            {},
+                        )
+                    }
+                }
             }
         }
     )
 }
 
 @Composable
+private fun FolderItem(
+    folderUi: MenuItemUi.FolderUi,
+    folderClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    println("Drawing folder!!")
+
+    Box(modifier = modifier.size(200.dp).clickable {
+        folderClick(folderUi.documentId)
+    }) {
+        Icon(
+            modifier = Modifier.align(Alignment.Center).size(40.dp).padding(12.dp),
+            imageVector = Icons.Outlined.Folder,
+            contentDescription = "Folder",
+            tint = MaterialTheme.colorScheme.onPrimary
+        )
+    }
+}
+
+@Composable
 private fun DocumentItem(
-    documentUi: MenuItemUi,
+    menuItem: MenuItemUi.DocumentUi,
     documentClick: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
     drawers: Map<Int, StoryStepDrawer>,
@@ -218,24 +272,23 @@ private fun DocumentItem(
             .clip(MaterialTheme.shapes.large)
             .clickable {
                 documentClick(
-                    documentUi.documentId,
-                    documentUi.title.takeIf { it.isNotEmpty() } ?: titleFallback
+                    menuItem.documentId,
+                    menuItem.title.takeIf { it.isNotEmpty() } ?: titleFallback
                 )
             }
             .semantics {
-                testTag = "$DOCUMENT_ITEM_TEST_TAG${documentUi.title}"
+                testTag = "$DOCUMENT_ITEM_TEST_TAG${menuItem.title}"
             },
-        isOnEditState = documentUi.selected,
+        isOnEditState = menuItem.selected,
         swipeListener = { state ->
-            selectionListener(documentUi.documentId, state)
+            selectionListener(menuItem.documentId, state)
         },
         cornersShape = MaterialTheme.shapes.large,
         defaultColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
         Column {
-
-            if (documentUi is MenuItemUi.DocumentUi) {
-                documentUi.preview.forEachIndexed { i, storyStep ->
+            if (menuItem is MenuItemUi.DocumentUi) {
+                menuItem.preview.forEachIndexed { i, storyStep ->
                     drawers[storyStep.type.number]?.Step(
                         step = storyStep,
                         drawInfo = DrawInfo(editable = false, position = i)
@@ -246,7 +299,7 @@ private fun DocumentItem(
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        if (documentUi.isFavorite) {
+        if (menuItem.isFavorite) {
             Icon(
                 modifier = Modifier.align(Alignment.TopEnd).size(40.dp).padding(12.dp),
                 imageVector = Icons.Outlined.Favorite,
@@ -260,7 +313,7 @@ private fun DocumentItem(
 @Preview
 @Composable
 fun DocumentItemPreview() {
-    val documentUi = MenuItemUi.DocumentUi(
+    val menuItem = MenuItemUi.DocumentUi(
         documentId = "documentId",
         title = "title",
         lastEdit = "lastEdit",
@@ -275,7 +328,7 @@ fun DocumentItemPreview() {
     )
 
     DocumentItem(
-        documentUi = documentUi,
+        menuItem = menuItem,
         documentClick = { _, _ -> },
         selectionListener = { _, _ -> },
         drawers = previewDrawers(),
@@ -287,7 +340,7 @@ fun DocumentItemPreview() {
 @Preview
 @Composable
 fun DocumentItemSelectedPreview() {
-    val documentUi = MenuItemUi.DocumentUi(
+    val menuItem = MenuItemUi.DocumentUi(
         documentId = "documentId",
         title = "title",
         lastEdit = "lastEdit",
@@ -302,7 +355,7 @@ fun DocumentItemSelectedPreview() {
     )
 
     DocumentItem(
-        documentUi = documentUi,
+        menuItem = menuItem,
         documentClick = { _, _ -> },
         selectionListener = { _, _ -> },
         drawers = previewDrawers(),
