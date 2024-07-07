@@ -2,6 +2,7 @@ package io.writeopia.note_menu.ui.screen.list
 
 //import io.writeopia.appresourcers.R
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -240,17 +241,42 @@ private fun FolderItem(
     folderClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    println("Drawing folder!!")
-
-    Box(modifier = modifier.size(200.dp).clickable {
-        folderClick(folderUi.documentId)
-    }) {
-        Icon(
-            modifier = Modifier.align(Alignment.Center).size(40.dp).padding(12.dp),
-            imageVector = Icons.Outlined.Folder,
-            contentDescription = "Folder",
-            tint = MaterialTheme.colorScheme.onPrimary
+    Box(modifier = modifier.height(160.dp)
+        .fillMaxWidth()
+        .clickable {
+            folderClick(folderUi.documentId)
+        }
+        .background(
+            MaterialTheme.colorScheme.surfaceVariant,
+            shape = MaterialTheme.shapes.large
         )
+    ) {
+
+        Column(
+            modifier = Modifier.align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                modifier = Modifier.size(70.dp).padding(12.dp),
+                imageVector = Icons.Outlined.Folder,
+                contentDescription = "Folder",
+                tint = MaterialTheme.colorScheme.primary
+            )
+
+            Text(
+                text = folderUi.title,
+                color = MaterialTheme.colorScheme.onBackground,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = "${folderUi.itemsCount} items",
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
     }
 }
 
