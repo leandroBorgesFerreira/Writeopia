@@ -7,8 +7,7 @@ import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
-import io.writeopia.sdk.persistence.core.sorting.OrderBy
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Instant
 
 /**
@@ -29,7 +28,8 @@ internal class NotesUseCase(
         folderRepository.updateFolder(folder)
     }
 
-    fun listenForFolders() = folderRepository.listenForAllFolders()
+    fun listenForFoldersByParentId(parentId: String): Flow<List<Folder>> =
+        folderRepository.listenForAllFoldersByParentId(parentId)
 
     suspend fun loadContentForFolder(userId: String, folderId: String): List<MenuItem> =
         loadFoldersByParent(userId = userId, parentId = folderId) + loadDocumentsForFolder(folderId)

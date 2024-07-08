@@ -20,8 +20,8 @@ class InMemoryFolderRepository : FolderRepository {
         refreshState()
     }
 
-    override suspend fun getRootFolders(userId: String): List<Folder> =
-        mutableMap.values.toList()
+    override fun listenForAllFoldersByParentId(parentId: String): Flow<List<Folder>> =
+        _foldersStateFlow.map { it.values.toList() }
 
     override suspend fun getChildrenFolders(userId: String, parentId: String): List<Folder> =
         emptyList()
@@ -29,10 +29,6 @@ class InMemoryFolderRepository : FolderRepository {
     override suspend fun deleteFolderById(folderId: String) {
         mutableMap.remove(folderId)
         refreshState()
-    }
-
-    override fun listenForAllFolders(): Flow<List<Folder>> = _foldersStateFlow.map { map ->
-        map.values.toList()
     }
 
     private fun refreshState() {

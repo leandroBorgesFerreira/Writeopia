@@ -16,7 +16,6 @@ import io.writeopia.sdk.export.DocumentToJson
 import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.export.DocumentWriter
 import io.writeopia.sdk.import_document.json.WriteopiaJsonParser
-import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
@@ -99,7 +98,7 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override val folders: StateFlow<Map<String, Folder>> by lazy {
-        notesUseCase.listenForFolders()
+        notesUseCase.listenForFoldersByParentId(Folder.ROOT_PATH)
             .map { folders ->
                 folders.associateBy { folder -> folder.id }
             }
@@ -471,7 +470,6 @@ internal class ChooseNoteKmpViewModel(
             val orderBy = notesConfig.getOrderPreference(userId)
             notesUseCase.loadFavDocumentsForUser(orderBy, userId)
         } else {
-            println("notesUseCase.loadContentForFolder")
             notesUseCase.loadContentForFolder(userId, Folder.ROOT_PATH)
         }
 

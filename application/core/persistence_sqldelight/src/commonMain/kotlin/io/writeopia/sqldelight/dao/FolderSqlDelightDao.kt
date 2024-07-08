@@ -5,9 +5,6 @@ import io.writeopia.app.sql.FolderEntityQueries
 import io.writeopia.sql.WriteopiaDb
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-
-private const val ROOT_PATH = "root"
 
 class FolderSqlDelightDao(database: WriteopiaDb?) {
 
@@ -39,29 +36,30 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
         ).also { refreshNotes() }
     }
 
-    fun listenForAllFolders(): Flow<List<FolderEntity>> {
+    fun listenForFolderByParentId(parentId: String): Flow<List<FolderEntity>> {
+        SelectedIds.ids.add(parentId)
         refreshNotes()
         return _foldersStateFlow
     }
 
-    fun getRootFolders(userId: String): List<FolderEntity> = getFolders(ROOT_PATH, userId)
-
-    fun getChildrenFolders(parentId: String, userId: String): List<FolderEntity> =
-        getFolders(parentId = parentId, userId = userId)
+    fun getChildrenFolders(parentId: String): List<FolderEntity> =
+        getFolders(parentId = parentId)
 
     suspend fun deleteFolder(folderId: String) {
         folderEntityQueries?.deleteFolder(folderId)
         refreshNotes()
     }
 
-    private fun getFolders(parentId: String, userId: String): List<FolderEntity> =
-        folderEntityQueries?.selectChildrenFolder(parent_id = parentId, user_id = userId)
+    private fun getFolders(parentId: String): List<FolderEntity> =
+        folderEntityQueries?.selectChildrenFolder(parent_id = parentId)
             ?.executeAsList()
             ?: emptyList()
 
     private fun refreshNotes() {
-        folderEntityQueries?.selectAllFolders()?.executeAsList()?.let { folders ->
-            _foldersStateFlow.value = folders
-        }
+        _foldersStateFlow.value = SelectedIds.ids.map { id -> getFolders(id) }.flatten()
     }
+}
+
+object SelectedIds {
+    internal val ids = mutableSetOf<String>()
 }
