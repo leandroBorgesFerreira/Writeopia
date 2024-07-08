@@ -2,6 +2,8 @@ package io.writeopia.note_menu.data.repository
 
 import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 
 class InMemoryConfigurationRepository private constructor(): ConfigurationRepository {
 
@@ -32,6 +34,20 @@ class InMemoryConfigurationRepository private constructor(): ConfigurationReposi
 
     override suspend fun loadWorkspacePath(userId: String): String? =
         workSpacePrefs[userId]
+
+    override fun listenForArrangementPref(
+        userIdFn: suspend () -> String,
+        coroutineScope: CoroutineScope
+    ): Flow<String> {
+        TODO("Not yet implemented")
+    }
+
+    override fun listenOrderPreference(
+        userIdFn: suspend () -> String,
+        coroutineScope: CoroutineScope
+    ): Flow<String> {
+        TODO("Not yet implemented")
+    }
 
     companion object {
         private var instance: InMemoryConfigurationRepository? = null

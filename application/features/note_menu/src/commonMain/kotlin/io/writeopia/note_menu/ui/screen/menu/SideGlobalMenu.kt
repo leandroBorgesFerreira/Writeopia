@@ -39,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.note_menu.data.model.Folder
+import io.writeopia.sdk.models.document.MenuItem
 import kotlinx.coroutines.flow.StateFlow
 
 private const val finalWidth = 300
@@ -46,7 +47,7 @@ private const val finalWidth = 300
 @Composable
 fun SideGlobalMenu(
     modifier: Modifier = Modifier,
-    foldersState: StateFlow<Map<String, Folder>>,
+    foldersState: StateFlow<Map<String, List<MenuItem>>>,
     background: Color,
     showOptions: Boolean,
     width: Dp = finalWidth.dp,
@@ -54,7 +55,7 @@ fun SideGlobalMenu(
     favoritesClick: () -> Unit,
     settingsClick: () -> Unit,
     addFolder: () -> Unit,
-    editFolder: (String) -> Unit,
+    editFolder: (Folder) -> Unit,
     navigateToFolder: (String) -> Unit
 ) {
     val widthState by derivedStateOf {
@@ -72,7 +73,8 @@ fun SideGlobalMenu(
     ) {
         Box(modifier = Modifier.width(widthAnimatedState).fillMaxHeight()) {
             if (showContent) {
-                val folders by foldersState.collectAsState()
+                val menuItems by foldersState.collectAsState()
+                val folders = menuItems.values.filterIsInstance<Folder>()
 
                 Column {
                     Spacer(modifier = Modifier.height(10.dp))
@@ -114,7 +116,7 @@ fun SideGlobalMenu(
                     )
 
                     LazyColumn(Modifier.fillMaxWidth()) {
-                        items(folders.values.toList()) { folder ->
+                        items(folders) { folder ->
                             Row(
                                 modifier = Modifier.clickable {
                                     navigateToFolder(folder.id)
@@ -148,7 +150,7 @@ fun SideGlobalMenu(
                                     modifier = Modifier
                                         .clip(RoundedCornerShape(6.dp))
                                         .clickable(onClick = {
-                                            editFolder(folder.id)
+                                            editFolder(folder)
                                         })
                                         .size(26.dp)
                                         .padding(4.dp)

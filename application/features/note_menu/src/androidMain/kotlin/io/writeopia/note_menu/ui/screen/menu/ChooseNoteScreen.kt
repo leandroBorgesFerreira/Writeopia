@@ -48,7 +48,7 @@ internal fun ChooseNoteScreen(
 ) {
     LaunchedEffect(key1 = "refresh", block = {
         chooseNoteViewModel.requestUser()
-        chooseNoteViewModel.requestDocuments(false)
+//        chooseNoteViewModel.requestDocuments(false)
         // Todo: Remove BuildConfig.DEBUG check later.
     })
 

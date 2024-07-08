@@ -2,8 +2,8 @@ package io.writeopia.note_menu.viewmodel
 
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesArrangement
-import io.writeopia.note_menu.ui.dto.FolderEdit
 import io.writeopia.note_menu.ui.dto.NotesUi
+import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.utils_module.ResultData
 import kotlinx.coroutines.flow.StateFlow
@@ -31,11 +31,11 @@ interface ChooseNoteViewModel {
 
     val showSettingsState: StateFlow<Boolean>
 
-    val folders: StateFlow<Map<String, Folder>>
+    val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>>
 
-    val editFolderState : StateFlow<FolderEdit?>
+    val editFolderState : StateFlow<Folder?>
 
-    fun requestDocuments(force: Boolean)
+//    fun requestDocuments(force: Boolean)
 
     fun handleNoteTap(id: String): Boolean
 
@@ -91,9 +91,9 @@ interface ChooseNoteViewModel {
 
     fun addFolder()
 
-    fun editFolder(id: String)
+    fun editFolder(folder: Folder)
 
-    fun updateFolder(folderEdit: FolderEdit)
+    fun updateFolder(folderEdit: Folder)
 
     fun deleteFolder(id: String)
 

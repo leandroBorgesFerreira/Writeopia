@@ -8,6 +8,7 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.datetime.Instant
 
 /**
@@ -28,9 +29,6 @@ internal class NotesUseCase(
         folderRepository.updateFolder(folder)
     }
 
-    fun listenForFoldersByParentId(parentId: String): Flow<List<Folder>> =
-        folderRepository.listenForAllFoldersByParentId(parentId)
-
     suspend fun loadContentForFolder(userId: String, folderId: String): List<MenuItem> =
         loadFoldersByParent(userId = userId, parentId = folderId) + loadDocumentsForFolder(folderId)
 
@@ -50,6 +48,15 @@ internal class NotesUseCase(
                     time
                 )
             }
+
+    fun listenForMenuItemsByParentId(parentId: String): Flow<Map<String, List<MenuItem>>> =
+        combine(
+            listenForFoldersByParentId(parentId),
+            listenForDocumentsByParentId(parentId)
+        ) { folders, documents ->
+            val sum = folders + documents
+            sum.groupBy { menuItem -> menuItem.parentId }
+        }
 
     suspend fun duplicateDocuments(ids: List<String>, userId: String) {
         notesConfig.getOrderPreference(userId).let { orderBy ->
@@ -91,4 +98,11 @@ internal class NotesUseCase(
 
     private suspend fun loadFoldersByParent(userId: String, parentId: String): List<Folder> =
         folderRepository.getChildrenFolders(userId = userId, parentId = parentId)
+
+    private fun listenForDocumentsByParentId(parentId: String): Flow<List<Document>> =
+        documentRepository.listenForDocumentsByParentId(parentId)
+
+    private fun listenForFoldersByParentId(parentId: String): Flow<List<Folder>> =
+        folderRepository.listenForAllFoldersByParentId(parentId)
 }
+
