@@ -1,6 +1,7 @@
 package io.writeopia.note_menu.data.repository
 
 import io.writeopia.note_menu.data.model.Folder
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 interface FolderRepository {
@@ -13,5 +14,8 @@ interface FolderRepository {
 
     suspend fun deleteFolderById(folderId: String)
 
-    fun listenForAllFoldersByParentId(parentId: String): Flow<List<Folder>>
+    fun listenForAllFoldersByParentId(
+        parentId: String,
+        coroutineScope: CoroutineScope
+    ): Flow<List<Folder>>
 }

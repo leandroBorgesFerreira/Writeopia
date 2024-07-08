@@ -3,8 +3,10 @@ package io.writeopia.sqldelight.dao
 import io.writeopia.app.sql.FolderEntity
 import io.writeopia.app.sql.FolderEntityQueries
 import io.writeopia.sql.WriteopiaDb
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
 class FolderSqlDelightDao(database: WriteopiaDb?) {
 
@@ -36,13 +38,15 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
         ).also { refreshNotes() }
     }
 
-    fun listenForFolderByParentId(parentId: String): Flow<List<FolderEntity>> {
-        SelectedIds.ids.add(parentId)
-        refreshNotes()
+    fun listenForFolderByParentId(parentId: String, coroutineScope: CoroutineScope): Flow<List<FolderEntity>> {
+        coroutineScope.launch {
+            SelectedIds.ids.add(parentId)
+            refreshNotes()
+        }
         return _foldersStateFlow
     }
 
-    fun getChildrenFolders(parentId: String): List<FolderEntity> =
+    suspend fun getChildrenFolders(parentId: String): List<FolderEntity> =
         getFolders(parentId = parentId)
 
     suspend fun deleteFolder(folderId: String) {
@@ -55,7 +59,7 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
             ?.executeAsList()
             ?: emptyList()
 
-    private fun refreshNotes() {
+    private suspend fun refreshNotes() {
         _foldersStateFlow.value = SelectedIds.ids.map { id -> getFolders(id) }.flatten()
     }
 }

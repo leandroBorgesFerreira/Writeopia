@@ -57,11 +57,14 @@ internal class ChooseNoteKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, false)
     }
 
-    private val _documentsState: StateFlow<ResultData<List<MenuItem>>> =
-        notesUseCase.listenForMenuItemsByParentId(parentId = folderId).map { menuItems ->
+    private val _documentsState: StateFlow<ResultData<List<MenuItem>>> by lazy {
+        notesUseCase.listenForMenuItemsByParentId(
+            parentId = folderId,
+            coroutineScope = coroutineScope
+        ).map { menuItems ->
             ResultData.Complete(menuItems[folderId] ?: emptyList())
         }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Loading())
-
+    }
     private val _user: MutableStateFlow<UserState<User>> = MutableStateFlow(UserState.Idle())
     override val userName: StateFlow<UserState<String>> by lazy {
         _user.map { userState ->
@@ -98,7 +101,7 @@ internal class ChooseNoteKmpViewModel(
     override val editFolderState: StateFlow<Folder?> = _editingFolder.asStateFlow()
 
     override val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>> by lazy {
-        notesUseCase.listenForMenuItemsByParentId(Folder.ROOT_PATH)
+        notesUseCase.listenForMenuItemsByParentId(Folder.ROOT_PATH, coroutineScope)
             .stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
     }
 

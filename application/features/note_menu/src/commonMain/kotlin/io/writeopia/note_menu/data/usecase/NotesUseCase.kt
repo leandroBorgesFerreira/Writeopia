@@ -7,6 +7,7 @@ import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.datetime.Instant
@@ -49,10 +50,13 @@ internal class NotesUseCase(
                 )
             }
 
-    fun listenForMenuItemsByParentId(parentId: String): Flow<Map<String, List<MenuItem>>> =
+    fun listenForMenuItemsByParentId(
+        parentId: String,
+        coroutineScope: CoroutineScope
+    ): Flow<Map<String, List<MenuItem>>> =
         combine(
-            listenForFoldersByParentId(parentId),
-            listenForDocumentsByParentId(parentId)
+            listenForFoldersByParentId(parentId, coroutineScope),
+            listenForDocumentsByParentId(parentId, coroutineScope)
         ) { folders, documents ->
             val sum = folders + documents
             sum.groupBy { menuItem -> menuItem.parentId }
@@ -99,10 +103,16 @@ internal class NotesUseCase(
     private suspend fun loadFoldersByParent(userId: String, parentId: String): List<Folder> =
         folderRepository.getChildrenFolders(userId = userId, parentId = parentId)
 
-    private fun listenForDocumentsByParentId(parentId: String): Flow<List<Document>> =
-        documentRepository.listenForDocumentsByParentId(parentId)
+    private fun listenForDocumentsByParentId(
+        parentId: String,
+        coroutineScope: CoroutineScope
+    ): Flow<List<Document>> =
+        documentRepository.listenForDocumentsByParentId(parentId, coroutineScope)
 
-    private fun listenForFoldersByParentId(parentId: String): Flow<List<Folder>> =
-        folderRepository.listenForAllFoldersByParentId(parentId)
+    private fun listenForFoldersByParentId(
+        parentId: String,
+        coroutineScope: CoroutineScope
+    ): Flow<List<Folder>> =
+        folderRepository.listenForAllFoldersByParentId(parentId, coroutineScope)
 }
 

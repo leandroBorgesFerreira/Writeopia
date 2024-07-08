@@ -4,6 +4,7 @@ import io.writeopia.sdk.manager.DocumentUpdate
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Instant
 
@@ -32,7 +33,10 @@ interface DocumentRepository : DocumentUpdate {
 
     suspend fun loadDocumentsWithContentByIds(ids: List<String>, orderBy: String): List<Document>
 
-    fun listenForDocumentsByParentId(parentId: String): Flow<List<Document>>
+    fun listenForDocumentsByParentId(
+        parentId: String,
+        coroutineScope: CoroutineScope
+    ): Flow<List<Document>>
 
     /**
      * Saves document. Both with content and meta data.

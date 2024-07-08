@@ -4,6 +4,7 @@ import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.extensions.toEntity
 import io.writeopia.note_menu.extensions.toModel
 import io.writeopia.sqldelight.dao.FolderSqlDelightDao
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -24,8 +25,11 @@ class FolderRepositorySqlDelight(
             folderEntity.toModel()
         }
 
-    override fun listenForAllFoldersByParentId(parentId: String): Flow<List<Folder>> =
-        folderDao.listenForFolderByParentId(parentId)
+    override fun listenForAllFoldersByParentId(
+        parentId: String,
+        coroutineScope: CoroutineScope
+    ): Flow<List<Folder>> =
+        folderDao.listenForFolderByParentId(parentId, coroutineScope)
             .map { folderEntityList ->
                 folderEntityList.map { folderEntity -> folderEntity.toModel() }
             }

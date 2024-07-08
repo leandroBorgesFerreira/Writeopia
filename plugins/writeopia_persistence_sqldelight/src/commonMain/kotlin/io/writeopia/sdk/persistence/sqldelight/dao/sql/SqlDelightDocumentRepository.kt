@@ -5,12 +5,15 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Instant
 
 class SqlDelightDocumentRepository(
     private val documentSqlDao: DocumentSqlDao
 ) : DocumentRepository {
+
+
 
     override suspend fun loadDocumentsForUser(userId: String): List<Document> =
         documentSqlDao.loadDocumentsWithContentByUserId(OrderBy.NAME.type, userId)
@@ -21,8 +24,12 @@ class SqlDelightDocumentRepository(
     override suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> =
         documentSqlDao.loadFavDocumentsWithContentByUserId(orderBy, userId)
 
-    override fun listenForDocumentsByParentId(parentId: String): Flow<List<Document>> {
-        TODO("Not yet implemented")
+    //    Here!!
+    override fun listenForDocumentsByParentId(
+        parentId: String,
+        coroutineScope: CoroutineScope
+    ): Flow<List<Document>> {
+        TODO()
     }
 
     override suspend fun loadDocumentsForUserAfterTime(
