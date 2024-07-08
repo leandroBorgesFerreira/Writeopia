@@ -17,5 +17,5 @@ interface FolderRepository {
     fun listenForAllFoldersByParentId(
         parentId: String,
         coroutineScope: CoroutineScope
-    ): Flow<List<Folder>>
+    ): Flow<Map<String, List<Folder>>>
 }

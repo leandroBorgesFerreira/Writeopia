@@ -36,7 +36,7 @@ interface DocumentRepository : DocumentUpdate {
     fun listenForDocumentsByParentId(
         parentId: String,
         coroutineScope: CoroutineScope
-    ): Flow<List<Document>>
+    ): Flow<Map<String, List<Document>>>
 
     /**
      * Saves document. Both with content and meta data.

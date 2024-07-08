@@ -50,6 +50,13 @@ internal class NotesUseCase(
                 )
             }
 
+    /**
+     * Listen and gets [MenuItem] groups by  parent folder.
+     * This will return all folders that this method was called for (using the parentId).
+     *
+     * @param parentId The id of the folder
+     * @param coroutineScope [CoroutineScope]
+     */
     fun listenForMenuItemsByParentId(
         parentId: String,
         coroutineScope: CoroutineScope
@@ -58,8 +65,8 @@ internal class NotesUseCase(
             listenForFoldersByParentId(parentId, coroutineScope),
             listenForDocumentsByParentId(parentId, coroutineScope)
         ) { folders, documents ->
-            val sum = folders + documents
-            sum.groupBy { menuItem -> menuItem.parentId }
+
+            folders + documents
         }
 
     suspend fun duplicateDocuments(ids: List<String>, userId: String) {
@@ -106,13 +113,20 @@ internal class NotesUseCase(
     private fun listenForDocumentsByParentId(
         parentId: String,
         coroutineScope: CoroutineScope
-    ): Flow<List<Document>> =
+    ): Flow<Map<String, List<Document>>> =
         documentRepository.listenForDocumentsByParentId(parentId, coroutineScope)
 
+    /**
+     * Listen and gets [MenuItem] groups by  parent folder.
+     * This will return all folders that this method was called for (using the parentId).
+     *
+     * @param parentId The id of the folder
+     * @param coroutineScope [CoroutineScope]
+     */
     private fun listenForFoldersByParentId(
         parentId: String,
         coroutineScope: CoroutineScope
-    ): Flow<List<Folder>> =
+    ): Flow<Map<String, List<Folder>>> =
         folderRepository.listenForAllFoldersByParentId(parentId, coroutineScope)
 }
 

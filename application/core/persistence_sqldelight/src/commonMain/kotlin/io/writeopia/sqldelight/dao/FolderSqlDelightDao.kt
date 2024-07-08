@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class FolderSqlDelightDao(database: WriteopiaDb?) {
 
-    private val _foldersStateFlow = MutableStateFlow<List<FolderEntity>>(emptyList())
+    private val _foldersStateFlow = MutableStateFlow<Map<String, List<FolderEntity>>>(emptyMap())
 
     private val folderEntityQueries: FolderEntityQueries? = database?.folderEntityQueries
 
@@ -38,7 +38,10 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
         ).also { refreshNotes() }
     }
 
-    fun listenForFolderByParentId(parentId: String, coroutineScope: CoroutineScope): Flow<List<FolderEntity>> {
+    fun listenForFolderByParentId(
+        parentId: String,
+        coroutineScope: CoroutineScope
+    ): Flow<Map<String, List<FolderEntity>>> {
         coroutineScope.launch {
             SelectedIds.ids.add(parentId)
             refreshNotes()
@@ -60,10 +63,10 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
             ?: emptyList()
 
     private suspend fun refreshNotes() {
-        _foldersStateFlow.value = SelectedIds.ids.map { id -> getFolders(id) }.flatten()
+        _foldersStateFlow.value = SelectedIds.ids.associateWith(::getFolders)
     }
 }
 
-object SelectedIds {
-    internal val ids = mutableSetOf<String>()
+private object SelectedIds {
+    val ids = mutableSetOf<String>()
 }

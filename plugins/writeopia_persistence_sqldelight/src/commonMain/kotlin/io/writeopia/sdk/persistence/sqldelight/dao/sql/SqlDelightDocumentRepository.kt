@@ -7,13 +7,15 @@ import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
 
 class SqlDelightDocumentRepository(
     private val documentSqlDao: DocumentSqlDao
 ) : DocumentRepository {
 
-
+    private val _documentState = MutableStateFlow<Map<String, List<Document>>>(emptyMap())
 
     override suspend fun loadDocumentsForUser(userId: String): List<Document> =
         documentSqlDao.loadDocumentsWithContentByUserId(OrderBy.NAME.type, userId)
@@ -24,12 +26,20 @@ class SqlDelightDocumentRepository(
     override suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> =
         documentSqlDao.loadFavDocumentsWithContentByUserId(orderBy, userId)
 
-    //    Here!!
+    // Here!!
     override fun listenForDocumentsByParentId(
         parentId: String,
         coroutineScope: CoroutineScope
-    ): Flow<List<Document>> {
-        TODO()
+    ): Flow<Map<String, List<Document>>> {
+        coroutineScope.launch {
+            SelectedIds.ids.add(parentId)
+
+            _documentState.value = SelectedIds.ids.associateWith { id ->
+                documentSqlDao.loadDocumentByParentId(id)
+            }
+        }
+
+        return _documentState
     }
 
     override suspend fun loadDocumentsForUserAfterTime(
@@ -104,4 +114,8 @@ class SqlDelightDocumentRepository(
     override suspend fun updateStoryStep(storyStep: StoryStep, position: Int, documentId: String) {
         TODO("Not yet implemented")
     }
+}
+
+private object SelectedIds {
+    val ids = mutableSetOf<String>()
 }
