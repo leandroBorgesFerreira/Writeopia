@@ -36,7 +36,7 @@ class NotesMenuKmpInjection(
     }
 
     internal fun provideChooseKmpNoteViewModel(
-        notesNavigation: NotesNavigation = NotesNavigation.Root,
+        notesNavigation: NotesNavigation,
         notesUseCase: NotesUseCase = provideNotesUseCase(),
         notesConfig: ConfigurationRepository =
             notesInjector.provideNotesConfigurationRepository(),
@@ -49,7 +49,7 @@ class NotesMenuKmpInjection(
             uiConfigurationRepo = uiConfigurationRepo,
             authManager = authCoreInjection.provideAccountManager(),
             selectionState = selectionState,
-            notesNavigation = notesNavigation
+            notesNavigation = notesNavigation,
         )
 
     @Composable
