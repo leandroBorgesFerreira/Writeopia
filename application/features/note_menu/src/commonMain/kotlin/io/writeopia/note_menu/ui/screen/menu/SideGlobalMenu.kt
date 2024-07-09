@@ -74,8 +74,7 @@ fun SideGlobalMenu(
     ) {
         Box(modifier = Modifier.width(widthAnimatedState).fillMaxHeight()) {
             if (showContent) {
-                val menuItems = foldersState.collectAsState().value
-
+                val menuItems by foldersState.collectAsState()
                 val folder = menuItems.values.flatten().filterIsInstance<Folder>()
 
                 Column {
