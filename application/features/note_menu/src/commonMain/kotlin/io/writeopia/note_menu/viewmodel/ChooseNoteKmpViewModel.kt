@@ -56,12 +56,13 @@ internal class ChooseNoteKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, false)
     }
 
-    private val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>> by lazy {
-        println("menuItemsPerFolderId")
+    override val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>> by lazy {
         when (notesNavigation) {
-            NotesNavigation.Favorites -> flow {
-                emit(notesUseCase.loadFavDocumentsForUser(getUserId()).groupBy { it.id })
-            }
+            NotesNavigation.Favorites -> notesUseCase.listenForMenuItemsByParentId(
+                Folder.ROOT_PATH,
+                ::getUserId,
+                coroutineScope
+            )
 
             is NotesNavigation.Folder -> notesUseCase.listenForMenuItemsByParentId(
                 notesNavigation.folderId,
@@ -82,7 +83,7 @@ internal class ChooseNoteKmpViewModel(
         menuItemsPerFolderId.map { menuItems ->
             println("NotesNavigation.Favorites: $notesNavigation")
             val pageItems = when (notesNavigation) {
-                NotesNavigation.Favorites -> menuItems.values.flatten()
+                NotesNavigation.Favorites -> menuItems.values.flatten().filter { it.favorite }
 
                 is NotesNavigation.Folder -> menuItems[notesNavigation.folderId]
 
