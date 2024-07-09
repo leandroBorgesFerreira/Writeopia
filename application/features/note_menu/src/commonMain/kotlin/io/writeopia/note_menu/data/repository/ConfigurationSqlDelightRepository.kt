@@ -41,6 +41,8 @@ class ConfigurationSqlDelightRepository(
                 orderBy.type
             )
         )
+
+        refreshOrderPref(userId)
     }
 
     override suspend fun arrangementPref(userId: String): String =

@@ -189,7 +189,7 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun showEditMenu() {
-        _editingFolder.value = null
+        _editState.value = true
     }
 
     override fun cancelEditMenu() {

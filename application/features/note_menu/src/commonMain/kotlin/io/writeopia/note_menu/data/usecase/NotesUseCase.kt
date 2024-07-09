@@ -67,8 +67,9 @@ internal class NotesUseCase(
             listenForDocumentsByParentId(parentId, coroutineScope),
             notesConfig.listenOrderPreference(userIdFn, coroutineScope)
         ) { folders, documents, orderPreference ->
+            val order = OrderBy.fromString(orderPreference)
             folders.merge(documents).mapValues { (_, menuItems) ->
-                menuItems.sortedWithOrderBy(OrderBy.fromString(orderPreference))
+                menuItems.sortedWithOrderBy(order)
             }
         }
 

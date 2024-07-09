@@ -8,11 +8,19 @@ import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 
 actual class NotesInjector(private val appRoomDaosInjection: AppRoomDaosInjection) {
 
+    private var configurationRepository: ConfigurationRepository? = null
+
     actual fun provideNotesConfigurationRepository(): ConfigurationRepository =
-        ConfigurationRoomRepository(appRoomDaosInjection.provideConfigurationDao())
+        configurationRepository ?: kotlin.run {
+            ConfigurationRoomRepository(appRoomDaosInjection.provideConfigurationDao()).also {
+                configurationRepository = it
+            }
+        }
+
 
     actual fun provideFoldersRepository(): FolderRepository {
         //Todo: Implement later!
         return InMemoryFolderRepository.singleton()
     }
 }
+
