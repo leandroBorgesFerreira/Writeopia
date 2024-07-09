@@ -183,7 +183,6 @@ class DocumentSqlDao(
             ?: emptyList()
     }
 
-
     suspend fun loadDocumentsWithContentByUserIdAfterTime(
         userId: String,
         time: Long

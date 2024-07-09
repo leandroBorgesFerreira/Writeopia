@@ -17,12 +17,14 @@ data class Folder(
     val documentList: List<Document> = emptyList(),
 ) : MenuItem {
     companion object {
+        const val ROOT_PATH = "root"
+
         fun fromName(name: String, userId: String): Folder {
             val now = Clock.System.now()
 
             return Folder(
                 id = GenerateId.generate(),
-                parentId = "",
+                parentId = ROOT_PATH,
                 title = name,
                 createdAt = now,
                 lastUpdatedAt = now,

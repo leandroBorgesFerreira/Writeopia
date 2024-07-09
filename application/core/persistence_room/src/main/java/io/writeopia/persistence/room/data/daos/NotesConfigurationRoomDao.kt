@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import io.writeopia.persistence.room.data.entities.NotesConfigurationEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NotesConfigurationRoomDao {
@@ -13,4 +14,7 @@ interface NotesConfigurationRoomDao {
 
     @Query("SELECT * FROM notes_configuration WHERE notes_configuration.user_id = :userId LIMIT 1")
     suspend fun getConfigurationByUserId(userId: String): NotesConfigurationEntity?
+
+    @Query("SELECT * FROM notes_configuration WHERE notes_configuration.user_id = :userId LIMIT 1")
+    fun listenForConfigurationByUserId(userId: String): Flow<NotesConfigurationEntity?>
 }

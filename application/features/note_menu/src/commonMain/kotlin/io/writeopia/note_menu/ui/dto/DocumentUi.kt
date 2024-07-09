@@ -22,6 +22,7 @@ sealed interface MenuItemUi {
         override val title: String,
         override val selected: Boolean,
         override val isFavorite: Boolean,
+        val itemsCount: Int = 0,
         val parentId: String
     ) : MenuItemUi
 }

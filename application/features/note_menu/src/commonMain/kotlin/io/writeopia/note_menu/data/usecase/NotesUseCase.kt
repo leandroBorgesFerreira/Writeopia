@@ -7,8 +7,10 @@ import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
-import io.writeopia.sdk.persistence.core.sorting.OrderBy
-import kotlinx.coroutines.flow.map
+import io.writeopia.utils_module.collections.merge
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.datetime.Instant
 
 /**
@@ -29,14 +31,8 @@ internal class NotesUseCase(
         folderRepository.updateFolder(folder)
     }
 
-    suspend fun loadRootsFolders(userId: String) {
-        folderRepository.getRootFolders(userId)
-    }
-
-    fun listenForFolders() = folderRepository.listenForAllFolders()
-
-    suspend fun loadRootContent(userId: String): List<MenuItem> =
-        loadRootFoldersForUser(userId) + loadDocumentsForFolder("root")
+    suspend fun loadContentForFolder(userId: String, folderId: String): List<MenuItem> =
+        loadFoldersByParent(userId = userId, parentId = folderId) + loadDocumentsForFolder(folderId)
 
     suspend fun loadDocumentsForUser(userId: String): List<Document> =
         documentRepository.loadDocumentsForUser(userId)
@@ -54,6 +50,24 @@ internal class NotesUseCase(
                     time
                 )
             }
+
+    /**
+     * Listen and gets [MenuItem] groups by  parent folder.
+     * This will return all folders that this method was called for (using the parentId).
+     *
+     * @param parentId The id of the folder
+     * @param coroutineScope [CoroutineScope]
+     */
+    fun listenForMenuItemsByParentId(
+        parentId: String,
+        coroutineScope: CoroutineScope
+    ): Flow<Map<String, List<MenuItem>>> =
+        combine(
+            listenForFoldersByParentId(parentId, coroutineScope),
+            listenForDocumentsByParentId(parentId, coroutineScope)
+        ) { folders, documents ->
+            folders.merge(documents)
+        }
 
     suspend fun duplicateDocuments(ids: List<String>, userId: String) {
         notesConfig.getOrderPreference(userId).let { orderBy ->
@@ -80,8 +94,6 @@ internal class NotesUseCase(
     suspend fun deleteFolderById(folderId: String) {
         documentRepository.deleteDocumentByFolder(folderId)
         folderRepository.deleteFolderById(folderId)
-
-
     }
 
     suspend fun favoriteNotes(ids: Set<String>) {
@@ -92,10 +104,29 @@ internal class NotesUseCase(
         documentRepository.unFavoriteDocumentByIds(ids)
     }
 
-    private suspend fun loadRootFoldersForUser(userId: String): List<Folder> =
-        folderRepository.getRootFolders(userId)
+    private suspend fun loadDocumentsForFolder(folderId: String): List<Document> =
+        documentRepository.loadDocumentsForFolder(folderId)
 
-    private suspend fun loadDocumentsForFolder(folderId: String): List<Document> {
-        return documentRepository.loadDocumentsForFolder(folderId)
-    }
+    private suspend fun loadFoldersByParent(userId: String, parentId: String): List<Folder> =
+        folderRepository.getChildrenFolders(userId = userId, parentId = parentId)
+
+    private fun listenForDocumentsByParentId(
+        parentId: String,
+        coroutineScope: CoroutineScope
+    ): Flow<Map<String, List<Document>>> =
+        documentRepository.listenForDocumentsByParentId(parentId, coroutineScope)
+
+    /**
+     * Listen and gets [MenuItem] groups by  parent folder.
+     * This will return all folders that this method was called for (using the parentId).
+     *
+     * @param parentId The id of the folder
+     * @param coroutineScope [CoroutineScope]
+     */
+    private fun listenForFoldersByParentId(
+        parentId: String,
+        coroutineScope: CoroutineScope
+    ): Flow<Map<String, List<Folder>>> =
+        folderRepository.listenForAllFoldersByParentId(parentId, coroutineScope)
 }
+

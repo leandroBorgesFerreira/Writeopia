@@ -9,14 +9,12 @@ import io.writeopia.note_menu.data.model.NotesNavigationType
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
-import io.writeopia.note_menu.ui.dto.FolderEdit
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.export.DocumentToJson
 import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.export.DocumentWriter
 import io.writeopia.sdk.import_document.json.WriteopiaJsonParser
-import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
@@ -46,7 +44,8 @@ internal class ChooseNoteKmpViewModel(
     private val previewParser: PreviewParser = PreviewParser(),
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
     private val documentToJson: DocumentToJson = DocumentToJson(),
-    private val writeopiaJsonParser: WriteopiaJsonParser = WriteopiaJsonParser()
+    private val writeopiaJsonParser: WriteopiaJsonParser = WriteopiaJsonParser(),
+    private val folderId: String = Folder.ROOT_PATH,
 ) : ChooseNoteViewModel, KmpViewModel() {
 
     private var localUserId: String? = null
@@ -58,9 +57,16 @@ internal class ChooseNoteKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, false)
     }
 
-    private val _documentsState: MutableStateFlow<ResultData<List<MenuItem>>> =
-        MutableStateFlow(ResultData.Idle())
+    private val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>> by lazy {
+        notesUseCase.listenForMenuItemsByParentId(folderId, coroutineScope)
+            .stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
+    }
 
+    override val menuItemsState: StateFlow<ResultData<List<MenuItem>>> by lazy {
+        menuItemsPerFolderId.map { menuItems ->
+            ResultData.Complete(menuItems[folderId] ?: emptyList())
+        }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Loading())
+    }
     private val _user: MutableStateFlow<UserState<User>> = MutableStateFlow(UserState.Idle())
     override val userName: StateFlow<UserState<String>> by lazy {
         _user.map { userState ->
@@ -70,8 +76,13 @@ internal class ChooseNoteKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, UserState.Idle())
     }
 
-    private val _notesArrangement = MutableStateFlow(NotesArrangement.GRID)
-    override val notesArrangement: StateFlow<NotesArrangement> = _notesArrangement.asStateFlow()
+    override val notesArrangement: StateFlow<NotesArrangement> by lazy {
+        notesConfig.listenForArrangementPref(::getUserId, coroutineScope)
+            .map { arrangement ->
+                NotesArrangement.fromString(arrangement)
+            }
+            .stateIn(coroutineScope, SharingStarted.Lazily, NotesArrangement.GRID)
+    }
 
     private val _showLocalSyncConfig = MutableStateFlow<ConfigState>(ConfigState.Idle)
     override val showLocalSyncConfigState = _showLocalSyncConfig.asStateFlow()
@@ -88,22 +99,19 @@ internal class ChooseNoteKmpViewModel(
     private val _showSettingsState = MutableStateFlow(false)
     override val showSettingsState: StateFlow<Boolean> = _showSettingsState.asStateFlow()
 
-    private val _editingFolderId = MutableStateFlow<String?>(null)
+    private val _editingFolder = MutableStateFlow<Folder?>(null)
+    override val editFolderState: StateFlow<Folder?> by lazy {
+        combine(_editingFolder, menuItemsPerFolderId) { selectedFolder, menuItems ->
+            if (selectedFolder != null) {
+                val folder = menuItems[selectedFolder.parentId]?.find { menuItem ->
+                    menuItem.id == selectedFolder.id
+                } as? Folder
 
-    override val editFolderState: StateFlow<FolderEdit?> by lazy {
-        combine(_editingFolderId, folders) { id, folders ->
-            if (id == null) null else folders[id]?.let { folder ->
-                FolderEdit(folder.id, folder.title)
+                folder ?: null
+            } else {
+                null
             }
         }.stateIn(coroutineScope, SharingStarted.Lazily, null)
-    }
-
-    override val folders: StateFlow<Map<String, Folder>> by lazy {
-        notesUseCase.listenForFolders()
-            .map { folders ->
-                folders.associateBy { folder -> folder.id }
-            }
-            .stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
     }
 
     override val showSideMenu: StateFlow<Boolean> by lazy {
@@ -116,7 +124,7 @@ internal class ChooseNoteKmpViewModel(
     override val documentsState: StateFlow<ResultData<NotesUi>> by lazy {
         combine(
             _selectedNotes,
-            _documentsState,
+            menuItemsState,
             notesArrangement
         ) { selectedNoteIds, resultData, arrangement ->
             val previewLimit = when (arrangement) {
@@ -141,13 +149,13 @@ internal class ChooseNoteKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Idle())
     }
 
-    override fun requestDocuments(force: Boolean) {
-        if (documentsState.value !is ResultData.Complete || force) {
-            coroutineScope.launch(Dispatchers.Default) {
-                refreshNotes()
-            }
-        }
-    }
+//    override fun requestDocuments(force: Boolean) {
+//        if (documentsState.value !is ResultData.Complete || force) {
+//            coroutineScope.launch(Dispatchers.Default) {
+////                refreshNotes()
+//            }
+//        }
+//    }
 
     override suspend fun requestUser() {
         try {
@@ -182,7 +190,7 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun showEditMenu() {
-        _editingFolderId.value = null
+        _editingFolder.value = null
     }
 
     override fun cancelEditMenu() {
@@ -205,35 +213,31 @@ internal class ChooseNoteKmpViewModel(
     override fun listArrangementSelected() {
         coroutineScope.launch {
             notesConfig.saveDocumentArrangementPref(NotesArrangement.LIST, getUserId())
-            _notesArrangement.value = NotesArrangement.LIST
         }
     }
 
     override fun gridArrangementSelected() {
         coroutineScope.launch {
             notesConfig.saveDocumentArrangementPref(NotesArrangement.GRID, getUserId())
-            _notesArrangement.value = NotesArrangement.GRID
         }
     }
 
     override fun staggeredGridArrangementSelected() {
         coroutineScope.launch {
             notesConfig.saveDocumentArrangementPref(NotesArrangement.STAGGERED_GRID, getUserId())
-            _notesArrangement.value = NotesArrangement.STAGGERED_GRID
         }
     }
 
     override fun sortingSelected(orderBy: OrderBy) {
         coroutineScope.launch(Dispatchers.Default) {
             notesConfig.saveDocumentSortingPref(orderBy, getUserId())
-            refreshNotes()
         }
     }
 
     override fun copySelectedNotes() {
         coroutineScope.launch(Dispatchers.Default) {
             notesUseCase.duplicateDocuments(_selectedNotes.value.toList(), getUserId())
-            refreshNotes()
+//            refreshNotes()
         }
     }
 
@@ -243,14 +247,14 @@ internal class ChooseNoteKmpViewModel(
         coroutineScope.launch(Dispatchers.Default) {
             notesUseCase.deleteNotes(selected)
             clearSelection()
-            refreshNotes()
+//            refreshNotes()
         }
     }
 
     override fun favoriteSelectedNotes() {
         val selectedIds = _selectedNotes.value
 
-        val allFavorites = (_documentsState.value as? ResultData.Complete<List<MenuItem>>)
+        val allFavorites = (menuItemsState.value as? ResultData.Complete<List<MenuItem>>)
             ?.data
             ?.filter { document ->
                 selectedIds.contains(document.id)
@@ -265,7 +269,7 @@ internal class ChooseNoteKmpViewModel(
                 notesUseCase.favoriteNotes(selectedIds)
             }
 
-            refreshNotes()
+//            refreshNotes()
         }
     }
 
@@ -297,7 +301,7 @@ internal class ChooseNoteKmpViewModel(
             writeopiaJsonParser.readDocuments(filePaths)
                 .onCompletion { exception ->
                     if (exception == null) {
-                        refreshNotes()
+//                        refreshNotes()
                         cancelEditMenu()
                     }
                 }
@@ -363,15 +367,13 @@ internal class ChooseNoteKmpViewModel(
         }
     }
 
-    override fun editFolder(id: String) {
-        _editingFolderId.value = id
+    override fun editFolder(folder: Folder) {
+        _editingFolder.value = folder
     }
 
-    override fun updateFolder(folderEdit: FolderEdit) {
-        folders.value[folderEdit.id]?.let { folder ->
-            coroutineScope.launch(Dispatchers.Default) {
-                notesUseCase.updateFolder(folder.copy(title = folderEdit.title))
-            }
+    override fun updateFolder(folder: Folder) {
+        coroutineScope.launch(Dispatchers.Default) {
+            notesUseCase.updateFolder(folder)
         }
     }
 
@@ -383,7 +385,7 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun stopEditingFolder() {
-        _editingFolderId.value = null
+        _editingFolder.value = null
     }
 
     private fun setShowSideMenu(enabled: Boolean) {
@@ -420,7 +422,7 @@ internal class ChooseNoteKmpViewModel(
 
         writeopiaJsonParser.readAllWorkSpace(path)
             .onCompletion {
-                refreshNotes()
+//                refreshNotes()
                 _syncInProgress.value = SyncState.Idle
             }
             .collect(notesUseCase::saveDocument)
@@ -451,29 +453,28 @@ internal class ChooseNoteKmpViewModel(
         }
     }
 
-    private suspend fun refreshNotes() {
-        _documentsState.value = ResultData.Loading()
+////    private suspend fun refreshNotes() {
+//        _documentsState.value = ResultData.Loading()
+//
+//        try {
+//            val userId = getUserId()
+//            val data = getNotes(userId)
+//
+//            _notesArrangement.value =
+//                NotesArrangement.fromString(notesConfig.arrangementPref(userId))
+//            _documentsState.value = ResultData.Complete(data)
+//        } catch (e: Exception) {
+//            _documentsState.value = ResultData.Error(e)
+//        }
+//    }
 
-        try {
-            val userId = getUserId()
-            val data = getNotes(userId)
-
-            _notesArrangement.value =
-                NotesArrangement.fromString(notesConfig.arrangementPref(userId))
-            _documentsState.value = ResultData.Complete(data)
-        } catch (e: Exception) {
-            _documentsState.value = ResultData.Error(e)
-        }
-    }
-
-    private suspend fun getNotes(userId: String): List<Document> =
+    private suspend fun getNotes(userId: String): List<MenuItem> =
         if (notesNavigation.navigationType == NotesNavigationType.FAVORITES) {
             val orderBy = notesConfig.getOrderPreference(userId)
             notesUseCase.loadFavDocumentsForUser(orderBy, userId)
         } else {
-            notesUseCase.loadDocumentsForUser(userId)
+            notesUseCase.loadContentForFolder(userId, Folder.ROOT_PATH)
         }
-
 
     private suspend fun getUserId(): String =
         localUserId ?: authManager.getUser().id.also { id ->

@@ -2,6 +2,8 @@ package io.writeopia.sdk.persistence.core.repository
 
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Instant
 
 class InMemoryDocumentRepository : DocumentRepository {
@@ -24,10 +26,18 @@ class InMemoryDocumentRepository : DocumentRepository {
     ): List<Document> = documentsMap.values.toList()
 
     override suspend fun loadDocumentById(id: String): Document? = documentsMap[id]
+
     override suspend fun loadDocumentByIds(ids: List<String>): List<Document> =
         ids.mapNotNull { id ->
             documentsMap[id]
         }
+
+    override fun listenForDocumentsByParentId(
+        parentId: String,
+        coroutineScope: CoroutineScope
+    ): Flow<Map<String, List<Document>>> {
+        TODO("Not yet implemented")
+    }
 
     override suspend fun loadDocumentsWithContentByIds(
         ids: List<String>,

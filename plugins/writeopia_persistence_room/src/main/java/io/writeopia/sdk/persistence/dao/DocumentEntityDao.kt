@@ -14,6 +14,7 @@ import io.writeopia.sdk.persistence.entity.document.DocumentEntity
 
 import io.writeopia.sdk.persistence.entity.story.STORY_UNIT_ENTITY
 import io.writeopia.sdk.persistence.entity.story.StoryStepEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DocumentEntityDao {
@@ -82,6 +83,22 @@ interface DocumentEntityDao {
     suspend fun loadDocumentsWithContentForUser(
         userId: String
     ): Map<DocumentEntity, List<StoryStepEntity>>?
+
+    @Query(
+        "SELECT * FROM $DOCUMENT_ENTITY " +
+                "JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
+                "WHERE user_id = :userId " +
+                "ORDER BY " +
+//                "CASE WHEN :orderBy = \'$TITLE\' THEN $DOCUMENT_ENTITY.title END COLLATE NOCASE ASC, " +
+//                "CASE WHEN :orderBy = \'$CREATED_AT\' THEN $DOCUMENT_ENTITY.created_at END DESC, " +
+//                "CASE WHEN :orderBy = \'$LAST_UPDATED_AT\' THEN $DOCUMENT_ENTITY.last_updated_at END DESC, " +
+                "$STORY_UNIT_ENTITY.position"
+    )
+    fun listenForDocumentsWithContentForUser(
+        userId: String
+    ): Flow<Map<DocumentEntity, List<StoryStepEntity>>>
+
+
 
     @Query("UPDATE $DOCUMENT_ENTITY set user_id = :newUserId WHERE user_id = :oldUserId")
     suspend fun moveDocumentsToNewUser(oldUserId: String, newUserId: String)
