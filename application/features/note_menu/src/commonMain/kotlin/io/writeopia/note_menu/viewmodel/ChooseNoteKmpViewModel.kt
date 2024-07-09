@@ -5,7 +5,6 @@ import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.note_menu.data.model.NotesNavigation
-import io.writeopia.note_menu.data.model.NotesNavigationType
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
@@ -58,7 +57,7 @@ internal class ChooseNoteKmpViewModel(
     }
 
     private val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>> by lazy {
-        notesUseCase.listenForMenuItemsByParentId(folderId, coroutineScope)
+        notesUseCase.listenForMenuItemsByParentId(folderId, ::getUserId, coroutineScope)
             .stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
     }
 
@@ -467,14 +466,6 @@ internal class ChooseNoteKmpViewModel(
 //            _documentsState.value = ResultData.Error(e)
 //        }
 //    }
-
-    private suspend fun getNotes(userId: String): List<MenuItem> =
-        if (notesNavigation.navigationType == NotesNavigationType.FAVORITES) {
-            val orderBy = notesConfig.getOrderPreference(userId)
-            notesUseCase.loadFavDocumentsForUser(orderBy, userId)
-        } else {
-            notesUseCase.loadContentForFolder(userId, Folder.ROOT_PATH)
-        }
 
     private suspend fun getUserId(): String =
         localUserId ?: authManager.getUser().id.also { id ->
