@@ -48,7 +48,7 @@ private const val finalWidth = 300
 @Composable
 fun SideGlobalMenu(
     modifier: Modifier = Modifier,
-    foldersState: StateFlow<ResultData<List<MenuItem>>>,
+    foldersState: StateFlow<Map<String, List<MenuItem>>>,
     background: Color,
     showOptions: Boolean,
     width: Dp = finalWidth.dp,
@@ -76,11 +76,7 @@ fun SideGlobalMenu(
             if (showContent) {
                 val menuItems = foldersState.collectAsState().value
 
-                val folder = if (menuItems is ResultData.Complete<List<MenuItem>>) {
-                    menuItems.data.filterIsInstance<Folder>()
-                } else {
-                    emptyList()
-                }
+                val folder = menuItems.values.flatten().filterIsInstance<Folder>()
 
                 Column {
                     Spacer(modifier = Modifier.height(10.dp))

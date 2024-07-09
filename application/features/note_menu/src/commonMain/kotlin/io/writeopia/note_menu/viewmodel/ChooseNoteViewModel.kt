@@ -17,6 +17,8 @@ interface ChooseNoteViewModel {
 
     val documentsState: StateFlow<ResultData<NotesUi>>
 
+    val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>>
+
     val menuItemsState: StateFlow<ResultData<List<MenuItem>>>
 
     val notesArrangement: StateFlow<NotesArrangement>
