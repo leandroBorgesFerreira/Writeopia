@@ -3,10 +3,12 @@ package io.writeopia.note_menu.data.usecase
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.repository.FolderRepository
+import io.writeopia.note_menu.utils.sortedWithOrderBy
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
+import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.utils_module.collections.merge
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -30,9 +32,6 @@ internal class NotesUseCase(
     suspend fun updateFolder(folder: Folder) {
         folderRepository.updateFolder(folder)
     }
-
-    suspend fun loadContentForFolder(userId: String, folderId: String): List<MenuItem> =
-        loadFoldersByParent(userId = userId, parentId = folderId) + loadDocumentsForFolder(folderId)
 
     suspend fun loadDocumentsForUser(userId: String): List<Document> =
         documentRepository.loadDocumentsForUser(userId)
@@ -60,13 +59,18 @@ internal class NotesUseCase(
      */
     fun listenForMenuItemsByParentId(
         parentId: String,
+        userIdFn: suspend () -> String,
         coroutineScope: CoroutineScope
     ): Flow<Map<String, List<MenuItem>>> =
         combine(
             listenForFoldersByParentId(parentId, coroutineScope),
-            listenForDocumentsByParentId(parentId, coroutineScope)
-        ) { folders, documents ->
-            folders.merge(documents)
+            listenForDocumentsByParentId(parentId, coroutineScope),
+            notesConfig.listenOrderPreference(userIdFn, coroutineScope)
+        ) { folders, documents, orderPreference ->
+            val order = OrderBy.fromString(orderPreference)
+            folders.merge(documents).mapValues { (_, menuItems) ->
+                menuItems.sortedWithOrderBy(order)
+            }
         }
 
     suspend fun duplicateDocuments(ids: List<String>, userId: String) {
