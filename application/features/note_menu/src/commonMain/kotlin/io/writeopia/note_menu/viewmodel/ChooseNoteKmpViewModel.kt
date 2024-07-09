@@ -57,11 +57,13 @@ internal class ChooseNoteKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, false)
     }
 
-    private val _documentsState: StateFlow<ResultData<List<MenuItem>>> by lazy {
-        notesUseCase.listenForMenuItemsByParentId(
-            parentId = folderId,
-            coroutineScope = coroutineScope
-        ).map { menuItems ->
+    private val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>> by lazy {
+        notesUseCase.listenForMenuItemsByParentId(folderId, coroutineScope)
+            .stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
+    }
+
+    override val menuItemsState: StateFlow<ResultData<List<MenuItem>>> by lazy {
+        menuItemsPerFolderId.map { menuItems ->
             ResultData.Complete(menuItems[folderId] ?: emptyList())
         }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Loading())
     }
@@ -98,11 +100,18 @@ internal class ChooseNoteKmpViewModel(
     override val showSettingsState: StateFlow<Boolean> = _showSettingsState.asStateFlow()
 
     private val _editingFolder = MutableStateFlow<Folder?>(null)
-    override val editFolderState: StateFlow<Folder?> = _editingFolder.asStateFlow()
+    override val editFolderState: StateFlow<Folder?> by lazy {
+        combine(_editingFolder, menuItemsPerFolderId) { selectedFolder, menuItems ->
+            if (selectedFolder != null) {
+                val folder = menuItems[selectedFolder.parentId]?.find { menuItem ->
+                    menuItem.id == selectedFolder.id
+                } as? Folder
 
-    override val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>> by lazy {
-        notesUseCase.listenForMenuItemsByParentId(Folder.ROOT_PATH, coroutineScope)
-            .stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
+                folder ?: null
+            } else {
+                null
+            }
+        }.stateIn(coroutineScope, SharingStarted.Lazily, null)
     }
 
     override val showSideMenu: StateFlow<Boolean> by lazy {
@@ -115,7 +124,7 @@ internal class ChooseNoteKmpViewModel(
     override val documentsState: StateFlow<ResultData<NotesUi>> by lazy {
         combine(
             _selectedNotes,
-            _documentsState,
+            menuItemsState,
             notesArrangement
         ) { selectedNoteIds, resultData, arrangement ->
             val previewLimit = when (arrangement) {
@@ -245,7 +254,7 @@ internal class ChooseNoteKmpViewModel(
     override fun favoriteSelectedNotes() {
         val selectedIds = _selectedNotes.value
 
-        val allFavorites = (_documentsState.value as? ResultData.Complete<List<MenuItem>>)
+        val allFavorites = (menuItemsState.value as? ResultData.Complete<List<MenuItem>>)
             ?.data
             ?.filter { document ->
                 selectedIds.contains(document.id)

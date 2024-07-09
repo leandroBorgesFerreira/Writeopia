@@ -9,12 +9,21 @@ import io.writeopia.sdk.persistence.entity.document.DocumentEntity
 import io.writeopia.sdk.persistence.entity.story.StoryStepEntity
 import io.writeopia.sdk.persistence.parse.toEntity
 import io.writeopia.sdk.persistence.parse.toModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
 
 class RoomDocumentRepository(
     private val documentEntityDao: DocumentEntityDao,
     private val storyUnitEntityDao: StoryUnitEntityDao
 ) : DocumentRepository {
+
+    private val documentsState: MutableStateFlow<Map<String, List<Document>>> =
+        MutableStateFlow(emptyMap())
 
     override suspend fun loadDocumentsForFolder(folderId: String): List<Document> = emptyList()
 
@@ -23,6 +32,27 @@ class RoomDocumentRepository(
 
     override suspend fun deleteDocumentByFolder(folderId: String) {
 
+    }
+
+    //Todo: Fix this later!!
+    override fun listenForDocumentsByParentId(
+        parentId: String,
+        coroutineScope: CoroutineScope
+    ): Flow<Map<String, List<Document>>> {
+        coroutineScope.launch {
+            documentEntityDao.listenForDocumentsWithContentForUser(parentId)
+                .map { resultsMap ->
+                    resultsMap.map { (documentEntity, storyEntity) ->
+                        val content = loadInnerSteps(storyEntity)
+                        documentEntity.toModel(content)
+                    }.groupBy { it.id }
+                }
+                .collectLatest { documents ->
+                    documentsState.value = documents
+                }
+        }
+
+        return documentsState
     }
 
     override suspend fun loadDocumentsForUser(userId: String): List<Document> {

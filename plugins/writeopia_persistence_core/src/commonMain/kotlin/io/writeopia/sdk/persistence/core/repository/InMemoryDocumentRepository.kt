@@ -35,7 +35,7 @@ class InMemoryDocumentRepository : DocumentRepository {
     override fun listenForDocumentsByParentId(
         parentId: String,
         coroutineScope: CoroutineScope
-    ): Flow<List<Document>> {
+    ): Flow<Map<String, List<Document>>> {
         TODO("Not yet implemented")
     }
 

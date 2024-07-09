@@ -65,7 +65,8 @@ fun NavGraphBuilder.notesMenuNavigation(
         }
     ) { backStackEntry ->
         val notesNavigation = backStackEntry.arguments?.getString(NAVIGATION_TYPE)?.let { type ->
-            NotesNavigation.fromType(NotesNavigationType.fromType(type), "")
+//            NotesNavigation.fromType(NotesNavigationType.fromType(type), "")
+            NotesNavigation.Root
         } ?: NotesNavigation.Root
 
         val chooseNoteViewModel: ChooseNoteViewModel =

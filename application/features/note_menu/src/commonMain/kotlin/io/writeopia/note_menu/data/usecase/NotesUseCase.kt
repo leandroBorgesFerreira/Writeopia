@@ -7,6 +7,7 @@ import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
+import io.writeopia.utils_module.collections.merge
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -65,8 +66,7 @@ internal class NotesUseCase(
             listenForFoldersByParentId(parentId, coroutineScope),
             listenForDocumentsByParentId(parentId, coroutineScope)
         ) { folders, documents ->
-
-            folders + documents
+            folders.merge(documents)
         }
 
     suspend fun duplicateDocuments(ids: List<String>, userId: String) {

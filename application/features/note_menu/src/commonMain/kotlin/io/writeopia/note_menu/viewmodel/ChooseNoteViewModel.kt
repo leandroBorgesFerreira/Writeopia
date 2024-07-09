@@ -17,6 +17,8 @@ interface ChooseNoteViewModel {
 
     val documentsState: StateFlow<ResultData<NotesUi>>
 
+    val menuItemsState: StateFlow<ResultData<List<MenuItem>>>
+
     val notesArrangement: StateFlow<NotesArrangement>
 
     val editState: StateFlow<Boolean>
@@ -30,8 +32,6 @@ interface ChooseNoteViewModel {
     val showSideMenu: StateFlow<Boolean>
 
     val showSettingsState: StateFlow<Boolean>
-
-    val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>>
 
     val editFolderState : StateFlow<Folder?>
 

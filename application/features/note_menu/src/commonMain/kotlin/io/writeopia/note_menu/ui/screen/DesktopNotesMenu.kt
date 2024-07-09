@@ -78,7 +78,7 @@ fun DesktopNotesMenu(
         Row {
             SideGlobalMenu(
                 modifier = Modifier.fillMaxHeight(),
-                foldersState = chooseNoteViewModel.menuItemsPerFolderId,
+                foldersState = chooseNoteViewModel.menuItemsState,
                 background = MaterialTheme.colorScheme.surfaceVariant,
                 showOptions = showOptions,
                 width = 280.dp,

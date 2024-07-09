@@ -4,7 +4,6 @@ import io.writeopia.note_menu.data.model.Folder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.map
 
 class InMemoryFolderRepository : FolderRepository {
 
@@ -24,7 +23,9 @@ class InMemoryFolderRepository : FolderRepository {
     override fun listenForAllFoldersByParentId(
         parentId: String,
         coroutineScope: CoroutineScope
-    ): Flow<List<Folder>> = _foldersStateFlow.map { it.values.toList() }
+    ): Flow<Map<String, List<Folder>>> {
+        return MutableStateFlow(emptyMap())
+    }
 
     override suspend fun getChildrenFolders(userId: String, parentId: String): List<Folder> =
         emptyList()

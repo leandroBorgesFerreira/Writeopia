@@ -23,7 +23,8 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
             created_at = folder.created_at,
             last_updated_at = folder.last_updated_at,
             favorite = folder.favorite,
-        ).also { refreshNotes() }
+        )
+        refreshNotes()
     }
 
     suspend fun updateFolder(folder: FolderEntity) {
@@ -35,7 +36,8 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
             created_at = folder.created_at,
             last_updated_at = folder.last_updated_at,
             favorite = folder.favorite,
-        ).also { refreshNotes() }
+        )
+        refreshNotes()
     }
 
     fun listenForFolderByParentId(

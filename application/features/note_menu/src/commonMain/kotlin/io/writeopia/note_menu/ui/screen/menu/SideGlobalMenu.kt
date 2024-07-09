@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.sdk.models.document.MenuItem
+import io.writeopia.utils_module.ResultData
 import kotlinx.coroutines.flow.StateFlow
 
 private const val finalWidth = 300
@@ -47,7 +48,7 @@ private const val finalWidth = 300
 @Composable
 fun SideGlobalMenu(
     modifier: Modifier = Modifier,
-    foldersState: StateFlow<Map<String, List<MenuItem>>>,
+    foldersState: StateFlow<ResultData<List<MenuItem>>>,
     background: Color,
     showOptions: Boolean,
     width: Dp = finalWidth.dp,
@@ -73,8 +74,13 @@ fun SideGlobalMenu(
     ) {
         Box(modifier = Modifier.width(widthAnimatedState).fillMaxHeight()) {
             if (showContent) {
-                val menuItems by foldersState.collectAsState()
-                val folders = menuItems.values.filterIsInstance<Folder>()
+                val menuItems = foldersState.collectAsState().value
+
+                val folder = if (menuItems is ResultData.Complete<List<MenuItem>>) {
+                    menuItems.data.filterIsInstance<Folder>()
+                } else {
+                    emptyList()
+                }
 
                 Column {
                     Spacer(modifier = Modifier.height(10.dp))
@@ -116,7 +122,7 @@ fun SideGlobalMenu(
                     )
 
                     LazyColumn(Modifier.fillMaxWidth()) {
-                        items(folders) { folder ->
+                        items(folder) { folder ->
                             Row(
                                 modifier = Modifier.clickable {
                                     navigateToFolder(folder.id)
@@ -242,7 +248,8 @@ private fun title(
             style = MaterialTheme.typography.bodySmall.copy(
                 fontWeight = FontWeight.Bold
             ),
-            maxLines = 1
+            maxLines = 1,
+            modifier = Modifier.weight(1F)
         )
 
         if (trailingContent != null) {
