@@ -24,7 +24,9 @@ class SqlDelightDocumentRepository(
         documentSqlDao.loadDocumentByParentId(folderId)
 
     override suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> =
-        documentSqlDao.loadFavDocumentsWithContentByUserId(orderBy, userId)
+        documentSqlDao.loadFavDocumentsWithContentByUserId(orderBy, userId).also {
+            "loadFavDocumentsForUser size: ${it.size}"
+        }
 
     // Here!!
     override fun listenForDocumentsByParentId(
@@ -33,10 +35,7 @@ class SqlDelightDocumentRepository(
     ): Flow<Map<String, List<Document>>> {
         coroutineScope.launch {
             SelectedIds.ids.add(parentId)
-
-            _documentState.value = SelectedIds.ids.associateWith { id ->
-                documentSqlDao.loadDocumentByParentId(id)
-            }
+            refreshDocuments()
         }
 
         return _documentState
@@ -99,12 +98,16 @@ class SqlDelightDocumentRepository(
         ids.forEach { id ->
             documentSqlDao.favoriteById(id)
         }
+
+        refreshDocuments()
     }
 
     override suspend fun unFavoriteDocumentByIds(ids: Set<String>) {
         ids.forEach { id ->
             documentSqlDao.unFavoriteById(id)
         }
+
+        refreshDocuments()
     }
 
     override suspend fun moveDocumentsToNewUser(oldUserId: String, newUserId: String) {
@@ -113,6 +116,12 @@ class SqlDelightDocumentRepository(
 
     override suspend fun updateStoryStep(storyStep: StoryStep, position: Int, documentId: String) {
         TODO("Not yet implemented")
+    }
+
+    private suspend fun refreshDocuments() {
+        _documentState.value = SelectedIds.ids.associateWith { id ->
+            documentSqlDao.loadDocumentByParentId(id)
+        }
     }
 }
 
