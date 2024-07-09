@@ -253,8 +253,6 @@ private fun title(
         )
 
         if (trailingContent != null) {
-            Spacer(modifier = Modifier.weight(1F))
-
             trailingContent()
         }
     }
