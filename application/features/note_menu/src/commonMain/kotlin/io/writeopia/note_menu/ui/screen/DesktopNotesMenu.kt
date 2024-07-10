@@ -40,7 +40,7 @@ import io.writeopia.note_menu.ui.screen.configuration.molecules.NotesSelectionMe
 import io.writeopia.note_menu.ui.screen.configuration.molecules.WorkspaceConfigurationDialog
 import io.writeopia.note_menu.ui.screen.file.fileChooserLoad
 import io.writeopia.note_menu.ui.screen.file.fileChooserSave
-import io.writeopia.note_menu.ui.screen.list.NotesCards
+import io.writeopia.note_menu.ui.screen.documents.NotesCards
 import io.writeopia.note_menu.ui.screen.menu.RoundedVerticalDivider
 import io.writeopia.note_menu.ui.screen.menu.SideGlobalMenu
 import io.writeopia.note_menu.ui.screen.settings.SettingsDialog
@@ -66,7 +66,6 @@ fun DesktopNotesMenu(
         key1 = "refresh",
         block = {
             chooseNoteViewModel.requestUser()
-//            chooseNoteViewModel.requestDocuments(false)
         }
     )
 
@@ -159,6 +158,9 @@ fun DesktopNotesMenu(
                                 }
                             } ,
                             selectionListener = chooseNoteViewModel::onDocumentSelected,
+                            folderClick = { id ->
+                                navigateToNotes(NotesNavigation.Folder(id))
+                            },
                             modifier = Modifier.weight(1F).fillMaxHeight()
                         )
 
