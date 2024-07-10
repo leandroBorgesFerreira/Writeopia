@@ -1,4 +1,4 @@
-package io.writeopia.note_menu.ui.screen.list
+package io.writeopia.note_menu.ui.screen.documents
 
 //import io.writeopia.appresourcers.R
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -61,6 +61,7 @@ fun NotesCards(
     documents: ResultData<NotesUi>,
     loadNote: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
+    folderClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (documents) {
@@ -78,7 +79,8 @@ fun NotesCards(
                             LazyStaggeredGridNotes(
                                 documentsUiList,
                                 selectionListener = selectionListener,
-                                onDocumentClick = loadNote
+                                onDocumentClick = loadNote,
+                                folderClick = folderClick
                             )
                         }
 
@@ -86,7 +88,8 @@ fun NotesCards(
                             LazyGridNotes(
                                 documentsUiList,
                                 selectionListener = selectionListener,
-                                onDocumentClick = loadNote
+                                onDocumentClick = loadNote,
+                                folderClick = folderClick
                             )
                         }
 
@@ -94,7 +97,8 @@ fun NotesCards(
                             LazyColumnNotes(
                                 documentsUiList,
                                 selectionListener = selectionListener,
-                                onDocumentClick = loadNote
+                                onDocumentClick = loadNote,
+                                folderClick = folderClick
                             )
                         }
                     }
@@ -129,6 +133,7 @@ private fun LazyStaggeredGridNotes(
     documents: List<MenuItemUi>,
     onDocumentClick: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
+    folderClick: (String) -> Unit,
 ) {
     LazyVerticalStaggeredGrid(
         modifier = Modifier.padding(6.dp),
@@ -153,7 +158,7 @@ private fun LazyStaggeredGridNotes(
                     is MenuItemUi.FolderUi -> {
                         FolderItem(
                             menuItem,
-                            {},
+                            folderClick = folderClick,
                         )
                     }
                 }
@@ -167,6 +172,7 @@ private fun LazyStaggeredGridNotes(
 private fun LazyGridNotes(
     documents: List<MenuItemUi>,
     onDocumentClick: (String, String) -> Unit,
+    folderClick: (String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
 ) {
     LazyVerticalGrid(
@@ -192,7 +198,7 @@ private fun LazyGridNotes(
                     is MenuItemUi.FolderUi -> {
                         FolderItem(
                             menuItem,
-                            {},
+                            folderClick = folderClick,
                         )
                     }
                 }
@@ -206,6 +212,7 @@ private fun LazyGridNotes(
 private fun LazyColumnNotes(
     documents: List<MenuItemUi>,
     onDocumentClick: (String, String) -> Unit,
+    folderClick: (String) -> Unit,
     selectionListener: (String, Boolean) -> Unit
 ) {
     LazyColumn(
@@ -227,7 +234,7 @@ private fun LazyColumnNotes(
                     is MenuItemUi.FolderUi -> {
                         FolderItem(
                             menuItem,
-                            {},
+                            folderClick,
                         )
                     }
                 }
