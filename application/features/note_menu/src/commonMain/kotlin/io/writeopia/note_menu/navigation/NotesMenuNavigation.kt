@@ -64,9 +64,22 @@ fun NavGraphBuilder.notesMenuNavigation(
             slideOutHorizontally(targetOffsetX = { intSize -> -intSize })
         }
     ) { backStackEntry ->
-        val notesNavigation = backStackEntry.arguments?.getString(NAVIGATION_TYPE)?.let { type ->
-            NotesNavigation.fromType(NotesNavigationType.fromType(type), "")
-        } ?: NotesNavigation.Root
+        val navigationType = backStackEntry.arguments?.getString(NAVIGATION_TYPE)
+        val navigationPath = backStackEntry.arguments?.getString(NAVIGATION_PATH)
+
+        println("navigationType: $navigationType")
+        println("navigationPath: $navigationPath")
+
+        val notesNavigation = if (navigationType != null && navigationPath != null) {
+            NotesNavigation.fromType(
+                NotesNavigationType.fromType(navigationType),
+                navigationPath
+            )
+        } else {
+            NotesNavigation.Root
+        }
+
+        println("notesNavigation: $notesNavigation")
 
         val chooseNoteViewModel: ChooseNoteViewModel =
             notesMenuInjection.provideChooseNoteViewModel(
@@ -82,9 +95,16 @@ fun NavGraphBuilder.notesMenuNavigation(
             onAccountClick = navigateToAccount,
             selectColorTheme = selectColorTheme,
             navigateToNotes = { navigation ->
-                navigationController.navigate(
-                    "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/path",
-                )
+                when (navigation) {
+                    is NotesNavigation.Folder -> navigationController.navigate(
+                        "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/${navigation.folderId}",
+                    )
+
+                    NotesNavigation.Favorites, NotesNavigation.Root -> navigationController.navigate(
+                        "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/path",
+                    )
+                }
+
             },
             addFolder = chooseNoteViewModel::addFolder,
             editFolder = chooseNoteViewModel::editFolder,

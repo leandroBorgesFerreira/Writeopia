@@ -35,7 +35,7 @@ class LastEmptySpace(
             if (inBound && data != null) {
                 moveRequest(
                     Action.Move(
-                        data.storyUnit,
+                        data.info as StoryStep,
                         positionFrom = data.positionFrom,
                         positionTo = drawInfo.position
                     )

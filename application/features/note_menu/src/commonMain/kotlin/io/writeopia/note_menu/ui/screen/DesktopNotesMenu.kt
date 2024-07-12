@@ -161,6 +161,9 @@ fun DesktopNotesMenu(
                             folderClick = { id ->
                                 navigateToNotes(NotesNavigation.Folder(id))
                             },
+                            moveRequest = { item, parentId ->
+                                chooseNoteViewModel.moveToFolder(item, parentId)
+                            } ,
                             modifier = Modifier.weight(1F).fillMaxHeight()
                         )
 

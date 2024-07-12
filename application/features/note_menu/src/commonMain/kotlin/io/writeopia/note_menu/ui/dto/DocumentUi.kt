@@ -14,6 +14,7 @@ sealed interface MenuItemUi {
         override val selected: Boolean,
         override val isFavorite: Boolean,
         val lastEdit: String,
+        val parentId: String,
         val preview: List<StoryStep>
     ) : MenuItemUi
 

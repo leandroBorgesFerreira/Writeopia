@@ -85,3 +85,6 @@ UPDATE documentEntity SET favorite = 1 WHERE id = ?;
 
 unFavoriteById:
 UPDATE documentEntity SET favorite = 0 WHERE id = ?;
+
+moveToFolder:
+UPDATE documentEntity SET parent_document_id = ? WHERE id = ?;

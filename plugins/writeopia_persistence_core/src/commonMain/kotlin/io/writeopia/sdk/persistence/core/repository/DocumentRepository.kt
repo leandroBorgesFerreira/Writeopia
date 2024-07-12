@@ -73,4 +73,6 @@ interface DocumentRepository : DocumentUpdate {
      * should be moved to the new online user.
      */
     suspend fun moveDocumentsToNewUser(oldUserId: String, newUserId: String)
+
+    suspend fun moveToFolder(documentId: String, parentId: String)
 }

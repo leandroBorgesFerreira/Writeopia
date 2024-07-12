@@ -2,11 +2,11 @@ package io.writeopia.ui.draganddrop.target
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DragIndicator
@@ -23,32 +23,35 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.draganddrop.DropInfo
+import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.sdk.models.story.StoryTypes
 
 // Todo: Review this name
 @Composable
-fun DragTargetWithDragItem(
+fun DragCardTargetWithDragItem(
     modifier: Modifier = Modifier,
     dataToDrop: DropInfo,
     showIcon: Boolean = true,
     position: Int,
-    emptySpaceClick: () -> Unit,
     dragIconWidth: Dp = 16.dp,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit
 ) {
     var currentPosition by remember { mutableStateOf(Offset.Zero) }
     val currentState = LocalDragTargetInfo.current
     val haptic = LocalHapticFeedback.current
 
-    Row(
+    Box(
         modifier = modifier
             .onGloballyPositioned { layoutCoordinates ->
                 // Todo: Offset.Zero Is wrong!
                 currentPosition = layoutCoordinates.localToWindow(Offset.Zero)
             },
-        verticalAlignment = Alignment.CenterVertically,
     ) {
+        content()
+
         val showDragIcon = showIcon ||
-            currentState.isDragging && position == currentState.dataToDrop?.positionFrom
+            currentState.isDragging
+            && position == currentState.dataToDrop?.positionFrom
 
         Crossfade(
             targetState = showDragIcon,
@@ -58,6 +61,8 @@ fun DragTargetWithDragItem(
             if (show) {
                 Icon(
                     modifier = Modifier
+                        .padding(6.dp)
+                        .size(20.dp)
                         .width(dragIconWidth)
                         .pointerInput(Unit) {
                             detectDragGestures(onDragStart = { offset ->
@@ -77,16 +82,13 @@ fun DragTargetWithDragItem(
                                 currentState.dragOffset = Offset.Zero
                                 currentState.isDragging = false
                             })
-                        },
+                        }
+                        .align(Alignment.TopEnd),
                     imageVector = Icons.Default.DragIndicator,
                     contentDescription = "Drag icon",
                     tint = MaterialTheme.colorScheme.onBackground
                 )
-            } else {
-                Spacer(modifier = Modifier.width(dragIconWidth).clickable(onClick = emptySpaceClick))
             }
         }
-
-        content()
     }
 }

@@ -48,7 +48,7 @@ class ImageDrawer(
                 mergeRequest(
                     Action.Merge(
                         receiver = step,
-                        sender = data.storyUnit,
+                        sender = data.info,
                         positionFrom = data.positionFrom,
                         positionTo = drawInfo.position
                     )

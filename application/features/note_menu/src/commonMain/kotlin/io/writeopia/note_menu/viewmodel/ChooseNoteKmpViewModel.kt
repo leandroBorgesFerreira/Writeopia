@@ -8,6 +8,7 @@ import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
+import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.export.DocumentToJson
@@ -68,7 +69,10 @@ internal class ChooseNoteKmpViewModel(
                 notesNavigation.folderId,
                 ::getUserId,
                 coroutineScope
-            )
+            ).also {
+                println("notesNavigation.folderId: ${notesNavigation.folderId}")
+
+            }
 
             NotesNavigation.Root -> notesUseCase.listenForMenuItemsByParentId(
                 Folder.ROOT_PATH,
@@ -81,7 +85,6 @@ internal class ChooseNoteKmpViewModel(
 
     override val menuItemsState: StateFlow<ResultData<List<MenuItem>>> by lazy {
         menuItemsPerFolderId.map { menuItems ->
-            println("NotesNavigation.Favorites: $notesNavigation")
             val pageItems = when (notesNavigation) {
                 NotesNavigation.Favorites -> menuItems.values.flatten().filter { it.favorite }
 
@@ -402,6 +405,12 @@ internal class ChooseNoteKmpViewModel(
 
     override fun stopEditingFolder() {
         _editingFolder.value = null
+    }
+
+    override fun moveToFolder(menuItemUi: MenuItemUi, parentId: String) {
+        coroutineScope.launch(Dispatchers.Default) {
+            notesUseCase.moveItem(menuItemUi, parentId)
+        }
     }
 
     private fun setShowSideMenu(enabled: Boolean) {

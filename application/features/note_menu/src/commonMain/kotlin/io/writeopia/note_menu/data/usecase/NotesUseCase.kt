@@ -3,7 +3,9 @@ package io.writeopia.note_menu.data.usecase
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.repository.FolderRepository
+import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.note_menu.utils.sortedWithOrderBy
+import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
@@ -31,6 +33,17 @@ internal class NotesUseCase(
 
     suspend fun updateFolder(folder: Folder) {
         folderRepository.updateFolder(folder)
+    }
+
+    suspend fun moveItem(menuItem: MenuItemUi, parentId: String) {
+        when (menuItem) {
+            is MenuItemUi.DocumentUi -> {
+                documentRepository.moveToFolder(menuItem.documentId, parentId)
+            }
+            is MenuItemUi.FolderUi -> {
+                //Todo
+            }
+        }
     }
 
     suspend fun loadDocumentsForUser(userId: String): List<Document> =
