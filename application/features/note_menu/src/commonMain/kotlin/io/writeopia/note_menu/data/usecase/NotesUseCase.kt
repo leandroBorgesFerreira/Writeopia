@@ -123,12 +123,6 @@ internal class NotesUseCase(
         documentRepository.unFavoriteDocumentByIds(ids)
     }
 
-    private suspend fun loadDocumentsForFolder(folderId: String): List<Document> =
-        documentRepository.loadDocumentsForFolder(folderId)
-
-    private suspend fun loadFoldersByParent(userId: String, parentId: String): List<Folder> =
-        folderRepository.getChildrenFolders(userId = userId, parentId = parentId)
-
     private fun listenForDocumentsByParentId(
         parentId: String,
         coroutineScope: CoroutineScope

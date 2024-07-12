@@ -51,9 +51,6 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
         return _foldersStateFlow
     }
 
-    suspend fun getChildrenFolders(parentId: String): List<FolderEntity> =
-        getFolders(parentId = parentId)
-
     suspend fun deleteFolder(folderId: String) {
         folderEntityQueries?.deleteFolder(folderId)
         refreshNotes()

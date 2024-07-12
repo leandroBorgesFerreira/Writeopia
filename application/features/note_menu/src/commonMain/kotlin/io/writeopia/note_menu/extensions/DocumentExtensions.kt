@@ -18,6 +18,7 @@ internal fun MenuItem.toUiCard(
                 title = title,
                 selected = selected,
                 isFavorite = favorite,
+                itemsCount = itemCount,
                 parentId = parentId,
             )
         }

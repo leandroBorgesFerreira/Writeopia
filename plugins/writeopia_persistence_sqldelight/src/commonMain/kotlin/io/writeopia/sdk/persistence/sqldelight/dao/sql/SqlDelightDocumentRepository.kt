@@ -32,7 +32,6 @@ class SqlDelightDocumentRepository(
         parentId: String,
         coroutineScope: CoroutineScope
     ): Flow<Map<String, List<Document>>> {
-        println("listenForDocumentsByParentId. parentId: $parentId")
         coroutineScope.launch {
             SelectedIds.ids.add(parentId)
             refreshDocuments()

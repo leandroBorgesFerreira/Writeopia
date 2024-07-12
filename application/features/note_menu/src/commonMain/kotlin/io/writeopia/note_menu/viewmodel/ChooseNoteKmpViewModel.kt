@@ -69,10 +69,7 @@ internal class ChooseNoteKmpViewModel(
                 notesNavigation.folderId,
                 ::getUserId,
                 coroutineScope
-            ).also {
-                println("notesNavigation.folderId: ${notesNavigation.folderId}")
-
-            }
+            )
 
             NotesNavigation.Root -> notesUseCase.listenForMenuItemsByParentId(
                 Folder.ROOT_PATH,
