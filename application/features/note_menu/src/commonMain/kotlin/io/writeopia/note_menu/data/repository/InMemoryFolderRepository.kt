@@ -32,6 +32,10 @@ class InMemoryFolderRepository : FolderRepository {
         refreshState()
     }
 
+    override fun refreshFolders() {
+        TODO("Not yet implemented")
+    }
+
     private fun refreshState() {
         _foldersStateFlow.value = mutableMap
     }

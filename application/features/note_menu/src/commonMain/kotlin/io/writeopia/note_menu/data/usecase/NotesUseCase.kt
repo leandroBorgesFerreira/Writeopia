@@ -39,6 +39,7 @@ internal class NotesUseCase(
         when (menuItem) {
             is MenuItemUi.DocumentUi -> {
                 documentRepository.moveToFolder(menuItem.documentId, parentId)
+                folderRepository.refreshFolders()
             }
             is MenuItemUi.FolderUi -> {
                 //Todo

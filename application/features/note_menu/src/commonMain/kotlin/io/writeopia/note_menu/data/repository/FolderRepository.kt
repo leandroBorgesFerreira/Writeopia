@@ -12,6 +12,8 @@ interface FolderRepository {
 
     suspend fun deleteFolderById(folderId: String)
 
+    fun refreshFolders()
+
     fun listenForAllFoldersByParentId(
         parentId: String,
         coroutineScope: CoroutineScope

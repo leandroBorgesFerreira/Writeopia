@@ -3,14 +3,15 @@ package io.writeopia.sqldelight.dao
 import io.writeopia.app.sql.FolderEntity
 import io.writeopia.app.sql.FolderEntityQueries
 import io.writeopia.sql.WriteopiaDb
+import io.writeopia.sqldelight.utils.sumValues
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-
 class FolderSqlDelightDao(database: WriteopiaDb?) {
 
-    private val _foldersStateFlow = MutableStateFlow<Map<String, List<FolderEntity>>>(emptyMap())
+    private val _foldersStateFlow =
+        MutableStateFlow<Map<String, List<Pair<FolderEntity, Long>>>>(emptyMap())
 
     private val folderEntityQueries: FolderEntityQueries? = database?.folderEntityQueries
 
@@ -24,7 +25,7 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
             last_updated_at = folder.last_updated_at,
             favorite = folder.favorite,
         )
-        refreshNotes()
+        refreshFolders()
     }
 
     suspend fun updateFolder(folder: FolderEntity) {
@@ -37,34 +38,58 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
             last_updated_at = folder.last_updated_at,
             favorite = folder.favorite,
         )
-        refreshNotes()
+        refreshFolders()
     }
 
     fun listenForFolderByParentId(
         parentId: String,
         coroutineScope: CoroutineScope
-    ): Flow<Map<String, List<FolderEntity>>> {
+    ): Flow<Map<String, List<Pair<FolderEntity, Long>>>> {
         coroutineScope.launch {
             SelectedIds.ids.add(parentId)
-            refreshNotes()
+            refreshFolders()
         }
+
         return _foldersStateFlow
     }
 
     suspend fun deleteFolder(folderId: String) {
         folderEntityQueries?.deleteFolder(folderId)
-        refreshNotes()
+        refreshFolders()
     }
 
-    private fun getFolders(parentId: String): List<FolderEntity> =
-        folderEntityQueries?.selectChildrenFolder(parent_id = parentId)
-            ?.executeAsList()
-            ?: emptyList()
+    private fun getFolders(parentId: String): List<Pair<FolderEntity, Long>> {
+        val countMap = countAllItems()
 
-    private suspend fun refreshNotes() {
+        return folderEntityQueries?.selectChildrenFolder(parent_id = parentId)
+            ?.executeAsList()
+            ?.map { folderEntity ->
+                folderEntity to (countMap[folderEntity.id] ?: 0)
+            } ?: emptyList()
+    }
+
+
+    private fun countAllItems(): Map<String, Long> {
+        val foldersCount = folderEntityQueries?.countAllFolderItems()
+            ?.executeAsList()
+            ?.associate { countByParent ->
+                countByParent.parent_id to countByParent.COUNT
+            } ?: emptyMap()
+
+        val documentsCount = folderEntityQueries?.countAllDocumentItems()
+            ?.executeAsList()
+            ?.associate { countByParent ->
+                countByParent.parent_document_id to countByParent.COUNT
+            } ?: emptyMap()
+
+        return foldersCount.sumValues(documentsCount)
+    }
+
+    fun refreshFolders() {
         _foldersStateFlow.value = SelectedIds.ids.associateWith(::getFolders)
     }
 }
+
 
 private object SelectedIds {
     val ids = mutableSetOf<String>()
