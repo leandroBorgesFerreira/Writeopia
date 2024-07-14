@@ -7,9 +7,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.drawer.content.ImageDrawer
+import io.writeopia.ui.drawer.content.ImageDrawer
 import io.writeopia.sdk.drawer.content.VideoDrawer
-import io.writeopia.sdk.drawer.content.defaultImageShape
+import io.writeopia.ui.drawer.content.defaultImageShape
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.content.RowGroupDrawer

@@ -104,4 +104,8 @@ class InMemoryDocumentRepository : DocumentRepository {
     override suspend fun deleteDocumentByFolder(folderId: String) {
 
     }
+
+    override suspend fun moveToFolder(documentId: String, parentId: String) {
+
+    }
 }

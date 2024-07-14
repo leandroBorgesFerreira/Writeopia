@@ -1,4 +1,4 @@
-package io.writeopia.sdk.drawer.content
+package io.writeopia.ui.drawer.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -48,7 +48,7 @@ class ImageDrawer(
                 mergeRequest(
                     Action.Merge(
                         receiver = step,
-                        sender = data.storyUnit,
+                        sender = data.info as StoryStep,
                         positionFrom = data.positionFrom,
                         positionTo = drawInfo.position
                     )

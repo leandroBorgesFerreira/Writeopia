@@ -10,9 +10,9 @@ interface FolderRepository {
 
     suspend fun updateFolder(folder: Folder)
 
-    suspend fun getChildrenFolders(userId: String, parentId: String): List<Folder>
-
     suspend fun deleteFolderById(folderId: String)
+
+    fun refreshFolders()
 
     fun listenForAllFoldersByParentId(
         parentId: String,

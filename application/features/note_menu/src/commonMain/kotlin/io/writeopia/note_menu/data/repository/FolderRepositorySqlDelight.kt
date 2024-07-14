@@ -20,23 +20,25 @@ class FolderRepositorySqlDelight(
         folderDao.updateFolder(folder.toEntity())
     }
 
-    override suspend fun getChildrenFolders(userId: String, parentId: String): List<Folder> =
-        folderDao.getChildrenFolders(parentId = parentId).map { folderEntity ->
-            folderEntity.toModel()
-        }
-
     override fun listenForAllFoldersByParentId(
         parentId: String,
         coroutineScope: CoroutineScope
-    ): Flow<Map<String, List<Folder>>> =
-        folderDao.listenForFolderByParentId(parentId, coroutineScope)
-            .map { folderEntityList ->
-                folderEntityList.mapValues { (_, folderEntityList) ->
-                    folderEntityList.map { it.toModel() }
+    ): Flow<Map<String, List<Folder>>> {
+        return folderDao.listenForFolderByParentId(parentId, coroutineScope)
+            .map { folderEntityMap ->
+                folderEntityMap.mapValues { (_, folderEntityListWithCount) ->
+                    folderEntityListWithCount.map { (folderEntity, count) ->
+                        folderEntity.toModel(count)
+                    }
                 }
             }
+    }
 
     override suspend fun deleteFolderById(folderId: String) {
         folderDao.deleteFolder(folderId)
+    }
+
+    override fun refreshFolders() {
+        folderDao.refreshFolders()
     }
 }

@@ -147,6 +147,10 @@ class RoomDocumentRepository(
         documentEntityDao.moveDocumentsToNewUser(oldUserId, newUserId)
     }
 
+    override suspend fun moveToFolder(documentId: String, parentId: String) {
+        TODO("Not yet implemented")
+    }
+
     /**
      * This method removes the story units that are not in the root level (they don't have parents)
      * and loads the inner steps of the steps that have children.

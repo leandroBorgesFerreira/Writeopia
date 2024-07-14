@@ -17,6 +17,16 @@ SELECT *
 FROM folderEntity
 WHERE folderEntity.parent_id = ?;
 
+countAllFolderItems:
+SELECT parent_id, COUNT(id)
+FROM folderEntity
+GROUP BY parent_id;
+
+countAllDocumentItems:
+SELECT parent_document_id, COUNT(id)
+FROM documentEntity
+GROUP BY parent_document_id;
+
 insert:
 INSERT INTO folderEntity(id, parent_id, user_id, title, created_at, last_updated_at, favorite)
 VALUES (?, ?, ?,?, ?, ?, ?)

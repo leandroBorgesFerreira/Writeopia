@@ -14,6 +14,7 @@ data class Folder(
     override val lastUpdatedAt: Instant,
     override val userId: String,
     override val favorite: Boolean = false,
+    val itemCount: Long,
     val documentList: List<Document> = emptyList(),
 ) : MenuItem {
     companion object {
@@ -28,6 +29,7 @@ data class Folder(
                 title = name,
                 createdAt = now,
                 lastUpdatedAt = now,
+                itemCount = 0,
                 userId = userId,
             )
         }

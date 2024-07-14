@@ -28,7 +28,6 @@ class SqlDelightDocumentRepository(
             "loadFavDocumentsForUser size: ${it.size}"
         }
 
-    // Here!!
     override fun listenForDocumentsByParentId(
         parentId: String,
         coroutineScope: CoroutineScope
@@ -116,6 +115,11 @@ class SqlDelightDocumentRepository(
 
     override suspend fun updateStoryStep(storyStep: StoryStep, position: Int, documentId: String) {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun moveToFolder(documentId: String, parentId: String) {
+        documentSqlDao.moveToFolder(documentId, parentId)
+        refreshDocuments()
     }
 
     private suspend fun refreshDocuments() {

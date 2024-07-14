@@ -326,6 +326,10 @@ class DocumentSqlDao(
     suspend fun unFavoriteById(documentId: String) {
         documentQueries?.unFavoriteById(documentId)
     }
+
+    suspend fun moveToFolder(documentId: String, parentId: String) {
+        documentQueries?.moveToFolder(parentId, documentId)
+    }
 }
 
 

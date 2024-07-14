@@ -2,6 +2,7 @@ package io.writeopia.note_menu.viewmodel
 
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesArrangement
+import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
@@ -100,6 +101,8 @@ interface ChooseNoteViewModel {
     fun deleteFolder(id: String)
 
     fun stopEditingFolder()
+
+    fun moveToFolder(menuItemUi: MenuItemUi, parentId: String)
 }
 
 sealed interface UserState<T> {

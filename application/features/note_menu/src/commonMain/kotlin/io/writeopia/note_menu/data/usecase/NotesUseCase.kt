@@ -3,11 +3,12 @@ package io.writeopia.note_menu.data.usecase
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.repository.FolderRepository
+import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.note_menu.utils.sortedWithOrderBy
-import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
+import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.utils_module.collections.merge
 import kotlinx.coroutines.CoroutineScope
@@ -33,14 +34,21 @@ internal class NotesUseCase(
         folderRepository.updateFolder(folder)
     }
 
+    suspend fun moveItem(menuItem: MenuItemUi, parentId: String) {
+        when (menuItem) {
+            is MenuItemUi.DocumentUi -> {
+                documentRepository.moveToFolder(menuItem.documentId, parentId)
+                folderRepository.refreshFolders()
+            }
+
+            is MenuItemUi.FolderUi -> {
+                //Todo
+            }
+        }
+    }
+
     suspend fun loadDocumentsForUser(userId: String): List<Document> =
         documentRepository.loadDocumentsForUser(userId)
-
-    suspend fun loadFavDocumentsForUser(userId: String): List<Document> =
-        documentRepository.loadFavDocumentsForUser(
-            notesConfig.getOrderPreference(userId),
-            userId
-        )
 
     suspend fun loadDocumentsForUserAfterTime(userId: String, time: Instant): List<Document> =
         notesConfig.getOrderPreference(userId)
@@ -69,7 +77,8 @@ internal class NotesUseCase(
             listenForDocumentsByParentId(parentId, coroutineScope),
             notesConfig.listenOrderPreference(userIdFn, coroutineScope)
         ) { folders, documents, orderPreference ->
-            val order = OrderBy.fromString(orderPreference)
+            val order = orderPreference.takeIf { it.isNotEmpty() }?.let(OrderBy::fromString)
+                ?: OrderBy.CREATE
             folders.merge(documents).mapValues { (_, menuItems) ->
                 menuItems.sortedWithOrderBy(order)
             }
@@ -109,12 +118,6 @@ internal class NotesUseCase(
     suspend fun unFavoriteNotes(ids: Set<String>) {
         documentRepository.unFavoriteDocumentByIds(ids)
     }
-
-    private suspend fun loadDocumentsForFolder(folderId: String): List<Document> =
-        documentRepository.loadDocumentsForFolder(folderId)
-
-    private suspend fun loadFoldersByParent(userId: String, parentId: String): List<Folder> =
-        folderRepository.getChildrenFolders(userId = userId, parentId = parentId)
 
     private fun listenForDocumentsByParentId(
         parentId: String,

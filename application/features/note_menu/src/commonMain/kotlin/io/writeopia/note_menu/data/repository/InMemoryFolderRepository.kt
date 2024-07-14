@@ -27,12 +27,13 @@ class InMemoryFolderRepository : FolderRepository {
         return MutableStateFlow(emptyMap())
     }
 
-    override suspend fun getChildrenFolders(userId: String, parentId: String): List<Folder> =
-        emptyList()
-
     override suspend fun deleteFolderById(folderId: String) {
         mutableMap.remove(folderId)
         refreshState()
+    }
+
+    override fun refreshFolders() {
+        TODO("Not yet implemented")
     }
 
     private fun refreshState() {

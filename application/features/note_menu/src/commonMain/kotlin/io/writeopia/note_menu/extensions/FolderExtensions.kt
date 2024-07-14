@@ -6,7 +6,7 @@ import io.writeopia.extensions.toLong
 import io.writeopia.note_menu.data.model.Folder
 import kotlinx.datetime.Instant
 
-fun FolderEntity.toModel() =
+fun FolderEntity.toModel(count: Long) =
     Folder(
         id = this.id,
         parentId = this.parent_id,
@@ -14,6 +14,7 @@ fun FolderEntity.toModel() =
         createdAt = Instant.fromEpochMilliseconds(created_at),
         lastUpdatedAt = Instant.fromEpochMilliseconds(last_updated_at),
         userId = user_id,
+        itemCount = count,
         favorite = favorite.toBoolean(),
     )
 

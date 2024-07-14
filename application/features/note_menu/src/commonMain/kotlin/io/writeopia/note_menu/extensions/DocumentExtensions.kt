@@ -18,6 +18,7 @@ internal fun MenuItem.toUiCard(
                 title = title,
                 selected = selected,
                 isFavorite = favorite,
+                itemsCount = itemCount,
                 parentId = parentId,
             )
         }
@@ -29,9 +30,11 @@ internal fun MenuItem.toUiCard(
                 lastEdit = "",
                 preview = content.values.let { previewParser?.preview(it, limit) ?: emptyList() },
                 selected = selected,
+                parentId = parentId,
                 isFavorite = favorite,
             )
         }
 
         else -> throw IllegalArgumentException("MenuItemUi could not me created")
     }
+

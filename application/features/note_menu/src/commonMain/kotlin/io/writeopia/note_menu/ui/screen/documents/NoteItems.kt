@@ -16,11 +16,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Folder
@@ -33,6 +33,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -41,10 +42,14 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.note_menu.ui.dto.NotesUi
+import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.components.SwipeBox
+import io.writeopia.ui.draganddrop.target.DragCardTargetWithDragItem
+import io.writeopia.ui.draganddrop.target.DraggableScreen
+import io.writeopia.ui.draganddrop.target.DropTarget
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.preview.CheckItemPreviewDrawer
 import io.writeopia.ui.drawer.preview.HeaderPreviewDrawer
@@ -62,6 +67,7 @@ fun NotesCards(
     loadNote: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
     folderClick: (String) -> Unit,
+    moveRequest: (MenuItemUi, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (documents) {
@@ -74,32 +80,37 @@ fun NotesCards(
                 } else {
                     val documentsUiList = notesUi.documentUiList
 
-                    when (notesUi.notesArrangement) {
-                        NotesArrangement.STAGGERED_GRID -> {
-                            LazyStaggeredGridNotes(
-                                documentsUiList,
-                                selectionListener = selectionListener,
-                                onDocumentClick = loadNote,
-                                folderClick = folderClick
-                            )
-                        }
+                    DraggableScreen {
+                        when (notesUi.notesArrangement) {
+                            NotesArrangement.STAGGERED_GRID -> {
+                                LazyStaggeredGridNotes(
+                                    documentsUiList,
+                                    selectionListener = selectionListener,
+                                    onDocumentClick = loadNote,
+                                    folderClick = folderClick,
+                                    moveRequest = moveRequest
+                                )
+                            }
 
-                        NotesArrangement.GRID -> {
-                            LazyGridNotes(
-                                documentsUiList,
-                                selectionListener = selectionListener,
-                                onDocumentClick = loadNote,
-                                folderClick = folderClick
-                            )
-                        }
+                            NotesArrangement.GRID -> {
+                                LazyGridNotes(
+                                    documentsUiList,
+                                    selectionListener = selectionListener,
+                                    onDocumentClick = loadNote,
+                                    folderClick = folderClick,
+                                    moveRequest = moveRequest
+                                )
+                            }
 
-                        NotesArrangement.LIST -> {
-                            LazyColumnNotes(
-                                documentsUiList,
-                                selectionListener = selectionListener,
-                                onDocumentClick = loadNote,
-                                folderClick = folderClick
-                            )
+                            NotesArrangement.LIST -> {
+                                LazyColumnNotes(
+                                    documentsUiList,
+                                    selectionListener = selectionListener,
+                                    onDocumentClick = loadNote,
+                                    folderClick = folderClick,
+                                    moveRequest = moveRequest
+                                )
+                            }
                         }
                     }
                 }
@@ -133,6 +144,7 @@ private fun LazyStaggeredGridNotes(
     documents: List<MenuItemUi>,
     onDocumentClick: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
+    moveRequest: (MenuItemUi, String) -> Unit,
     folderClick: (String) -> Unit,
 ) {
     LazyVerticalStaggeredGrid(
@@ -140,10 +152,10 @@ private fun LazyStaggeredGridNotes(
         columns = StaggeredGridCells.Adaptive(minSize = 150.dp),
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         content = {
-            items(
+            itemsIndexed(
                 documents,
-                key = { menuItem -> menuItem.hashCode() }
-            ) { menuItem ->
+                key = { _, menuItem -> menuItem.hashCode() }
+            ) { i, menuItem ->
                 when (menuItem) {
                     is MenuItemUi.DocumentUi -> {
                         DocumentItem(
@@ -151,6 +163,7 @@ private fun LazyStaggeredGridNotes(
                             onDocumentClick,
                             selectionListener,
                             previewDrawers(),
+                            position = i,
                             modifier = Modifier.animateItemPlacement()
                         )
                     }
@@ -159,6 +172,8 @@ private fun LazyStaggeredGridNotes(
                         FolderItem(
                             menuItem,
                             folderClick = folderClick,
+                            position = i,
+                            moveRequest = moveRequest
                         )
                     }
                 }
@@ -173,6 +188,7 @@ private fun LazyGridNotes(
     documents: List<MenuItemUi>,
     onDocumentClick: (String, String) -> Unit,
     folderClick: (String) -> Unit,
+    moveRequest: (MenuItemUi, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
 ) {
     LazyVerticalGrid(
@@ -180,10 +196,10 @@ private fun LazyGridNotes(
         columns = GridCells.Adaptive(minSize = 150.dp),
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         content = {
-            items(
+            itemsIndexed(
                 documents,
-                key = { menuItem -> menuItem.hashCode() }
-            ) { menuItem ->
+                key = { _, menuItem -> menuItem.hashCode() }
+            ) { i, menuItem ->
                 when (menuItem) {
                     is MenuItemUi.DocumentUi -> {
                         DocumentItem(
@@ -191,6 +207,7 @@ private fun LazyGridNotes(
                             onDocumentClick,
                             selectionListener,
                             previewDrawers(),
+                            position = i,
                             modifier = Modifier.animateItemPlacement()
                         )
                     }
@@ -199,6 +216,8 @@ private fun LazyGridNotes(
                         FolderItem(
                             menuItem,
                             folderClick = folderClick,
+                            moveRequest = moveRequest,
+                            position = i
                         )
                     }
                 }
@@ -213,13 +232,17 @@ private fun LazyColumnNotes(
     documents: List<MenuItemUi>,
     onDocumentClick: (String, String) -> Unit,
     folderClick: (String) -> Unit,
-    selectionListener: (String, Boolean) -> Unit
+    selectionListener: (String, Boolean) -> Unit,
+    moveRequest: (MenuItemUi, String) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.padding(6.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp),
         content = {
-            items(documents, key = { menuItem -> menuItem.hashCode() }) { menuItem ->
+            itemsIndexed(
+                documents,
+                key = { _, menuItem -> menuItem.hashCode() }
+            ) { i, menuItem ->
                 when (menuItem) {
                     is MenuItemUi.DocumentUi -> {
                         DocumentItem(
@@ -227,6 +250,7 @@ private fun LazyColumnNotes(
                             onDocumentClick,
                             selectionListener,
                             previewDrawers(),
+                            position = i,
                             modifier = Modifier.animateItemPlacement()
                         )
                     }
@@ -235,6 +259,8 @@ private fun LazyColumnNotes(
                         FolderItem(
                             menuItem,
                             folderClick,
+                            moveRequest = moveRequest,
+                            position = i
                         )
                     }
                 }
@@ -247,56 +273,72 @@ private fun LazyColumnNotes(
 private fun FolderItem(
     folderUi: MenuItemUi.FolderUi,
     folderClick: (String) -> Unit,
-    modifier: Modifier = Modifier
+    position: Int,
+    moveRequest: (MenuItemUi, String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Box(modifier = modifier.height(160.dp)
-        .fillMaxWidth()
-        .padding(bottom = 6.dp)
-        .clickable {
-            folderClick(folderUi.documentId)
+    DropTarget { inBound, data ->
+        if (inBound && data != null) {
+            moveRequest(data.info as MenuItemUi, folderUi.documentId)
         }
-        .background(
-            MaterialTheme.colorScheme.surfaceVariant,
-            shape = MaterialTheme.shapes.large
-        )
-    ) {
-        Column(
-            modifier = Modifier.align(Alignment.Center),
-            horizontalAlignment = Alignment.CenterHorizontally
+
+        val bgColor =
+            when {
+                inBound -> Color.LightGray
+//                    BuildConfig.DEBUG -> Color.Cyan
+                else -> MaterialTheme.colorScheme.surfaceVariant
+            }
+
+        DragCardTargetWithDragItem(
+            modifier = modifier.height(160.dp)
+                .fillMaxWidth()
+                .padding(bottom = 6.dp)
+                .clickable {
+                    folderClick(folderUi.documentId)
+                }
+                .background(color = bgColor, shape = MaterialTheme.shapes.large),
+            position = position,
+            dataToDrop = DropInfo(folderUi, position)
         ) {
-            Icon(
-                modifier = Modifier.size(70.dp).padding(12.dp),
-                imageVector = Icons.Outlined.Folder,
-                contentDescription = "Folder",
-                tint = MaterialTheme.colorScheme.primary
-            )
+            Column(
+                modifier = Modifier.align(Alignment.Center),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Icon(
+                    modifier = Modifier.size(70.dp).padding(12.dp),
+                    imageVector = Icons.Outlined.Folder,
+                    contentDescription = "Folder",
+                    tint = MaterialTheme.colorScheme.primary
+                )
 
-            Text(
-                modifier = Modifier.padding(horizontal = 12.dp),
-                text = folderUi.title,
-                color = MaterialTheme.colorScheme.onBackground,
-                fontWeight = FontWeight.Bold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+                Text(
+                    modifier = Modifier.padding(horizontal = 12.dp),
+                    text = folderUi.title,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
 
-            Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
-            Text(
-                text = "${folderUi.itemsCount} items",
-                color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.bodySmall
-            )
+                Text(
+                    text = "${folderUi.itemsCount} items",
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
         }
     }
 }
 
 @Composable
 private fun DocumentItem(
-    menuItem: MenuItemUi.DocumentUi,
+    documentUi: MenuItemUi.DocumentUi,
     documentClick: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
     drawers: Map<Int, StoryStepDrawer>,
+    position: Int,
     modifier: Modifier = Modifier
 ) {
     val titleFallback = "untitled"
@@ -309,40 +351,43 @@ private fun DocumentItem(
             .clip(MaterialTheme.shapes.large)
             .clickable {
                 documentClick(
-                    menuItem.documentId,
-                    menuItem.title.takeIf { it.isNotEmpty() } ?: titleFallback
+                    documentUi.documentId,
+                    documentUi.title.takeIf { it.isNotEmpty() } ?: titleFallback
                 )
             }
             .semantics {
-                testTag = "$DOCUMENT_ITEM_TEST_TAG${menuItem.title}"
+                testTag = "$DOCUMENT_ITEM_TEST_TAG${documentUi.title}"
             },
-        isOnEditState = menuItem.selected,
+        isOnEditState = documentUi.selected,
         swipeListener = { state ->
-            selectionListener(menuItem.documentId, state)
+            selectionListener(documentUi.documentId, state)
         },
         cornersShape = MaterialTheme.shapes.large,
         defaultColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
-        Column {
-            if (menuItem is MenuItemUi.DocumentUi) {
-                menuItem.preview.forEachIndexed { i, storyStep ->
+        DragCardTargetWithDragItem(
+            position = position,
+            dataToDrop = DropInfo(documentUi, position)
+        ) {
+            Column {
+                documentUi.preview.forEachIndexed { i, storyStep ->
                     drawers[storyStep.type.number]?.Step(
                         step = storyStep,
                         drawInfo = DrawInfo(editable = false, position = i)
                     )
                 }
+
+                Spacer(modifier = Modifier.height(16.dp))
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        if (menuItem.isFavorite) {
-            Icon(
-                modifier = Modifier.align(Alignment.TopEnd).size(40.dp).padding(12.dp),
-                imageVector = Icons.Outlined.Favorite,
-                contentDescription = "Favorite",
-                tint = MaterialTheme.colorScheme.onPrimary
-            )
+            if (documentUi.isFavorite) {
+                Icon(
+                    modifier = Modifier.align(Alignment.TopEnd).size(40.dp).padding(12.dp),
+                    imageVector = Icons.Outlined.Favorite,
+                    contentDescription = "Favorite",
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
         }
     }
 }
@@ -361,14 +406,16 @@ fun DocumentItemPreview() {
             StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type, text = "some text")
         ),
         selected = false,
-        isFavorite = true
+        isFavorite = true,
+        parentId = "",
     )
 
     DocumentItem(
-        menuItem = menuItem,
+        documentUi = menuItem,
         documentClick = { _, _ -> },
         selectionListener = { _, _ -> },
         drawers = previewDrawers(),
+        position = 0,
         modifier = Modifier.padding(10.dp)
     )
 }
@@ -388,14 +435,16 @@ fun DocumentItemSelectedPreview() {
             StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type, text = "some text")
         ),
         selected = true,
-        isFavorite = true
+        isFavorite = true,
+        parentId = ""
     )
 
     DocumentItem(
-        menuItem = menuItem,
+        documentUi = menuItem,
         documentClick = { _, _ -> },
         selectionListener = { _, _ -> },
         drawers = previewDrawers(),
+        position = 0,
         modifier = Modifier.padding(10.dp)
     )
 }
