@@ -5,11 +5,10 @@ import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.repository.FolderRepository
 import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.note_menu.utils.sortedWithOrderBy
-import io.writeopia.sdk.model.action.Action
-import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
+import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.utils_module.collections.merge
 import kotlinx.coroutines.CoroutineScope
@@ -49,12 +48,6 @@ internal class NotesUseCase(
 
     suspend fun loadDocumentsForUser(userId: String): List<Document> =
         documentRepository.loadDocumentsForUser(userId)
-
-    suspend fun loadFavDocumentsForUser(userId: String): List<Document> =
-        documentRepository.loadFavDocumentsForUser(
-            notesConfig.getOrderPreference(userId),
-            userId
-        )
 
     suspend fun loadDocumentsForUserAfterTime(userId: String, time: Instant): List<Document> =
         notesConfig.getOrderPreference(userId)
