@@ -40,6 +40,7 @@ internal class NotesUseCase(
                 documentRepository.moveToFolder(menuItem.documentId, parentId)
                 folderRepository.refreshFolders()
             }
+
             is MenuItemUi.FolderUi -> {
                 //Todo
             }
@@ -76,7 +77,8 @@ internal class NotesUseCase(
             listenForDocumentsByParentId(parentId, coroutineScope),
             notesConfig.listenOrderPreference(userIdFn, coroutineScope)
         ) { folders, documents, orderPreference ->
-            val order = OrderBy.fromString(orderPreference)
+            val order = orderPreference.takeIf { it.isNotEmpty() }?.let(OrderBy::fromString)
+                ?: OrderBy.CREATE
             folders.merge(documents).mapValues { (_, menuItems) ->
                 menuItems.sortedWithOrderBy(order)
             }

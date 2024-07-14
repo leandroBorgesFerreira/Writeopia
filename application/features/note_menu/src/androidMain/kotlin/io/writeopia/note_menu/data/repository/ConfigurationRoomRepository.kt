@@ -68,7 +68,7 @@ internal class ConfigurationRoomRepository(
         coroutineScope.launch(Dispatchers.IO) {
             configurationDao.listenForConfigurationByUserId(userIdFn())
                 .collectLatest { configuration ->
-                    arrangementStateFlow.value = configuration?.orderByType ?: OrderBy.CREATE.type
+                    orderStateFlow.value = configuration?.orderByType ?: OrderBy.CREATE.type
                 }
         }
 

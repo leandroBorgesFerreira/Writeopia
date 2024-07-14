@@ -232,6 +232,7 @@ private fun Content(
         loadNote = loadNote,
         selectionListener = selectionListener,
         folderClick = {},
+        moveRequest = {_, _ -> },
         modifier = Modifier
             .padding(paddingValues)
             .fillMaxSize()
