@@ -405,8 +405,10 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun moveToFolder(menuItemUi: MenuItemUi, parentId: String) {
-        coroutineScope.launch(Dispatchers.Default) {
-            notesUseCase.moveItem(menuItemUi, parentId)
+        if (menuItemUi.documentId != parentId) {
+            coroutineScope.launch(Dispatchers.Default) {
+                notesUseCase.moveItem(menuItemUi, parentId)
+            }
         }
     }
 

@@ -88,6 +88,10 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
     fun refreshFolders() {
         _foldersStateFlow.value = SelectedIds.ids.associateWith(::getFolders)
     }
+
+    suspend fun moveToFolder(documentId: String, parentId: String) {
+        folderEntityQueries?.moveToFolder(parentId, documentId)
+    }
 }
 
 
