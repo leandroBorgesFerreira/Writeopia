@@ -41,4 +41,9 @@ class FolderRepositorySqlDelight(
     override fun refreshFolders() {
         folderDao.refreshFolders()
     }
+
+    override suspend fun moveToFolder(documentId: String, parentId: String) {
+        folderDao.moveToFolder(documentId = documentId, parentId = parentId)
+        refreshFolders()
+    }
 }

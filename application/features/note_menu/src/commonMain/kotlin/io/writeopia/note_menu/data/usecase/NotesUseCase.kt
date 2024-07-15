@@ -38,13 +38,14 @@ internal class NotesUseCase(
         when (menuItem) {
             is MenuItemUi.DocumentUi -> {
                 documentRepository.moveToFolder(menuItem.documentId, parentId)
-                folderRepository.refreshFolders()
             }
 
             is MenuItemUi.FolderUi -> {
-                //Todo
+                folderRepository.moveToFolder(menuItem.documentId, parentId)
             }
         }
+
+        folderRepository.refreshFolders()
     }
 
     suspend fun loadDocumentsForUser(userId: String): List<Document> =

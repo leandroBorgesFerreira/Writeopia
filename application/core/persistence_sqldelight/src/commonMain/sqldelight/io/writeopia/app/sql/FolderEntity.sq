@@ -38,3 +38,6 @@ UPDATE SET id=excluded.id, parent_id=excluded.parent_id, user_id=excluded.user_i
 
 deleteFolder:
 DELETE FROM folderEntity WHERE id = ?;
+
+moveToFolder:
+UPDATE folderEntity SET parent_id = ? WHERE id = ?;
