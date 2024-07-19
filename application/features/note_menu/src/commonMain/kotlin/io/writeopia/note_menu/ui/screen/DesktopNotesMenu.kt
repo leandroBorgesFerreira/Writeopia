@@ -48,6 +48,7 @@ import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.note_menu.viewmodel.ConfigState
 import io.writeopia.note_menu.viewmodel.getPath
 import io.writeopia.note_menu.viewmodel.toNumberDesktop
+import io.writeopia.ui.draganddrop.target.DraggableScreen
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
@@ -71,7 +72,7 @@ fun DesktopNotesMenu(
 
     val borderPadding = 8.dp
 
-    Box(modifier = modifier.fillMaxSize().padding(end = 12.dp)) {
+    DraggableScreen(modifier = modifier.fillMaxSize().padding(end = 12.dp)) {
         val showOptions by chooseNoteViewModel.showSideMenu.collectAsState()
 
         Row {
@@ -86,7 +87,8 @@ fun DesktopNotesMenu(
                 settingsClick = chooseNoteViewModel::showSettings,
                 addFolder = addFolder,
                 editFolder = editFolder,
-                navigateToFolder = { id -> navigateToNotes(NotesNavigation.Folder(id)) }
+                navigateToFolder = { id -> navigateToNotes(NotesNavigation.Folder(id)) },
+                moveRequest = chooseNoteViewModel::moveToFolder
             )
 
             Box {

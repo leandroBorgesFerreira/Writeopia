@@ -15,7 +15,7 @@ import io.writeopia.sdk.model.draganddrop.DropInfo
 @Composable
 fun DropTarget(
     modifier: Modifier = Modifier,
-    content: @Composable BoxScope.(inBound: Boolean, data: DropInfo?) -> Unit
+    content: @Composable BoxScope.(inBound: Boolean, data: DropInfo?) -> Unit,
 ) {
     val dragInfo: DragTargetInfo = LocalDragTargetInfo.current
     val dragPosition = dragInfo.dragPosition
@@ -29,14 +29,12 @@ fun DropTarget(
             }
         }
     ) {
-        val data =
-            if (isCurrentDropTarget && !dragInfo.isDragging) dragInfo.dataToDrop else null
+        val data = if (isCurrentDropTarget && !dragInfo.isDragging) dragInfo.dataToDrop else null
 
         if (data != null) {
-            content(isCurrentDropTarget, data)
             dragInfo.dataToDrop = null
-        } else {
-            content(isCurrentDropTarget, null)
         }
+
+        content(isCurrentDropTarget, data)
     }
 }
