@@ -39,8 +39,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.note_menu.data.model.Folder
+import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.sdk.models.document.MenuItem
-import io.writeopia.utils_module.ResultData
+import io.writeopia.ui.draganddrop.target.DropTarget
 import kotlinx.coroutines.flow.StateFlow
 
 private const val finalWidth = 300
@@ -57,7 +58,8 @@ fun SideGlobalMenu(
     settingsClick: () -> Unit,
     addFolder: () -> Unit,
     editFolder: (Folder) -> Unit,
-    navigateToFolder: (String) -> Unit
+    navigateToFolder: (String) -> Unit,
+    moveRequest: (MenuItemUi, String) -> Unit,
 ) {
     val widthState by derivedStateOf {
         if (showOptions) width else 0.dp
@@ -118,52 +120,73 @@ fun SideGlobalMenu(
 
                     LazyColumn(Modifier.fillMaxWidth()) {
                         items(folder) { folder ->
-                            Row(
-                                modifier = Modifier.clickable {
-                                    navigateToFolder(folder.id)
-                                }.padding(top = 8.dp, bottom = 8.dp, start = 26.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Outlined.Folder,
-                                    contentDescription = "Folder",
-                                    tint = MaterialTheme.colorScheme.onBackground,
-                                    modifier = Modifier.size(16.dp)
-                                )
-
-                                Spacer(modifier = Modifier.width(6.dp))
-
-                                Text(
-                                    text = folder.title,
-                                    modifier = Modifier,
-                                    color = MaterialTheme.colorScheme.onBackground,
-                                    style = MaterialTheme.typography.bodySmall
-                                        .copy(fontWeight = FontWeight.Bold),
-                                    maxLines = 1
-                                )
-
-                                Spacer(modifier = Modifier.weight(1F))
-
-                                Icon(
-                                    imageVector = Icons.Default.MoreHoriz,
-                                    contentDescription = "More",
-                                    tint = MaterialTheme.colorScheme.onBackground,
-                                    modifier = Modifier
-                                        .clip(RoundedCornerShape(6.dp))
-                                        .clickable(onClick = {
-                                            editFolder(folder)
-                                        })
-                                        .size(26.dp)
-                                        .padding(4.dp)
-                                )
-
-                                Spacer(modifier = Modifier.width(6.dp))
-                            }
+                            FolderItem(folder, editFolder, navigateToFolder, moveRequest)
                         }
-
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun FolderItem(
+    folder: Folder,
+    editFolder: (Folder) -> Unit,
+    navigateToFolder: (String) -> Unit,
+    moveRequest: (MenuItemUi, String) -> Unit,
+) {
+    DropTarget { inBound, data ->
+        if (inBound && data != null) {
+            moveRequest(data.info as MenuItemUi, folder.id)
+        }
+
+        val bgColor =
+            when {
+                inBound -> Color.LightGray
+                else -> MaterialTheme.colorScheme.surfaceVariant
+            }
+
+        Row(
+            modifier = Modifier.clickable { navigateToFolder(folder.id) }
+                .background(bgColor)
+                .padding(top = 8.dp, bottom = 8.dp, start = 26.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Folder,
+                contentDescription = "Folder",
+                tint = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.size(16.dp)
+            )
+
+            Spacer(modifier = Modifier.width(6.dp))
+
+            Text(
+                text = folder.title,
+                modifier = Modifier,
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodySmall
+                    .copy(fontWeight = FontWeight.Bold),
+                maxLines = 1
+            )
+
+            Spacer(modifier = Modifier.weight(1F))
+
+            Icon(
+                imageVector = Icons.Default.MoreHoriz,
+                contentDescription = "More",
+                tint = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(6.dp))
+                    .clickable(onClick = {
+                        editFolder(folder)
+                    })
+                    .size(26.dp)
+                    .padding(4.dp)
+            )
+
+            Spacer(modifier = Modifier.width(6.dp))
         }
     }
 }

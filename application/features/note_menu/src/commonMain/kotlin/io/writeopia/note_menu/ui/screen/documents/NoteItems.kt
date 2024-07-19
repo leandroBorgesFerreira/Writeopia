@@ -48,7 +48,6 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.components.SwipeBox
 import io.writeopia.ui.draganddrop.target.DragCardTargetWithDragItem
-import io.writeopia.ui.draganddrop.target.DraggableScreen
 import io.writeopia.ui.draganddrop.target.DropTarget
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.preview.CheckItemPreviewDrawer
@@ -80,37 +79,35 @@ fun NotesCards(
                 } else {
                     val documentsUiList = notesUi.documentUiList
 
-                    DraggableScreen {
-                        when (notesUi.notesArrangement) {
-                            NotesArrangement.STAGGERED_GRID -> {
-                                LazyStaggeredGridNotes(
-                                    documentsUiList,
-                                    selectionListener = selectionListener,
-                                    onDocumentClick = loadNote,
-                                    folderClick = folderClick,
-                                    moveRequest = moveRequest
-                                )
-                            }
+                    when (notesUi.notesArrangement) {
+                        NotesArrangement.STAGGERED_GRID -> {
+                            LazyStaggeredGridNotes(
+                                documentsUiList,
+                                selectionListener = selectionListener,
+                                onDocumentClick = loadNote,
+                                folderClick = folderClick,
+                                moveRequest = moveRequest
+                            )
+                        }
 
-                            NotesArrangement.GRID -> {
-                                LazyGridNotes(
-                                    documentsUiList,
-                                    selectionListener = selectionListener,
-                                    onDocumentClick = loadNote,
-                                    folderClick = folderClick,
-                                    moveRequest = moveRequest
-                                )
-                            }
+                        NotesArrangement.GRID -> {
+                            LazyGridNotes(
+                                documentsUiList,
+                                selectionListener = selectionListener,
+                                onDocumentClick = loadNote,
+                                folderClick = folderClick,
+                                moveRequest = moveRequest
+                            )
+                        }
 
-                            NotesArrangement.LIST -> {
-                                LazyColumnNotes(
-                                    documentsUiList,
-                                    selectionListener = selectionListener,
-                                    onDocumentClick = loadNote,
-                                    folderClick = folderClick,
-                                    moveRequest = moveRequest
-                                )
-                            }
+                        NotesArrangement.LIST -> {
+                            LazyColumnNotes(
+                                documentsUiList,
+                                selectionListener = selectionListener,
+                                onDocumentClick = loadNote,
+                                folderClick = folderClick,
+                                moveRequest = moveRequest
+                            )
                         }
                     }
                 }
@@ -278,8 +275,11 @@ private fun FolderItem(
     modifier: Modifier = Modifier,
 ) {
     DropTarget { inBound, data ->
-        if (inBound && data != null) {
-            moveRequest(data.info as MenuItemUi, folderUi.documentId)
+        val menuItemUI = data?.info as? MenuItemUi
+        if (inBound && menuItemUI != null) {
+            LaunchedEffect(menuItemUI) {
+                moveRequest(menuItemUI, folderUi.documentId)
+            }
         }
 
         val bgColor =
