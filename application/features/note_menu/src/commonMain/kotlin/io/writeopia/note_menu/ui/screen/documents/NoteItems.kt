@@ -291,21 +291,21 @@ private fun FolderItem(
             }
 
         DragCardTargetWithDragItem(
-            modifier = modifier.height(160.dp)
-                .fillMaxWidth()
-                .padding(bottom = 6.dp)
+            modifier = modifier
                 .clickable {
                     folderClick(folderUi.documentId)
-                }
-                .background(color = bgColor, shape = MaterialTheme.shapes.large),
+                },
             position = position,
             dataToDrop = DropInfo(folderUi, position),
-            limitSize = SizeDp(70.dp, 120.dp)
+            limitSize = SizeDp(150.dp, 150.dp)
 
         ) {
             Column(
-                modifier = Modifier.align(Alignment.Center)
-                    .background(color = bgColor, shape = MaterialTheme.shapes.large),
+                modifier = Modifier
+                    .background(color = bgColor, shape = MaterialTheme.shapes.large)
+                    .fillMaxWidth()
+                    .padding(bottom = 26.dp, top = 10.dp)
+                    .align(Alignment.Center),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(
@@ -372,7 +372,7 @@ private fun DocumentItem(
         DragCardTargetWithDragItem(
             position = position,
             dataToDrop = DropInfo(documentUi, position),
-            limitSize = SizeDp(70.dp, 120.dp)
+            limitSize = SizeDp(150.dp, 120.dp)
         ) {
             Column(
                 modifier = Modifier.background(
