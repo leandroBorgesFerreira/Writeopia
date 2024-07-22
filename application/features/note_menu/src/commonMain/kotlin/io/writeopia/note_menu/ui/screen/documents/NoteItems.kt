@@ -49,6 +49,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.components.SwipeBox
 import io.writeopia.ui.draganddrop.target.DragCardTargetWithDragItem
 import io.writeopia.ui.draganddrop.target.DropTarget
+import io.writeopia.ui.draganddrop.target.SizeDp
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.preview.CheckItemPreviewDrawer
 import io.writeopia.ui.drawer.preview.HeaderPreviewDrawer
@@ -298,10 +299,13 @@ private fun FolderItem(
                 }
                 .background(color = bgColor, shape = MaterialTheme.shapes.large),
             position = position,
-            dataToDrop = DropInfo(folderUi, position)
+            dataToDrop = DropInfo(folderUi, position),
+            limitSize = SizeDp(70.dp, 120.dp)
+
         ) {
             Column(
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier.align(Alignment.Center)
+                    .background(color = bgColor, shape = MaterialTheme.shapes.large),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(
@@ -367,9 +371,15 @@ private fun DocumentItem(
     ) {
         DragCardTargetWithDragItem(
             position = position,
-            dataToDrop = DropInfo(documentUi, position)
+            dataToDrop = DropInfo(documentUi, position),
+            limitSize = SizeDp(70.dp, 120.dp)
         ) {
-            Column {
+            Column(
+                modifier = Modifier.background(
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    shape = MaterialTheme.shapes.large
+                )
+            ) {
                 documentUi.preview.forEachIndexed { i, storyStep ->
                     drawers[storyStep.type.number]?.Step(
                         step = storyStep,
