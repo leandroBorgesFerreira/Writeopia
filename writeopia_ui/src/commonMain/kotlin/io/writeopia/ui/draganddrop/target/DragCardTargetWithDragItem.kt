@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -34,6 +35,7 @@ fun DragCardTargetWithDragItem(
     showIcon: Boolean = true,
     position: Int,
     dragIconWidth: Dp = 16.dp,
+    limitSize: SizeDp? = null,
     content: @Composable BoxScope.() -> Unit
 ) {
     var currentPosition by remember { mutableStateOf(Offset.Zero) }
@@ -71,7 +73,20 @@ fun DragCardTargetWithDragItem(
                                 currentState.dataToDrop = dataToDrop
                                 currentState.isDragging = true
                                 currentState.dragPosition = currentPosition + offset
-                                currentState.draggableComposable = { content() }
+                                currentState.draggableComposable = {
+                                    if (limitSize != null) {
+                                        Box(
+                                            modifier = Modifier.size(
+                                                limitSize.width,
+                                                limitSize.height
+                                            )
+                                        ) {
+                                            content()
+                                        }
+                                    } else {
+                                        content()
+                                    }
+                                }
                             }, onDrag = { change, dragAmount ->
                                 change.consume()
                                 currentState.dragOffset += Offset(dragAmount.x, dragAmount.y)
