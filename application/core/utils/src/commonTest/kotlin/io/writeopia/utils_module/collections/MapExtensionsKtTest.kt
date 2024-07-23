@@ -26,4 +26,9 @@ class MapExtensionsKtTest {
 
         assertEquals(expectedMap, result)
     }
+
+    @Test
+    fun nodeTreeShouldBeCorrectlyCreated() {
+        
+    }
 }

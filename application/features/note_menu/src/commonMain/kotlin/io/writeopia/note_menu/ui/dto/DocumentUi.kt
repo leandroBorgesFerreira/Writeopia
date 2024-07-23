@@ -1,8 +1,9 @@
 package io.writeopia.note_menu.ui.dto
 
 import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.utils_module.node.Node
 
-sealed interface MenuItemUi {
+sealed interface MenuItemUi : Node<MenuItemUi> {
     val documentId: String
     val title: String
     val selected: Boolean
@@ -16,7 +17,18 @@ sealed interface MenuItemUi {
         val lastEdit: String,
         val parentId: String,
         val preview: List<StoryStep>
-    ) : MenuItemUi
+    ) : MenuItemUi {
+
+        override val id: String = documentId
+
+        override val acceptNodes: Boolean = false
+
+        override fun addNotes(nodes: List<MenuItemUi>) {
+            throw IllegalStateException(
+                "A DocumentUi should not contain other documents. Use FolderUI"
+            )
+        }
+    }
 
     data class FolderUi(
         override val documentId: String,
@@ -24,6 +36,16 @@ sealed interface MenuItemUi {
         override val selected: Boolean,
         override val isFavorite: Boolean,
         val itemsCount: Long,
-        val parentId: String
-    ) : MenuItemUi
+        val parentId: String,
+        val insideContent: MutableList<MenuItemUi> = mutableListOf()
+    ) : MenuItemUi {
+
+        override val id: String = documentId
+
+        override val acceptNodes: Boolean = false
+
+        override fun addNotes(nodes: List<MenuItemUi>) {
+            insideContent.addAll(nodes)
+        }
+    }
 }

@@ -77,7 +77,6 @@ internal class ChooseNoteKmpViewModel(
                 coroutineScope
             )
         }.stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
-
     }
 
     override val menuItemsState: StateFlow<ResultData<List<MenuItem>>> by lazy {
@@ -161,10 +160,10 @@ internal class ChooseNoteKmpViewModel(
 
             resultData.map { documentList ->
                 NotesUi(
-                    documentUiList = documentList.map { document ->
-                        document.toUiCard(
+                    documentUiList = documentList.map { menuItem ->
+                        menuItem.toUiCard(
                             previewParser,
-                            selectedNoteIds.contains(document.id),
+                            selectedNoteIds.contains(menuItem.id),
                             previewLimit
                         )
                     },
