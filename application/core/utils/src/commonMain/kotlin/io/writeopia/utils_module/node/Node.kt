@@ -13,12 +13,12 @@ internal fun <T : Node> createNodeTree(
     map: Map<String, List<T>>,
     node: T
 ): T {
-    val nextNodes = map[node.id] ?: throw IllegalStateException("The start node is not in the tree")
-    val nextSteps = nextNodes.filter { it.acceptNodes }
+    val nextNodes = map[node.id]
+    val nextSteps = nextNodes?.filter { it.acceptNodes }
 
-    node.addNotes(nextNodes)
+    nextNodes.takeIf { it?.isNotEmpty() == true }?.let(node::addNotes)
 
-    nextSteps.forEach { nextStepNode ->
+    nextSteps?.forEach { nextStepNode ->
         createNodeTree(map, nextStepNode)
     }
 

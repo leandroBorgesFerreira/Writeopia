@@ -1,5 +1,8 @@
 package io.writeopia.utils_module.collections
 
+import androidx.compose.ui.util.trace
+import io.writeopia.utils_module.node.Node
+import io.writeopia.utils_module.node.createNodeTree
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -29,6 +32,34 @@ class MapExtensionsKtTest {
 
     @Test
     fun nodeTreeShouldBeCorrectlyCreated() {
-        
+        val nodes: Map<String, List<SimpleNode>> = mapOf(
+            "root" to listOf(
+                SimpleNode(id = "0", nodes = mutableListOf()),
+                SimpleNode(id = "1", nodes = mutableListOf()),
+                SimpleNode(id = "2", nodes = mutableListOf())
+            ),
+            "0" to listOf(
+                SimpleNode(id = "3", nodes = mutableListOf()),
+                SimpleNode(id = "4", nodes = mutableListOf()),
+            ),
+            "4" to listOf(
+                SimpleNode(id = "5", nodes = mutableListOf()),
+                SimpleNode(id = "6", nodes = mutableListOf()),
+            ),
+        )
+
+        val result = nodes.toNodeTree(SimpleNode("root", mutableListOf()))
+//        val result = nodes.toNodeTree(SimpleNode("root", mutableListOf()))
+
+        println("ha")
+    }
+}
+
+class SimpleNode(override val id: String, val nodes: MutableList<Node>) : Node {
+
+    override val acceptNodes: Boolean = true
+
+    override fun addNotes(nodes: List<Node>) {
+        this.nodes.addAll(nodes)
     }
 }
