@@ -19,6 +19,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.outlined.AddCircleOutline
+import androidx.compose.material.icons.outlined.Description
+import androidx.compose.material.icons.outlined.DocumentScanner
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Home
@@ -38,9 +40,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.ui.dto.MenuItemUi
-import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.ui.draganddrop.target.DropTarget
 import kotlinx.coroutines.flow.StateFlow
 
@@ -77,7 +77,6 @@ fun SideGlobalMenu(
         Box(modifier = Modifier.width(widthAnimatedState).fillMaxHeight()) {
             if (showContent) {
                 val menuItems by foldersState.collectAsState()
-                val folder = menuItems.filterIsInstance<MenuItemUi.FolderUi>()
 
                 Column {
                     Spacer(modifier = Modifier.height(10.dp))
@@ -119,8 +118,15 @@ fun SideGlobalMenu(
                     )
 
                     LazyColumn(Modifier.fillMaxWidth()) {
-                        items(folder) { folder ->
-                            FolderItem(folder, editFolder, navigateToFolder, moveRequest)
+                        items(menuItems) { item ->
+                            when (item) {
+                                is MenuItemUi.DocumentUi -> {
+                                    DocumentItem(item, navigateToFolder, moveRequest)
+                                }
+                                is MenuItemUi.FolderUi -> {
+                                    FolderItem(item, editFolder, navigateToFolder, moveRequest)
+                                }
+                            }
                         }
                     }
                 }
@@ -182,6 +188,64 @@ private fun FolderItem(
                     .clickable(onClick = {
                         editFolder(folder)
                     })
+                    .size(26.dp)
+                    .padding(4.dp)
+            )
+
+            Spacer(modifier = Modifier.width(6.dp))
+        }
+    }
+}
+
+@Composable
+private fun DocumentItem(
+    folder: MenuItemUi.DocumentUi,
+    navigateToFolder: (String) -> Unit,
+    moveRequest: (MenuItemUi, String) -> Unit,
+) {
+    DropTarget { inBound, data ->
+        if (inBound && data != null) {
+            moveRequest(data.info as MenuItemUi, folder.id)
+        }
+
+        val bgColor =
+            when {
+                inBound -> Color.LightGray
+                else -> MaterialTheme.colorScheme.surfaceVariant
+            }
+
+        Row(
+            modifier = Modifier.clickable { navigateToFolder(folder.id) }
+                .background(bgColor)
+                .padding(top = 8.dp, bottom = 8.dp, start = 26.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Description,
+                contentDescription = "Folder",
+                tint = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.size(16.dp)
+            )
+
+            Spacer(modifier = Modifier.width(6.dp))
+
+            Text(
+                text = folder.title,
+                modifier = Modifier,
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodySmall
+                    .copy(fontWeight = FontWeight.Bold),
+                maxLines = 1
+            )
+
+            Spacer(modifier = Modifier.weight(1F))
+
+            Icon(
+                imageVector = Icons.Default.MoreHoriz,
+                contentDescription = "More",
+                tint = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(6.dp))
                     .size(26.dp)
                     .padding(4.dp)
             )

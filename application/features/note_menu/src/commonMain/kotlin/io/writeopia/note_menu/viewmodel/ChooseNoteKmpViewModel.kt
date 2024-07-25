@@ -402,9 +402,9 @@ internal class ChooseNoteKmpViewModel(
         _editingFolder.value = folder
     }
 
-    override fun updateFolder(folder: Folder) {
+    override fun updateFolder(folderEdit: Folder) {
         coroutineScope.launch(Dispatchers.Default) {
-            notesUseCase.updateFolder(folder)
+            notesUseCase.updateFolder(folderEdit)
         }
     }
 
