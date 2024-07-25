@@ -21,6 +21,7 @@ import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.utils_module.DISCONNECTED_USER_ID
 import io.writeopia.utils_module.KmpViewModel
 import io.writeopia.utils_module.ResultData
+import io.writeopia.utils_module.collections.toNodeTree
 import io.writeopia.utils_module.map
 import io.writeopia.utils_module.toBoolean
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +30,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.stateIn
@@ -79,6 +79,22 @@ internal class ChooseNoteKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
     }
 
+    override val sideMenuItems: StateFlow<List<MenuItemUi>> by lazy {
+        menuItemsPerFolderId.map { folderMap ->
+            val folderUiMap = folderMap.mapValues { (_, item) ->
+                item.map { it.toUiCard() }
+            }
+
+            val itemsList = folderUiMap
+                .toNodeTree(MenuItemUi.FolderUi.root())
+                .toList() as List<MenuItemUi>
+
+            itemsList.toMutableList().apply {
+                removeAt(0)
+            }
+        }.stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
+    }
+
     override val menuItemsState: StateFlow<ResultData<List<MenuItem>>> by lazy {
         menuItemsPerFolderId.map { menuItems ->
             val pageItems = when (notesNavigation) {
@@ -124,7 +140,7 @@ internal class ChooseNoteKmpViewModel(
     private val _showSettingsState = MutableStateFlow(false)
     override val showSettingsState: StateFlow<Boolean> = _showSettingsState.asStateFlow()
 
-    private val _editingFolder = MutableStateFlow<Folder?>(null)
+    private val _editingFolder = MutableStateFlow<MenuItemUi.FolderUi?>(null)
     override val editFolderState: StateFlow<Folder?> by lazy {
         combine(_editingFolder, menuItemsPerFolderId) { selectedFolder, menuItems ->
             if (selectedFolder != null) {
@@ -382,7 +398,7 @@ internal class ChooseNoteKmpViewModel(
         }
     }
 
-    override fun editFolder(folder: Folder) {
+    override fun editFolder(folder: MenuItemUi.FolderUi) {
         _editingFolder.value = folder
     }
 

@@ -1,5 +1,6 @@
 package io.writeopia.note_menu.ui.dto
 
+import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.utils_module.node.Node
 
@@ -53,5 +54,17 @@ sealed interface MenuItemUi : Node {
         }
 
         override fun getNodes(): List<Node> = insideContent
+
+        companion object {
+            fun root() = FolderUi(
+                documentId = Folder.ROOT_PATH,
+                title = "",
+                selected = false,
+                isFavorite = false,
+                itemsCount = 0,
+                parentId = "",
+                depth = 0
+            )
+        }
     }
 }

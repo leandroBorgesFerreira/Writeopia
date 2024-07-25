@@ -38,6 +38,8 @@ interface ChooseNoteViewModel {
 
     val editFolderState : StateFlow<Folder?>
 
+    val sideMenuItems: StateFlow<List<MenuItemUi>>
+
 //    fun requestDocuments(force: Boolean)
 
     fun handleNoteTap(id: String): Boolean
@@ -94,7 +96,7 @@ interface ChooseNoteViewModel {
 
     fun addFolder()
 
-    fun editFolder(folder: Folder)
+    fun editFolder(folder: MenuItemUi.FolderUi)
 
     fun updateFolder(folderEdit: Folder)
 

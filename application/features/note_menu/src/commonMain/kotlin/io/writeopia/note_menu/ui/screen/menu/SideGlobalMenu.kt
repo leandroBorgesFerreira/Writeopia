@@ -49,7 +49,7 @@ private const val finalWidth = 300
 @Composable
 fun SideGlobalMenu(
     modifier: Modifier = Modifier,
-    foldersState: StateFlow<Map<String, List<MenuItem>>>,
+    foldersState: StateFlow<List<MenuItemUi>>,
     background: Color,
     showOptions: Boolean,
     width: Dp = finalWidth.dp,
@@ -57,7 +57,7 @@ fun SideGlobalMenu(
     favoritesClick: () -> Unit,
     settingsClick: () -> Unit,
     addFolder: () -> Unit,
-    editFolder: (Folder) -> Unit,
+    editFolder: (MenuItemUi.FolderUi) -> Unit,
     navigateToFolder: (String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
 ) {
@@ -77,7 +77,7 @@ fun SideGlobalMenu(
         Box(modifier = Modifier.width(widthAnimatedState).fillMaxHeight()) {
             if (showContent) {
                 val menuItems by foldersState.collectAsState()
-                val folder = menuItems.values.flatten().filterIsInstance<Folder>()
+                val folder = menuItems.filterIsInstance<MenuItemUi.FolderUi>()
 
                 Column {
                     Spacer(modifier = Modifier.height(10.dp))
@@ -131,8 +131,8 @@ fun SideGlobalMenu(
 
 @Composable
 private fun FolderItem(
-    folder: Folder,
-    editFolder: (Folder) -> Unit,
+    folder: MenuItemUi.FolderUi,
+    editFolder: (MenuItemUi.FolderUi) -> Unit,
     navigateToFolder: (String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
 ) {
