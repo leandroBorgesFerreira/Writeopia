@@ -30,11 +30,7 @@ sealed interface MenuItemUi : Node {
             )
         }
 
-        override fun getNodes(): List<Node> {
-            throw IllegalStateException(
-                "A DocumentUi should not contain other documents. Use FolderUI"
-            )
-        }
+        override fun getNodes(): List<Node> = emptyList()
     }
 
     data class FolderUi(
