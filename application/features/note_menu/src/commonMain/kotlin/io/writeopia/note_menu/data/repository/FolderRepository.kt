@@ -14,10 +14,12 @@ interface FolderRepository {
 
     suspend fun moveToFolder(documentId: String, parentId: String)
 
-    fun refreshFolders()
+    suspend fun refreshFolders()
 
-    fun listenForAllFoldersByParentId(
+    fun listenForFoldersByParentId(
         parentId: String,
         coroutineScope: CoroutineScope
     ): Flow<Map<String, List<Folder>>>
+
+    suspend fun stopListeningForFoldersByParentId(parentId: String)
 }

@@ -58,7 +58,7 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
         refreshFolders()
     }
 
-    private fun getFolders(parentId: String): List<Pair<FolderEntity, Long>> {
+    private suspend fun getFolders(parentId: String): List<Pair<FolderEntity, Long>> {
         val countMap = countAllItems()
 
         return folderEntityQueries?.selectChildrenFolder(parent_id = parentId)
@@ -85,8 +85,15 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
         return foldersCount.sumValues(documentsCount)
     }
 
-    fun refreshFolders() {
-        _foldersStateFlow.value = SelectedIds.ids.associateWith(::getFolders)
+    suspend fun refreshFolders() {
+        _foldersStateFlow.value = SelectedIds.ids.associateWith {
+            getFolders(it)
+        }
+    }
+
+    suspend fun removeListening(id: String) {
+        SelectedIds.ids.remove(id)
+        refreshFolders()
     }
 
     suspend fun moveToFolder(documentId: String, parentId: String) {

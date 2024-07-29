@@ -39,6 +39,7 @@ sealed interface MenuItemUi : Node {
         override val isFavorite: Boolean,
         val itemsCount: Long,
         val parentId: String,
+        val expanded: Boolean,
         override var depth: Int = 0,
         val insideContent: MutableList<MenuItemUi> = mutableListOf()
     ) : MenuItemUi {
@@ -59,6 +60,7 @@ sealed interface MenuItemUi : Node {
                 isFavorite = false,
                 itemsCount = 0,
                 parentId = "",
+                expanded = false,
                 depth = 0
             )
         }

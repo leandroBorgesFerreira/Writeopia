@@ -112,4 +112,8 @@ class InMemoryDocumentRepository : DocumentRepository {
     override suspend fun refreshDocuments() {
 
     }
+
+    override suspend fun stopListeningForFoldersByParentId(parentId: String) {
+
+    }
 }

@@ -40,6 +40,11 @@ class SqlDelightDocumentRepository(
         return _documentState
     }
 
+    override suspend fun stopListeningForFoldersByParentId(parentId: String) {
+        SelectedIds.ids.remove(parentId)
+        refreshDocuments()
+    }
+
     override suspend fun loadDocumentsForUserAfterTime(
         orderBy: String,
         userId: String,

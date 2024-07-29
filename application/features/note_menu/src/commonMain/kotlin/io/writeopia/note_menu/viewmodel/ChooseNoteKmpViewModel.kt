@@ -80,9 +80,9 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override val sideMenuItems: StateFlow<List<MenuItemUi>> by lazy {
-        menuItemsPerFolderId.map { folderMap ->
+        combine(expanded, menuItemsPerFolderId) { expanded, folderMap ->
             val folderUiMap = folderMap.mapValues { (_, item) ->
-                item.map { it.toUiCard() }
+                item.map { it.toUiCard(expanded = expanded.contains(it.id)) }
             }
 
             val itemsList = folderUiMap
@@ -180,7 +180,8 @@ internal class ChooseNoteKmpViewModel(
                         menuItem.toUiCard(
                             previewParser,
                             selectedNoteIds.contains(menuItem.id),
-                            previewLimit
+                            previewLimit,
+                            false
                         )
                     },
                     notesArrangement = arrangement
@@ -189,6 +190,9 @@ internal class ChooseNoteKmpViewModel(
             }
         }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Idle())
     }
+
+    private val _expandedFolders = MutableStateFlow(setOf<String>())
+    override val expanded: StateFlow<Set<String>> = _expandedFolders.asStateFlow()
 
     override suspend fun requestUser() {
         try {
@@ -426,7 +430,16 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun expandFolder(id: String) {
-        notesUseCase.listenForMenuItemsByParentId(id, ::getUserId, coroutineScope)
+        val expanded = _expandedFolders.value
+        if (expanded.contains(id)) {
+            coroutineScope.launch(Dispatchers.Default) {
+                notesUseCase.stopListeningForMenuItemsByParentId(id)
+                _expandedFolders.value = expanded - id
+            }
+        } else {
+            notesUseCase.listenForMenuItemsByParentId(id, ::getUserId, coroutineScope)
+            _expandedFolders.value = expanded + id
+        }
     }
 
     private fun setShowSideMenu(enabled: Boolean) {
