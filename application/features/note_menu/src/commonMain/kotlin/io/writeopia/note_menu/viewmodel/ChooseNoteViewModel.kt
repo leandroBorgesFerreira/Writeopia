@@ -105,6 +105,8 @@ interface ChooseNoteViewModel {
     fun stopEditingFolder()
 
     fun moveToFolder(menuItemUi: MenuItemUi, parentId: String)
+
+    fun expandFolder(id: String)
 }
 
 sealed interface UserState<T> {

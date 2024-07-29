@@ -91,6 +91,8 @@ internal class ChooseNoteKmpViewModel(
 
             itemsList.toMutableList().apply {
                 removeAt(0)
+            }.also { list ->
+                println("sideMenuItems: ${list.joinToString { it.title }}")
             }
         }.stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
     }
@@ -270,7 +272,6 @@ internal class ChooseNoteKmpViewModel(
     override fun copySelectedNotes() {
         coroutineScope.launch(Dispatchers.Default) {
             notesUseCase.duplicateDocuments(_selectedNotes.value.toList(), getUserId())
-//            refreshNotes()
         }
     }
 
@@ -426,6 +427,10 @@ internal class ChooseNoteKmpViewModel(
         }
     }
 
+    override fun expandFolder(id: String) {
+        notesUseCase.listenForMenuItemsByParentId(id, ::getUserId, coroutineScope)
+    }
+
     private fun setShowSideMenu(enabled: Boolean) {
         coroutineScope.launch(Dispatchers.Default) {
             uiConfigurationRepo.updateShowSideMenu(userId = getUserId(), showSideMenu = enabled)
@@ -490,15 +495,6 @@ internal class ChooseNoteKmpViewModel(
             documentWriter.writeDocuments(data, path)
         }
     }
-
-//    private suspend fun getNotes(userId: String): List<MenuItem> =
-//        if (notesNavigation.navigationType == NotesNavigationType.FAVORITES) {
-//            val orderBy = notesConfig.getOrderPreference(userId)
-//            notesUseCase.loadFavDocumentsForUser(orderBy, userId)
-//        } else {
-//            notesUseCase.loadContentForFolder(userId, Folder.ROOT_PATH)
-//        }
-
 
     private suspend fun getUserId(): String =
         localUserId ?: authManager.getUser().id.also { id ->

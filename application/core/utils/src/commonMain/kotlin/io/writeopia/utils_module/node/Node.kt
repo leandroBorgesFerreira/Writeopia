@@ -2,7 +2,6 @@ package io.writeopia.utils_module.node
 
 interface Node {
     val id: String
-    val acceptNodes: Boolean
     var depth: Int
     fun addNotes(nodes: List<Node>)
     fun getNodes(): List<Node>
@@ -20,7 +19,6 @@ internal fun <T : Node> createNodeTree(
     depth: Int = 0
 ): T {
     val nextNodes = map[node.id]
-    val nextSteps = nextNodes?.filter { it.acceptNodes }
 
     nextNodes.takeIf { it?.isNotEmpty() == true }
         ?.map { nextNode ->
@@ -29,9 +27,9 @@ internal fun <T : Node> createNodeTree(
             }
         }?.let(node::addNotes)
 
-    nextSteps?.forEach { nextStepNode ->
-        createNodeTree(map, nextStepNode, depth + 1)
-    }
+    nextNodes?.forEach { node ->
+            createNodeTree(map, node, depth + 1)
+        }
 
     return node
 }

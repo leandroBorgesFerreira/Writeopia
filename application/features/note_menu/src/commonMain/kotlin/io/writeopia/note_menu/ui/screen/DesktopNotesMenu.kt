@@ -89,7 +89,8 @@ fun DesktopNotesMenu(
                 addFolder = addFolder,
                 editFolder = editFolder,
                 navigateToFolder = { id -> navigateToNotes(NotesNavigation.Folder(id)) },
-                moveRequest = chooseNoteViewModel::moveToFolder
+                moveRequest = chooseNoteViewModel::moveToFolder,
+                expandFolder = chooseNoteViewModel::expandFolder
             )
 
             Box {

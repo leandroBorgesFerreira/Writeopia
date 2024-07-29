@@ -60,6 +60,7 @@ fun SideGlobalMenu(
     editFolder: (MenuItemUi.FolderUi) -> Unit,
     navigateToFolder: (String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
+    expandFolder: (String) -> Unit
 ) {
     val widthState by derivedStateOf {
         if (showOptions) width else 0.dp
@@ -125,7 +126,13 @@ fun SideGlobalMenu(
                                 }
 
                                 is MenuItemUi.FolderUi -> {
-                                    FolderItem(item, editFolder, navigateToFolder, moveRequest)
+                                    FolderItem(
+                                        item,
+                                        editFolder,
+                                        navigateToFolder,
+                                        moveRequest,
+                                        expandFolder = expandFolder
+                                    )
                                 }
                             }
                         }
@@ -142,6 +149,7 @@ private fun FolderItem(
     editFolder: (MenuItemUi.FolderUi) -> Unit,
     navigateToFolder: (String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
+    expandFolder: (String) -> Unit
 ) {
     DropTarget { inBound, data ->
         if (inBound && data != null) {
@@ -166,7 +174,9 @@ private fun FolderItem(
                 tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .clip(MaterialTheme.shapes.medium)
-                    .clickable { }
+                    .clickable {
+                        expandFolder(folder.id)
+                    }
                     .size(26.dp)
                     .padding(6.dp)
             )

@@ -86,8 +86,6 @@ data class SimpleNode(
     override var depth: Int = 0
 ) : Node {
 
-    override val acceptNodes: Boolean = true
-
     override fun addNotes(nodes: List<Node>) {
         this.simpleNodes.addAll(nodes)
     }

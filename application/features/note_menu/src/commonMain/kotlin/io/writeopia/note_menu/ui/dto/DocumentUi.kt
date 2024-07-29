@@ -23,8 +23,6 @@ sealed interface MenuItemUi : Node {
 
         override val id: String = documentId
 
-        override val acceptNodes: Boolean = false
-
         override fun addNotes(nodes: List<Node>) {
             throw IllegalStateException(
                 "A DocumentUi should not contain other documents. Use FolderUI"
@@ -46,8 +44,6 @@ sealed interface MenuItemUi : Node {
     ) : MenuItemUi {
 
         override val id: String = documentId
-
-        override val acceptNodes: Boolean = false
 
         override fun addNotes(nodes: List<Node>) {
             insideContent.addAll(nodes as List<MenuItemUi>)
