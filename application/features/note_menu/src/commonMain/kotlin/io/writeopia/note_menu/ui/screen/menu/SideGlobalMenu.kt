@@ -17,10 +17,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.DocumentScanner
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Home
@@ -123,6 +123,7 @@ fun SideGlobalMenu(
                                 is MenuItemUi.DocumentUi -> {
                                     DocumentItem(item, navigateToFolder, moveRequest)
                                 }
+
                                 is MenuItemUi.FolderUi -> {
                                     FolderItem(item, editFolder, navigateToFolder, moveRequest)
                                 }
@@ -159,6 +160,19 @@ private fun FolderItem(
                 .padding(top = 8.dp, bottom = 8.dp, start = 26.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
+                contentDescription = "Expand",
+                tint = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier
+                    .clip(MaterialTheme.shapes.medium)
+                    .clickable { }
+                    .size(26.dp)
+                    .padding(6.dp)
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
             Icon(
                 imageVector = Icons.Outlined.Folder,
                 contentDescription = "Folder",
