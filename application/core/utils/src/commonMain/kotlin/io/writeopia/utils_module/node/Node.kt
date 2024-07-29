@@ -33,5 +33,3 @@ internal fun <T : Node> createNodeTree(
 
     return node
 }
-
-
