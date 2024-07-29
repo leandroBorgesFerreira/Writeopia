@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesNavigation
+import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 
 @Composable
@@ -18,7 +19,7 @@ actual fun NotesMenuScreen(
     selectColorTheme: (ColorThemeOption) -> Unit,
     navigateToNotes: (NotesNavigation) -> Unit,
     addFolder: () -> Unit,
-    editFolder: (Folder) -> Unit,
+    editFolder: (MenuItemUi.FolderUi) -> Unit,
     modifier: Modifier
 ) {
     ChooseNoteScreen(

@@ -108,4 +108,8 @@ class InMemoryDocumentRepository : DocumentRepository {
     override suspend fun moveToFolder(documentId: String, parentId: String) {
 
     }
+
+    override suspend fun refreshDocuments() {
+
+    }
 }

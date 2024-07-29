@@ -33,6 +33,7 @@ import androidx.navigation.NavController
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesNavigation
+import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.note_menu.ui.screen.actions.DesktopNoteActionsMenu
 import io.writeopia.note_menu.ui.screen.configuration.modifier.icon
 import io.writeopia.note_menu.ui.screen.configuration.molecules.NotesConfigurationMenu
@@ -60,7 +61,7 @@ fun DesktopNotesMenu(
     selectColorTheme: (ColorThemeOption) -> Unit,
     navigateToNotes: (NotesNavigation) -> Unit,
     addFolder: () -> Unit,
-    editFolder: (Folder) -> Unit,
+    editFolder: (MenuItemUi.FolderUi) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LaunchedEffect(
@@ -78,7 +79,7 @@ fun DesktopNotesMenu(
         Row {
             SideGlobalMenu(
                 modifier = Modifier.fillMaxHeight(),
-                foldersState = chooseNoteViewModel.menuItemsPerFolderId,
+                foldersState = chooseNoteViewModel.sideMenuItems,
                 background = MaterialTheme.colorScheme.surfaceVariant,
                 showOptions = showOptions,
                 width = 280.dp,
@@ -88,7 +89,8 @@ fun DesktopNotesMenu(
                 addFolder = addFolder,
                 editFolder = editFolder,
                 navigateToFolder = { id -> navigateToNotes(NotesNavigation.Folder(id)) },
-                moveRequest = chooseNoteViewModel::moveToFolder
+                moveRequest = chooseNoteViewModel::moveToFolder,
+                expandFolder = chooseNoteViewModel::expandFolder
             )
 
             Box {

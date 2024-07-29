@@ -145,15 +145,20 @@ private fun LazyStaggeredGridNotes(
     moveRequest: (MenuItemUi, String) -> Unit,
     folderClick: (String) -> Unit,
 ) {
+    val spacing = 6.dp
+
     LazyVerticalStaggeredGrid(
         modifier = Modifier.padding(6.dp),
         columns = StaggeredGridCells.Adaptive(minSize = 150.dp),
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        horizontalArrangement = Arrangement.spacedBy(spacing),
+        verticalItemSpacing = spacing,
         content = {
             itemsIndexed(
                 documents,
                 key = { _, menuItem -> menuItem.hashCode() }
             ) { i, menuItem ->
+                val modifier = Modifier.animateItemPlacement()
+
                 when (menuItem) {
                     is MenuItemUi.DocumentUi -> {
                         DocumentItem(
@@ -162,7 +167,7 @@ private fun LazyStaggeredGridNotes(
                             selectionListener,
                             previewDrawers(),
                             position = i,
-                            modifier = Modifier.animateItemPlacement()
+                            modifier = modifier,
                         )
                     }
 
@@ -171,7 +176,8 @@ private fun LazyStaggeredGridNotes(
                             menuItem,
                             folderClick = folderClick,
                             position = i,
-                            moveRequest = moveRequest
+                            moveRequest = moveRequest,
+                            modifier = modifier
                         )
                     }
                 }
@@ -189,10 +195,12 @@ private fun LazyGridNotes(
     moveRequest: (MenuItemUi, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
 ) {
+    val spacing = Arrangement.spacedBy(6.dp)
+
     LazyVerticalGrid(
-        modifier = Modifier.padding(6.dp),
         columns = GridCells.Adaptive(minSize = 150.dp),
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        horizontalArrangement = spacing,
+        verticalArrangement = spacing,
         content = {
             itemsIndexed(
                 documents,
@@ -356,7 +364,6 @@ private fun DocumentItem(
 
     SwipeBox(
         modifier = modifier
-            .padding(bottom = 6.dp)
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.large)
             .clickable {

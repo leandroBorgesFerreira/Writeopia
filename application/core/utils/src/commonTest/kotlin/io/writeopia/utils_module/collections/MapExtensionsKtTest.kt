@@ -1,5 +1,6 @@
 package io.writeopia.utils_module.collections
 
+import io.writeopia.utils_module.node.Node
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -26,4 +27,68 @@ class MapExtensionsKtTest {
 
         assertEquals(expectedMap, result)
     }
+
+    @Test
+    fun nodeTreeShouldBeCorrectlyCreated() {
+        val nodes: Map<String, List<SimpleNode>> = mapOf(
+            "root" to listOf(
+                SimpleNode(id = "0", simpleNodes = mutableListOf()),
+                SimpleNode(id = "1", simpleNodes = mutableListOf()),
+                SimpleNode(id = "2", simpleNodes = mutableListOf())
+            ),
+            "0" to listOf(
+                SimpleNode(id = "3", simpleNodes = mutableListOf()),
+                SimpleNode(id = "4", simpleNodes = mutableListOf()),
+            ),
+            "4" to listOf(
+                SimpleNode(id = "5", simpleNodes = mutableListOf()),
+                SimpleNode(id = "6", simpleNodes = mutableListOf()),
+            ),
+        )
+
+        val expectedNodeTree = SimpleNode(
+            id = "root",
+            simpleNodes = mutableListOf(
+                SimpleNode(
+                    id = "0",
+                    depth = 1,
+                    simpleNodes = mutableListOf(
+                        SimpleNode(
+                            id = "3",
+                            depth = 2,
+                            simpleNodes = mutableListOf()
+                        ),
+                        SimpleNode(
+                            id = "4",
+                            depth = 2,
+                            simpleNodes = mutableListOf(
+                                SimpleNode(id = "5", depth = 3, simpleNodes = mutableListOf()),
+                                SimpleNode(id = "6", depth = 3, simpleNodes = mutableListOf()),
+                            )
+                        ),
+                    )
+                ),
+                SimpleNode(id = "1", depth = 1, simpleNodes = mutableListOf()),
+                SimpleNode(id = "2", depth = 1, simpleNodes = mutableListOf()),
+            )
+        )
+
+        val expectedList = expectedNodeTree.toList()
+        val result = nodes.toNodeTree(SimpleNode("root", mutableListOf())).toList()
+
+        assertEquals(expectedList, result)
+    }
+}
+
+data class SimpleNode(
+    override val id: String,
+    val simpleNodes: MutableList<Node>,
+    override var depth: Int = 0
+) : Node {
+
+    override fun addNotes(nodes: List<Node>) {
+        this.simpleNodes.addAll(nodes)
+    }
+
+    override fun getNodes(): List<Node> = this.simpleNodes
 }

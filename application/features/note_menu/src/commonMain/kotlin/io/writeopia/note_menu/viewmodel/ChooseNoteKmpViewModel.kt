@@ -21,6 +21,7 @@ import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.utils_module.DISCONNECTED_USER_ID
 import io.writeopia.utils_module.KmpViewModel
 import io.writeopia.utils_module.ResultData
+import io.writeopia.utils_module.collections.toNodeTree
 import io.writeopia.utils_module.map
 import io.writeopia.utils_module.toBoolean
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +30,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.stateIn
@@ -77,7 +77,22 @@ internal class ChooseNoteKmpViewModel(
                 coroutineScope
             )
         }.stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
+    }
 
+    override val sideMenuItems: StateFlow<List<MenuItemUi>> by lazy {
+        menuItemsPerFolderId.map { folderMap ->
+            val folderUiMap = folderMap.mapValues { (_, item) ->
+                item.map { it.toUiCard() }
+            }
+
+            val itemsList = folderUiMap
+                .toNodeTree(MenuItemUi.FolderUi.root())
+                .toList() as List<MenuItemUi>
+
+            itemsList.toMutableList().apply {
+                removeAt(0)
+            }
+        }.stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
     }
 
     override val menuItemsState: StateFlow<ResultData<List<MenuItem>>> by lazy {
@@ -125,7 +140,7 @@ internal class ChooseNoteKmpViewModel(
     private val _showSettingsState = MutableStateFlow(false)
     override val showSettingsState: StateFlow<Boolean> = _showSettingsState.asStateFlow()
 
-    private val _editingFolder = MutableStateFlow<Folder?>(null)
+    private val _editingFolder = MutableStateFlow<MenuItemUi.FolderUi?>(null)
     override val editFolderState: StateFlow<Folder?> by lazy {
         combine(_editingFolder, menuItemsPerFolderId) { selectedFolder, menuItems ->
             if (selectedFolder != null) {
@@ -161,10 +176,10 @@ internal class ChooseNoteKmpViewModel(
 
             resultData.map { documentList ->
                 NotesUi(
-                    documentUiList = documentList.map { document ->
-                        document.toUiCard(
+                    documentUiList = documentList.map { menuItem ->
+                        menuItem.toUiCard(
                             previewParser,
-                            selectedNoteIds.contains(document.id),
+                            selectedNoteIds.contains(menuItem.id),
                             previewLimit
                         )
                     },
@@ -255,7 +270,6 @@ internal class ChooseNoteKmpViewModel(
     override fun copySelectedNotes() {
         coroutineScope.launch(Dispatchers.Default) {
             notesUseCase.duplicateDocuments(_selectedNotes.value.toList(), getUserId())
-//            refreshNotes()
         }
     }
 
@@ -265,7 +279,6 @@ internal class ChooseNoteKmpViewModel(
         coroutineScope.launch(Dispatchers.Default) {
             notesUseCase.deleteNotes(selected)
             clearSelection()
-//            refreshNotes()
         }
     }
 
@@ -383,13 +396,13 @@ internal class ChooseNoteKmpViewModel(
         }
     }
 
-    override fun editFolder(folder: Folder) {
+    override fun editFolder(folder: MenuItemUi.FolderUi) {
         _editingFolder.value = folder
     }
 
-    override fun updateFolder(folder: Folder) {
+    override fun updateFolder(folderEdit: Folder) {
         coroutineScope.launch(Dispatchers.Default) {
-            notesUseCase.updateFolder(folder)
+            notesUseCase.updateFolder(folderEdit)
         }
     }
 
@@ -410,6 +423,10 @@ internal class ChooseNoteKmpViewModel(
                 notesUseCase.moveItem(menuItemUi, parentId)
             }
         }
+    }
+
+    override fun expandFolder(id: String) {
+        notesUseCase.listenForMenuItemsByParentId(id, ::getUserId, coroutineScope)
     }
 
     private fun setShowSideMenu(enabled: Boolean) {
@@ -476,15 +493,6 @@ internal class ChooseNoteKmpViewModel(
             documentWriter.writeDocuments(data, path)
         }
     }
-
-//    private suspend fun getNotes(userId: String): List<MenuItem> =
-//        if (notesNavigation.navigationType == NotesNavigationType.FAVORITES) {
-//            val orderBy = notesConfig.getOrderPreference(userId)
-//            notesUseCase.loadFavDocumentsForUser(orderBy, userId)
-//        } else {
-//            notesUseCase.loadContentForFolder(userId, Folder.ROOT_PATH)
-//        }
-
 
     private suspend fun getUserId(): String =
         localUserId ?: authManager.getUser().id.also { id ->

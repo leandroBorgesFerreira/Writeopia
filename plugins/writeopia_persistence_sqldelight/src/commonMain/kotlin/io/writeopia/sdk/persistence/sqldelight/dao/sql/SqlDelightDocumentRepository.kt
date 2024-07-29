@@ -79,10 +79,14 @@ class SqlDelightDocumentRepository(
 
     override suspend fun deleteDocument(document: Document) {
         documentSqlDao.deleteDocumentById(document.id)
+
+        refreshDocuments()
     }
 
     override suspend fun deleteDocumentByIds(ids: Set<String>) {
         documentSqlDao.deleteDocumentByIds(ids)
+
+        refreshDocuments()
     }
 
     override suspend fun deleteDocumentByFolder(folderId: String) {
@@ -122,7 +126,7 @@ class SqlDelightDocumentRepository(
         refreshDocuments()
     }
 
-    private suspend fun refreshDocuments() {
+    override suspend fun refreshDocuments() {
         _documentState.value = SelectedIds.ids.associateWith { id ->
             documentSqlDao.loadDocumentByParentId(id)
         }
