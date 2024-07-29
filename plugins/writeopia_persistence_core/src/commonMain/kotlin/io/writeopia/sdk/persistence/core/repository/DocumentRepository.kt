@@ -75,4 +75,6 @@ interface DocumentRepository : DocumentUpdate {
     suspend fun moveDocumentsToNewUser(oldUserId: String, newUserId: String)
 
     suspend fun moveToFolder(documentId: String, parentId: String)
+
+    suspend fun refreshDocuments()
 }

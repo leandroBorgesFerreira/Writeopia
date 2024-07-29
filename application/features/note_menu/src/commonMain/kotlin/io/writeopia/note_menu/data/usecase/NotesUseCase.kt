@@ -80,6 +80,7 @@ internal class NotesUseCase(
         ) { folders, documents, orderPreference ->
             val order = orderPreference.takeIf { it.isNotEmpty() }?.let(OrderBy::fromString)
                 ?: OrderBy.CREATE
+            
             folders.merge(documents).mapValues { (_, menuItems) ->
                 menuItems.sortedWithOrderBy(order)
             }
@@ -97,10 +98,13 @@ internal class NotesUseCase(
         }.forEach { document ->
             documentRepository.saveDocument(document)
         }
+
+        documentRepository.refreshDocuments()
     }
 
     suspend fun saveDocument(document: Document) {
         documentRepository.saveDocument(document)
+        documentRepository.refreshDocuments()
     }
 
     suspend fun deleteNotes(ids: Set<String>) {

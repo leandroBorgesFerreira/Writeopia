@@ -280,7 +280,6 @@ internal class ChooseNoteKmpViewModel(
         coroutineScope.launch(Dispatchers.Default) {
             notesUseCase.deleteNotes(selected)
             clearSelection()
-//            refreshNotes()
         }
     }
 
