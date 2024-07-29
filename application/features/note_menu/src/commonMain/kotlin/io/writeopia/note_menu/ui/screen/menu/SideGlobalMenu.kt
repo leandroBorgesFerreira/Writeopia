@@ -24,6 +24,7 @@ import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -168,8 +169,14 @@ private fun FolderItem(
                 .padding(top = 8.dp, bottom = 8.dp, start = 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            val imageVector = if (folder.expanded) {
+                Icons.Outlined.KeyboardArrowDown
+            } else {
+                Icons.AutoMirrored.Outlined.KeyboardArrowRight
+            }
+
             Icon(
-                imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
+                imageVector = imageVector,
                 contentDescription = "Expand",
                 tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier

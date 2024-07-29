@@ -9,7 +9,8 @@ import io.writeopia.sdk.preview.PreviewParser
 internal fun MenuItem.toUiCard(
     previewParser: PreviewParser? = null,
     selected: Boolean = false,
-    limit: Int = 0
+    limit: Int = 0,
+    expanded: Boolean
 ): MenuItemUi =
     when (this) {
         is Folder -> {
@@ -19,6 +20,7 @@ internal fun MenuItem.toUiCard(
                 selected = selected,
                 isFavorite = favorite,
                 itemsCount = itemCount,
+                expanded = expanded,
                 parentId = parentId,
             )
         }

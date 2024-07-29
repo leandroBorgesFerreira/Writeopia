@@ -40,6 +40,8 @@ interface ChooseNoteViewModel {
 
     val sideMenuItems: StateFlow<List<MenuItemUi>>
 
+    val expanded: StateFlow<Set<String>>
+
 //    fun requestDocuments(force: Boolean)
 
     fun handleNoteTap(id: String): Boolean

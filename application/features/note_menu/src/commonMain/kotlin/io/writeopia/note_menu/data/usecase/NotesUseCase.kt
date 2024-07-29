@@ -80,11 +80,16 @@ internal class NotesUseCase(
         ) { folders, documents, orderPreference ->
             val order = orderPreference.takeIf { it.isNotEmpty() }?.let(OrderBy::fromString)
                 ?: OrderBy.CREATE
-            
+
             folders.merge(documents).mapValues { (_, menuItems) ->
                 menuItems.sortedWithOrderBy(order)
             }
         }
+
+    suspend fun stopListeningForMenuItemsByParentId(id: String) {
+        folderRepository.stopListeningForFoldersByParentId(id)
+        documentRepository.stopListeningForFoldersByParentId(id)
+    }
 
     suspend fun duplicateDocuments(ids: List<String>, userId: String) {
         notesConfig.getOrderPreference(userId).let { orderBy ->
@@ -141,6 +146,6 @@ internal class NotesUseCase(
         parentId: String,
         coroutineScope: CoroutineScope
     ): Flow<Map<String, List<Folder>>> =
-        folderRepository.listenForAllFoldersByParentId(parentId, coroutineScope)
+        folderRepository.listenForFoldersByParentId(parentId, coroutineScope)
 }
 

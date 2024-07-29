@@ -20,7 +20,7 @@ class InMemoryFolderRepository : FolderRepository {
         refreshState()
     }
 
-    override fun listenForAllFoldersByParentId(
+    override fun listenForFoldersByParentId(
         parentId: String,
         coroutineScope: CoroutineScope
     ): Flow<Map<String, List<Folder>>> {
@@ -32,7 +32,7 @@ class InMemoryFolderRepository : FolderRepository {
         refreshState()
     }
 
-    override fun refreshFolders() {
+    override suspend fun refreshFolders() {
         TODO("Not yet implemented")
     }
 
@@ -54,5 +54,10 @@ class InMemoryFolderRepository : FolderRepository {
             }
         }
     }
+
+    override suspend fun stopListeningForFoldersByParentId(parentId: String) {
+
+    }
+
 
 }

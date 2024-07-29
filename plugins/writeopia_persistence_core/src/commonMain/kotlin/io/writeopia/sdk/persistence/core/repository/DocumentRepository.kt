@@ -38,6 +38,8 @@ interface DocumentRepository : DocumentUpdate {
         coroutineScope: CoroutineScope
     ): Flow<Map<String, List<Document>>>
 
+    suspend fun stopListeningForFoldersByParentId(parentId: String)
+
     /**
      * Saves document. Both with content and meta data.
      */
