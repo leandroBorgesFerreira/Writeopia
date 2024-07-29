@@ -175,4 +175,7 @@ class RoomDocumentRepository(
             documentEntityDao.updateDocument(document.copy(favorite = isFavorite).toEntity())
         }
     }
+
+    override suspend fun refreshDocuments() {
+    }
 }
