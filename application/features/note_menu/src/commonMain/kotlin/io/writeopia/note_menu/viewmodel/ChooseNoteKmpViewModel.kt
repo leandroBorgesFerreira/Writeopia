@@ -91,8 +91,6 @@ internal class ChooseNoteKmpViewModel(
 
             itemsList.toMutableList().apply {
                 removeAt(0)
-            }.also { list ->
-                println("sideMenuItems: ${list.joinToString { it.title }}")
             }
         }.stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
     }
