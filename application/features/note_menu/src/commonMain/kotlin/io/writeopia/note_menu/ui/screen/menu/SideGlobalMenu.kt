@@ -121,19 +121,24 @@ fun SideGlobalMenu(
 
                     LazyColumn(Modifier.fillMaxWidth()) {
                         items(menuItems) { item ->
-                            when (item) {
-                                is MenuItemUi.DocumentUi -> {
-                                    DocumentItem(item, navigateToFolder, moveRequest)
-                                }
+                            val depth = item.depth
 
-                                is MenuItemUi.FolderUi -> {
-                                    FolderItem(
-                                        item,
-                                        editFolder,
-                                        navigateToFolder,
-                                        moveRequest,
-                                        expandFolder = expandFolder
-                                    )
+                            Row {
+                                Spacer(modifier = Modifier.width(12.dp * depth))
+                                when (item) {
+                                    is MenuItemUi.DocumentUi -> {
+                                        DocumentItem(item, navigateToFolder, moveRequest)
+                                    }
+
+                                    is MenuItemUi.FolderUi -> {
+                                        FolderItem(
+                                            item,
+                                            editFolder,
+                                            navigateToFolder,
+                                            moveRequest,
+                                            expandFolder = expandFolder
+                                        )
+                                    }
                                 }
                             }
                         }
