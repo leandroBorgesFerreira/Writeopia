@@ -348,6 +348,12 @@ private fun DocumentItem(
     val titleFallback = "untitled"
 //        stringResource(R.string.untitled)
 
+    val backgroundColor = if (documentUi.selected) {
+        MaterialTheme.colorScheme.primary
+    } else {
+        MaterialTheme.colorScheme.surfaceVariant
+    }
+
     SwipeBox(
         modifier = modifier
             .padding(bottom = 6.dp)
@@ -376,7 +382,7 @@ private fun DocumentItem(
         ) {
             Column(
                 modifier = Modifier.background(
-                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    color = backgroundColor,
                     shape = MaterialTheme.shapes.large
                 )
             ) {
