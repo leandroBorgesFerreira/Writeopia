@@ -165,7 +165,7 @@ private fun FolderItem(
         Row(
             modifier = Modifier.clickable { navigateToFolder(folder.id) }
                 .background(bgColor)
-                .padding(top = 8.dp, bottom = 8.dp, start = 26.dp),
+                .padding(top = 8.dp, bottom = 8.dp, start = 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
