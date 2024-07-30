@@ -15,12 +15,14 @@ import io.writeopia.sdk.export.DocumentToJson
 import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.export.DocumentWriter
 import io.writeopia.sdk.import_document.json.WriteopiaJsonParser
+import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.utils_module.DISCONNECTED_USER_ID
 import io.writeopia.utils_module.KmpViewModel
 import io.writeopia.utils_module.ResultData
+import io.writeopia.utils_module.collections.reverseTraverse
 import io.writeopia.utils_module.collections.toNodeTree
 import io.writeopia.utils_module.map
 import io.writeopia.utils_module.toBoolean
@@ -30,6 +32,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.stateIn
@@ -66,7 +69,7 @@ internal class ChooseNoteKmpViewModel(
             )
 
             is NotesNavigation.Folder -> notesUseCase.listenForMenuItemsByParentId(
-                notesNavigation.folderId,
+                notesNavigation.id,
                 ::getUserId,
                 coroutineScope
             )
@@ -100,7 +103,7 @@ internal class ChooseNoteKmpViewModel(
             val pageItems = when (notesNavigation) {
                 NotesNavigation.Favorites -> menuItems.values.flatten().filter { it.favorite }
 
-                is NotesNavigation.Folder -> menuItems[notesNavigation.folderId]
+                is NotesNavigation.Folder -> menuItems[notesNavigation.id]
 
                 NotesNavigation.Root -> menuItems[Folder.ROOT_PATH]
             }
@@ -108,6 +111,19 @@ internal class ChooseNoteKmpViewModel(
             ResultData.Complete(pageItems ?: emptyList())
         }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Loading())
     }
+
+    override val folderPath: StateFlow<String> by lazy {
+        sideMenuItems.map { menuItems ->
+            val pathList = listOf("Home") + menuItems.reverseTraverse(
+                notesNavigation.id,
+                filterPredicate = { item -> item is MenuItemUi.FolderUi },
+                mapFunc = { item -> item.title }
+            )
+
+            pathList.joinToString(separator = " > ")
+        }.stateIn(coroutineScope, SharingStarted.Lazily, "")
+    }
+
     private val _user: MutableStateFlow<UserState<User>> = MutableStateFlow(UserState.Idle())
     override val userName: StateFlow<UserState<String>> by lazy {
         _user.map { userState ->
