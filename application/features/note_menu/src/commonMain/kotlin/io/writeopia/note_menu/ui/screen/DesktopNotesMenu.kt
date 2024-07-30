@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -51,6 +52,7 @@ import io.writeopia.note_menu.viewmodel.getPath
 import io.writeopia.note_menu.viewmodel.toNumberDesktop
 import io.writeopia.ui.draganddrop.target.DraggableScreen
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun DesktopNotesMenu(
@@ -150,6 +152,8 @@ fun DesktopNotesMenu(
                         )
                     }
 
+                    pathToCurrentDirectory(chooseNoteViewModel.folderPath)
+
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(start = 40.dp)
@@ -161,14 +165,14 @@ fun DesktopNotesMenu(
                                 if (!handled) {
                                     onNoteClick(id, title)
                                 }
-                            } ,
+                            },
                             selectionListener = chooseNoteViewModel::onDocumentSelected,
                             folderClick = { id ->
                                 navigateToNotes(NotesNavigation.Folder(id))
                             },
                             moveRequest = { item, parentId ->
                                 chooseNoteViewModel.moveToFolder(item, parentId)
-                            } ,
+                            },
                             modifier = Modifier.weight(1F).fillMaxHeight()
                         )
 
@@ -240,4 +244,16 @@ fun DesktopNotesMenu(
             )
         }
     }
+}
+
+@Composable
+private fun pathToCurrentDirectory(pathState: StateFlow<String>) {
+    val path by pathState.collectAsState()
+
+    Text(
+        text = path,
+        style = MaterialTheme.typography.bodyLarge,
+        color = MaterialTheme.colorScheme.onBackground,
+        modifier = Modifier.padding(12.dp)
+    )
 }

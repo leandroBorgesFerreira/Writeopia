@@ -2,9 +2,10 @@ package io.writeopia.note_menu.ui.dto
 
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.sdk.models.utils.Traversable
 import io.writeopia.utils_module.node.Node
 
-sealed interface MenuItemUi : Node {
+sealed interface MenuItemUi : Node, Traversable {
     val documentId: String
     val title: String
     val selected: Boolean
@@ -16,7 +17,7 @@ sealed interface MenuItemUi : Node {
         override val selected: Boolean,
         override val isFavorite: Boolean,
         val lastEdit: String,
-        val parentId: String,
+        override val parentId: String,
         val preview: List<StoryStep>,
         override var depth: Int = 0
     ) : MenuItemUi {
@@ -38,11 +39,11 @@ sealed interface MenuItemUi : Node {
         override val selected: Boolean,
         override val isFavorite: Boolean,
         val itemsCount: Long,
-        val parentId: String,
+        override val parentId: String,
         val expanded: Boolean,
         override var depth: Int = 0,
         val insideContent: MutableList<MenuItemUi> = mutableListOf()
-    ) : MenuItemUi {
+    ) : MenuItemUi, Traversable {
 
         override val id: String = documentId
 

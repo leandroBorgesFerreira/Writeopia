@@ -42,6 +42,8 @@ interface ChooseNoteViewModel {
 
     val expanded: StateFlow<Set<String>>
 
+    val folderPath: StateFlow<String>
+
 //    fun requestDocuments(force: Boolean)
 
     fun handleNoteTap(id: String): Boolean

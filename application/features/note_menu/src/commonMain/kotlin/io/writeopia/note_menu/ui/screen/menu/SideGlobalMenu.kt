@@ -134,7 +134,7 @@ fun SideGlobalMenu(
                             menuItems,
                             key = { _, item -> item.id + item.depth }
                         ) { i, item ->
-                            val modifier = Modifier.padding(start = 4.dp).animateItemPlacement()
+                            val itemModifier = Modifier.padding(start = 4.dp).animateItemPlacement()
 
                             when (item) {
                                 is MenuItemUi.DocumentUi -> {
@@ -142,7 +142,7 @@ fun SideGlobalMenu(
                                         item,
                                         navigateToEditDocument,
                                         position = i,
-                                        modifier = modifier
+                                        modifier = itemModifier
                                     )
                                 }
 
@@ -154,7 +154,7 @@ fun SideGlobalMenu(
                                         moveRequest,
                                         expandFolder = expandFolder,
                                         position = i,
-                                        modifier = modifier
+                                        modifier = itemModifier
                                     )
                                 }
                             }

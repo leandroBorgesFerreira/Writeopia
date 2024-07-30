@@ -91,7 +91,7 @@ fun NavGraphBuilder.notesMenuNavigation(
             navigateToNotes = { navigation ->
                 when (navigation) {
                     is NotesNavigation.Folder -> navigationController.navigate(
-                        "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/${navigation.folderId}",
+                        "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/${navigation.id}",
                     )
 
                     NotesNavigation.Favorites, NotesNavigation.Root -> navigationController.navigate(

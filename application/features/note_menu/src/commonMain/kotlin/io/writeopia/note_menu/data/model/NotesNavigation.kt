@@ -1,11 +1,11 @@
 package io.writeopia.note_menu.data.model
 
-sealed class NotesNavigation(val navigationType: NotesNavigationType) {
-    data object Favorites : NotesNavigation(navigationType = NotesNavigationType.FAVORITES)
-    data class Folder(val folderId: String) :
-        NotesNavigation(navigationType = NotesNavigationType.FOLDER)
+sealed class NotesNavigation(val navigationType: NotesNavigationType, val id: String) {
+    data object Favorites : NotesNavigation(navigationType = NotesNavigationType.FAVORITES, "favorites")
+    class Folder(folderId: String) :
+        NotesNavigation(navigationType = NotesNavigationType.FOLDER, id = folderId)
 
-    data object Root : NotesNavigation(navigationType = NotesNavigationType.ROOT)
+    data object Root : NotesNavigation(navigationType = NotesNavigationType.ROOT, "root")
 
     companion object {
         fun fromType(type: NotesNavigationType, path: String): NotesNavigation =
