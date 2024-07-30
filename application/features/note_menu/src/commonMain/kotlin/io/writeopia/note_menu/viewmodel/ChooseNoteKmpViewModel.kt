@@ -15,7 +15,6 @@ import io.writeopia.sdk.export.DocumentToJson
 import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.export.DocumentWriter
 import io.writeopia.sdk.import_document.json.WriteopiaJsonParser
-import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
@@ -32,7 +31,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.stateIn
@@ -89,7 +87,12 @@ internal class ChooseNoteKmpViewModel(
             }
 
             val itemsList = folderUiMap
-                .toNodeTree(MenuItemUi.FolderUi.root())
+                .toNodeTree(
+                    MenuItemUi.FolderUi.root(),
+                    filterPredicate = { menuItemUi ->
+                        expanded.contains(menuItemUi.documentId)
+                    }
+                )
                 .toList() as List<MenuItemUi>
 
             itemsList.toMutableList().apply {
@@ -449,7 +452,9 @@ internal class ChooseNoteKmpViewModel(
         val expanded = _expandedFolders.value
         if (expanded.contains(id)) {
             coroutineScope.launch(Dispatchers.Default) {
-                notesUseCase.stopListeningForMenuItemsByParentId(id)
+                if (notesNavigation.id != id) {
+                    notesUseCase.stopListeningForMenuItemsByParentId(id)
+                }
                 _expandedFolders.value = expanded - id
             }
         } else {
