@@ -16,7 +16,8 @@ interface Node {
 internal fun <T : Node> createNodeTree(
     map: Map<String, List<T>>,
     node: T,
-    depth: Int = -1
+    depth: Int = -1,
+    filterPredicate: (T) -> Boolean = { true }
 ): T {
     val nextNodes = map[node.id]
 
@@ -27,9 +28,8 @@ internal fun <T : Node> createNodeTree(
             }
         }?.let(node::addNotes)
 
-    nextNodes?.forEach { node ->
-            createNodeTree(map, node, depth + 1)
-        }
+    nextNodes?.filter(filterPredicate)
+        ?.forEach { nextCode -> createNodeTree(map, nextCode, depth + 1) }
 
     return node
 }

@@ -11,7 +11,10 @@ fun <K, V> Map<K, List<V>>.merge(map: Map<K, List<V>>) =
             putAll(map.filterKeys { key -> !this.containsKey(key) })
         }
 
-fun <T : Node> Map<String, List<T>>.toNodeTree(node: Node): Node = createNodeTree(this, node)
+fun <T : Node> Map<String, List<T>>.toNodeTree(
+    node: T,
+    filterPredicate: (T) -> Boolean = { true }
+): Node = createNodeTree(this, node, filterPredicate = filterPredicate)
 
 inline fun <reified T : Traversable, U> List<T>.reverseTraverse(
     initialId: String,
@@ -29,8 +32,6 @@ inline fun <reified T : Traversable, U> List<T>.reverseTraverse(
     val resultList = mutableListOf(currentTraversable)
 
     while (currentTraversable != null && currentTraversable.id != targetId) {
-        println("iterating. currentTraversable?.id: ${currentTraversable.id}")
-
         currentTraversable = traversableMap[currentTraversable.parentId]
         resultList.add(currentTraversable)
     }
