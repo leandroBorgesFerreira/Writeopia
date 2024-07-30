@@ -1,8 +1,12 @@
 package io.writeopia.note_menu.ui.screen.menu
 
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.hoverable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,7 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
@@ -33,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,11 +47,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.note_menu.ui.dto.MenuItemUi
+import io.writeopia.sdk.model.draganddrop.DropInfo
+import io.writeopia.ui.draganddrop.target.DragRowTargetWithDragItem
 import io.writeopia.ui.draganddrop.target.DropTarget
 import kotlinx.coroutines.flow.StateFlow
 
 private const val finalWidth = 300
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SideGlobalMenu(
     modifier: Modifier = Modifier,
@@ -60,6 +68,7 @@ fun SideGlobalMenu(
     addFolder: () -> Unit,
     editFolder: (MenuItemUi.FolderUi) -> Unit,
     navigateToFolder: (String) -> Unit,
+    navigateToEditDocument: (String, String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
     expandFolder: (String) -> Unit
 ) {
@@ -119,26 +128,34 @@ fun SideGlobalMenu(
                         }
                     )
 
+
                     LazyColumn(Modifier.fillMaxWidth()) {
-                        items(menuItems) { item ->
-                            val depth = item.depth
+                        itemsIndexed(
+                            menuItems,
+                            key = { _, item -> item.id + item.depth }
+                        ) { i, item ->
+                            val modifier = Modifier.padding(start = 4.dp).animateItemPlacement()
 
-                            Row {
-                                Spacer(modifier = Modifier.width(12.dp * depth))
-                                when (item) {
-                                    is MenuItemUi.DocumentUi -> {
-                                        DocumentItem(item, navigateToFolder, moveRequest)
-                                    }
+                            when (item) {
+                                is MenuItemUi.DocumentUi -> {
+                                    DocumentItem(
+                                        item,
+                                        navigateToEditDocument,
+                                        position = i,
+                                        modifier = modifier
+                                    )
+                                }
 
-                                    is MenuItemUi.FolderUi -> {
-                                        FolderItem(
-                                            item,
-                                            editFolder,
-                                            navigateToFolder,
-                                            moveRequest,
-                                            expandFolder = expandFolder
-                                        )
-                                    }
+                                is MenuItemUi.FolderUi -> {
+                                    FolderItem(
+                                        item,
+                                        editFolder,
+                                        navigateToFolder,
+                                        moveRequest,
+                                        expandFolder = expandFolder,
+                                        position = i,
+                                        modifier = modifier
+                                    )
                                 }
                             }
                         }
@@ -155,8 +172,13 @@ private fun FolderItem(
     editFolder: (MenuItemUi.FolderUi) -> Unit,
     navigateToFolder: (String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
-    expandFolder: (String) -> Unit
+    expandFolder: (String) -> Unit,
+    position: Int,
+    modifier: Modifier = Modifier,
 ) {
+    val depth = folder.depth
+    val dropInfo = DropInfo(folder, position)
+
     DropTarget { inBound, data ->
         if (inBound && data != null) {
             moveRequest(data.info as MenuItemUi, folder.id)
@@ -168,12 +190,22 @@ private fun FolderItem(
                 else -> MaterialTheme.colorScheme.surfaceVariant
             }
 
-        Row(
-            modifier = Modifier.clickable { navigateToFolder(folder.id) }
+        val interactionSource = remember { MutableInteractionSource() }
+        val isHovered by interactionSource.collectIsHoveredAsState()
+
+        DragRowTargetWithDragItem(
+            modifier = modifier.clickable { navigateToFolder(folder.id) }
                 .background(bgColor)
-                .padding(top = 8.dp, bottom = 8.dp, start = 6.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .hoverable(interactionSource),
+            dataToDrop = dropInfo,
+            position = position,
+            emptySpaceClick = {
+                navigateToFolder(folder.id)
+            },
+            showIcon = isHovered,
         ) {
+            Spacer(modifier = Modifier.width(4.dp + 12.dp * depth))
+
             val imageVector = if (folder.expanded) {
                 Icons.Outlined.KeyboardArrowDown
             } else {
@@ -235,59 +267,62 @@ private fun FolderItem(
 
 @Composable
 private fun DocumentItem(
-    folder: MenuItemUi.DocumentUi,
-    navigateToFolder: (String) -> Unit,
-    moveRequest: (MenuItemUi, String) -> Unit,
+    document: MenuItemUi.DocumentUi,
+    navigateToEditDocument: (String, String) -> Unit,
+    position: Int,
+    modifier: Modifier = Modifier,
 ) {
-    DropTarget { inBound, data ->
-        if (inBound && data != null) {
-            moveRequest(data.info as MenuItemUi, folder.id)
-        }
+    val depth = document.depth
+    val dropInfo = DropInfo(document, position)
 
-        val bgColor =
-            when {
-                inBound -> Color.LightGray
-                else -> MaterialTheme.colorScheme.surfaceVariant
-            }
+    val interactionSource = remember { MutableInteractionSource() }
+    val isHovered by interactionSource.collectIsHoveredAsState()
 
-        Row(
-            modifier = Modifier.clickable { navigateToFolder(folder.id) }
-                .background(bgColor)
-                .padding(top = 8.dp, bottom = 8.dp, start = 26.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Description,
-                contentDescription = "Folder",
-                tint = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.size(16.dp)
-            )
+    DragRowTargetWithDragItem(
+        modifier = modifier
+            .clickable { navigateToEditDocument(document.id, document.title) }
+            .hoverable(interactionSource)
+            .padding(start = 4.dp),
+        dataToDrop = dropInfo,
+        position = position,
+        emptySpaceClick = {
+            navigateToEditDocument(document.id, document.title)
+        },
+        showIcon = isHovered
+    ) {
+        Spacer(modifier = Modifier.width(4.dp + 12.dp * depth))
 
-            Spacer(modifier = Modifier.width(6.dp))
+        Icon(
+            imageVector = Icons.Outlined.Description,
+            contentDescription = "Folder",
+            tint = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.size(16.dp)
+        )
 
-            Text(
-                text = folder.title,
-                modifier = Modifier,
-                color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.bodySmall
-                    .copy(fontWeight = FontWeight.Bold),
-                maxLines = 1
-            )
+        Spacer(modifier = Modifier.width(6.dp))
 
-            Spacer(modifier = Modifier.weight(1F))
+        Text(
+            text = document.title,
+            modifier = Modifier,
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.bodySmall
+                .copy(fontWeight = FontWeight.Bold),
+            maxLines = 1
+        )
 
-            Icon(
-                imageVector = Icons.Default.MoreHoriz,
-                contentDescription = "More",
-                tint = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(6.dp))
-                    .size(26.dp)
-                    .padding(4.dp)
-            )
+        Spacer(modifier = Modifier.weight(1F))
 
-            Spacer(modifier = Modifier.width(6.dp))
-        }
+        Icon(
+            imageVector = Icons.Default.MoreHoriz,
+            contentDescription = "More",
+            tint = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier
+                .clip(RoundedCornerShape(6.dp))
+                .size(26.dp)
+                .padding(4.dp)
+        )
+
+        Spacer(modifier = Modifier.width(6.dp))
     }
 }
 
