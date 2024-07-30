@@ -16,7 +16,7 @@ interface Node {
 internal fun <T : Node> createNodeTree(
     map: Map<String, List<T>>,
     node: T,
-    depth: Int = 0
+    depth: Int = -1
 ): T {
     val nextNodes = map[node.id]
 

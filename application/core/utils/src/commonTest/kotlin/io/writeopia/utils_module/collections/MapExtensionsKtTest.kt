@@ -51,25 +51,25 @@ class MapExtensionsKtTest {
             simpleNodes = mutableListOf(
                 SimpleNode(
                     id = "0",
-                    depth = 1,
+                    depth = 0,
                     simpleNodes = mutableListOf(
                         SimpleNode(
                             id = "3",
-                            depth = 2,
+                            depth = 1,
                             simpleNodes = mutableListOf()
                         ),
                         SimpleNode(
                             id = "4",
-                            depth = 2,
+                            depth = 1,
                             simpleNodes = mutableListOf(
-                                SimpleNode(id = "5", depth = 3, simpleNodes = mutableListOf()),
-                                SimpleNode(id = "6", depth = 3, simpleNodes = mutableListOf()),
+                                SimpleNode(id = "5", depth = 2, simpleNodes = mutableListOf()),
+                                SimpleNode(id = "6", depth = 2, simpleNodes = mutableListOf()),
                             )
                         ),
                     )
                 ),
-                SimpleNode(id = "1", depth = 1, simpleNodes = mutableListOf()),
-                SimpleNode(id = "2", depth = 1, simpleNodes = mutableListOf()),
+                SimpleNode(id = "1", depth = 0, simpleNodes = mutableListOf()),
+                SimpleNode(id = "2", depth = 0, simpleNodes = mutableListOf()),
             )
         )
 
