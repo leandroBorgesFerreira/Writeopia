@@ -200,7 +200,9 @@ private fun FolderItem(
         val bgColor =
             when {
                 inBound -> Color.LightGray
-                folder.highlighted -> Color.Blue
+                folder.highlighted -> Color.LightGray.copy(
+                    alpha = 0.7F
+                )
                 else -> MaterialTheme.colorScheme.surfaceVariant
             }
 
