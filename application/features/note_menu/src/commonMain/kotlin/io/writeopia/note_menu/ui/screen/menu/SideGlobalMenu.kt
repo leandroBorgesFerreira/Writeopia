@@ -10,6 +10,7 @@ import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,6 +27,7 @@ import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.FilterCenterFocus
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
@@ -66,6 +68,7 @@ fun SideGlobalMenu(
     favoritesClick: () -> Unit,
     settingsClick: () -> Unit,
     addFolder: () -> Unit,
+    highlightContent: () -> Unit,
     editFolder: (MenuItemUi.FolderUi) -> Unit,
     navigateToFolder: (String) -> Unit,
     navigateToEditDocument: (String, String) -> Unit,
@@ -117,6 +120,16 @@ fun SideGlobalMenu(
                         text = "Folder",
                         trailingContent = {
                             Icon(
+                                imageVector = Icons.Outlined.FilterCenterFocus,
+                                contentDescription = "Select opened file",
+                                tint = MaterialTheme.colorScheme.onBackground,
+                                modifier = Modifier.size(30.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .clickable(onClick = highlightContent)
+                                    .padding(6.dp)
+                            )
+
+                            Icon(
                                 imageVector = Icons.Outlined.AddCircleOutline,
                                 contentDescription = "Add Folder",
                                 tint = MaterialTheme.colorScheme.onBackground,
@@ -134,7 +147,7 @@ fun SideGlobalMenu(
                             menuItems,
                             key = { _, item -> item.id + item.depth }
                         ) { i, item ->
-                            val itemModifier = Modifier.padding(start = 4.dp).animateItemPlacement()
+                            val itemModifier = Modifier.animateItemPlacement()
 
                             when (item) {
                                 is MenuItemUi.DocumentUi -> {
@@ -187,6 +200,7 @@ private fun FolderItem(
         val bgColor =
             when {
                 inBound -> Color.LightGray
+                folder.highlighted -> Color.Blue
                 else -> MaterialTheme.colorScheme.surfaceVariant
             }
 
@@ -196,7 +210,8 @@ private fun FolderItem(
         DragRowTargetWithDragItem(
             modifier = modifier.clickable { navigateToFolder(folder.id) }
                 .background(bgColor)
-                .hoverable(interactionSource),
+                .hoverable(interactionSource)
+                .padding(start = 4.dp),
             dataToDrop = dropInfo,
             position = position,
             emptySpaceClick = {
@@ -278,9 +293,17 @@ private fun DocumentItem(
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()
 
+    val background =
+        if (document.highlighted){
+            Color.Blue
+        } else {
+            MaterialTheme.colorScheme.surfaceVariant
+        }
+
     DragRowTargetWithDragItem(
         modifier = modifier
             .clickable { navigateToEditDocument(document.id, document.title) }
+            .background(background)
             .hoverable(interactionSource)
             .padding(start = 4.dp),
         dataToDrop = dropInfo,
@@ -380,7 +403,7 @@ private fun settingsOptions(
 private fun title(
     text: String,
     click: (() -> Unit)? = null,
-    trailingContent: @Composable (() -> Unit)? = null,
+    trailingContent: @Composable (RowScope.() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     Row(

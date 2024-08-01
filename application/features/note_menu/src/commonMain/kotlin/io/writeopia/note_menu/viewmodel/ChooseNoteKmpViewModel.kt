@@ -81,9 +81,14 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override val sideMenuItems: StateFlow<List<MenuItemUi>> by lazy {
-        combine(expanded, menuItemsPerFolderId) { expanded, folderMap ->
+        combine(expanded, menuItemsPerFolderId, highlightItem) { expanded, folderMap, highlighted ->
             val folderUiMap = folderMap.mapValues { (_, item) ->
-                item.map { it.toUiCard(expanded = expanded.contains(it.id)) }
+                item.map {
+                    it.toUiCard(
+                        expanded = expanded.contains(it.id),
+                        highlighted = it.id == highlighted
+                    )
+                }
             }
 
             val itemsList = folderUiMap
@@ -185,8 +190,9 @@ internal class ChooseNoteKmpViewModel(
         combine(
             _selectedNotes,
             menuItemsState,
-            notesArrangement
-        ) { selectedNoteIds, resultData, arrangement ->
+            notesArrangement,
+            highlightItem
+        ) { selectedNoteIds, resultData, arrangement, highlightId ->
             val previewLimit = when (arrangement) {
                 NotesArrangement.LIST -> 4
                 NotesArrangement.GRID -> 4
@@ -197,10 +203,11 @@ internal class ChooseNoteKmpViewModel(
                 NotesUi(
                     documentUiList = documentList.map { menuItem ->
                         menuItem.toUiCard(
-                            previewParser,
-                            selectedNoteIds.contains(menuItem.id),
-                            previewLimit,
-                            false
+                            previewParser = previewParser,
+                            selected = selectedNoteIds.contains(menuItem.id),
+                            limit = previewLimit,
+                            expanded = false,
+                            highlighted = highlightId == menuItem.id
                         )
                     },
                     notesArrangement = arrangement
@@ -212,6 +219,9 @@ internal class ChooseNoteKmpViewModel(
 
     private val _expandedFolders = MutableStateFlow(setOf<String>())
     override val expanded: StateFlow<Set<String>> = _expandedFolders.asStateFlow()
+
+    private val _highlightItem = MutableStateFlow<String?>(null)
+    override val highlightItem: StateFlow<String?> = _highlightItem.asStateFlow()
 
     override suspend fun requestUser() {
         try {
@@ -461,6 +471,10 @@ internal class ChooseNoteKmpViewModel(
             notesUseCase.listenForMenuItemsByParentId(id, ::getUserId, coroutineScope)
             _expandedFolders.value = expanded + id
         }
+    }
+
+    override fun highlightMenuItem() {
+        _highlightItem.value = notesNavigation.id
     }
 
     private fun setShowSideMenu(enabled: Boolean) {

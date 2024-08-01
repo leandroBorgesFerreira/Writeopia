@@ -10,7 +10,8 @@ internal fun MenuItem.toUiCard(
     previewParser: PreviewParser? = null,
     selected: Boolean = false,
     limit: Int = 0,
-    expanded: Boolean
+    expanded: Boolean,
+    highlighted: Boolean
 ): MenuItemUi =
     when (this) {
         is Folder -> {
@@ -22,6 +23,7 @@ internal fun MenuItem.toUiCard(
                 itemsCount = itemCount,
                 expanded = expanded,
                 parentId = parentId,
+                highlighted = highlighted,
             )
         }
 
@@ -34,6 +36,7 @@ internal fun MenuItem.toUiCard(
                 selected = selected,
                 parentId = parentId,
                 isFavorite = favorite,
+                highlighted = highlighted,
             )
         }
 
