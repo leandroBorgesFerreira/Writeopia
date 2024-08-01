@@ -431,6 +431,7 @@ fun DocumentItemPreview() {
         selected = false,
         isFavorite = true,
         parentId = "",
+        highlighted = false,
     )
 
     DocumentItem(
@@ -459,7 +460,8 @@ fun DocumentItemSelectedPreview() {
         ),
         selected = true,
         isFavorite = true,
-        parentId = ""
+        parentId = "",
+        highlighted = false,
     )
 
     DocumentItem(

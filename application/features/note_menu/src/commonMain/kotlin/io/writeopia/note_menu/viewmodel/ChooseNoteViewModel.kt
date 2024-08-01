@@ -44,6 +44,8 @@ interface ChooseNoteViewModel {
 
     val folderPath: StateFlow<String>
 
+    val highlightItem: StateFlow<String?>
+
 //    fun requestDocuments(force: Boolean)
 
     fun handleNoteTap(id: String): Boolean
@@ -111,6 +113,8 @@ interface ChooseNoteViewModel {
     fun moveToFolder(menuItemUi: MenuItemUi, parentId: String)
 
     fun expandFolder(id: String)
+
+    fun highlightMenuItem()
 }
 
 sealed interface UserState<T> {
