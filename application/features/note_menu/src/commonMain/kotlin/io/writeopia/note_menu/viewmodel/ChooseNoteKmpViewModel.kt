@@ -120,16 +120,14 @@ internal class ChooseNoteKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Loading())
     }
 
-    override val folderPath: StateFlow<String> by lazy {
+    override val folderPath: StateFlow<List<String>> by lazy {
         sideMenuItems.map { menuItems ->
-            val pathList = listOf("Home") + menuItems.reverseTraverse(
+            listOf("Home") + menuItems.reverseTraverse(
                 notesNavigation.id,
                 filterPredicate = { item -> item is MenuItemUi.FolderUi },
                 mapFunc = { item -> item.title }
             )
-
-            pathList.joinToString(separator = " > ")
-        }.stateIn(coroutineScope, SharingStarted.Lazily, "")
+        }.stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
     }
 
     private val _user: MutableStateFlow<UserState<User>> = MutableStateFlow(UserState.Idle())

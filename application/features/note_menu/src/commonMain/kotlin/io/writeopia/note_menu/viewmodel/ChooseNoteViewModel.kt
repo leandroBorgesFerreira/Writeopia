@@ -42,7 +42,7 @@ interface ChooseNoteViewModel {
 
     val expanded: StateFlow<Set<String>>
 
-    val folderPath: StateFlow<String>
+    val folderPath: StateFlow<List<String>>
 
     val highlightItem: StateFlow<String?>
 
