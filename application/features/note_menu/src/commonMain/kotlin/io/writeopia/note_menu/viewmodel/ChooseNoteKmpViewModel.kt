@@ -121,7 +121,8 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override val folderPath: StateFlow<List<String>> by lazy {
-        sideMenuItems.map { menuItems ->
+        menuItemsPerFolderId.map { perFolder ->
+            val menuItems = perFolder.values.flatten().map { it.toUiCard() }
             listOf("Home") + menuItems.reverseTraverse(
                 notesNavigation.id,
                 filterPredicate = { item -> item is MenuItemUi.FolderUi },
