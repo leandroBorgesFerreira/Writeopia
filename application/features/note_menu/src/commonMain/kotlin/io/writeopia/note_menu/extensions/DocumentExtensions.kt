@@ -10,8 +10,8 @@ internal fun MenuItem.toUiCard(
     previewParser: PreviewParser? = null,
     selected: Boolean = false,
     limit: Int = 0,
-    expanded: Boolean,
-    highlighted: Boolean
+    expanded: Boolean = false,
+    highlighted: Boolean = false
 ): MenuItemUi =
     when (this) {
         is Folder -> {
