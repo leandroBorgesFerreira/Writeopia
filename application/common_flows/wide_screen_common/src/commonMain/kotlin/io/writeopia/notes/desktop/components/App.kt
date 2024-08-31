@@ -72,6 +72,7 @@ fun App(
 
     if (colorTheme != null) {
         WrieopiaTheme(darkTheme = colorThemeOption.collectAsState().value?.darkTheme() ?: false) {
+            //Here!
             Navigation(
                 startDestination = startDestination(),
                 notesMenuInjection = notesMenuInjection,
@@ -80,9 +81,7 @@ fun App(
                 editorInjector = editorInjector,
                 isUndoKeyEvent = isUndoKeyEvent,
                 selectColorTheme = selectColorTheme
-            ) {
-
-            }
+            ) {}
         }
     } else {
         Box(modifier = Modifier.fillMaxSize()) {

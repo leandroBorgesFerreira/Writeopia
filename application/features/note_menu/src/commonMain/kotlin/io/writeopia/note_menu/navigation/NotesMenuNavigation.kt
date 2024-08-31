@@ -36,7 +36,6 @@ fun NavGraphBuilder.notesMenuNavigation(
     navigateToNewNote: () -> Unit,
     navigateToAccount: () -> Unit,
 ) {
-
     composable(
         route = NoteMenuDestiny.noteMenu(),
         arguments = listOf(
