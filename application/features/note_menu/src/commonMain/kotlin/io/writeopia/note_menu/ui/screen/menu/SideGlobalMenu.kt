@@ -61,7 +61,7 @@ private const val finalWidth = 300
 fun SideGlobalMenu(
     modifier: Modifier = Modifier,
     foldersState: StateFlow<List<MenuItemUi>>,
-    background: Color,
+    background: Color = MaterialTheme.colorScheme.surfaceVariant,
     showOptions: Boolean,
     width: Dp = finalWidth.dp,
     homeClick: () -> Unit,

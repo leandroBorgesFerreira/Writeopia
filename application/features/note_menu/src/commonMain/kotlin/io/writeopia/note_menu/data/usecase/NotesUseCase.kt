@@ -20,7 +20,7 @@ import kotlinx.datetime.Instant
  * UseCase responsible to perform CRUD operations in the Notes (Documents) of the app taking in to
  * consideration the configuration desired in the app.
  */
-internal class NotesUseCase(
+public class NotesUseCase(
     private val documentRepository: DocumentRepository,
     private val notesConfig: ConfigurationRepository,
     private val folderRepository: FolderRepository

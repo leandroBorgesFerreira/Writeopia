@@ -22,8 +22,12 @@ kotlin {
                 implementation(project(":writeopia_models"))
                 implementation(project(":plugins:writeopia_serialization"))
                 implementation(project(":plugins:writeopia_network"))
-                implementation(project(":application:features:note_menu"))
+
                 implementation(project(":application:core:utils"))
+                implementation(project(":application:core:theme"))
+                implementation(project(":application:core:auth_core"))
+
+                implementation(project(":application:features:note_menu"))
 
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.datetime)

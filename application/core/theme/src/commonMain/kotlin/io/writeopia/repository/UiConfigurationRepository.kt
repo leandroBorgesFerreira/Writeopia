@@ -1,6 +1,5 @@
 package io.writeopia.repository
 
-import io.writeopia.app.sql.UiConfigurationEntity
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.model.UiConfiguration
 import kotlinx.coroutines.CoroutineScope
