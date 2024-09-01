@@ -11,109 +11,58 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 
 interface ChooseNoteViewModel {
-
     val hasSelectedNotes: StateFlow<Boolean>
-
     val userName: StateFlow<UserState<String>>
-
     val documentsState: StateFlow<ResultData<NotesUi>>
-
     val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>>
-
     val menuItemsState: StateFlow<ResultData<List<MenuItem>>>
-
     val notesArrangement: StateFlow<NotesArrangement>
-
     val editState: StateFlow<Boolean>
-
     val showSortMenuState: StateFlow<Boolean>
-
     val showLocalSyncConfigState: StateFlow<ConfigState>
-
     val syncInProgress: StateFlow<SyncState>
-
     val showSideMenu: StateFlow<Boolean>
-
     val showSettingsState: StateFlow<Boolean>
-
     val editFolderState : StateFlow<Folder?>
-
     val sideMenuItems: StateFlow<List<MenuItemUi>>
-
     val expanded: StateFlow<Set<String>>
-
     val folderPath: StateFlow<List<String>>
-
     val highlightItem: StateFlow<String?>
 
 //    fun requestDocuments(force: Boolean)
-
     fun handleNoteTap(id: String): Boolean
-
     fun toggleSideMenu()
-
     suspend fun requestUser()
-
     fun showEditMenu()
-
     fun showSortMenu()
-
     fun cancelEditMenu()
-
     fun cancelSortMenu()
-
     fun directoryFilesAsMarkdown(path: String)
-
     fun loadFiles(filePaths: List<String>)
-
     fun onDocumentSelected(id: String, selected: Boolean)
-
     fun onSyncLocallySelected()
-
     fun configureDirectory()
-
     fun onWriteLocallySelected()
-
     fun clearSelection()
-
     fun listArrangementSelected()
-
     fun gridArrangementSelected()
-
     fun staggeredGridArrangementSelected()
-
     fun sortingSelected(orderBy: OrderBy)
-
     fun copySelectedNotes()
-
     fun deleteSelectedNotes()
-
     fun favoriteSelectedNotes()
-
     fun hideConfigSyncMenu()
-
     fun pathSelected(path: String)
-
     fun confirmWorkplacePath()
-
     fun showSettings()
-
     fun hideSettings()
-
     fun addFolder()
-
     fun editFolder(folder: MenuItemUi.FolderUi)
-
     fun updateFolder(folderEdit: Folder)
-
     fun deleteFolder(id: String)
-
     fun stopEditingFolder()
-
     fun moveToFolder(menuItemUi: MenuItemUi, parentId: String)
-
     fun expandFolder(id: String)
-
     fun highlightMenuItem()
 }
 

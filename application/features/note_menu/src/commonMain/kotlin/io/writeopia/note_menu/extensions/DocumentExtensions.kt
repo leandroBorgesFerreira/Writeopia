@@ -6,7 +6,7 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.preview.PreviewParser
 
-internal fun MenuItem.toUiCard(
+fun MenuItem.toUiCard(
     previewParser: PreviewParser? = null,
     selected: Boolean = false,
     limit: Int = 0,

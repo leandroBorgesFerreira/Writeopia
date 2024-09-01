@@ -510,7 +510,6 @@ internal class ChooseNoteKmpViewModel(
 
         writeopiaJsonParser.readAllWorkSpace(path)
             .onCompletion {
-//                refreshNotes()
                 _syncInProgress.value = SyncState.Idle
             }
             .collect(notesUseCase::saveDocument)
