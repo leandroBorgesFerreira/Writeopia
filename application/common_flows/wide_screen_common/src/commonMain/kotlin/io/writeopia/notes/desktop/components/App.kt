@@ -29,13 +29,13 @@ import io.writeopia.note_menu.data.model.NotesNavigationType
 import io.writeopia.note_menu.di.NotesInjector
 import io.writeopia.note_menu.di.NotesMenuKmpInjection
 import io.writeopia.note_menu.di.UiConfigurationInjector
-import io.writeopia.note_menu.ui.screen.menu.SideGlobalMenu
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.theme.WrieopiaTheme
 import io.writeopia.utils_module.Destinations
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
+import io.writeopia.global.shell.SideGlobalMenu
 
 
 @Composable
@@ -105,7 +105,7 @@ fun App(
                     navigateToEditDocument = navigationController::navigateToNote,
                     moveRequest = sideMenuViewModel::moveToFolder,
                     expandFolder = sideMenuViewModel::expandFolder,
-                    highlightContent = sideMenuViewModel::highlightMenuItem
+                    highlightContent = {}
                 )
 
                 Navigation(

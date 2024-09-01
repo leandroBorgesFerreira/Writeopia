@@ -15,13 +15,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowLeft
-import androidx.compose.material.icons.automirrored.filled.ArrowRight
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowForward
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowLeft
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -39,7 +36,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import io.writeopia.model.ColorThemeOption
-import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.note_menu.ui.screen.actions.DesktopNoteActionsMenu
@@ -47,9 +43,9 @@ import io.writeopia.note_menu.ui.screen.configuration.modifier.icon
 import io.writeopia.note_menu.ui.screen.configuration.molecules.NotesConfigurationMenu
 import io.writeopia.note_menu.ui.screen.configuration.molecules.NotesSelectionMenu
 import io.writeopia.note_menu.ui.screen.configuration.molecules.WorkspaceConfigurationDialog
+import io.writeopia.note_menu.ui.screen.documents.NotesCards
 import io.writeopia.note_menu.ui.screen.file.fileChooserLoad
 import io.writeopia.note_menu.ui.screen.file.fileChooserSave
-import io.writeopia.note_menu.ui.screen.documents.NotesCards
 import io.writeopia.note_menu.ui.screen.menu.RoundedVerticalDivider
 import io.writeopia.note_menu.ui.screen.menu.SideGlobalMenu
 import io.writeopia.note_menu.ui.screen.settings.SettingsDialog
@@ -60,7 +56,6 @@ import io.writeopia.note_menu.viewmodel.toNumberDesktop
 import io.writeopia.ui.draganddrop.target.DraggableScreen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.forEach
 
 @Composable
 fun DesktopNotesMenu(

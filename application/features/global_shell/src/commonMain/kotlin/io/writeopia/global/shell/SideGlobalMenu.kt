@@ -54,6 +54,7 @@ import io.writeopia.ui.draganddrop.target.DragRowTargetWithDragItem
 import io.writeopia.ui.draganddrop.target.DropTarget
 import kotlinx.coroutines.flow.StateFlow
 
+
 private const val finalWidth = 300
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -61,7 +62,7 @@ private const val finalWidth = 300
 fun SideGlobalMenu(
     modifier: Modifier = Modifier,
     foldersState: StateFlow<List<MenuItemUi>>,
-    background: Color,
+    background: Color = MaterialTheme.colorScheme.surfaceVariant,
     showOptions: Boolean,
     width: Dp = finalWidth.dp,
     homeClick: () -> Unit,
