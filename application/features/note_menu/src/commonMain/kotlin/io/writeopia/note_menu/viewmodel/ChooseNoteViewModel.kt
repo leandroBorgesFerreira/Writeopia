@@ -1,8 +1,6 @@
 package io.writeopia.note_menu.viewmodel
 
-import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesArrangement
-import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
@@ -10,7 +8,7 @@ import io.writeopia.utils_module.ResultData
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 
-interface ChooseNoteViewModel {
+interface ChooseNoteViewModel : FolderController {
     val hasSelectedNotes: StateFlow<Boolean>
     val userName: StateFlow<UserState<String>>
     val documentsState: StateFlow<ResultData<NotesUi>>
@@ -21,17 +19,10 @@ interface ChooseNoteViewModel {
     val showSortMenuState: StateFlow<Boolean>
     val showLocalSyncConfigState: StateFlow<ConfigState>
     val syncInProgress: StateFlow<SyncState>
-    val showSideMenu: StateFlow<Boolean>
-    val showSettingsState: StateFlow<Boolean>
-    val editFolderState : StateFlow<Folder?>
-    val sideMenuItems: StateFlow<List<MenuItemUi>>
-    val expanded: StateFlow<Set<String>>
     val folderPath: StateFlow<List<String>>
-    val highlightItem: StateFlow<String?>
 
-//    fun requestDocuments(force: Boolean)
+    //    fun requestDocuments(force: Boolean)
     fun handleNoteTap(id: String): Boolean
-    fun toggleSideMenu()
     suspend fun requestUser()
     fun showEditMenu()
     fun showSortMenu()
@@ -54,16 +45,6 @@ interface ChooseNoteViewModel {
     fun hideConfigSyncMenu()
     fun pathSelected(path: String)
     fun confirmWorkplacePath()
-    fun showSettings()
-    fun hideSettings()
-    fun addFolder()
-    fun editFolder(folder: MenuItemUi.FolderUi)
-    fun updateFolder(folderEdit: Folder)
-    fun deleteFolder(id: String)
-    fun stopEditingFolder()
-    fun moveToFolder(menuItemUi: MenuItemUi, parentId: String)
-    fun expandFolder(id: String)
-    fun highlightMenuItem()
 }
 
 sealed interface UserState<T> {
@@ -122,7 +103,7 @@ fun ConfigState.getSyncRequest(): SyncRequest? =
 
 fun StateFlow<NotesArrangement>.toNumberDesktop() =
     map { notesArrangement ->
-        when(notesArrangement) {
+        when (notesArrangement) {
             NotesArrangement.STAGGERED_GRID -> 0
             NotesArrangement.GRID -> 1
             NotesArrangement.LIST -> 2

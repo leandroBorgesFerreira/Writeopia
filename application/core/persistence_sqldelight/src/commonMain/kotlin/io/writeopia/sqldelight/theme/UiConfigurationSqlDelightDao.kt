@@ -30,9 +30,9 @@ class UiConfigurationSqlDelightDao(database: WriteopiaDb?) {
             )
         }
 
-        if (userId == uiConfiguration.user_id) {
+//        if (userId == uiConfiguration.user_id) {
             configurationState.value = uiConfiguration
-        }
+//        }
     }
 
     suspend fun getConfigurationByUserId(userId: String): UiConfigurationEntity? =
@@ -43,7 +43,9 @@ class UiConfigurationSqlDelightDao(database: WriteopiaDb?) {
         coroutineScope: CoroutineScope
     ): Flow<UiConfigurationEntity?> {
         coroutineScope.launch(Dispatchers.Default) {
-            val id = getUserId()
+            val id = "user_offline"
+//                getUserId()
+
             userId = id
             configurationState.value = getConfigurationByUserId(id)
         }

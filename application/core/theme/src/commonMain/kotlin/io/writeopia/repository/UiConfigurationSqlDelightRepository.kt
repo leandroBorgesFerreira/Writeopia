@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UiConfigurationSqlDelightRepository(
+class UiConfigurationSqlDelightRepository internal constructor(
     private val uiConfigurationDao: UiConfigurationSqlDelightDao
 ) : UiConfigurationRepository {
 
@@ -61,4 +61,17 @@ class UiConfigurationSqlDelightRepository(
             .map { entity ->
                 entity?.toModel()
             }
+
+    companion object {
+        var instance: UiConfigurationSqlDelightRepository? = null
+
+        fun singleton(
+            uiConfigurationDao: UiConfigurationSqlDelightDao
+        ): UiConfigurationSqlDelightRepository = instance ?: UiConfigurationSqlDelightRepository(
+            uiConfigurationDao
+        ).also {
+            instance = it
+        }
+
+    }
 }

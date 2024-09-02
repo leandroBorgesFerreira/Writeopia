@@ -29,13 +29,11 @@ class NotesMenuAndroidInjection(
             notesInjector: NotesInjector,
             authCoreInjection: AuthCoreInjection,
             repositoryInjection: RepositoryInjector,
-            uiConfigurationInjector: UiConfigurationInjector,
         ) = NotesMenuAndroidInjection(
             NotesMenuKmpInjection(
                 notesInjector = notesInjector,
                 authCoreInjection = authCoreInjection,
                 repositoryInjection = repositoryInjection,
-                uiConfigurationInjector = uiConfigurationInjector,
                 selectionState = MutableStateFlow(false)
             )
         )

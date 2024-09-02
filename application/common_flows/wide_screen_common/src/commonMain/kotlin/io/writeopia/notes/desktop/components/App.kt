@@ -1,16 +1,22 @@
 package io.writeopia.notes.desktop.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -19,6 +25,8 @@ import io.writeopia.account.di.AccountMenuKmpInjector
 import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
 import io.writeopia.editor.di.EditorKmpInjector
+import io.writeopia.global.shell.SideGlobalMenu
+import io.writeopia.global.shell.di.SideMenuKmpInjector
 import io.writeopia.global.shell.viewmodel.SideMenuViewModel
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.model.darkTheme
@@ -29,14 +37,16 @@ import io.writeopia.note_menu.data.model.NotesNavigationType
 import io.writeopia.note_menu.di.NotesInjector
 import io.writeopia.note_menu.di.NotesMenuKmpInjection
 import io.writeopia.note_menu.di.UiConfigurationInjector
+import io.writeopia.note_menu.ui.screen.menu.EditFileScreen
+import io.writeopia.note_menu.ui.screen.menu.RoundedVerticalDivider
+import io.writeopia.note_menu.ui.screen.settings.SettingsDialog
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.theme.WrieopiaTheme
 import io.writeopia.utils_module.Destinations
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import io.writeopia.global.shell.SideGlobalMenu
-
 
 @Composable
 fun App(
@@ -73,41 +83,51 @@ fun App(
             notesInjector = notesInjector,
             authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,
-            uiConfigurationInjector = uiConfigurationInjector,
             selectionState = selectionState,
         )
     }
 
-    val sideMenuViewModel: SideMenuViewModel = null!!
+    val sideMenuInjector = remember {
+        SideMenuKmpInjector(
+            notesInjector,
+            authCoreInjection,
+            repositoryInjection,
+            uiConfigurationInjector,
+            selectionState
+        )
+    }
+
+    val sideMenuViewModel: SideMenuViewModel =
+        sideMenuInjector.provideSideMenuViewModel(coroutineScope)
     val colorTheme = colorThemeOption.collectAsState().value
 
-    if (colorTheme != null) {
-        WrieopiaTheme(darkTheme = colorThemeOption.collectAsState().value?.darkTheme() ?: false) {
-            val showOptions by sideMenuViewModel.showSideMenu.collectAsState()
-            val navigationController: NavHostController = rememberNavController()
-            //Here!
-            Row {
-                SideGlobalMenu(
-                    modifier = Modifier.fillMaxHeight(),
-                    foldersState = sideMenuViewModel.sideMenuItems,
-                    showOptions = showOptions,
-                    width = 280.dp,
-                    homeClick = { navigationController.navigateToNotes(NotesNavigation.Root) },
-                    favoritesClick = {
-                        navigationController.navigateToNotes(NotesNavigation.Favorites)
-                    },
-                    settingsClick = sideMenuViewModel::showSettings,
-                    addFolder = sideMenuViewModel::addFolder,
-                    editFolder = sideMenuViewModel::editFolder,
-                    navigateToFolder = { id ->
-                        navigationController.navigateToNotes(NotesNavigation.Folder(id))
-                    },
-                    navigateToEditDocument = navigationController::navigateToNote,
-                    moveRequest = sideMenuViewModel::moveToFolder,
-                    expandFolder = sideMenuViewModel::expandFolder,
-                    highlightContent = {}
-                )
+    WrieopiaTheme(darkTheme = colorTheme.darkTheme()) {
+        val showOptions by sideMenuViewModel.showSideMenu.collectAsState()
+        val navigationController: NavHostController = rememberNavController()
 
+        Row(Modifier.background(MaterialTheme.colorScheme.background)) {
+            SideGlobalMenu(
+                modifier = Modifier.fillMaxHeight(),
+                foldersState = sideMenuViewModel.sideMenuItems,
+                showOptions = showOptions,
+                width = 280.dp,
+                homeClick = { navigationController.navigateToNotes(NotesNavigation.Root) },
+                favoritesClick = {
+                    navigationController.navigateToNotes(NotesNavigation.Favorites)
+                },
+                settingsClick = sideMenuViewModel::showSettings,
+                addFolder = sideMenuViewModel::addFolder,
+                editFolder = sideMenuViewModel::editFolder,
+                navigateToFolder = { id ->
+                    navigationController.navigateToNotes(NotesNavigation.Folder(id))
+                },
+                navigateToEditDocument = navigationController::navigateToNote,
+                moveRequest = sideMenuViewModel::moveToFolder,
+                expandFolder = sideMenuViewModel::expandFolder,
+                highlightContent = {}
+            )
+
+            Box {
                 Navigation(
                     startDestination = startDestination(),
                     notesMenuInjection = notesMenuInjection,
@@ -118,11 +138,44 @@ fun App(
                     selectColorTheme = selectColorTheme,
                     navController = navigationController
                 ) {}
+
+                Box(
+                    modifier = Modifier
+                        .height(60.dp)
+                        .width(16.dp)
+                        .align(alignment = Alignment.CenterStart)
+                        .clip(RoundedCornerShape(100))
+                        .clickable(onClick = sideMenuViewModel::toggleSideMenu)
+                        .padding(vertical = 6.dp),
+                ) {
+                    RoundedVerticalDivider(
+                        modifier = Modifier.height(60.dp).align(Alignment.Center),
+                        thickness = 4.dp,
+                        color = MaterialTheme.colorScheme.surfaceVariant
+                    )
+                }
+
+                val folderEdit = sideMenuViewModel.editFolderState.collectAsState().value
+
+                if (folderEdit != null) {
+                    EditFileScreen(
+                        folderEdit = folderEdit,
+                        onDismissRequest = sideMenuViewModel::stopEditingFolder,
+                        deleteFolder = sideMenuViewModel::deleteFolder,
+                        editFolder = sideMenuViewModel::updateFolder
+                    )
+                }
+
+                val showSettingsState by sideMenuViewModel.showSettingsState.collectAsState()
+
+                if (showSettingsState) {
+                    SettingsDialog(
+                        selectedThemePosition = MutableStateFlow(2),
+                        onDismissRequest = sideMenuViewModel::hideSettings,
+                        selectColorTheme = selectColorTheme
+                    )
+                }
             }
-        }
-    } else {
-        Box(modifier = Modifier.fillMaxSize()) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
     }
 }

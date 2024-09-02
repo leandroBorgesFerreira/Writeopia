@@ -48,20 +48,20 @@ fun NavGraphBuilder.notesMenuNavigation(
                 defaultValue = ""
             },
         ),
-        enterTransition = {
-            val isFirstScreen = this.initialState.destination
-                .route
-                ?.startsWith(Destinations.AUTH_MENU.id)
-
-            if (isFirstScreen == true) {
-                fadeIn()
-            } else {
-                slideInHorizontally(initialOffsetX = { intSize -> -intSize })
-            }
-        },
-        exitTransition = {
-            slideOutHorizontally(targetOffsetX = { intSize -> -intSize })
-        }
+//        enterTransition = {
+//            val isFirstScreen = this.initialState.destination
+//                .route
+//                ?.startsWith(Destinations.AUTH_MENU.id)
+//
+//            if (isFirstScreen == true) {
+//                fadeIn()
+//            } else {
+//                slideInHorizontally(initialOffsetX = { intSize -> -intSize })
+//            }
+//        },
+//        exitTransition = {
+//            slideOutHorizontally(targetOffsetX = { intSize -> -intSize })
+//        }
     ) { backStackEntry ->
         val navigationType = backStackEntry.arguments?.getString(NAVIGATION_TYPE)
         val navigationPath = backStackEntry.arguments?.getString(NAVIGATION_PATH)

@@ -13,6 +13,7 @@ interface UiConfigurationRepository {
     suspend fun updateShowSideMenu(userId: String, showSideMenu: Boolean)
 
     suspend fun updateColorTheme(userId: String, colorThemeOption: ColorThemeOption)
+
     fun listenForUiConfiguration(
         getUserId: suspend () -> String,
         coroutineScope: CoroutineScope

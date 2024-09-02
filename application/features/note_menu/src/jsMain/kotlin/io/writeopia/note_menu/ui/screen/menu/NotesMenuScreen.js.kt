@@ -30,8 +30,8 @@ actual fun NotesMenuScreen(
         onNoteClick = onNoteClick,
         selectColorTheme = selectColorTheme,
         navigateToNotes = navigateToNotes,
-        addFolder = addFolder,
-        editFolder = editFolder,
+//        addFolder = addFolder,
+//        editFolder = editFolder,
         modifier = modifier,
     )
 }

@@ -6,7 +6,7 @@ abstract class KmpViewModel {
 
     protected lateinit var coroutineScope: CoroutineScope
 
-    fun initCoroutine(coroutineScope: CoroutineScope) {
+    open fun initCoroutine(coroutineScope: CoroutineScope) {
         this.coroutineScope = coroutineScope
     }
 }
