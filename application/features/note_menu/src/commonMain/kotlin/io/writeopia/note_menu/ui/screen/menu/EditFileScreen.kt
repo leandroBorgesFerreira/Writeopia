@@ -19,7 +19,7 @@ import androidx.compose.ui.window.Dialog
 import io.writeopia.note_menu.data.model.Folder
 
 @Composable
-internal fun EditFileScreen(
+fun EditFileScreen(
     folderEdit: Folder,
     onDismissRequest: () -> Unit,
     editFolder: (Folder) -> Unit,

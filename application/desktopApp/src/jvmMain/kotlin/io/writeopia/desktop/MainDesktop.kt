@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,7 +56,9 @@ fun main() = application {
             is DatabaseCreation.Complete -> {
                 val database = databaseState.writeopiaDb
 
-                val uiConfigurationViewModel = UiConfigurationInjector(database)
+                val uiConfigurationInjector = remember { UiConfigurationInjector(database) }
+
+                val uiConfigurationViewModel = uiConfigurationInjector
                     .provideUiConfigurationViewModel(coroutineScope = coroutineScope)
 
                 val colorTheme =
@@ -64,7 +67,7 @@ fun main() = application {
                 App(
                     notesInjector = NotesInjector(database),
                     repositoryInjection = SqlDelightDaoInjector(database),
-                    uiConfigurationInjector = UiConfigurationInjector(database),
+                    uiConfigurationInjector = uiConfigurationInjector,
                     selectionState = selectionState,
                     coroutineScope = coroutineScope,
                     isUndoKeyEvent = ::isUndoKeyboardEvent,

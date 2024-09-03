@@ -20,7 +20,7 @@ import kotlinx.datetime.Instant
  * UseCase responsible to perform CRUD operations in the Notes (Documents) of the app taking in to
  * consideration the configuration desired in the app.
  */
-internal class NotesUseCase(
+class NotesUseCase private constructor(
     private val documentRepository: DocumentRepository,
     private val notesConfig: ConfigurationRepository,
     private val folderRepository: FolderRepository
@@ -147,5 +147,18 @@ internal class NotesUseCase(
         coroutineScope: CoroutineScope
     ): Flow<Map<String, List<Folder>>> =
         folderRepository.listenForFoldersByParentId(parentId, coroutineScope)
+
+    companion object {
+        var instance: NotesUseCase? = null
+
+        fun singleton(
+            documentRepository: DocumentRepository,
+            notesConfig: ConfigurationRepository,
+            folderRepository: FolderRepository
+        ): NotesUseCase =
+            instance ?: NotesUseCase(documentRepository, notesConfig, folderRepository).also {
+                instance = it
+            }
+    }
 }
 

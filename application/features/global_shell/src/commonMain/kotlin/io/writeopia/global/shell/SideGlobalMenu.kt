@@ -1,4 +1,4 @@
-package io.writeopia.note_menu.ui.screen.menu
+package io.writeopia.global.shell
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -61,7 +61,7 @@ private const val finalWidth = 300
 fun SideGlobalMenu(
     modifier: Modifier = Modifier,
     foldersState: StateFlow<List<MenuItemUi>>,
-    background: Color,
+    background: Color = MaterialTheme.colorScheme.surfaceVariant,
     showOptions: Boolean,
     width: Dp = finalWidth.dp,
     homeClick: () -> Unit,
@@ -145,7 +145,7 @@ fun SideGlobalMenu(
                     LazyColumn(Modifier.fillMaxWidth()) {
                         itemsIndexed(
                             menuItems,
-                            key = { _, item -> item.id + item.depth }
+                            key = { _, item -> item.id }
                         ) { i, item ->
                             val itemModifier = Modifier.animateItemPlacement()
 
@@ -307,7 +307,7 @@ private fun DocumentItem(
             .clickable { navigateToEditDocument(document.id, document.title) }
             .background(background)
             .hoverable(interactionSource)
-            .padding(start = 4.dp),
+            .padding(start = 4.dp, bottom = 6.dp, top = 6.dp),
         dataToDrop = dropInfo,
         position = position,
         emptySpaceClick = {
@@ -336,18 +336,6 @@ private fun DocumentItem(
         )
 
         Spacer(modifier = Modifier.weight(1F))
-
-        Icon(
-            imageVector = Icons.Default.MoreHoriz,
-            contentDescription = "More",
-            tint = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier
-                .clip(RoundedCornerShape(6.dp))
-                .size(26.dp)
-                .padding(4.dp)
-        )
-
-        Spacer(modifier = Modifier.width(6.dp))
     }
 }
 
@@ -372,7 +360,6 @@ private fun settingsOptions(
             .padding(start = 20.dp, end = 10.dp, top = 10.dp, bottom = 10.dp)
             .fillMaxWidth()
     ) {
-
         iconVector?.let { icon ->
             Icon(
                 modifier = Modifier.size(22.dp),

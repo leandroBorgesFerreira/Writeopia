@@ -70,12 +70,10 @@ fun NavigationGraph(
     val editorInjector =
         EditorInjector.create(authCoreInjection, repositoryInjection, connectionInjector)
     val accountMenuInjector = AndroidAccountMenuInjector.create(authCoreInjection)
-    val uiConfigurationInjector = UiConfigurationInjector(database)
     val notesMenuInjection = NotesMenuAndroidInjection.create(
         notesInjector,
         authCoreInjection,
         repositoryInjection,
-        uiConfigurationInjector
     )
 
     WrieopiaTheme {

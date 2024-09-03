@@ -12,15 +12,14 @@ actual fun TextEditorScreen(
     documentId: String?,
     title: String?,
     noteEditorViewModel: NoteEditorViewModel,
-    navigateBack: () -> Unit,
     isUndoKeyEvent: (KeyEvent) -> Boolean,
+    navigateBack: () -> Unit,
     modifier: Modifier,
 ) {
     DesktopNoteEditorScreen(
         documentId = documentId,
         noteEditorViewModel = noteEditorViewModel,
         drawersFactory = DefaultDrawersJs,
-        navigateBack = navigateBack,
         isUndoKeyEvent = isUndoKeyEvent,
         modifier = modifier
     )

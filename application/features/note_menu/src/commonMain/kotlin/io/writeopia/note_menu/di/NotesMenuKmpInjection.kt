@@ -9,6 +9,7 @@ import io.writeopia.note_menu.data.repository.FolderRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.viewmodel.ChooseNoteKmpViewModel
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
+import io.writeopia.note_menu.viewmodel.FolderStateController
 import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
@@ -19,7 +20,6 @@ class NotesMenuKmpInjection(
     private val notesInjector: NotesInjector,
     private val authCoreInjection: AuthCoreInjection,
     private val repositoryInjection: RepositoryInjector,
-    private val uiConfigurationInjector: UiConfigurationInjector,
     private val selectionState: StateFlow<Boolean>
 ) : NotesMenuInjection {
 
@@ -32,24 +32,28 @@ class NotesMenuKmpInjection(
             notesInjector.provideNotesConfigurationRepository(),
         folderRepository: FolderRepository = notesInjector.provideFoldersRepository()
     ): NotesUseCase {
-        return NotesUseCase(documentRepository, configurationRepository, folderRepository)
+        return NotesUseCase.singleton(documentRepository, configurationRepository, folderRepository)
     }
+
+    private fun provideFolderStateController(): FolderStateController =
+        FolderStateController(
+            provideNotesUseCase(),
+            authCoreInjection.provideAccountManager()
+        )
 
     internal fun provideChooseKmpNoteViewModel(
         notesNavigation: NotesNavigation,
         notesUseCase: NotesUseCase = provideNotesUseCase(),
         notesConfig: ConfigurationRepository =
             notesInjector.provideNotesConfigurationRepository(),
-        uiConfigurationRepo: UiConfigurationRepository =
-            uiConfigurationInjector.provideUiConfigurationRepository()
     ): ChooseNoteKmpViewModel =
         ChooseNoteKmpViewModel(
             notesUseCase = notesUseCase,
             notesConfig = notesConfig,
-            uiConfigurationRepo = uiConfigurationRepo,
             authManager = authCoreInjection.provideAccountManager(),
             selectionState = selectionState,
             notesNavigation = notesNavigation,
+            folderController = provideFolderStateController()
         )
 
     @Composable

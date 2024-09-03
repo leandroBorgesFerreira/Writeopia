@@ -1,8 +1,5 @@
 package io.writeopia.note_menu.navigation
 
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
@@ -20,8 +17,8 @@ import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.utils_module.Destinations
 import kotlinx.coroutines.CoroutineScope
 
-private const val NAVIGATION_TYPE = "type"
-private const val NAVIGATION_PATH = "path"
+const val NAVIGATION_TYPE = "type"
+const val NAVIGATION_PATH = "path"
 
 object NoteMenuDestiny {
     fun noteMenu() = "${Destinations.CHOOSE_NOTE.id}/{$NAVIGATION_TYPE}/{$NAVIGATION_PATH}"
@@ -36,7 +33,6 @@ fun NavGraphBuilder.notesMenuNavigation(
     navigateToNewNote: () -> Unit,
     navigateToAccount: () -> Unit,
 ) {
-
     composable(
         route = NoteMenuDestiny.noteMenu(),
         arguments = listOf(
@@ -49,20 +45,6 @@ fun NavGraphBuilder.notesMenuNavigation(
                 defaultValue = ""
             },
         ),
-        enterTransition = {
-            val isFirstScreen = this.initialState.destination
-                .route
-                ?.startsWith(Destinations.AUTH_MENU.id)
-
-            if (isFirstScreen == true) {
-                fadeIn()
-            } else {
-                slideInHorizontally(initialOffsetX = { intSize -> -intSize })
-            }
-        },
-        exitTransition = {
-            slideOutHorizontally(targetOffsetX = { intSize -> -intSize })
-        }
     ) { backStackEntry ->
         val navigationType = backStackEntry.arguments?.getString(NAVIGATION_TYPE)
         val navigationPath = backStackEntry.arguments?.getString(NAVIGATION_PATH)

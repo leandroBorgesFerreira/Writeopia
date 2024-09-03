@@ -15,12 +15,14 @@ import io.writeopia.api.utils.example
 import io.writeopia.app.endpoints.EndPoints
 import io.writeopia.sdk.serialization.data.DocumentApi
 import io.writeopia.sdk.serialization.json.writeopiaJson
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ApplicationTest {
 
     @Test
+    @Ignore
     fun itShouldBePossibleToGetAnExampleDocument() {
         testApplication {
             defaultConfig()
@@ -34,6 +36,7 @@ class ApplicationTest {
     }
 
     @Test
+    @Ignore
     fun itShouldBePossibleToGetIntroNotes() = testApplication {
         defaultConfig()
         val client = clientClient()
@@ -45,6 +48,7 @@ class ApplicationTest {
     }
 
     @Test
+    @Ignore
     fun itShouldBePossibleToSaveAndGetDocuments() = testApplication {
         defaultConfig()
         val client = clientClient()

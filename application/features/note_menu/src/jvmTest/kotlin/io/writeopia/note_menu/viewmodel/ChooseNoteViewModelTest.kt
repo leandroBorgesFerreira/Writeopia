@@ -21,7 +21,6 @@ class ChooseNoteViewModelTest {
     private val notesUseCase: NotesUseCase = mockk()
     private val notesConfig: ConfigurationRepository = mockk()
     private val authManager: AuthManager = mockk()
-    private val uiConfigurationSqlDelightRepository: UiConfigurationSqlDelightRepository = mockk()
 
     @Test
     @Ignore("Todo: Fix")
@@ -33,11 +32,10 @@ class ChooseNoteViewModelTest {
             coEvery { notesUseCase.deleteNotes(any()) } returns Unit
 
             val viewModel = ChooseNoteKmpViewModel(
-                notesUseCase,
-                notesConfig,
-                uiConfigurationSqlDelightRepository,
-                authManager,
-                MutableStateFlow(false)
+                notesUseCase = notesUseCase,
+                notesConfig = notesConfig,
+                authManager = authManager,
+                selectionState = MutableStateFlow(false)
             ).apply {
                 initCoroutine(this@runTest)
             }
