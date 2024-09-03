@@ -152,12 +152,17 @@ class WriteopiaStateManager(
     fun newStory(
         documentId: String = GenerateId.generate(),
         title: String = "",
+        parentFolder: String = "root",
         forceRestart: Boolean = false
     ) {
         if (isInitialized() && !forceRestart) return
 
         _initialized = true
-        val (documentInfo, storyState) = writeopiaManager.newStory(documentId, title)
+        val (documentInfo, storyState) = writeopiaManager.newStory(
+            documentId,
+            title,
+            parentFolder = parentFolder
+        )
 
         _documentInfo.value = documentInfo
         _currentStory.value = storyState

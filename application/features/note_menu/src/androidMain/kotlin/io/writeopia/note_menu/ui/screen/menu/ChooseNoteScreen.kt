@@ -1,6 +1,5 @@
 package io.writeopia.note_menu.ui.screen.menu
 
-//import androidx.compose.ui.tooling.preview.Preview
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

@@ -17,7 +17,7 @@ class EditorKmpInjector(
     private val authCoreInjection: AuthCoreInjection,
     private val repositoryInjection: RepositoryInjector,
     private val connectionInjection: ConnectionInjector,
-): TextEditorInjector {
+) : TextEditorInjector {
 
     private fun provideDocumentRepository(): DocumentRepository =
         repositoryInjection.provideDocumentRepository()
@@ -36,14 +36,17 @@ class EditorKmpInjector(
     fun provideNoteEditorViewModel(
         documentRepository: DocumentRepository = provideDocumentRepository(),
         writeopiaManager: WriteopiaStateManager = provideWriteopiaStateManager(),
-        sharedEditionManager: SharedEditionManager = connectionInjection.liveEditionManager()
+        sharedEditionManager: SharedEditionManager = connectionInjection.liveEditionManager(),
+        parentFolder: String,
     ): NoteEditorKmpViewModel =
         NoteEditorKmpViewModel(
             writeopiaManager,
             documentRepository,
-            sharedEditionManager = sharedEditionManager
+            sharedEditionManager = sharedEditionManager,
+            parentFolderId = parentFolder
         )
 
     @Composable
-    override fun provideNoteDetailsViewModel(): NoteEditorViewModel = provideNoteEditorViewModel()
+    override fun provideNoteDetailsViewModel(parentFolder: String): NoteEditorViewModel =
+        provideNoteEditorViewModel(parentFolder = parentFolder)
 }

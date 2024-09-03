@@ -19,7 +19,6 @@ interface ChooseNoteViewModel : FolderController {
     val showSortMenuState: StateFlow<Boolean>
     val showLocalSyncConfigState: StateFlow<ConfigState>
     val syncInProgress: StateFlow<SyncState>
-    val folderPath: StateFlow<List<String>>
 
     //    fun requestDocuments(force: Boolean)
     fun handleNoteTap(id: String): Boolean

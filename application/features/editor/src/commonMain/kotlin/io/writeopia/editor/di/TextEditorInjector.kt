@@ -6,5 +6,5 @@ import io.writeopia.editor.viewmodel.NoteEditorViewModel
 interface TextEditorInjector {
 
     @Composable
-    fun provideNoteDetailsViewModel(): NoteEditorViewModel
+    fun provideNoteDetailsViewModel(parentFolderId: String): NoteEditorViewModel
 }

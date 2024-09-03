@@ -8,7 +8,6 @@ import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
-import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.export.DocumentToJson
 import io.writeopia.sdk.export.DocumentToMarkdown
@@ -20,7 +19,6 @@ import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.utils_module.DISCONNECTED_USER_ID
 import io.writeopia.utils_module.KmpViewModel
 import io.writeopia.utils_module.ResultData
-import io.writeopia.utils_module.collections.reverseTraverse
 import io.writeopia.utils_module.map
 import io.writeopia.utils_module.toBoolean
 import kotlinx.coroutines.CoroutineScope
@@ -94,17 +92,6 @@ internal class ChooseNoteKmpViewModel(
 
             ResultData.Complete(pageItems ?: emptyList())
         }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Loading())
-    }
-
-    override val folderPath: StateFlow<List<String>> by lazy {
-        menuItemsPerFolderId.map { perFolder ->
-            val menuItems = perFolder.values.flatten().map { it.toUiCard() }
-            listOf("Home") + menuItems.reverseTraverse(
-                notesNavigation.id,
-                filterPredicate = { item -> item is MenuItemUi.FolderUi },
-                mapFunc = { item -> item.title }
-            )
-        }.stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
     }
 
     private val _user: MutableStateFlow<UserState<User>> = MutableStateFlow(UserState.Idle())

@@ -31,7 +31,8 @@ class NoteEditorKmpViewModel(
     override val writeopiaManager: WriteopiaStateManager,
     private val documentRepository: DocumentRepository,
     private val documentFilter: DocumentFilter = DocumentFilterObject,
-    private val sharedEditionManager: SharedEditionManager
+    private val sharedEditionManager: SharedEditionManager,
+    private val parentFolderId: String
 ) : NoteEditorViewModel, KmpViewModel(), BackstackInform by writeopiaManager,
     BackstackHandler by writeopiaManager {
 
@@ -110,7 +111,7 @@ class NoteEditorKmpViewModel(
             return
         }
 
-        writeopiaManager.newStory(documentId, title)
+        writeopiaManager.newStory(documentId, title, parentFolder = parentFolderId)
         writeopiaManager.saveOnStoryChanges(OnUpdateDocumentTracker(documentRepository))
         writeopiaManager.liveSync(sharedEditionManager)
     }
