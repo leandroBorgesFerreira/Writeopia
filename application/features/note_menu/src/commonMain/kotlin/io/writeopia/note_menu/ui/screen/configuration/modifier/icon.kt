@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 
-internal fun Modifier.icon(onClick: () -> Unit): Modifier =
+fun Modifier.icon(onClick: () -> Unit): Modifier =
     this.clip(CircleShape)
         .clickable(onClick = onClick)
         .size(36.dp)

@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun EditorScaffold(
     clickAtBottom: () -> Unit,
-    onBackClick: () -> Unit,
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -63,20 +62,6 @@ fun EditorScaffold(
                         .testTag("EditorBottomContent")
                 )
             }
-
-            Icon(
-                imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                contentDescription = "Back",
-                modifier = Modifier.align(Alignment.TopStart)
-                    .padding(top = 40.dp)
-                    .clip(CircleShape)
-                    .clickable(
-                        onClick = onBackClick
-                    )
-                    .padding(10.dp)
-                    .testTag("NoteEditorScreenNavigateBack"),
-                tint = MaterialTheme.colorScheme.onBackground
-            )
         }
     }
 }

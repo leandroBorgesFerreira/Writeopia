@@ -4,7 +4,7 @@ import io.writeopia.note_menu.data.model.NotesNavigation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class NoteNavigationUseCase private constructor() {
+class NotesNavigationUseCase private constructor() {
     private val _navigationState = MutableStateFlow<NotesNavigation>(NotesNavigation.Root)
     val navigationState = _navigationState.asStateFlow()
 
@@ -13,10 +13,10 @@ class NoteNavigationUseCase private constructor() {
     }
 
     companion object {
-        var instance: NoteNavigationUseCase? = null
+        var instance: NotesNavigationUseCase? = null
 
-        fun singleton(): NoteNavigationUseCase =
-            instance ?: NoteNavigationUseCase().also {
+        fun singleton(): NotesNavigationUseCase =
+            instance ?: NotesNavigationUseCase().also {
                 instance = it
             }
     }

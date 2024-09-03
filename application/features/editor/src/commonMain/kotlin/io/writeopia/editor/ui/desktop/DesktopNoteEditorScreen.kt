@@ -17,13 +17,11 @@ fun DesktopNoteEditorScreen(
     documentId: String?,
     noteEditorViewModel: NoteEditorViewModel,
     drawersFactory: DrawersFactory,
-    navigateBack: () -> Unit,
     isUndoKeyEvent: (KeyEvent) -> Boolean,
     modifier: Modifier = Modifier,
 ) {
     EditorScaffold(
         clickAtBottom = noteEditorViewModel.writeopiaManager::clickAtTheEnd,
-        onBackClick = navigateBack,
         modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         content = {
             AppTextEditor(

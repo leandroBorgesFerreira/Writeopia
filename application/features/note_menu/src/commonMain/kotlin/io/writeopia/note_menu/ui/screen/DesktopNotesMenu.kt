@@ -13,8 +13,6 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
-import androidx.compose.material.icons.automirrored.outlined.ArrowForward
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -34,20 +32,17 @@ import androidx.navigation.NavController
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.ui.screen.actions.DesktopNoteActionsMenu
-import io.writeopia.note_menu.ui.screen.configuration.modifier.icon
 import io.writeopia.note_menu.ui.screen.configuration.molecules.NotesConfigurationMenu
 import io.writeopia.note_menu.ui.screen.configuration.molecules.NotesSelectionMenu
 import io.writeopia.note_menu.ui.screen.configuration.molecules.WorkspaceConfigurationDialog
 import io.writeopia.note_menu.ui.screen.documents.NotesCards
 import io.writeopia.note_menu.ui.screen.file.fileChooserLoad
 import io.writeopia.note_menu.ui.screen.file.fileChooserSave
-import io.writeopia.note_menu.ui.screen.settings.SettingsDialog
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.note_menu.viewmodel.ConfigState
 import io.writeopia.note_menu.viewmodel.getPath
 import io.writeopia.note_menu.viewmodel.toNumberDesktop
 import io.writeopia.ui.draganddrop.target.DraggableScreen
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -74,24 +69,6 @@ fun DesktopNotesMenu(
     DraggableScreen(modifier = modifier.fillMaxSize().padding(end = 12.dp)) {
         Column(modifier = Modifier.padding(top = borderPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Spacer(modifier = Modifier.width(borderPadding))
-
-                Icon(
-                    modifier = Modifier.icon {
-                        navigationController.navigateUp()
-                    },
-                    imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
-                    contentDescription = "Navigate back",
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
-
-                Icon(
-                    modifier = Modifier.icon { },
-                    imageVector = Icons.AutoMirrored.Outlined.ArrowForward,
-                    contentDescription = "Navigate forward",
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
-
                 Spacer(Modifier.weight(1F))
 
                 DesktopNoteActionsMenu(
@@ -110,8 +87,6 @@ fun DesktopNotesMenu(
                     onWriteLocallySelected = chooseNoteViewModel::onWriteLocallySelected,
                 )
             }
-
-            pathToCurrentDirectory(chooseNoteViewModel.folderPath)
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -190,34 +165,5 @@ fun DesktopNotesMenu(
             exitAnimationOffset = 2.3F,
             animationSpec = spring(dampingRatio = 0.6F)
         )
-    }
-}
-
-@Composable
-private fun pathToCurrentDirectory(pathState: StateFlow<List<String>>) {
-    val path by pathState.collectAsState()
-    val size = path.lastIndex
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(start = 12.dp)
-    ) {
-        path.forEachIndexed { i, nodePath ->
-            Text(
-                text = nodePath,
-                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center
-            )
-
-            if (i != size) {
-                Icon(
-                    modifier = Modifier.size(20.dp),
-                    imageVector = Icons.AutoMirrored.Default.KeyboardArrowRight,
-                    contentDescription = "Next",
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
-            }
-        }
     }
 }

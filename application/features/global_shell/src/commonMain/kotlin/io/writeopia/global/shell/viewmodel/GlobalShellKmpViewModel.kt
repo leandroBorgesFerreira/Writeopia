@@ -3,7 +3,7 @@ package io.writeopia.global.shell.viewmodel
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesNavigation
-import io.writeopia.note_menu.data.usecase.NoteNavigationUseCase
+import io.writeopia.note_menu.data.usecase.NotesNavigationUseCase
 import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.extensions.toUiCard
 import io.writeopia.note_menu.ui.dto.MenuItemUi
@@ -12,6 +12,7 @@ import io.writeopia.note_menu.viewmodel.FolderStateController
 import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.utils_module.KmpViewModel
+import io.writeopia.utils_module.collections.reverseTraverse
 import io.writeopia.utils_module.collections.toNodeTree
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,16 +27,16 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class SideMenuKmpViewModel(
+class GlobalShellKmpViewModel(
     private val notesUseCase: NotesUseCase,
     private val uiConfigurationRepo: UiConfigurationRepository,
     private val authManager: AuthManager,
-    private val notesNavigationUseCase: NoteNavigationUseCase,
+    private val notesNavigationUseCase: NotesNavigationUseCase,
     private val folderStateController: FolderStateController = FolderStateController(
         notesUseCase,
         authManager
     ),
-) : SideMenuViewModel, KmpViewModel(), FolderController by folderStateController {
+) : GlobalShellViewModel, KmpViewModel(), FolderController by folderStateController {
 
     private var localUserId: String? = null
 
@@ -131,6 +132,20 @@ class SideMenuKmpViewModel(
             itemsList.toMutableList().apply {
                 removeAt(0)
             }
+        }.stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
+    }
+
+    override val folderPath: StateFlow<List<String>> by lazy {
+        combine(
+            menuItemsPerFolderId,
+            notesNavigationUseCase.navigationState
+        ) { perFolder, navigation ->
+            val menuItems = perFolder.values.flatten().map { it.toUiCard() }
+            listOf("Home") + menuItems.reverseTraverse(
+                navigation.id,
+                filterPredicate = { item -> item is MenuItemUi.FolderUi },
+                mapFunc = { item -> item.title }
+            )
         }.stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
     }
 

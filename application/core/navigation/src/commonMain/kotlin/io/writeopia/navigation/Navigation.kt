@@ -44,7 +44,6 @@ fun Navigation(
 
         editorNavigation(
             editorInjector = editorInjector,
-            navigateToNoteMenu = navController::navigateUp,
             isUndoKeyEvent = isUndoKeyEvent,
         )
 
