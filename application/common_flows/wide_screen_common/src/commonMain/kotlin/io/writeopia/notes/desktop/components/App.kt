@@ -223,7 +223,6 @@ private fun GlobalHeader(
     ) {
         Icon(
             modifier = Modifier.icon {
-                println("navigationController.navigateUp()")
                 if (navigationController.previousBackStackEntry != null) {
                     navigationController.navigateUp()
                 }
