@@ -336,18 +336,6 @@ private fun DocumentItem(
         )
 
         Spacer(modifier = Modifier.weight(1F))
-
-//        Icon(
-//            imageVector = Icons.Default.MoreHoriz,
-//            contentDescription = "More",
-//            tint = MaterialTheme.colorScheme.onBackground,
-//            modifier = Modifier
-//                .clip(RoundedCornerShape(6.dp))
-//                .size(26.dp)
-//                .padding(4.dp)
-//        )
-
-//        Spacer(modifier = Modifier.width(6.dp))
     }
 }
 

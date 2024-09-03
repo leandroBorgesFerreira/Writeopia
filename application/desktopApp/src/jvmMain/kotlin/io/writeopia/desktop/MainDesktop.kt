@@ -64,7 +64,6 @@ fun main() = application {
                 val colorTheme =
                     uiConfigurationViewModel.listenForColorTheme { "user_offline" }
 
-                println("App - init")
                 App(
                     notesInjector = NotesInjector(database),
                     repositoryInjection = SqlDelightDaoInjector(database),
