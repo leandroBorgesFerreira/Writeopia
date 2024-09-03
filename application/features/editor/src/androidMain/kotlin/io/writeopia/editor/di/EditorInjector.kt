@@ -10,12 +10,14 @@ import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 
 class EditorInjector internal constructor(
     private val editorKmpInjector: EditorKmpInjector
-): TextEditorInjector {
+) : TextEditorInjector {
 
     @Composable
-    override fun provideNoteDetailsViewModel(): NoteEditorViewModel =
+    override fun provideNoteDetailsViewModel(parentFolderId: String): NoteEditorViewModel =
         viewModel {
-            AndroidNoteEditorViewModel(editorKmpInjector.provideNoteEditorViewModel())
+            AndroidNoteEditorViewModel(
+                editorKmpInjector.provideNoteEditorViewModel(parentFolder = parentFolderId)
+            )
         }
 
     companion object {

@@ -30,6 +30,7 @@ class WriteopiaManager(
     fun newStory(
         documentId: String = GenerateId.generate(),
         title: String = "",
+        parentFolder: String = "root"
     ): Pair<DocumentInfo, StoryState> {
         val firstMessage = StoryStep(
             localId = GenerateId.generate(),
@@ -44,7 +45,8 @@ class WriteopiaManager(
             id = documentId,
             title = title,
             createdAt = now,
-            lastUpdatedAt = now
+            lastUpdatedAt = now,
+            parentId = parentFolder
         )
 
         val state = StoryState(
