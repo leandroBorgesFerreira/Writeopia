@@ -298,7 +298,7 @@ private fun FolderItem(
             when {
                 inBound -> Color.LightGray
 //                    BuildConfig.DEBUG -> Color.Cyan
-                else -> WriteopiaTheme.colorScheme.globalBackground
+                else -> MaterialTheme.colorScheme.surfaceVariant
             }
 
         DragCardTargetWithDragItem(
@@ -363,7 +363,7 @@ private fun DocumentItem(
     val backgroundColor = if (documentUi.selected) {
         MaterialTheme.colorScheme.primary
     } else {
-        WriteopiaTheme.colorScheme.globalBackground
+        MaterialTheme.colorScheme.surfaceVariant
     }
 
     SwipeBox(

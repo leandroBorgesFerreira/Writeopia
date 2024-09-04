@@ -43,10 +43,6 @@ fun SettingsDialog(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(fraction = 0.7F),
-            colors = CardDefaults.cardColors()
-                .copy(
-                    containerColor = WriteopiaTheme.colorScheme.globalBackground,
-                ),
             shape = RoundedCornerShape(16.dp),
         ) {
             Column(modifier = Modifier.padding(horizontal = 40.dp, vertical = 20.dp)) {

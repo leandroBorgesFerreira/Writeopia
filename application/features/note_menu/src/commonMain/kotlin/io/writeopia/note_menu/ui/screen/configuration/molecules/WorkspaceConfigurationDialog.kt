@@ -34,10 +34,6 @@ fun WorkspaceConfigurationDialog(
                 .height(300.dp)
                 .padding(30.dp),
             shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors()
-                .copy(
-                    containerColor = WriteopiaTheme.colorScheme.globalBackground,
-                )
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Column(
