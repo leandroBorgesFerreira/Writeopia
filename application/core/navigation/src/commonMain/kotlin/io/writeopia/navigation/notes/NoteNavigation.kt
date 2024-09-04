@@ -10,7 +10,11 @@ fun NavController.navigateToNewNote() {
 }
 
 fun NavController.navigateToNote(id: String, title: String) {
-    navigate("${Destinations.EDITOR.id}/$id/$title")
+    val noteId = this.currentBackStackEntry?.arguments?.getString("noteId")
+
+    if (noteId != id) {
+        navigate("${Destinations.EDITOR.id}/$id/$title")
+    }
 }
 
 fun NavController.navigateToAccount() {
