@@ -31,4 +31,5 @@ fun Document.info(): DocumentInfo = DocumentInfo(
     title = this.title,
     createdAt = this.createdAt,
     lastUpdatedAt = this.lastUpdatedAt,
+    parentId = this.parentId
 )
