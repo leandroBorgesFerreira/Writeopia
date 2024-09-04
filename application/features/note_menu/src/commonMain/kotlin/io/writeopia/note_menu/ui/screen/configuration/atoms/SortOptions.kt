@@ -39,12 +39,14 @@ internal fun SortOptions(
             onDismissRequest = hideSortOptionsRequest,
             offset = DpOffset((-30).dp, (-6).dp)
         ) {
+            val iconTintColor = MaterialTheme.colorScheme.onPrimary
+
             DropdownMenuItem(
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Outlined.Folder,
                         contentDescription = "Sort by name",
-                        tint = MaterialTheme.colorScheme.onBackground
+                        tint = iconTintColor
                     )
                 }, onClick = {
                     selectSortOption(OrderBy.NAME)
@@ -59,7 +61,7 @@ internal fun SortOptions(
                     Icon(
                         imageVector = Icons.Outlined.Folder,
                         contentDescription = "Sort by creation",
-                        tint = MaterialTheme.colorScheme.onBackground
+                        tint = iconTintColor
                     )
                 }, onClick = {
                     selectSortOption(OrderBy.CREATE)
@@ -74,7 +76,7 @@ internal fun SortOptions(
                     Icon(
                         imageVector = Icons.Outlined.Folder,
                         contentDescription = "Sort by last update",
-                        tint = MaterialTheme.colorScheme.onBackground
+                        tint = iconTintColor
                     )
                 }, onClick = {
                     selectSortOption(OrderBy.UPDATE)

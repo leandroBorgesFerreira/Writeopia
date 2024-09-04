@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import io.writeopia.note_menu.ui.screen.file.fileChooserSave
+import io.writeopia.theme.WriteopiaTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -32,6 +34,10 @@ fun WorkspaceConfigurationDialog(
                 .height(300.dp)
                 .padding(30.dp),
             shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors()
+                .copy(
+                    containerColor = WriteopiaTheme.colorScheme.globalBackground,
+                )
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Column(
@@ -57,7 +63,7 @@ fun WorkspaceConfigurationDialog(
                         Spacer(modifier = Modifier.width(8.dp))
 
                         Icon(
-                            imageVector = Icons.Default.Folder,
+                            imageVector = Icons.Outlined.Folder,
                             "Choose directory",
                             modifier = Modifier
                                 .clip(CircleShape)

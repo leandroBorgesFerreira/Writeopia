@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.sdk.model.draganddrop.DropInfo
+import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.draganddrop.target.DragRowTargetWithDragItem
 import io.writeopia.ui.draganddrop.target.DropTarget
 import kotlinx.coroutines.flow.StateFlow
@@ -61,7 +62,7 @@ private const val finalWidth = 300
 fun SideGlobalMenu(
     modifier: Modifier = Modifier,
     foldersState: StateFlow<List<MenuItemUi>>,
-    background: Color = MaterialTheme.colorScheme.surfaceVariant,
+    background: Color = WriteopiaTheme.colorScheme.globalBackground,
     showOptions: Boolean,
     width: Dp = finalWidth.dp,
     homeClick: () -> Unit,
@@ -203,14 +204,17 @@ private fun FolderItem(
                 folder.highlighted -> Color.LightGray.copy(
                     alpha = 0.7F
                 )
-                else -> MaterialTheme.colorScheme.surfaceVariant
+                else -> WriteopiaTheme.colorScheme.globalBackground
             }
 
         val interactionSource = remember { MutableInteractionSource() }
         val isHovered by interactionSource.collectIsHoveredAsState()
 
         DragRowTargetWithDragItem(
-            modifier = modifier.clickable { navigateToFolder(folder.id) }
+            modifier = modifier
+                .padding(start = 4.dp)
+                .clip(MaterialTheme.shapes.medium)
+                .clickable { navigateToFolder(folder.id) }
                 .background(bgColor)
                 .hoverable(interactionSource)
                 .padding(start = 4.dp),
@@ -299,11 +303,13 @@ private fun DocumentItem(
         if (document.highlighted){
             Color.Blue
         } else {
-            MaterialTheme.colorScheme.surfaceVariant
+            WriteopiaTheme.colorScheme.globalBackground
         }
 
     DragRowTargetWithDragItem(
         modifier = modifier
+            .padding(start = 4.dp)
+            .clip(MaterialTheme.shapes.medium)
             .clickable { navigateToEditDocument(document.id, document.title) }
             .background(background)
             .hoverable(interactionSource)
@@ -350,14 +356,17 @@ private fun settingsOptions(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.let { modifierLet ->
+        modifier = modifier
+            .padding(start = 4.dp)
+            .clip(MaterialTheme.shapes.large)
+            .let { modifierLet ->
             if (click != null) {
                 modifierLet.clickable(onClick = click)
             } else {
                 modifierLet
             }
         }
-            .padding(start = 20.dp, end = 10.dp, top = 10.dp, bottom = 10.dp)
+            .padding(start = 14.dp, end = 10.dp, top = 10.dp, bottom = 10.dp)
             .fillMaxWidth()
     ) {
         iconVector?.let { icon ->

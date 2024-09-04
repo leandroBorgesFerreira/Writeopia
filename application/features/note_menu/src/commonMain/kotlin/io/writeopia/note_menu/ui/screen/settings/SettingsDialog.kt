@@ -13,8 +13,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Contrast
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.LightMode
-import androidx.compose.material.icons.outlined.SystemUpdate
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.note_menu.ui.screen.configuration.modifier.orderConfigModifierHorizontal
+import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -42,6 +43,10 @@ fun SettingsDialog(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(fraction = 0.7F),
+            colors = CardDefaults.cardColors()
+                .copy(
+                    containerColor = WriteopiaTheme.colorScheme.globalBackground,
+                ),
             shape = RoundedCornerShape(16.dp),
         ) {
             Column(modifier = Modifier.padding(horizontal = 40.dp, vertical = 20.dp)) {
@@ -68,7 +73,7 @@ private fun ColorThemeOptions(
     selectColorTheme: (ColorThemeOption) -> Unit
 ) {
     val typography = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
-    val color = MaterialTheme.colorScheme.onBackground
+    val color = MaterialTheme.colorScheme.onPrimary
 
     val spaceWidth = 10.dp
 
