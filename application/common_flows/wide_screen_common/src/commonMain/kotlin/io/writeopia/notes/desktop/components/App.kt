@@ -156,7 +156,6 @@ fun App(
                         .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
                         .clip(MaterialTheme.shapes.large)
                         .background(MaterialTheme.colorScheme.background)
-                        .shadow(elevation = 8.dp)
                 ) {
                     Navigation(
                         startDestination = startDestination(),
