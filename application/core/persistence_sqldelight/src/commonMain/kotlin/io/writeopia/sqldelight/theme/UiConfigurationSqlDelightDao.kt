@@ -36,7 +36,10 @@ class UiConfigurationSqlDelightDao(database: WriteopiaDb?) {
     }
 
     suspend fun getConfigurationByUserId(userId: String): UiConfigurationEntity? =
-        uiConfigurationQueries?.selectConfigurationByUserId(userId)?.awaitAsOneOrNull()
+        uiConfigurationQueries?.selectConfigurationByUserId(
+            "user_offline"
+//            userId
+        )?.awaitAsOneOrNull()
 
     fun listenForConfigurationByUserId(
         getUserId: suspend () -> String,

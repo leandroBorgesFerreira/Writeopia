@@ -28,8 +28,6 @@ import kotlin.math.absoluteValue
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
-// Here
-
 /**
  * Composable to create a swipe effect. The more far away for the original position the user is, the
  * harder it will be to keep moving, which mimics an elastic effect. The recomended usage of this

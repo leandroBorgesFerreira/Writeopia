@@ -87,12 +87,14 @@ private fun MoreOptions(
         val showExtra by showExtraOptions.collectAsState()
 
         DropdownMenu(expanded = showExtra, onDismissRequest = hideExtraOptionsRequest) {
+            val iconTintColor = MaterialTheme.colorScheme.onPrimary
+
             DropdownMenuItem(
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Outlined.Folder,
                         contentDescription = "Configure directory",
-                        tint = MaterialTheme.colorScheme.onBackground
+                        tint = iconTintColor
                     )
                 }, onClick = configureDirectory,
                 text = {
@@ -108,7 +110,7 @@ private fun MoreOptions(
                     Icon(
                         imageVector = Icons.Outlined.AttachFile,
                         contentDescription = "Export",
-                        tint = MaterialTheme.colorScheme.onBackground
+                        tint = iconTintColor
                     )
                 }, onClick = exportAsMarkdownClick,
                 text = {
@@ -121,7 +123,7 @@ private fun MoreOptions(
                     Icon(
                         imageVector = Icons.Outlined.FileDownload,
                         contentDescription = "Export",
-                        tint = MaterialTheme.colorScheme.onBackground
+                        tint = iconTintColor
                     )
                 },
                 onClick = importClick,

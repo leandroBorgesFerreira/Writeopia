@@ -7,17 +7,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -25,11 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import io.writeopia.model.ColorThemeOption
 import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.ui.screen.actions.DesktopNoteActionsMenu
 import io.writeopia.note_menu.ui.screen.configuration.molecules.NotesConfigurationMenu
@@ -43,15 +36,12 @@ import io.writeopia.note_menu.viewmodel.ConfigState
 import io.writeopia.note_menu.viewmodel.getPath
 import io.writeopia.note_menu.viewmodel.toNumberDesktop
 import io.writeopia.ui.draganddrop.target.DraggableScreen
-import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun DesktopNotesMenu(
     chooseNoteViewModel: ChooseNoteViewModel,
-    navigationController: NavController,
     onNewNoteClick: () -> Unit,
     onNoteClick: (String, String) -> Unit,
-    selectColorTheme: (ColorThemeOption) -> Unit,
     navigateToNotes: (NotesNavigation) -> Unit,
 //    addFolder: () -> Unit,
 //    editFolder: (MenuItemUi.FolderUi) -> Unit,

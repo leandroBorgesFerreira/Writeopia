@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 
 fun Modifier.orderConfigModifierHorizontal(clickable: () -> Unit): Modifier =
     composed {
-        clip(RoundedCornerShape(6.dp))
+        clip(MaterialTheme.shapes.large)
             .background(MaterialTheme.colorScheme.inverseSurface)
             .clickable(onClick = clickable)
             .padding(6.dp)

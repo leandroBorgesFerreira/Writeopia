@@ -46,6 +46,7 @@ import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.components.SwipeBox
 import io.writeopia.ui.draganddrop.target.DragCardTargetWithDragItem
 import io.writeopia.ui.draganddrop.target.DropTarget
@@ -194,10 +195,12 @@ private fun LazyGridNotes(
     folderClick: (String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val spacing = Arrangement.spacedBy(6.dp)
 
     LazyVerticalGrid(
+        modifier = modifier,
         columns = GridCells.Adaptive(minSize = 150.dp),
         horizontalArrangement = spacing,
         verticalArrangement = spacing,
@@ -300,6 +303,7 @@ private fun FolderItem(
 
         DragCardTargetWithDragItem(
             modifier = modifier
+                .clip(MaterialTheme.shapes.large)
                 .clickable {
                     folderClick(folderUi.documentId)
                 },
@@ -326,7 +330,7 @@ private fun FolderItem(
                 Text(
                     modifier = Modifier.padding(horizontal = 12.dp),
                     text = folderUi.title,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = WriteopiaTheme.colorScheme.textLight,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -336,7 +340,7 @@ private fun FolderItem(
 
                 Text(
                     text = "${folderUi.itemsCount} items",
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = WriteopiaTheme.colorScheme.textLight,
                     style = MaterialTheme.typography.bodySmall
                 )
             }

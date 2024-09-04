@@ -26,10 +26,8 @@ actual fun NotesMenuScreen(
 ) {
     DesktopNotesMenu(
         chooseNoteViewModel = chooseNoteViewModel,
-        navigationController = navigationController,
         onNewNoteClick = onNewNoteClick,
         onNoteClick = onNoteClick,
-        selectColorTheme = selectColorTheme,
         navigateToNotes = navigateToNotes,
 //        addFolder = addFolder,
 //        editFolder = editFolder,
