@@ -236,7 +236,7 @@ private fun FolderItem(
             Icon(
                 imageVector = imageVector,
                 contentDescription = "Expand",
-                tint = MaterialTheme.colorScheme.onBackground,
+                tint = WriteopiaTheme.colorScheme.textLight,
                 modifier = Modifier
                     .clip(MaterialTheme.shapes.medium)
                     .clickable {
@@ -251,7 +251,7 @@ private fun FolderItem(
             Icon(
                 imageVector = Icons.Outlined.Folder,
                 contentDescription = "Folder",
-                tint = MaterialTheme.colorScheme.onBackground,
+                tint = WriteopiaTheme.colorScheme.textLight,
                 modifier = Modifier.size(16.dp)
             )
 
@@ -260,7 +260,7 @@ private fun FolderItem(
             Text(
                 text = folder.title,
                 modifier = Modifier,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = WriteopiaTheme.colorScheme.textLight,
                 style = MaterialTheme.typography.bodySmall
                     .copy(fontWeight = FontWeight.Bold),
                 maxLines = 1
@@ -271,7 +271,7 @@ private fun FolderItem(
             Icon(
                 imageVector = Icons.Default.MoreHoriz,
                 contentDescription = "More",
-                tint = MaterialTheme.colorScheme.onBackground,
+                tint = WriteopiaTheme.colorScheme.textLight,
                 modifier = Modifier
                     .clip(RoundedCornerShape(6.dp))
                     .clickable(onClick = {
@@ -326,7 +326,7 @@ private fun DocumentItem(
         Icon(
             imageVector = Icons.Outlined.Description,
             contentDescription = "Folder",
-            tint = MaterialTheme.colorScheme.onBackground,
+            tint = WriteopiaTheme.colorScheme.textLight,
             modifier = Modifier.size(16.dp)
         )
 
@@ -335,7 +335,7 @@ private fun DocumentItem(
         Text(
             text = document.title,
             modifier = Modifier,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = WriteopiaTheme.colorScheme.textLight,
             style = MaterialTheme.typography.bodySmall
                 .copy(fontWeight = FontWeight.Bold),
             maxLines = 1

@@ -330,7 +330,7 @@ private fun FolderItem(
                 Text(
                     modifier = Modifier.padding(horizontal = 12.dp),
                     text = folderUi.title,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = WriteopiaTheme.colorScheme.textLight,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -340,7 +340,7 @@ private fun FolderItem(
 
                 Text(
                     text = "${folderUi.itemsCount} items",
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = WriteopiaTheme.colorScheme.textLight,
                     style = MaterialTheme.typography.bodySmall
                 )
             }
