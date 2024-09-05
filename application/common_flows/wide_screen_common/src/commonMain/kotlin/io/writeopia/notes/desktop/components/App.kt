@@ -131,9 +131,23 @@ fun App(
                 foldersState = globalShellViewModel.sideMenuItems,
                 showOptions = showOptions,
                 width = 280.dp,
-                homeClick = { navigationController.navigateToNotes(NotesNavigation.Root) },
+                homeClick = {
+                    val navType = navigationController.currentBackStackEntry
+                        ?.arguments
+                        ?.getString(NAVIGATION_TYPE)
+
+                    if (NotesNavigationType.fromType(navType) != NotesNavigationType.ROOT) {
+                        navigationController.navigateToNotes(NotesNavigation.Root)
+                    }
+                },
                 favoritesClick = {
-                    navigationController.navigateToNotes(NotesNavigation.Favorites)
+                    val navType = navigationController.currentBackStackEntry
+                        ?.arguments
+                        ?.getString(NAVIGATION_TYPE)
+
+                    if (NotesNavigationType.fromType(navType) != NotesNavigationType.FAVORITES) {
+                        navigationController.navigateToNotes(NotesNavigation.Favorites)
+                    }
                 },
                 settingsClick = globalShellViewModel::showSettings,
                 addFolder = globalShellViewModel::addFolder,
@@ -212,9 +226,11 @@ fun App(
 
 private fun NavHostController.navigateToNotes(navigation: NotesNavigation) {
     when (navigation) {
-        is NotesNavigation.Folder -> navigate(
-            "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/${navigation.id}",
-        )
+        is NotesNavigation.Folder -> {
+            navigate(
+                "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/${navigation.id}",
+            )
+        }
 
         NotesNavigation.Favorites, NotesNavigation.Root -> navigate(
             "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/path",

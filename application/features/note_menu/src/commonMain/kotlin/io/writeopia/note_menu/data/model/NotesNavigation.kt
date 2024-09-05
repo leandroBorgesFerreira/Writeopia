@@ -21,7 +21,7 @@ enum class NotesNavigationType(val type: String) {
     FAVORITES("favorites"), ROOT("root"), FOLDER("folder");
 
     companion object {
-        fun fromType(type: String) = entries.firstOrNull { it.type == type }
+        fun fromType(type: String?) = entries.firstOrNull { it.type == type }
             ?: throw IllegalArgumentException("Could not find type: $type")
     }
 }
