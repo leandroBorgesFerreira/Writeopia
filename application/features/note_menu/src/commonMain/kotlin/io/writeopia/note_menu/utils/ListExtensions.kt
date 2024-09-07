@@ -7,5 +7,5 @@ fun List<MenuItem>.sortedWithOrderBy(orderBy: OrderBy): List<MenuItem> =
     when (orderBy) {
         OrderBy.CREATE -> this.sortedBy { menuItem -> menuItem.createdAt }
         OrderBy.UPDATE -> this.sortedBy { menuItem -> menuItem.lastUpdatedAt }
-        OrderBy.NAME -> this.sortedBy { menuItem -> menuItem.title }
+        OrderBy.NAME -> this.sortedBy { menuItem -> menuItem.title.lowercase() }
     }
