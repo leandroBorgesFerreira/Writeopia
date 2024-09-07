@@ -14,6 +14,7 @@ import io.writeopia.utils_module.collections.merge
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 /**
@@ -45,6 +46,7 @@ class NotesUseCase private constructor(
             }
         }
 
+        folderRepository.setLasUpdated(parentId, Clock.System.now().toEpochMilliseconds())
         folderRepository.refreshFolders()
     }
 
@@ -92,19 +94,8 @@ class NotesUseCase private constructor(
     }
 
     suspend fun duplicateDocuments(ids: List<String>, userId: String) {
-        notesConfig.getOrderPreference(userId).let { orderBy ->
-            documentRepository.loadDocumentsWithContentByIds(ids, orderBy)
-        }.map { document ->
-            document.copy(
-                id = GenerateId.generate(),
-                content = document.content.mapValues { (_, storyStep) ->
-                    storyStep.copy(id = GenerateId.generate())
-                })
-        }.forEach { document ->
-            documentRepository.saveDocument(document)
-        }
+        duplicateNotes(ids, userId)
 
-        documentRepository.refreshDocuments()
     }
 
     suspend fun saveDocument(document: Document) {
@@ -138,6 +129,26 @@ class NotesUseCase private constructor(
         coroutineScope: CoroutineScope
     ): Flow<Map<String, List<Document>>> =
         documentRepository.listenForDocumentsByParentId(parentId, coroutineScope)
+
+    private suspend fun duplicateNotes(ids: List<String>, userId: String) {
+        notesConfig.getOrderPreference(userId).let { orderBy ->
+            documentRepository.loadDocumentsWithContentByIds(ids, orderBy)
+        }.map { document ->
+            document.copy(
+                id = GenerateId.generate(),
+                content = document.content.mapValues { (_, storyStep) ->
+                    storyStep.copy(id = GenerateId.generate())
+                })
+        }.forEach { document ->
+            documentRepository.saveDocument(document)
+        }
+
+        documentRepository.refreshDocuments()
+    }
+
+    private suspend fun duplicateFolders(ids: List<String>, userId: String) {
+
+    }
 
     /**
      * Listen and gets [MenuItem] groups by  parent folder.

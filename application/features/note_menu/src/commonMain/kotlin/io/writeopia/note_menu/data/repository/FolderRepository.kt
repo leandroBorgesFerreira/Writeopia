@@ -10,6 +10,8 @@ interface FolderRepository {
 
     suspend fun updateFolder(folder: Folder)
 
+    suspend fun setLasUpdated(folderId: String, long: Long)
+
     suspend fun deleteFolderById(folderId: String)
 
     suspend fun deleteFolderByParent(folderId: String)

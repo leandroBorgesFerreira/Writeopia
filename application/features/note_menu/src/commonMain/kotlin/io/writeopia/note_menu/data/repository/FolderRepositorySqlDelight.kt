@@ -20,6 +20,10 @@ class FolderRepositorySqlDelight(
         folderDao.updateFolder(folder.toEntity())
     }
 
+    override suspend fun setLasUpdated(folderId: String, long: Long) {
+        folderDao.setLastUpdate(folderId, long)
+    }
+
     override fun listenForFoldersByParentId(
         parentId: String,
         coroutineScope: CoroutineScope

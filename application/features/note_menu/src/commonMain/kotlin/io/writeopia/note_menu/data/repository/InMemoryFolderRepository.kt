@@ -44,6 +44,10 @@ class InMemoryFolderRepository : FolderRepository {
         TODO("Not yet implemented")
     }
 
+    override suspend fun setLasUpdated(folderId: String, long: Long) {
+        TODO("Not yet implemented")
+    }
+
     private fun refreshState() {
         _foldersStateFlow.value = mutableMap
     }

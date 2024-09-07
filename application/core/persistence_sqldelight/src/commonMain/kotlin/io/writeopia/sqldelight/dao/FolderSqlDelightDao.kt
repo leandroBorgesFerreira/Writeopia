@@ -8,6 +8,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+
 class FolderSqlDelightDao(database: WriteopiaDb?) {
 
     private val _foldersStateFlow =
@@ -39,6 +41,10 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
             favorite = folder.favorite,
         )
         refreshFolders()
+    }
+
+    suspend fun setLastUpdate(id: String, lastUpdateTimeStamp: Long) {
+        folderEntityQueries?.setLastUpdate(lastUpdateTimeStamp, id)
     }
 
     fun listenForFolderByParentId(
@@ -73,7 +79,6 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
             } ?: emptyList()
     }
 
-
     private fun countAllItems(): Map<String, Long> {
         val foldersCount = folderEntityQueries?.countAllFolderItems()
             ?.executeAsList()
@@ -102,7 +107,11 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
     }
 
     suspend fun moveToFolder(documentId: String, parentId: String) {
-        folderEntityQueries?.moveToFolder(parentId, documentId)
+        folderEntityQueries?.moveToFolder(
+            parentId,
+            Clock.System.now().toEpochMilliseconds(),
+            documentId
+        )
     }
 }
 

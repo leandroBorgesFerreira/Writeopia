@@ -43,4 +43,7 @@ deleteFolderByParent:
 DELETE FROM folderEntity WHERE parent_id = ?;
 
 moveToFolder:
-UPDATE folderEntity SET parent_id = ? WHERE id = ?;
+UPDATE folderEntity SET parent_id = ?, last_updated_at = ? WHERE id = ?;
+
+setLastUpdate:
+UPDATE folderEntity SET last_updated_at = ? WHERE id = ?;

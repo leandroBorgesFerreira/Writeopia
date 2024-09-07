@@ -17,6 +17,7 @@ kotlin {
                 implementation(project(":plugins:writeopia_persistence_core"))
                 implementation(project(":plugins:writeopia_persistence_sqldelight"))
                 implementation(project(":libraries:dbtest"))
+                implementation(libs.kotlinx.datetime)
             }
         }
 
