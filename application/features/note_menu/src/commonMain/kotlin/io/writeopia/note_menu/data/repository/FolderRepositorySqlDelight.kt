@@ -12,6 +12,10 @@ class FolderRepositorySqlDelight(
     private val folderDao: FolderSqlDelightDao
 ) : FolderRepository {
 
+    override suspend fun getFolderById(id: String): Folder? =
+        folderDao.getFolderById(id)?.toModel(0)
+
+
     override suspend fun createFolder(folder: Folder) {
         folderDao.createFolder(folder.toEntity())
     }

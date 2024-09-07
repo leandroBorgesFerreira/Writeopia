@@ -17,6 +17,9 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
 
     private val folderEntityQueries: FolderEntityQueries? = database?.folderEntityQueries
 
+    suspend fun getFolderById(id: String) : FolderEntity? =
+        folderEntityQueries?.selectFolderById(id)?.executeAsOneOrNull()
+
     suspend fun createFolder(folder: FolderEntity) {
         folderEntityQueries?.insert(
             id = folder.id,

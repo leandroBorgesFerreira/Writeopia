@@ -159,7 +159,7 @@ private fun LazyStaggeredGridNotes(
                 documents,
                 key = { _, menuItem -> menuItem.hashCode() }
             ) { i, menuItem ->
-                val modifier = Modifier.animateItemPlacement()
+                val itemModifier = Modifier.animateItemPlacement()
 
                 when (menuItem) {
                     is MenuItemUi.DocumentUi -> {
@@ -169,7 +169,7 @@ private fun LazyStaggeredGridNotes(
                             selectionListener,
                             previewDrawers(),
                             position = i,
-                            modifier = modifier,
+                            modifier = itemModifier,
                         )
                     }
 
@@ -180,7 +180,7 @@ private fun LazyStaggeredGridNotes(
                             position = i,
                             selectionListener = selectionListener,
                             moveRequest = moveRequest,
-                            modifier = modifier
+                            modifier = itemModifier
                         )
                     }
                 }

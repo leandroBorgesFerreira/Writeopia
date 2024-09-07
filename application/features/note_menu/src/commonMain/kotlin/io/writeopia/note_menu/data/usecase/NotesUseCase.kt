@@ -95,7 +95,7 @@ class NotesUseCase private constructor(
 
     suspend fun duplicateDocuments(ids: List<String>, userId: String) {
         duplicateNotes(ids, userId)
-
+        duplicateFolders(ids)
     }
 
     suspend fun saveDocument(document: Document) {
@@ -136,11 +136,7 @@ class NotesUseCase private constructor(
         notesConfig.getOrderPreference(userId).let { orderBy ->
             documentRepository.loadDocumentsWithContentByIds(ids, orderBy)
         }.map { document ->
-            document.copy(
-                id = GenerateId.generate(),
-                content = document.content.mapValues { (_, storyStep) ->
-                    storyStep.copy(id = GenerateId.generate())
-                })
+            document.duplicateWithNewIds()
         }.forEach { document ->
             documentRepository.saveDocument(document)
         }
@@ -148,8 +144,29 @@ class NotesUseCase private constructor(
         documentRepository.refreshDocuments()
     }
 
-    private suspend fun duplicateFolders(ids: List<String>, userId: String) {
+    private suspend fun duplicateFolders(ids: List<String>) {
+        ids.forEach { id -> duplicateFolder(id) }
+    }
 
+    private suspend fun duplicateFolder(id: String) {
+        val newFolder = folderRepository.getFolderById(id)?.copy(id = GenerateId.generate())
+
+        if (newFolder != null) {
+            folderRepository.createFolder(newFolder)
+
+            documentRepository.loadDocumentsByParentId(id)
+                .map { document ->
+                    document.copy(
+                        id = GenerateId.generate(),
+                        content = document.content.mapValues { (_, storyStep) ->
+                            storyStep.copy(id = GenerateId.generate())
+                        },
+                        parentId = newFolder.id
+                    )
+                }.forEach { document ->
+                    documentRepository.saveDocument(document)
+                }
+        }
     }
 
     /**
@@ -178,4 +195,11 @@ class NotesUseCase private constructor(
             }
     }
 }
+
+private fun Document.duplicateWithNewIds(): Document =
+    this.copy(
+        id = GenerateId.generate(),
+        content = this.content.mapValues { (_, storyStep) ->
+            storyStep.copy(id = GenerateId.generate())
+        })
 

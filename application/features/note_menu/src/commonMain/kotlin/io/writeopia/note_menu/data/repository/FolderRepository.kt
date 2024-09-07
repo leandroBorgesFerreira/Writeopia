@@ -24,6 +24,8 @@ interface FolderRepository {
 
     suspend fun refreshFolders()
 
+    suspend fun getFolderById(id: String): Folder?
+
     fun listenForFoldersByParentId(
         parentId: String,
         coroutineScope: CoroutineScope

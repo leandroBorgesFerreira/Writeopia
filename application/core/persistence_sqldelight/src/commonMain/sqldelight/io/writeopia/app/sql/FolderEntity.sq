@@ -17,6 +17,11 @@ SELECT *
 FROM folderEntity
 WHERE folderEntity.parent_id = ?;
 
+selectFolderById:
+SELECT *
+FROM folderEntity
+WHERE folderEntity.id = ?;
+
 countAllFolderItems:
 SELECT parent_id, COUNT(id)
 FROM folderEntity

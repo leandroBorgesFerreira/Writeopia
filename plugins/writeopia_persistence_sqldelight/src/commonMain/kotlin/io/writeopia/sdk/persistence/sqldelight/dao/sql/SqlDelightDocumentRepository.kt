@@ -29,6 +29,9 @@ class SqlDelightDocumentRepository(
             "loadFavDocumentsForUser size: ${it.size}"
         }
 
+    override suspend fun loadDocumentsByParentId(parentId: String): List<Document> =
+        documentSqlDao.loadDocumentByParentId(parentId)
+
     override fun listenForDocumentsByParentId(
         parentId: String,
         coroutineScope: CoroutineScope
