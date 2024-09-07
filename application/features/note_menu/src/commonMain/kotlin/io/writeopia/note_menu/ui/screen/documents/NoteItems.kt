@@ -379,6 +379,19 @@ private fun FolderItem(
                     )
                 }
             }
+
+            if (folderUi.isFavorite) {
+                Icon(
+                    modifier = Modifier.align(Alignment.TopEnd).size(40.dp).padding(12.dp),
+                    imageVector = Icons.Outlined.Favorite,
+                    contentDescription = "Favorite",
+                    tint = if (folderUi.selected) {
+                        MaterialTheme.colorScheme.onPrimary
+                    } else {
+                        MaterialTheme.colorScheme.onBackground
+                    }
+                )
+            }
         }
     }
 }
@@ -456,7 +469,11 @@ private fun DocumentItem(
                     modifier = Modifier.align(Alignment.TopEnd).size(40.dp).padding(12.dp),
                     imageVector = Icons.Outlined.Favorite,
                     contentDescription = "Favorite",
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    tint = if (documentUi.selected) {
+                        MaterialTheme.colorScheme.onPrimary
+                    } else {
+                        MaterialTheme.colorScheme.onBackground
+                    }
                 )
             }
         }

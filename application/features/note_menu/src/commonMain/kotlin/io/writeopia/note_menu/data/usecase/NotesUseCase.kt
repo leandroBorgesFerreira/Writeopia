@@ -116,12 +116,14 @@ class NotesUseCase private constructor(
         folderRepository.deleteFolderById(folderId)
     }
 
-    suspend fun favoriteNotes(ids: Set<String>) {
+    suspend fun favoriteDocuments(ids: Set<String>) {
         documentRepository.favoriteDocumentByIds(ids)
+        folderRepository.favoriteDocumentByIds(ids)
     }
 
-    suspend fun unFavoriteNotes(ids: Set<String>) {
+    suspend fun unFavoriteDocuments(ids: Set<String>) {
         documentRepository.unFavoriteDocumentByIds(ids)
+        folderRepository.unFavoriteDocumentByIds(ids)
     }
 
     private fun listenForDocumentsByParentId(

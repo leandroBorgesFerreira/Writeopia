@@ -16,6 +16,10 @@ interface FolderRepository {
 
     suspend fun deleteFolderByParent(folderId: String)
 
+    suspend fun favoriteDocumentByIds(ids: Set<String>)
+
+    suspend fun unFavoriteDocumentByIds(ids: Set<String>)
+
     suspend fun moveToFolder(documentId: String, parentId: String)
 
     suspend fun refreshFolders()

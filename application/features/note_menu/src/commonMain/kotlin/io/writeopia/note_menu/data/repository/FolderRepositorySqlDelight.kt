@@ -24,6 +24,22 @@ class FolderRepositorySqlDelight(
         folderDao.setLastUpdate(folderId, long)
     }
 
+    override suspend fun favoriteDocumentByIds(ids: Set<String>) {
+        ids.forEach { id ->
+            folderDao.favoriteById(id)
+        }
+
+        refreshFolders()
+    }
+
+    override suspend fun unFavoriteDocumentByIds(ids: Set<String>) {
+        ids.forEach { id ->
+            folderDao.unFavoriteById(id)
+        }
+
+        refreshFolders()
+    }
+
     override fun listenForFoldersByParentId(
         parentId: String,
         coroutineScope: CoroutineScope

@@ -47,3 +47,6 @@ UPDATE folderEntity SET parent_id = ?, last_updated_at = ? WHERE id = ?;
 
 setLastUpdate:
 UPDATE folderEntity SET last_updated_at = ? WHERE id = ?;
+
+favoriteById:
+UPDATE folderEntity SET favorite = ? WHERE id = ?;

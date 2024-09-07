@@ -47,6 +47,14 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
         folderEntityQueries?.setLastUpdate(lastUpdateTimeStamp, id)
     }
 
+    suspend fun favoriteById(id: String) {
+        folderEntityQueries?.favoriteById(1, id)
+    }
+
+    suspend fun unFavoriteById(id: String) {
+        folderEntityQueries?.favoriteById(0, id)
+    }
+
     fun listenForFolderByParentId(
         parentId: String,
         coroutineScope: CoroutineScope
