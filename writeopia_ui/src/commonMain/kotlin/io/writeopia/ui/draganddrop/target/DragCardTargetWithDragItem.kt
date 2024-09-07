@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -37,6 +38,7 @@ fun DragCardTargetWithDragItem(
     position: Int,
     dragIconWidth: Dp = 16.dp,
     limitSize: SizeDp? = null,
+    tintColor: Color = MaterialTheme.colorScheme.onBackground,
     content: @Composable BoxScope.() -> Unit
 ) {
     var currentPosition by remember { mutableStateOf(Offset.Zero) }
@@ -102,7 +104,7 @@ fun DragCardTargetWithDragItem(
                         .align(Alignment.TopEnd),
                     imageVector = Icons.Default.DragIndicator,
                     contentDescription = "Drag icon",
-                    tint = MaterialTheme.colorScheme.onBackground
+                    tint = tintColor
                 )
             }
         }

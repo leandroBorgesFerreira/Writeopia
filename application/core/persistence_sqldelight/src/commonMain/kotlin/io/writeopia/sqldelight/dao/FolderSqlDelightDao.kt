@@ -58,6 +58,11 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
         refreshFolders()
     }
 
+    suspend fun deleteFolderByParent(folderId: String) {
+        folderEntityQueries?.deleteFolderByParent(folderId)
+        refreshFolders()
+    }
+
     private suspend fun getFolders(parentId: String): List<Pair<FolderEntity, Long>> {
         val countMap = countAllItems()
 

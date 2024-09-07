@@ -145,11 +145,12 @@ private fun LazyStaggeredGridNotes(
     selectionListener: (String, Boolean) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
     folderClick: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val spacing = 6.dp
 
     LazyVerticalStaggeredGrid(
-        modifier = Modifier.padding(6.dp),
+        modifier = modifier,
         columns = StaggeredGridCells.Adaptive(minSize = 150.dp),
         horizontalArrangement = Arrangement.spacedBy(spacing),
         verticalItemSpacing = spacing,
@@ -177,6 +178,7 @@ private fun LazyStaggeredGridNotes(
                             menuItem,
                             folderClick = folderClick,
                             position = i,
+                            selectionListener = selectionListener,
                             moveRequest = moveRequest,
                             modifier = modifier
                         )
@@ -226,6 +228,7 @@ private fun LazyGridNotes(
                             menuItem,
                             folderClick = folderClick,
                             moveRequest = moveRequest,
+                            selectionListener = selectionListener,
                             position = i
                         )
                     }
@@ -243,9 +246,10 @@ private fun LazyColumnNotes(
     folderClick: (String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        modifier = Modifier.padding(6.dp),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(6.dp),
         content = {
             itemsIndexed(
@@ -268,6 +272,7 @@ private fun LazyColumnNotes(
                         FolderItem(
                             menuItem,
                             folderClick,
+                            selectionListener = selectionListener,
                             moveRequest = moveRequest,
                             position = i
                         )
@@ -284,6 +289,7 @@ private fun FolderItem(
     folderClick: (String) -> Unit,
     position: Int,
     moveRequest: (MenuItemUi, String) -> Unit,
+    selectionListener: (String, Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DropTarget { inBound, data ->
@@ -298,51 +304,80 @@ private fun FolderItem(
             when {
                 inBound -> Color.LightGray
 //                    BuildConfig.DEBUG -> Color.Cyan
+                folderUi.selected -> MaterialTheme.colorScheme.primary
                 else -> MaterialTheme.colorScheme.surfaceVariant
             }
 
-        DragCardTargetWithDragItem(
+        val tintColor = if (folderUi.selected) {
+            MaterialTheme.colorScheme.onPrimary
+        } else {
+            MaterialTheme.colorScheme.primary
+        }
+
+        val textColor = if (folderUi.selected) {
+            MaterialTheme.colorScheme.onPrimary
+        } else {
+            WriteopiaTheme.colorScheme.textLight
+        }
+
+        SwipeBox(
             modifier = modifier
+                .fillMaxWidth()
                 .clip(MaterialTheme.shapes.large)
                 .clickable {
                     folderClick(folderUi.documentId)
                 },
-            position = position,
-            dataToDrop = DropInfo(folderUi, position),
-            limitSize = SizeDp(150.dp, 150.dp)
-
+            isOnEditState = folderUi.selected,
+            swipeListener = { state ->
+                selectionListener(folderUi.documentId, state)
+            },
+            cornersShape = MaterialTheme.shapes.large,
+            defaultColor = MaterialTheme.colorScheme.surfaceVariant
         ) {
-            Column(
-                modifier = Modifier
-                    .background(color = bgColor, shape = MaterialTheme.shapes.large)
-                    .fillMaxWidth()
-                    .padding(bottom = 26.dp, top = 10.dp)
-                    .align(Alignment.Center),
-                horizontalAlignment = Alignment.CenterHorizontally
+            DragCardTargetWithDragItem(
+                modifier = modifier
+                    .clip(MaterialTheme.shapes.large),
+                position = position,
+                dataToDrop = DropInfo(folderUi, position),
+                limitSize = SizeDp(150.dp, 150.dp),
+                tintColor = if (folderUi.selected) {
+                    MaterialTheme.colorScheme.onPrimary
+                } else {
+                    MaterialTheme.colorScheme.onBackground
+                }
             ) {
-                Icon(
-                    modifier = Modifier.size(70.dp).padding(12.dp),
-                    imageVector = Icons.Outlined.Folder,
-                    contentDescription = "Folder",
-                    tint = MaterialTheme.colorScheme.primary
-                )
+                Column(
+                    modifier = Modifier
+                        .background(color = bgColor, shape = MaterialTheme.shapes.large)
+                        .fillMaxWidth()
+                        .padding(bottom = 26.dp, top = 10.dp)
+                        .align(Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        modifier = Modifier.size(70.dp).padding(12.dp),
+                        imageVector = Icons.Outlined.Folder,
+                        contentDescription = "Folder",
+                        tint = tintColor
+                    )
 
-                Text(
-                    modifier = Modifier.padding(horizontal = 12.dp),
-                    text = folderUi.title,
-                    color = WriteopiaTheme.colorScheme.textLight,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                    Text(
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        text = folderUi.title,
+                        color = textColor,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(4.dp))
 
-                Text(
-                    text = "${folderUi.itemsCount} items",
-                    color = WriteopiaTheme.colorScheme.textLight,
-                    style = MaterialTheme.typography.bodySmall
-                )
+                    Text(
+                        text = "${folderUi.itemsCount} items",
+                        color = textColor,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
             }
         }
     }
@@ -389,7 +424,12 @@ private fun DocumentItem(
         DragCardTargetWithDragItem(
             position = position,
             dataToDrop = DropInfo(documentUi, position),
-            limitSize = SizeDp(150.dp, 120.dp)
+            limitSize = SizeDp(150.dp, 120.dp),
+            tintColor = if (documentUi.selected) {
+                MaterialTheme.colorScheme.onPrimary
+            } else {
+                MaterialTheme.colorScheme.onBackground
+            }
         ) {
             Column(
                 modifier = Modifier.background(
@@ -400,7 +440,11 @@ private fun DocumentItem(
                 documentUi.preview.forEachIndexed { i, storyStep ->
                     drawers[storyStep.type.number]?.Step(
                         step = storyStep,
-                        drawInfo = DrawInfo(editable = false, position = i)
+                        drawInfo = DrawInfo(
+                            editable = false,
+                            position = i,
+                            selectMode = documentUi.selected
+                        ),
                     )
                 }
 

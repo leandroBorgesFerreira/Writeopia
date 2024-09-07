@@ -42,6 +42,10 @@ class FolderRepositorySqlDelight(
         folderDao.deleteFolder(folderId)
     }
 
+    override suspend fun deleteFolderByParent(folderId: String) {
+        folderDao.deleteFolderByParent(folderId)
+    }
+
     override suspend fun refreshFolders() {
         folderDao.refreshFolders()
     }

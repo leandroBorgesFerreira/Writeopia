@@ -40,6 +40,10 @@ class InMemoryFolderRepository : FolderRepository {
         TODO("Not yet implemented")
     }
 
+    override suspend fun deleteFolderByParent(folderId: String) {
+        TODO("Not yet implemented")
+    }
+
     private fun refreshState() {
         _foldersStateFlow.value = mutableMap
     }

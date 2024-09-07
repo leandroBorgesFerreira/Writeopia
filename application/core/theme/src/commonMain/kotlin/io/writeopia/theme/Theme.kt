@@ -52,7 +52,7 @@ fun WrieopiaTheme(
 ) {
     val globalBackground = if (darkTheme) Color(0xFF252525) else Color(0xFFEEEEEE)
     val optionsSelector = if (darkTheme) Color(0x22FFFFFF) else Color(0x22000000)
-    val textLight = if (darkTheme) Color(0xFFCCCCCC) else Color(0xFF444444)
+    val textLight = if (darkTheme) Color(0xFFDFDFDF) else Color(0xFF444444)
 
     val colors = if (darkTheme) {
         DarkColorPalette

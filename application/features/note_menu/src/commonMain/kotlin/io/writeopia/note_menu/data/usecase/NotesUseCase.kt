@@ -114,10 +114,14 @@ class NotesUseCase private constructor(
 
     suspend fun deleteNotes(ids: Set<String>) {
         documentRepository.deleteDocumentByIds(ids)
+        ids.forEach { id ->
+            deleteFolderById(id)
+        }
     }
 
     suspend fun deleteFolderById(folderId: String) {
         documentRepository.deleteDocumentByFolder(folderId)
+        folderRepository.deleteFolderByParent(folderId)
         folderRepository.deleteFolderById(folderId)
     }
 

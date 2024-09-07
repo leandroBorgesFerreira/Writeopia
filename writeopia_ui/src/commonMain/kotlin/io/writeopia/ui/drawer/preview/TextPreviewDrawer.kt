@@ -25,11 +25,17 @@ class TextPreviewDrawer(
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
+        val textColor = if (drawInfo.selectMode) {
+            MaterialTheme.colorScheme.onPrimary
+        } else {
+            MaterialTheme.colorScheme.onBackground
+        }
+
         Text(
             modifier = modifier,
             text = step.text ?: "",
             style = style(),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = textColor,
             maxLines = maxLines
         )
     }

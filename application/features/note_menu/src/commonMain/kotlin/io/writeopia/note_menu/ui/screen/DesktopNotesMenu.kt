@@ -126,7 +126,7 @@ fun DesktopNotesMenu(
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "New note",
-                    tint = MaterialTheme.colorScheme.onBackground
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             },
             containerColor = MaterialTheme.colorScheme.primary
@@ -151,6 +151,7 @@ fun DesktopNotesMenu(
             onDelete = chooseNoteViewModel::deleteSelectedNotes,
             onCopy = chooseNoteViewModel::copySelectedNotes,
             onFavorite = chooseNoteViewModel::favoriteSelectedNotes,
+            onClose = chooseNoteViewModel::unSelectNotes,
             shape = RoundedCornerShape(CornerSize(16.dp)),
             exitAnimationOffset = 2.3F,
             animationSpec = spring(dampingRatio = 0.6F)

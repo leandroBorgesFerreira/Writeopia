@@ -269,6 +269,10 @@ internal class ChooseNoteKmpViewModel(
         }
     }
 
+    override fun unSelectNotes() {
+        _selectedNotes.value = emptySet()
+    }
+
     override fun showSortMenu() {
         _showSortMenuState.value = true
     }
