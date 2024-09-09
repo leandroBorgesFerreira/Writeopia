@@ -26,6 +26,8 @@ interface FolderRepository {
 
     suspend fun getFolderById(id: String): Folder?
 
+    suspend fun getFolderByParentId(parentId: String): List<Folder>
+
     fun listenForFoldersByParentId(
         parentId: String,
         coroutineScope: CoroutineScope

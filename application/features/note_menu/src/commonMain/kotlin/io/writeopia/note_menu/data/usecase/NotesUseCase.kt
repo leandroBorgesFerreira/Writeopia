@@ -145,16 +145,41 @@ class NotesUseCase private constructor(
     }
 
     private suspend fun duplicateFolders(ids: List<String>) {
-        ids.forEach { id -> duplicateFolder(id) }
+        ids.forEach { id -> duplicateFolderRecursively(id) }
+
+        folderRepository.refreshFolders()
     }
 
-    private suspend fun duplicateFolder(id: String) {
-        val newFolder = folderRepository.getFolderById(id)?.copy(id = GenerateId.generate())
+    private suspend fun duplicateFolderRecursively(id: String) {
+        val folder = folderRepository.getFolderById(id)
 
-        if (newFolder != null) {
+        if (folder != null) {
+            duplicateAllFoldersInside(folder)
+        }
+    }
+
+    private suspend fun duplicateAllFoldersInside(folder: Folder) {
+        val newFolder = duplicateFolder(folder)
+        val folderList = getFolderIdByParentId(folder.id).map { insideFolder ->
+            insideFolder.copy(parentId = newFolder.id)
+        }
+
+        if (folderList.isNotEmpty()) {
+            folderList.forEach { insideFolder -> duplicateAllFoldersInside(insideFolder) }
+        }
+    }
+
+    private suspend fun getFolderIdByParentId(parentId: String): List<Folder> =
+        folderRepository.getFolderByParentId(parentId)
+
+    private suspend fun duplicateFolder(folder: Folder): Folder {
+        //Todo: É necessário mudar o parent id da pasta também
+        val newFolder = folder.copy(id = GenerateId.generate())
+
+        return run {
             folderRepository.createFolder(newFolder)
 
-            documentRepository.loadDocumentsByParentId(id)
+            documentRepository.loadDocumentsByParentId(folder.id)
                 .map { document ->
                     document.copy(
                         id = GenerateId.generate(),
@@ -166,6 +191,8 @@ class NotesUseCase private constructor(
                 }.forEach { document ->
                     documentRepository.saveDocument(document)
                 }
+
+            newFolder
         }
     }
 

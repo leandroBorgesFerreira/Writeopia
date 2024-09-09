@@ -15,7 +15,6 @@ class FolderRepositorySqlDelight(
     override suspend fun getFolderById(id: String): Folder? =
         folderDao.getFolderById(id)?.toModel(0)
 
-
     override suspend fun createFolder(folder: Folder) {
         folderDao.createFolder(folder.toEntity())
     }
@@ -43,6 +42,10 @@ class FolderRepositorySqlDelight(
 
         refreshFolders()
     }
+
+    override suspend fun getFolderByParentId(parentId: String): List<Folder> =
+        folderDao.getFoldersByParentId(parentId)
+            .map { (folderEntity, count) -> folderEntity.toModel(count) }
 
     override fun listenForFoldersByParentId(
         parentId: String,
