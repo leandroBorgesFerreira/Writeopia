@@ -93,6 +93,7 @@ internal fun ChooseNoteScreen(
             onDelete = chooseNoteViewModel::deleteSelectedNotes,
             onCopy = chooseNoteViewModel::copySelectedNotes,
             onFavorite = chooseNoteViewModel::favoriteSelectedNotes,
+            onClose = chooseNoteViewModel::unSelectNotes,
         )
 
         val selected = chooseNoteViewModel.notesArrangement.toNumberDesktop()

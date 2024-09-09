@@ -41,6 +41,7 @@ interface ChooseNoteViewModel : FolderController {
     fun copySelectedNotes()
     fun deleteSelectedNotes()
     fun favoriteSelectedNotes()
+    fun unSelectNotes()
     fun hideConfigSyncMenu()
     fun pathSelected(path: String)
     fun confirmWorkplacePath()

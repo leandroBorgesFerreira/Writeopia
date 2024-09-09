@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -30,6 +31,7 @@ internal fun NotesSelectionMenu(
     onDelete: () -> Unit,
     onCopy: () -> Unit,
     onFavorite: () -> Unit,
+    onClose: () -> Unit,
     shape: Shape = RoundedCornerShape(
         CornerSize(16.dp),
         CornerSize(16.dp),
@@ -93,6 +95,17 @@ internal fun NotesSelectionMenu(
 //                    stringResource(R.string.delete),
                     tint = tintColor
                 )
+
+                Icon(
+                    modifier = Modifier
+                        .clickable(onClick = onClose)
+                        .weight(1F)
+                        .padding(vertical = 25.dp),
+                    imageVector = Icons.Outlined.Close,
+                    contentDescription = "Close",
+//                    stringResource(R.string.delete),
+                    tint = tintColor
+                )
             }
         }
     }
@@ -102,6 +115,6 @@ internal fun NotesSelectionMenu(
 @Composable
 internal fun NotesSelectionMenuPreview() {
     Box(modifier = Modifier.fillMaxSize()) {
-        NotesSelectionMenu(visibilityState = true, onDelete = {}, onCopy = {}, onFavorite = {})
+        NotesSelectionMenu(visibilityState = true, onDelete = {}, onCopy = {}, onFavorite = {}, onClose = {})
     }
 }

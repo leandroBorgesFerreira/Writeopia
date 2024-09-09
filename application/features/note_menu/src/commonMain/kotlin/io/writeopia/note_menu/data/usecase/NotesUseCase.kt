@@ -14,6 +14,7 @@ import io.writeopia.utils_module.collections.merge
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 /**
@@ -45,6 +46,7 @@ class NotesUseCase private constructor(
             }
         }
 
+        folderRepository.setLasUpdated(parentId, Clock.System.now().toEpochMilliseconds())
         folderRepository.refreshFolders()
     }
 
@@ -92,19 +94,8 @@ class NotesUseCase private constructor(
     }
 
     suspend fun duplicateDocuments(ids: List<String>, userId: String) {
-        notesConfig.getOrderPreference(userId).let { orderBy ->
-            documentRepository.loadDocumentsWithContentByIds(ids, orderBy)
-        }.map { document ->
-            document.copy(
-                id = GenerateId.generate(),
-                content = document.content.mapValues { (_, storyStep) ->
-                    storyStep.copy(id = GenerateId.generate())
-                })
-        }.forEach { document ->
-            documentRepository.saveDocument(document)
-        }
-
-        documentRepository.refreshDocuments()
+        duplicateNotes(ids, userId)
+        duplicateFolders(ids)
     }
 
     suspend fun saveDocument(document: Document) {
@@ -114,19 +105,25 @@ class NotesUseCase private constructor(
 
     suspend fun deleteNotes(ids: Set<String>) {
         documentRepository.deleteDocumentByIds(ids)
+        ids.forEach { id ->
+            deleteFolderById(id)
+        }
     }
 
     suspend fun deleteFolderById(folderId: String) {
         documentRepository.deleteDocumentByFolder(folderId)
+        folderRepository.deleteFolderByParent(folderId)
         folderRepository.deleteFolderById(folderId)
     }
 
-    suspend fun favoriteNotes(ids: Set<String>) {
+    suspend fun favoriteDocuments(ids: Set<String>) {
         documentRepository.favoriteDocumentByIds(ids)
+        folderRepository.favoriteDocumentByIds(ids)
     }
 
-    suspend fun unFavoriteNotes(ids: Set<String>) {
+    suspend fun unFavoriteDocuments(ids: Set<String>) {
         documentRepository.unFavoriteDocumentByIds(ids)
+        folderRepository.unFavoriteDocumentByIds(ids)
     }
 
     private fun listenForDocumentsByParentId(
@@ -134,6 +131,70 @@ class NotesUseCase private constructor(
         coroutineScope: CoroutineScope
     ): Flow<Map<String, List<Document>>> =
         documentRepository.listenForDocumentsByParentId(parentId, coroutineScope)
+
+    private suspend fun duplicateNotes(ids: List<String>, userId: String) {
+        notesConfig.getOrderPreference(userId).let { orderBy ->
+            documentRepository.loadDocumentsWithContentByIds(ids, orderBy)
+        }.map { document ->
+            document.duplicateWithNewIds()
+        }.forEach { document ->
+            documentRepository.saveDocument(document)
+        }
+
+        documentRepository.refreshDocuments()
+    }
+
+    private suspend fun duplicateFolders(ids: List<String>) {
+        ids.forEach { id -> duplicateFolderRecursively(id) }
+
+        folderRepository.refreshFolders()
+    }
+
+    private suspend fun duplicateFolderRecursively(id: String) {
+        val folder = folderRepository.getFolderById(id)
+
+        if (folder != null) {
+            duplicateAllFoldersInside(folder)
+        }
+    }
+
+    private suspend fun duplicateAllFoldersInside(folder: Folder) {
+        val newFolder = duplicateFolder(folder)
+        val folderList = getFolderIdByParentId(folder.id).map { insideFolder ->
+            insideFolder.copy(parentId = newFolder.id)
+        }
+
+        if (folderList.isNotEmpty()) {
+            folderList.forEach { insideFolder -> duplicateAllFoldersInside(insideFolder) }
+        }
+    }
+
+    private suspend fun getFolderIdByParentId(parentId: String): List<Folder> =
+        folderRepository.getFolderByParentId(parentId)
+
+    private suspend fun duplicateFolder(folder: Folder): Folder {
+        //Todo: É necessário mudar o parent id da pasta também
+        val newFolder = folder.copy(id = GenerateId.generate())
+
+        return run {
+            folderRepository.createFolder(newFolder)
+
+            documentRepository.loadDocumentsByParentId(folder.id)
+                .map { document ->
+                    document.copy(
+                        id = GenerateId.generate(),
+                        content = document.content.mapValues { (_, storyStep) ->
+                            storyStep.copy(id = GenerateId.generate())
+                        },
+                        parentId = newFolder.id
+                    )
+                }.forEach { document ->
+                    documentRepository.saveDocument(document)
+                }
+
+            newFolder
+        }
+    }
 
     /**
      * Listen and gets [MenuItem] groups by  parent folder.
@@ -161,4 +222,11 @@ class NotesUseCase private constructor(
             }
     }
 }
+
+private fun Document.duplicateWithNewIds(): Document =
+    this.copy(
+        id = GenerateId.generate(),
+        content = this.content.mapValues { (_, storyStep) ->
+            storyStep.copy(id = GenerateId.generate())
+        })
 

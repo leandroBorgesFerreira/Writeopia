@@ -262,11 +262,15 @@ internal class ChooseNoteKmpViewModel(
 
         coroutineScope.launch(Dispatchers.Default) {
             if (allFavorites) {
-                notesUseCase.unFavoriteNotes(selectedIds)
+                notesUseCase.unFavoriteDocuments(selectedIds)
             } else {
-                notesUseCase.favoriteNotes(selectedIds)
+                notesUseCase.favoriteDocuments(selectedIds)
             }
         }
+    }
+
+    override fun unSelectNotes() {
+        _selectedNotes.value = emptySet()
     }
 
     override fun showSortMenu() {

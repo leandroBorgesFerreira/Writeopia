@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 class SqlDelightDocumentRepository(
@@ -27,6 +28,9 @@ class SqlDelightDocumentRepository(
         documentSqlDao.loadFavDocumentsWithContentByUserId(orderBy, userId).also {
             "loadFavDocumentsForUser size: ${it.size}"
         }
+
+    override suspend fun loadDocumentsByParentId(parentId: String): List<Document> =
+        documentSqlDao.loadDocumentByParentId(parentId)
 
     override fun listenForDocumentsByParentId(
         parentId: String,

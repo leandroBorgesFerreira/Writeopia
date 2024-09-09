@@ -30,6 +30,12 @@ class HeaderPreviewDrawer(
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
+        val textColor = if (drawInfo.selectMode) {
+            MaterialTheme.colorScheme.onPrimary
+        } else {
+            MaterialTheme.colorScheme.onBackground
+        }
+
         Box(
             modifier = modifier
                 .padding(bottom = 16.dp)
@@ -49,10 +55,8 @@ class HeaderPreviewDrawer(
                     .padding(horizontal = 16.dp, vertical = 12.dp)
                     .align(Alignment.BottomStart),
                 text = step.text ?: "",
-                style = style ?: MaterialTheme.typography.titleLarge.copy(
-                    color = MaterialTheme.colorScheme.onPrimary
-                ),
-                color = MaterialTheme.colorScheme.onBackground,
+                style = style ?: MaterialTheme.typography.titleLarge,
+                color = textColor,
             )
         }
     }

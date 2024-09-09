@@ -17,6 +17,11 @@ SELECT *
 FROM folderEntity
 WHERE folderEntity.parent_id = ?;
 
+selectFolderById:
+SELECT *
+FROM folderEntity
+WHERE folderEntity.id = ?;
+
 countAllFolderItems:
 SELECT parent_id, COUNT(id)
 FROM folderEntity
@@ -39,5 +44,14 @@ UPDATE SET id=excluded.id, parent_id=excluded.parent_id, user_id=excluded.user_i
 deleteFolder:
 DELETE FROM folderEntity WHERE id = ?;
 
+deleteFolderByParent:
+DELETE FROM folderEntity WHERE parent_id = ?;
+
 moveToFolder:
-UPDATE folderEntity SET parent_id = ? WHERE id = ?;
+UPDATE folderEntity SET parent_id = ?, last_updated_at = ? WHERE id = ?;
+
+setLastUpdate:
+UPDATE folderEntity SET last_updated_at = ? WHERE id = ?;
+
+favoriteById:
+UPDATE folderEntity SET favorite = ? WHERE id = ?;

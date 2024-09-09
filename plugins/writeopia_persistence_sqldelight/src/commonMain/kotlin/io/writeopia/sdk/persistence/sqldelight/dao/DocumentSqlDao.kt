@@ -9,6 +9,7 @@ import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.persistence.sqldelight.toLong
 import io.writeopia.sdk.sql.DocumentEntityQueries
 import io.writeopia.sdk.sql.StoryStepEntityQueries
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 class DocumentSqlDao(
@@ -135,14 +136,17 @@ class DocumentSqlDao(
                         favorite = document.favorite == 1L,
                         parentId = document.parent_document_id,
 
-                    )
+                        )
                 }
             }
             ?.sortWithOrderBy(OrderBy.fromString(orderBy))
             ?: emptyList()
     }
 
-    suspend fun loadFavDocumentsWithContentByUserId(orderBy: String, userId: String): List<Document> {
+    suspend fun loadFavDocumentsWithContentByUserId(
+        orderBy: String,
+        userId: String
+    ): List<Document> {
         return documentQueries?.selectFavoritesWithContentByUserId(userId)
             ?.awaitAsList()
             ?.groupBy { it.id }
@@ -328,7 +332,11 @@ class DocumentSqlDao(
     }
 
     suspend fun moveToFolder(documentId: String, parentId: String) {
-        documentQueries?.moveToFolder(parentId, documentId)
+        documentQueries?.moveToFolder(
+            parentId,
+            Clock.System.now().toEpochMilliseconds(),
+            documentId
+        )
     }
 }
 

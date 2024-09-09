@@ -33,6 +33,8 @@ interface DocumentRepository : DocumentUpdate {
 
     suspend fun loadDocumentsWithContentByIds(ids: List<String>, orderBy: String): List<Document>
 
+    suspend fun loadDocumentsByParentId(parentId: String): List<Document>
+
     fun listenForDocumentsByParentId(
         parentId: String,
         coroutineScope: CoroutineScope

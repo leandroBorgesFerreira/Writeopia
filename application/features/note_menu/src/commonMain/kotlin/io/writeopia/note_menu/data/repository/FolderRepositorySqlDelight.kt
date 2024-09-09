@@ -12,6 +12,9 @@ class FolderRepositorySqlDelight(
     private val folderDao: FolderSqlDelightDao
 ) : FolderRepository {
 
+    override suspend fun getFolderById(id: String): Folder? =
+        folderDao.getFolderById(id)?.toModel(0)
+
     override suspend fun createFolder(folder: Folder) {
         folderDao.createFolder(folder.toEntity())
     }
@@ -19,6 +22,30 @@ class FolderRepositorySqlDelight(
     override suspend fun updateFolder(folder: Folder) {
         folderDao.updateFolder(folder.toEntity())
     }
+
+    override suspend fun setLasUpdated(folderId: String, long: Long) {
+        folderDao.setLastUpdate(folderId, long)
+    }
+
+    override suspend fun favoriteDocumentByIds(ids: Set<String>) {
+        ids.forEach { id ->
+            folderDao.favoriteById(id)
+        }
+
+        refreshFolders()
+    }
+
+    override suspend fun unFavoriteDocumentByIds(ids: Set<String>) {
+        ids.forEach { id ->
+            folderDao.unFavoriteById(id)
+        }
+
+        refreshFolders()
+    }
+
+    override suspend fun getFolderByParentId(parentId: String): List<Folder> =
+        folderDao.getFoldersByParentId(parentId)
+            .map { (folderEntity, count) -> folderEntity.toModel(count) }
 
     override fun listenForFoldersByParentId(
         parentId: String,
@@ -40,6 +67,10 @@ class FolderRepositorySqlDelight(
 
     override suspend fun deleteFolderById(folderId: String) {
         folderDao.deleteFolder(folderId)
+    }
+
+    override suspend fun deleteFolderByParent(folderId: String) {
+        folderDao.deleteFolderByParent(folderId)
     }
 
     override suspend fun refreshFolders() {
