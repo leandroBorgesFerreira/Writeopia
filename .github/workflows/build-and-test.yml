@@ -45,7 +45,7 @@ jobs:
       - name: JVM tests
         run: ./gradlew jvmTest --no-daemon
       - name: upload results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: test-results-jvm
@@ -85,7 +85,7 @@ jobs:
       - name: Build backend
         run: ./gradlew backend:documents:documents_spring:assemble backend:editor:api_editor:assemble backend:editor:api_editor:test backend:editor:api_editor_socket:assemble backend:editor:api_editor_socket:test --no-daemon
       - name: upload results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: test-results-backend
