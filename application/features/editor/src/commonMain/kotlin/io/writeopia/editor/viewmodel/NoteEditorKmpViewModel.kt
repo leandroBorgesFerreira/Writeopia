@@ -19,7 +19,6 @@ import io.writeopia.sdk.serialization.request.wrapInRequest
 import io.writeopia.sdk.sharededition.SharedEditionManager
 import io.writeopia.sdk.utils.extensions.noContent
 import io.writeopia.utils_module.KmpViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -135,18 +134,14 @@ class NoteEditorKmpViewModel(
 
     override fun onHeaderColorSelection(color: Int?) {
         onHeaderEditionCancel()
-        writeopiaManager.currentStory.value.stories[0]?.let { storyStep ->
 
+        writeopiaManager.currentStory.value.stories[0]?.let { storyStep ->
             val action = Action.StoryStateChange(
-                storyStep = if (color != null) {
-                    storyStep.copy(
-                        decoration = storyStep.decoration.copy(
-                            backgroundColor = color
-                        )
+                storyStep = storyStep.copy(
+                    decoration = storyStep.decoration.copy(
+                        backgroundColor = color
                     )
-                } else {
-                    storyStep
-                },
+                ),
                 position = 0
             )
             writeopiaManager.changeStoryState(action)

@@ -45,14 +45,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import io.writeopia.editor.ColorUtils
 import io.writeopia.editor.configuration.ui.HeaderEdition
 import io.writeopia.editor.configuration.ui.NoteGlobalActionsMenu
 import io.writeopia.editor.input.InputScreen
@@ -147,24 +146,11 @@ internal fun NoteEditorScreen(
                 )
             }
 
-            val colors = listOf(
-                Color.Blue.toArgb(),
-                Color.Yellow.toArgb(),
-                Color.DarkGray.toArgb(),
-                Color.Red.toArgb(),
-                Color.Magenta.toArgb(),
-                Color.Gray.toArgb(),
-                Color.Green.toArgb(),
-                Color.Cyan.toArgb(),
-                Color.Black.toArgb(),
-                Color.White.toArgb(),
-            )
-
             val headerEdition by noteEditorViewModel.editHeader.collectAsState()
 
             HeaderEdition(
                 modifier = Modifier.fillMaxWidth(),
-                availableColors = colors,
+                availableColors = ColorUtils.headerColors(),
                 onColorSelection = noteEditorViewModel::onHeaderColorSelection,
                 outsideClick = noteEditorViewModel::onHeaderEditionCancel,
                 visibilityState = headerEdition
