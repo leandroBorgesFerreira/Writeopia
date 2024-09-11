@@ -2,11 +2,14 @@ package io.writeopia.ui.draganddrop.target
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DragIndicator
@@ -19,12 +22,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.draganddrop.DropInfo
 
@@ -40,6 +47,7 @@ fun DragRowTargetWithDragItem(
     content: @Composable RowScope.() -> Unit
 ) {
     var currentPosition by remember { mutableStateOf(Offset.Zero) }
+    var maxSize by remember { mutableStateOf(DpSize(0.dp, 0.dp)) }
     val currentState = LocalDragTargetInfo.current
     val haptic = LocalHapticFeedback.current
 
@@ -48,6 +56,7 @@ fun DragRowTargetWithDragItem(
             .onGloballyPositioned { layoutCoordinates ->
                 // Todo: Offset.Zero Is wrong!
                 currentPosition = layoutCoordinates.localToWindow(Offset.Zero)
+                maxSize = DpSize(layoutCoordinates.size.width.dp, layoutCoordinates.size.height.dp)
             },
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -70,7 +79,19 @@ fun DragRowTargetWithDragItem(
                                 currentState.dataToDrop = dataToDrop
                                 currentState.isDragging = true
                                 currentState.dragPosition = currentPosition + offset
-                                currentState.draggableComposable = { content() }
+                                currentState.draggableComposable = {
+                                    Row(
+                                        modifier = Modifier.size(maxSize)
+                                            .clip(MaterialTheme.shapes.medium)
+                                            .background(
+                                                MaterialTheme.colorScheme
+                                                    .surfaceVariant
+                                                    .copy(alpha = 0.6F)
+                                            )
+                                    ) {
+                                        content()
+                                    }
+                                }
                             }, onDrag = { change, dragAmount ->
                                 change.consume()
                                 currentState.dragOffset += Offset(dragAmount.x, dragAmount.y)
@@ -93,6 +114,12 @@ fun DragRowTargetWithDragItem(
             }
         }
 
-        content()
+        if (currentState.isDragging && position == currentState.dataToDrop?.positionFrom) {
+            Row(modifier = Modifier.alpha(0.7F), verticalAlignment = Alignment.CenterVertically) {
+                content()
+            }
+        } else {
+            content()
+        }
     }
 }
