@@ -1,6 +1,7 @@
 package io.writeopia.note_menu.ui.screen
 
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -56,7 +57,7 @@ fun DesktopNotesMenu(
 
     val borderPadding = 8.dp
 
-    DraggableScreen(modifier = modifier.fillMaxSize().padding(end = 12.dp)) {
+    Box(modifier = modifier.fillMaxSize().padding(end = 12.dp)) {
         Column(modifier = Modifier.padding(top = borderPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Spacer(Modifier.weight(1F))

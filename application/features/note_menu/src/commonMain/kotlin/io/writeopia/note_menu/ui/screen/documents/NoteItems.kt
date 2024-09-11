@@ -50,7 +50,6 @@ import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.components.SwipeBox
 import io.writeopia.ui.draganddrop.target.DragCardTargetWithDragItem
 import io.writeopia.ui.draganddrop.target.DropTarget
-import io.writeopia.ui.draganddrop.target.SizeDp
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.preview.CheckItemPreviewDrawer
 import io.writeopia.ui.drawer.preview.HeaderPreviewDrawer
@@ -339,7 +338,6 @@ private fun FolderItem(
                     .clip(MaterialTheme.shapes.large),
                 position = position,
                 dataToDrop = DropInfo(folderUi, position),
-                limitSize = SizeDp(150.dp, 150.dp),
                 tintColor = if (folderUi.selected) {
                     MaterialTheme.colorScheme.onPrimary
                 } else {
@@ -437,7 +435,6 @@ private fun DocumentItem(
         DragCardTargetWithDragItem(
             position = position,
             dataToDrop = DropInfo(documentUi, position),
-            limitSize = SizeDp(150.dp, 120.dp),
             tintColor = if (documentUi.selected) {
                 MaterialTheme.colorScheme.onPrimary
             } else {

@@ -49,6 +49,7 @@ import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.theme.WrieopiaTheme
 import io.writeopia.theme.WriteopiaTheme
+import io.writeopia.ui.draganddrop.target.DraggableScreen
 import io.writeopia.utils_module.Destinations
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -125,98 +126,100 @@ fun App(
 
     WrieopiaTheme(darkTheme = colorTheme.darkTheme()) {
         val globalBackground = WriteopiaTheme.colorScheme.globalBackground
-        Row(Modifier.background(globalBackground)) {
-            SideGlobalMenu(
-                modifier = Modifier.fillMaxHeight(),
-                foldersState = globalShellViewModel.sideMenuItems,
-                showOptions = showOptions,
-                width = 280.dp,
-                homeClick = {
-                    val navType = navigationController.currentBackStackEntry
-                        ?.arguments
-                        ?.getString(NAVIGATION_TYPE)
+        DraggableScreen {
+            Row(Modifier.background(globalBackground)) {
+                SideGlobalMenu(
+                    modifier = Modifier.fillMaxHeight(),
+                    foldersState = globalShellViewModel.sideMenuItems,
+                    showOptions = showOptions,
+                    width = 280.dp,
+                    homeClick = {
+                        val navType = navigationController.currentBackStackEntry
+                            ?.arguments
+                            ?.getString(NAVIGATION_TYPE)
 
-                    if (NotesNavigationType.fromType(navType) != NotesNavigationType.ROOT) {
-                        navigationController.navigateToNotes(NotesNavigation.Root)
-                    }
-                },
-                favoritesClick = {
-                    val navType = navigationController.currentBackStackEntry
-                        ?.arguments
-                        ?.getString(NAVIGATION_TYPE)
+                        if (NotesNavigationType.fromType(navType) != NotesNavigationType.ROOT) {
+                            navigationController.navigateToNotes(NotesNavigation.Root)
+                        }
+                    },
+                    favoritesClick = {
+                        val navType = navigationController.currentBackStackEntry
+                            ?.arguments
+                            ?.getString(NAVIGATION_TYPE)
 
-                    if (NotesNavigationType.fromType(navType) != NotesNavigationType.FAVORITES) {
-                        navigationController.navigateToNotes(NotesNavigation.Favorites)
-                    }
-                },
-                settingsClick = globalShellViewModel::showSettings,
-                addFolder = globalShellViewModel::addFolder,
-                editFolder = globalShellViewModel::editFolder,
-                navigateToFolder = { id ->
-                    val navigation = NotesNavigation.Folder(id)
-                    navigationController.navigateToNotes(navigation)
-                },
-                navigateToEditDocument = navigationController::navigateToNote,
-                moveRequest = globalShellViewModel::moveToFolder,
-                expandFolder = globalShellViewModel::expandFolder,
-                highlightContent = {}
-            )
+                        if (NotesNavigationType.fromType(navType) != NotesNavigationType.FAVORITES) {
+                            navigationController.navigateToNotes(NotesNavigation.Favorites)
+                        }
+                    },
+                    settingsClick = globalShellViewModel::showSettings,
+                    addFolder = globalShellViewModel::addFolder,
+                    editFolder = globalShellViewModel::editFolder,
+                    navigateToFolder = { id ->
+                        val navigation = NotesNavigation.Folder(id)
+                        navigationController.navigateToNotes(navigation)
+                    },
+                    navigateToEditDocument = navigationController::navigateToNote,
+                    moveRequest = globalShellViewModel::moveToFolder,
+                    expandFolder = globalShellViewModel::expandFolder,
+                    highlightContent = {}
+                )
 
-            Column {
-                GlobalHeader(navigationController, globalShellViewModel.folderPath)
-
-                Box(
-                    modifier = Modifier
-                        .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
-                        .clip(MaterialTheme.shapes.large)
-                        .background(MaterialTheme.colorScheme.background)
-                ) {
-                    Navigation(
-                        startDestination = startDestination(),
-                        notesMenuInjection = notesMenuInjection,
-                        accountMenuInjector = accountInjector,
-                        coroutineScope = coroutineScope,
-                        editorInjector = editorInjector,
-                        isUndoKeyEvent = isUndoKeyEvent,
-                        selectColorTheme = selectColorTheme,
-                        navController = navigationController
-                    ) {}
+                Column {
+                    GlobalHeader(navigationController, globalShellViewModel.folderPath)
 
                     Box(
                         modifier = Modifier
-                            .height(60.dp)
-                            .width(16.dp)
-                            .align(alignment = Alignment.CenterStart)
-                            .clip(RoundedCornerShape(100))
-                            .clickable(onClick = globalShellViewModel::toggleSideMenu)
-                            .padding(vertical = 6.dp),
+                            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                            .clip(MaterialTheme.shapes.large)
+                            .background(MaterialTheme.colorScheme.background)
                     ) {
-                        RoundedVerticalDivider(
-                            modifier = Modifier.height(60.dp).align(Alignment.Center),
-                            thickness = 4.dp,
-                            color = MaterialTheme.colorScheme.surfaceVariant
-                        )
-                    }
+                        Navigation(
+                            startDestination = startDestination(),
+                            notesMenuInjection = notesMenuInjection,
+                            accountMenuInjector = accountInjector,
+                            coroutineScope = coroutineScope,
+                            editorInjector = editorInjector,
+                            isUndoKeyEvent = isUndoKeyEvent,
+                            selectColorTheme = selectColorTheme,
+                            navController = navigationController
+                        ) {}
 
-                    val folderEdit = globalShellViewModel.editFolderState.collectAsState().value
+                        Box(
+                            modifier = Modifier
+                                .height(60.dp)
+                                .width(16.dp)
+                                .align(alignment = Alignment.CenterStart)
+                                .clip(RoundedCornerShape(100))
+                                .clickable(onClick = globalShellViewModel::toggleSideMenu)
+                                .padding(vertical = 6.dp),
+                        ) {
+                            RoundedVerticalDivider(
+                                modifier = Modifier.height(60.dp).align(Alignment.Center),
+                                thickness = 4.dp,
+                                color = MaterialTheme.colorScheme.surfaceVariant
+                            )
+                        }
 
-                    if (folderEdit != null) {
-                        EditFileScreen(
-                            folderEdit = folderEdit,
-                            onDismissRequest = globalShellViewModel::stopEditingFolder,
-                            deleteFolder = globalShellViewModel::deleteFolder,
-                            editFolder = globalShellViewModel::updateFolder
-                        )
-                    }
+                        val folderEdit = globalShellViewModel.editFolderState.collectAsState().value
 
-                    val showSettingsState by globalShellViewModel.showSettingsState.collectAsState()
+                        if (folderEdit != null) {
+                            EditFileScreen(
+                                folderEdit = folderEdit,
+                                onDismissRequest = globalShellViewModel::stopEditingFolder,
+                                deleteFolder = globalShellViewModel::deleteFolder,
+                                editFolder = globalShellViewModel::updateFolder
+                            )
+                        }
 
-                    if (showSettingsState) {
-                        SettingsDialog(
-                            selectedThemePosition = MutableStateFlow(2),
-                            onDismissRequest = globalShellViewModel::hideSettings,
-                            selectColorTheme = selectColorTheme
-                        )
+                        val showSettingsState by globalShellViewModel.showSettingsState.collectAsState()
+
+                        if (showSettingsState) {
+                            SettingsDialog(
+                                selectedThemePosition = MutableStateFlow(2),
+                                onDismissRequest = globalShellViewModel::hideSettings,
+                                selectColorTheme = selectColorTheme
+                            )
+                        }
                     }
                 }
             }

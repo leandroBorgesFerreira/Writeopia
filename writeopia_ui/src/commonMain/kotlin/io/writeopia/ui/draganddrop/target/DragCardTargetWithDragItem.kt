@@ -26,6 +26,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.draganddrop.DropInfo
 
@@ -37,11 +38,11 @@ fun DragCardTargetWithDragItem(
     showIcon: Boolean = true,
     position: Int,
     dragIconWidth: Dp = 16.dp,
-    limitSize: SizeDp? = null,
     tintColor: Color = MaterialTheme.colorScheme.onBackground,
     content: @Composable BoxScope.() -> Unit
 ) {
     var currentPosition by remember { mutableStateOf(Offset.Zero) }
+    var maxSize by remember { mutableStateOf(DpSize(0.dp, 0.dp)) }
     val currentState = LocalDragTargetInfo.current
     val haptic = LocalHapticFeedback.current
 
@@ -50,6 +51,7 @@ fun DragCardTargetWithDragItem(
             .onGloballyPositioned { layoutCoordinates ->
                 // Todo: Offset.Zero Is wrong!
                 currentPosition = layoutCoordinates.localToWindow(Offset.Zero)
+                maxSize = DpSize(layoutCoordinates.size.width.dp, layoutCoordinates.size.height.dp)
             },
     ) {
         content()
@@ -77,16 +79,7 @@ fun DragCardTargetWithDragItem(
                                 currentState.isDragging = true
                                 currentState.dragPosition = currentPosition + offset
                                 currentState.draggableComposable = {
-                                    if (limitSize != null) {
-                                        Box(
-                                            modifier = Modifier.size(
-                                                limitSize.width,
-                                                limitSize.height
-                                            )
-                                        ) {
-                                            content()
-                                        }
-                                    } else {
+                                    Box(modifier = Modifier.size(maxSize)) {
                                         content()
                                     }
                                 }
