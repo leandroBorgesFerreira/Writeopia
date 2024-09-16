@@ -2,6 +2,7 @@ package io.writeopia.sdk.persistence.sqldelight.dao
 
 import app.cash.sqldelight.async.coroutines.awaitAsList
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.persistence.core.extensions.sortWithOrderBy
@@ -81,8 +82,12 @@ class DocumentSqlDao(
                             path = innerContent.path,
                             text = innerContent.text,
                             checked = innerContent.checked == 1L,
+
 //                                steps = emptyList(), // Todo: Fix!
-//                                decoration = decoration, // Todo: Fix!
+                            decoration = Decoration(
+                                backgroundColor = innerContent.background_color?.toInt(),
+                                textSize = 16
+                            ), // Todo: Fix!
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -120,7 +125,10 @@ class DocumentSqlDao(
                             text = innerContent.text,
                             checked = innerContent.checked == 1L,
 //                                steps = emptyList(), // Todo: Fix!
-//                                decoration = decoration, // Todo: Fix!
+                            decoration = Decoration(
+                                backgroundColor = innerContent.background_color?.toInt(),
+                                textSize = 16
+                            )
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -165,7 +173,10 @@ class DocumentSqlDao(
                             text = innerContent.text,
                             checked = innerContent.checked == 1L,
 //                                steps = emptyList(), // Todo: Fix!
-//                                decoration = decoration, // Todo: Fix!
+                            decoration = Decoration(
+                                backgroundColor = innerContent.background_color?.toInt(),
+                                textSize = 16
+                            )
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -209,7 +220,10 @@ class DocumentSqlDao(
                             text = innerContent.text,
                             checked = innerContent.checked == 1L,
 //                                steps = emptyList(), // Todo: Fix!
-//                                decoration = decoration, // Todo: Fix!
+                            decoration = Decoration(
+                                backgroundColor = innerContent.background_color?.toInt(),
+                                textSize = 16
+                            )
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -256,7 +270,10 @@ class DocumentSqlDao(
                             text = innerContent.text,
                             checked = innerContent.checked == 1L,
 //                                steps = emptyList(), // Todo: Fix!
-//                                decoration = decoration, // Todo: Fix!
+                            decoration = Decoration(
+                                backgroundColor = innerContent.background_color?.toInt(),
+                                textSize = 16
+                            )
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -295,7 +312,10 @@ class DocumentSqlDao(
                             text = innerContent.text,
                             checked = innerContent.checked == 1L,
 //                                steps = emptyList(), // Todo: Fix!
-//                                decoration = decoration, // Todo: Fix!
+                            decoration = Decoration(
+                                backgroundColor = innerContent.background_color?.toInt(),
+                                textSize = 16
+                            )
                         )
 
                         innerContent.position!!.toInt() to storyStep

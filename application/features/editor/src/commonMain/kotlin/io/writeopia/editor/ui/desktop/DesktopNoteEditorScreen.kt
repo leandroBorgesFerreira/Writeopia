@@ -1,6 +1,7 @@
 package io.writeopia.editor.ui.desktop
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -24,21 +25,27 @@ fun DesktopNoteEditorScreen(
         clickAtBottom = noteEditorViewModel.writeopiaManager::clickAtTheEnd,
         modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         content = {
-            AppTextEditor(
-                noteEditorViewModel.writeopiaManager,
-                noteEditorViewModel,
-                drawersFactory = drawersFactory,
-                loadNoteId = documentId,
-                modifier = Modifier
-                    .onPreviewKeyEvent { keyEvent ->
-                        if (isUndoKeyEvent(keyEvent)) {
-                            noteEditorViewModel.undo()
-                            true
-                        } else {
-                            false
-                        }
-                    }.padding(horizontal = 30.dp)
-            )
+            Row {
+                AppTextEditor(
+                    noteEditorViewModel.writeopiaManager,
+                    noteEditorViewModel,
+                    drawersFactory = drawersFactory,
+                    loadNoteId = documentId,
+                    modifier = Modifier
+                        .onPreviewKeyEvent { keyEvent ->
+                            if (isUndoKeyEvent(keyEvent)) {
+                                noteEditorViewModel.undo()
+                                true
+                            } else {
+                                false
+                            }
+                        }.padding(horizontal = 30.dp)
+                        .weight(1F)
+                )
+
+                SideEditorOptions(modifier = Modifier.padding(horizontal = 20.dp, vertical = 40.dp))
+            }
         }
     )
 }
+

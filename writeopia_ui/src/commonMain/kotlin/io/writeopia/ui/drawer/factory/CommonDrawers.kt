@@ -3,6 +3,7 @@ package io.writeopia.ui.drawer.factory
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -132,8 +133,17 @@ object CommonDrawers {
                     lineBreakByContent = lineBreakByContent,
                 )
             }
+
         val headerDrawer = headerDrawer(
             manager,
+            modifier = Modifier.clip(
+                RoundedCornerShape(
+                    0.dp,
+                    0.dp,
+                    8.dp,
+                    8.dp
+                )
+            ),
             headerClick = onHeaderClick,
             onKeyEvent = eventListener,
             lineBreakByContent = lineBreakByContent,

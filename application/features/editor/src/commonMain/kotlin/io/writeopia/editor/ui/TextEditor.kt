@@ -1,7 +1,6 @@
 package io.writeopia.editor.ui
 
 import androidx.compose.foundation.gestures.animateScrollBy
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
@@ -39,7 +38,7 @@ internal fun TextEditor(
     val clipShape = MaterialTheme.shapes.medium
 
     WriteopiaEditor(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         editable = editable,
         listState = listState,
         drawers = drawersFactory.create(
