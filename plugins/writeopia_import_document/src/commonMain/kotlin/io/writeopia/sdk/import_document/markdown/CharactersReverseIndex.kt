@@ -7,11 +7,7 @@ class CharactersReverseIndexParser(
     commandList: List<Command> = CommandFactory.defaultCommands().toList()
 ) {
 
-    private val reversedIndex: Map<Char, List<CommandIndex>>
-
-    init {
-        reversedIndex = createReverseIndexOfCommand(commandList)
-    }
+    private val reversedIndex: Map<Char, List<CommandIndex>> = createReverseIndexOfCommand(commandList)
 }
 
 fun createReverseIndexOfCommand(commandList: List<Command>): Map<Char, List<CommandIndex>> {

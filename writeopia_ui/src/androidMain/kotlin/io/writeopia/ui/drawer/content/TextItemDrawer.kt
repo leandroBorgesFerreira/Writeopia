@@ -80,7 +80,7 @@ actual class TextItemDrawer actual constructor(
 
                 val interactionSource = remember { MutableInteractionSource() }
                 messageDrawer().apply {
-                    onFocusChanged = { focusState ->
+                    onFocusChanged = { _, focusState ->
                         showDragIcon = focusState.hasFocus
                     }
                 }.Text(

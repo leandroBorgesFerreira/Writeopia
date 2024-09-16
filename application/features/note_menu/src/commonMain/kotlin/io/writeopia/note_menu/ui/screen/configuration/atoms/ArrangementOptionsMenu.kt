@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.writeopia.common_ui.VerticalOptions
+import io.writeopia.common_ui.options.slide.VerticalOptions
 import io.writeopia.note_menu.ui.screen.configuration.modifier.orderConfigModifierVertical
 import kotlinx.coroutines.flow.Flow
 

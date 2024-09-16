@@ -46,7 +46,7 @@ class TextDrawer(
     private val lineBreakByContent: Boolean = true,
     private val emptyErase: EmptyErase = EmptyErase.CHANGE_TYPE,
     private val onLineBreak: (Action.LineBreak) -> Unit = {},
-    override var onFocusChanged: (FocusState) -> Unit = {}
+    override var onFocusChanged: (String, FocusState) -> Unit = { _, _ -> }
 ) : SimpleTextDrawer {
 
     @Composable
@@ -82,12 +82,14 @@ class TextDrawer(
 //                    println("onKeyEvent: $keyEvent")
                     onKeyEvent(keyEvent, inputText, step, drawInfo.position, emptyErase)
                 }
-                .onFocusChanged(onFocusChanged)
+                .onFocusChanged { focusState ->
+                    onFocusChanged(step.id, focusState)
+                }
                 .testTag("MessageDrawer_${drawInfo.position}"),
             value = inputText,
             onValueChange = { value ->
                 val text = value.text
-                
+
                 inputText = if (lineBreakByContent && !allowLineBreaks && text.contains("\n")) {
                     val newStep = step.copy(text = text)
                     onLineBreak(Action.LineBreak(newStep, drawInfo.position))

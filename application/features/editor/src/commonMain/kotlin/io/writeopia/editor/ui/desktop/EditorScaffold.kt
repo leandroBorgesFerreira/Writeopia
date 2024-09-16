@@ -37,9 +37,6 @@ fun EditorScaffold(
                             modifierLet.fillMaxWidth()
                         }
                     }
-                    .defaultMinSize(minHeight = 700.dp)
-//                    .clip(RoundedCornerShape(20.dp))
-//                    .background(Color.White)
             ) {
                 content()
 

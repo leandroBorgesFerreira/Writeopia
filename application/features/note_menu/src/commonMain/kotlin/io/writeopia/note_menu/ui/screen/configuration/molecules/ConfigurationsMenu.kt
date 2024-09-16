@@ -29,7 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.writeopia.common_ui.HorizontalOptions
+import io.writeopia.common_ui.options.slide.HorizontalOptions
 import io.writeopia.common_ui.SlideInBox
 import io.writeopia.note_menu.ui.screen.configuration.modifier.orderConfigModifierHorizontal
 import io.writeopia.sdk.persistence.core.sorting.OrderBy

@@ -1,5 +1,6 @@
 package io.writeopia.ui.manager
 
+import androidx.compose.ui.focus.FocusState
 import io.writeopia.sdk.manager.ContentHandler
 import io.writeopia.sdk.manager.DocumentTracker
 import io.writeopia.sdk.manager.MovementHandler
@@ -63,6 +64,9 @@ class WriteopiaStateManager(
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
     val scrollToPosition: StateFlow<Int?> = _scrollToPosition.asStateFlow()
 
+    /**
+     * The current story in focus
+     */
     private val _currentStory: MutableStateFlow<StoryState> = MutableStateFlow(
         StoryState(stories = initialContent, lastEdit = LastEdit.Nothing)
     )
@@ -257,6 +261,57 @@ class WriteopiaStateManager(
     }
 
     /**
+     * Click lister when user clicks in the menu to add a check item
+     */
+    fun onCheckItemClicked() {
+        changeCurrentStoryType(StoryTypes.CHECK_ITEM)
+    }
+
+    /**
+     * Click lister when user clicks in the menu to add a list item
+     */
+    fun onListItemClicked() {
+        changeCurrentStoryType(StoryTypes.UNORDERED_LIST_ITEM)
+    }
+
+    /**
+     * Click lister when user clicks in the menu to add a code block
+     */
+    fun onCodeBlockClicked() {
+        changeCurrentStoryType(StoryTypes.CODE_BLOCK)
+    }
+
+    private fun changeCurrentStoryType(storyTypes: StoryTypes) {
+        changeCurrentStoryState { storyStep ->
+            val newType = if (storyStep.type == storyTypes.type ) {
+                StoryTypes.TEXT.type
+            } else {
+                storyTypes.type
+            }
+
+            storyStep.copy(type = newType)
+        }
+    }
+
+    private fun changeCurrentStoryState(stateChange: (StoryStep) -> StoryStep) {
+        val currentFocusId = currentStory.value.focusId
+
+        val currentStepEntry = _currentStory.value
+            .stories
+            .entries
+            .find { (_, step) -> step.id == currentFocusId }
+
+        if (currentStepEntry != null) {
+            changeStoryState(
+                Action.StoryStateChange(
+                    stateChange(currentStepEntry.value),
+                    currentStepEntry.key
+                )
+            )
+        }
+    }
+
+    /**
      * At the moment it is only possible to check items not inside groups. Todo: Fix it!
      *
      * @param stateChange [Action.StoryStateChange]
@@ -448,6 +503,12 @@ class WriteopiaStateManager(
             sharedEditionManager?.stopLiveEdition()
         }.invokeOnCompletion {
             coroutineScope.cancel()
+        }
+    }
+
+    fun onFocusChange(id: String, focusState: FocusState) {
+        if (focusState.isFocused) {
+            _currentStory.value = _currentStory.value.copy(focusId = id)
         }
     }
 

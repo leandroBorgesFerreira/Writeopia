@@ -28,6 +28,7 @@ object DefaultDrawersDesktop : DrawersFactory {
             onHeaderClick,
             dragIconWidth = 16.dp,
             lineBreakByContent = true,
+            onFocusChanged = manager::onFocusChange,
             eventListener = KeyEventListenerFactory.desktop(
                 manager = manager,
 //                isLineBreakKey = ::isLineBreak,

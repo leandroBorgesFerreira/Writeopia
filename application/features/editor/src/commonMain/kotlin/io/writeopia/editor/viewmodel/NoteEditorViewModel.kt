@@ -29,6 +29,8 @@ interface NoteEditorViewModel: BackstackInform, BackstackHandler {
 
     val documentToShareInfo: StateFlow<ShareDocument?>
 
+    val showTextOptionsMenu: StateFlow<Boolean>
+
     fun deleteSelection()
 
     fun handleBackAction(navigateBack: () -> Unit)
@@ -50,6 +52,16 @@ interface NoteEditorViewModel: BackstackInform, BackstackHandler {
     fun shareDocumentInMarkdown()
 
     fun onViewModelCleared()
+
+    fun toggleOptionsMenu()
+
+    fun hideOptionsMenu()
+
+    fun onAddCheckListClick()
+
+    fun onAddListItemClick()
+
+    fun onAddCodeBlockClick()
 }
 
 data class ShareDocument(val content: String, val title: String, val type: String)
