@@ -1,5 +1,6 @@
 package io.writeopia.ui.drawer.content
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
@@ -28,6 +29,8 @@ import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.utils.defaultTextStyle
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
@@ -46,7 +49,8 @@ class TextDrawer(
     private val lineBreakByContent: Boolean = true,
     private val emptyErase: EmptyErase = EmptyErase.CHANGE_TYPE,
     private val onLineBreak: (Action.LineBreak) -> Unit = {},
-    override var onFocusChanged: (String, FocusState) -> Unit = { _, _ -> }
+    override var onFocusChanged: (FocusState) -> Unit = { _ -> },
+    private val selectionState: StateFlow<Boolean>,
 ) : SimpleTextDrawer {
 
     @Composable
@@ -61,6 +65,8 @@ class TextDrawer(
             val text = step.text ?: ""
             mutableStateOf(TextFieldValue(text, TextRange(text.length)))
         }
+
+        val selectionState by selectionState.collectAsState()
 
         if (drawInfo.focusId == step.id) {
             LaunchedEffect(step.localId) {
@@ -83,10 +89,19 @@ class TextDrawer(
                     onKeyEvent(keyEvent, inputText, step, drawInfo.position, emptyErase)
                 }
                 .onFocusChanged { focusState ->
-                    onFocusChanged(step.id, focusState)
+                    onFocusChanged(focusState)
                 }
-                .testTag("MessageDrawer_${drawInfo.position}"),
+                .testTag("MessageDrawer_${drawInfo.position}")
+                .let { modifierLet ->
+                    if (selectionState) {
+                        modifierLet.clickable { println("click") }
+                    } else {
+                        modifierLet
+                    }
+                }
+                ,
             value = inputText,
+            enabled = !selectionState,
             onValueChange = { value ->
                 val text = value.text
 
@@ -123,7 +138,7 @@ class TextDrawer(
 @Preview
 @Composable
 fun DesktopMessageDrawerPreview() {
-    TextDrawer().Text(
+    TextDrawer(selectionState = MutableStateFlow(false)).Text(
         step = StoryStep(text = "Some text", type = StoryTypes.TEXT.type),
         drawInfo = DrawInfo(),
         interactionSource = remember { MutableInteractionSource() },

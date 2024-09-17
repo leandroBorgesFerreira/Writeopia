@@ -8,7 +8,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.key.KeyEvent
@@ -53,7 +52,6 @@ object CommonDrawers {
         dragIconWidth: Dp = DRAG_ICON_WIDTH.dp,
         lineBreakByContent: Boolean,
         eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean,
-        onFocusChanged: (String, FocusState) -> Unit
     ): Map<Int, StoryStepDrawer> {
         val textBoxDrawer = swipeTextDrawer(
             modifier = Modifier
@@ -70,7 +68,6 @@ object CommonDrawers {
                     allowLineBreaks = true,
                     lineBreakByContent = lineBreakByContent,
                     emptyErase = EmptyErase.CHANGE_TYPE,
-                    onFocusChanged = onFocusChanged
                 )
             }
         )
@@ -91,7 +88,6 @@ object CommonDrawers {
                     allowLineBreaks = true,
                     lineBreakByContent = lineBreakByContent,
                     emptyErase = EmptyErase.CHANGE_TYPE,
-                    onFocusChanged = onFocusChanged
                 )
             }
         )
@@ -107,7 +103,6 @@ object CommonDrawers {
                 eventListener = eventListener,
                 lineBreakByContent = lineBreakByContent,
                 emptyErase = EmptyErase.DELETE,
-                onFocusChanged = onFocusChanged
             )
         }
 
@@ -122,7 +117,6 @@ object CommonDrawers {
                 eventListener = eventListener,
                 emptyErase = EmptyErase.CHANGE_TYPE,
                 lineBreakByContent = lineBreakByContent,
-                onFocusChanged = onFocusChanged
             )
         }
 
@@ -138,7 +132,6 @@ object CommonDrawers {
                     eventListener = eventListener,
                     emptyErase = EmptyErase.CHANGE_TYPE,
                     lineBreakByContent = lineBreakByContent,
-                    onFocusChanged = onFocusChanged
                 )
             }
 
@@ -155,6 +148,7 @@ object CommonDrawers {
             headerClick = onHeaderClick,
             onKeyEvent = eventListener,
             lineBreakByContent = lineBreakByContent,
+            selectionState = manager.selectionState
         )
 
         return buildMap {
@@ -187,7 +181,6 @@ object CommonDrawers {
         lineBreakByContent: Boolean,
         emptyErase: EmptyErase,
         eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean,
-        onFocusChanged: (String, FocusState) -> Unit
     ): TextDrawer {
         return TextDrawer(
             modifier = modifier.weight(1F),
@@ -199,7 +192,7 @@ object CommonDrawers {
             allowLineBreaks = allowLineBreaks,
             lineBreakByContent = lineBreakByContent,
             emptyErase = emptyErase,
-            onFocusChanged = onFocusChanged
+            selectionState = manager.selectionState
         )
     }
 }

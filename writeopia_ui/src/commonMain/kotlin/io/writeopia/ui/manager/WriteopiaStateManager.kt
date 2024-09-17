@@ -52,7 +52,7 @@ class WriteopiaStateManager(
     private val backStackManager: BackstackManager,
     private val userId: suspend () -> String = { "no_user_id_provided" },
     private val writeopiaManager: WriteopiaManager,
-    private val selectionState: StateFlow<Boolean>,
+    val selectionState: StateFlow<Boolean>,
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     private var lastStateChange: Action.StoryStateChange? = null
@@ -426,7 +426,9 @@ class WriteopiaStateManager(
      */
     fun onSelected(isSelected: Boolean, position: Int) {
         coroutineScope.launch(dispatcher) {
+            println("onSelected")
             if (_currentStory.value.stories[position] != null) {
+                println("_currentStory.value.stories[position] != null. isSelected: $isSelected")
                 if (isSelected) {
                     _positionsOnEdit.value += position
                 } else {
@@ -437,7 +439,7 @@ class WriteopiaStateManager(
     }
 
     private fun toggleSelection(position: Int) {
-        onSelected(_positionsOnEdit.value.contains(position), position)
+        onSelected(!_positionsOnEdit.value.contains(position), position)
     }
 
     /**
@@ -542,22 +544,20 @@ class WriteopiaStateManager(
         }
     }
 
-    fun onFocusChange(id: String, focusState: FocusState) {
-        if (focusState.isFocused) {
-            _currentStory.value = _currentStory.value.copy(focusId = id)
+    fun onSelectionClick(id: String) {
+        _currentStory.value = _currentStory.value.copy(focusId = id)
 
-            println("onFocusChange. selectionState.value: ${selectionState.value}")
+        println("onFocusChange. selectionState.value: ${selectionState.value}")
 
-            if (selectionState.value) {
-                currentStory.value
-                    .stories
-                    .entries
-                    .find { (_, story) -> story.id == id }
-                    ?.let { (position, _) ->
-                        println("toggleSelection")
-                        toggleSelection(position)
-                    }
-            }
+        if (selectionState.value) {
+            currentStory.value
+                .stories
+                .entries
+                .find { (_, story) -> story.id == id }
+                ?.let { (position, _) ->
+                    println("toggleSelection")
+                    toggleSelection(position)
+                }
         }
     }
 

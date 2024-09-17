@@ -199,10 +199,11 @@ internal class ChooseNoteKmpViewModel(
 
     override fun onDocumentSelected(id: String, selected: Boolean) {
         coroutineScope.launch(Dispatchers.Default) {
-            val selectedIds = _selectedNotes.value
-            val newIds = if (selected) selectedIds + id else selectedIds - id
-
-            _selectedNotes.value = newIds
+            if (selected) {
+                _selectedNotes.value += id
+            } else {
+                _selectedNotes.value -= id
+            }
         }
     }
 

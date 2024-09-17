@@ -20,6 +20,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
@@ -67,8 +68,9 @@ fun checkItemDrawer(
     manager: WriteopiaStateManager,
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
-    messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
-): StoryStepDrawer = checkItemDrawer(
+    messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
+
+    ): StoryStepDrawer = checkItemDrawer(
     modifier = modifier,
     onCheckedChange = manager::changeStoryState,
     onSelected = manager::onSelected,
@@ -82,7 +84,12 @@ fun checkItemDrawer(
 @Preview
 @Composable
 fun CheckItemDrawerStepPreview() {
-    checkItemDrawer(messageDrawer = { TextDrawer() }).Step(
+    checkItemDrawer(
+        messageDrawer = {
+            TextDrawer(
+                selectionState = MutableStateFlow(false)
+            )
+        }).Step(
         step = StoryStep(
             type = StoryTypes.CHECK_ITEM.type,
             text = "This is a check item"
