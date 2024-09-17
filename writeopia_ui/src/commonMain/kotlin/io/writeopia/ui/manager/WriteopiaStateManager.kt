@@ -425,7 +425,6 @@ class WriteopiaStateManager(
      */
     fun onSelected(isSelected: Boolean, position: Int) {
         coroutineScope.launch(dispatcher) {
-            println("onSelected")
             if (_currentStory.value.stories[position] != null) {
                 if (isSelected) {
                     _positionsOnEdit.value += position
