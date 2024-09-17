@@ -1,6 +1,5 @@
 package io.writeopia.ui.manager
 
-import androidx.compose.ui.focus.FocusState
 import io.writeopia.sdk.manager.ContentHandler
 import io.writeopia.sdk.manager.DocumentTracker
 import io.writeopia.sdk.manager.MovementHandler
@@ -428,7 +427,6 @@ class WriteopiaStateManager(
         coroutineScope.launch(dispatcher) {
             println("onSelected")
             if (_currentStory.value.stories[position] != null) {
-                println("_currentStory.value.stories[position] != null. isSelected: $isSelected")
                 if (isSelected) {
                     _positionsOnEdit.value += position
                 } else {
@@ -541,23 +539,6 @@ class WriteopiaStateManager(
             sharedEditionManager?.stopLiveEdition()
         }.invokeOnCompletion {
             coroutineScope.cancel()
-        }
-    }
-
-    fun onSelectionClick(id: String) {
-        _currentStory.value = _currentStory.value.copy(focusId = id)
-
-        println("onFocusChange. selectionState.value: ${selectionState.value}")
-
-        if (selectionState.value) {
-            currentStory.value
-                .stories
-                .entries
-                .find { (_, story) -> story.id == id }
-                ?.let { (position, _) ->
-                    println("toggleSelection")
-                    toggleSelection(position)
-                }
         }
     }
 
