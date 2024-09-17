@@ -73,7 +73,12 @@ private fun UnOrderedListItemPreview() {
 
     unOrderedListItemDrawer(
         modifier,
-        messageDrawer = { TextDrawer(selectionState = MutableStateFlow(false)) }
+        messageDrawer = {
+            TextDrawer(
+                selectionState = MutableStateFlow(false),
+                onSelectionLister = {}
+            )
+        }
     ).Step(
         StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type, text = "Item1"),
         DrawInfo()

@@ -57,7 +57,10 @@ object CommonDrawers {
             modifier = Modifier
                 .padding(horizontal = LARGE_START_PADDING.dp)
                 .clip(shape = defaultBorder)
-                .background(groupsBackgroundColor),
+                .background(groupsBackgroundColor)
+                .let { modifierLet ->
+                    modifierLet
+                },
             dragIconWidth = DRAG_ICON_WIDTH.dp,
             onSelected = manager::onSelected,
             messageDrawer = {
@@ -68,6 +71,7 @@ object CommonDrawers {
                     allowLineBreaks = true,
                     lineBreakByContent = lineBreakByContent,
                     emptyErase = EmptyErase.CHANGE_TYPE,
+                    onSelectionLister = manager::toggleSelection
                 )
             }
         )
@@ -88,6 +92,7 @@ object CommonDrawers {
                     allowLineBreaks = true,
                     lineBreakByContent = lineBreakByContent,
                     emptyErase = EmptyErase.CHANGE_TYPE,
+                    onSelectionLister = manager::toggleSelection,
                 )
             }
         )
@@ -103,6 +108,7 @@ object CommonDrawers {
                 eventListener = eventListener,
                 lineBreakByContent = lineBreakByContent,
                 emptyErase = EmptyErase.DELETE,
+                onSelectionLister = manager::toggleSelection,
             )
         }
 
@@ -117,6 +123,7 @@ object CommonDrawers {
                 eventListener = eventListener,
                 emptyErase = EmptyErase.CHANGE_TYPE,
                 lineBreakByContent = lineBreakByContent,
+                onSelectionLister = manager::toggleSelection,
             )
         }
 
@@ -132,6 +139,7 @@ object CommonDrawers {
                     eventListener = eventListener,
                     emptyErase = EmptyErase.CHANGE_TYPE,
                     lineBreakByContent = lineBreakByContent,
+                    onSelectionLister = manager::toggleSelection,
                 )
             }
 
@@ -181,6 +189,7 @@ object CommonDrawers {
         lineBreakByContent: Boolean,
         emptyErase: EmptyErase,
         eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean,
+        onSelectionLister: (Int) -> Unit
     ): TextDrawer {
         return TextDrawer(
             modifier = modifier.weight(1F),
@@ -192,7 +201,8 @@ object CommonDrawers {
             allowLineBreaks = allowLineBreaks,
             lineBreakByContent = lineBreakByContent,
             emptyErase = emptyErase,
-            selectionState = manager.selectionState
+            selectionState = manager.selectionState,
+            onSelectionLister = onSelectionLister
         )
     }
 }

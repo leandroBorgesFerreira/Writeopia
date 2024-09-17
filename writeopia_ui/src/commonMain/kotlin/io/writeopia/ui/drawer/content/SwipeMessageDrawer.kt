@@ -58,7 +58,7 @@ fun swipeTextDrawer(
 private fun SwipeMessageDrawerPreview() {
     swipeTextDrawer(
         messageDrawer = {
-            TextDrawer(selectionState = MutableStateFlow(false))
+            TextDrawer(selectionState = MutableStateFlow(false), onSelectionLister = {})
         },
     ).Step(
         step = StoryStep(text = "Some text", type = StoryTypes.TEXT.type),

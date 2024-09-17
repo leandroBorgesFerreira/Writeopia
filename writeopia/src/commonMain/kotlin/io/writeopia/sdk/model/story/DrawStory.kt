@@ -8,5 +8,5 @@ import io.writeopia.sdk.models.story.StoryStep
  */
 data class DrawStory(val storyStep: StoryStep, val isSelected: Boolean) {
 
-    val key = storyStep.key
+    val key = storyStep.key + isSelected.let { if (it) 1 else 0 }
 }

@@ -51,6 +51,7 @@ class TextDrawer(
     private val onLineBreak: (Action.LineBreak) -> Unit = {},
     override var onFocusChanged: (FocusState) -> Unit = { _ -> },
     private val selectionState: StateFlow<Boolean>,
+    private val onSelectionLister: (Int) -> Unit
 ) : SimpleTextDrawer {
 
     @Composable
@@ -94,7 +95,7 @@ class TextDrawer(
                 .testTag("MessageDrawer_${drawInfo.position}")
                 .let { modifierLet ->
                     if (selectionState) {
-                        modifierLet.clickable { println("click") }
+                        modifierLet.clickable { onSelectionLister(drawInfo.position) }
                     } else {
                         modifierLet
                     }
@@ -138,7 +139,7 @@ class TextDrawer(
 @Preview
 @Composable
 fun DesktopMessageDrawerPreview() {
-    TextDrawer(selectionState = MutableStateFlow(false)).Text(
+    TextDrawer(selectionState = MutableStateFlow(false), onSelectionLister = {}).Text(
         step = StoryStep(text = "Some text", type = StoryTypes.TEXT.type),
         drawInfo = DrawInfo(),
         interactionSource = remember { MutableInteractionSource() },

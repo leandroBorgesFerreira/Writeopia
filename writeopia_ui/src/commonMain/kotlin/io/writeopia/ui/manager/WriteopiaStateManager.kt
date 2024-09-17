@@ -438,7 +438,7 @@ class WriteopiaStateManager(
         }
     }
 
-    private fun toggleSelection(position: Int) {
+    fun toggleSelection(position: Int) {
         onSelected(!_positionsOnEdit.value.contains(position), position)
     }
 

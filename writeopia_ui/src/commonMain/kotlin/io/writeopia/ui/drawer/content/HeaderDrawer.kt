@@ -121,7 +121,8 @@ fun headerDrawer(
                         color = MaterialTheme.colorScheme.onBackground
                     )
                 },
-                selectionState = selectionState
+                selectionState = selectionState,
+                onSelectionLister = {}
             )
         },
         headerClick = headerClick
@@ -144,7 +145,8 @@ private fun HeaderDrawerStepPreview() {
                         color = MaterialTheme.colorScheme.onBackground
                     )
                 },
-                selectionState = MutableStateFlow(false)
+                selectionState = MutableStateFlow(false),
+                onSelectionLister = {}
             )
         },
         headerClick = {}
@@ -168,7 +170,8 @@ private fun HeaderDrawerStepPreviewNoColor() {
                         color = MaterialTheme.colorScheme.onBackground
                     )
                 },
-                selectionState = MutableStateFlow(false)
+                selectionState = MutableStateFlow(false),
+                onSelectionLister = {}
             )
         },
         headerClick = {}
