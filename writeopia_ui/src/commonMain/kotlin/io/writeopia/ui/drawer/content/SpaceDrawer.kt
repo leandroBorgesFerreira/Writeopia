@@ -48,7 +48,7 @@ class SpaceDrawer(private val moveRequest: (Action.Move) -> Unit = {}) : StorySt
                 modifier = Modifier
                     .height(10.dp)
                     .fillMaxWidth()
-                    .padding(top = 3.dp, bottom = 3.dp, start = 24.dp)
+                    .padding(top = 3.dp, bottom = 3.dp, start = 12.dp)
                     .clip(MaterialTheme.shapes.medium)
                     .background(spaceBgColor)
             )

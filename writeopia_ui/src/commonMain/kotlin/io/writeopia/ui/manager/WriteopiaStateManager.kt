@@ -51,7 +51,8 @@ class WriteopiaStateManager(
     private val coroutineScope: CoroutineScope = CoroutineScope(EmptyCoroutineContext),
     private val backStackManager: BackstackManager,
     private val userId: suspend () -> String = { "no_user_id_provided" },
-    private val writeopiaManager: WriteopiaManager
+    private val writeopiaManager: WriteopiaManager,
+    private val selectionState: StateFlow<Boolean>,
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     private var lastStateChange: Action.StoryStateChange? = null
@@ -264,26 +265,62 @@ class WriteopiaStateManager(
      * Click lister when user clicks in the menu to add a check item
      */
     fun onCheckItemClicked() {
-        changeCurrentStoryType(StoryTypes.CHECK_ITEM)
+        val onEdit = _positionsOnEdit.value
+
+        if (onEdit.isNotEmpty()) {
+            toggleStateForStories(onEdit, StoryTypes.CHECK_ITEM)
+        } else {
+            changeCurrentStoryType(StoryTypes.CHECK_ITEM)
+        }
+    }
+
+    private fun toggleStateForStories(onEdit: Set<Int>, storyTypes: StoryTypes) {
+        val currentStories = currentStory.value.stories
+
+        onEdit.forEach { position ->
+            val story = currentStories[position]
+            if (story != null) {
+                val newType = if (story.type == storyTypes.type) {
+                    StoryTypes.TEXT
+                } else {
+                    storyTypes
+                }
+
+                changeStoryState(
+                    Action.StoryStateChange(
+                        storyStep = story.copy(type = newType.type),
+                        position = position
+                    )
+                )
+            }
+        }
     }
 
     /**
      * Click lister when user clicks in the menu to add a list item
      */
     fun onListItemClicked() {
-        changeCurrentStoryType(StoryTypes.UNORDERED_LIST_ITEM)
+        val onEdit = _positionsOnEdit.value
+
+        if (onEdit.isNotEmpty()) {
+            toggleStateForStories(onEdit, StoryTypes.UNORDERED_LIST_ITEM)
+        } else {
+            changeCurrentStoryType(StoryTypes.UNORDERED_LIST_ITEM)
+        }
     }
 
     /**
      * Click lister when user clicks in the menu to add a code block
      */
     fun onCodeBlockClicked() {
-        changeCurrentStoryType(StoryTypes.CODE_BLOCK)
+        //Todo: This change needs to take into account that code block is a multi line block and then
+        //it needs to be have the relation N -> 1 and 1 -> N when transforming.
+//        changeCurrentStoryType(StoryTypes.CODE_BLOCK)
     }
 
     private fun changeCurrentStoryType(storyTypes: StoryTypes) {
         changeCurrentStoryState { storyStep ->
-            val newType = if (storyStep.type == storyTypes.type ) {
+            val newType = if (storyStep.type == storyTypes.type) {
                 StoryTypes.TEXT.type
             } else {
                 storyTypes.type
@@ -334,10 +371,6 @@ class WriteopiaStateManager(
         if (lastStateChange == stateChange) return
         lastStateChange = stateChange
 
-        if (isOnSelection) {
-            cancelSelection()
-        }
-
         writeopiaManager.changeStoryState(stateChange, _currentStory.value)?.let { state ->
             _currentStory.value = state
             backstackAction?.let { action ->
@@ -352,7 +385,7 @@ class WriteopiaStateManager(
      * example.
      *
      * @param position Int
-     * @param storyType [StoryStep]
+     * @param typeInfo [TypeInfo]
      * @param commandInfo [CommandInfo]
      */
     fun changeStoryType(position: Int, typeInfo: TypeInfo, commandInfo: CommandInfo?) {
@@ -394,14 +427,17 @@ class WriteopiaStateManager(
     fun onSelected(isSelected: Boolean, position: Int) {
         coroutineScope.launch(dispatcher) {
             if (_currentStory.value.stories[position] != null) {
-                val newOnEdit = if (isSelected) {
-                    _positionsOnEdit.value + position
+                if (isSelected) {
+                    _positionsOnEdit.value += position
                 } else {
-                    _positionsOnEdit.value - position
+                    _positionsOnEdit.value -= position
                 }
-                _positionsOnEdit.value = newOnEdit
             }
         }
+    }
+
+    private fun toggleSelection(position: Int) {
+        onSelected(_positionsOnEdit.value.contains(position), position)
     }
 
     /**
@@ -509,6 +545,19 @@ class WriteopiaStateManager(
     fun onFocusChange(id: String, focusState: FocusState) {
         if (focusState.isFocused) {
             _currentStory.value = _currentStory.value.copy(focusId = id)
+
+            println("onFocusChange. selectionState.value: ${selectionState.value}")
+
+            if (selectionState.value) {
+                currentStory.value
+                    .stories
+                    .entries
+                    .find { (_, story) -> story.id == id }
+                    ?.let { (position, _) ->
+                        println("toggleSelection")
+                        toggleSelection(position)
+                    }
+            }
         }
     }
 
@@ -516,6 +565,7 @@ class WriteopiaStateManager(
         fun create(
             writeopiaManager: WriteopiaManager,
             dispatcher: CoroutineDispatcher,
+            selectionState: StateFlow<Boolean>,
             stepsNormalizer: UnitsNormalizationMap =
                 StepsMapNormalizationBuilder.reduceNormalizations {
                     defaultNormalizers()
@@ -536,7 +586,8 @@ class WriteopiaStateManager(
             coroutineScope,
             backStackManager,
             userId,
-            writeopiaManager
+            writeopiaManager,
+            selectionState
         )
     }
 }

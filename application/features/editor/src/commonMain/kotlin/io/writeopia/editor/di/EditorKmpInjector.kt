@@ -12,11 +12,13 @@ import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.sharededition.SharedEditionManager
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.StateFlow
 
 class EditorKmpInjector(
     private val authCoreInjection: AuthCoreInjection,
     private val repositoryInjection: RepositoryInjector,
     private val connectionInjection: ConnectionInjector,
+    private val selectionState: StateFlow<Boolean>,
 ) : TextEditorInjector {
 
     private fun provideDocumentRepository(): DocumentRepository =
@@ -30,7 +32,8 @@ class EditorKmpInjector(
     ) = WriteopiaStateManager.create(
         userId = { authManager.getUser().id },
         dispatcher = Dispatchers.Default,
-        writeopiaManager = writeopiaManager
+        writeopiaManager = writeopiaManager,
+        selectionState = selectionState
     )
 
     fun provideNoteEditorViewModel(

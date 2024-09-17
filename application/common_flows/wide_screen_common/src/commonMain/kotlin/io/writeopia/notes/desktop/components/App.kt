@@ -81,7 +81,8 @@ fun App(
         EditorKmpInjector(
             authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,
-            connectionInjection = connectionInjection
+            connectionInjection = connectionInjection,
+            selectionState = selectionState
         )
     }
     val accountInjector = remember { AccountMenuKmpInjector(authCoreInjection) }

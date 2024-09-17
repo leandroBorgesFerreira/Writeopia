@@ -175,7 +175,7 @@ internal class ChooseNoteKmpViewModel(
         }
     }
 
-    override fun handleNoteTap(id: String): Boolean {
+    override fun handleMenuItemTap(id: String): Boolean {
         return if (selectionState.value) {
             if (_selectedNotes.value.contains(id)) {
                 _selectedNotes.value -= id
