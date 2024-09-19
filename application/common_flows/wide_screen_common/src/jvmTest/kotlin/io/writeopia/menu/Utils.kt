@@ -9,6 +9,7 @@ import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
+import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -30,7 +31,8 @@ suspend fun startApp(
             disableWebsocket = true,
             isUndoKeyEvent = { false },
             selectColorTheme = {},
-            selectionState = MutableStateFlow(false)
+            selectionState = MutableStateFlow(false),
+            keyboardEventFlow = MutableStateFlow(KeyboardEvent.IDLE)
         )
     }
 }
