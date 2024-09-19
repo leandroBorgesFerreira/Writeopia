@@ -49,7 +49,7 @@ class TextDrawer(
     private val lineBreakByContent: Boolean = true,
     private val emptyErase: EmptyErase = EmptyErase.CHANGE_TYPE,
     private val onLineBreak: (Action.LineBreak) -> Unit = {},
-    override var onFocusChanged: (FocusState) -> Unit = { _ -> },
+    override var onFocusChanged: (Int, FocusState) -> Unit = { _, _ -> },
     private val selectionState: StateFlow<Boolean>,
     private val onSelectionLister: (Int) -> Unit
 ) : SimpleTextDrawer {
@@ -90,7 +90,7 @@ class TextDrawer(
                     onKeyEvent(keyEvent, inputText, step, drawInfo.position, emptyErase)
                 }
                 .onFocusChanged { focusState ->
-                    onFocusChanged(focusState)
+                    onFocusChanged(drawInfo.position, focusState)
                 }
                 .testTag("MessageDrawer_${drawInfo.position}")
                 .let { modifierLet ->

@@ -419,6 +419,15 @@ class WriteopiaStateManager(
         }
     }
 
+    fun onFocusChange(position: Int, hasFocus: Boolean) {
+        if (!hasFocus) return
+        val story = currentStory.value
+
+        story.stories[position]?.id.let { newFocusId ->
+            _currentStory.value = story.copy(focusId = newFocusId)
+        }
+    }
+
     /**
      * Add a [StoryStep] of a position into the selection list. Selected content can be used to
      * perform bulk actions, like bulk edition and bulk deletion.
@@ -545,7 +554,7 @@ class WriteopiaStateManager(
         fun create(
             writeopiaManager: WriteopiaManager,
             dispatcher: CoroutineDispatcher,
-            selectionState: StateFlow<Boolean>,
+            selectionState: StateFlow<Boolean> = MutableStateFlow(false),
             stepsNormalizer: UnitsNormalizationMap =
                 StepsMapNormalizationBuilder.reduceNormalizations {
                     defaultNormalizers()
