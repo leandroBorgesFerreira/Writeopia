@@ -7,6 +7,7 @@ import io.writeopia.editor.AndroidNoteEditorViewModel
 import io.writeopia.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
+import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class EditorInjector internal constructor(
@@ -31,7 +32,8 @@ class EditorInjector internal constructor(
                 authCoreInjection,
                 daosInjection,
                 connectionInjector,
-                MutableStateFlow(false)
+                MutableStateFlow(false),
+                MutableStateFlow(KeyboardEvent.IDLE)
             )
         )
     }
