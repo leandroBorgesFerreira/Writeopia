@@ -26,16 +26,20 @@ import io.writeopia.sdk.utils.extensions.toEditState
 import io.writeopia.ui.backstack.BackstackHandler
 import io.writeopia.ui.backstack.BackstackInform
 import io.writeopia.ui.backstack.BackstackManager
+import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.math.max
 
 /**
  * This is the entry class of the framework. It follows the Controller pattern, redirecting all the
@@ -52,7 +56,26 @@ class WriteopiaStateManager(
     private val userId: suspend () -> String = { "no_user_id_provided" },
     private val writeopiaManager: WriteopiaManager,
     val selectionState: StateFlow<Boolean>,
+    private val keyboardEventFlow: Flow<KeyboardEvent>,
 ) : BackstackHandler, BackstackInform by backStackManager {
+
+    init {
+        coroutineScope.launch(Dispatchers.Default) {
+            keyboardEventFlow.collect { event ->
+                when (event) {
+                    KeyboardEvent.MOVE_UP -> {
+                        moveToPrevious()
+                    }
+
+                    KeyboardEvent.MOVE_DOWN -> {
+                        moveToNext()
+                    }
+
+                    KeyboardEvent.IDLE -> {}
+                }
+            }
+        }
+    }
 
     private var lastStateChange: Action.StoryStateChange? = null
 
@@ -199,11 +222,21 @@ class WriteopiaStateManager(
      * @param position Int
      */
     // Todo: Add unit tests
-    fun nextFocusOrCreate(position: Int) {
+    private fun nextFocusOrCreate(position: Int) {
         coroutineScope.launch(dispatcher) {
             _currentStory.value =
                 writeopiaManager.nextFocusOrCreate(position, _currentStory.value)
         }
+    }
+
+    private fun moveToNext() {
+        val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
+        nextFocusOrCreate(focusPosition + 1)
+    }
+
+    private fun moveToPrevious() {
+        val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
+        nextFocusOrCreate(max(focusPosition - 1, 0))
     }
 
     /**
@@ -330,21 +363,28 @@ class WriteopiaStateManager(
     }
 
     private fun changeCurrentStoryState(stateChange: (StoryStep) -> StoryStep) {
-        val currentFocusId = currentStory.value.focusId
-
-        val currentStepEntry = _currentStory.value
-            .stories
-            .entries
-            .find { (_, step) -> step.id == currentFocusId }
+        val currentStepEntry = currentFocus()
 
         if (currentStepEntry != null) {
             changeStoryState(
                 Action.StoryStateChange(
-                    stateChange(currentStepEntry.value),
-                    currentStepEntry.key
+                    stateChange(currentStepEntry.second),
+                    currentStepEntry.first
                 )
             )
         }
+    }
+
+    private fun currentFocus(): Pair<Int, StoryStep>? {
+        val currentFocusId = currentStory.value.focusId
+
+        return _currentStory.value
+            .stories
+            .entries
+            .find { (_, step) -> step.id == currentFocusId }
+            ?.let { (position, step) ->
+                position to step
+            }
     }
 
     /**
@@ -555,6 +595,7 @@ class WriteopiaStateManager(
             writeopiaManager: WriteopiaManager,
             dispatcher: CoroutineDispatcher,
             selectionState: StateFlow<Boolean> = MutableStateFlow(false),
+            keyboardEventFlow: Flow<KeyboardEvent?> = MutableStateFlow(null),
             stepsNormalizer: UnitsNormalizationMap =
                 StepsMapNormalizationBuilder.reduceNormalizations {
                     defaultNormalizers()
@@ -576,7 +617,8 @@ class WriteopiaStateManager(
             backStackManager,
             userId,
             writeopiaManager,
-            selectionState
+            selectionState,
+            keyboardEventFlow.filterNotNull()
         )
     }
 }

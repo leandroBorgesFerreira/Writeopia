@@ -11,7 +11,9 @@ import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.sharededition.SharedEditionManager
+import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 class EditorKmpInjector(
@@ -19,6 +21,7 @@ class EditorKmpInjector(
     private val repositoryInjection: RepositoryInjector,
     private val connectionInjection: ConnectionInjector,
     private val selectionState: StateFlow<Boolean>,
+    private val keyboardEventFlow: Flow<KeyboardEvent>,
 ) : TextEditorInjector {
 
     private fun provideDocumentRepository(): DocumentRepository =
@@ -33,7 +36,8 @@ class EditorKmpInjector(
         userId = { authManager.getUser().id },
         dispatcher = Dispatchers.Default,
         writeopiaManager = writeopiaManager,
-        selectionState = selectionState
+        selectionState = selectionState,
+        keyboardEventFlow = keyboardEventFlow
     )
 
     fun provideNoteEditorViewModel(

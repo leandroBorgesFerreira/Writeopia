@@ -50,8 +50,10 @@ import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.theme.WrieopiaTheme
 import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.draganddrop.target.DraggableScreen
+import io.writeopia.ui.keyboard.KeyboardEvent
 import io.writeopia.utils_module.Destinations
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -63,6 +65,7 @@ fun App(
     uiConfigurationInjector: UiConfigurationInjector,
     disableWebsocket: Boolean = false,
     selectionState: StateFlow<Boolean>,
+    keyboardEventFlow: Flow<KeyboardEvent>,
     colorThemeOption: StateFlow<ColorThemeOption?>,
     coroutineScope: CoroutineScope,
     isUndoKeyEvent: (KeyEvent) -> Boolean,
@@ -82,7 +85,8 @@ fun App(
             authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,
             connectionInjection = connectionInjection,
-            selectionState = selectionState
+            selectionState = selectionState,
+            keyboardEventFlow = keyboardEventFlow
         )
     }
     val accountInjector = remember { AccountMenuKmpInjector(authCoreInjection) }
