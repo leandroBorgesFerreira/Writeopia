@@ -12,6 +12,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
@@ -57,7 +58,7 @@ fun swipeTextDrawer(
 private fun SwipeMessageDrawerPreview() {
     swipeTextDrawer(
         messageDrawer = {
-            TextDrawer()
+            TextDrawer(selectionState = MutableStateFlow(false), onSelectionLister = {})
         },
     ).Step(
         step = StoryStep(text = "Some text", type = StoryTypes.TEXT.type),

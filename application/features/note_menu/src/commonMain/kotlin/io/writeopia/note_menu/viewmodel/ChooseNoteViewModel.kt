@@ -21,7 +21,7 @@ interface ChooseNoteViewModel : FolderController {
     val syncInProgress: StateFlow<SyncState>
 
     //    fun requestDocuments(force: Boolean)
-    fun handleNoteTap(id: String): Boolean
+    fun handleMenuItemTap(id: String): Boolean
     suspend fun requestUser()
     fun showEditMenu()
     fun showSortMenu()

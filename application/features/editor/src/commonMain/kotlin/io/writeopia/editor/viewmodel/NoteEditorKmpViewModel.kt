@@ -80,6 +80,9 @@ class NoteEditorKmpViewModel(
     private val _documentToShareInfo = MutableStateFlow<ShareDocument?>(null)
     override val documentToShareInfo: StateFlow<ShareDocument?> = _documentToShareInfo.asStateFlow()
 
+    private val _showTextOptionsMenu: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    override val showTextOptionsMenu: StateFlow<Boolean> = _showTextOptionsMenu.asStateFlow()
+
     override fun deleteSelection() {
         writeopiaManager.deleteSelection()
     }
@@ -148,6 +151,17 @@ class NoteEditorKmpViewModel(
         }
     }
 
+    override fun onAddCheckListClick() {
+        writeopiaManager.onCheckItemClicked()
+    }
+
+    override fun onAddListItemClick() {
+        writeopiaManager.onListItemClicked()
+    }
+    override fun onAddCodeBlockClick() {
+        writeopiaManager.onCodeBlockClicked()
+    }
+
     override fun onHeaderEditionCancel() {
         _editHeader.value = false
     }
@@ -166,6 +180,14 @@ class NoteEditorKmpViewModel(
 
     override fun onViewModelCleared() {
         writeopiaManager.onClear()
+    }
+
+    override fun toggleOptionsMenu() {
+        _showTextOptionsMenu.value = !_showTextOptionsMenu.value
+    }
+
+    override fun hideOptionsMenu() {
+        _showTextOptionsMenu.value = false
     }
 
     private fun documentToJson(document: Document, json: Json = writeopiaJson): String {

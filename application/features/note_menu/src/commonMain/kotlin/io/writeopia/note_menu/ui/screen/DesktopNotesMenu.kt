@@ -36,7 +36,6 @@ import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.note_menu.viewmodel.ConfigState
 import io.writeopia.note_menu.viewmodel.getPath
 import io.writeopia.note_menu.viewmodel.toNumberDesktop
-import io.writeopia.ui.draganddrop.target.DraggableScreen
 
 @Composable
 fun DesktopNotesMenu(
@@ -86,14 +85,17 @@ fun DesktopNotesMenu(
                 NotesCards(
                     documents = chooseNoteViewModel.documentsState.collectAsState().value,
                     loadNote = { id, title ->
-                        val handled = chooseNoteViewModel.handleNoteTap(id)
+                        val handled = chooseNoteViewModel.handleMenuItemTap(id)
                         if (!handled) {
                             onNoteClick(id, title)
                         }
                     },
                     selectionListener = chooseNoteViewModel::onDocumentSelected,
                     folderClick = { id ->
-                        navigateToNotes(NotesNavigation.Folder(id))
+                        val handled = chooseNoteViewModel.handleMenuItemTap(id)
+                        if (!handled) {
+                            navigateToNotes(NotesNavigation.Folder(id))
+                        }
                     },
                     moveRequest = { item, parentId ->
                         chooseNoteViewModel.moveToFolder(item, parentId)

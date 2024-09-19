@@ -15,6 +15,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
@@ -72,7 +73,12 @@ private fun UnOrderedListItemPreview() {
 
     unOrderedListItemDrawer(
         modifier,
-        messageDrawer = { TextDrawer() }
+        messageDrawer = {
+            TextDrawer(
+                selectionState = MutableStateFlow(false),
+                onSelectionLister = {}
+            )
+        }
     ).Step(
         StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type, text = "Item1"),
         DrawInfo()

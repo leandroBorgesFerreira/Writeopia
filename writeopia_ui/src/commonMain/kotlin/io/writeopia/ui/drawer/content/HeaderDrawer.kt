@@ -32,6 +32,8 @@ import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.utils.transparentTextInputColors
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
@@ -101,6 +103,7 @@ fun headerDrawer(
     onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean,
     modifier: Modifier = Modifier,
     lineBreakByContent: Boolean,
+    selectionState: StateFlow<Boolean>,
 ): StoryStepDrawer =
     HeaderDrawer(
         modifier = modifier,
@@ -117,7 +120,9 @@ fun headerDrawer(
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground
                     )
-                }
+                },
+                selectionState = selectionState,
+                onSelectionLister = {}
             )
         },
         headerClick = headerClick
@@ -139,7 +144,9 @@ private fun HeaderDrawerStepPreview() {
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground
                     )
-                }
+                },
+                selectionState = MutableStateFlow(false),
+                onSelectionLister = {}
             )
         },
         headerClick = {}
@@ -162,7 +169,9 @@ private fun HeaderDrawerStepPreviewNoColor() {
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground
                     )
-                }
+                },
+                selectionState = MutableStateFlow(false),
+                onSelectionLister = {}
             )
         },
         headerClick = {}

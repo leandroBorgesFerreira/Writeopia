@@ -175,7 +175,7 @@ internal class ChooseNoteKmpViewModel(
         }
     }
 
-    override fun handleNoteTap(id: String): Boolean {
+    override fun handleMenuItemTap(id: String): Boolean {
         return if (selectionState.value) {
             if (_selectedNotes.value.contains(id)) {
                 _selectedNotes.value -= id
@@ -199,10 +199,11 @@ internal class ChooseNoteKmpViewModel(
 
     override fun onDocumentSelected(id: String, selected: Boolean) {
         coroutineScope.launch(Dispatchers.Default) {
-            val selectedIds = _selectedNotes.value
-            val newIds = if (selected) selectedIds + id else selectedIds - id
-
-            _selectedNotes.value = newIds
+            if (selected) {
+                _selectedNotes.value += id
+            } else {
+                _selectedNotes.value -= id
+            }
         }
     }
 

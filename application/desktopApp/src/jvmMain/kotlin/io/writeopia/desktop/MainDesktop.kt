@@ -24,7 +24,12 @@ import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
+import io.writeopia.ui.keyboard.KeyboardEvent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 import java.awt.event.KeyEvent
 import androidx.compose.ui.input.key.KeyEvent as AndroidKeyEvent
 
@@ -37,6 +42,7 @@ fun main() = application {
     )
 
     val selectionState = MutableStateFlow(false)
+    val keyboardEventFlow = MutableStateFlow<KeyboardEvent?>(null)
 
     Window(
         onCloseRequest = ::exitApplication,
@@ -49,7 +55,41 @@ fun main() = application {
                 selectionState.value = false
             }
 
-            false
+            when {
+                isSelectionKeyEventStart(keyEvent) -> {
+                    selectionState.value = true
+
+                    false
+                }
+
+                isSelectionKeyEventStop(keyEvent) -> {
+                    selectionState.value = false
+
+                    false
+                }
+
+                isMoveDownEvent(keyEvent) -> {
+                    coroutineScope.launch(Dispatchers.IO) {
+                        keyboardEventFlow.tryEmit(KeyboardEvent.MOVE_DOWN)
+                        delay(100)
+                        keyboardEventFlow.tryEmit(KeyboardEvent.IDLE)
+                    }
+
+                    true
+                }
+
+                isMoveUpEvent(keyEvent) -> {
+                    coroutineScope.launch(Dispatchers.IO) {
+                        keyboardEventFlow.tryEmit(KeyboardEvent.MOVE_UP)
+                        delay(100)
+                        keyboardEventFlow.tryEmit(KeyboardEvent.IDLE)
+                    }
+
+                    true
+                }
+
+                else -> false
+            }
         }
     ) {
         when (val databaseState = databaseStateFlow.collectAsState().value) {
@@ -69,6 +109,7 @@ fun main() = application {
                     repositoryInjection = SqlDelightDaoInjector(database),
                     uiConfigurationInjector = uiConfigurationInjector,
                     selectionState = selectionState,
+                    keyboardEventFlow = keyboardEventFlow.filterNotNull(),
                     coroutineScope = coroutineScope,
                     isUndoKeyEvent = ::isUndoKeyboardEvent,
                     colorThemeOption = colorTheme,
@@ -102,3 +143,9 @@ private fun isSelectionKeyEventStart(keyEvent: AndroidKeyEvent) =
 private fun isSelectionKeyEventStop(keyEvent: AndroidKeyEvent) =
     keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_META &&
         keyEvent.type == KeyEventType.KeyUp
+
+private fun isMoveDownEvent(keyEvent: AndroidKeyEvent) =
+    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_DOWN
+
+private fun isMoveUpEvent(keyEvent: AndroidKeyEvent) =
+    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_UP

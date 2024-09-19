@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.manager.WriteopiaStateManager
+import kotlinx.coroutines.flow.StateFlow
 
 object DefaultDrawersDesktop : DrawersFactory {
 
@@ -17,7 +18,7 @@ object DefaultDrawersDesktop : DrawersFactory {
         editable: Boolean,
         groupsBackgroundColor: Color,
         onHeaderClick: () -> Unit,
-        textCommandHandler: TextCommandHandler
+        textCommandHandler: TextCommandHandler,
     ): Map<Int, StoryStepDrawer> =
         CommonDrawers.create(
             manager,

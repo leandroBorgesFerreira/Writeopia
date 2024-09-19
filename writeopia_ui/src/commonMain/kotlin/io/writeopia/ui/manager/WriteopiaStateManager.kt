@@ -26,16 +26,20 @@ import io.writeopia.sdk.utils.extensions.toEditState
 import io.writeopia.ui.backstack.BackstackHandler
 import io.writeopia.ui.backstack.BackstackInform
 import io.writeopia.ui.backstack.BackstackManager
+import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.math.max
 
 /**
  * This is the entry class of the framework. It follows the Controller pattern, redirecting all the
@@ -50,8 +54,28 @@ class WriteopiaStateManager(
     private val coroutineScope: CoroutineScope = CoroutineScope(EmptyCoroutineContext),
     private val backStackManager: BackstackManager,
     private val userId: suspend () -> String = { "no_user_id_provided" },
-    private val writeopiaManager: WriteopiaManager
+    private val writeopiaManager: WriteopiaManager,
+    val selectionState: StateFlow<Boolean>,
+    private val keyboardEventFlow: Flow<KeyboardEvent>,
 ) : BackstackHandler, BackstackInform by backStackManager {
+
+    init {
+        coroutineScope.launch(Dispatchers.Default) {
+            keyboardEventFlow.collect { event ->
+                when (event) {
+                    KeyboardEvent.MOVE_UP -> {
+                        moveToPrevious()
+                    }
+
+                    KeyboardEvent.MOVE_DOWN -> {
+                        moveToNext()
+                    }
+
+                    KeyboardEvent.IDLE -> {}
+                }
+            }
+        }
+    }
 
     private var lastStateChange: Action.StoryStateChange? = null
 
@@ -63,6 +87,9 @@ class WriteopiaStateManager(
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
     val scrollToPosition: StateFlow<Int?> = _scrollToPosition.asStateFlow()
 
+    /**
+     * The current story in focus
+     */
     private val _currentStory: MutableStateFlow<StoryState> = MutableStateFlow(
         StoryState(stories = initialContent, lastEdit = LastEdit.Nothing)
     )
@@ -195,11 +222,21 @@ class WriteopiaStateManager(
      * @param position Int
      */
     // Todo: Add unit tests
-    fun nextFocusOrCreate(position: Int) {
+    private fun nextFocusOrCreate(position: Int) {
         coroutineScope.launch(dispatcher) {
             _currentStory.value =
                 writeopiaManager.nextFocusOrCreate(position, _currentStory.value)
         }
+    }
+
+    private fun moveToNext() {
+        val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
+        nextFocusOrCreate(focusPosition + 1)
+    }
+
+    private fun moveToPrevious() {
+        val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
+        nextFocusOrCreate(max(focusPosition - 1, 0))
     }
 
     /**
@@ -257,6 +294,100 @@ class WriteopiaStateManager(
     }
 
     /**
+     * Click lister when user clicks in the menu to add a check item
+     */
+    fun onCheckItemClicked() {
+        val onEdit = _positionsOnEdit.value
+
+        if (onEdit.isNotEmpty()) {
+            toggleStateForStories(onEdit, StoryTypes.CHECK_ITEM)
+        } else {
+            changeCurrentStoryType(StoryTypes.CHECK_ITEM)
+        }
+    }
+
+    private fun toggleStateForStories(onEdit: Set<Int>, storyTypes: StoryTypes) {
+        val currentStories = currentStory.value.stories
+
+        onEdit.forEach { position ->
+            val story = currentStories[position]
+            if (story != null) {
+                val newType = if (story.type == storyTypes.type) {
+                    StoryTypes.TEXT
+                } else {
+                    storyTypes
+                }
+
+                changeStoryState(
+                    Action.StoryStateChange(
+                        storyStep = story.copy(type = newType.type),
+                        position = position
+                    )
+                )
+            }
+        }
+    }
+
+    /**
+     * Click lister when user clicks in the menu to add a list item
+     */
+    fun onListItemClicked() {
+        val onEdit = _positionsOnEdit.value
+
+        if (onEdit.isNotEmpty()) {
+            toggleStateForStories(onEdit, StoryTypes.UNORDERED_LIST_ITEM)
+        } else {
+            changeCurrentStoryType(StoryTypes.UNORDERED_LIST_ITEM)
+        }
+    }
+
+    /**
+     * Click lister when user clicks in the menu to add a code block
+     */
+    fun onCodeBlockClicked() {
+        //Todo: This change needs to take into account that code block is a multi line block and then
+        //it needs to be have the relation N -> 1 and 1 -> N when transforming.
+//        changeCurrentStoryType(StoryTypes.CODE_BLOCK)
+    }
+
+    private fun changeCurrentStoryType(storyTypes: StoryTypes) {
+        changeCurrentStoryState { storyStep ->
+            val newType = if (storyStep.type == storyTypes.type) {
+                StoryTypes.TEXT.type
+            } else {
+                storyTypes.type
+            }
+
+            storyStep.copy(type = newType)
+        }
+    }
+
+    private fun changeCurrentStoryState(stateChange: (StoryStep) -> StoryStep) {
+        val currentStepEntry = currentFocus()
+
+        if (currentStepEntry != null) {
+            changeStoryState(
+                Action.StoryStateChange(
+                    stateChange(currentStepEntry.second),
+                    currentStepEntry.first
+                )
+            )
+        }
+    }
+
+    private fun currentFocus(): Pair<Int, StoryStep>? {
+        val currentFocusId = currentStory.value.focusId
+
+        return _currentStory.value
+            .stories
+            .entries
+            .find { (_, step) -> step.id == currentFocusId }
+            ?.let { (position, step) ->
+                position to step
+            }
+    }
+
+    /**
      * At the moment it is only possible to check items not inside groups. Todo: Fix it!
      *
      * @param stateChange [Action.StoryStateChange]
@@ -279,10 +410,6 @@ class WriteopiaStateManager(
         if (lastStateChange == stateChange) return
         lastStateChange = stateChange
 
-        if (isOnSelection) {
-            cancelSelection()
-        }
-
         writeopiaManager.changeStoryState(stateChange, _currentStory.value)?.let { state ->
             _currentStory.value = state
             backstackAction?.let { action ->
@@ -297,7 +424,7 @@ class WriteopiaStateManager(
      * example.
      *
      * @param position Int
-     * @param storyType [StoryStep]
+     * @param typeInfo [TypeInfo]
      * @param commandInfo [CommandInfo]
      */
     fun changeStoryType(position: Int, typeInfo: TypeInfo, commandInfo: CommandInfo?) {
@@ -332,6 +459,15 @@ class WriteopiaStateManager(
         }
     }
 
+    fun onFocusChange(position: Int, hasFocus: Boolean) {
+        if (!hasFocus) return
+        val story = currentStory.value
+
+        story.stories[position]?.id.let { newFocusId ->
+            _currentStory.value = story.copy(focusId = newFocusId)
+        }
+    }
+
     /**
      * Add a [StoryStep] of a position into the selection list. Selected content can be used to
      * perform bulk actions, like bulk edition and bulk deletion.
@@ -339,14 +475,17 @@ class WriteopiaStateManager(
     fun onSelected(isSelected: Boolean, position: Int) {
         coroutineScope.launch(dispatcher) {
             if (_currentStory.value.stories[position] != null) {
-                val newOnEdit = if (isSelected) {
-                    _positionsOnEdit.value + position
+                if (isSelected) {
+                    _positionsOnEdit.value += position
                 } else {
-                    _positionsOnEdit.value - position
+                    _positionsOnEdit.value -= position
                 }
-                _positionsOnEdit.value = newOnEdit
             }
         }
+    }
+
+    fun toggleSelection(position: Int) {
+        onSelected(!_positionsOnEdit.value.contains(position), position)
     }
 
     /**
@@ -455,6 +594,8 @@ class WriteopiaStateManager(
         fun create(
             writeopiaManager: WriteopiaManager,
             dispatcher: CoroutineDispatcher,
+            selectionState: StateFlow<Boolean> = MutableStateFlow(false),
+            keyboardEventFlow: Flow<KeyboardEvent?> = MutableStateFlow(null),
             stepsNormalizer: UnitsNormalizationMap =
                 StepsMapNormalizationBuilder.reduceNormalizations {
                     defaultNormalizers()
@@ -475,7 +616,9 @@ class WriteopiaStateManager(
             coroutineScope,
             backStackManager,
             userId,
-            writeopiaManager
+            writeopiaManager,
+            selectionState,
+            keyboardEventFlow.filterNotNull()
         )
     }
 }
