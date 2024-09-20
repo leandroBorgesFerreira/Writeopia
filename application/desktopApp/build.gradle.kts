@@ -39,9 +39,18 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Writeopia"
             packageVersion = "1.0.0"
+            modules("java.sql")
 
+            val iconsRoot = project.file("./src/jvmMain/resources/images")
             macOS {
+                iconFile.set(iconsRoot.resolve("icon-mac.icns"))
                 jvmArgs("-Dapple.awt.application.appearance=system")
+            }
+        }
+
+        buildTypes.release {
+            proguard {
+                configurationFiles.from("proguard-rules.pro")
             }
         }
     }

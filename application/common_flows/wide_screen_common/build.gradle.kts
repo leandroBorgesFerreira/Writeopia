@@ -61,14 +61,3 @@ kotlin {
     }
 }
 
-compose.desktop {
-    application {
-        mainClass = "io.writeopia.notes.desktop.MainKt"
-
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "Writeopia"
-            packageVersion = "1.0.0"
-        }
-    }
-}

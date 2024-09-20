@@ -43,6 +43,9 @@ fun Navigation(
         )
 
         editorNavigation(
+            navigateBack = {
+                navController.navigateUp()
+            },
             editorInjector = editorInjector,
             isUndoKeyEvent = isUndoKeyEvent,
         )

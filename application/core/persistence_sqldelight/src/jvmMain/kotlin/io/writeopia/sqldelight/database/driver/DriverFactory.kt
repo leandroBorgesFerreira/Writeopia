@@ -10,7 +10,5 @@ import java.util.Properties
 actual class DriverFactory {
     actual suspend fun createDriver(
         url: String,
-    ): SqlDriver = JdbcSqliteDriver(url, Properties(), WriteopiaDb.Schema.synchronous()).also {
-//        WriteopiaDb.Schema.awaitCreate(it)
-    }
+    ): SqlDriver = JdbcSqliteDriver(url, Properties(), WriteopiaDb.Schema.synchronous())
 }

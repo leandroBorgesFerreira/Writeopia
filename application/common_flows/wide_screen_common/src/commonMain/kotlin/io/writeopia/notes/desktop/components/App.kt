@@ -142,8 +142,9 @@ fun App(
                         val navType = navigationController.currentBackStackEntry
                             ?.arguments
                             ?.getString(NAVIGATION_TYPE)
+                            ?.let(NotesNavigationType::fromType)
 
-                        if (NotesNavigationType.fromType(navType) != NotesNavigationType.ROOT) {
+                        if (navType != NotesNavigationType.ROOT) {
                             navigationController.navigateToNotes(NotesNavigation.Root)
                         }
                     },
@@ -151,8 +152,9 @@ fun App(
                         val navType = navigationController.currentBackStackEntry
                             ?.arguments
                             ?.getString(NAVIGATION_TYPE)
+                            ?.let(NotesNavigationType::fromType)
 
-                        if (NotesNavigationType.fromType(navType) != NotesNavigationType.FAVORITES) {
+                        if (navType != NotesNavigationType.FAVORITES) {
                             navigationController.navigateToNotes(NotesNavigation.Favorites)
                         }
                     },
