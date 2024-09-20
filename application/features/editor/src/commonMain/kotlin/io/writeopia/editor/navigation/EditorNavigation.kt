@@ -13,9 +13,11 @@ import io.writeopia.editor.ui.screen.TextEditorScreen
 import io.writeopia.utils_module.Destinations
 
 fun NavGraphBuilder.editorNavigation(
+    navigateBack: () -> Unit = {},
     editorInjector: TextEditorInjector,
     isUndoKeyEvent: (KeyEvent) -> Boolean
 ) {
+
     composable(
         route = "${Destinations.EDITOR.id}/{noteId}/{noteTitle}",
         arguments = listOf(navArgument("noteId") { type = NavType.StringType }),
@@ -58,7 +60,8 @@ fun NavGraphBuilder.editorNavigation(
             title = null,
             noteEditorViewModel = notesDetailsViewModel,
             isUndoKeyEvent = isUndoKeyEvent,
-            modifier = Modifier
+            navigateBack = navigateBack,
+            modifier = Modifier,
         )
     }
 }

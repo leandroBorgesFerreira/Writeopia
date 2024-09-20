@@ -4,6 +4,7 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.datetime.Instant
 
 class InMemoryDocumentRepository : DocumentRepository {
@@ -35,9 +36,8 @@ class InMemoryDocumentRepository : DocumentRepository {
     override fun listenForDocumentsByParentId(
         parentId: String,
         coroutineScope: CoroutineScope
-    ): Flow<Map<String, List<Document>>> {
-        TODO("Not yet implemented")
-    }
+    ): Flow<Map<String, List<Document>>> =
+        MutableStateFlow(emptyMap())
 
     override suspend fun loadDocumentsWithContentByIds(
         ids: List<String>,
@@ -117,7 +117,6 @@ class InMemoryDocumentRepository : DocumentRepository {
 
     }
 
-    override suspend fun loadDocumentsByParentId(parentId: String): List<Document> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun loadDocumentsByParentId(parentId: String): List<Document> =
+        emptyList()
 }

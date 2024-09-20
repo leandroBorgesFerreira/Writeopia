@@ -31,13 +31,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import java.awt.event.KeyEvent
+import java.io.File
 import androidx.compose.ui.input.key.KeyEvent as AndroidKeyEvent
+
+private const val APP_DIRECTORY = ".writeopia"
 
 fun main() = application {
     val coroutineScope = rememberCoroutineScope()
+
+    val homeDirectory: String = System.getProperty("user.home")
+    val appDirectory = File(homeDirectory, APP_DIRECTORY)
+
     val databaseStateFlow = DatabaseFactory.createDatabaseAsState(
         DriverFactory(),
-        url = "jdbc:sqlite:writeopia.db_1",
+        url = "jdbc:sqlite:${appDirectory.path}:writeopia.db_1",
         coroutineScope = coroutineScope
     )
 
@@ -58,13 +65,11 @@ fun main() = application {
             when {
                 isSelectionKeyEventStart(keyEvent) -> {
                     selectionState.value = true
-
                     false
                 }
 
                 isSelectionKeyEventStop(keyEvent) -> {
                     selectionState.value = false
-
                     false
                 }
 

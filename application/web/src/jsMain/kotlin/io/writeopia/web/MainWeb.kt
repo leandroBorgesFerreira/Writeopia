@@ -14,6 +14,7 @@ import io.writeopia.note_menu.di.NotesInjector
 import io.writeopia.note_menu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.App
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
+import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 //import org.jetbrains.skiko.SkikoKey
 import org.jetbrains.skiko.wasm.onWasmReady
@@ -46,7 +47,8 @@ fun CreateAppInMemory(repositoryInjection: SqlDelightDaoInjector) {
         isUndoKeyEvent = ::isUndoKeyboardEvent,
         colorThemeOption = colorTheme,
         selectColorTheme = uiConfigurationViewModel::changeColorTheme,
-        coroutineScope = coroutineScope
+        coroutineScope = coroutineScope,
+        keyboardEventFlow = MutableStateFlow(KeyboardEvent.IDLE)
     )
 }
 
