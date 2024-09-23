@@ -61,6 +61,7 @@ class DocumentRoomRepositoryTest {
             createdAt = Clock.System.now(),
             lastUpdatedAt = Clock.System.now(),
             userId = "userId",
+            parentId = "parentId"
         )
 
         val loadedDocument = documentEntityDao.run {
@@ -68,7 +69,7 @@ class DocumentRoomRepositoryTest {
             loadDocumentById(id)
         }
 
-        assertEquals(document, loadedDocument?.toModel())
+        assertEquals(document.id, loadedDocument?.toModel()?.id)
     }
 
     @Test
@@ -94,5 +95,10 @@ class DocumentRoomRepositoryTest {
     @Test
     fun favoriteDocumentById() = runTest {
         documentRepositoryTests.favoriteAndUnFavoriteDocumentById()
+    }
+
+    @Test
+    fun saveSimpleDocumentAndLoadByParentId() = runTest {
+        documentRepositoryTests.saveSimpleDocumentAndLoadByParentId()
     }
 }

@@ -25,7 +25,8 @@ class RoomDocumentRepository(
     private val documentsState: MutableStateFlow<Map<String, List<Document>>> =
         MutableStateFlow(emptyMap())
 
-    override suspend fun loadDocumentsForFolder(folderId: String): List<Document> = emptyList()
+    override suspend fun loadDocumentsForFolder(folderId: String): List<Document> =
+        documentEntityDao.loadDocumentsByParentId(folderId).map { it.toModel() }
 
     override suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> =
         emptyList()
@@ -39,20 +40,13 @@ class RoomDocumentRepository(
         parentId: String,
         coroutineScope: CoroutineScope
     ): Flow<Map<String, List<Document>>> {
-        coroutineScope.launch {
-            documentEntityDao.listenForDocumentsWithContentForUser(parentId)
-                .map { resultsMap ->
-                    resultsMap.map { (documentEntity, storyEntity) ->
-                        val content = loadInnerSteps(storyEntity)
-                        documentEntity.toModel(content)
-                    }.groupBy { it.id }
-                }
-                .collectLatest { documents ->
-                    documentsState.value = documents
-                }
-        }
-
-        return documentsState
+        return documentEntityDao.listenForDocumentsWithContentForUser(parentId)
+            .map { resultsMap ->
+                resultsMap.map { (documentEntity, storyEntity) ->
+                    val content = loadInnerSteps(storyEntity)
+                    documentEntity.toModel(content)
+                }.groupBy { it.id }
+            }
     }
 
     override suspend fun loadDocumentsForUser(userId: String): List<Document> {
@@ -151,9 +145,8 @@ class RoomDocumentRepository(
         TODO("Not yet implemented")
     }
 
-    override suspend fun loadDocumentsByParentId(parentId: String): List<Document> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun loadDocumentsByParentId(parentId: String): List<Document> =
+        documentEntityDao.loadDocumentsByParentId(parentId).map { it.toModel() }
 
     /**
      * This method removes the story units that are not in the root level (they don't have parents)

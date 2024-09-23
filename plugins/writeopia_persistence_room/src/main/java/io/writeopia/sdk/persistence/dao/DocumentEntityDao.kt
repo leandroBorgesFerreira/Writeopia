@@ -37,6 +37,9 @@ interface DocumentEntityDao {
     @Query("SELECT * FROM $DOCUMENT_ENTITY WHERE $DOCUMENT_ENTITY.id in (:ids)")
     suspend fun loadDocumentByIds(ids: List<String>): List<DocumentEntity>
 
+    @Query("SELECT * FROM $DOCUMENT_ENTITY WHERE $DOCUMENT_ENTITY.parent_id = :id")
+    suspend fun loadDocumentsByParentId(id: String): List<DocumentEntity>
+
     @Query("SELECT * FROM $DOCUMENT_ENTITY")
     suspend fun loadAllDocuments(): List<DocumentEntity>
 
@@ -72,7 +75,7 @@ interface DocumentEntityDao {
 
     @Query(
         "SELECT * FROM $DOCUMENT_ENTITY " +
-                "JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
+                "LEFT JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
                 "WHERE user_id = :userId " +
                 "ORDER BY " +
 //                "CASE WHEN :orderBy = \'$TITLE\' THEN $DOCUMENT_ENTITY.title END COLLATE NOCASE ASC, " +

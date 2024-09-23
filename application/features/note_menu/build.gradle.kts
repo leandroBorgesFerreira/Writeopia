@@ -60,6 +60,24 @@ kotlin {
             }
         }
 
+        val androidInstrumentedTest by getting {
+            dependencies {
+                implementation(project(":application:core:common_ui_tests"))
+                implementation(project(":application:core:theme"))
+                implementation(project(":application:core:persistence_bridge"))
+                implementation(project(":plugins:writeopia_persistence_room"))
+
+                implementation(libs.kotlin.test)
+                implementation(libs.androidx.espresso.core)
+
+                implementation(libs.androidx.compose.test)
+                implementation(project(":libraries:dbtest"))
+                implementation(libs.room.runtime)
+
+                implementation(libs.room.ktx)
+            }
+        }
+
         val jvmMain by getting {
             dependencies {
             }

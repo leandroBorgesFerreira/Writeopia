@@ -23,7 +23,7 @@ class FolderRepositorySqlDelight(
         folderDao.updateFolder(folder.toEntity())
     }
 
-    override suspend fun setLasUpdated(folderId: String, long: Long) {
+    override suspend fun setLastUpdated(folderId: String, long: Long) {
         folderDao.setLastUpdate(folderId, long)
     }
 
@@ -49,7 +49,7 @@ class FolderRepositorySqlDelight(
 
     override fun listenForFoldersByParentId(
         parentId: String,
-        coroutineScope: CoroutineScope
+        coroutineScope: CoroutineScope?
     ): Flow<Map<String, List<Folder>>> {
         return folderDao.listenForFolderByParentId(parentId, coroutineScope)
             .map { folderEntityMap ->

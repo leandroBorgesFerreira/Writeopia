@@ -10,7 +10,7 @@ interface FolderRepository {
 
     suspend fun updateFolder(folder: Folder)
 
-    suspend fun setLasUpdated(folderId: String, long: Long)
+    suspend fun setLastUpdated(folderId: String, long: Long)
 
     suspend fun deleteFolderById(folderId: String)
 
@@ -30,7 +30,7 @@ interface FolderRepository {
 
     fun listenForFoldersByParentId(
         parentId: String,
-        coroutineScope: CoroutineScope
+        coroutineScope: CoroutineScope? = null
     ): Flow<Map<String, List<Folder>>>
 
     suspend fun stopListeningForFoldersByParentId(parentId: String)

@@ -22,7 +22,7 @@ class InMemoryFolderRepository : FolderRepository {
 
     override fun listenForFoldersByParentId(
         parentId: String,
-        coroutineScope: CoroutineScope
+        coroutineScope: CoroutineScope?
     ): Flow<Map<String, List<Folder>>> {
         return MutableStateFlow(emptyMap())
     }
@@ -44,7 +44,7 @@ class InMemoryFolderRepository : FolderRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun setLasUpdated(folderId: String, long: Long) {
+    override suspend fun setLastUpdated(folderId: String, long: Long) {
         TODO("Not yet implemented")
     }
 

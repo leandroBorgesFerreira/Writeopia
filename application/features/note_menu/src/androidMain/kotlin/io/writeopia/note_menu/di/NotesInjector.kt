@@ -4,6 +4,7 @@ import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.repository.ConfigurationRoomRepository
 import io.writeopia.note_menu.data.repository.FolderRepository
 import io.writeopia.note_menu.data.repository.InMemoryFolderRepository
+import io.writeopia.note_menu.data.repository.RoomFolderRepository
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 
 actual class NotesInjector(private val appRoomDaosInjection: AppRoomDaosInjection) {
@@ -17,10 +18,7 @@ actual class NotesInjector(private val appRoomDaosInjection: AppRoomDaosInjectio
             }
         }
 
-
-    actual fun provideFoldersRepository(): FolderRepository {
-        //Todo: Implement later!
-        return InMemoryFolderRepository.singleton()
-    }
+    actual fun provideFoldersRepository(): FolderRepository =
+        RoomFolderRepository(appRoomDaosInjection.provideFolderDao())
 }
 

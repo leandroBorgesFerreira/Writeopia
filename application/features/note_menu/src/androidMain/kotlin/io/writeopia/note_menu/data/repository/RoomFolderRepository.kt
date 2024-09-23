@@ -1,63 +1,100 @@
 package io.writeopia.note_menu.data.repository
 
 import io.writeopia.note_menu.data.model.Folder
+import io.writeopia.note_menu.extensions.toModel
+import io.writeopia.note_menu.extensions.toRoomEntity
+import io.writeopia.persistence.room.data.daos.FolderRoomDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.datetime.Instant
 
-class RoomFolderRepository: FolderRepository {
+class RoomFolderRepository(private val folderRoomDao: FolderRoomDao) : FolderRepository {
 
     override suspend fun createFolder(folder: Folder) {
-        TODO("Not yet implemented")
+        updateFolder(folder)
     }
 
     override suspend fun updateFolder(folder: Folder) {
-        TODO("Not yet implemented")
+        folderRoomDao.upsertFolder(folder.toRoomEntity())
     }
 
-    override suspend fun setLasUpdated(folderId: String, long: Long) {
-        TODO("Not yet implemented")
+    override suspend fun setLastUpdated(folderId: String, long: Long) {
+        updateFolderById(folderId) { folder ->
+            folder.copy(lastUpdatedAt = Instant.fromEpochMilliseconds(long))
+        }
     }
 
     override suspend fun deleteFolderById(folderId: String) {
-        TODO("Not yet implemented")
+        folderRoomDao.deleteById(folderId)
     }
 
     override suspend fun deleteFolderByParent(folderId: String) {
-        TODO("Not yet implemented")
+        folderRoomDao.getFolderByParentId(folderId)
     }
 
     override suspend fun favoriteDocumentByIds(ids: Set<String>) {
-        TODO("Not yet implemented")
+        ids.forEach { folderId ->
+            updateFolderById(folderId) { folder ->
+                folder.copy(favorite = true)
+            }
+        }
     }
 
     override suspend fun unFavoriteDocumentByIds(ids: Set<String>) {
-        TODO("Not yet implemented")
+        ids.forEach { folderId ->
+            updateFolderById(folderId) { folder ->
+                folder.copy(favorite = false)
+            }
+        }
     }
 
     override suspend fun moveToFolder(documentId: String, parentId: String) {
         TODO("Not yet implemented")
     }
 
-    override suspend fun refreshFolders() {
-        TODO("Not yet implemented")
-    }
+    override suspend fun refreshFolders() {}
 
-    override suspend fun getFolderById(id: String): Folder? {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getFolderById(id: String): Folder? =
+        folderRoomDao.getFolderById(id)?.toModel(0)
 
-    override suspend fun getFolderByParentId(parentId: String): List<Folder> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getFolderByParentId(parentId: String): List<Folder> =
+        folderRoomDao.getFolderByParentId(parentId).map { folderEntity ->
+            folderEntity.toModel(0)
+        }
 
     override fun listenForFoldersByParentId(
         parentId: String,
-        coroutineScope: CoroutineScope
+        coroutineScope: CoroutineScope?
     ): Flow<Map<String, List<Folder>>> {
-        TODO("Not yet implemented")
+        val flows = SelectedIds.ids.map {
+            folderRoomDao.listenForFolderByParentId(parentId)
+        }
+
+        return combine(flows) { arrayOfFolders -> arrayOfFolders.toList().flatten() }
+            .map { folders ->
+                folders.map { folderEntity ->
+                    folderEntity.toModel(0)
+                }.groupBy { folder -> folder.parentId }
+            }
     }
 
+
     override suspend fun stopListeningForFoldersByParentId(parentId: String) {
-        TODO("Not yet implemented")
+        SelectedIds.ids.remove(parentId)
     }
+
+    private suspend fun updateFolderById(id: String, func: (Folder) -> Folder) {
+        folderRoomDao.getFolderById(id = id)
+            ?.toModel(0)
+            ?.let(func)
+            ?.let { folder ->
+                updateFolder(folder)
+            }
+    }
+}
+
+private object SelectedIds {
+    val ids = mutableSetOf<String>()
 }

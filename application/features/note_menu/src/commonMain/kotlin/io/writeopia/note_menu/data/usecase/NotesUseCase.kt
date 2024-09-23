@@ -46,7 +46,7 @@ class NotesUseCase private constructor(
             }
         }
 
-        folderRepository.setLasUpdated(parentId, Clock.System.now().toEpochMilliseconds())
+        folderRepository.setLastUpdated(parentId, Clock.System.now().toEpochMilliseconds())
         folderRepository.refreshFolders()
     }
 
