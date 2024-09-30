@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-private const val NOTES_CONFIGURATION = "NOTES_CONFIGURATION"
+const val NOTES_CONFIGURATION = "NOTES_CONFIGURATION"
 
 @Entity(tableName = NOTES_CONFIGURATION)
 data class NotesConfigurationEntity(
