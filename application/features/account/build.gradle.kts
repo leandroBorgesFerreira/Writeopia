@@ -17,6 +17,8 @@ kotlin {
             dependencies {
                 implementation(project(":application:core:utils"))
                 implementation(project(":application:core:auth_core"))
+                implementation(project(":application:core:auth_core"))
+                implementation(project(":application:core:theme"))
 
                 implementation(libs.kotlinx.datetime)
 

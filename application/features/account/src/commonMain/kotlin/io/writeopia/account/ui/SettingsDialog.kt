@@ -1,6 +1,7 @@
-package io.writeopia.note_menu.ui.screen.settings
+package io.writeopia.account.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -14,7 +15,6 @@ import androidx.compose.material.icons.outlined.Contrast
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,8 +25,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import io.writeopia.model.ColorThemeOption
-import io.writeopia.note_menu.ui.screen.configuration.modifier.orderConfigModifierHorizontal
-import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -35,32 +33,41 @@ fun SettingsDialog(
     onDismissRequest: () -> Unit,
     selectColorTheme: (ColorThemeOption) -> Unit,
 ) {
-    val titleStyle = MaterialTheme.typography.titleLarge
-    val titleColor = MaterialTheme.colorScheme.onBackground
-
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(fraction = 0.7F),
+                .fillMaxHeight(fraction = 0.7F)
+                .padding(horizontal = 40.dp, vertical = 20.dp),
             shape = RoundedCornerShape(16.dp),
         ) {
-            Column(modifier = Modifier.padding(horizontal = 40.dp, vertical = 20.dp)) {
-                Text("Color Theme", style = titleStyle, color = titleColor)
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                ColorThemeOptions(
-                    selectedThemePosition = selectedThemePosition,
-                    selectColorTheme = selectColorTheme
-                )
-
-                Spacer(modifier = Modifier.weight(1F))
-
-                Text("Release version: 2024-06-14", style = MaterialTheme.typography.bodySmall)
+            Column(modifier = Modifier.padding(16.dp)) {
+                SettingsScreen(selectedThemePosition, selectColorTheme)
             }
         }
     }
+}
+
+@Composable
+fun ColumnScope.SettingsScreen(
+    selectedThemePosition: StateFlow<Int>,
+    selectColorTheme: (ColorThemeOption) -> Unit,
+) {
+    val titleStyle = MaterialTheme.typography.titleLarge
+    val titleColor = MaterialTheme.colorScheme.onBackground
+
+    Text("Color Theme", style = titleStyle, color = titleColor)
+
+    Spacer(modifier = Modifier.height(20.dp))
+
+    ColorThemeOptions(
+        selectedThemePosition = selectedThemePosition,
+        selectColorTheme = selectColorTheme
+    )
+
+    Spacer(modifier = Modifier.weight(1F))
+
+    Text("Release version: 2024-06-14", style = MaterialTheme.typography.bodySmall)
 }
 
 @Composable

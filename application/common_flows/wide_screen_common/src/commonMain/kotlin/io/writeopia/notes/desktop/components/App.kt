@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import io.writeopia.account.di.AccountMenuKmpInjector
+import io.writeopia.account.ui.SettingsDialog
 import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
 import io.writeopia.editor.di.EditorKmpInjector
@@ -45,7 +46,6 @@ import io.writeopia.note_menu.navigation.NAVIGATION_TYPE
 import io.writeopia.note_menu.navigation.navigateToNotes
 import io.writeopia.note_menu.ui.screen.menu.EditFileScreen
 import io.writeopia.note_menu.ui.screen.menu.RoundedVerticalDivider
-import io.writeopia.note_menu.ui.screen.settings.SettingsDialog
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.theme.WrieopiaTheme
