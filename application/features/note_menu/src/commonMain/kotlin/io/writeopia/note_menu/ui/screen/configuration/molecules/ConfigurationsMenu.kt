@@ -1,5 +1,8 @@
 package io.writeopia.note_menu.ui.screen.configuration.molecules
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -27,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.writeopia.common_ui.options.slide.HorizontalOptions
@@ -54,6 +58,10 @@ internal fun BoxScope.MobileConfigurationsMenu(
         modifier = modifier.align(Alignment.BottomCenter),
         editState = visibilityState,
         outsideClick = outsideClick,
+        enterAnimationSpec = spring(
+            stiffness = Spring.StiffnessMediumLow,
+            visibilityThreshold = IntOffset.VisibilityThreshold
+        ),
         animationLabel = "configurationsMenuAnimation"
     ) {
         val topCorner = CornerSize(16.dp)

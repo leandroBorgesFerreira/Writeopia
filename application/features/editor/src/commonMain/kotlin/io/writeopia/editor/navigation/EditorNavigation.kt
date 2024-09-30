@@ -45,6 +45,7 @@ fun NavGraphBuilder.editorNavigation(
                 noteTitle.takeIf { it != "null" },
                 noteDetailsViewModel,
                 isUndoKeyEvent = isUndoKeyEvent,
+                navigateBack = navigateBack,
             )
         } else {
             throw IllegalArgumentException("The arguments for this route are wrong!")

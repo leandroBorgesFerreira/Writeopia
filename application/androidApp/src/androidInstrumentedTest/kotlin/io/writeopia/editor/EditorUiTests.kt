@@ -8,6 +8,7 @@ import io.writeopia.common.uitests.robots.DocumentEditRobot
 import io.writeopia.common.uitests.robots.DocumentsMenuRobot
 import io.writeopia.common.uitests.tests.editor.EditorCommonTests
 import io.writeopia.navigation.NavigationGraph
+import io.writeopia.note_menu.navigation.NoteMenuDestiny
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.utils_module.Destinations
 import org.junit.Rule
@@ -40,7 +41,7 @@ class EditorUiTests {
                     "MockShared",
                     Context.MODE_PRIVATE
                 ),
-                startDestination = Destinations.CHOOSE_NOTE.id
+                startDestination = NoteMenuDestiny.noteMenu()
             )
         }
     }

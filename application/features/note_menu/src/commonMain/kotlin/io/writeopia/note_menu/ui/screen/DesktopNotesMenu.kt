@@ -157,7 +157,7 @@ fun DesktopNotesMenu(
             onClose = chooseNoteViewModel::unSelectNotes,
             shape = RoundedCornerShape(CornerSize(16.dp)),
             exitAnimationOffset = 2.3F,
-            animationSpec = spring(dampingRatio = 0.6F)
+            enterAnimationSpec = spring(dampingRatio = 0.6F)
         )
     }
 }

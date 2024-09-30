@@ -35,6 +35,7 @@ import java.io.File
 import androidx.compose.ui.input.key.KeyEvent as AndroidKeyEvent
 
 private const val APP_DIRECTORY = ".writeopia"
+private const val DB_VERSION = 2
 
 fun main() = application {
     val coroutineScope = rememberCoroutineScope()
@@ -44,7 +45,7 @@ fun main() = application {
 
     val databaseStateFlow = DatabaseFactory.createDatabaseAsState(
         DriverFactory(),
-        url = "jdbc:sqlite:${appDirectory.path}:writeopia.db_1",
+        url = "jdbc:sqlite:${appDirectory.path}:writeopia.db_$DB_VERSION",
         coroutineScope = coroutineScope
     )
 

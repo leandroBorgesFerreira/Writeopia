@@ -143,9 +143,8 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
     }
 
     suspend fun saveSimpleDocumentAndLoadByParentId() {
-        val id = GenerateId.generate()
         val document = Document(
-            id = id,
+            id = GenerateId.generate(),
             title = "Document1",
             content = emptyMap(),
             createdAt = Clock.System.now(),

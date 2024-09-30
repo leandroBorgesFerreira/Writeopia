@@ -7,6 +7,7 @@ import io.writeopia.persistence.room.data.daos.FolderRoomDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 
@@ -68,16 +69,22 @@ class RoomFolderRepository(private val folderRoomDao: FolderRoomDao) : FolderRep
         parentId: String,
         coroutineScope: CoroutineScope?
     ): Flow<Map<String, List<Folder>>> {
+        SelectedIds.ids.add(parentId)
+
         val flows = SelectedIds.ids.map {
             folderRoomDao.listenForFolderByParentId(parentId)
         }
 
-        return combine(flows) { arrayOfFolders -> arrayOfFolders.toList().flatten() }
-            .map { folders ->
-                folders.map { folderEntity ->
-                    folderEntity.toModel(0)
-                }.groupBy { folder -> folder.parentId }
-            }
+        return if (flows.isNotEmpty()) {
+            combine(flows) { arrayOfFolders -> arrayOfFolders.toList().flatten() }
+                .map { folders ->
+                    folders.map { folderEntity ->
+                        folderEntity.toModel(0)
+                    }.groupBy { folder -> folder.parentId }
+                }
+        } else {
+            flow { emit(emptyMap()) }
+        }
     }
 
 

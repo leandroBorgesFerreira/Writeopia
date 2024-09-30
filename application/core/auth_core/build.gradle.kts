@@ -19,6 +19,8 @@ kotlin {
             dependencies {
                 implementation(project(":application:core:utils"))
                 implementation(project(":plugins:writeopia_network"))
+//                implementation(libs.kotlinx.coroutines.flow)
+                implementation(libs.kotlinx.coroutines.core)
             }
         }
 

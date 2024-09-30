@@ -21,6 +21,8 @@ kotlin {
                 implementation(project(":application:features:editor"))
                 implementation(project(":application:features:account"))
                 implementation(project(":application:features:global_shell"))
+                implementation(project(":application:features:notifications"))
+                implementation(project(":application:features:search"))
                 implementation(project(":application:core:utils"))
                 implementation(project(":application:core:theme"))
             }

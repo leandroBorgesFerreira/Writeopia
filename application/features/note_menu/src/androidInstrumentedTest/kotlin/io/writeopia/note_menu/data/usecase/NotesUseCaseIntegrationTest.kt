@@ -3,6 +3,7 @@ package io.writeopia.note_menu.data.usecase
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.repository.ConfigurationRoomRepository
 import io.writeopia.note_menu.data.repository.RoomFolderRepository
@@ -11,6 +12,7 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.dao.room.RoomDocumentRepository
 import io.writeopia.utils_module.DISCONNECTED_USER_ID
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
 import org.junit.Before
@@ -48,7 +50,7 @@ class NotesUseCaseIntegrationTest {
     }
 
     @Test
-    fun itShouldBePossibleToSaveAndLoadADocument() = runTest {
+    fun itShouldBePossibleToSaveAndLoadDocument() = runTest {
         val now = Clock.System.now()
 
         notesUseCase.saveDocument(
@@ -65,5 +67,44 @@ class NotesUseCaseIntegrationTest {
         assertTrue {
             notesUseCase.loadDocumentsForUser(DISCONNECTED_USER_ID).isNotEmpty()
         }
+    }
+
+    @Test
+    fun itShouldBePossibleToSaveAndLoadDocumentByParentId() = runTest {
+        val now = Clock.System.now()
+
+        notesUseCase.saveDocument(
+            Document(
+                id = "documentId",
+                title = "Document1",
+                createdAt = now,
+                lastUpdatedAt = now,
+                userId = DISCONNECTED_USER_ID,
+                parentId = "root"
+            )
+        )
+
+        val flow = notesUseCase.listenForMenuItemsByParentId(
+            "root",
+            DISCONNECTED_USER_ID,
+            null
+        )
+
+        assertTrue { flow.first().isNotEmpty() }
+    }
+
+    @Test
+    fun itShouldBePossibleToSaveAndLoadFolderByParentId() = runTest {
+        notesUseCase.updateFolder(
+            Folder.fromName("Folder", DISCONNECTED_USER_ID).copy(parentId = "root")
+        )
+
+        val flow = notesUseCase.listenForMenuItemsByParentId(
+            "root",
+            DISCONNECTED_USER_ID,
+            null
+        )
+
+        assertTrue { flow.first().isNotEmpty() }
     }
 }

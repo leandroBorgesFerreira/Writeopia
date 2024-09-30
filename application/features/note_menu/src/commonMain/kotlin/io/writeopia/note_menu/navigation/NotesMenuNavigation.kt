@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
@@ -85,6 +86,20 @@ fun NavGraphBuilder.notesMenuNavigation(
             addFolder = chooseNoteViewModel::addFolder,
             editFolder = chooseNoteViewModel::editFolder,
             modifier = Modifier.background(MaterialTheme.colorScheme.background)
+        )
+    }
+}
+
+fun NavHostController.navigateToNotes(navigation: NotesNavigation) {
+    when (navigation) {
+        is NotesNavigation.Folder -> {
+            navigate(
+                "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/${navigation.id}",
+            )
+        }
+
+        NotesNavigation.Favorites, NotesNavigation.Root -> navigate(
+            "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/path",
         )
     }
 }

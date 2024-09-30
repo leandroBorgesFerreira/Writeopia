@@ -42,6 +42,7 @@ import io.writeopia.note_menu.di.NotesMenuKmpInjection
 import io.writeopia.note_menu.di.UiConfigurationInjector
 import io.writeopia.note_menu.navigation.NAVIGATION_PATH
 import io.writeopia.note_menu.navigation.NAVIGATION_TYPE
+import io.writeopia.note_menu.navigation.navigateToNotes
 import io.writeopia.note_menu.ui.screen.menu.EditFileScreen
 import io.writeopia.note_menu.ui.screen.menu.RoundedVerticalDivider
 import io.writeopia.note_menu.ui.screen.settings.SettingsDialog
@@ -231,20 +232,6 @@ fun App(
                 }
             }
         }
-    }
-}
-
-private fun NavHostController.navigateToNotes(navigation: NotesNavigation) {
-    when (navigation) {
-        is NotesNavigation.Folder -> {
-            navigate(
-                "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/${navigation.id}",
-            )
-        }
-
-        NotesNavigation.Favorites, NotesNavigation.Root -> navigate(
-            "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/path",
-        )
     }
 }
 

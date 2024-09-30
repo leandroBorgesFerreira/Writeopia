@@ -35,17 +35,16 @@ class RoomDocumentRepository(
 
     }
 
-    //Todo: Fix this later!!
     override fun listenForDocumentsByParentId(
         parentId: String,
-        coroutineScope: CoroutineScope
+        coroutineScope: CoroutineScope?
     ): Flow<Map<String, List<Document>>> {
-        return documentEntityDao.listenForDocumentsWithContentForUser(parentId)
+        return documentEntityDao.listenForDocumentsWithContentByParentId(parentId)
             .map { resultsMap ->
                 resultsMap.map { (documentEntity, storyEntity) ->
                     val content = loadInnerSteps(storyEntity)
                     documentEntity.toModel(content)
-                }.groupBy { it.id }
+                }.groupBy { it.parentId }
             }
     }
 

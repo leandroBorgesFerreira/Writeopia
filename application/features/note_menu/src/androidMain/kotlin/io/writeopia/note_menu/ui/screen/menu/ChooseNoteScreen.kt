@@ -48,7 +48,6 @@ internal fun ChooseNoteScreen(
     LaunchedEffect(key1 = "refresh", block = {
         chooseNoteViewModel.requestUser()
 //        chooseNoteViewModel.requestDocuments(false)
-        // Todo: Remove BuildConfig.DEBUG check later.
     })
 
     val hasSelectedNotes by chooseNoteViewModel.hasSelectedNotes.collectAsState()
@@ -88,12 +87,13 @@ internal fun ChooseNoteScreen(
         }
 
         NotesSelectionMenu(
-            modifier = Modifier.align(Alignment.BottomCenter),
+            modifier = Modifier.align(Alignment.BottomCenter).padding(8.dp),
             visibilityState = hasSelectedNotes,
             onDelete = chooseNoteViewModel::deleteSelectedNotes,
             onCopy = chooseNoteViewModel::copySelectedNotes,
             onFavorite = chooseNoteViewModel::favoriteSelectedNotes,
             onClose = chooseNoteViewModel::unSelectNotes,
+            shape = MaterialTheme.shapes.large
         )
 
         val selected = chooseNoteViewModel.notesArrangement.toNumberDesktop()

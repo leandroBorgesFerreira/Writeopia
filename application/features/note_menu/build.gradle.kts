@@ -43,7 +43,6 @@ kotlin {
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.compose.navigation)
-
             }
         }
 

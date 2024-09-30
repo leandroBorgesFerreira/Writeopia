@@ -16,11 +16,13 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.Flow
@@ -33,6 +35,7 @@ fun HorizontalOptions(
     options: List<Pair<() -> Unit, @Composable RowScope.() -> Unit>>,
     height: Dp = 42.dp,
     spaceWidth: Dp = 9.dp,
+    clipShare: Shape = MaterialTheme.shapes.large,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier.height(height)) {
@@ -47,7 +50,6 @@ fun HorizontalOptions(
         }
 
         val selected by selectedState.collectAsState(0)
-        val shape = RoundedCornerShape(6.dp)
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(options.size),
@@ -67,14 +69,14 @@ fun HorizontalOptions(
                             .animateItemPlacement()
                             .background(
                                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.25F),
-                                shape = shape
+                                shape = clipShare
                             )
                     )
                 } else {
                     Spacer(
                         modifier = Modifier.fillMaxSize()
                             .height(height)
-                            .clip(shape)
+                            .clip(clipShare)
                             .clickable {
                                 options[i].first.invoke()
                             }

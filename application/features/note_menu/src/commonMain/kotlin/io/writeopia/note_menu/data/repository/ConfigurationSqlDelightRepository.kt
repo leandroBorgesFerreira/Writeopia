@@ -54,22 +54,22 @@ class ConfigurationSqlDelightRepository(
             ?: OrderBy.CREATE.type
 
     override fun listenForArrangementPref(
-        userIdFn: suspend () -> String,
-        coroutineScope: CoroutineScope
+        userId: String,
+        coroutineScope: CoroutineScope?
     ): Flow<String> {
-        coroutineScope.launch {
-            refreshArrangementPref(userIdFn())
+        coroutineScope?.launch {
+            refreshArrangementPref(userId)
         }
 
         return _arrangementPref
     }
 
     override fun listenOrderPreference(
-        userIdFn: suspend () -> String,
-        coroutineScope: CoroutineScope
+        userId: String,
+        coroutineScope: CoroutineScope?
     ): Flow<String> {
-        coroutineScope.launch {
-            refreshOrderPref(userIdFn())
+        coroutineScope?.launch {
+            refreshOrderPref(userId)
         }
 
         return _orderPreference
