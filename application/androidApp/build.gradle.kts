@@ -42,7 +42,6 @@ kotlin {
                 implementation(project(":application:features:editor"))
                 implementation(project(":application:features:auth"))
                 implementation(project(":application:features:account"))
-                implementation(project(":application:features:search"))
 
                 implementation(libs.androidx.ktx)
                 implementation(libs.appCompat)
