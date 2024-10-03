@@ -1,6 +1,7 @@
 package io.writeopia.navigation
 
 import androidx.lifecycle.ViewModel
+import io.writeopia.utils_module.Destinations
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -17,18 +18,18 @@ class NavigationViewModel : ViewModel() {
         listOf(
             BottomBarItem(
                 navItemName = NavItemName.HOME,
-                destination = "",
+                destination = "${Destinations.CHOOSE_NOTE.id}/{type}/{path}",
                 selected = navItem == NavItemName.HOME
             ),
             BottomBarItem(
                 navItemName = NavItemName.SEARCH,
-                destination = "",
+                destination = Destinations.SEARCH.id,
                 selected = navItem == NavItemName.SEARCH
 
             ),
             BottomBarItem(
                 navItemName = NavItemName.NOTIFICATIONS,
-                destination = "",
+                destination = Destinations.NOTIFICATIONS.id,
                 selected = navItem == NavItemName.NOTIFICATIONS
             ),
         )

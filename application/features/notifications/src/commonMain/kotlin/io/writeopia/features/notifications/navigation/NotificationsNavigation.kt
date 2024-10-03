@@ -6,7 +6,7 @@ import io.writeopia.features.notifications.NotificationsScreen
 import io.writeopia.utils_module.Destinations
 
 object NotificationsDestiny {
-    fun notifications() = "${Destinations.NOTIFICATIONS}"
+    fun notifications() = Destinations.NOTIFICATIONS.id
 }
 
 fun NavGraphBuilder.notificationsNavigation() {

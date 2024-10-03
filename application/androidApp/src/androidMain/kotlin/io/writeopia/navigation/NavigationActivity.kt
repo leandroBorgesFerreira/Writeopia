@@ -1,5 +1,6 @@
 package io.writeopia.navigation
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -22,9 +23,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptionsBuilder
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.writeopia.AndroidLogger
 import io.writeopia.BuildConfig
@@ -66,6 +72,7 @@ class NavigationActivity : AppCompatActivity() {
     }
 }
 
+@SuppressLint("RestrictedApi")
 @Composable
 fun NavigationGraph(
     application: Application,
@@ -106,11 +113,23 @@ fun NavigationGraph(
             bottomBar = {
                 NavigationBar(
                     containerColor = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.clip(MaterialTheme.shapes.large)
                 ) {
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+                    val currentDestination = navBackStackEntry?.destination
                     val navigationItems by navigationViewModel.selectedNavigation.collectAsState()
+
                     navigationItems.forEach { item ->
+                        val isSelected =
+                            currentDestination?.hierarchy?.any { destination ->
+                                destination.hasRoute(
+                                    item.destination,
+                                    null
+                                )
+                            } == true
+
                         NavigationBarItem(
-                            selected = item.selected,
+                            selected = isSelected,
                             icon = {
                                 Icon(
                                     imageVector = item.navItemName.iconForNavItem(),
@@ -118,8 +137,15 @@ fun NavigationGraph(
                                 )
                             },
                             onClick = {
-                                navigationViewModel.selectNavigation(item.navItemName)
-                                navController.navigateToItem(item.navItemName)
+                                if (!isSelected) {
+                                    navController.navigateToItem(item.navItemName) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
+                                }
                             },
                             colors = NavigationBarItemDefaults.colors()
                                 .copy(
@@ -151,11 +177,14 @@ fun NavigationGraph(
     }
 }
 
-private fun NavHostController.navigateToItem(navItem: NavItemName) {
+private fun NavHostController.navigateToItem(
+    navItem: NavItemName,
+    builder: NavOptionsBuilder.() -> Unit
+) {
     when (navItem) {
-        NavItemName.HOME -> this.navigateToNoteMenu(NotesNavigation.Root)
-        NavItemName.SEARCH -> this.navigateToSearch()
-        NavItemName.NOTIFICATIONS -> this.navigateToNotifications()
+        NavItemName.HOME -> this.navigateToNoteMenu(NotesNavigation.Root, builder)
+        NavItemName.SEARCH -> this.navigateToSearch(builder)
+        NavItemName.NOTIFICATIONS -> this.navigateToNotifications(builder)
     }
 }
 

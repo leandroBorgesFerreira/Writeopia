@@ -59,24 +59,17 @@ internal fun BoxScope.MobileConfigurationsMenu(
         editState = visibilityState,
         outsideClick = outsideClick,
         enterAnimationSpec = spring(
+            dampingRatio = Spring.DampingRatioLowBouncy,
             stiffness = Spring.StiffnessMediumLow,
             visibilityThreshold = IntOffset.VisibilityThreshold
         ),
         animationLabel = "configurationsMenuAnimation"
     ) {
-        val topCorner = CornerSize(16.dp)
-        val bottomCorner = CornerSize(0.dp)
-
         Column(
             modifier = Modifier
+                .padding(12.dp)
                 .fillMaxWidth()
-                .clip(
-                    RoundedCornerShape(
-                        topCorner,
-                        topCorner,
-                        bottomCorner,
-                        bottomCorner
-                    )
+                .clip(MaterialTheme.shapes.large
                 )
                 .background(MaterialTheme.colorScheme.surface)
                 .padding(16.dp),

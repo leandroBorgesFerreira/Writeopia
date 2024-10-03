@@ -6,7 +6,7 @@ import io.writeopia.features.search.DocumentsSearchScreen
 import io.writeopia.utils_module.Destinations
 
 object SearchDestiny {
-    fun search() = "${Destinations.SEARCH}"
+    fun search() = Destinations.SEARCH.id
 }
 
 fun NavGraphBuilder.searchNavigation() {

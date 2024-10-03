@@ -11,8 +11,6 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
@@ -28,8 +26,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
@@ -283,19 +279,10 @@ private fun BottomScreen(
 ) {
     val edit by editState.collectAsState()
 
-    val topCorner = CornerSize(10.dp)
-    val bottomCorner = CornerSize(0.dp)
-
     val containerModifier = Modifier
         .fillMaxWidth()
-        .clip(
-            RoundedCornerShape(
-                topCorner,
-                topCorner,
-                bottomCorner,
-                bottomCorner
-            )
-        )
+        .padding(8.dp)
+        .clip(MaterialTheme.shapes.large)
         .background(MaterialTheme.colorScheme.primary)
 
     AnimatedContent(
@@ -303,15 +290,14 @@ private fun BottomScreen(
         label = "bottomSheetAnimation",
         transitionSpec = {
             (slideInVertically(
-                animationSpec = tween(durationMillis = 130),
+                animationSpec = spring(dampingRatio = 0.65F),
                 initialOffsetY = { fullHeight -> fullHeight }
-            ) + fadeIn()) togetherWith slideOutVertically(
+            )) togetherWith slideOutVertically(
                 animationSpec = tween(durationMillis = 130),
                 targetOffsetY = { fullHeight -> fullHeight }
-            ) + fadeOut()
+            )
         }
     ) { editStateAnimated ->
-
         when (editStateAnimated) {
             EditState.TEXT -> {
                 InputScreen(

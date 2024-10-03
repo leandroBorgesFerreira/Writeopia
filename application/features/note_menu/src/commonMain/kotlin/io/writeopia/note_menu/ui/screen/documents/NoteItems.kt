@@ -304,9 +304,13 @@ private fun FolderItem(
             }
         }
 
+        if (inBound) {
+            println("menuItemUI?.id: ${menuItemUI?.id}. folderUi.id: ${folderUi.id}")
+        }
+
         val bgColor =
             when {
-                inBound -> Color.LightGray
+                inBound && menuItemUI?.id != folderUi.id -> Color.LightGray
 //                    BuildConfig.DEBUG -> Color.Cyan
                 folderUi.selected -> MaterialTheme.colorScheme.primary
                 else -> MaterialTheme.colorScheme.surfaceVariant
