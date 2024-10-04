@@ -9,7 +9,6 @@ import io.writeopia.persistence.room.data.daos.FolderRoomDao
 import io.writeopia.persistence.room.data.daos.NotesConfigurationRoomDao
 import io.writeopia.persistence.room.data.entities.FolderEntity
 import io.writeopia.persistence.room.data.entities.NotesConfigurationEntity
-import io.writeopia.repository.UiConfigurationRoomDao
 import io.writeopia.sdk.persistence.converter.IdListConverter
 import io.writeopia.sdk.persistence.dao.DocumentEntityDao
 import io.writeopia.sdk.persistence.dao.StoryUnitEntityDao
@@ -24,7 +23,6 @@ private const val DATABASE_NAME = "WriteopiaDatabase"
         StoryStepEntity::class,
         NotesConfigurationEntity::class,
         FolderEntity::class,
-//        UiConfigurationRoomEntity::class
     ],
     version = 11,
     exportSchema = false
@@ -36,7 +34,6 @@ abstract class WriteopiaApplicationDatabase : RoomDatabase() {
     abstract fun storyUnitDao(): StoryUnitEntityDao
     abstract fun notesConfigurationDao(): NotesConfigurationRoomDao
     abstract fun folderRoomDao(): FolderRoomDao
-//    abstract fun uiConfigurationDao(): UiConfigurationRoomDao
 
     companion object {
         private var instance: WriteopiaApplicationDatabase? = null

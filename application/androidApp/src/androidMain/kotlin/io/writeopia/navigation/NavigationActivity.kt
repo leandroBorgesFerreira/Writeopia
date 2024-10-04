@@ -9,6 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Notifications
@@ -25,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -109,15 +111,17 @@ fun NavigationGraph(
     )
 
     val navigationViewModel = viewModel { NavigationViewModel() }
-    val uiConfigViewModel = UiConfigurationInjector(database).provideUiConfigurationViewModel()
+    val uiConfigViewModel = UiConfigurationInjector(sharedPreferences).provideUiConfigurationViewModel()
     val colorTheme by uiConfigViewModel.listenForColorTheme { "user_offline" }.collectAsState()
 
-    WrieopiaTheme(colorTheme.isDarkTheme()) {
+    WrieopiaTheme(darkTheme = colorTheme.isDarkTheme()) {
         Scaffold(
             bottomBar = {
+                RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+
                 NavigationBar(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.clip(MaterialTheme.shapes.large)
+                    modifier = Modifier.clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
                 ) {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentDestination = navBackStackEntry?.destination
