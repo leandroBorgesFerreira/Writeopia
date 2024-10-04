@@ -12,7 +12,7 @@ import io.writeopia.viewmodel.UiConfigurationViewModel
 actual class UiConfigurationInjector(private val database: WriteopiaApplicationDatabase) {
 
     actual fun provideUiConfigurationRepository(): UiConfigurationRepository =
-        UiConfigurationRoomRepository(database.uiConfigurationDao())
+        UiConfigurationRoomRepository(null)
 
     @Composable
     fun provideUiConfigurationViewModel(
