@@ -1,8 +1,10 @@
 package io.writeopia.account.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -75,72 +78,39 @@ private fun ColorThemeOptions(
     selectedThemePosition: StateFlow<Int>,
     selectColorTheme: (ColorThemeOption) -> Unit
 ) {
-    val typography = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
-    val color = MaterialTheme.colorScheme.onPrimary
-
     val spaceWidth = 10.dp
 
     Row(modifier = Modifier.fillMaxWidth().height(90.dp)) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .orderConfigModifierHorizontal {
-                    selectColorTheme(ColorThemeOption.LIGHT)
-                }
-                .weight(1F)
-        ) {
-            Icon(
-                modifier = Modifier.weight(1F),
-                imageVector = Icons.Outlined.LightMode,
-                contentDescription = "staggered card",
-                //            stringResource(R.string.staggered_card),
-                tint = MaterialTheme.colorScheme.onPrimary
-            )
-
-            Text("Light", style = typography, color = color)
-        }
+        Option(
+            text = "Light",
+            imageVector = Icons.Outlined.LightMode,
+            contextDescription = "light",
+            selectColorTheme = {
+                selectColorTheme(ColorThemeOption.LIGHT)
+            }
+        )
 
         Spacer(modifier = Modifier.width(spaceWidth))
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .orderConfigModifierHorizontal {
-                    selectColorTheme(ColorThemeOption.DARK)
-                }
-                .weight(1F)
-        ) {
-            Icon(
-                modifier = Modifier.weight(1F),
-                imageVector = Icons.Outlined.DarkMode,
-                contentDescription = "staggered card",
-                //            stringResource(R.string.staggered_card),
-                tint = MaterialTheme.colorScheme.onPrimary
-            )
-
-            Text("Dark", style = typography, color = color)
-        }
+        Option(
+            text = "Dark",
+            imageVector = Icons.Outlined.DarkMode,
+            contextDescription = "dark",
+            selectColorTheme = {
+                selectColorTheme(ColorThemeOption.DARK)
+            }
+        )
 
         Spacer(modifier = Modifier.width(spaceWidth))
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .orderConfigModifierHorizontal {
-                    selectColorTheme(ColorThemeOption.SYSTEM)
-                }
-                .weight(1F)
-        ) {
-            Icon(
-                modifier = Modifier.weight(1F),
-                imageVector = Icons.Outlined.Contrast,
-                contentDescription = "note list",
-                //            stringResource(R.string.note_list),
-                tint = MaterialTheme.colorScheme.onPrimary
-            )
-
-            Text("System", style = typography, color = color)
-        }
+        Option(
+            text = "System",
+            imageVector = Icons.Outlined.Contrast,
+            contextDescription = "system",
+            selectColorTheme = {
+                selectColorTheme(ColorThemeOption.SYSTEM)
+            }
+        )
     }
 
 //    HorizontalOptions(
@@ -205,4 +175,40 @@ private fun ColorThemeOptions(
 //        ),
 //        height = 90.dp
 //    )
+}
+
+@Composable
+private fun RowScope.Option(
+    text: String,
+    imageVector: ImageVector,
+    contextDescription: String,
+    selectColorTheme: (ColorThemeOption) -> Unit
+) {
+    val typography = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+    val color = MaterialTheme.colorScheme.onPrimary
+
+    Box(
+        modifier = Modifier
+            .orderConfigModifierHorizontal {
+                selectColorTheme(ColorThemeOption.SYSTEM)
+            }
+            .fillMaxHeight()
+            .weight(1F)
+    ) {
+        Column(
+            modifier = Modifier.align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                imageVector = imageVector,
+                contentDescription = contextDescription,
+                //            stringResource(R.string.note_list),
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(text, style = typography, color = color)
+        }
+    }
 }
