@@ -54,7 +54,8 @@ fun Navigation(
 
         accountMenuNavigation(
             accountMenuInjector = accountMenuInjector,
-            navigateToAuthMenu = { }
+            navigateToAuthMenu = { },
+            selectColorTheme = selectColorTheme
         )
 
         searchNavigation()

@@ -40,12 +40,14 @@ import io.writeopia.auth.core.token.FirebaseTokenHandler
 import io.writeopia.auth.di.AuthInjection
 import io.writeopia.auth.navigation.authNavigation
 import io.writeopia.editor.di.EditorInjector
+import io.writeopia.model.isDarkTheme
 import io.writeopia.navigation.notes.navigateToNoteMenu
 import io.writeopia.navigation.notifications.navigateToNotifications
 import io.writeopia.navigation.search.navigateToSearch
 import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.di.NotesInjector
 import io.writeopia.note_menu.di.NotesMenuAndroidInjection
+import io.writeopia.note_menu.di.UiConfigurationInjector
 import io.writeopia.note_menu.navigation.NoteMenuDestiny
 import io.writeopia.note_menu.navigation.navigateToNotes
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
@@ -107,8 +109,10 @@ fun NavigationGraph(
     )
 
     val navigationViewModel = viewModel { NavigationViewModel() }
+    val uiConfigViewModel = UiConfigurationInjector(database).provideUiConfigurationViewModel()
+    val colorTheme by uiConfigViewModel.listenForColorTheme { "user_offline" }.collectAsState()
 
-    WrieopiaTheme {
+    WrieopiaTheme(colorTheme.isDarkTheme()) {
         Scaffold(
             bottomBar = {
                 NavigationBar(
@@ -165,8 +169,9 @@ fun NavigationGraph(
                     editorInjector = editorInjector,
                     accountMenuInjector = accountMenuInjector,
                     startDestination = startDestination,
-                    selectColorTheme = {},
-                    isUndoKeyEvent = { false }
+                    selectColorTheme = uiConfigViewModel::changeColorTheme,
+                    isUndoKeyEvent = { false },
+
                 ) {
                     authNavigation(navController, authInjection) {
                         navController.navigateToNotes(NotesNavigation.Root)

@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.writeopia.account.viewmodel.AccountMenuViewModel
+import io.writeopia.model.ColorThemeOption
 import io.writeopia.utils_module.ResultData
 import io.writeopia.utils_module.toBoolean
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,11 +30,15 @@ fun AccountMenuScreen(
     accountMenuViewModel: AccountMenuViewModel,
     isLoggedInState: StateFlow<ResultData<Boolean>>,
     onLogout: () -> Unit,
-    goToRegister: () -> Unit
+    goToRegister: () -> Unit,
+    selectColorTheme: (ColorThemeOption) -> Unit,
 ) {
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        SettingsScreen(selectedThemePosition = MutableStateFlow(0), selectColorTheme = {})
+        SettingsScreen(
+            selectedThemePosition = MutableStateFlow(0),
+            selectColorTheme = selectColorTheme
+        )
 
         Spacer(modifier = Modifier.height(12.dp))
 

@@ -35,7 +35,6 @@ fun DropTarget(
 
         if (data != null) {
             dragInfo.dataToDrop = null
-
         }
 
         content(isCurrentDropTarget, data)

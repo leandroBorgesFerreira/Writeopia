@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -32,7 +31,7 @@ import io.writeopia.global.shell.SideGlobalMenu
 import io.writeopia.global.shell.di.SideMenuKmpInjector
 import io.writeopia.global.shell.viewmodel.GlobalShellViewModel
 import io.writeopia.model.ColorThemeOption
-import io.writeopia.model.darkTheme
+import io.writeopia.model.isDarkTheme
 import io.writeopia.navigation.Navigation
 import io.writeopia.navigation.notes.navigateToNote
 import io.writeopia.note_menu.data.model.NotesNavigation
@@ -130,7 +129,7 @@ fun App(
         }
     }
 
-    WrieopiaTheme(darkTheme = colorTheme.darkTheme()) {
+    WrieopiaTheme(darkTheme = colorTheme.isDarkTheme()) {
         val globalBackground = WriteopiaTheme.colorScheme.globalBackground
         DraggableScreen {
             Row(Modifier.background(globalBackground)) {
