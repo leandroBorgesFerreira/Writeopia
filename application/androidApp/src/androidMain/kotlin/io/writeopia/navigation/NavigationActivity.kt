@@ -111,7 +111,8 @@ fun NavigationGraph(
     )
 
     val navigationViewModel = viewModel { NavigationViewModel() }
-    val uiConfigViewModel = UiConfigurationInjector(sharedPreferences).provideUiConfigurationViewModel()
+    val uiConfigViewModel =
+        UiConfigurationInjector(sharedPreferences).provideUiConfigurationViewModel()
     val colorTheme by uiConfigViewModel.listenForColorTheme { "user_offline" }.collectAsState()
 
     WrieopiaTheme(darkTheme = colorTheme.isDarkTheme()) {
@@ -130,11 +131,10 @@ fun NavigationGraph(
                     navigationItems.forEach { item ->
                         val isSelected =
                             currentDestination?.hierarchy?.any { destination ->
-                                destination.hasRoute(
-                                    item.destination,
-                                    null
-                                )
-                            } == true
+                                destination.route?.let {
+                                    NavItemName.selectRoute(it)
+                                }?.value == item.navItemName.value
+                            } ?: false
 
                         NavigationBarItem(
                             selected = isSelected,
@@ -145,8 +145,8 @@ fun NavigationGraph(
                                 )
                             },
                             onClick = {
-                                if (!isSelected) {
-                                    navController.navigateToItem(item.navItemName) {
+                                navController.navigateToItem(item.navItemName) {
+                                    if (!isSelected) {
                                         popUpTo(navController.graph.findStartDestination().id) {
                                             saveState = true
                                         }
@@ -176,7 +176,7 @@ fun NavigationGraph(
                     selectColorTheme = uiConfigViewModel::changeColorTheme,
                     isUndoKeyEvent = { false },
 
-                ) {
+                    ) {
                     authNavigation(navController, authInjection) {
                         navController.navigateToNotes(NotesNavigation.Root)
                     }
