@@ -25,7 +25,9 @@ fun DropTarget(
     Box(
         modifier = modifier.onGloballyPositioned { layoutCoordinates ->
             layoutCoordinates.boundsInWindow().let { rect ->
-                isCurrentDropTarget = rect.contains(dragPosition + dragOffset)
+                if (dragInfo.isDragging) {
+                    isCurrentDropTarget = rect.contains(dragPosition + dragOffset)
+                }
             }
         }
     ) {
@@ -36,5 +38,9 @@ fun DropTarget(
         }
 
         content(isCurrentDropTarget, data)
+
+        if (data != null) {
+            isCurrentDropTarget = false
+        }
     }
 }

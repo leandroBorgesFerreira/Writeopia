@@ -1,5 +1,6 @@
 package io.writeopia.global.shell.viewmodel
 
+import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesNavigation
@@ -82,26 +83,13 @@ class GlobalShellKmpViewModel(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>> by lazy {
-        notesNavigationUseCase.navigationState.flatMapLatest { notesNavigation ->
-            when (notesNavigation) {
-                NotesNavigation.Favorites -> notesUseCase.listenForMenuItemsByParentId(
-                    Folder.ROOT_PATH,
-                    ::getUserId,
-                    coroutineScope
-                )
-
-                is NotesNavigation.Folder -> notesUseCase.listenForMenuItemsByParentId(
-                    notesNavigation.id,
-                    ::getUserId,
-                    coroutineScope
-                )
-
-                NotesNavigation.Root -> notesUseCase.listenForMenuItemsByParentId(
-                    Folder.ROOT_PATH,
-                    ::getUserId,
-                    coroutineScope
-                )
-            }
+        combine(
+            authManager.listenForUser(),
+            notesNavigationUseCase.navigationState
+        ) { user, notesNavigation ->
+            user to notesNavigation
+        }.flatMapLatest { (user, notesNavigation) ->
+            notesUseCase.listenForMenuItemsPerFolderId(notesNavigation, user.id, coroutineScope)
         }.stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
     }
 
@@ -156,8 +144,10 @@ class GlobalShellKmpViewModel(
                 _expandedFolders.value = expanded - id
             }
         } else {
-            notesUseCase.listenForMenuItemsByParentId(id, ::getUserId, coroutineScope)
-            _expandedFolders.value = expanded + id
+            coroutineScope.launch {
+                notesUseCase.listenForMenuItemsByParentId(id, getUserId(), coroutineScope)
+                _expandedFolders.value = expanded + id
+            }
         }
     }
 

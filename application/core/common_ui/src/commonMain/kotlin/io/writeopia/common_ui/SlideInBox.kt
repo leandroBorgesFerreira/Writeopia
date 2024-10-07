@@ -30,10 +30,12 @@ fun SlideInBox(
     extraExitOffset: Float = 1F,
     showBackground: Boolean = true,
     enterAnimationSpec: FiniteAnimationSpec<IntOffset> = spring(
+        dampingRatio = Spring.DampingRatioLowBouncy,
         stiffness = Spring.StiffnessMediumLow,
         visibilityThreshold = IntOffset.VisibilityThreshold
     ),
     exitAnimationSpec: FiniteAnimationSpec<IntOffset> = spring(
+        dampingRatio = Spring.DampingRatioLowBouncy,
         stiffness = Spring.StiffnessMediumLow,
         visibilityThreshold = IntOffset.VisibilityThreshold
     ),
@@ -45,7 +47,7 @@ fun SlideInBox(
         exit = fadeOut()
     ) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .background(Color(0xAA000000))
                 .clickable(

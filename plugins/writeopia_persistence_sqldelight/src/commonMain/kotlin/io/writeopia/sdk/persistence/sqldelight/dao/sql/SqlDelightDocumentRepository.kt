@@ -9,7 +9,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 class SqlDelightDocumentRepository(
@@ -34,9 +33,9 @@ class SqlDelightDocumentRepository(
 
     override fun listenForDocumentsByParentId(
         parentId: String,
-        coroutineScope: CoroutineScope
+        coroutineScope: CoroutineScope?
     ): Flow<Map<String, List<Document>>> {
-        coroutineScope.launch {
+        coroutineScope?.launch {
             SelectedIds.ids.add(parentId)
             refreshDocuments()
         }

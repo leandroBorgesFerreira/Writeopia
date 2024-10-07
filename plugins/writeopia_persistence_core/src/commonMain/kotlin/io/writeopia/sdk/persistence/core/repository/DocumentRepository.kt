@@ -37,7 +37,7 @@ interface DocumentRepository : DocumentUpdate {
 
     fun listenForDocumentsByParentId(
         parentId: String,
-        coroutineScope: CoroutineScope
+        coroutineScope: CoroutineScope? = null
     ): Flow<Map<String, List<Document>>>
 
     suspend fun stopListeningForFoldersByParentId(parentId: String)

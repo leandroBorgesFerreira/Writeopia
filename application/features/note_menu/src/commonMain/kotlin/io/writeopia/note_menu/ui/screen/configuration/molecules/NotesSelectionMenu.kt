@@ -1,6 +1,7 @@
 package io.writeopia.note_menu.ui.screen.configuration.molecules
 
 import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
@@ -39,8 +40,14 @@ internal fun NotesSelectionMenu(
         CornerSize(0.dp)
     ),
     exitAnimationOffset: Float = 1F,
-    animationSpec: FiniteAnimationSpec<IntOffset> = spring(
-        stiffness = 4000F,
+    enterAnimationSpec: FiniteAnimationSpec<IntOffset> = spring(
+        dampingRatio = 0.6F,
+        stiffness = Spring.StiffnessMedium,
+        visibilityThreshold = IntOffset.VisibilityThreshold
+    ),
+    exitAnimationSpec: FiniteAnimationSpec<IntOffset> = spring(
+        dampingRatio = Spring.DampingRatioNoBouncy,
+        stiffness = Spring.StiffnessHigh,
         visibilityThreshold = IntOffset.VisibilityThreshold
     )
 ) {
@@ -49,8 +56,8 @@ internal fun NotesSelectionMenu(
         editState = visibilityState,
         showBackground = false,
         outsideClick = { },
-        enterAnimationSpec = animationSpec,
-        exitAnimationSpec = animationSpec,
+        enterAnimationSpec = enterAnimationSpec,
+        exitAnimationSpec = exitAnimationSpec,
         animationLabel = "configurationsMenuAnimation",
         extraExitOffset = exitAnimationOffset
     ) {

@@ -11,6 +11,6 @@ expect fun TextEditorScreen(
     title: String?,
     noteEditorViewModel: NoteEditorViewModel,
     isUndoKeyEvent: (KeyEvent) -> Boolean,
-    navigateBack: () -> Unit = {},
+    navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 )

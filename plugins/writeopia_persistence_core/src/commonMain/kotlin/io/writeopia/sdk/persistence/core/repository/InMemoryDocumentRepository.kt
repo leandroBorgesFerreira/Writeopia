@@ -35,7 +35,7 @@ class InMemoryDocumentRepository : DocumentRepository {
 
     override fun listenForDocumentsByParentId(
         parentId: String,
-        coroutineScope: CoroutineScope
+        coroutineScope: CoroutineScope?
     ): Flow<Map<String, List<Document>>> =
         MutableStateFlow(emptyMap())
 

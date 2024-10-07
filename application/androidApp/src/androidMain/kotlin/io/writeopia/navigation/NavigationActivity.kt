@@ -1,13 +1,38 @@
 package io.writeopia.navigation
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptionsBuilder
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.writeopia.AndroidLogger
 import io.writeopia.BuildConfig
@@ -17,10 +42,16 @@ import io.writeopia.auth.core.token.FirebaseTokenHandler
 import io.writeopia.auth.di.AuthInjection
 import io.writeopia.auth.navigation.authNavigation
 import io.writeopia.editor.di.EditorInjector
+import io.writeopia.model.isDarkTheme
+import io.writeopia.navigation.notes.navigateToNoteMenu
+import io.writeopia.navigation.notifications.navigateToNotifications
+import io.writeopia.navigation.search.navigateToSearch
+import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.di.NotesInjector
 import io.writeopia.note_menu.di.NotesMenuAndroidInjection
 import io.writeopia.note_menu.di.UiConfigurationInjector
 import io.writeopia.note_menu.navigation.NoteMenuDestiny
+import io.writeopia.note_menu.navigation.navigateToNotes
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 import io.writeopia.persistence.room.injection.RoomRespositoryInjection
@@ -45,6 +76,7 @@ class NavigationActivity : AppCompatActivity() {
     }
 }
 
+@SuppressLint("RestrictedApi")
 @Composable
 fun NavigationGraph(
     application: Application,
@@ -58,17 +90,19 @@ fun NavigationGraph(
 ) {
     val appDaosInjection = AppRoomDaosInjection(database)
     val notesInjector = NotesInjector(appDaosInjection)
-    val connectionInjector =
-        ConnectionInjector(
-            apiLogger = AndroidLogger,
-            bearerTokenHandler = FirebaseTokenHandler,
-            baseUrl = BuildConfig.BASE_URL
-        )
+    val connectionInjector = ConnectionInjector(
+        apiLogger = AndroidLogger,
+        bearerTokenHandler = FirebaseTokenHandler,
+        baseUrl = BuildConfig.BASE_URL
+    )
     val authCoreInjection = AndroidAuthCoreInjection(sharedPreferences)
     val repositoryInjection = RoomRespositoryInjection(database)
     val authInjection = AuthInjection(authCoreInjection, connectionInjector, repositoryInjection)
-    val editorInjector =
-        EditorInjector.create(authCoreInjection, repositoryInjection, connectionInjector)
+    val editorInjector = EditorInjector.create(
+        authCoreInjection,
+        repositoryInjection,
+        connectionInjector
+    )
     val accountMenuInjector = AndroidAccountMenuInjector.create(authCoreInjection)
     val notesMenuInjection = NotesMenuAndroidInjection.create(
         notesInjector,
@@ -76,17 +110,96 @@ fun NavigationGraph(
         repositoryInjection,
     )
 
-    WrieopiaTheme {
-        Navigation(
-            notesMenuInjection = notesMenuInjection,
-            navController = navController,
-            editorInjector = editorInjector,
-            accountMenuInjector = accountMenuInjector,
-            startDestination = startDestination,
-            selectColorTheme = {},
-            isUndoKeyEvent = { false }
-        ) {
-            authNavigation(navController, authInjection, navController::navigateToMainMenu)
+    val navigationViewModel = viewModel { NavigationViewModel() }
+    val uiConfigViewModel =
+        UiConfigurationInjector(sharedPreferences).provideUiConfigurationViewModel()
+    val colorTheme by uiConfigViewModel.listenForColorTheme { "user_offline" }.collectAsState()
+
+    WrieopiaTheme(darkTheme = colorTheme.isDarkTheme()) {
+        Scaffold(
+            bottomBar = {
+                RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+
+                NavigationBar(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                ) {
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+                    val currentDestination = navBackStackEntry?.destination
+                    val navigationItems by navigationViewModel.selectedNavigation.collectAsState()
+
+                    navigationItems.forEach { item ->
+                        val isSelected =
+                            currentDestination?.hierarchy?.any { destination ->
+                                destination.route?.let {
+                                    NavItemName.selectRoute(it)
+                                }?.value == item.navItemName.value
+                            } ?: false
+
+                        NavigationBarItem(
+                            selected = isSelected,
+                            icon = {
+                                Icon(
+                                    imageVector = item.navItemName.iconForNavItem(),
+                                    contentDescription = item.navItemName.value
+                                )
+                            },
+                            onClick = {
+                                navController.navigateToItem(item.navItemName) {
+                                    if (!isSelected) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
+                                }
+                            },
+                            colors = NavigationBarItemDefaults.colors()
+                                .copy(
+                                    selectedIconColor = MaterialTheme.colorScheme.onSecondary,
+                                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                                    selectedIndicatorColor = MaterialTheme.colorScheme.secondary,
+                                )
+                        )
+                    }
+                }
+            }
+        ) { padding ->
+            Box(modifier = Modifier.padding(padding)) {
+                Navigation(
+                    notesMenuInjection = notesMenuInjection,
+                    navController = navController,
+                    editorInjector = editorInjector,
+                    accountMenuInjector = accountMenuInjector,
+                    startDestination = startDestination,
+                    selectColorTheme = uiConfigViewModel::changeColorTheme,
+                    isUndoKeyEvent = { false },
+
+                    ) {
+                    authNavigation(navController, authInjection) {
+                        navController.navigateToNotes(NotesNavigation.Root)
+                    }
+                }
+            }
         }
     }
 }
+
+private fun NavHostController.navigateToItem(
+    navItem: NavItemName,
+    builder: NavOptionsBuilder.() -> Unit
+) {
+    when (navItem) {
+        NavItemName.HOME -> this.navigateToNoteMenu(NotesNavigation.Root, builder)
+        NavItemName.SEARCH -> this.navigateToSearch(builder)
+        NavItemName.NOTIFICATIONS -> this.navigateToNotifications(builder)
+    }
+}
+
+private fun NavItemName.iconForNavItem(): ImageVector =
+    when (this) {
+        NavItemName.HOME -> Icons.Outlined.Home
+        NavItemName.SEARCH -> Icons.Outlined.Search
+        NavItemName.NOTIFICATIONS -> Icons.Outlined.Notifications
+    }

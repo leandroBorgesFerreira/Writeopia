@@ -2,8 +2,12 @@ package io.writeopia.auth.core.manager
 
 import io.writeopia.auth.core.data.User
 import io.writeopia.utils_module.ResultData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 interface AuthManager {
+
+    fun listenForUser(): Flow<User> = flow { emit(getUser()) }
 
     suspend fun getUser(): User
 

@@ -1,6 +1,7 @@
 package io.writeopia.note_menu.data.usecase
 
 import io.writeopia.note_menu.data.model.Folder
+import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.repository.FolderRepository
 import io.writeopia.note_menu.ui.dto.MenuItemUi
@@ -46,7 +47,7 @@ class NotesUseCase private constructor(
             }
         }
 
-        folderRepository.setLasUpdated(parentId, Clock.System.now().toEpochMilliseconds())
+        folderRepository.setLastUpdated(parentId, Clock.System.now().toEpochMilliseconds())
         folderRepository.refreshFolders()
     }
 
@@ -72,13 +73,13 @@ class NotesUseCase private constructor(
      */
     fun listenForMenuItemsByParentId(
         parentId: String,
-        userIdFn: suspend () -> String,
-        coroutineScope: CoroutineScope
+        userId: String,
+        coroutineScope: CoroutineScope?
     ): Flow<Map<String, List<MenuItem>>> =
         combine(
             listenForFoldersByParentId(parentId, coroutineScope),
             listenForDocumentsByParentId(parentId, coroutineScope),
-            notesConfig.listenOrderPreference(userIdFn, coroutineScope)
+            notesConfig.listenOrderPreference(userId, coroutineScope)
         ) { folders, documents, orderPreference ->
             val order = orderPreference.takeIf { it.isNotEmpty() }?.let(OrderBy::fromString)
                 ?: OrderBy.CREATE
@@ -86,6 +87,31 @@ class NotesUseCase private constructor(
             folders.merge(documents).mapValues { (_, menuItems) ->
                 menuItems.sortedWithOrderBy(order)
             }
+        }
+
+    fun listenForMenuItemsPerFolderId(
+        notesNavigation: NotesNavigation,
+        userId: String,
+        coroutineScope: CoroutineScope? = null
+    ): Flow<Map<String, List<MenuItem>>> =
+        when (notesNavigation) {
+            NotesNavigation.Favorites -> listenForMenuItemsByParentId(
+                Folder.ROOT_PATH,
+                userId,
+                coroutineScope
+            )
+
+            is NotesNavigation.Folder -> listenForMenuItemsByParentId(
+                notesNavigation.id,
+                userId,
+                coroutineScope
+            )
+
+            NotesNavigation.Root -> listenForMenuItemsByParentId(
+                Folder.ROOT_PATH,
+                userId,
+                coroutineScope
+            )
         }
 
     suspend fun stopListeningForMenuItemsByParentId(id: String) {
@@ -128,7 +154,7 @@ class NotesUseCase private constructor(
 
     private fun listenForDocumentsByParentId(
         parentId: String,
-        coroutineScope: CoroutineScope
+        coroutineScope: CoroutineScope? = null
     ): Flow<Map<String, List<Document>>> =
         documentRepository.listenForDocumentsByParentId(parentId, coroutineScope)
 
@@ -205,12 +231,12 @@ class NotesUseCase private constructor(
      */
     private fun listenForFoldersByParentId(
         parentId: String,
-        coroutineScope: CoroutineScope
+        coroutineScope: CoroutineScope? = null
     ): Flow<Map<String, List<Folder>>> =
         folderRepository.listenForFoldersByParentId(parentId, coroutineScope)
 
     companion object {
-        var instance: NotesUseCase? = null
+        private var instance: NotesUseCase? = null
 
         fun singleton(
             documentRepository: DocumentRepository,

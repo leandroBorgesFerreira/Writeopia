@@ -108,7 +108,6 @@ class NoteEditorKmpViewModel(
     }
 
     override fun createNewDocument(documentId: String, title: String) {
-        //Todo: There is a problem here!!
         if (writeopiaManager.isInitialized()) {
             return
         }

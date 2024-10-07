@@ -23,11 +23,13 @@ import io.writeopia.utils_module.map
 import io.writeopia.utils_module.toBoolean
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.stateIn
@@ -49,8 +51,6 @@ internal class ChooseNoteKmpViewModel(
     private val writeopiaJsonParser: WriteopiaJsonParser = WriteopiaJsonParser()
 ) : ChooseNoteViewModel, KmpViewModel(), FolderController by folderController {
 
-    private var localUserId: String? = null
-
     private val _selectedNotes = MutableStateFlow(setOf<String>())
     override val hasSelectedNotes: StateFlow<Boolean> by lazy {
         _selectedNotes.map { selectedIds ->
@@ -58,26 +58,12 @@ internal class ChooseNoteKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, false)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>> by lazy {
-        when (notesNavigation) {
-            NotesNavigation.Favorites -> notesUseCase.listenForMenuItemsByParentId(
-                Folder.ROOT_PATH,
-                ::getUserId,
-                coroutineScope
-            )
-
-            is NotesNavigation.Folder -> notesUseCase.listenForMenuItemsByParentId(
-                notesNavigation.id,
-                ::getUserId,
-                coroutineScope
-            )
-
-            NotesNavigation.Root -> notesUseCase.listenForMenuItemsByParentId(
-                Folder.ROOT_PATH,
-                ::getUserId,
-                coroutineScope
-            )
-        }.stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
+        authManager.listenForUser()
+            .flatMapLatest { user ->
+                notesUseCase.listenForMenuItemsPerFolderId(notesNavigation, user.id, coroutineScope)
+            }.stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
     }
 
     override val menuItemsState: StateFlow<ResultData<List<MenuItem>>> by lazy {
@@ -104,9 +90,12 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override val notesArrangement: StateFlow<NotesArrangement> by lazy {
-        notesConfig.listenForArrangementPref(::getUserId, coroutineScope)
-            .map { arrangement ->
-                NotesArrangement.fromString(arrangement)
+        authManager.listenForUser()
+            .flatMapLatest { user ->
+                notesConfig.listenForArrangementPref(user.id, coroutineScope)
+                    .map { arrangement ->
+                        NotesArrangement.fromString(arrangement)
+                    }
             }
             .stateIn(coroutineScope, SharingStarted.Lazily, NotesArrangement.GRID)
     }
@@ -409,8 +398,5 @@ internal class ChooseNoteKmpViewModel(
         }
     }
 
-    private suspend fun getUserId(): String =
-        localUserId ?: authManager.getUser().id.also { id ->
-            localUserId = id
-        }
+    private suspend fun getUserId(): String = authManager.getUser().id
 }

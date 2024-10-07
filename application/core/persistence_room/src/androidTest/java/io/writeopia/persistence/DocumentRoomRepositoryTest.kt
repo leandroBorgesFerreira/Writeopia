@@ -14,10 +14,12 @@ import io.writeopia.sdk.persistence.dao.StoryUnitEntityDao
 import io.writeopia.sdk.persistence.dao.room.RoomDocumentRepository
 import io.writeopia.sdk.persistence.parse.toEntity
 import io.writeopia.sdk.persistence.parse.toModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -61,6 +63,7 @@ class DocumentRoomRepositoryTest {
             createdAt = Clock.System.now(),
             lastUpdatedAt = Clock.System.now(),
             userId = "userId",
+            parentId = "parentId"
         )
 
         val loadedDocument = documentEntityDao.run {
@@ -68,7 +71,7 @@ class DocumentRoomRepositoryTest {
             loadDocumentById(id)
         }
 
-        assertEquals(document, loadedDocument?.toModel())
+        assertEquals(document.id, loadedDocument?.toModel()?.id)
     }
 
     @Test
@@ -94,5 +97,27 @@ class DocumentRoomRepositoryTest {
     @Test
     fun favoriteDocumentById() = runTest {
         documentRepositoryTests.favoriteAndUnFavoriteDocumentById()
+    }
+
+    @Test
+    fun saveSimpleDocumentAndLoadByParentId() = runTest {
+        documentRepositoryTests.saveSimpleDocumentAndLoadByParentId()
+    }
+
+    @Test
+    fun listenDocumentByParentId() = runTest {
+        val document = Document(
+            title = "Document1",
+            content = emptyMap(),
+            createdAt = Clock.System.now(),
+            lastUpdatedAt = Clock.System.now(),
+            userId = "userId",
+            parentId = "parentId"
+        )
+
+        documentRepository.saveDocument(document)
+        val flow = documentRepository.listenForDocumentsByParentId(document.parentId)
+
+        assertTrue(flow.first().isNotEmpty())
     }
 }

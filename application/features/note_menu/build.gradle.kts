@@ -43,7 +43,6 @@ kotlin {
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.compose.navigation)
-
             }
         }
 
@@ -57,6 +56,24 @@ kotlin {
                 implementation(libs.compose.shimmer)
 
                 implementation(project.dependencies.platform(libs.androidx.compose.bom))
+            }
+        }
+
+        val androidInstrumentedTest by getting {
+            dependencies {
+                implementation(project(":application:core:common_ui_tests"))
+                implementation(project(":application:core:theme"))
+                implementation(project(":application:core:persistence_bridge"))
+                implementation(project(":plugins:writeopia_persistence_room"))
+
+                implementation(libs.kotlin.test)
+                implementation(libs.androidx.espresso.core)
+
+                implementation(libs.androidx.compose.test)
+                implementation(project(":libraries:dbtest"))
+                implementation(libs.room.runtime)
+
+                implementation(libs.room.ktx)
             }
         }
 

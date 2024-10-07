@@ -1,10 +1,11 @@
 package io.writeopia.sdk.persistence.core.sorting
 
 enum class OrderBy(val type: String) {
-    CREATE("create"), UPDATE("update"), NAME(type = "name");
+    CREATE("created_at"), UPDATE("last_updated_at"), NAME(type = "title");
 
     companion object {
-        fun fromString(stringValue: String) = entries.first { orderBy -> orderBy.type == stringValue }
+        fun fromString(stringValue: String) = entries
+            .firstOrNull { orderBy -> orderBy.type == stringValue }
+            ?: throw IllegalArgumentException("Not found: $stringValue")
     }
-
 }

@@ -36,15 +36,15 @@ class InMemoryConfigurationRepository private constructor(): ConfigurationReposi
         workSpacePrefs[userId]
 
     override fun listenForArrangementPref(
-        userIdFn: suspend () -> String,
-        coroutineScope: CoroutineScope
+        userId: String,
+        coroutineScope: CoroutineScope?
     ): Flow<String> {
         TODO("Not yet implemented")
     }
 
     override fun listenOrderPreference(
-        userIdFn: suspend () -> String,
-        coroutineScope: CoroutineScope
+        userId: String,
+        coroutineScope: CoroutineScope?
     ): Flow<String> {
         TODO("Not yet implemented")
     }

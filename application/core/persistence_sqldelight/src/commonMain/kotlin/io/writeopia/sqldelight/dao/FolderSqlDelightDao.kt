@@ -60,9 +60,9 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
 
     fun listenForFolderByParentId(
         parentId: String,
-        coroutineScope: CoroutineScope
+        coroutineScope: CoroutineScope?
     ): Flow<Map<String, List<Pair<FolderEntity, Long>>>> {
-        coroutineScope.launch {
+        coroutineScope?.launch {
             SelectedIds.ids.add(parentId)
             refreshFolders()
         }

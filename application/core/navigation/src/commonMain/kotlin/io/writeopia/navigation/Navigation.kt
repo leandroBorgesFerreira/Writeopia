@@ -10,6 +10,8 @@ import io.writeopia.account.di.AccountMenuInjector
 import io.writeopia.account.navigation.accountMenuNavigation
 import io.writeopia.editor.di.TextEditorInjector
 import io.writeopia.editor.navigation.editorNavigation
+import io.writeopia.features.notifications.navigation.notificationsNavigation
+import io.writeopia.features.search.navigation.searchNavigation
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.navigation.notes.navigateToAccount
 import io.writeopia.navigation.notes.navigateToNewNote
@@ -52,8 +54,13 @@ fun Navigation(
 
         accountMenuNavigation(
             accountMenuInjector = accountMenuInjector,
-            navigateToAuthMenu = { }
+            navigateToAuthMenu = { },
+            selectColorTheme = selectColorTheme
         )
+
+        searchNavigation()
+
+        notificationsNavigation()
 
         builder()
     }

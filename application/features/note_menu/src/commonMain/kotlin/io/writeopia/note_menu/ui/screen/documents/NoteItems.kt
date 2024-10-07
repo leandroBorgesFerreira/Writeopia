@@ -80,6 +80,8 @@ fun NotesCards(
                 } else {
                     val documentsUiList = notesUi.documentUiList
 
+                    val listModifier = Modifier.padding(4.dp)
+
                     when (notesUi.notesArrangement) {
                         NotesArrangement.STAGGERED_GRID -> {
                             LazyStaggeredGridNotes(
@@ -87,7 +89,8 @@ fun NotesCards(
                                 selectionListener = selectionListener,
                                 onDocumentClick = loadNote,
                                 folderClick = folderClick,
-                                moveRequest = moveRequest
+                                moveRequest = moveRequest,
+                                modifier = listModifier,
                             )
                         }
 
@@ -97,7 +100,8 @@ fun NotesCards(
                                 selectionListener = selectionListener,
                                 onDocumentClick = loadNote,
                                 folderClick = folderClick,
-                                moveRequest = moveRequest
+                                moveRequest = moveRequest,
+                                modifier = listModifier,
                             )
                         }
 
@@ -107,7 +111,8 @@ fun NotesCards(
                                 selectionListener = selectionListener,
                                 onDocumentClick = loadNote,
                                 folderClick = folderClick,
-                                moveRequest = moveRequest
+                                moveRequest = moveRequest,
+                                modifier = listModifier,
                             )
                         }
                     }
@@ -301,8 +306,7 @@ private fun FolderItem(
 
         val bgColor =
             when {
-                inBound -> Color.LightGray
-//                    BuildConfig.DEBUG -> Color.Cyan
+                inBound && menuItemUI?.id != folderUi.id -> WriteopiaTheme.colorScheme.highlight
                 folderUi.selected -> MaterialTheme.colorScheme.primary
                 else -> MaterialTheme.colorScheme.surfaceVariant
             }

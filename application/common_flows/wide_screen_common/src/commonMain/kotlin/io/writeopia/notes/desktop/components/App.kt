@@ -18,12 +18,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import io.writeopia.account.di.AccountMenuKmpInjector
+import io.writeopia.account.ui.SettingsDialog
 import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
 import io.writeopia.editor.di.EditorKmpInjector
@@ -31,7 +31,7 @@ import io.writeopia.global.shell.SideGlobalMenu
 import io.writeopia.global.shell.di.SideMenuKmpInjector
 import io.writeopia.global.shell.viewmodel.GlobalShellViewModel
 import io.writeopia.model.ColorThemeOption
-import io.writeopia.model.darkTheme
+import io.writeopia.model.isDarkTheme
 import io.writeopia.navigation.Navigation
 import io.writeopia.navigation.notes.navigateToNote
 import io.writeopia.note_menu.data.model.NotesNavigation
@@ -42,9 +42,9 @@ import io.writeopia.note_menu.di.NotesMenuKmpInjection
 import io.writeopia.note_menu.di.UiConfigurationInjector
 import io.writeopia.note_menu.navigation.NAVIGATION_PATH
 import io.writeopia.note_menu.navigation.NAVIGATION_TYPE
+import io.writeopia.note_menu.navigation.navigateToNotes
 import io.writeopia.note_menu.ui.screen.menu.EditFileScreen
 import io.writeopia.note_menu.ui.screen.menu.RoundedVerticalDivider
-import io.writeopia.note_menu.ui.screen.settings.SettingsDialog
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.theme.WrieopiaTheme
@@ -129,7 +129,7 @@ fun App(
         }
     }
 
-    WrieopiaTheme(darkTheme = colorTheme.darkTheme()) {
+    WrieopiaTheme(darkTheme = colorTheme.isDarkTheme()) {
         val globalBackground = WriteopiaTheme.colorScheme.globalBackground
         DraggableScreen {
             Row(Modifier.background(globalBackground)) {
@@ -231,20 +231,6 @@ fun App(
                 }
             }
         }
-    }
-}
-
-private fun NavHostController.navigateToNotes(navigation: NotesNavigation) {
-    when (navigation) {
-        is NotesNavigation.Folder -> {
-            navigate(
-                "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/${navigation.id}",
-            )
-        }
-
-        NotesNavigation.Favorites, NotesNavigation.Root -> navigate(
-            "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/path",
-        )
     }
 }
 

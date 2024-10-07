@@ -141,6 +141,25 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
         val loadedDocument2 = documentRepository.loadDocumentById(id)
         assertTrue(loadedDocument2?.favorite == false)
     }
+
+    suspend fun saveSimpleDocumentAndLoadByParentId() {
+        val document = Document(
+            id = GenerateId.generate(),
+            title = "Document1",
+            content = emptyMap(),
+            createdAt = Clock.System.now(),
+            lastUpdatedAt = Clock.System.now(),
+            userId = "userId",
+            parentId = "parentId"
+        )
+
+        val loadedDocument = documentRepository.run {
+            saveDocument(document)
+            loadDocumentsByParentId("parentId")
+        }.first()
+
+        assertEquals(document.id, loadedDocument.id)
+    }
 }
 
 private fun now() = Instant.fromEpochMilliseconds(Clock.System.now().toEpochMilliseconds())
