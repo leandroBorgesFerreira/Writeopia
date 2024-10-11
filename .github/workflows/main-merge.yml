@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   android_build_and_test:
-    name: Android - build and test
+    name: Android - Build and Test
     runs-on: ubuntu-22.04
     env:
       isCI: "true"
@@ -25,7 +25,7 @@ jobs:
       - name: Main test
         run: ./gradlew assembleDebug test
   desktop_build_and_test:
-    name: Desktop build and test
+    name: Desktop - Build, Test and Publish
     runs-on: macos-14
     env:
       isCI: "true"
@@ -50,7 +50,7 @@ jobs:
           retention-days: 10
           overwrite: true
   web_build_and_publish:
-    name: Web build and publish
+    name: Web - Build and Publish
     runs-on: ubuntu-22.04
     env:
       isCI: "true"
