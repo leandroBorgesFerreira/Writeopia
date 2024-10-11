@@ -55,7 +55,7 @@ interface DocumentEntityDao {
     )
     suspend fun loadDocumentWithContentById(
         documentId: String
-    ): Map<DocumentEntity, List<StoryStepEntity>>?
+    ): Map<DocumentEntity, List<StoryStepEntity>>
 
     /* The order here doesn't matter, because only one document should be returned */
     @Query(
@@ -85,7 +85,7 @@ interface DocumentEntityDao {
     )
     suspend fun loadDocumentsWithContentForUser(
         userId: String
-    ): Map<DocumentEntity, List<StoryStepEntity>>?
+    ): Map<DocumentEntity, List<StoryStepEntity>>
 
     @Query(
         "SELECT * FROM $DOCUMENT_ENTITY " +

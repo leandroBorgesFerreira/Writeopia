@@ -1,8 +1,8 @@
 package io.writeopia.sdk.persistence.dao.room
 
-import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.dao.DocumentEntityDao
 import io.writeopia.sdk.persistence.dao.StoryUnitEntityDao
 import io.writeopia.sdk.persistence.entity.document.DocumentEntity
@@ -12,9 +12,7 @@ import io.writeopia.sdk.persistence.parse.toModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
 
 class RoomDocumentRepository(
@@ -38,23 +36,21 @@ class RoomDocumentRepository(
     override fun listenForDocumentsByParentId(
         parentId: String,
         coroutineScope: CoroutineScope?
-    ): Flow<Map<String, List<Document>>> {
-        return documentEntityDao.listenForDocumentsWithContentByParentId(parentId)
+    ): Flow<Map<String, List<Document>>> =
+        documentEntityDao.listenForDocumentsWithContentByParentId(parentId)
             .map { resultsMap ->
                 resultsMap.map { (documentEntity, storyEntity) ->
                     val content = loadInnerSteps(storyEntity)
                     documentEntity.toModel(content)
                 }.groupBy { it.parentId }
             }
-    }
 
-    override suspend fun loadDocumentsForUser(userId: String): List<Document> {
-        return documentEntityDao.loadDocumentsWithContentForUser(userId)
-            ?.map { (documentEntity, storyEntity) ->
+    override suspend fun loadDocumentsForUser(userId: String): List<Document> =
+        documentEntityDao.loadDocumentsWithContentForUser(userId)
+            .map { (documentEntity, storyEntity) ->
                 val content = loadInnerSteps(storyEntity)
                 documentEntity.toModel(content)
-            } ?: emptyList()
-    }
+            }
 
     override suspend fun loadDocumentsForUserAfterTime(
         orderBy: String,

@@ -89,6 +89,7 @@ internal class ChooseNoteKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, UserState.Idle())
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override val notesArrangement: StateFlow<NotesArrangement> by lazy {
         authManager.listenForUser()
             .flatMapLatest { user ->
