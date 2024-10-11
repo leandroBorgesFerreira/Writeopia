@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.multiplatform.compiler)
+    alias(libs.plugins.ktlint)
 }
 
 kotlin {
@@ -48,7 +49,6 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-
             }
         }
     }

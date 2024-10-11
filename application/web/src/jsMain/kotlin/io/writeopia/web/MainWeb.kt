@@ -16,7 +16,6 @@ import io.writeopia.notes.desktop.components.App
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.flow.MutableStateFlow
-//import org.jetbrains.skiko.SkikoKey
 import org.jetbrains.skiko.wasm.onWasmReady
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -62,5 +61,5 @@ private fun isSelectionKeyEventStart(keyEvent: KeyEvent): Boolean =
         keyEvent.type == KeyEventType.KeyDown
 
 private fun isSelectionKeyEventStop(keyEvent: KeyEvent): Boolean =
-        (keyEvent.key == Key.MetaLeft || keyEvent.key == Key.MetaRight) &&
+    (keyEvent.key == Key.MetaLeft || keyEvent.key == Key.MetaRight) &&
         keyEvent.type == KeyEventType.KeyUp
