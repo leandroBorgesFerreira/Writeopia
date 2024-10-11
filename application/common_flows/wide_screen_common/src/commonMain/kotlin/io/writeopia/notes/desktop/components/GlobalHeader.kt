@@ -46,7 +46,6 @@ fun GlobalHeader(
     }
 }
 
-
 @Composable
 private fun PathToCurrentDirectory(pathState: StateFlow<List<String>>) {
     val path by pathState.collectAsState()

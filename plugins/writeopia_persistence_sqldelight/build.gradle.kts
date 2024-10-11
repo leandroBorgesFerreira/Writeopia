@@ -52,18 +52,3 @@ sqldelight {
 tasks.dokkaHtmlPartial {
     moduleName = "plugin:writeopia_persistence_sqldelight"
 }
-
-
-//configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-//    filter {
-//        exclude("**/generated/**")
-//        include("**/kotlin/**")
-//    }
-//}
-
-ktlint {
-    filter {
-        exclude("**/generated/**")
-        include("**/kotlin/**")
-    }
-}

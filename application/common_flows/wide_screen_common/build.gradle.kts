@@ -1,10 +1,10 @@
 import org.jetbrains.compose.compose
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     kotlin("multiplatform")
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.multiplatform.compiler)
+    alias(libs.plugins.ktlint)
 }
 
 kotlin {
@@ -60,4 +60,3 @@ kotlin {
         }
     }
 }
-

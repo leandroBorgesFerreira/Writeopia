@@ -22,4 +22,3 @@ dagCommand {
     outputType = "json_pretty_print"
     printModulesInfo = true
 }
-

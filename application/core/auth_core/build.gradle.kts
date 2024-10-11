@@ -2,8 +2,8 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     kotlin("multiplatform")
+    alias(libs.plugins.ktlint)
 }
-
 
 kotlin {
     jvm {}
@@ -26,13 +26,11 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-
             }
         }
 
         val jsMain by getting {
             dependencies {
-
             }
         }
 

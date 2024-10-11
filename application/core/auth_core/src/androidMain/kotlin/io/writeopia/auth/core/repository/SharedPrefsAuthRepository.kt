@@ -3,7 +3,7 @@ package io.writeopia.auth.core.repository
 import android.content.SharedPreferences
 import io.writeopia.auth.core.utils.USER_OFFLINE
 
-class SharedPrefsAuthRepository(private val sharedPreferences: SharedPreferences): AuthRepository {
+class SharedPrefsAuthRepository(private val sharedPreferences: SharedPreferences) : AuthRepository {
 
     override fun saveUserChoiceOffline() {
         sharedPreferences.edit().putBoolean(USER_OFFLINE, true).apply()

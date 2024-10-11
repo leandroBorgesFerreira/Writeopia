@@ -43,7 +43,6 @@ class FirebaseAuthManager(private val auth: FirebaseAuth) : AuthManager {
             } catch (e: Exception) {
                 ResultData.Complete(userCreated)
             }
-
         } catch (e: Exception) {
             ResultData.Error(e)
         }

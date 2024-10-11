@@ -175,8 +175,7 @@ fun NavigationGraph(
                     startDestination = startDestination,
                     selectColorTheme = uiConfigViewModel::changeColorTheme,
                     isUndoKeyEvent = { false },
-
-                    ) {
+                ) {
                     authNavigation(navController, authInjection) {
                         navController.navigateToNotes(NotesNavigation.Root)
                     }
