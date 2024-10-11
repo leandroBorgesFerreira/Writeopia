@@ -1,16 +1,22 @@
 
 [![Main merge](https://github.com/leandroBorgesFerreira/Writeopia/actions/workflows/main-merge.yml/badge.svg)](https://github.com/leandroBorgesFerreira/Writeopia/actions/workflows/main-merge.yml) ![Maven Central](https://img.shields.io/maven-central/v/io.writeopia/writeopia-core)
 
+<p align="center">Open source documentation app for the brave and true<p/>
 
 <p align="center" width="100%">
   <img 
    src="./images/icon_with_title.svg" alt="Writeopia logo"
-   width="400" 
-   height="350" 
+   width="100" 
+   height="87" 
   />
 </p>
 
-Embeded text editor for apps. 
+<p align="center" width="100%">
+  <img 
+   src="./images/usage_screenshot.png" alt="Writeopia logo"
+  />
+</p>
+
 
 ## Intro
 
