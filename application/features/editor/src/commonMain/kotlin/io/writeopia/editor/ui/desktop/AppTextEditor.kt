@@ -22,8 +22,8 @@ import io.writeopia.editor.ui.TextEditor
 import io.writeopia.editor.viewmodel.NoteEditorKmpViewModel
 import io.writeopia.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.sdk.models.id.GenerateId
-import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.drawer.factory.DrawersFactory
+import io.writeopia.ui.manager.WriteopiaStateManager
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -58,7 +58,7 @@ fun AppTextEditor(
         val isEditionHeader by viewModel.editHeader.collectAsState()
 
         if (isEditionHeader) {
-            Dialog(onDismissRequest = viewModel::onHeaderEditionCancel, ) {
+            Dialog(onDismissRequest = viewModel::onHeaderEditionCancel,) {
                 Card(modifier = Modifier.padding(30.dp), shape = MaterialTheme.shapes.large) {
                     Spacer(modifier = Modifier.height(20.dp))
 

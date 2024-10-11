@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun TextOptionsMenu() {
-    DropdownMenu(expanded = true, onDismissRequest = {  }) {
+    DropdownMenu(expanded = true, onDismissRequest = { }) {
         Text("Column")
 
         Icon(imageVector = Icons.Default.FormatBold, contentDescription = "Bold text")
