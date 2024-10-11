@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
     id("com.google.devtools.ksp")
+    alias(libs.plugins.ktlint)
 }
 
 android {
@@ -69,5 +70,4 @@ dependencies {
     androidTestImplementation(project(":libraries:dbtest"))
 
     testImplementation(libs.kotlin.test)
-
 }

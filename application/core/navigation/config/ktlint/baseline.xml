@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <baseline version="1.0">
-    <file name="src/main/java/io/writeopia/persistence/room/WriteopiaAplicationDatabase.kt">
+    <file name="src/commonMain/kotlin/io/writeopia/navigation/notifications/navigateToSearch.kt">
         <error line="1" column="1" source="standard:filename" />
     </file>
 </baseline>

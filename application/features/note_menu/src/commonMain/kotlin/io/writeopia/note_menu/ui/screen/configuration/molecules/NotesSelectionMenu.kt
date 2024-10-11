@@ -22,7 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import io.writeopia.common_ui.SlideInBox
+import io.writeopia.commonui.SlideInBox
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable

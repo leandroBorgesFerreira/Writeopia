@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import io.writeopia.common_ui.SlideInBox
+import io.writeopia.commonui.SlideInBox
 
 // This screen could live in a module for extra Composables
 @Composable

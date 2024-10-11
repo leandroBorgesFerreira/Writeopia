@@ -13,7 +13,7 @@ fun NavController.navigateToNote(id: String, title: String) {
 //    val noteId = this.currentBackStackEntry?.arguments?.getString("noteId")
 
 //    if (noteId != id) {
-        navigate("${Destinations.EDITOR.id}/$id/$title")
+    navigate("${Destinations.EDITOR.id}/$id/$title")
 //    }
 }
 

@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform")
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.ktlint)
 }
 
 kotlin {
@@ -21,13 +22,11 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-
             }
         }
 
         val jsMain by getting {
             dependencies {
-
             }
         }
 
@@ -38,7 +37,6 @@ kotlin {
         }
     }
 }
-
 
 android {
     namespace = "io.writeopia.sdk.persistence.bridge"

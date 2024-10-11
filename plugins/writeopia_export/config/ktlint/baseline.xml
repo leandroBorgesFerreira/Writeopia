@@ -1,29 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <baseline version="1.0">
-    <file name="src/commonMain/kotlin/io/writeopia/sdk/export/DocumentToJson.kt">
-        <error line="3" column="1" source="standard:import-ordering" />
-    </file>
-    <file name="src/commonMain/kotlin/io/writeopia/sdk/export/DocumentToMarkdown.kt">
-        <error line="15" column="26" source="standard:colon-spacing" />
-        <error line="68" column="26" source="standard:wrapping" />
-        <error line="69" column="1" source="standard:indent" />
-        <error line="69" column="84" source="standard:wrapping" />
-        <error line="78" column="26" source="standard:wrapping" />
-        <error line="79" column="1" source="standard:indent" />
-        <error line="79" column="84" source="standard:wrapping" />
-        <error line="87" column="1" source="standard:no-consecutive-blank-lines" />
-        <error line="115" column="1" source="standard:no-consecutive-blank-lines" />
-        <error line="117" column="14" source="standard:enum-wrapping" />
-        <error line="117" column="33" source="standard:enum-wrapping" />
-        <error line="117" column="51" source="standard:enum-wrapping" />
-    </file>
     <file name="src/jsMain/kotlin/io/writeopia/sdk/export/files/KmpFileWritter.js.kt">
         <error line="1" column="1" source="standard:filename" />
-        <error line="3" column="1" source="standard:no-unused-imports" />
-        <error line="7" column="64" source="standard:colon-spacing" />
     </file>
     <file name="src/jvmMain/kotlin/io/writeopia/sdk/export/files/KmpFileWritter.jvm.kt">
         <error line="1" column="1" source="standard:filename" />
-        <error line="3" column="1" source="standard:no-unused-imports" />
     </file>
 </baseline>

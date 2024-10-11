@@ -31,8 +31,11 @@ private const val DATABASE_NAME = "WriteopiaDatabase"
 abstract class WriteopiaApplicationDatabase : RoomDatabase() {
 
     abstract fun documentDao(): DocumentEntityDao
+
     abstract fun storyUnitDao(): StoryUnitEntityDao
+
     abstract fun notesConfigurationDao(): NotesConfigurationRoomDao
+
     abstract fun folderRoomDao(): FolderRoomDao
 
     companion object {
