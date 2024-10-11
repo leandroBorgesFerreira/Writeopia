@@ -8,8 +8,11 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 end_of_line = lf
 
-[*.{java,xml}]
+[*.java]
 indent_size = 4
+
+[*.{yaml,yml,xml}]
+indent_size = 2
 
 [*.{kt,kts}]
 ktlint_code_style = ktlint_official
