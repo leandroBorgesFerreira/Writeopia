@@ -65,6 +65,21 @@ jobs:
           java-version: '21'
       - name: Build debug
         run: ./gradlew assembleDebug test --no-daemon
+  ktlint:
+    name: General - Build debug
+    runs-on: ubuntu-22.04
+    env:
+      isCI: "true"
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: adopt
+          java-version: '21'
+      - name: Ktlint
+        run: ./gradlew ktlintCheck
   backend_build_and_test:
     name: Backend - build
     runs-on: ubuntu-22.04
