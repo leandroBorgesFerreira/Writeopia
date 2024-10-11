@@ -2,15 +2,16 @@ plugins {
     kotlin("multiplatform")
     alias(libs.plugins.sqldelight)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.ktlint)
 }
 
-//rootProject.extra.apply {
+// rootProject.extra.apply {
 //    set("PUBLISH_GROUP_ID", "io.writeopia")
 //    set("PUBLISH_ARTIFACT_ID", "writeopia-network")
 //    set("PUBLISH_VERSION", libs.versions.writeopia.get())
-//}
+// }
 
-//apply(from = "${rootDir}/scripts/publish-module.gradle")
+// apply(from = "${rootDir}/scripts/publish-module.gradle")
 
 kotlin {
     jvm {}
@@ -50,4 +51,19 @@ sqldelight {
 
 tasks.dokkaHtmlPartial {
     moduleName = "plugin:writeopia_persistence_sqldelight"
+}
+
+
+//configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+//    filter {
+//        exclude("**/generated/**")
+//        include("**/kotlin/**")
+//    }
+//}
+
+ktlint {
+    filter {
+        exclude("**/generated/**")
+        include("**/kotlin/**")
+    }
 }

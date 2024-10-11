@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     id("com.google.devtools.ksp")
     alias(libs.plugins.dokka)
+    alias(libs.plugins.ktlint)
 }
 
 rootProject.extra.apply {
@@ -11,7 +12,7 @@ rootProject.extra.apply {
     set("PUBLISH_VERSION", libs.versions.writeopia.get())
 }
 
-apply(from = "${rootDir}/scripts/publish-module.gradle")
+apply(from = "$rootDir/scripts/publish-module.gradle")
 
 android {
     namespace = "io.writeopia.sdk.persistence"

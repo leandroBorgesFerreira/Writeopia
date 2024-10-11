@@ -15,7 +15,7 @@ class StoryUnitParseKtTest {
         assertEquals("group_image", entity.first().type)
 
         entity.forEachIndexed { i, entityUnit ->
-            assertEquals( id, entityUnit.documentId, "step $i should have a document id")
+            assertEquals(id, entityUnit.documentId, "step $i should have a document id")
         }
 
         val parentId = entity.first().id
@@ -25,4 +25,3 @@ class StoryUnitParseKtTest {
         }
     }
 }
-

@@ -3,7 +3,6 @@ package io.writeopia.sdk.persistence.core.repository
 import io.writeopia.sdk.manager.DocumentUpdate
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Instant

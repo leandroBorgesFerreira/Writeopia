@@ -78,11 +78,9 @@ class InMemoryDocumentRepository : DocumentRepository {
     }
 
     override suspend fun moveDocumentsToNewUser(oldUserId: String, newUserId: String) {
-
     }
 
     override suspend fun updateStoryStep(storyStep: StoryStep, position: Int, documentId: String) {
-
     }
 
     override suspend fun favoriteDocumentByIds(ids: Set<String>) {
@@ -102,19 +100,15 @@ class InMemoryDocumentRepository : DocumentRepository {
     }
 
     override suspend fun deleteDocumentByFolder(folderId: String) {
-
     }
 
     override suspend fun moveToFolder(documentId: String, parentId: String) {
-
     }
 
     override suspend fun refreshDocuments() {
-
     }
 
     override suspend fun stopListeningForFoldersByParentId(parentId: String) {
-
     }
 
     override suspend fun loadDocumentsByParentId(parentId: String): List<Document> =

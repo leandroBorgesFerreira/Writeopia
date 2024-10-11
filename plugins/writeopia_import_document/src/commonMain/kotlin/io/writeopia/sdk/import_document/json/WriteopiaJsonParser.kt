@@ -30,5 +30,4 @@ class WriteopiaJsonParser(
             json
         )?.lastUpdateTable
             ?.let(Instant::fromEpochMilliseconds)
-
 }

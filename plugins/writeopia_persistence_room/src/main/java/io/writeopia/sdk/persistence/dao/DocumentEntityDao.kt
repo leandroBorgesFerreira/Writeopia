@@ -11,7 +11,6 @@ import io.writeopia.sdk.persistence.core.DOCUMENT_ENTITY
 import io.writeopia.sdk.persistence.core.LAST_UPDATED_AT
 import io.writeopia.sdk.persistence.core.TITLE
 import io.writeopia.sdk.persistence.entity.document.DocumentEntity
-
 import io.writeopia.sdk.persistence.entity.story.STORY_UNIT_ENTITY
 import io.writeopia.sdk.persistence.entity.story.StoryStepEntity
 import kotlinx.coroutines.flow.Flow
@@ -46,27 +45,27 @@ interface DocumentEntityDao {
     @Query("SELECT id FROM $DOCUMENT_ENTITY")
     suspend fun loadAllIds(): List<String>
 
-    /* The order here doesn't matter, because only one document should be returned */
+    // The order here doesn't matter, because only one document should be returned
     @Query(
         "SELECT * FROM $DOCUMENT_ENTITY " +
-                "LEFT JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
-                "WHERE $DOCUMENT_ENTITY.id = :documentId " +
-                "ORDER BY $DOCUMENT_ENTITY.created_at, $STORY_UNIT_ENTITY.position"
+            "LEFT JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
+            "WHERE $DOCUMENT_ENTITY.id = :documentId " +
+            "ORDER BY $DOCUMENT_ENTITY.created_at, $STORY_UNIT_ENTITY.position"
     )
     suspend fun loadDocumentWithContentById(
         documentId: String
     ): Map<DocumentEntity, List<StoryStepEntity>>
 
-    /* The order here doesn't matter, because only one document should be returned */
+    // The order here doesn't matter, because only one document should be returned
     @Query(
         "SELECT * FROM $DOCUMENT_ENTITY " +
-                "LEFT JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
-                "WHERE $DOCUMENT_ENTITY.id IN (:documentIds) " +
-                "ORDER BY " +
-                "CASE WHEN :orderBy = \'$TITLE\' THEN $DOCUMENT_ENTITY.title END COLLATE NOCASE ASC, " +
-                "CASE WHEN :orderBy = \'$CREATED_AT\' THEN $DOCUMENT_ENTITY.created_at END DESC, " +
-                "CASE WHEN :orderBy = \'$LAST_UPDATED_AT\' THEN $DOCUMENT_ENTITY.last_updated_at END DESC, " +
-                "$STORY_UNIT_ENTITY.position"
+            "LEFT JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
+            "WHERE $DOCUMENT_ENTITY.id IN (:documentIds) " +
+            "ORDER BY " +
+            "CASE WHEN :orderBy = \'$TITLE\' THEN $DOCUMENT_ENTITY.title END COLLATE NOCASE ASC, " +
+            "CASE WHEN :orderBy = \'$CREATED_AT\' THEN $DOCUMENT_ENTITY.created_at END DESC, " +
+            "CASE WHEN :orderBy = \'$LAST_UPDATED_AT\' THEN $DOCUMENT_ENTITY.last_updated_at END DESC, " +
+            "$STORY_UNIT_ENTITY.position"
     )
     suspend fun loadDocumentWithContentByIds(
         documentIds: List<String>,
@@ -75,13 +74,13 @@ interface DocumentEntityDao {
 
     @Query(
         "SELECT * FROM $DOCUMENT_ENTITY " +
-                "LEFT JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
-                "WHERE user_id = :userId " +
-                "ORDER BY " +
+            "LEFT JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
+            "WHERE user_id = :userId " +
+            "ORDER BY " +
 //                "CASE WHEN :orderBy = \'$TITLE\' THEN $DOCUMENT_ENTITY.title END COLLATE NOCASE ASC, " +
 //                "CASE WHEN :orderBy = \'$CREATED_AT\' THEN $DOCUMENT_ENTITY.created_at END DESC, " +
 //                "CASE WHEN :orderBy = \'$LAST_UPDATED_AT\' THEN $DOCUMENT_ENTITY.last_updated_at END DESC, " +
-                "$STORY_UNIT_ENTITY.position"
+            "$STORY_UNIT_ENTITY.position"
     )
     suspend fun loadDocumentsWithContentForUser(
         userId: String
@@ -89,13 +88,13 @@ interface DocumentEntityDao {
 
     @Query(
         "SELECT * FROM $DOCUMENT_ENTITY " +
-                "LEFT JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
-                "WHERE user_id = :userId " +
-                "ORDER BY " +
+            "LEFT JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
+            "WHERE user_id = :userId " +
+            "ORDER BY " +
 //                "CASE WHEN :orderBy = \'$TITLE\' THEN $DOCUMENT_ENTITY.title END COLLATE NOCASE ASC, " +
 //                "CASE WHEN :orderBy = \'$CREATED_AT\' THEN $DOCUMENT_ENTITY.created_at END DESC, " +
 //                "CASE WHEN :orderBy = \'$LAST_UPDATED_AT\' THEN $DOCUMENT_ENTITY.last_updated_at END DESC, " +
-                "$STORY_UNIT_ENTITY.position"
+            "$STORY_UNIT_ENTITY.position"
     )
     fun listenForDocumentsWithContentForUser(
         userId: String
@@ -103,19 +102,17 @@ interface DocumentEntityDao {
 
     @Query(
         "SELECT * FROM $DOCUMENT_ENTITY " +
-                "LEFT JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
-                "WHERE $DOCUMENT_ENTITY.parent_id = :parentId " +
-                "ORDER BY " +
+            "LEFT JOIN $STORY_UNIT_ENTITY ON $DOCUMENT_ENTITY.id = $STORY_UNIT_ENTITY.document_id " +
+            "WHERE $DOCUMENT_ENTITY.parent_id = :parentId " +
+            "ORDER BY " +
 //                "CASE WHEN :orderBy = \'$TITLE\' THEN $DOCUMENT_ENTITY.title END COLLATE NOCASE ASC, " +
 //                "CASE WHEN :orderBy = \'$CREATED_AT\' THEN $DOCUMENT_ENTITY.created_at END DESC, " +
 //                "CASE WHEN :orderBy = \'$LAST_UPDATED_AT\' THEN $DOCUMENT_ENTITY.last_updated_at END DESC, " +
-                "$STORY_UNIT_ENTITY.position"
+            "$STORY_UNIT_ENTITY.position"
     )
     fun listenForDocumentsWithContentByParentId(
         parentId: String
     ): Flow<Map<DocumentEntity, List<StoryStepEntity>>>
-
-
 
     @Query("UPDATE $DOCUMENT_ENTITY set user_id = :newUserId WHERE user_id = :oldUserId")
     suspend fun moveDocumentsToNewUser(oldUserId: String, newUserId: String)

@@ -3,7 +3,7 @@ package io.writeopia.sdk.models.document
 import io.writeopia.sdk.models.utils.Traversable
 import kotlinx.datetime.Instant
 
-interface MenuItem : Traversable{
+interface MenuItem : Traversable {
     override val id: String
     val title: String
     val createdAt: Instant

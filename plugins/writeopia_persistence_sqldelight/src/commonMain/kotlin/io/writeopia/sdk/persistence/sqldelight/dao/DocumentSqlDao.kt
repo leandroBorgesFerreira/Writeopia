@@ -82,12 +82,11 @@ class DocumentSqlDao(
                             path = innerContent.path,
                             text = innerContent.text,
                             checked = innerContent.checked == 1L,
-
 //                                steps = emptyList(), // Todo: Fix!
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                                 textSize = 16
-                            ), // Todo: Fix!
+                            ),
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -143,8 +142,7 @@ class DocumentSqlDao(
                         userId = document.user_id,
                         favorite = document.favorite == 1L,
                         parentId = document.parent_document_id,
-
-                        )
+                    )
                 }
             }
             ?.sortWithOrderBy(OrderBy.fromString(orderBy))
@@ -359,5 +357,3 @@ class DocumentSqlDao(
         )
     }
 }
-
-

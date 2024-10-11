@@ -30,7 +30,6 @@ class RoomDocumentRepository(
         emptyList()
 
     override suspend fun deleteDocumentByFolder(folderId: String) {
-
     }
 
     override fun listenForDocumentsByParentId(
@@ -59,7 +58,6 @@ class RoomDocumentRepository(
     ): List<Document> {
         throw IllegalStateException("This method is not supported")
     }
-
 
     override suspend fun favoriteDocumentByIds(ids: Set<String>) {
         setFavorite(ids, true)
@@ -111,13 +109,15 @@ class RoomDocumentRepository(
 
     override suspend fun deleteDocumentByIds(ids: Set<String>) {
         // The user ID is not relevant in the way to delete documents
-        documentEntityDao.deleteDocuments(*ids.map {
-            DocumentEntity.createById(
-                it,
-                "",
-                parentId = ""
-            )
-        }.toTypedArray())
+        documentEntityDao.deleteDocuments(
+            *ids.map {
+                DocumentEntity.createById(
+                    it,
+                    "",
+                    parentId = ""
+                )
+            }.toTypedArray()
+        )
     }
 
     override suspend fun saveStoryStep(storyStep: StoryStep, position: Int, documentId: String) {
@@ -172,6 +172,5 @@ class RoomDocumentRepository(
     }
 
     override suspend fun stopListeningForFoldersByParentId(parentId: String) {
-
     }
 }
