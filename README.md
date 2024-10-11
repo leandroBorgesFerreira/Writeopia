@@ -1,7 +1,7 @@
 
-<p align="center">
-  [![Main merge](https://github.com/leandroBorgesFerreira/Writeopia/actions/workflows/main-merge.yml/badge.svg)](https://github.com/leandroBorgesFerreira/Writeopia/actions/workflows/main-merge.yml)
-  [![Maven Central](https://img.shields.io/maven-central/v/io.writeopia/writeopia-core)
+<p align="center"  width="100%">
+  <a href="https://github.com/leandroBorgesFerreira/Writeopia/actions/workflows/main-merge.yml"><img src="https://github.com/leandroBorgesFerreira/Writeopia/actions/workflows/main-merge.yml/badge.svg" alt="Main merge"></a>
+  <a href="https://search.maven.org/artifact/io.writeopia/writeopia-core"><img src="https://img.shields.io/maven-central/v/io.writeopia/writeopia-core" alt="Maven Central"></a>
 </p>
 
 <p align="center" width="100%">
