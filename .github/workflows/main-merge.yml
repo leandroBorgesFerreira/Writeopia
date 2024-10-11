@@ -45,7 +45,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: writeopia-desktop-mac-app
-          path: ./application/desktopApp/build/compose/binaries/main-release/app/
+          path: ./application/desktopApp/build/compose/binaries/main/app/
           if-no-files-found: error
           retention-days: 10
           overwrite: true
@@ -68,7 +68,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: writeopia-js-webpack
-          path: ./application/web/build/dist/js
+          path: ./application/web/build/kotlin-webpack/js/developmentExecutable
           if-no-files-found: error
           retention-days: 10
           overwrite: true
