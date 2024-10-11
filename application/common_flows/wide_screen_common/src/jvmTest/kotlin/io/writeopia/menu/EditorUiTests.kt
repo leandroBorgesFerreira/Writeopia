@@ -3,9 +3,9 @@ package io.writeopia.menu
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import io.writeopia.common.uitests.tests.editor.EditorCommonTests
 import io.writeopia.common.uitests.robots.DocumentEditRobot
 import io.writeopia.common.uitests.robots.DocumentsMenuRobot
+import io.writeopia.common.uitests.tests.editor.EditorCommonTests
 import kotlinx.coroutines.test.runTest
 import org.junit.Ignore
 import org.junit.Rule

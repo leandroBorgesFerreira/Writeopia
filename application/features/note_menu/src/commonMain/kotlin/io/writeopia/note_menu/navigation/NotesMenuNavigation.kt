@@ -15,7 +15,7 @@ import io.writeopia.note_menu.data.model.NotesNavigationType
 import io.writeopia.note_menu.di.NotesMenuInjection
 import io.writeopia.note_menu.ui.screen.menu.NotesMenuScreen
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
-import io.writeopia.utils_module.Destinations
+import io.writeopia.common.utils.Destinations
 import kotlinx.coroutines.CoroutineScope
 
 const val NAVIGATION_TYPE = "type"

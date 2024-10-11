@@ -10,7 +10,7 @@ import io.writeopia.auth.login.LoginScreenBinding
 import io.writeopia.auth.menu.AuthMenuScreen
 import io.writeopia.auth.menu.AuthMenuViewModel
 import io.writeopia.auth.register.RegisterScreen
-import io.writeopia.utils_module.Destinations
+import io.writeopia.common.utils.Destinations
 
 fun NavGraphBuilder.authNavigation(
     navController: NavController,

@@ -10,21 +10,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # kt_lint:
-  #   name: Ktlint
-  #   runs-on: ubuntu-22.04
-  #   env:
-  #     isCI: "true"
-  #   steps:
-  #     - name: Check out code
-  #       uses: actions/checkout@v4
-  #     - name: Set up JDK 21
-  #       uses: actions/setup-java@v3
-  #       with:
-  #         distribution: adopt
-  #         java-version: '21'
-  #     - name: Ktlint
-  #       run: ./gradlew ktlintCheck --no-daemon
+  kt_lint:
+    name: Ktlint
+    runs-on: ubuntu-22.04
+    env:
+      isCI: "true"
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: adopt
+          java-version: '21'
+      - name: Ktlint
+        run: ./gradlew ktlintCheck --no-daemon
   ui_jvm_tests:
     name: Jvm UI Compose tests
     runs-on: ubuntu-22.04
@@ -38,7 +38,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
       - name: Set up JDK 21
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: adopt
           java-version: '21'
@@ -59,7 +59,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
       - name: Set up JDK 21
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: adopt
           java-version: '21'
@@ -78,7 +78,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
       - name: Set up JDK 21
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: adopt
           java-version: '21'
@@ -95,7 +95,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: yarn

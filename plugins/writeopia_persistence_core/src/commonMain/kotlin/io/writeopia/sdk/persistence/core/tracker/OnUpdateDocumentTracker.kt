@@ -4,10 +4,10 @@ import io.writeopia.sdk.filter.DocumentFilter
 import io.writeopia.sdk.filter.DocumentFilterObject
 import io.writeopia.sdk.manager.DocumentTracker
 import io.writeopia.sdk.manager.DocumentUpdate
-import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.model.story.LastEdit
 import io.writeopia.sdk.model.story.StoryState
+import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryTypes
 import kotlinx.coroutines.flow.Flow
@@ -36,8 +36,8 @@ class OnUpdateDocumentTracker(
 
                     val stories = storyState.stories
                     val titleFromContent = stories.values.firstOrNull { storyStep ->
-                        //Todo: Change the type of change to allow different types. The client code should decide what is a title
-                        //It is also interesting to inv
+                        // Todo: Change the type of change to allow different types. The client code should decide what is a title
+                        // It is also interesting to inv
                         storyStep.type == StoryTypes.TITLE.type
                     }?.text
 
@@ -58,8 +58,8 @@ class OnUpdateDocumentTracker(
                 LastEdit.Whole -> {
                     val stories = storyState.stories
                     val titleFromContent = stories.values.firstOrNull { storyStep ->
-                        //Todo: Change the type of change to allow different types. The client code should decide what is a title
-                        //It is also interesting to inv
+                        // Todo: Change the type of change to allow different types. The client code should decide what is a title
+                        // It is also interesting to inv
                         storyStep.type == StoryTypes.TITLE.type
                     }?.text
 
@@ -79,8 +79,8 @@ class OnUpdateDocumentTracker(
                 is LastEdit.InfoEdition -> {
                     val stories = storyState.stories
                     val titleFromContent = stories.values.firstOrNull { storyStep ->
-                        //Todo: Change the type of change to allow different types. The client code should decide what is a title
-                        //It is also interesting to inv
+                        // Todo: Change the type of change to allow different types. The client code should decide what is a title
+                        // It is also interesting to inv
                         storyStep.type == StoryTypes.TITLE.type
                     }?.text
 

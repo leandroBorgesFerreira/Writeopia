@@ -12,5 +12,4 @@ object FirebaseTokenHandler : BearerTokenHandler {
         Firebase.auth.currentUser?.getIdToken(true)?.await()?.token?.also { token ->
             Log.d("FirebaseTokenHandler", "token: $token")
         }
-
 }

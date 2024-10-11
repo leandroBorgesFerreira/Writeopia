@@ -1,6 +1,5 @@
 package io.writeopia.sdk.export.files
 
-import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.utils.files.KmpClosable
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json

@@ -1,6 +1,5 @@
 package io.writeopia.repository
 
-import io.writeopia.extensions.toModel
 import io.writeopia.model.ColorThemeOption
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -21,7 +20,6 @@ object UiConfigurationRepositoryCommonTest {
         }
     }
 
-
     suspend fun shouldBePossibleToKeepChoiceToHideSideMenu(repository: UiConfigurationRepository) {
         val userId = "user_offline"
         repository.run {
@@ -29,5 +27,4 @@ object UiConfigurationRepositoryCommonTest {
             assertTrue(getUiConfigurationEntity(userId)?.showSideMenu == true)
         }
     }
-
 }

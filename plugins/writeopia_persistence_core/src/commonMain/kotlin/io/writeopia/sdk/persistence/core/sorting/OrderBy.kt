@@ -1,7 +1,9 @@
 package io.writeopia.sdk.persistence.core.sorting
 
 enum class OrderBy(val type: String) {
-    CREATE("created_at"), UPDATE("last_updated_at"), NAME(type = "title");
+    CREATE("created_at"),
+    UPDATE("last_updated_at"),
+    NAME(type = "title");
 
     companion object {
         fun fromString(stringValue: String) = entries

@@ -1,6 +1,6 @@
 package io.writeopia.editor.configuration.ui
 
-//import androidx.compose.ui.tooling.preview.Preview
+// import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import io.writeopia.common_ui.SlideInBox
+import io.writeopia.commonui.SlideInBox
 
 // This screen could live in a module for extra Composables
 @Composable
@@ -57,9 +57,9 @@ fun BoxScope.HeaderEdition(
     }
 }
 
-//@Preview
-//@Composable
-//fun HeaderEditionPreview() {
+// @Preview
+// @Composable
+// fun HeaderEditionPreview() {
 //    val colors = listOf(
 //        Color.Blue.toArgb(),
 //        Color.White.toArgb(),
@@ -76,4 +76,4 @@ fun BoxScope.HeaderEdition(
 //            visibilityState = true
 //        )
 //    }
-//}
+// }

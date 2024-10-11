@@ -1,7 +1,7 @@
 package io.writeopia.editor.ui.screen
 
-//import androidx.compose.ui.tooling.preview.Preview
-//import io.writeopia.appresourcers.R
+// import androidx.compose.ui.tooling.preview.Preview
+// import io.writeopia.appresourcers.R
 import android.content.Context
 import android.content.Intent
 import androidx.activity.compose.BackHandler
@@ -74,7 +74,6 @@ internal fun NoteEditorScreen(
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
     val systemUiController = rememberSystemUiController()
     val systemBarColor = MaterialTheme.colorScheme.background
     val systemBarDefaultColor = MaterialTheme.colorScheme.primary
@@ -181,7 +180,6 @@ internal fun NoteEditorScreen(
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar(
@@ -260,13 +258,13 @@ private fun shareDocument(context: Context, shareDocument: ShareDocument) {
     )
 }
 
-//@Preview
-//@Composable
-//private fun TopBar_Preview() {
+// @Preview
+// @Composable
+// private fun TopBar_Preview() {
 //    Box(modifier = Modifier.background(Color.LightGray)) {
 //        TopBar(titleState = MutableStateFlow("Title"), shareDocument = {})
 //    }
-//}
+// }
 
 @Composable
 private fun BottomScreen(
@@ -289,10 +287,12 @@ private fun BottomScreen(
         targetState = edit,
         label = "bottomSheetAnimation",
         transitionSpec = {
-            (slideInVertically(
-                animationSpec = spring(dampingRatio = 0.65F),
-                initialOffsetY = { fullHeight -> fullHeight }
-            )) togetherWith slideOutVertically(
+            (
+                slideInVertically(
+                    animationSpec = spring(dampingRatio = 0.65F),
+                    initialOffsetY = { fullHeight -> fullHeight }
+                )
+            ) togetherWith slideOutVertically(
                 animationSpec = tween(durationMillis = 130),
                 targetOffsetY = { fullHeight -> fullHeight }
             )
@@ -319,22 +319,22 @@ private fun BottomScreen(
     }
 }
 
-//@Preview
-//@Composable
-//private fun BottomScreenTextPreview() {
+// @Preview
+// @Composable
+// private fun BottomScreenTextPreview() {
 //    BottomScreen(
 //        editState = MutableStateFlow(EditState.TEXT),
 //        canUndo = MutableStateFlow(true),
 //        canRedo = MutableStateFlow(true),
 //    )
-//}
+// }
 //
-//@Preview
-//@Composable
-//private fun BottomScreenSelectedPreview() {
+// @Preview
+// @Composable
+// private fun BottomScreenSelectedPreview() {
 //    BottomScreen(
 //        editState = MutableStateFlow(EditState.SELECTED_TEXT),
 //        canUndo = MutableStateFlow(true),
 //        canRedo = MutableStateFlow(true),
 //    )
-//}
+// }

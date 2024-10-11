@@ -2,7 +2,6 @@ package io.writeopia.persistence.room.data.daos
 
 import androidx.room.Dao
 import androidx.room.Query
-import androidx.room.Update
 import androidx.room.Upsert
 import io.writeopia.persistence.room.data.entities.FOLDER_ENTITY
 import io.writeopia.persistence.room.data.entities.FolderEntity

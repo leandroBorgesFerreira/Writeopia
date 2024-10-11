@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.compose.multiplatform.compiler)
     alias(libs.plugins.application)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.ktlint)
 }
 
 kotlin {

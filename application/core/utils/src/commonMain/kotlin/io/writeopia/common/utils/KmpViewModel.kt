@@ -1,4 +1,4 @@
-package io.writeopia.utils_module
+package io.writeopia.common.utils
 
 import kotlinx.coroutines.CoroutineScope
 

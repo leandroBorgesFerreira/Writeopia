@@ -5,13 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.auth.intronotes.IntroNotesUseCase
-import io.writeopia.utils_module.ResultData
-import io.writeopia.utils_module.toBoolean
+import io.writeopia.common.utils.ResultData
+import io.writeopia.common.utils.toBoolean
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-/* The NavigationActivity won't leak because it is the single activity of the whole project*/
+// The NavigationActivity won't leak because it is the single activity of the whole project
 internal class LoginViewModel(
     private val introNotesUseCase: IntroNotesUseCase,
     private val authManager: AuthManager

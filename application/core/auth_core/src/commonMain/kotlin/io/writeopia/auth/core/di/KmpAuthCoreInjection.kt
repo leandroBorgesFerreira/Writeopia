@@ -5,7 +5,7 @@ import io.writeopia.auth.core.manager.MockAuthManager
 import io.writeopia.auth.core.repository.AuthRepository
 import io.writeopia.auth.core.repository.MockAuthRepository
 
-class KmpAuthCoreInjection: AuthCoreInjection {
+class KmpAuthCoreInjection : AuthCoreInjection {
 
     override fun provideAccountManager(): AuthManager = MockAuthManager()
 

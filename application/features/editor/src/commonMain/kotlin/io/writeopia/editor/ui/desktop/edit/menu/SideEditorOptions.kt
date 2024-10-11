@@ -72,7 +72,6 @@ fun SideEditorOptions(
                     .width(160.dp)
                     .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp)
             ) {
-
                 Text(
                     "Text",
                     style = MaterialTheme.typography.titleSmall,
@@ -240,4 +239,3 @@ private fun Modifier.horizontalOptionsRow() =
             MaterialTheme.colorScheme.surfaceVariant,
             MaterialTheme.shapes.medium
         )
-

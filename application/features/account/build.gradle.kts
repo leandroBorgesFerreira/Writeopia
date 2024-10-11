@@ -3,11 +3,12 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.multiplatform.compiler)
+    alias(libs.plugins.ktlint)
 }
 
 kotlin {
     androidTarget()
-    jvm{}
+    jvm {}
     js(IR) {
         browser()
     }
@@ -48,12 +49,10 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-
             }
         }
     }
 }
-
 
 android {
     namespace = "io.writeopia.account"

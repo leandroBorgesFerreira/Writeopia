@@ -1,6 +1,6 @@
 package io.writeopia.navigation
 
-import io.writeopia.utils_module.Destinations
+import io.writeopia.common.utils.Destinations
 
 enum class NavItemName(val value: String) {
     HOME("Home"),

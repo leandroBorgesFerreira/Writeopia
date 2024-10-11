@@ -8,16 +8,15 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import io.writeopia.common.utils.Destinations
 import io.writeopia.editor.di.TextEditorInjector
 import io.writeopia.editor.ui.screen.TextEditorScreen
-import io.writeopia.utils_module.Destinations
 
 fun NavGraphBuilder.editorNavigation(
     navigateBack: () -> Unit = {},
     editorInjector: TextEditorInjector,
     isUndoKeyEvent: (KeyEvent) -> Boolean
 ) {
-
     composable(
         route = "${Destinations.EDITOR.id}/{noteId}/{noteTitle}",
         arguments = listOf(navArgument("noteId") { type = NavType.StringType }),

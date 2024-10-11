@@ -3,7 +3,7 @@ package io.writeopia.auth.core.manager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import io.writeopia.auth.core.data.User
-import io.writeopia.utils_module.ResultData
+import io.writeopia.common.utils.ResultData
 import kotlinx.coroutines.tasks.await
 
 class FirebaseAuthManager(private val auth: FirebaseAuth) : AuthManager {
@@ -43,7 +43,6 @@ class FirebaseAuthManager(private val auth: FirebaseAuth) : AuthManager {
             } catch (e: Exception) {
                 ResultData.Complete(userCreated)
             }
-
         } catch (e: Exception) {
             ResultData.Error(e)
         }

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.compose.multiplatform.compiler)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.ktlint)
 //    id("androidx.room")
 }
 
@@ -42,12 +43,10 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-
             }
         }
     }
 }
-
 
 android {
     namespace = "io.writeopia.theme"

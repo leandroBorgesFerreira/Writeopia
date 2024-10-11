@@ -1,6 +1,8 @@
-package io.writeopia.utils_module.collections
+package io.writeopia.common.tests.collections
 
-import io.writeopia.utils_module.node.Node
+import io.writeopia.common.utils.Node
+import io.writeopia.common.utils.collections.merge
+import io.writeopia.common.utils.collections.toNodeTree
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

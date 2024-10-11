@@ -41,6 +41,7 @@ import io.writeopia.auth.core.di.AndroidAuthCoreInjection
 import io.writeopia.auth.core.token.FirebaseTokenHandler
 import io.writeopia.auth.di.AuthInjection
 import io.writeopia.auth.navigation.authNavigation
+import io.writeopia.common.utils.Destinations
 import io.writeopia.editor.di.EditorInjector
 import io.writeopia.model.isDarkTheme
 import io.writeopia.navigation.notes.navigateToNoteMenu
@@ -57,7 +58,6 @@ import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 import io.writeopia.persistence.room.injection.RoomRespositoryInjection
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.theme.WrieopiaTheme
-import io.writeopia.utils_module.Destinations
 
 class NavigationActivity : AppCompatActivity() {
 
@@ -175,8 +175,7 @@ fun NavigationGraph(
                     startDestination = startDestination,
                     selectColorTheme = uiConfigViewModel::changeColorTheme,
                     isUndoKeyEvent = { false },
-
-                    ) {
+                ) {
                     authNavigation(navController, authInjection) {
                         navController.navigateToNotes(NotesNavigation.Root)
                     }

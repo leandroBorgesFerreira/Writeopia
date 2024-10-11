@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <baseline version="1.0">
-    <file name="build.gradle.kts">
-        <error line="60" column="1" source="standard:no-blank-line-before-rbrace" />
-    </file>
-    <file name="build/generated/compose/resourceGenerator/kotlin/writeopia/application/features/editor/generated/resources/Res.kt">
+    <file name="build/generated/compose/resourceGenerator/kotlin/commonResClass/writeopia/application/features/editor/generated/resources/Res.kt">
         <error line="2" column="1" source="standard:indent" />
         <error line="3" column="1" source="standard:indent" />
         <error line="8" column="1" source="standard:import-ordering" />
@@ -16,82 +13,45 @@
         <error line="22" column="1" source="standard:indent" />
         <error line="23" column="1" source="standard:indent" />
         <error line="24" column="1" source="standard:indent" />
+        <error line="25" column="1" source="standard:indent" />
         <error line="26" column="1" source="standard:indent" />
-        <error line="26" column="17" source="standard:class-naming" />
-        <error line="28" column="1" source="standard:indent" />
-        <error line="28" column="17" source="standard:class-naming" />
+        <error line="26" column="25" source="standard:wrapping" />
+        <error line="26" column="25" source="standard:argument-list-wrapping" />
+        <error line="27" column="1" source="standard:indent" />
+        <error line="27" column="10" source="standard:wrapping" />
+        <error line="27" column="11" source="standard:argument-list-wrapping" />
+        <error line="29" column="1" source="standard:indent" />
         <error line="30" column="1" source="standard:indent" />
-        <error line="30" column="17" source="standard:class-naming" />
-    </file>
-    <file name="src/androidMain/kotlin/io/writeopia/editor/input/InputScreen.kt">
-        <error line="3" column="1" source="standard:comment-spacing" />
-        <error line="6" column="1" source="standard:no-wildcard-imports" />
-        <error line="76" column="1" source="standard:comment-spacing" />
-        <error line="77" column="1" source="standard:comment-spacing" />
-        <error line="78" column="1" source="standard:comment-spacing" />
-        <error line="83" column="1" source="standard:comment-spacing" />
-    </file>
-    <file name="src/androidMain/kotlin/io/writeopia/editor/ui/NoteEditorScreen.kt">
-        <error line="3" column="1" source="standard:comment-spacing" />
-        <error line="4" column="1" source="standard:comment-spacing" />
-        <error line="5" column="1" source="standard:import-ordering" />
-        <error line="8" column="1" source="standard:no-wildcard-imports" />
-        <error line="12" column="1" source="standard:no-wildcard-imports" />
-        <error line="19" column="1" source="standard:no-wildcard-imports" />
-        <error line="20" column="1" source="standard:no-wildcard-imports" />
-        <error line="53" column="1" source="standard:no-empty-first-line-in-method-block" />
-        <error line="168" column="1" source="standard:no-consecutive-blank-lines" />
-        <error line="247" column="1" source="standard:comment-spacing" />
-        <error line="248" column="1" source="standard:comment-spacing" />
-        <error line="249" column="1" source="standard:comment-spacing" />
-        <error line="253" column="1" source="standard:comment-spacing" />
-        <error line="285" column="14" source="standard:wrapping" />
-        <error line="288" column="24" source="standard:wrapping" />
-        <error line="316" column="1" source="standard:comment-spacing" />
-        <error line="317" column="1" source="standard:comment-spacing" />
-        <error line="318" column="1" source="standard:comment-spacing" />
-        <error line="324" column="1" source="standard:comment-spacing" />
-        <error line="326" column="1" source="standard:comment-spacing" />
-        <error line="327" column="1" source="standard:comment-spacing" />
-        <error line="328" column="1" source="standard:comment-spacing" />
-        <error line="334" column="1" source="standard:comment-spacing" />
-    </file>
-    <file name="src/commonMain/kotlin/io/writeopia/editor/configuration/ui/HeaderEdition.kt">
-        <error line="3" column="1" source="standard:import-ordering" />
-        <error line="33" column="1" source="standard:comment-spacing" />
-        <error line="113" column="1" source="standard:comment-spacing" />
-        <error line="114" column="1" source="standard:comment-spacing" />
-        <error line="115" column="1" source="standard:comment-spacing" />
-        <error line="132" column="1" source="standard:comment-spacing" />
+        <error line="31" column="1" source="standard:indent" />
+        <error line="32" column="1" source="standard:indent" />
+        <error line="33" column="1" source="standard:indent" />
+        <error line="34" column="1" source="standard:indent" />
+        <error line="35" column="1" source="standard:indent" />
+        <error line="36" column="1" source="standard:indent" />
+        <error line="37" column="1" source="standard:indent" />
+        <error line="38" column="1" source="standard:indent" />
+        <error line="39" column="1" source="standard:indent" />
+        <error line="39" column="22" source="standard:wrapping" />
+        <error line="39" column="22" source="standard:argument-list-wrapping" />
+        <error line="40" column="1" source="standard:indent" />
+        <error line="40" column="10" source="standard:wrapping" />
+        <error line="40" column="11" source="standard:argument-list-wrapping" />
+        <error line="42" column="1" source="standard:indent" />
+        <error line="42" column="17" source="standard:class-naming" />
+        <error line="44" column="1" source="standard:indent" />
+        <error line="44" column="17" source="standard:class-naming" />
+        <error line="46" column="1" source="standard:indent" />
+        <error line="46" column="17" source="standard:class-naming" />
+        <error line="48" column="1" source="standard:indent" />
+        <error line="48" column="17" source="standard:class-naming" />
+        <error line="50" column="1" source="standard:indent" />
+        <error line="50" column="17" source="standard:class-naming" />
     </file>
     <file name="src/commonMain/kotlin/io/writeopia/editor/configuration/ui/NoteGlobalActionsMenu.kt">
-        <error line="3" column="1" source="standard:no-consecutive-blank-lines" />
-        <error line="4" column="1" source="standard:import-ordering" />
-        <error line="20" column="1" source="standard:comment-spacing" />
-        <error line="23" column="1" source="standard:comment-spacing" />
-    </file>
-    <file name="src/commonMain/kotlin/io/writeopia/editor/di/EditorKmpInjector.kt">
         <error line="3" column="1" source="standard:import-ordering" />
-    </file>
-    <file name="src/commonMain/kotlin/io/writeopia/editor/model/EditState.kt">
-        <error line="4" column="11" source="standard:enum-wrapping" />
-    </file>
-    <file name="src/commonMain/kotlin/io/writeopia/editor/ui/desktop/AppTextEditor.kt">
-        <error line="3" column="1" source="standard:import-ordering" />
-        <error line="4" column="1" source="standard:no-unused-imports" />
-        <error line="5" column="1" source="standard:no-unused-imports" />
     </file>
     <file name="src/commonMain/kotlin/io/writeopia/editor/viewmodel/NoteEditorKmpViewModel.kt">
-        <error line="3" column="1" source="standard:import-ordering" />
-        <error line="24" column="1" source="standard:no-wildcard-imports" />
-        <error line="35" column="25" source="standard:wrapping" />
-        <error line="35" column="39" source="standard:wrapping" />
+        <error line="23" column="1" source="standard:no-wildcard-imports" />
         <error line="40" column="17" source="standard:property-naming" />
-        <error line="114" column="9" source="standard:comment-spacing" />
-        <error line="220" column="1" source="standard:no-consecutive-blank-lines" />
-    </file>
-    <file name="src/commonMain/kotlin/io/writeopia/editor/viewmodel/NoteEditorViewModel.kt">
-        <error line="3" column="1" source="standard:import-ordering" />
-        <error line="10" column="30" source="standard:colon-spacing" />
     </file>
 </baseline>

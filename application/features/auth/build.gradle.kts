@@ -5,6 +5,7 @@ plugins {
     id("com.google.devtools.ksp")
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.multiplatform.compiler)
+    alias(libs.plugins.ktlint)
 }
 
 android {
@@ -79,5 +80,4 @@ dependencies {
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
 }

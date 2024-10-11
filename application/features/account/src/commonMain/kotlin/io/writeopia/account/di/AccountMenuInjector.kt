@@ -7,5 +7,4 @@ interface AccountMenuInjector {
 
     @Composable
     fun provideAccountMenuViewModel(): AccountMenuViewModel
-
 }

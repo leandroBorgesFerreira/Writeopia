@@ -15,10 +15,8 @@ class AndroidAccountMenuInjector(
         AccountMenuAndroidViewModel(accountMenuKmpInjector.provideAccountMenuKmpViewModel())
     }
 
-
     companion object {
         fun create(authCoreInjection: AuthCoreInjection) =
             AndroidAccountMenuInjector(AccountMenuKmpInjector(authCoreInjection))
-
     }
 }

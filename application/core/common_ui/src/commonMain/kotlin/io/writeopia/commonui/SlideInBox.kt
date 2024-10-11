@@ -1,4 +1,4 @@
-package io.writeopia.common_ui
+package io.writeopia.commonui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope

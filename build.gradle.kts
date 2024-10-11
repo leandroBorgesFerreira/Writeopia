@@ -12,8 +12,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.jvm) apply false
     alias(libs.plugins.compose.multiplatform) apply false
     alias(libs.plugins.google.services) apply false
-//    id("androidx.room") version "2.7.0-alpha02" apply false
-//    alias(libs.plugins.ktlint)
+    alias(libs.plugins.ktlint)
 }
 
 apply(from = "$rootDir/scripts/publish-root.gradle")
@@ -23,12 +22,3 @@ dagCommand {
     outputType = "json_pretty_print"
     printModulesInfo = true
 }
-
-//subprojects {
-//    apply(plugin = "org.jlleitschuh.gradle.ktlint") // Version should be inherited from parent
-//
-//    repositories {
-//        // Required to download KtLint
-//        mavenCentral()
-//    }
-//}

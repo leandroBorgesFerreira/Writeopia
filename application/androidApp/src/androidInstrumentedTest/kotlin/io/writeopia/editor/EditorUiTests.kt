@@ -10,7 +10,6 @@ import io.writeopia.common.uitests.tests.editor.EditorCommonTests
 import io.writeopia.navigation.NavigationGraph
 import io.writeopia.note_menu.navigation.NoteMenuDestiny
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
-import io.writeopia.utils_module.Destinations
 import org.junit.Rule
 import org.junit.Test
 

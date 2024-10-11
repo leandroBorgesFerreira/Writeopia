@@ -16,11 +16,11 @@ import io.writeopia.sdk.import_document.json.WriteopiaJsonParser
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
-import io.writeopia.utils_module.DISCONNECTED_USER_ID
-import io.writeopia.utils_module.KmpViewModel
-import io.writeopia.utils_module.ResultData
-import io.writeopia.utils_module.map
-import io.writeopia.utils_module.toBoolean
+import io.writeopia.common.utils.DISCONNECTED_USER_ID
+import io.writeopia.common.utils.KmpViewModel
+import io.writeopia.common.utils.ResultData
+import io.writeopia.common.utils.map
+import io.writeopia.common.utils.toBoolean
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -89,6 +89,7 @@ internal class ChooseNoteKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, UserState.Idle())
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override val notesArrangement: StateFlow<NotesArrangement> by lazy {
         authManager.listenForUser()
             .flatMapLatest { user ->

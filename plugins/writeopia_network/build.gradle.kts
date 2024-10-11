@@ -3,16 +3,16 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     kotlin("multiplatform")
     alias(libs.plugins.dokka)
+    alias(libs.plugins.ktlint)
 }
 
-
-//rootProject.extra.apply {
+// rootProject.extra.apply {
 //    set("PUBLISH_GROUP_ID", "io.writeopia")
 //    set("PUBLISH_ARTIFACT_ID", "writeopia-network")
 //    set("PUBLISH_VERSION", libs.versions.writeopia.get())
-//}
+// }
 
-//apply(from = "${rootDir}/scripts/publish-module.gradle")
+// apply(from = "${rootDir}/scripts/publish-module.gradle")
 
 kotlin {
     jvm {}

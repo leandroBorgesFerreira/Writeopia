@@ -1,4 +1,4 @@
-package io.writeopia.sdk.serialization.storage;
+package io.writeopia.sdk.serialization.storage
 
 import kotlinx.serialization.Serializable
 

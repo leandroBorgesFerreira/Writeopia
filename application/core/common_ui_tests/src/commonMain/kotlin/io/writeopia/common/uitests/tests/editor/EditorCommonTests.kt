@@ -55,7 +55,7 @@ object EditorCommonTests {
 
         documentEditRobot.run {
             clickWithText(text)
-            checkWithText(text) //It shouldn't crash
+            checkWithText(text) // It shouldn't crash
         }
     }
 }

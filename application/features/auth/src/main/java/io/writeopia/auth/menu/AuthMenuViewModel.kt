@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.auth.core.repository.AuthRepository
-import io.writeopia.utils_module.ResultData
-import io.writeopia.utils_module.map
+import io.writeopia.common.utils.ResultData
+import io.writeopia.common.utils.map
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -17,13 +17,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.writeopia.account.viewmodel.AccountMenuViewModel
+import io.writeopia.common.utils.ResultData
+import io.writeopia.common.utils.toBoolean
 import io.writeopia.model.ColorThemeOption
-import io.writeopia.utils_module.ResultData
-import io.writeopia.utils_module.toBoolean
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-//import io.writeopia.appresourcers.R
+// import io.writeopia.appresourcers.R
 
 @Composable
 fun AccountMenuScreen(
@@ -33,7 +33,6 @@ fun AccountMenuScreen(
     goToRegister: () -> Unit,
     selectColorTheme: (ColorThemeOption) -> Unit,
 ) {
-
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         SettingsScreen(
             selectedThemePosition = MutableStateFlow(0),

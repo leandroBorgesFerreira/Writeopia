@@ -1,6 +1,5 @@
 package io.writeopia.auth.core.repository
 
-
 interface AuthRepository {
 
     fun saveUserChoiceOffline()

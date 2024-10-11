@@ -26,6 +26,7 @@ import io.writeopia.account.di.AccountMenuKmpInjector
 import io.writeopia.account.ui.SettingsDialog
 import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
+import io.writeopia.common.utils.Destinations
 import io.writeopia.editor.di.EditorKmpInjector
 import io.writeopia.global.shell.SideGlobalMenu
 import io.writeopia.global.shell.di.SideMenuKmpInjector
@@ -51,7 +52,6 @@ import io.writeopia.theme.WrieopiaTheme
 import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.draganddrop.target.DraggableScreen
 import io.writeopia.ui.keyboard.KeyboardEvent
-import io.writeopia.utils_module.Destinations
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

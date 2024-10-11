@@ -6,14 +6,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.note_menu.viewmodel.UiConfigurationAndroidViewModel
 import io.writeopia.repository.UiConfigurationPreferenceDao
 import io.writeopia.repository.UiConfigurationRepository
-import io.writeopia.repository.UiConfigurationRoomRepository
+import io.writeopia.repository.UiConfigurationRepositoryImpl
 import io.writeopia.viewmodel.UiConfigurationKmpViewModel
 import io.writeopia.viewmodel.UiConfigurationViewModel
 
 actual class UiConfigurationInjector(private val sharedPreferences: SharedPreferences) {
 
     actual fun provideUiConfigurationRepository(): UiConfigurationRepository =
-        UiConfigurationRoomRepository(UiConfigurationPreferenceDao(sharedPreferences))
+        UiConfigurationRepositoryImpl(UiConfigurationPreferenceDao(sharedPreferences))
 
     @Composable
     fun provideUiConfigurationViewModel(

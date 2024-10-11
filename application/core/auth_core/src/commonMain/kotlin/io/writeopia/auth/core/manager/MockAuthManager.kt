@@ -1,7 +1,7 @@
 package io.writeopia.auth.core.manager
 
 import io.writeopia.auth.core.data.User
-import io.writeopia.utils_module.ResultData
+import io.writeopia.common.utils.ResultData
 
 internal class MockAuthManager : AuthManager {
 

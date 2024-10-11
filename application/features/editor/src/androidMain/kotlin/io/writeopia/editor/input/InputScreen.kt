@@ -1,12 +1,19 @@
 package io.writeopia.editor.input
 
-//import androidx.compose.ui.tooling.preview.Preview
+// import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Redo
-import androidx.compose.material.icons.filled.Undo
+import androidx.compose.material.icons.automirrored.outlined.Redo
+import androidx.compose.material.icons.automirrored.outlined.Undo
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -49,7 +56,7 @@ internal fun InputScreen(
                                 onBackPress()
                             }
                         }),
-                    imageVector = Icons.Default.Undo,
+                    imageVector = Icons.AutoMirrored.Outlined.Undo,
                     contentDescription = "",
 //                    stringResource(R.string.undo),
                     tint = if (canUndo) buttonColor else disabledColor
@@ -63,7 +70,7 @@ internal fun InputScreen(
                                 onForwardPress()
                             }
                         }),
-                    imageVector = Icons.Default.Redo,
+                    imageVector = Icons.AutoMirrored.Outlined.Redo,
                     contentDescription = "",
 //                    stringResource(R.string.redo),
                     tint = if (canRedo) buttonColor else disabledColor
@@ -73,11 +80,11 @@ internal fun InputScreen(
     }
 }
 
-//@Preview
-//@Composable
-//private fun InputComposablePreview() {
+// @Preview
+// @Composable
+// private fun InputComposablePreview() {
 //    InputScreen(
 //        canUndoState = MutableStateFlow(true),
 //        canRedoState = MutableStateFlow(true)
 //    )
-//}
+// }

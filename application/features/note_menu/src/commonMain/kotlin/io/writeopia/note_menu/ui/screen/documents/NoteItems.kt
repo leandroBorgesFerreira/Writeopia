@@ -33,7 +33,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -55,7 +54,7 @@ import io.writeopia.ui.drawer.preview.CheckItemPreviewDrawer
 import io.writeopia.ui.drawer.preview.HeaderPreviewDrawer
 import io.writeopia.ui.drawer.preview.TextPreviewDrawer
 import io.writeopia.ui.drawer.preview.UnOrderedListItemPreviewDrawer
-import io.writeopia.utils_module.ResultData
+import io.writeopia.common.utils.ResultData
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 const val DOCUMENT_ITEM_TEST_TAG = "DocumentItem_"

@@ -1,4 +1,4 @@
-package io.writeopia.utils_module
+package io.writeopia.common.utils
 
 enum class Destinations(val id: String, val root: String) {
     EDITOR("note_details", "Home"),
@@ -15,5 +15,5 @@ enum class Destinations(val id: String, val root: String) {
      */
     AUTH_MENU_INNER_NAVIGATION("auth_menu_inner_navigation", "Home"),
     AUTH_MENU("auth_menu", "Home"),
-    AUTH_LOGIN("auth_login", "Home");
+    AUTH_LOGIN("auth_login", "Home")
 }

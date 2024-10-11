@@ -12,7 +12,7 @@ import io.writeopia.sdk.utils.files.useKmp
  * This class parses a document as a Map<Int, [StoryStep]> to a String following the Markdown
  * syntax.
  */
-object DocumentToMarkdown: DocumentWriter {
+object DocumentToMarkdown : DocumentWriter {
 
     // In the future it may be necessary to add a parse to an OutputStream
 
@@ -63,27 +63,18 @@ object DocumentToMarkdown: DocumentWriter {
             .filter { (_, contextText) -> contextText != null }
             .let { contentList ->
                 contentList.forEach { (contentAdd, contextText) ->
-                    if (
-                        prettyPrint &&
-                        (contentAdd == ContentAdd.EMPTY_LINE_BEFORE ||
-                                contentAdd == ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER)
-                    ) {
+                    if (prettyPrint && contentAdd.isEmptyLineBefore()) {
                         writeFn(null)
                     }
 
                     writeFn(contextText)
 
-                    if (
-                        prettyPrint &&
-                        (contentAdd == ContentAdd.EMPTY_LINE_AFTER ||
-                                contentAdd == ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER)
-                    ) {
+                    if (prettyPrint && contentAdd.isEmptyLineAfter()) {
                         writeFn(null)
                     }
                 }
             }
     }
-
 
     private fun parseStep(storyStep: StoryStep): Pair<ContentAdd, String?> =
         when (storyStep.type.number) {
@@ -112,7 +103,13 @@ object DocumentToMarkdown: DocumentWriter {
         }
 }
 
-
 enum class ContentAdd {
-    NOTHING, EMPTY_LINE_BEFORE, EMPTY_LINE_AFTER, EMPTY_LINE_BEFORE_AND_AFTER
+    NOTHING,
+    EMPTY_LINE_BEFORE,
+    EMPTY_LINE_AFTER,
+    EMPTY_LINE_BEFORE_AND_AFTER;
+
+    fun isEmptyLineBefore() = this == EMPTY_LINE_BEFORE || this == EMPTY_LINE_BEFORE_AND_AFTER
+
+    fun isEmptyLineAfter() = this == EMPTY_LINE_AFTER || this == EMPTY_LINE_BEFORE_AND_AFTER
 }
