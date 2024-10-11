@@ -8,15 +8,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UiConfigurationRoomRepository(
-    private val uiConfigurationRoomDao: UiConfigurationRoomDao
+class UiConfigurationRepositoryImpl(
+    private val uiConfigurationDao: UiConfigurationDao
 ) : UiConfigurationRepository {
     override suspend fun insertUiConfiguration(uiConfiguration: UiConfiguration) {
-        uiConfigurationRoomDao.saveUiConfiguration(uiConfiguration.toRoomEntity())
+        uiConfigurationDao.saveUiConfiguration(uiConfiguration.toRoomEntity())
     }
 
     override suspend fun getUiConfigurationEntity(userId: String): UiConfiguration? =
-        uiConfigurationRoomDao.getConfigurationByUserId(userId)?.toModel()
+        uiConfigurationDao.getConfigurationByUserId(userId)?.toModel()
 
     override suspend fun updateShowSideMenu(userId: String, showSideMenu: Boolean) {
         val entity = getUiConfigurationEntity(userId)
@@ -54,7 +54,7 @@ class UiConfigurationRoomRepository(
         getUserId: suspend () -> String,
         coroutineScope: CoroutineScope
     ): Flow<UiConfiguration?> =
-        uiConfigurationRoomDao.listenForConfigurationByUserId("")
+        uiConfigurationDao.listenForConfigurationByUserId("")
             .map { entity ->
                 entity?.toModel()
             }

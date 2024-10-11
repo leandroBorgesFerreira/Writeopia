@@ -1,6 +1,5 @@
 package io.writeopia.global.shell.viewmodel
 
-import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesNavigation

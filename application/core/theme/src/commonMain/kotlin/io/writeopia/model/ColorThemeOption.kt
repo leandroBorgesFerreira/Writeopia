@@ -4,7 +4,9 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 
 enum class ColorThemeOption(val theme: String) {
-    LIGHT("light"), DARK("dark"), SYSTEM("system");
+    LIGHT("light"),
+    DARK("dark"),
+    SYSTEM("system");
 
     companion object {
         fun fromText(theme: String?): ColorThemeOption? = entries.find { option ->

@@ -3,7 +3,9 @@ package io.writeopia.utils_module.node
 interface Node {
     val id: String
     var depth: Int
+
     fun addNotes(nodes: List<Node>)
+
     fun getNodes(): List<Node>
 
     fun toList(): List<Node> =

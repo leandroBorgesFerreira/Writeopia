@@ -10,7 +10,7 @@ import kotlinx.coroutines.runBlocking
 
 class UiConfigurationPreferenceDao(
     private val sharedPreferences: SharedPreferences
-) : UiConfigurationRoomDao {
+) : UiConfigurationDao {
 
     private val themeState = MutableStateFlow(
         UiConfigurationEntity("disconnected_user", ColorThemeOption.LIGHT.theme)

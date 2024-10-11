@@ -1,9 +1,12 @@
 package io.writeopia.utils_module
 
 sealed interface ResultData<T> {
-    class Idle<T>: ResultData<T>
+    class Idle<T> : ResultData<T>
+
     class Loading<T> : ResultData<T>
-    data class Complete<T>(val data: T): ResultData<T>
+
+    data class Complete<T>(val data: T) : ResultData<T>
+
     data class Error<T>(val exception: Exception) : ResultData<T>
 }
 

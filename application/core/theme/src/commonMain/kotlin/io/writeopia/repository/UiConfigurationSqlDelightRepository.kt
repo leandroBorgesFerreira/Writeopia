@@ -1,6 +1,5 @@
 package io.writeopia.repository
 
-import io.writeopia.app.sql.UiConfigurationEntity
 import io.writeopia.extensions.toEntity
 import io.writeopia.extensions.toModel
 import io.writeopia.model.ColorThemeOption
@@ -72,6 +71,5 @@ class UiConfigurationSqlDelightRepository internal constructor(
         ).also {
             instance = it
         }
-
     }
 }
