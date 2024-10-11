@@ -1,6 +1,6 @@
 package io.writeopia.editor.input
 
-//import androidx.compose.ui.tooling.preview.Preview
+// import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -80,11 +80,11 @@ internal fun InputScreen(
     }
 }
 
-//@Preview
-//@Composable
-//private fun InputComposablePreview() {
+// @Preview
+// @Composable
+// private fun InputComposablePreview() {
 //    InputScreen(
 //        canUndoState = MutableStateFlow(true),
 //        canRedoState = MutableStateFlow(true)
 //    )
-//}
+// }

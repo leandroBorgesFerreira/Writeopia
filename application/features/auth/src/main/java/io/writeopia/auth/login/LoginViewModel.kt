@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-/* The NavigationActivity won't leak because it is the single activity of the whole project*/
+// The NavigationActivity won't leak because it is the single activity of the whole project
 internal class LoginViewModel(
     private val introNotesUseCase: IntroNotesUseCase,
     private val authManager: AuthManager

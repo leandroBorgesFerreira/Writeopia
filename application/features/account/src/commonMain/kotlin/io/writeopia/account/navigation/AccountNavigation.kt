@@ -7,8 +7,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import io.writeopia.account.di.AccountMenuInjector
 import io.writeopia.account.ui.AccountMenuScreen
-import io.writeopia.model.ColorThemeOption
 import io.writeopia.common.utils.Destinations
+import io.writeopia.model.ColorThemeOption
 
 fun NavGraphBuilder.accountMenuNavigation(
     accountMenuInjector: AccountMenuInjector,

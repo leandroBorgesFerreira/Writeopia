@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-/* The NavigationActivity won't leak because it is the single activity of the whole project */
+// The NavigationActivity won't leak because it is the single activity of the whole project
 internal class RegisterViewModel(
     private val introNotesUseCase: IntroNotesUseCase,
     private val authManager: AuthManager
@@ -52,7 +52,6 @@ internal class RegisterViewModel(
                 } catch (e: Exception) {
                     Log.d("RegisterViewModel", "Could not add intro notes. Error: ${e.message}")
                 }
-
             }
 
             _register.value = result

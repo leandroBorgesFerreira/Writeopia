@@ -1,6 +1,6 @@
 package io.writeopia.editor.configuration.ui
 
-//import androidx.compose.ui.tooling.preview.Preview
+// import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -57,9 +57,9 @@ fun BoxScope.HeaderEdition(
     }
 }
 
-//@Preview
-//@Composable
-//fun HeaderEditionPreview() {
+// @Preview
+// @Composable
+// fun HeaderEditionPreview() {
 //    val colors = listOf(
 //        Color.Blue.toArgb(),
 //        Color.White.toArgb(),
@@ -76,4 +76,4 @@ fun BoxScope.HeaderEdition(
 //            visibilityState = true
 //        )
 //    }
-//}
+// }

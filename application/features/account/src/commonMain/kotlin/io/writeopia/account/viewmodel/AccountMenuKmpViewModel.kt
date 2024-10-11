@@ -13,9 +13,12 @@ import kotlinx.coroutines.launch
 internal class AccountMenuKmpViewModel(
     private val authManager: AuthManager,
     private val authRepository: AuthRepository,
-): AccountMenuViewModel, KmpViewModel() {
-    private val _isLoggedIn: MutableStateFlow<ResultData<Boolean>> by lazy { MutableStateFlow(
-        ResultData.Idle()) }
+) : AccountMenuViewModel, KmpViewModel() {
+    private val _isLoggedIn: MutableStateFlow<ResultData<Boolean>> by lazy {
+        MutableStateFlow(
+            ResultData.Idle()
+        )
+    }
     override val isLoggedIn: StateFlow<ResultData<Boolean>> by lazy { _isLoggedIn.asStateFlow() }
 
     override fun checkLoggedIn() {

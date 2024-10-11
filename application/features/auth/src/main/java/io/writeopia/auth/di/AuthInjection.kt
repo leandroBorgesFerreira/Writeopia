@@ -10,9 +10,9 @@ import io.writeopia.auth.login.LoginViewModel
 import io.writeopia.auth.menu.AuthMenuViewModel
 import io.writeopia.auth.register.RegisterViewModel
 import io.writeopia.persistence.room.injection.RoomRespositoryInjection
-import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.network.notes.NotesApi
+import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 
 class AuthInjection(
     private val authCoreInjection: AuthCoreInjection,
@@ -48,5 +48,4 @@ class AuthInjection(
         authManager: AuthManager = authCoreInjection.provideAccountManager(),
         authRepository: AuthRepository = authCoreInjection.provideAuthRepository(),
     ): AuthMenuViewModel = viewModel { AuthMenuViewModel(authManager, authRepository) }
-
 }
