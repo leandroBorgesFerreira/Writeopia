@@ -1,8 +1,8 @@
-package io.writeopia.utils_module.collections
+package io.writeopia.common.utils.collections
 
+import io.writeopia.common.utils.Node
+import io.writeopia.common.utils.createNodeTree
 import io.writeopia.sdk.models.utils.Traversable
-import io.writeopia.utils_module.node.Node
-import io.writeopia.utils_module.node.createNodeTree
 
 fun <K, V> Map<K, List<V>>.merge(map: Map<K, List<V>>) =
     this.mapValues { (key, dataList) -> dataList + (map[key] ?: emptyList()) }

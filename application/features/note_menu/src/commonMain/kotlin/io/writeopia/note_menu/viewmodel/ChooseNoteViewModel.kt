@@ -4,7 +4,7 @@ import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
-import io.writeopia.utils_module.ResultData
+import io.writeopia.common.utils.ResultData
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 

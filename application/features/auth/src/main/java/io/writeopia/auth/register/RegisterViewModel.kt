@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.auth.intronotes.IntroNotesUseCase
-import io.writeopia.utils_module.ResultData
-import io.writeopia.utils_module.toBoolean
+import io.writeopia.common.utils.ResultData
+import io.writeopia.common.utils.toBoolean
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

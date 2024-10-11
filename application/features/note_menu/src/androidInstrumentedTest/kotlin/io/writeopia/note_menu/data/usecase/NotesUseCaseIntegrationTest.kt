@@ -11,7 +11,7 @@ import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.dao.room.RoomDocumentRepository
-import io.writeopia.utils_module.DISCONNECTED_USER_ID
+import io.writeopia.common.utils.DISCONNECTED_USER_ID
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock

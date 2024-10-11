@@ -1,4 +1,4 @@
-package io.writeopia.utils_module.colors
+package io.writeopia.common.utils.colors
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb

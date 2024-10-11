@@ -18,7 +18,7 @@ import io.writeopia.sdk.serialization.json.writeopiaJson
 import io.writeopia.sdk.serialization.request.wrapInRequest
 import io.writeopia.sdk.sharededition.SharedEditionManager
 import io.writeopia.sdk.utils.extensions.noContent
-import io.writeopia.utils_module.KmpViewModel
+import io.writeopia.common.utils.KmpViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

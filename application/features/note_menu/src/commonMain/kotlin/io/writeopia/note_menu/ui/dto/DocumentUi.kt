@@ -3,7 +3,7 @@ package io.writeopia.note_menu.ui.dto
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.utils.Traversable
-import io.writeopia.utils_module.node.Node
+import io.writeopia.common.utils.Node
 
 sealed interface MenuItemUi : Node, Traversable {
     val documentId: String

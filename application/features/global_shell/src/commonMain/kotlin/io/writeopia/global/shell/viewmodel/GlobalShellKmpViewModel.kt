@@ -11,9 +11,9 @@ import io.writeopia.note_menu.viewmodel.FolderController
 import io.writeopia.note_menu.viewmodel.FolderStateController
 import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.models.document.MenuItem
-import io.writeopia.utils_module.KmpViewModel
-import io.writeopia.utils_module.collections.reverseTraverse
-import io.writeopia.utils_module.collections.toNodeTree
+import io.writeopia.common.utils.KmpViewModel
+import io.writeopia.common.utils.collections.reverseTraverse
+import io.writeopia.common.utils.collections.toNodeTree
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

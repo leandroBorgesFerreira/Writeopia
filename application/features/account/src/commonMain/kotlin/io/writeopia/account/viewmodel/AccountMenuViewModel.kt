@@ -1,6 +1,6 @@
 package io.writeopia.account.viewmodel
 
-import io.writeopia.utils_module.ResultData
+import io.writeopia.common.utils.ResultData
 import kotlinx.coroutines.flow.StateFlow
 
 interface AccountMenuViewModel {

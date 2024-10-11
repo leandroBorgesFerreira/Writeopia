@@ -1,4 +1,4 @@
-package io.writeopia.utils_module.node
+package io.writeopia.common.utils
 
 interface Node {
     val id: String

@@ -18,8 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.writeopia.account.viewmodel.AccountMenuViewModel
 import io.writeopia.model.ColorThemeOption
-import io.writeopia.utils_module.ResultData
-import io.writeopia.utils_module.toBoolean
+import io.writeopia.common.utils.ResultData
+import io.writeopia.common.utils.toBoolean
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

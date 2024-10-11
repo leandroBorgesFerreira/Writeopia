@@ -1,8 +1,8 @@
 package io.writeopia.viewmodel
 
+import io.writeopia.common.utils.KmpViewModel
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.repository.UiConfigurationRepository
-import io.writeopia.utils_module.KmpViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

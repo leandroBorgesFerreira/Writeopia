@@ -54,7 +54,7 @@ import io.writeopia.ui.drawer.preview.CheckItemPreviewDrawer
 import io.writeopia.ui.drawer.preview.HeaderPreviewDrawer
 import io.writeopia.ui.drawer.preview.TextPreviewDrawer
 import io.writeopia.ui.drawer.preview.UnOrderedListItemPreviewDrawer
-import io.writeopia.utils_module.ResultData
+import io.writeopia.common.utils.ResultData
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 const val DOCUMENT_ITEM_TEST_TAG = "DocumentItem_"

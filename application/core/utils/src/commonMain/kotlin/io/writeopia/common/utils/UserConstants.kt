@@ -1,3 +1,3 @@
-package io.writeopia.utils_module
+package io.writeopia.common.utils
 
 const val DISCONNECTED_USER_ID = "disconnected_user"

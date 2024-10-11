@@ -1,7 +1,7 @@
 package io.writeopia.navigation
 
 import androidx.lifecycle.ViewModel
-import io.writeopia.utils_module.Destinations
+import io.writeopia.common.utils.Destinations
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 

@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import io.writeopia.account.di.AccountMenuInjector
 import io.writeopia.account.navigation.accountMenuNavigation
+import io.writeopia.common.utils.Destinations
 import io.writeopia.editor.di.TextEditorInjector
 import io.writeopia.editor.navigation.editorNavigation
 import io.writeopia.features.notifications.navigation.notificationsNavigation
@@ -18,7 +19,6 @@ import io.writeopia.navigation.notes.navigateToNewNote
 import io.writeopia.navigation.notes.navigateToNote
 import io.writeopia.note_menu.di.NotesMenuInjection
 import io.writeopia.note_menu.navigation.notesMenuNavigation
-import io.writeopia.utils_module.Destinations
 import kotlinx.coroutines.CoroutineScope
 
 @Composable

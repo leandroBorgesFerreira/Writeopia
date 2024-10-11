@@ -1,6 +1,6 @@
 package io.writeopia.auth.core.data
 
-import io.writeopia.utils_module.DISCONNECTED_USER_ID
+import io.writeopia.common.utils.DISCONNECTED_USER_ID
 
 data class User(
     val id: String,

@@ -2,7 +2,7 @@ package io.writeopia.edit_folder
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import io.writeopia.utils_module.KmpViewModel
+import io.writeopia.common.utils.KmpViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class EditFolderViewModel: KmpViewModel() {

@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import io.writeopia.editor.di.TextEditorInjector
 import io.writeopia.editor.ui.screen.TextEditorScreen
-import io.writeopia.utils_module.Destinations
+import io.writeopia.common.utils.Destinations
 
 fun NavGraphBuilder.editorNavigation(
     navigateBack: () -> Unit = {},
