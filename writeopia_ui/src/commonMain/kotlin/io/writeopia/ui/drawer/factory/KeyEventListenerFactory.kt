@@ -21,7 +21,8 @@ object KeyEventListenerFactory {
                 isEmptyErase(keyEvent, inputText) -> {
                     when (onEmptyErase) {
                         EmptyErase.DELETE -> {
-                            manager.onDelete(Action.DeleteStory(step, position))
+                            println("EmptyErase.DELETE inputText: ${inputText.text}")
+                            manager.onErase(Action.EraseStory(step, position))
                         }
 
                         EmptyErase.CHANGE_TYPE -> {
@@ -48,7 +49,7 @@ object KeyEventListenerFactory {
                 isEmptyErase(keyEvent, inputText) -> {
                     when (onEmptyErase) {
                         EmptyErase.DELETE -> {
-                            manager.onDelete(Action.DeleteStory(step, position))
+                            manager.onErase(Action.EraseStory(step, position))
                         }
 
                         EmptyErase.CHANGE_TYPE -> {
@@ -79,7 +80,7 @@ object KeyEventListenerFactory {
                 isEmptyErase(keyEvent, inputText) -> {
                     when (onEmptyErase) {
                         EmptyErase.DELETE -> {
-                            manager.onDelete(Action.DeleteStory(step, position))
+                            manager.onErase(Action.EraseStory(step, position))
                         }
 
                         EmptyErase.CHANGE_TYPE -> {

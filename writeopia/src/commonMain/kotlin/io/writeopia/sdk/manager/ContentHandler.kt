@@ -27,7 +27,10 @@ class ContentHandler(
         StoryTypes.UNORDERED_LIST_ITEM.type.number,
     ),
     private val stepsNormalizer: UnitsNormalizationMap,
-    private val lineBreakMap: (StoryType) -> StoryType = ::defaultLineBreakMap
+    private val lineBreakMap: (StoryType) -> StoryType = ::defaultLineBreakMap,
+    private val isTextStory: (StoryStep) -> Boolean = { story ->
+        focusableTypes.contains(story.type.number)
+    }
 ) {
 
     fun changeStoryStepState(
@@ -150,7 +153,7 @@ class ContentHandler(
 
         return if (parentId == null) {
             mutableSteps.remove(deleteInfo.position)
-            val previousFocus =
+            val previousFocus: StoryStep? =
                 FindStory.previousFocus(
                     mutableSteps.values.toList(),
                     deleteInfo.position,
@@ -177,6 +180,28 @@ class ContentHandler(
         }
     }
 
+    fun eraseStory(deleteInfo: Action.EraseStory, history: Map<Int, StoryStep>): StoryState {
+        val mutableSteps = history.toMutableMap()
+
+        mutableSteps.remove(deleteInfo.position)
+        val previousFocus: StoryStep? =
+            FindStory.previousFocus(
+                mutableSteps.values.toList(),
+                deleteInfo.position,
+                focusableTypes
+            )
+
+        previousTextStory(history, deleteInfo.position)?.let { (previous, position) ->
+            mutableSteps[position] = previous.copy(
+                text = previous.text + deleteInfo.storyStep.text,
+                localId = GenerateId.generate()
+            )
+        }
+
+        val normalized = stepsNormalizer(mutableSteps.toEditState())
+        return StoryState(normalized, lastEdit = LastEdit.Whole, focusId = previousFocus?.id)
+    }
+
     /**
      * Delete story steps in bulk. Returns a pair with first the new state of stories and
      * the deleted stories.
@@ -195,6 +220,24 @@ class ContentHandler(
         }
 
         return newState.normalizePositions() to deleted
+    }
+
+    private fun previousTextStory(
+        history: Map<Int, StoryStep>,
+        position: Int
+    ): Pair<StoryStep, Int>? {
+        var acc = position
+        while (position > 0) {
+            acc -= 1
+
+            val storyStep = history[acc]
+
+            if (storyStep?.let(isTextStory) == true) {
+                return storyStep to acc
+            }
+        }
+
+        return null
     }
 }
 

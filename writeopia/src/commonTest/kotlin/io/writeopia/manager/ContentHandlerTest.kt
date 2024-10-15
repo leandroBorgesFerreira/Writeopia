@@ -121,6 +121,20 @@ class ContentHandlerTest {
 
         assertEquals(textStory!!.id, newState2?.focusId)
     }
+
+    @Test
+    fun `when erasing stories, is should move text correctly`() {
+        val input = MapStoryData.simpleMessages()
+        val contentHandler = ContentHandler(stepsNormalizer = normalizer())
+
+        val lastStory = input.values.last()
+        val lastIndex = input.values.size - 1
+        val secondLastStory = input[lastIndex - 1]
+
+        val newState = contentHandler.eraseStory(Action.EraseStory(lastStory, lastIndex), input)
+
+        assertEquals(secondLastStory!!.text + lastStory.text, newState.stories.values.last().text)
+    }
 }
 
 private fun normalizer(): UnitsNormalizationMap =

@@ -163,6 +163,14 @@ class WriteopiaManager(
         contentHandler.deleteStory(deleteStory, storyState.stories)
 
     /**
+     * Erases a [StoryStep]
+     *
+     * @param deleteStory [Action.DeleteStory]
+     */
+    fun onErase(deleteStory: Action.EraseStory, storyState: StoryState): StoryState =
+        contentHandler.eraseStory(deleteStory, storyState.stories)
+
+    /**
      * Deletes the whole selection. All [StoryStep] in the selection will be deleted.
      */
     fun bulkDelete(

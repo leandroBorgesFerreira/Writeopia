@@ -15,7 +15,7 @@ import kotlinx.datetime.Clock
 import kotlin.test.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class WriteopiaManagerTest {
+class WriteopiaStateManagerTest {
 
     private val imagesInLineRepo: StoriesRepository = object : StoriesRepository {
         override suspend fun history(): Map<Int, StoryStep> = MapStoryData.imageStepsList()
