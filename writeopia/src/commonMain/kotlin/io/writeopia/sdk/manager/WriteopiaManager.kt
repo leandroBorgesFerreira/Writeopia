@@ -11,6 +11,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
+import io.writeopia.sdk.utils.extensions.previousTextStory
 import io.writeopia.sdk.utils.extensions.toEditState
 import io.writeopia.sdk.utils.iterables.normalizePositions
 import kotlinx.datetime.Clock
@@ -161,6 +162,19 @@ class WriteopiaManager(
      */
     fun onDelete(deleteStory: Action.DeleteStory, storyState: StoryState): StoryState? =
         contentHandler.deleteStory(deleteStory, storyState.stories)
+
+    /**
+     * Erases a [StoryStep]
+     *
+     * @param deleteStory [Action.DeleteStory]
+     */
+    fun onErase(deleteStory: Action.EraseStory, storyState: StoryState): StoryState =
+        contentHandler.eraseStory(deleteStory, storyState.stories)
+
+    fun previousTextStory(
+        storyMap: Map<Int, StoryStep>,
+        position: Int,
+    ) = contentHandler.previousTextStory(storyMap, position)
 
     /**
      * Deletes the whole selection. All [StoryStep] in the selection will be deleted.

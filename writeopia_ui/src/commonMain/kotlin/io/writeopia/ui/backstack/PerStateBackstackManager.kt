@@ -54,6 +54,18 @@ internal class PerStateBackstackManager(
                 revertDelete(state, action.storyStep, action.position)
             }
 
+            is BackstackAction.Erase -> {
+                forwardStack.add(action)
+
+                revertErase(
+                    state,
+                    action.erasedStep,
+                    action.receivingStep,
+                    action.erasedPosition,
+                    action.receivingPosition
+                )
+            }
+
             is BackstackAction.Merge -> state // Todo
 
             is BackstackAction.Move -> {
@@ -103,6 +115,17 @@ internal class PerStateBackstackManager(
             is BackstackAction.Delete -> {
                 backStack.add(action)
                 revertAddStory(state, action.storyStep, action.position)
+            }
+
+            is BackstackAction.Erase -> {
+                backStack.add(action)
+                revertErase(
+                    state,
+                    action.erasedStep,
+                    action.receivingStep,
+                    action.erasedPosition,
+                    action.receivingPosition
+                )
             }
 
             is BackstackAction.Merge -> state
@@ -239,6 +262,33 @@ internal class PerStateBackstackManager(
             stories = newStory,
             lastEdit = LastEdit.Whole,
         )
+    }
+
+    private fun revertErase(
+        storyState: StoryState,
+        erasedStory: StoryStep,
+        receivingStory: StoryStep?,
+        erasedPosition: Int,
+        receivingPosition: Int?
+    ): StoryState {
+        val newStory = contentHandler.addNewContent(
+            storyState.stories,
+            erasedStory,
+            erasedPosition
+        )
+
+        return if (receivingStory != null && receivingPosition != null) {
+            contentHandler.changeStoryStepState(newStory, receivingStory, receivingPosition)
+                ?: StoryState(
+                    stories = newStory,
+                    lastEdit = LastEdit.Whole,
+                )
+        } else {
+            StoryState(
+                stories = newStory,
+                lastEdit = LastEdit.Whole,
+            )
+        }
     }
 
     private fun revertBulkDelete(storyState: StoryState, action: BackstackAction.BulkDelete) =
