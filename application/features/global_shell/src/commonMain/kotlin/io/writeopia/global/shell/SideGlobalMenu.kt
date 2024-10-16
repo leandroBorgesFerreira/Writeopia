@@ -142,7 +142,6 @@ fun SideGlobalMenu(
                         }
                     )
 
-
                     LazyColumn(Modifier.fillMaxWidth()) {
                         itemsIndexed(
                             menuItems,
@@ -204,6 +203,7 @@ private fun FolderItem(
                 folder.highlighted -> Color.LightGray.copy(
                     alpha = 0.7F
                 )
+
                 else -> WriteopiaTheme.colorScheme.globalBackground
             }
 
@@ -300,7 +300,7 @@ private fun DocumentItem(
     val isHovered by interactionSource.collectIsHoveredAsState()
 
     val background =
-        if (document.highlighted){
+        if (document.highlighted) {
             Color.Blue
         } else {
             WriteopiaTheme.colorScheme.globalBackground
@@ -360,12 +360,12 @@ private fun settingsOptions(
             .padding(start = 4.dp)
             .clip(MaterialTheme.shapes.large)
             .let { modifierLet ->
-            if (click != null) {
-                modifierLet.clickable(onClick = click)
-            } else {
-                modifierLet
+                if (click != null) {
+                    modifierLet.clickable(onClick = click)
+                } else {
+                    modifierLet
+                }
             }
-        }
             .padding(start = 14.dp, end = 10.dp, top = 10.dp, bottom = 10.dp)
             .fillMaxWidth()
     ) {

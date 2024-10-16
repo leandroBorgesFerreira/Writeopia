@@ -1,6 +1,9 @@
 package io.writeopia.global.shell.viewmodel
 
 import io.writeopia.auth.core.manager.AuthManager
+import io.writeopia.common.utils.KmpViewModel
+import io.writeopia.common.utils.collections.reverseTraverse
+import io.writeopia.common.utils.collections.toNodeTree
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.data.usecase.NotesNavigationUseCase
@@ -11,9 +14,6 @@ import io.writeopia.note_menu.viewmodel.FolderController
 import io.writeopia.note_menu.viewmodel.FolderStateController
 import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.models.document.MenuItem
-import io.writeopia.common.utils.KmpViewModel
-import io.writeopia.common.utils.collections.reverseTraverse
-import io.writeopia.common.utils.collections.toNodeTree
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

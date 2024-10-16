@@ -555,17 +555,22 @@ class WriteopiaStateManager(
 
     fun onErase(eraseStory: Action.EraseStory) {
         coroutineScope.launch(dispatcher) {
-            _currentStory.value = writeopiaManager.onErase(eraseStory, _currentStory.value)
-        }
+            val previousInfo = writeopiaManager.previousTextStory(
+                _currentStory.value.stories,
+                eraseStory.position
+            )
 
-        //Todo: Add undo!
-//            val backstackAction = BackstackAction.Delete(
-//                storyStep = deleteStory.storyStep,
-//                position = deleteStory.position
-//            )
-//
-//            backStackManager.addAction(backstackAction)
-//        }
+            _currentStory.value = writeopiaManager.onErase(eraseStory, _currentStory.value)
+
+            val backstackAction = BackstackAction.Erase(
+                erasedStep = eraseStory.storyStep,
+                receivingStep = previousInfo?.first,
+                erasedPosition = eraseStory.position,
+                receivingPosition = previousInfo?.second
+            )
+
+            backStackManager.addAction(backstackAction)
+        }
     }
 
 

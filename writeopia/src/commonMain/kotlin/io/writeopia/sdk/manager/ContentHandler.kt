@@ -11,6 +11,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
+import io.writeopia.sdk.utils.extensions.previousTextStory
 import io.writeopia.sdk.utils.extensions.toEditState
 import io.writeopia.sdk.utils.iterables.addElementInPosition
 import io.writeopia.sdk.utils.iterables.mergeSortedMaps
@@ -191,7 +192,7 @@ class ContentHandler(
                 focusableTypes
             )
 
-        previousTextStory(history, deleteInfo.position)?.let { (previous, position) ->
+        history.previousTextStory(deleteInfo.position, isTextStory)?.let { (previous, position) ->
             mutableSteps[position] = previous.copy(
                 text = previous.text + deleteInfo.storyStep.text,
                 localId = GenerateId.generate()
@@ -222,23 +223,10 @@ class ContentHandler(
         return newState.normalizePositions() to deleted
     }
 
-    private fun previousTextStory(
-        history: Map<Int, StoryStep>,
+    fun previousTextStory(
+        storyMap: Map<Int, StoryStep>,
         position: Int
-    ): Pair<StoryStep, Int>? {
-        var acc = position
-        while (position > 0) {
-            acc -= 1
-
-            val storyStep = history[acc]
-
-            if (storyStep?.let(isTextStory) == true) {
-                return storyStep to acc
-            }
-        }
-
-        return null
-    }
+    ) = storyMap.previousTextStory(position, isTextStory)
 }
 
 private fun defaultLineBreakMap(storyType: StoryType): StoryType =
