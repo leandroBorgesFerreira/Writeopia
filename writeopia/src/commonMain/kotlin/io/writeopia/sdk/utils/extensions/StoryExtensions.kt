@@ -20,3 +20,26 @@ fun Map<Int, StoryStep>.noContent(): Boolean =
                 steps.isEmpty()
         }
     }
+
+fun Map<Int, StoryStep>.previousTextStory(
+    position: Int,
+    isTextStory: (StoryStep) -> Boolean
+): Pair<StoryStep, Int>? {
+    var acc = position
+    while (position > 0) {
+        acc -= 1
+
+        val storyStep = this[acc]
+
+        if (storyStep?.let(isTextStory) == true) {
+            return storyStep to acc
+        }
+    }
+
+    return null
+}
+
+fun Map<Int, StoryStep>.previousTextStoryPosition(
+    position: Int,
+    isTextStory: (StoryStep) -> Boolean
+): Int? = previousTextStory(position, isTextStory)?.second

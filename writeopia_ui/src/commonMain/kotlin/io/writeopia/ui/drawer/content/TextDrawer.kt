@@ -86,7 +86,6 @@ class TextDrawer(
                     }
                 }
                 .onKeyEvent { keyEvent ->
-//                    println("onKeyEvent: $keyEvent")
                     onKeyEvent(keyEvent, inputText, step, drawInfo.position, emptyErase)
                 }
                 .onFocusChanged { focusState ->
@@ -99,8 +98,7 @@ class TextDrawer(
                     } else {
                         modifierLet
                     }
-                }
-                ,
+                },
             value = inputText,
             enabled = !selectionState,
             onValueChange = { value ->

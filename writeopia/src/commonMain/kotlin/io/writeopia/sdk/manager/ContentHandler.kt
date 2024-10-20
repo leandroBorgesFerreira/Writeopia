@@ -11,6 +11,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
+import io.writeopia.sdk.utils.extensions.previousTextStory
 import io.writeopia.sdk.utils.extensions.toEditState
 import io.writeopia.sdk.utils.iterables.addElementInPosition
 import io.writeopia.sdk.utils.iterables.mergeSortedMaps
@@ -27,7 +28,10 @@ class ContentHandler(
         StoryTypes.UNORDERED_LIST_ITEM.type.number,
     ),
     private val stepsNormalizer: UnitsNormalizationMap,
-    private val lineBreakMap: (StoryType) -> StoryType = ::defaultLineBreakMap
+    private val lineBreakMap: (StoryType) -> StoryType = ::defaultLineBreakMap,
+    private val isTextStory: (StoryStep) -> Boolean = { story ->
+        focusableTypes.contains(story.type.number)
+    }
 ) {
 
     fun changeStoryStepState(
@@ -150,7 +154,7 @@ class ContentHandler(
 
         return if (parentId == null) {
             mutableSteps.remove(deleteInfo.position)
-            val previousFocus =
+            val previousFocus: StoryStep? =
                 FindStory.previousFocus(
                     mutableSteps.values.toList(),
                     deleteInfo.position,
@@ -177,6 +181,28 @@ class ContentHandler(
         }
     }
 
+    fun eraseStory(deleteInfo: Action.EraseStory, history: Map<Int, StoryStep>): StoryState {
+        val mutableSteps = history.toMutableMap()
+
+        mutableSteps.remove(deleteInfo.position)
+        val previousFocus: StoryStep? =
+            FindStory.previousFocus(
+                mutableSteps.values.toList(),
+                deleteInfo.position,
+                focusableTypes
+            )
+
+        history.previousTextStory(deleteInfo.position, isTextStory)?.let { (previous, position) ->
+            mutableSteps[position] = previous.copy(
+                text = previous.text + deleteInfo.storyStep.text,
+                localId = GenerateId.generate()
+            )
+        }
+
+        val normalized = stepsNormalizer(mutableSteps.toEditState())
+        return StoryState(normalized, lastEdit = LastEdit.Whole, focusId = previousFocus?.id)
+    }
+
     /**
      * Delete story steps in bulk. Returns a pair with first the new state of stories and
      * the deleted stories.
@@ -196,6 +222,11 @@ class ContentHandler(
 
         return newState.normalizePositions() to deleted
     }
+
+    fun previousTextStory(
+        storyMap: Map<Int, StoryStep>,
+        position: Int
+    ) = storyMap.previousTextStory(position, isTextStory)
 }
 
 private fun defaultLineBreakMap(storyType: StoryType): StoryType =
