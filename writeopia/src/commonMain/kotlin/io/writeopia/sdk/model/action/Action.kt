@@ -6,6 +6,8 @@ import io.writeopia.sdk.models.story.StoryStep
  * An action performed in the text editor.
  */
 sealed class Action {
+    data class EraseStory(val storyStep: StoryStep, val position: Int) : Action()
+
     data class DeleteStory(val storyStep: StoryStep, val position: Int) : Action()
 
     data class BulkDelete(val deletedUnits: Map<Int, StoryStep>) : Action()

@@ -45,6 +45,16 @@ sealed class BackstackAction {
     ) : BackstackAction(), SingleAction
 
     /**
+     * Deleting a single story
+     */
+    data class Erase(
+        val erasedStep: StoryStep,
+        val receivingStep: StoryStep?,
+        val erasedPosition: Int,
+        val receivingPosition: Int?
+    ) : BackstackAction()
+
+    /**
      * Adding a single story
      */
     data class Add(

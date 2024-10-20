@@ -11,12 +11,15 @@ interface GlobalShellViewModel : FolderController {
     val showSideMenu: StateFlow<Boolean>
     val highlightItem: StateFlow<String?>
     val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>>
-    val editFolderState : StateFlow<Folder?>
+    val editFolderState: StateFlow<Folder?>
     val showSettingsState: StateFlow<Boolean>
     val folderPath: StateFlow<List<String>>
 
     fun expandFolder(id: String)
+
     fun toggleSideMenu()
+
     fun showSettings()
+
     fun hideSettings()
 }

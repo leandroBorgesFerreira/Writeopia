@@ -221,7 +221,6 @@ class WriteopiaStateManager(
      *
      * @param position Int
      */
-    // Todo: Add unit tests
     private fun nextFocusOrCreate(position: Int) {
         coroutineScope.launch(dispatcher) {
             _currentStory.value =
@@ -553,6 +552,27 @@ class WriteopiaStateManager(
             backStackManager.addAction(backstackAction)
         }
     }
+
+    fun onErase(eraseStory: Action.EraseStory) {
+        coroutineScope.launch(dispatcher) {
+            val previousInfo = writeopiaManager.previousTextStory(
+                _currentStory.value.stories,
+                eraseStory.position
+            )
+
+            _currentStory.value = writeopiaManager.onErase(eraseStory, _currentStory.value)
+
+            val backstackAction = BackstackAction.Erase(
+                erasedStep = eraseStory.storyStep,
+                receivingStep = previousInfo?.first,
+                erasedPosition = eraseStory.position,
+                receivingPosition = previousInfo?.second
+            )
+
+            backStackManager.addAction(backstackAction)
+        }
+    }
+
 
     /**
      * Deletes the whole selection. All [StoryStep] in the selection will be deleted.
