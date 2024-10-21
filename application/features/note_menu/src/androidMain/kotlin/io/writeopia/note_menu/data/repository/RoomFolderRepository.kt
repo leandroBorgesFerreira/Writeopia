@@ -87,7 +87,6 @@ class RoomFolderRepository(private val folderRoomDao: FolderRoomDao) : FolderRep
         }
     }
 
-
     override suspend fun stopListeningForFoldersByParentId(parentId: String) {
         SelectedIds.ids.remove(parentId)
     }

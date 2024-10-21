@@ -1,6 +1,6 @@
 package io.writeopia.note_menu.ui.screen.documents
 
-//import io.writeopia.appresourcers.R
+// import io.writeopia.appresourcers.R
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -38,11 +38,11 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import io.writeopia.common.utils.ResultData
 import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.model.draganddrop.DropInfo
-import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.theme.WriteopiaTheme
@@ -54,7 +54,7 @@ import io.writeopia.ui.drawer.preview.CheckItemPreviewDrawer
 import io.writeopia.ui.drawer.preview.HeaderPreviewDrawer
 import io.writeopia.ui.drawer.preview.TextPreviewDrawer
 import io.writeopia.ui.drawer.preview.UnOrderedListItemPreviewDrawer
-import io.writeopia.common.utils.ResultData
+import io.writeopia.ui.model.DrawInfo
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 const val DOCUMENT_ITEM_TEST_TAG = "DocumentItem_"
@@ -127,7 +127,8 @@ fun NotesCards(
             Box(modifier = modifier.fillMaxSize()) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
-                    text = "Error!!"// stringResource(R.string.error_loading_notes)
+                    // stringResource(R.string.error_loading_notes)
+                    text = "Error!!"
                 )
             }
         }
@@ -509,7 +510,6 @@ fun DocumentItemPreview() {
     )
 }
 
-
 @Preview
 @Composable
 fun DocumentItemSelectedPreview() {
@@ -538,7 +538,6 @@ fun DocumentItemSelectedPreview() {
         modifier = Modifier.padding(10.dp)
     )
 }
-
 
 @Preview
 @Composable

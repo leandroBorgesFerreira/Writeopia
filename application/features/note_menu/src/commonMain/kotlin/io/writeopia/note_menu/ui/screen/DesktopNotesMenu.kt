@@ -112,7 +112,7 @@ fun DesktopNotesMenu(
                     showSortOptionsRequest = chooseNoteViewModel::showSortMenu,
                     hideSortOptionsRequest = chooseNoteViewModel::cancelSortMenu,
                     staggeredGridSelected =
-                    chooseNoteViewModel::staggeredGridArrangementSelected,
+                        chooseNoteViewModel::staggeredGridArrangementSelected,
                     gridSelected = chooseNoteViewModel::gridArrangementSelected,
                     listSelected = chooseNoteViewModel::listArrangementSelected,
                     selectSortOption = chooseNoteViewModel::sortingSelected,

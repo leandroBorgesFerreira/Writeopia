@@ -1,4 +1,4 @@
-package io.writeopia.sdk.model.story
+package io.writeopia.ui.model
 
 /**
  * The state of document of the TextEditor of Writeopia. This class has all the stories in their

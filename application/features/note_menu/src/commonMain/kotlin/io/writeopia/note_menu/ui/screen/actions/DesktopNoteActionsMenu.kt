@@ -96,7 +96,8 @@ private fun MoreOptions(
                         contentDescription = "Configure directory",
                         tint = iconTintColor
                     )
-                }, onClick = configureDirectory,
+                },
+                onClick = configureDirectory,
                 text = {
                     Text(
                         "Configure directory",
@@ -112,7 +113,8 @@ private fun MoreOptions(
                         contentDescription = "Export",
                         tint = iconTintColor
                     )
-                }, onClick = exportAsMarkdownClick,
+                },
+                onClick = exportAsMarkdownClick,
                 text = {
                     Text("Export as Markdown", color = MaterialTheme.colorScheme.onPrimary)
                 }

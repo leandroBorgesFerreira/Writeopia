@@ -6,7 +6,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
@@ -16,18 +20,17 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.model.action.Action
-import io.writeopia.sdk.model.draw.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
-import io.writeopia.ui.edition.TextCommandHandler
+import io.writeopia.ui.extensions.toTextRange
+import io.writeopia.ui.model.DrawInfo
 import io.writeopia.ui.model.EmptyErase
+import io.writeopia.ui.model.TextInput
 import io.writeopia.ui.utils.defaultTextStyle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -43,12 +46,10 @@ class TextDrawer(
     private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean =
         { _, _, _, _, _ -> false },
     private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
-    private val onTextEdit: (Action.StoryStateChange) -> Unit = { },
-    private val commandHandler: TextCommandHandler = TextCommandHandler(emptyMap()),
+    private val onTextEdit: (TextInput, Int, Boolean, Boolean) -> Unit = { _, _, _, _ -> },
     private val allowLineBreaks: Boolean = false,
     private val lineBreakByContent: Boolean = true,
     private val emptyErase: EmptyErase = EmptyErase.CHANGE_TYPE,
-    private val onLineBreak: (Action.LineBreak) -> Unit = {},
     override var onFocusChanged: (Int, FocusState) -> Unit = { _, _ -> },
     private val selectionState: StateFlow<Boolean>,
     private val onSelectionLister: (Int) -> Unit
@@ -62,10 +63,8 @@ class TextDrawer(
         focusRequester: FocusRequester?,
         decorationBox: @Composable (innerTextField: @Composable () -> Unit) -> Unit
     ) {
-        var inputText by remember {
-            val text = step.text ?: ""
-            mutableStateOf(TextFieldValue(text, TextRange(text.length)))
-        }
+        val text = step.text ?: ""
+        val inputText = TextFieldValue(text, drawInfo.selection.toTextRange())
 
         val selectionState by selectionState.collectAsState()
 
@@ -102,26 +101,12 @@ class TextDrawer(
             value = inputText,
             enabled = !selectionState,
             onValueChange = { value ->
-                val text = value.text
-
-                inputText = if (lineBreakByContent && !allowLineBreaks && text.contains("\n")) {
-                    val newStep = step.copy(text = text)
-                    onLineBreak(Action.LineBreak(newStep, drawInfo.position))
-
-                    val newText = text.split("\n", limit = 2)[0]
-                    TextFieldValue(newText, TextRange(newText.length))
-                } else {
-                    val newText = if (allowLineBreaks) {
-                        text
-                    } else {
-                        text.replace("\n", "")
-                    }
-                    val newStep = step.copy(text = newText)
-                    onTextEdit(Action.StoryStateChange(newStep, drawInfo.position))
-                    commandHandler.handleCommand(text, newStep, drawInfo.position)
-
-                    value.copy(text = newText)
-                }
+                onTextEdit(
+                    TextInput(value.text, value.selection.start, value.selection.end),
+                    drawInfo.position,
+                    lineBreakByContent,
+                    allowLineBreaks
+                )
             },
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences

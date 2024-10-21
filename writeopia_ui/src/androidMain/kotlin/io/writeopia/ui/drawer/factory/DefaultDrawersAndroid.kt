@@ -13,7 +13,6 @@ import io.writeopia.ui.drawer.content.defaultImageShape
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.content.RowGroupDrawer
-import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.manager.WriteopiaStateManager
 
 object DefaultDrawersAndroid : DrawersFactory {
@@ -25,7 +24,6 @@ object DefaultDrawersAndroid : DrawersFactory {
         editable: Boolean,
         groupsBackgroundColor: Color,
         onHeaderClick: () -> Unit,
-        textCommandHandler: TextCommandHandler
     ): Map<Int, StoryStepDrawer> {
         val imageDrawer = ImageDrawer(
             containerModifier = Modifier::defaultImageShape,
@@ -44,7 +42,6 @@ object DefaultDrawersAndroid : DrawersFactory {
             editable,
             groupsBackgroundColor,
             onHeaderClick,
-            textCommandHandler,
             lineBreakByContent = true,
             eventListener = KeyEventListenerFactory.android(
                 manager,
