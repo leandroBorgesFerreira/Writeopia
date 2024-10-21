@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.writeopia.sdk.model.draw.DrawInfo
-import io.writeopia.sdk.model.story.DrawState
+import io.writeopia.ui.model.DrawState
 import io.writeopia.ui.draganddrop.target.DraggableScreen
 import io.writeopia.ui.drawer.StoryStepDrawer
 

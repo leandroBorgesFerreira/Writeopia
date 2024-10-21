@@ -1,7 +1,7 @@
 package io.writeopia.editor.viewmodel
 
 import io.writeopia.editor.model.EditState
-import io.writeopia.sdk.model.story.DrawState
+import io.writeopia.ui.model.DrawState
 import io.writeopia.ui.backstack.BackstackHandler
 import io.writeopia.ui.backstack.BackstackInform
 import io.writeopia.ui.manager.WriteopiaStateManager

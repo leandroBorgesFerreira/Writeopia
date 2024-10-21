@@ -6,7 +6,7 @@ import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.filter.DocumentFilter
 import io.writeopia.sdk.filter.DocumentFilterObject
 import io.writeopia.sdk.model.action.Action
-import io.writeopia.sdk.model.story.DrawState
+import io.writeopia.ui.model.DrawState
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository

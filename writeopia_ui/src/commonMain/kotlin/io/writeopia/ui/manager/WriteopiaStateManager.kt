@@ -9,8 +9,7 @@ import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.action.BackstackAction
 import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.model.document.info
-import io.writeopia.sdk.model.story.DrawState
-import io.writeopia.sdk.model.story.DrawStory
+import io.writeopia.ui.model.DrawState
 import io.writeopia.sdk.model.story.LastEdit
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.command.CommandInfo
@@ -27,6 +26,8 @@ import io.writeopia.ui.backstack.BackstackHandler
 import io.writeopia.ui.backstack.BackstackInform
 import io.writeopia.ui.backstack.BackstackManager
 import io.writeopia.ui.keyboard.KeyboardEvent
+import io.writeopia.ui.model.DrawStory
+import io.writeopia.ui.model.Selection
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -105,6 +106,8 @@ class WriteopiaStateManager(
     private val _positionsOnEdit = MutableStateFlow(setOf<Int>())
     val onEditPositions = _positionsOnEdit.asStateFlow()
 
+    private val selections = MutableStateFlow(mapOf<Int, Selection>())
+
     private var sharedEditionManager: SharedEditionManager? = null
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
@@ -134,15 +137,20 @@ class WriteopiaStateManager(
             storyState to documentInfo
         }
 
-    val toDraw: Flow<DrawState> = combine(_positionsOnEdit, currentStory) { positions, storyState ->
-        val focus = storyState.focusId
+    val toDraw: Flow<DrawState> =
+        combine(_positionsOnEdit, selections, currentStory) { positions, selections, storyState ->
+            val focus = storyState.focusId
 
-        val toDrawStories = storyState.stories.mapValues { (position, storyStep) ->
-            DrawStory(storyStep, positions.contains(position))
+            val toDrawStories = storyState.stories.mapValues { (position, storyStep) ->
+                DrawStory(
+                    storyStep = storyStep,
+                    cursor = selections[position] ?: Selection.start(),
+                    isSelected = positions.contains(position)
+                )
+            }
+
+            DrawState(toDrawStories, focus)
         }
-
-        DrawState(toDrawStories, focus)
-    }
 
     private var _initialized = false
 
