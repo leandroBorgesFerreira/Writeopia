@@ -6,7 +6,6 @@ import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.filter.DocumentFilter
 import io.writeopia.sdk.filter.DocumentFilterObject
 import io.writeopia.sdk.model.action.Action
-import io.writeopia.sdk.model.story.DrawState
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
@@ -19,6 +18,7 @@ import io.writeopia.sdk.utils.extensions.noContent
 import io.writeopia.ui.backstack.BackstackHandler
 import io.writeopia.ui.backstack.BackstackInform
 import io.writeopia.ui.manager.WriteopiaStateManager
+import io.writeopia.ui.model.DrawState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

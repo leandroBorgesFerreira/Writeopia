@@ -7,7 +7,7 @@ import io.writeopia.viewmodel.UiConfigurationViewModel
 
 class UiConfigurationAndroidViewModel(
     private val uiConfigurationKmpViewModel: UiConfigurationKmpViewModel
-) : UiConfigurationViewModel by uiConfigurationKmpViewModel, ViewModel(){
+) : UiConfigurationViewModel by uiConfigurationKmpViewModel, ViewModel() {
 
     init {
         uiConfigurationKmpViewModel.initCoroutine(viewModelScope)

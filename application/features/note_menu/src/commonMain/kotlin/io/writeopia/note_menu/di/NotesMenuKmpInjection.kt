@@ -10,7 +10,6 @@ import io.writeopia.note_menu.data.usecase.NotesUseCase
 import io.writeopia.note_menu.viewmodel.ChooseNoteKmpViewModel
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.note_menu.viewmodel.FolderStateController
-import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import kotlinx.coroutines.CoroutineScope
@@ -69,4 +68,3 @@ class NotesMenuKmpInjection(
             }
         }
 }
-

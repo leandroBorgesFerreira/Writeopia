@@ -2,6 +2,11 @@ package io.writeopia.note_menu.viewmodel
 
 import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
+import io.writeopia.common.utils.DISCONNECTED_USER_ID
+import io.writeopia.common.utils.KmpViewModel
+import io.writeopia.common.utils.ResultData
+import io.writeopia.common.utils.map
+import io.writeopia.common.utils.toBoolean
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.note_menu.data.model.NotesNavigation
@@ -16,11 +21,6 @@ import io.writeopia.sdk.import_document.json.WriteopiaJsonParser
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
-import io.writeopia.common.utils.DISCONNECTED_USER_ID
-import io.writeopia.common.utils.KmpViewModel
-import io.writeopia.common.utils.ResultData
-import io.writeopia.common.utils.map
-import io.writeopia.common.utils.toBoolean
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -137,7 +137,6 @@ internal class ChooseNoteKmpViewModel(
                     },
                     notesArrangement = arrangement
                 )
-
             }
         }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Idle())
     }
@@ -339,7 +338,6 @@ internal class ChooseNoteKmpViewModel(
     override fun onWriteLocallySelected() {
         handleStorage(::writeWorkspace, SyncRequest.WRITE)
     }
-
 
     private fun handleStorage(workspaceFunc: suspend (String) -> Unit, syncRequest: SyncRequest) {
         coroutineScope.launch(Dispatchers.Default) {

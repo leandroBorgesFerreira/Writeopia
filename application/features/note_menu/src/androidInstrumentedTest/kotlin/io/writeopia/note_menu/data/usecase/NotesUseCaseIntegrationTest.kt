@@ -3,6 +3,7 @@ package io.writeopia.note_menu.data.usecase
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import io.writeopia.common.utils.DISCONNECTED_USER_ID
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.repository.ConfigurationRoomRepository
@@ -11,7 +12,6 @@ import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.dao.room.RoomDocumentRepository
-import io.writeopia.common.utils.DISCONNECTED_USER_ID
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock

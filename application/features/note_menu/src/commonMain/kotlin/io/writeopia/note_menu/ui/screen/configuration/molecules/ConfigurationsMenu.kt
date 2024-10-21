@@ -32,8 +32,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.writeopia.commonui.options.slide.HorizontalOptions
 import io.writeopia.commonui.SlideInBox
+import io.writeopia.commonui.options.slide.HorizontalOptions
 import io.writeopia.note_menu.ui.screen.configuration.modifier.orderConfigModifierHorizontal
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import kotlinx.coroutines.flow.Flow
@@ -68,7 +68,8 @@ internal fun BoxScope.MobileConfigurationsMenu(
             modifier = Modifier
                 .padding(12.dp)
                 .fillMaxWidth()
-                .clip(MaterialTheme.shapes.large
+                .clip(
+                    MaterialTheme.shapes.large
                 )
                 .background(MaterialTheme.colorScheme.surface)
                 .padding(16.dp),
@@ -221,7 +222,6 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit) {
 }
 
 private fun Modifier.sortingOptionModifier(): Modifier = fillMaxWidth().padding(12.dp)
-
 
 @Preview
 @Composable

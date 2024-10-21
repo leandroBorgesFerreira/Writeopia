@@ -9,13 +9,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import io.writeopia.common.utils.Destinations
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.data.model.NotesNavigationType
 import io.writeopia.note_menu.di.NotesMenuInjection
 import io.writeopia.note_menu.ui.screen.menu.NotesMenuScreen
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
-import io.writeopia.common.utils.Destinations
 import kotlinx.coroutines.CoroutineScope
 
 const val NAVIGATION_TYPE = "type"
@@ -81,7 +81,6 @@ fun NavGraphBuilder.notesMenuNavigation(
                         "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/path",
                     )
                 }
-
             },
             addFolder = chooseNoteViewModel::addFolder,
             editFolder = chooseNoteViewModel::editFolder,

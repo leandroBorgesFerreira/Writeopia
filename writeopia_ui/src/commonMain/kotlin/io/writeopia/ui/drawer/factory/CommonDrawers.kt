@@ -8,7 +8,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.key.KeyEvent
@@ -27,7 +26,6 @@ import io.writeopia.ui.drawer.content.checkItemDrawer
 import io.writeopia.ui.drawer.content.headerDrawer
 import io.writeopia.ui.drawer.content.swipeTextDrawer
 import io.writeopia.ui.drawer.content.unOrderedListItemDrawer
-import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.utils.codeBlockStyle
@@ -49,7 +47,6 @@ object CommonDrawers {
         editable: Boolean = false,
         groupsBackgroundColor: Color = Color.Transparent,
         onHeaderClick: () -> Unit = {},
-        textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager),
         dragIconWidth: Dp = DRAG_ICON_WIDTH.dp,
         lineBreakByContent: Boolean,
         eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean,
@@ -58,16 +55,12 @@ object CommonDrawers {
             modifier = Modifier
                 .padding(horizontal = LARGE_START_PADDING.dp)
                 .clip(shape = defaultBorder)
-                .background(groupsBackgroundColor)
-                .let { modifierLet ->
-                    modifierLet
-                },
+                .background(groupsBackgroundColor),
             dragIconWidth = DRAG_ICON_WIDTH.dp,
             onSelected = manager::onSelected,
             messageDrawer = {
                 messageDrawer(
                     manager = manager,
-                    textCommandHandler = textCommandHandler,
                     eventListener = eventListener,
                     allowLineBreaks = true,
                     lineBreakByContent = lineBreakByContent,
@@ -87,7 +80,6 @@ object CommonDrawers {
             messageDrawer = {
                 messageDrawer(
                     manager = manager,
-                    textCommandHandler = TextCommandHandler.noCommands(),
                     eventListener = eventListener,
                     textStyle = { codeBlockStyle() },
                     allowLineBreaks = true,
@@ -105,7 +97,6 @@ object CommonDrawers {
         ) {
             messageDrawer(
                 manager = manager,
-                textCommandHandler = textCommandHandler,
                 eventListener = eventListener,
                 lineBreakByContent = lineBreakByContent,
                 emptyErase = EmptyErase.DELETE,
@@ -120,7 +111,6 @@ object CommonDrawers {
         ) {
             messageDrawer(
                 manager,
-                textCommandHandler = textCommandHandler,
                 eventListener = eventListener,
                 emptyErase = EmptyErase.CHANGE_TYPE,
                 lineBreakByContent = lineBreakByContent,
@@ -136,7 +126,6 @@ object CommonDrawers {
             ) {
                 messageDrawer(
                     manager,
-                    textCommandHandler = textCommandHandler,
                     eventListener = eventListener,
                     emptyErase = EmptyErase.CHANGE_TYPE,
                     lineBreakByContent = lineBreakByContent,
@@ -185,7 +174,6 @@ object CommonDrawers {
         manager: WriteopiaStateManager,
         modifier: Modifier = Modifier,
         textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
-        textCommandHandler: TextCommandHandler = TextCommandHandler.defaultCommands(manager),
         allowLineBreaks: Boolean = false,
         lineBreakByContent: Boolean,
         emptyErase: EmptyErase,
@@ -195,10 +183,8 @@ object CommonDrawers {
         return TextDrawer(
             modifier = modifier.weight(1F),
             onKeyEvent = eventListener,
-            onTextEdit = manager::changeStoryText,
+            onTextEdit = manager::handleTextInput,
             textStyle = textStyle,
-            commandHandler = textCommandHandler,
-            onLineBreak = manager::onLineBreak,
             onFocusChanged = { position, focus ->
                 manager.onFocusChange(position, focus.isFocused)
             } ,

@@ -65,7 +65,6 @@ internal class ConfigurationRoomRepository(
             ?: OrderBy.CREATE.type.toEntityField()
 
     override suspend fun saveWorkspacePath(path: String, userId: String) {
-
     }
 
     override suspend fun loadWorkspacePath(userId: String): String? = null

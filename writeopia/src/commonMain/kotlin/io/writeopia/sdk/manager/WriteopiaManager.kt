@@ -107,9 +107,12 @@ class WriteopiaManager(
         )
 
     /**
-     * At the moment it is only possible to check items not inside groups. Todo: Fix it!
+     * Changes the state of a story step based of the stateChange
      *
-     * @param stateChange [Action.StoryStateChange]
+     * @param stateChange [Action.StoryStateChange] the actual change.
+     * @param storyState The current state of the document
+     *
+     * @return [StoryState] The current state
      */
     fun changeStoryState(
         stateChange: Action.StoryStateChange,

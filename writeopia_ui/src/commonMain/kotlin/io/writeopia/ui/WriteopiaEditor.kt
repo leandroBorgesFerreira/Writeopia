@@ -8,8 +8,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.model.draw.DrawInfo
-import io.writeopia.sdk.model.story.DrawState
+import io.writeopia.ui.model.DrawInfo
+import io.writeopia.ui.model.DrawState
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.draganddrop.target.DraggableScreen
 import io.writeopia.ui.drawer.StoryStepDrawer
@@ -51,7 +51,8 @@ fun WriteopiaEditor(
                                         focusId = storyState.focusId,
                                         position = index,
                                         extraData = mapOf("listSize" to storyState.stories.size),
-                                        selectMode = drawStory.isSelected
+                                        selectMode = drawStory.isSelected,
+                                        selection = drawStory.cursor
                                     )
                                 )
                             }

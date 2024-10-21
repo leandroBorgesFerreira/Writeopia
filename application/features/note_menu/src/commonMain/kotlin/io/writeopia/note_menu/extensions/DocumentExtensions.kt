@@ -42,4 +42,3 @@ fun MenuItem.toUiCard(
 
         else -> throw IllegalArgumentException("MenuItemUi could not me created")
     }
-

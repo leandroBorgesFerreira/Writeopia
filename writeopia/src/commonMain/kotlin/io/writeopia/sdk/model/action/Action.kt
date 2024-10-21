@@ -16,7 +16,12 @@ sealed class Action {
 
     data class Move(val storyStep: StoryStep, val positionFrom: Int, val positionTo: Int) : Action()
 
-    data class StoryStateChange(val storyStep: StoryStep, val position: Int) : Action()
+    data class StoryStateChange(
+        val storyStep: StoryStep,
+        val position: Int,
+        val selectionStart: Int? = null,
+        val selectionEnd: Int? = null
+    ) : Action()
 
     data class Merge(
         val receiver: StoryStep,

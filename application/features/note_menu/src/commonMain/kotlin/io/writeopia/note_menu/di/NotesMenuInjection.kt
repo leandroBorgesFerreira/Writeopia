@@ -12,5 +12,4 @@ interface NotesMenuInjection {
         coroutineScope: CoroutineScope?,
         notesNavigation: NotesNavigation
     ): ChooseNoteViewModel
-
 }

@@ -5,7 +5,7 @@ import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
-class InMemoryConfigurationRepository private constructor(): ConfigurationRepository {
+class InMemoryConfigurationRepository private constructor() : ConfigurationRepository {
 
     private val arrangementPrefs = mutableMapOf<String, String>()
     private val sortPrefs = mutableMapOf<String, String>()

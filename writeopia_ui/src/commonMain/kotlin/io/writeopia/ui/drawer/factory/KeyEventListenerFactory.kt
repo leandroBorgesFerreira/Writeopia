@@ -21,7 +21,6 @@ object KeyEventListenerFactory {
                 isEmptyErase(keyEvent, inputText) -> {
                     when (onEmptyErase) {
                         EmptyErase.DELETE -> {
-                            println("EmptyErase.DELETE inputText: ${inputText.text}")
                             manager.onErase(Action.EraseStory(step, position))
                         }
 

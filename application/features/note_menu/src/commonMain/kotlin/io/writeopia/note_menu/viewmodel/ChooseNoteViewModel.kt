@@ -1,10 +1,10 @@
 package io.writeopia.note_menu.viewmodel
 
+import io.writeopia.common.utils.ResultData
 import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
-import io.writeopia.common.utils.ResultData
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 
@@ -22,36 +22,63 @@ interface ChooseNoteViewModel : FolderController {
 
     //    fun requestDocuments(force: Boolean)
     fun handleMenuItemTap(id: String): Boolean
+
     suspend fun requestUser()
+
     fun showEditMenu()
+
     fun showSortMenu()
+
     fun cancelEditMenu()
+
     fun cancelSortMenu()
+
     fun directoryFilesAsMarkdown(path: String)
+
     fun loadFiles(filePaths: List<String>)
+
     fun onDocumentSelected(id: String, selected: Boolean)
+
     fun onSyncLocallySelected()
+
     fun configureDirectory()
+
     fun onWriteLocallySelected()
+
     fun clearSelection()
+
     fun listArrangementSelected()
+
     fun gridArrangementSelected()
+
     fun staggeredGridArrangementSelected()
+
     fun sortingSelected(orderBy: OrderBy)
+
     fun copySelectedNotes()
+
     fun deleteSelectedNotes()
+
     fun favoriteSelectedNotes()
+
     fun unSelectNotes()
+
     fun hideConfigSyncMenu()
+
     fun pathSelected(path: String)
+
     fun confirmWorkplacePath()
 }
 
 sealed interface UserState<T> {
     class Idle<T> : UserState<T>
+
     class Loading<T> : UserState<T>
+
     class ConnectedUser<T>(val data: T) : UserState<T>
+
     class UserNotReturned<T> : UserState<T>
+
     class DisconnectedUser<T>(val data: T) : UserState<T>
 }
 
@@ -80,7 +107,9 @@ sealed interface ConfigState {
 }
 
 enum class SyncRequest {
-    WRITE, READ_WRITE, CONFIGURE
+    WRITE,
+    READ_WRITE,
+    CONFIGURE
 }
 
 fun ConfigState.setPath(func: () -> String): ConfigState =

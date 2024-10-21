@@ -110,9 +110,8 @@ internal fun ChooseNoteScreen(
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
-//@Preview(backgroundColor = 0xFF000000)
+// @Preview(backgroundColor = 0xFF000000)
 @Composable
 private fun TopBar(
     titleState: StateFlow<UserState<String>> = MutableStateFlow(UserState.ConnectedUser("Title")),
@@ -127,7 +126,6 @@ private fun TopBar(
                 modifier = Modifier.clickable(onClick = accountClick),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 val userIcon = Icons.Outlined.Person
 
                 val fallbackPainter = rememberVectorPainter(
@@ -232,7 +230,7 @@ private fun Content(
         loadNote = loadNote,
         selectionListener = selectionListener,
         folderClick = {},
-        moveRequest = {_, _ -> },
+        moveRequest = { _, _ -> },
         modifier = Modifier
             .padding(paddingValues)
             .fillMaxSize()

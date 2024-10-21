@@ -31,8 +31,6 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
         fun noCommands(): TextCommandHandler = TextCommandHandler(emptyMap())
 
         fun defaultCommands(manager: WriteopiaStateManager): TextCommandHandler {
-            val background = Color.Black.toArgb()
-
             return TextCommandHandler(
                 mapOf(
                     CommandFactory.checkItem() to { _, position ->

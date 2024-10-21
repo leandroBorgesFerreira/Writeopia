@@ -16,7 +16,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import io.writeopia.note_menu.ui.screen.file.fileChooserSave
-import io.writeopia.theme.WriteopiaTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -106,5 +105,4 @@ private fun WorkspaceConfigurationDialogPreview() {
             modifier = Modifier.align(Alignment.Center)
         )
     }
-
 }
