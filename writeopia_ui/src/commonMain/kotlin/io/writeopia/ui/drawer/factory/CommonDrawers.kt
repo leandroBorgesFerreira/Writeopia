@@ -8,7 +8,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.key.KeyEvent
@@ -195,10 +194,8 @@ object CommonDrawers {
         return TextDrawer(
             modifier = modifier.weight(1F),
             onKeyEvent = eventListener,
-            onTextEdit = manager::changeStoryText,
+            onTextEdit = manager::handleTextInput,
             textStyle = textStyle,
-            commandHandler = textCommandHandler,
-            onLineBreak = manager::onLineBreak,
             onFocusChanged = { position, focus ->
                 manager.onFocusChange(position, focus.isFocused)
             } ,

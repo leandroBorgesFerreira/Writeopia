@@ -1,5 +1,6 @@
 package io.writeopia.note_menu.data.usecase
 
+import io.writeopia.common.utils.collections.merge
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.data.repository.ConfigurationRepository
@@ -11,7 +12,6 @@ import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
-import io.writeopia.common.utils.collections.merge
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -199,7 +199,7 @@ class NotesUseCase private constructor(
         folderRepository.getFolderByParentId(parentId)
 
     private suspend fun duplicateFolder(folder: Folder): Folder {
-        //Todo: É necessário mudar o parent id da pasta também
+        // Todo: É necessário mudar o parent id da pasta também
         val newFolder = folder.copy(id = GenerateId.generate())
 
         return run {
@@ -254,5 +254,5 @@ private fun Document.duplicateWithNewIds(): Document =
         id = GenerateId.generate(),
         content = this.content.mapValues { (_, storyStep) ->
             storyStep.copy(id = GenerateId.generate())
-        })
-
+        }
+    )

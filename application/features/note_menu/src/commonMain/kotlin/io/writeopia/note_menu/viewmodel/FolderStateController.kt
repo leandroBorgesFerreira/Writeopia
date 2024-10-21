@@ -13,12 +13,12 @@ import kotlinx.coroutines.launch
 class FolderStateController(
     private val notesUseCase: NotesUseCase,
     private val authManager: AuthManager,
-): FolderController {
+) : FolderController {
     private lateinit var coroutineScope: CoroutineScope
 
     private var localUserId: String? = null
 
-    //Todo: Change this to a usecase
+    // Todo: Change this to a usecase
     private val _editingFolder = MutableStateFlow<MenuItemUi.FolderUi?>(null)
     val editingFolderState = _editingFolder.asStateFlow()
 

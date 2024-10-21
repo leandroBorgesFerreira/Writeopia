@@ -23,7 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.model.draw.DrawInfo
+import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
@@ -110,9 +110,9 @@ fun headerDrawer(
         drawer = {
             TextDrawer(
                 modifier = Modifier.align(Alignment.BottomStart),
-                onTextEdit = manager::changeStoryText,
+                onTextEdit = manager::handleTextInput,
                 onKeyEvent = onKeyEvent,
-                onLineBreak = manager::onLineBreak,
+//                onLineBreak = manager::onLineBreak,
                 lineBreakByContent = lineBreakByContent,
                 emptyErase = EmptyErase.DISABLED,
                 textStyle = {
@@ -137,8 +137,7 @@ private fun HeaderDrawerStepPreview() {
         drawer = {
             TextDrawer(
                 modifier = Modifier.align(Alignment.BottomStart).padding(start = 16.dp, bottom = 16.dp),
-                onTextEdit = { },
-                onLineBreak = { },
+                onTextEdit = { _, _, _, _ -> },
                 textStyle = {
                     MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Bold,
@@ -162,8 +161,7 @@ private fun HeaderDrawerStepPreviewNoColor() {
         drawer = {
             TextDrawer(
                 modifier = Modifier.align(Alignment.BottomStart).padding(start = 16.dp, bottom = 16.dp),
-                onTextEdit = { },
-                onLineBreak = { },
+                onTextEdit = { _, _, _, _ -> },
                 textStyle = {
                     MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Bold,

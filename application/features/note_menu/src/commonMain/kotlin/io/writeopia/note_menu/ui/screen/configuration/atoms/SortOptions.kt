@@ -2,9 +2,13 @@ package io.writeopia.note_menu.ui.screen.configuration.atoms
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Sort
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.SwapVert
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -48,7 +52,8 @@ internal fun SortOptions(
                         contentDescription = "Sort by name",
                         tint = iconTintColor
                     )
-                }, onClick = {
+                },
+                onClick = {
                     selectSortOption(OrderBy.NAME)
                 },
                 text = {
@@ -63,7 +68,8 @@ internal fun SortOptions(
                         contentDescription = "Sort by creation",
                         tint = iconTintColor
                     )
-                }, onClick = {
+                },
+                onClick = {
                     selectSortOption(OrderBy.CREATE)
                 },
                 text = {
@@ -78,7 +84,8 @@ internal fun SortOptions(
                         contentDescription = "Sort by last update",
                         tint = iconTintColor
                     )
-                }, onClick = {
+                },
+                onClick = {
                     selectSortOption(OrderBy.UPDATE)
                 },
                 text = {

@@ -4,7 +4,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
-import io.writeopia.sdk.model.draw.DrawInfo
+import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 
 interface SimpleTextDrawer {

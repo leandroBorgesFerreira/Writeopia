@@ -80,8 +80,5 @@ class InMemoryFolderRepository : FolderRepository {
     }
 
     override suspend fun stopListeningForFoldersByParentId(parentId: String) {
-
     }
-
-
 }
