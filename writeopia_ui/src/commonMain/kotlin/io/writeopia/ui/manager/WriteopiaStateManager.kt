@@ -642,7 +642,6 @@ class WriteopiaStateManager(
         lineBreakByContent: Boolean,
         allowLineBreaks: Boolean
     ) {
-        println("handleTextInput. input.text: ${input.text}")
         val text = input.text
         val step = _currentStory.value.stories[position] ?: return
 
