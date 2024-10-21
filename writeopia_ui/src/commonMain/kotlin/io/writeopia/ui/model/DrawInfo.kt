@@ -1,4 +1,4 @@
-package io.writeopia.sdk.model.draw
+package io.writeopia.ui.model
 
 /**
  * The class holds the information of the content to be draw by the SDK.
@@ -16,5 +16,5 @@ data class DrawInfo(
     val position: Int = 0,
     val extraData: Map<String, Any> = emptyMap(),
     val selectMode: Boolean = false,
-//    val textRange: TextRange //Todo: Populate this!!
+    val selection: Selection = Selection.start()
 )

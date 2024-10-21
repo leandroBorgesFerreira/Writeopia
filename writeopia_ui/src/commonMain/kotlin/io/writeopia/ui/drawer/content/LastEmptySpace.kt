@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.action.Action
-import io.writeopia.sdk.model.draw.DrawInfo
+import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.draganddrop.target.DropTarget
 import io.writeopia.ui.drawer.StoryStepDrawer

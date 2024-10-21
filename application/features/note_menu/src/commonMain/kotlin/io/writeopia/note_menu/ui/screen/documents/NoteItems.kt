@@ -42,7 +42,7 @@ import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.note_menu.ui.dto.NotesUi
 import io.writeopia.sdk.model.draganddrop.DropInfo
-import io.writeopia.sdk.model.draw.DrawInfo
+import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.theme.WriteopiaTheme

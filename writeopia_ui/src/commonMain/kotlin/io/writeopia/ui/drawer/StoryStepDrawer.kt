@@ -1,7 +1,7 @@
 package io.writeopia.ui.drawer
 
 import androidx.compose.runtime.Composable
-import io.writeopia.sdk.model.draw.DrawInfo
+import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 
 /**

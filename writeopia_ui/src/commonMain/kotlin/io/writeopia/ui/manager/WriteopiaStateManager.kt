@@ -229,29 +229,6 @@ class WriteopiaStateManager(
     }
 
     /**
-     * Moves the focus to the next available [StoryStep] if it can't find a step to focus, it
-     * creates a new [StoryStep] at the end of the document.
-     *
-     * @param position Int
-     */
-    private fun nextFocusOrCreate(position: Int) {
-        coroutineScope.launch(dispatcher) {
-            _currentStory.value =
-                writeopiaManager.nextFocusOrCreate(position, _currentStory.value)
-        }
-    }
-
-    private fun moveToNext() {
-        val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
-        nextFocusOrCreate(focusPosition + 1)
-    }
-
-    private fun moveToPrevious() {
-        val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
-        nextFocusOrCreate(max(focusPosition - 1, 0))
-    }
-
-    /**
      * Merges two [StoryStep] into a group. This can be used to merge two images into a message
      * group or any other kind of group.
      *
@@ -305,6 +282,10 @@ class WriteopiaStateManager(
         changeStoryStateAndTrackIt(stateChange, backstackAction)
     }
 
+    fun onTextEdition(storyStep: StoryStep, position: Int, selection: Selection) {
+        
+    }
+
     /**
      * Click lister when user clicks in the menu to add a check item
      */
@@ -315,28 +296,6 @@ class WriteopiaStateManager(
             toggleStateForStories(onEdit, StoryTypes.CHECK_ITEM)
         } else {
             changeCurrentStoryType(StoryTypes.CHECK_ITEM)
-        }
-    }
-
-    private fun toggleStateForStories(onEdit: Set<Int>, storyTypes: StoryTypes) {
-        val currentStories = currentStory.value.stories
-
-        onEdit.forEach { position ->
-            val story = currentStories[position]
-            if (story != null) {
-                val newType = if (story.type == storyTypes.type) {
-                    StoryTypes.TEXT
-                } else {
-                    storyTypes
-                }
-
-                changeStoryState(
-                    Action.StoryStateChange(
-                        storyStep = story.copy(type = newType.type),
-                        position = position
-                    )
-                )
-            }
         }
     }
 
@@ -362,43 +321,6 @@ class WriteopiaStateManager(
 //        changeCurrentStoryType(StoryTypes.CODE_BLOCK)
     }
 
-    private fun changeCurrentStoryType(storyTypes: StoryTypes) {
-        changeCurrentStoryState { storyStep ->
-            val newType = if (storyStep.type == storyTypes.type) {
-                StoryTypes.TEXT.type
-            } else {
-                storyTypes.type
-            }
-
-            storyStep.copy(type = newType)
-        }
-    }
-
-    private fun changeCurrentStoryState(stateChange: (StoryStep) -> StoryStep) {
-        val currentStepEntry = currentFocus()
-
-        if (currentStepEntry != null) {
-            changeStoryState(
-                Action.StoryStateChange(
-                    stateChange(currentStepEntry.second),
-                    currentStepEntry.first
-                )
-            )
-        }
-    }
-
-    private fun currentFocus(): Pair<Int, StoryStep>? {
-        val currentFocusId = currentStory.value.focusId
-
-        return _currentStory.value
-            .stories
-            .entries
-            .find { (_, step) -> step.id == currentFocusId }
-            ?.let { (position, step) ->
-                position to step
-            }
-    }
-
     /**
      * At the moment it is only possible to check items not inside groups. Todo: Fix it!
      *
@@ -413,21 +335,6 @@ class WriteopiaStateManager(
         }
 
         changeStoryStateAndTrackIt(stateChange, backstackAction)
-    }
-
-    private fun changeStoryStateAndTrackIt(
-        stateChange: Action.StoryStateChange,
-        backstackAction: BackstackAction?
-    ) {
-        if (lastStateChange == stateChange) return
-        lastStateChange = stateChange
-
-        writeopiaManager.changeStoryState(stateChange, _currentStory.value)?.let { state ->
-            _currentStory.value = state
-            backstackAction?.let { action ->
-                backStackManager.addAction(action)
-            }
-        }
     }
 
     /**
@@ -606,13 +513,6 @@ class WriteopiaStateManager(
     }
 
     /**
-     * Cancels the current selection.
-     */
-    private fun cancelSelection() {
-        _positionsOnEdit.value = emptySet()
-    }
-
-    /**
      * Clears the [WriteopiaStateManager]. Use this in the onCleared of your ViewModel.
      */
     fun onClear() {
@@ -621,6 +521,110 @@ class WriteopiaStateManager(
         }.invokeOnCompletion {
             coroutineScope.cancel()
         }
+    }
+
+    /**
+     * Moves the focus to the next available [StoryStep] if it can't find a step to focus, it
+     * creates a new [StoryStep] at the end of the document.
+     *
+     * @param position Int
+     */
+    private fun nextFocusOrCreate(position: Int) {
+        coroutineScope.launch(dispatcher) {
+            _currentStory.value =
+                writeopiaManager.nextFocusOrCreate(position, _currentStory.value)
+        }
+    }
+
+    private fun moveToNext() {
+        val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
+        nextFocusOrCreate(focusPosition + 1)
+    }
+
+    private fun moveToPrevious() {
+        val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
+        nextFocusOrCreate(max(focusPosition - 1, 0))
+    }
+
+    private fun toggleStateForStories(onEdit: Set<Int>, storyTypes: StoryTypes) {
+        val currentStories = currentStory.value.stories
+
+        onEdit.forEach { position ->
+            val story = currentStories[position]
+            if (story != null) {
+                val newType = if (story.type == storyTypes.type) {
+                    StoryTypes.TEXT
+                } else {
+                    storyTypes
+                }
+
+                changeStoryState(
+                    Action.StoryStateChange(
+                        storyStep = story.copy(type = newType.type),
+                        position = position
+                    )
+                )
+            }
+        }
+    }
+
+    private fun changeCurrentStoryType(storyTypes: StoryTypes) {
+        changeCurrentStoryState { storyStep ->
+            val newType = if (storyStep.type == storyTypes.type) {
+                StoryTypes.TEXT.type
+            } else {
+                storyTypes.type
+            }
+
+            storyStep.copy(type = newType)
+        }
+    }
+
+    private fun changeCurrentStoryState(stateChange: (StoryStep) -> StoryStep) {
+        val currentStepEntry = currentFocus()
+
+        if (currentStepEntry != null) {
+            changeStoryState(
+                Action.StoryStateChange(
+                    stateChange(currentStepEntry.second),
+                    currentStepEntry.first
+                )
+            )
+        }
+    }
+
+    private fun currentFocus(): Pair<Int, StoryStep>? {
+        val currentFocusId = currentStory.value.focusId
+
+        return _currentStory.value
+            .stories
+            .entries
+            .find { (_, step) -> step.id == currentFocusId }
+            ?.let { (position, step) ->
+                position to step
+            }
+    }
+
+    private fun changeStoryStateAndTrackIt(
+        stateChange: Action.StoryStateChange,
+        backstackAction: BackstackAction?
+    ) {
+        if (lastStateChange == stateChange) return
+        lastStateChange = stateChange
+
+        writeopiaManager.changeStoryState(stateChange, _currentStory.value)?.let { state ->
+            _currentStory.value = state
+            backstackAction?.let { action ->
+                backStackManager.addAction(action)
+            }
+        }
+    }
+
+    /**
+     * Cancels the current selection.
+     */
+    private fun cancelSelection() {
+        _positionsOnEdit.value = emptySet()
     }
 
     companion object {
