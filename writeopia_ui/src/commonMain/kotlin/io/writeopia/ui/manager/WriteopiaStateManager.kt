@@ -71,6 +71,11 @@ class WriteopiaStateManager(
                         moveToNext()
                     }
 
+                    KeyboardEvent.DELETE -> {
+                        if (_positionsOnEdit.value.isNotEmpty()) {
+                            deleteSelection()
+                        }
+                    }
                     KeyboardEvent.IDLE -> {}
                 }
             }

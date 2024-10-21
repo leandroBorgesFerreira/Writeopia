@@ -94,6 +94,16 @@ fun main() = application {
                     true
                 }
 
+                isDeleteEvent(keyEvent) -> {
+                    coroutineScope.launch(Dispatchers.IO) {
+                        keyboardEventFlow.tryEmit(KeyboardEvent.DELETE)
+                        delay(100)
+                        keyboardEventFlow.tryEmit(KeyboardEvent.IDLE)
+                    }
+
+                    false
+                }
+
                 else -> false
             }
         }
@@ -152,6 +162,10 @@ private fun isSelectionKeyEventStop(keyEvent: AndroidKeyEvent) =
 
 private fun isMoveDownEvent(keyEvent: AndroidKeyEvent) =
     keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_DOWN
+
+private fun isDeleteEvent(keyEvent: AndroidKeyEvent) =
+    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_DELETE ||
+        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE
 
 private fun isMoveUpEvent(keyEvent: AndroidKeyEvent) =
     keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_UP
