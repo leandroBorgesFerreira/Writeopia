@@ -112,7 +112,6 @@ fun headerDrawer(
                 modifier = Modifier.align(Alignment.BottomStart),
                 onTextEdit = manager::handleTextInput,
                 onKeyEvent = onKeyEvent,
-//                onLineBreak = manager::onLineBreak,
                 lineBreakByContent = lineBreakByContent,
                 emptyErase = EmptyErase.DISABLED,
                 textStyle = {
