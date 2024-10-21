@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
@@ -102,10 +101,6 @@ class TextDrawer(
             value = inputText,
             enabled = !selectionState,
             onValueChange = { value ->
-                //The value is updated in the Compose for performance reasons. If the text input is
-                //sent to the ViewModel, it will perform many calculations to show the new text
-                //which can be a costly operation for long documents.
-                println("value.text: ${value.text}, value.selection.start: ${value.selection.start}")
                 onTextEdit(
                     TextInput(value.text, value.selection.start, value.selection.end),
                     drawInfo.position,
@@ -122,40 +117,6 @@ class TextDrawer(
             decorationBox = decorationBox,
         )
     }
-
-//    private fun parseInputText(
-//        input: TextFieldValue,
-//        step: StoryStep,
-//        drawInfo: DrawInfo
-//    ): TextFieldValue {
-//        val text = input.text
-//
-//        return if (lineBreakByContent && !allowLineBreaks && text.contains("\n")) {
-//            val newStep = step.copy(text = text)
-//            onLineBreak(Action.LineBreak(newStep, drawInfo.position))
-//
-//            val newText = text.split("\n", limit = 2)[0]
-//            TextFieldValue(newText, TextRange(newText.length))
-//        } else {
-//            val newText = if (allowLineBreaks) {
-//                text
-//            } else {
-//                text.replace("\n", "")
-//            }
-//            val newStep = step.copy(text = newText)
-//            onTextEdit(
-//                Action.StoryStateChange(
-//                    newStep,
-//                    drawInfo.position,
-//                    selectionStart = input.selection.start,
-//                    selectionEnd = input.selection.end
-//                )
-//            )
-//            commandHandler.handleCommand(text, newStep, drawInfo.position)
-//
-//            input.copy(text = newText)
-//        }
-//    }
 }
 
 @Preview
