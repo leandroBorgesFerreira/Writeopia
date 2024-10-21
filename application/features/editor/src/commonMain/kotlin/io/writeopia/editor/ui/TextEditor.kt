@@ -46,9 +46,6 @@ internal fun TextEditor(
             defaultBorder = clipShape,
             onHeaderClick = noteEditorViewModel::onHeaderClick,
             editable = true,
-            textCommandHandler = TextCommandHandler.defaultCommands(
-                noteEditorViewModel.writeopiaManager
-            ),
             groupsBackgroundColor = Color.Transparent,
         ),
         storyState = storyState,

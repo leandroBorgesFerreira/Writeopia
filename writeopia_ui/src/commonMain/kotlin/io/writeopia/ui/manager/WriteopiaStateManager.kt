@@ -28,7 +28,7 @@ import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.keyboard.KeyboardEvent
 import io.writeopia.ui.model.DrawState
 import io.writeopia.ui.model.DrawStory
-import io.writeopia.ui.model.Selection
+import io.writeopia.sdk.model.story.Selection
 import io.writeopia.ui.model.TextInput
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -111,7 +111,7 @@ class WriteopiaStateManager(
     private val _positionsOnEdit = MutableStateFlow(setOf<Int>())
     val onEditPositions = _positionsOnEdit.asStateFlow()
 
-    private val selection = MutableStateFlow(Selection.start())
+//    private val selection = MutableStateFlow(Selection.start())
 
     private var sharedEditionManager: SharedEditionManager? = null
 
@@ -143,13 +143,13 @@ class WriteopiaStateManager(
         }
 
     val toDraw: Flow<DrawState> =
-        combine(_positionsOnEdit, selection, currentStory) { positions, selections, storyState ->
+        combine(_positionsOnEdit, currentStory) { positions, storyState ->
             val focus = storyState.focusId
 
             val toDrawStories = storyState.stories.mapValues { (position, storyStep) ->
                 DrawStory(
                     storyStep = storyStep,
-                    cursor = selections,
+                    cursor = storyState.selection,
                     isSelected = positions.contains(position)
                 )
             }
@@ -373,9 +373,8 @@ class WriteopiaStateManager(
                 val (newPosition, newStory) = info
                 // Todo: Fix this when the inner position are completed
                 backStackManager.addAction(BackstackAction.Add(newStory, newPosition))
-                _currentStory.value = newState
+                _currentStory.value = newState.copy(selection = Selection.start())
                 _scrollToPosition.value = info.first
-                selection.value = Selection.start()
             }
         }
     }
@@ -483,7 +482,18 @@ class WriteopiaStateManager(
             )
             val previousStory = previousInfo?.first
 
-            _currentStory.value = writeopiaManager.onErase(eraseStory, _currentStory.value)
+            _currentStory.value =
+                writeopiaManager.onErase(eraseStory, _currentStory.value).let { state ->
+                    if (previousStory != null) {
+                        state.copy(
+                            selection = Selection.fromPosition(
+                                previousStory.text?.length ?: 0
+                            )
+                        )
+                    } else {
+                        state
+                    }
+                }
 
             val backstackAction = BackstackAction.Erase(
                 erasedStep = eraseStory.storyStep,
@@ -492,9 +502,6 @@ class WriteopiaStateManager(
                 receivingPosition = previousInfo?.second
             )
 
-            previousStory?.text?.length?.let(Selection::fromPosition)?.let {
-                selection.value = it
-            }
             backStackManager.addAction(backstackAction)
         }
     }
@@ -568,8 +575,6 @@ class WriteopiaStateManager(
                     Action.StoryStateChange(
                         storyStep = story.copy(type = newType.type),
                         position = position,
-                        selectionStart = selection.value.start,
-                        selectionEnd = selection.value.end
                     )
                 )
             }
@@ -621,11 +626,14 @@ class WriteopiaStateManager(
         lastStateChange = stateChange
 
         writeopiaManager.changeStoryState(stateChange, _currentStory.value)?.let { state ->
-            _currentStory.value = state
+            _currentStory.value = state.copy(
+                selection = Selection(
+                    stateChange.selectionStart ?: 0,
+                    stateChange.selectionEnd ?: 0
+                )
+            )
             backstackAction?.let(backStackManager::addAction)
         }
-
-        selection.value = Selection(stateChange.selectionStart ?: 0, stateChange.selectionEnd ?: 0)
     }
 
     fun handleTextInput(
@@ -634,6 +642,7 @@ class WriteopiaStateManager(
         lineBreakByContent: Boolean,
         allowLineBreaks: Boolean
     ) {
+        println("handleTextInput. input.text: ${input.text}")
         val text = input.text
         val step = _currentStory.value.stories[position] ?: return
 

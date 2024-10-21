@@ -27,10 +27,10 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
+import io.writeopia.ui.extensions.toTextRange
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.model.TextInput
-import io.writeopia.ui.model.toTextRange
 import io.writeopia.ui.utils.defaultTextStyle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

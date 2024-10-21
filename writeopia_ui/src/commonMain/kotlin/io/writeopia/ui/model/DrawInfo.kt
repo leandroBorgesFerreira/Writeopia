@@ -1,5 +1,7 @@
 package io.writeopia.ui.model
 
+import io.writeopia.sdk.model.story.Selection
+
 /**
  * The class holds the information of the content to be draw by the SDK.
  *

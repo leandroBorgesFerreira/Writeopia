@@ -18,7 +18,6 @@ object DefaultDrawersDesktop : DrawersFactory {
         editable: Boolean,
         groupsBackgroundColor: Color,
         onHeaderClick: () -> Unit,
-        textCommandHandler: TextCommandHandler,
     ): Map<Int, StoryStepDrawer> =
         CommonDrawers.create(
             manager,

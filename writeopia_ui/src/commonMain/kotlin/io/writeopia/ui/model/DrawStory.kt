@@ -1,5 +1,6 @@
 package io.writeopia.ui.model
 
+import io.writeopia.sdk.model.story.Selection
 import io.writeopia.sdk.models.story.StoryStep
 
 /**

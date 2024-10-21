@@ -1,6 +1,5 @@
-package io.writeopia.ui.model
+package io.writeopia.sdk.model.story
 
-import androidx.compose.ui.text.TextRange
 
 data class Selection(val start: Int, val end: Int) {
     companion object {
@@ -10,4 +9,3 @@ data class Selection(val start: Int, val end: Int) {
     }
 }
 
-fun Selection.toTextRange() = TextRange(start = start, end = end)
