@@ -102,26 +102,10 @@ class TextDrawer(
             value = inputText,
             enabled = !selectionState,
             onValueChange = { value ->
-                val text = value.text
-
-                inputText = if (lineBreakByContent && !allowLineBreaks && text.contains("\n")) {
-                    val newStep = step.copy(text = text)
-                    onLineBreak(Action.LineBreak(newStep, drawInfo.position))
-
-                    val newText = text.split("\n", limit = 2)[0]
-                    TextFieldValue(newText, TextRange(newText.length))
-                } else {
-                    val newText = if (allowLineBreaks) {
-                        text
-                    } else {
-                        text.replace("\n", "")
-                    }
-                    val newStep = step.copy(text = newText)
-                    onTextEdit(Action.StoryStateChange(newStep, drawInfo.position))
-                    commandHandler.handleCommand(text, newStep, drawInfo.position)
-
-                    value.copy(text = newText)
-                }
+                //The value is updated in the Compose for performance reasons. If the text input is
+                //sent to the ViewModel, it will perform many calculations to show the new text
+                //which can be a costly operation for long documents.
+                inputText = parseInputText(value, step, drawInfo)
             },
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences
@@ -132,7 +116,42 @@ class TextDrawer(
             decorationBox = decorationBox,
         )
     }
+
+    private fun parseInputText(
+        input: TextFieldValue,
+        step: StoryStep,
+        drawInfo: DrawInfo
+    ): TextFieldValue {
+        val text = input.text
+
+        return if (lineBreakByContent && !allowLineBreaks && text.contains("\n")) {
+            val newStep = step.copy(text = text)
+            onLineBreak(Action.LineBreak(newStep, drawInfo.position))
+
+            val newText = text.split("\n", limit = 2)[0]
+            TextFieldValue(newText, TextRange(newText.length))
+        } else {
+            val newText = if (allowLineBreaks) {
+                text
+            } else {
+                text.replace("\n", "")
+            }
+            val newStep = step.copy(text = newText)
+            onTextEdit(
+                Action.StoryStateChange(
+                    newStep,
+                    drawInfo.position,
+                    selectionStart = input.selection.start,
+                    selectionEnd = input.selection.end
+                )
+            )
+            commandHandler.handleCommand(text, newStep, drawInfo.position)
+
+            input.copy(text = newText)
+        }
+    }
 }
+
 
 @Preview
 @Composable

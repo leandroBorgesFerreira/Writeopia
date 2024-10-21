@@ -77,6 +77,7 @@ class WriteopiaStateManager(
                             deleteSelection()
                         }
                     }
+
                     KeyboardEvent.IDLE -> {}
                 }
             }
@@ -280,10 +281,6 @@ class WriteopiaStateManager(
         }
 
         changeStoryStateAndTrackIt(stateChange, backstackAction)
-    }
-
-    fun onTextEdition(storyStep: StoryStep, position: Int, selection: Selection) {
-        
     }
 
     /**
@@ -558,10 +555,14 @@ class WriteopiaStateManager(
                     storyTypes
                 }
 
+                val selection = selections.value[position] ?: Selection.start()
+
                 changeStoryState(
                     Action.StoryStateChange(
                         storyStep = story.copy(type = newType.type),
-                        position = position
+                        position = position,
+                        selectionStart = selection.start,
+                        selectionEnd = selection.end
                     )
                 )
             }
@@ -614,9 +615,7 @@ class WriteopiaStateManager(
 
         writeopiaManager.changeStoryState(stateChange, _currentStory.value)?.let { state ->
             _currentStory.value = state
-            backstackAction?.let { action ->
-                backStackManager.addAction(action)
-            }
+            backstackAction?.let(backStackManager::addAction)
         }
     }
 
