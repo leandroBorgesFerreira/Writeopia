@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -259,20 +260,28 @@ class WriteopiaStateManager(
      * @param move [Action.Move]
      */
     fun moveRequest(move: Action.Move) {
-        if (isOnSelection) {
-            cancelSelection()
-        }
-
         val fixedMove = move.fixMove()
 
-        _currentStory.value = writeopiaManager.moveRequest(fixedMove, _currentStory.value)
+        if (_positionsOnEdit.value.contains(fixedMove.positionFrom)) {
+            val bulkMove = Action.BulkMove(
+                storyStep = selectedStories(),
+                positionFrom = fixedMove.positionFrom,
+                positionTo = fixedMove.positionTo
+            )
 
-        val backStackAction = BackstackAction.Move(
-            storyStep = fixedMove.storyStep,
-            positionFrom = fixedMove.positionFrom,
-            positionTo = fixedMove.positionTo
-        )
-        backStackManager.addAction(backStackAction)
+            _currentStory.value = writeopiaManager.moveRequest(bulkMove, _currentStory.value)
+        } else {
+            _currentStory.value = writeopiaManager.moveRequest(fixedMove, _currentStory.value)
+
+            val backStackAction = BackstackAction.Move(
+                storyStep = fixedMove.storyStep,
+                positionFrom = fixedMove.positionFrom,
+                positionTo = fixedMove.positionTo
+            )
+            backStackManager.addAction(backStackAction)
+        }
+
+        cancelSelection()
     }
 
     /**
@@ -377,7 +386,8 @@ class WriteopiaStateManager(
             return
         }
 
-        lastLineBreak = LineBreakCommand(lineBreak.storyStep.text ?: "", lineBreak.position, Clock.System.now())
+        lastLineBreak =
+            LineBreakCommand(lineBreak.storyStep.text ?: "", lineBreak.position, Clock.System.now())
 
         if (isOnSelection) {
             cancelSelection()
@@ -682,12 +692,16 @@ class WriteopiaStateManager(
         }
     }
 
+    private fun selectedStories(): List<StoryStep> = _positionsOnEdit.value.mapNotNull(::getStory)
+
     /**
      * Cancels the current selection.
      */
     private fun cancelSelection() {
         _positionsOnEdit.value = emptySet()
     }
+
+    private fun getStory(position: Int): StoryStep? = _currentStory.value.stories[position]
 
     companion object {
         fun create(

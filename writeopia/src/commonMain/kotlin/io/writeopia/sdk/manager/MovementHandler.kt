@@ -64,6 +64,10 @@ class MovementHandler {
 
         return movedStories
     }
+
+    fun move(stories: Map<Int, StoryStep>, move: Action.BulkMove): Map<Int, StoryStep> {
+        TODO()
+    }
 }
 
 fun Action.Move.fixMove(): Action.Move =

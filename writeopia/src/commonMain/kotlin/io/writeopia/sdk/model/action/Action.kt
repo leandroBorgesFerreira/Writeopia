@@ -16,6 +16,12 @@ sealed class Action {
 
     data class Move(val storyStep: StoryStep, val positionFrom: Int, val positionTo: Int) : Action()
 
+    data class BulkMove(
+        val storyStep: List<StoryStep>,
+        val positionFrom: Int,
+        val positionTo: Int
+    ) : Action()
+
     data class StoryStateChange(
         val storyStep: StoryStep,
         val position: Int,
