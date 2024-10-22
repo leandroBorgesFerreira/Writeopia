@@ -148,7 +148,7 @@ class WriteopiaStateManager(
 
     val toDraw: Flow<DrawState> =
         combine(_positionsOnEdit, currentStory) { positions, storyState ->
-            val focus = storyState.focusId
+            val focus = storyState.focus
 
             val toDrawStories = storyState.stories.mapValues { (position, storyStep) ->
                 DrawStory(
@@ -398,9 +398,7 @@ class WriteopiaStateManager(
         if (!hasFocus) return
         val story = currentStory.value
 
-        story.stories[position]?.id.let { newFocusId ->
-            _currentStory.value = story.copy(focusId = newFocusId)
-        }
+        _currentStory.value = story.copy(focus = position)
     }
 
     /**
@@ -437,12 +435,12 @@ class WriteopiaStateManager(
                 this[lastPosition] = lastContentStory.copyNewLocalId()
             }
 
-            _currentStory.value.copy(focusId = lastContentStory.id, stories = newStoriesState)
+            _currentStory.value.copy(focus = lastPosition, stories = newStoriesState)
         } else {
             val newLastMessage = StoryStep(type = StoryTypes.TEXT.type)
             val newStories = stories + mapOf(stories.size to newLastMessage)
 
-            StoryState(newStories, LastEdit.Whole, newLastMessage.id)
+            StoryState(newStories, LastEdit.Whole, lastPosition)
         }
 
         _currentStory.value = newState
@@ -622,12 +620,12 @@ class WriteopiaStateManager(
     }
 
     private fun currentFocus(): Pair<Int, StoryStep>? {
-        val currentFocusId = currentStory.value.focusId
+        val currentFocus = currentStory.value.focus
 
         return _currentStory.value
             .stories
             .entries
-            .find { (_, step) -> step.id == currentFocusId }
+            .find { (position, _) -> position == currentFocus }
             ?.let { (position, step) ->
                 position to step
             }

@@ -12,10 +12,10 @@ object FindStory {
         storyList: List<StoryStep>,
         localPosition: Int,
         focusableTypes: Set<Int>
-    ): StoryStep? {
+    ): Int? {
         for (i in (localPosition - 1) downTo 0) {
             if (focusableTypes.contains(storyList[i].type.number)) {
-                return storyList[i]
+                return i
             }
         }
 
