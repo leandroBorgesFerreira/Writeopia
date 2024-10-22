@@ -41,6 +41,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.math.max
 
@@ -85,6 +87,8 @@ class WriteopiaStateManager(
             }
         }
     }
+
+    private var lastLineBreak: LineBreakCommand? = null
 
     private val commandHandler = TextCommandHandler.defaultCommands(this)
 
@@ -363,6 +367,17 @@ class WriteopiaStateManager(
      * @param lineBreak [Action.LineBreak]
      */
     fun onLineBreak(lineBreak: Action.LineBreak) {
+        val lastBreak = lastLineBreak
+        if (lastBreak != null
+            && lastBreak.text == lineBreak.storyStep.text
+            && (Clock.System.now()
+                .toEpochMilliseconds() - lastBreak.time.toEpochMilliseconds() < 100)
+        ) {
+            return
+        }
+
+        lastLineBreak = LineBreakCommand(lineBreak.storyStep.text ?: "", Clock.System.now())
+
         if (isOnSelection) {
             cancelSelection()
         }
@@ -707,3 +722,5 @@ class WriteopiaStateManager(
         )
     }
 }
+
+private class LineBreakCommand(val text: String, val time: Instant)
