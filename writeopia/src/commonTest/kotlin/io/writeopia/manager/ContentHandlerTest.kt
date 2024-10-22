@@ -119,7 +119,7 @@ class ContentHandlerTest {
             newState.stories
         )
 
-        assertEquals(textStory!!.id, newState2?.focusId)
+        assertEquals(1, newState2?.focus)
     }
 
     @Test

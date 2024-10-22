@@ -1062,6 +1062,6 @@ class WriteopiaStateManagerTest {
         val lastContentStory = currentStory[currentStory.size - 1]
 
         assertEquals(lastContentStory!!.type, StoryTypes.TEXT.type)
-        assertEquals(storyManager.currentStory.value.focusId, lastContentStory.id)
+        assertEquals(currentStory.size - 2, storyManager.currentStory.value.focus)
     }
 }

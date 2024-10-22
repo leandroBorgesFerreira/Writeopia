@@ -370,13 +370,14 @@ class WriteopiaStateManager(
         val lastBreak = lastLineBreak
         if (lastBreak != null
             && lastBreak.text == lineBreak.storyStep.text
+            && lastBreak.position == lineBreak.position
             && (Clock.System.now()
                 .toEpochMilliseconds() - lastBreak.time.toEpochMilliseconds() < 100)
         ) {
             return
         }
 
-        lastLineBreak = LineBreakCommand(lineBreak.storyStep.text ?: "", Clock.System.now())
+        lastLineBreak = LineBreakCommand(lineBreak.storyStep.text ?: "", lineBreak.position, Clock.System.now())
 
         if (isOnSelection) {
             cancelSelection()
@@ -721,4 +722,4 @@ class WriteopiaStateManager(
     }
 }
 
-private class LineBreakCommand(val text: String, val time: Instant)
+private class LineBreakCommand(val text: String, val position: Int, val time: Instant)
