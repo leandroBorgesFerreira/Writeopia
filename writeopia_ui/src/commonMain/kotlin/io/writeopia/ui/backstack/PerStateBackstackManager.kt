@@ -81,12 +81,12 @@ internal class PerStateBackstackManager(
 
             is BackstackAction.StoryStateChange -> {
                 forwardStack.keepState(state, action)
-                revertStoryState(state, action, action.storyStep.id)
+                revertStoryState(state, action)
             }
 
             is BackstackAction.StoryTextChange -> {
                 forwardStack.keepState(state, action)
-                revertStoryState(state, action, action.storyStep.id)
+                revertStoryState(state, action)
             }
 
             is BackstackAction.Add -> {
@@ -145,12 +145,12 @@ internal class PerStateBackstackManager(
 
             is BackstackAction.StoryStateChange -> {
                 backStack.keepState(state, action)
-                revertStoryState(state, action, action.storyStep.id)
+                revertStoryState(state, action)
             }
 
             is BackstackAction.StoryTextChange -> {
                 backStack.keepState(state, action)
-                revertStoryState(state, action, action.storyStep.id)
+                revertStoryState(state, action)
             }
 
             is BackstackAction.Add -> {
@@ -214,7 +214,6 @@ internal class PerStateBackstackManager(
     private fun revertStoryState(
         state: StoryState,
         action: SingleAction,
-        focusId: String?
     ): StoryState {
         val stories = state.stories.toMutableMap()
         val position = action.position
@@ -225,7 +224,7 @@ internal class PerStateBackstackManager(
         return StoryState(
             stories,
             LastEdit.LineEdition(position, storyStep),
-            focusId
+            position
         )
     }
 

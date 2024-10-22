@@ -9,6 +9,6 @@ import io.writeopia.sdk.models.story.StoryStep
 data class StoryState(
     val stories: Map<Int, StoryStep>,
     val lastEdit: LastEdit,
-    val focusId: String? = null,
+    val focus: Int? = null,
     val selection: Selection = Selection.start()
 )

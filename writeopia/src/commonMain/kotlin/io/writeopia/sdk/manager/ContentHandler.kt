@@ -42,7 +42,7 @@ class ContentHandler(
         return if (currentStory[position] != null) {
             val newMap = currentStory.toMutableMap()
             newMap[position] = newState
-            StoryState(newMap, LastEdit.LineEdition(position, newState), newState.id)
+            StoryState(newMap, LastEdit.LineEdition(position, newState), position)
         } else {
             null
         }
@@ -90,7 +90,7 @@ class ContentHandler(
             newMap[position] = newCheck
         }
 
-        return StoryState(newMap, LastEdit.Whole, storyStep?.id)
+        return StoryState(newMap, LastEdit.Whole, position)
     }
 
     // Todo: Add unit test
@@ -142,7 +142,7 @@ class ContentHandler(
             (addPosition to secondMessage) to StoryState(
                 stories = newStory,
                 lastEdit = LastEdit.Whole,
-                focusId = secondMessage.id
+                focus = addPosition
             )
         }
     }
@@ -154,7 +154,7 @@ class ContentHandler(
 
         return if (parentId == null) {
             mutableSteps.remove(deleteInfo.position)
-            val previousFocus: StoryStep? =
+            val previousFocus: Int? =
                 FindStory.previousFocus(
                     mutableSteps.values.toList(),
                     deleteInfo.position,
@@ -162,7 +162,7 @@ class ContentHandler(
                 )
 
             val normalized = stepsNormalizer(mutableSteps.toEditState())
-            StoryState(normalized, lastEdit = LastEdit.Whole, focusId = previousFocus?.id)
+            StoryState(normalized, lastEdit = LastEdit.Whole, focus = previousFocus)
         } else {
             mutableSteps[deleteInfo.position]?.let { group ->
                 val newSteps = group.steps.filter { storyUnit ->
@@ -185,7 +185,7 @@ class ContentHandler(
         val mutableSteps = history.toMutableMap()
 
         mutableSteps.remove(deleteInfo.position)
-        val previousFocus: StoryStep? =
+        val previousFocus: Int? =
             FindStory.previousFocus(
                 mutableSteps.values.toList(),
                 deleteInfo.position,
@@ -200,7 +200,7 @@ class ContentHandler(
         }
 
         val normalized = stepsNormalizer(mutableSteps.toEditState())
-        return StoryState(normalized, lastEdit = LastEdit.Whole, focusId = previousFocus?.id)
+        return StoryState(normalized, lastEdit = LastEdit.Whole, focus = previousFocus)
     }
 
     /**

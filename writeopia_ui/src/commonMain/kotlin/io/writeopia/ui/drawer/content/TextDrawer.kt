@@ -68,7 +68,7 @@ class TextDrawer(
 
         val selectionState by selectionState.collectAsState()
 
-        if (drawInfo.focusId == step.id) {
+        if (drawInfo.hasFocus()) {
             LaunchedEffect(step.localId) {
                 focusRequester?.requestFocus()
             }

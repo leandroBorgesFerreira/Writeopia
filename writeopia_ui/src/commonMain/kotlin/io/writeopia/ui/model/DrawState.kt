@@ -6,5 +6,5 @@ package io.writeopia.ui.model
  */
 data class DrawState(
     val stories: Map<Int, DrawStory> = emptyMap(),
-    val focusId: String? = null
+    val focus: Int? = null
 )

@@ -53,7 +53,7 @@ class WriteopiaManager(
         val state = StoryState(
             normalized + normalized,
             LastEdit.Nothing,
-            firstMessage.id
+            focus = 0
         )
 
         return info to state
@@ -74,7 +74,7 @@ class WriteopiaManager(
             val mutable = storyMap.toMutableMap()
             mutable[nextPosition] = storyStep.copy(localId = GenerateId.generate())
 
-            storyState.copy(stories = mutable, focusId = storyStep.id)
+            storyState.copy(stories = mutable, focus = nextPosition)
         } else {
             storyState
         }
