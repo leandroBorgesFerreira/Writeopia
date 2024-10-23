@@ -77,7 +77,7 @@ fun main() = application {
                 isMoveDownEvent(keyEvent) -> {
                     coroutineScope.launch(Dispatchers.IO) {
                         keyboardEventFlow.tryEmit(KeyboardEvent.MOVE_DOWN)
-                        delay(100)
+                        delay(30)
                         keyboardEventFlow.tryEmit(KeyboardEvent.IDLE)
                     }
 
@@ -87,7 +87,7 @@ fun main() = application {
                 isMoveUpEvent(keyEvent) -> {
                     coroutineScope.launch(Dispatchers.IO) {
                         keyboardEventFlow.tryEmit(KeyboardEvent.MOVE_UP)
-                        delay(100)
+                        delay(30)
                         keyboardEventFlow.tryEmit(KeyboardEvent.IDLE)
                     }
 
@@ -97,7 +97,7 @@ fun main() = application {
                 isDeleteEvent(keyEvent) -> {
                     coroutineScope.launch(Dispatchers.IO) {
                         keyboardEventFlow.tryEmit(KeyboardEvent.DELETE)
-                        delay(100)
+                        delay(30)
                         keyboardEventFlow.tryEmit(KeyboardEvent.IDLE)
                     }
 

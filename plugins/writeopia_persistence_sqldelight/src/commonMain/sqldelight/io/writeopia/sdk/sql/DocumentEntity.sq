@@ -56,7 +56,7 @@ ORDER BY position;
 selectWithContentByParentId:
 SELECT *
 FROM documentEntity
-LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
+JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
 WHERE documentEntity.parent_document_id = ?
 ORDER BY position;
 

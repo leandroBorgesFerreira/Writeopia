@@ -107,6 +107,18 @@ class WriteopiaManager(
         )
 
     /**
+     * A request to move a content to a position.
+     *
+     * @param move [Action.BulkMove]
+     * @param storyState [StoryState]
+     */
+    fun moveRequest(move: Action.BulkMove, storyState: StoryState) =
+        storyState.copy(
+            stories = movementHandler.move(storyState.stories, move),
+            lastEdit = LastEdit.Whole
+        )
+
+    /**
      * Changes the state of a story step based of the stateChange
      *
      * @param stateChange [Action.StoryStateChange] the actual change.
