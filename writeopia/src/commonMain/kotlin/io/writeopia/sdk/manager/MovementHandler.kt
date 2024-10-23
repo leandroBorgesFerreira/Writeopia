@@ -66,7 +66,13 @@ class MovementHandler {
     }
 
     fun move(stories: Map<Int, StoryStep>, move: Action.BulkMove): Map<Int, StoryStep> {
-        TODO()
+        val mutable = stories.toMutableMap()
+
+        move.positionFrom.forEach(mutable::remove)
+
+        return move.storyStep.fold(mutable.toMap()) { map, moveStory ->
+            map.addElementInPosition(moveStory.copy(parentId = null), move.positionTo)
+        }
     }
 }
 

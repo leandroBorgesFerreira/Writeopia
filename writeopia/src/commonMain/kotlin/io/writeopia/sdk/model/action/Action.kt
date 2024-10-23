@@ -18,7 +18,7 @@ sealed class Action {
 
     data class BulkMove(
         val storyStep: List<StoryStep>,
-        val positionFrom: Int,
+        val positionFrom: Set<Int>,
         val positionTo: Int
     ) : Action()
 

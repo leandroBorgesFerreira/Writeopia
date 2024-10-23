@@ -10,6 +10,7 @@ import io.writeopia.sdk.model.action.BackstackAction
 import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.model.document.info
 import io.writeopia.sdk.model.story.LastEdit
+import io.writeopia.sdk.model.story.Selection
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.command.CommandInfo
 import io.writeopia.sdk.models.command.TypeInfo
@@ -28,19 +29,19 @@ import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.keyboard.KeyboardEvent
 import io.writeopia.ui.model.DrawState
 import io.writeopia.ui.model.DrawStory
-import io.writeopia.sdk.model.story.Selection
 import io.writeopia.ui.model.TextInput
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -67,25 +68,27 @@ class WriteopiaStateManager(
 
     init {
         coroutineScope.launch(Dispatchers.Default) {
-            keyboardEventFlow.collect { event ->
-                when (event) {
-                    KeyboardEvent.MOVE_UP -> {
-                        moveToPrevious()
-                    }
-
-                    KeyboardEvent.MOVE_DOWN -> {
-                        moveToNext()
-                    }
-
-                    KeyboardEvent.DELETE -> {
-                        if (_positionsOnEdit.value.isNotEmpty()) {
-                            deleteSelection()
+            keyboardEventFlow
+                .onEach { delay(60) }
+                .collect { event ->
+                    when (event) {
+                        KeyboardEvent.MOVE_UP -> {
+                            moveToPrevious()
                         }
-                    }
 
-                    KeyboardEvent.IDLE -> {}
+                        KeyboardEvent.MOVE_DOWN -> {
+                            moveToNext()
+                        }
+
+                        KeyboardEvent.DELETE -> {
+                            if (_positionsOnEdit.value.isNotEmpty()) {
+                                deleteSelection()
+                            }
+                        }
+
+                        KeyboardEvent.IDLE -> {}
+                    }
                 }
-            }
         }
     }
 
@@ -265,7 +268,7 @@ class WriteopiaStateManager(
         if (_positionsOnEdit.value.contains(fixedMove.positionFrom)) {
             val bulkMove = Action.BulkMove(
                 storyStep = selectedStories(),
-                positionFrom = fixedMove.positionFrom,
+                positionFrom = _positionsOnEdit.value,
                 positionTo = fixedMove.positionTo
             )
 
