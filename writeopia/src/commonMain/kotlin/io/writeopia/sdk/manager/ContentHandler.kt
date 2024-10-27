@@ -57,7 +57,7 @@ class ContentHandler(
         val newMap = currentStory.toMutableMap()
         val storyStep = newMap[position]
         val commandTrigger = commandInfo?.commandTrigger
-        val commandText = commandInfo?.command?.commandText ?: ""
+        val commandText = commandInfo?.command?.commandText?.trim() ?: ""
 
         if (storyStep != null) {
             val storyText = storyStep.text
