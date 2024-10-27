@@ -5,9 +5,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import io.writeopia.ui.drawer.StoryStepDrawer
-import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.manager.WriteopiaStateManager
-import kotlinx.coroutines.flow.StateFlow
 
 object DefaultDrawersDesktop : DrawersFactory {
 

@@ -5,7 +5,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import io.writeopia.ui.drawer.StoryStepDrawer
-import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.manager.WriteopiaStateManager
 
 private const val LARGE_START_PADDING = 26
@@ -21,7 +20,6 @@ object DefaultDrawersJs : DrawersFactory {
         editable: Boolean,
         groupsBackgroundColor: Color,
         onHeaderClick: () -> Unit,
-        textCommandHandler: TextCommandHandler,
     ): Map<Int, StoryStepDrawer> =
         CommonDrawers.create(
             manager,
