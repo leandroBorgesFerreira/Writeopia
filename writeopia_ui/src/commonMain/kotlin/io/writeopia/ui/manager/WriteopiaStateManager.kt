@@ -682,16 +682,18 @@ class WriteopiaStateManager(
                 text.replace("\n", "")
             }
             val newStep = step.copy(text = newText)
+            val handled = commandHandler.handleCommand(text, newStep, position)
 
-            commandHandler.handleCommand(text, newStep, position)
-            changeStoryText(
-                Action.StoryStateChange(
-                    newStep,
-                    position,
-                    selectionStart = input.start,
-                    selectionEnd = input.end
+            if (!handled) {
+                changeStoryText(
+                    Action.StoryStateChange(
+                        newStep,
+                        position,
+                        selectionStart = input.start,
+                        selectionEnd = input.end
+                    )
                 )
-            )
+            }
         }
     }
 
