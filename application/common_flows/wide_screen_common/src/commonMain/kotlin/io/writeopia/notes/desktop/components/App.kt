@@ -70,6 +70,7 @@ fun App(
     coroutineScope: CoroutineScope,
     isUndoKeyEvent: (KeyEvent) -> Boolean,
     selectColorTheme: (ColorThemeOption) -> Unit,
+    startDestination: String = startDestination(),
 ) {
     val authCoreInjection = remember { KmpAuthCoreInjection() }
     val connectionInjection =
@@ -181,7 +182,7 @@ fun App(
                             .background(MaterialTheme.colorScheme.background)
                     ) {
                         Navigation(
-                            startDestination = startDestination(),
+                            startDestination = startDestination,
                             notesMenuInjection = notesMenuInjection,
                             accountMenuInjector = accountInjector,
                             coroutineScope = coroutineScope,

@@ -1,8 +1,11 @@
 package io.writeopia.ui.edition
 
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
-import io.writeopia.sdk.models.command.*
+import io.writeopia.sdk.models.command.Command
+import io.writeopia.sdk.models.command.CommandFactory
+import io.writeopia.sdk.models.command.CommandInfo
+import io.writeopia.sdk.models.command.CommandTrigger
+import io.writeopia.sdk.models.command.TypeInfo
+import io.writeopia.sdk.models.command.WhereToFind
 import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
@@ -19,8 +22,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                     WhereToFind.START -> text.startsWith(command.commandText)
                     WhereToFind.ANYWHERE -> text.contains(command.commandText)
                 }
-            }
-            ?: return false
+            } ?: return false
 
         commandsMap[command]!!.invoke(step.copy(text = text), position)
 
