@@ -65,7 +65,7 @@ class ContentHandlerTest {
 
         val storyStep = StoryStep(
             type = StoryTypes.TEXT.type,
-            text = "-[] $text"
+            text = "-[]$text"
         )
 
         val position = 1
@@ -93,7 +93,7 @@ class ContentHandlerTest {
 
         val storyStep = StoryStep(
             type = StoryTypes.TEXT.type,
-            text = "# $text"
+            text = "#$text"
         )
 
         val position = 1
