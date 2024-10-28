@@ -18,23 +18,6 @@ class UiConfigurationRepositoryImpl(
     override suspend fun getUiConfigurationEntity(userId: String): UiConfiguration? =
         uiConfigurationDao.getConfigurationByUserId(userId)?.toModel()
 
-    override suspend fun updateShowSideMenu(userId: String, showSideMenu: Boolean) {
-        val entity = getUiConfigurationEntity(userId)
-
-        if (entity != null) {
-            insertUiConfiguration(entity.copy(showSideMenu = showSideMenu))
-        } else {
-            insertUiConfiguration(
-                UiConfiguration(
-                    userId = userId,
-                    showSideMenu = showSideMenu,
-                    colorThemeOption = ColorThemeOption.SYSTEM,
-                    sideMenuWidth = 280F
-                )
-            )
-        }
-    }
-
     override suspend fun updateColorTheme(userId: String, colorThemeOption: ColorThemeOption) {
         val entity = getUiConfigurationEntity(userId)
 
@@ -44,7 +27,6 @@ class UiConfigurationRepositoryImpl(
             insertUiConfiguration(
                 UiConfiguration(
                     userId = userId,
-                    showSideMenu = true,
                     colorThemeOption = colorThemeOption,
                     sideMenuWidth = 280F
                 )

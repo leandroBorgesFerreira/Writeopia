@@ -10,7 +10,6 @@ class UiConfigurationMemoryRepository : UiConfigurationRepository {
     private var uiConfiguration = MutableStateFlow(
         UiConfiguration(
             userId = "userId",
-            showSideMenu = true,
             colorThemeOption = ColorThemeOption.SYSTEM,
             sideMenuWidth = 280F
         )
@@ -22,10 +21,6 @@ class UiConfigurationMemoryRepository : UiConfigurationRepository {
 
     override suspend fun getUiConfigurationEntity(userId: String): UiConfiguration =
         uiConfiguration.value
-
-    override suspend fun updateShowSideMenu(userId: String, showSideMenu: Boolean) {
-        uiConfiguration.value = uiConfiguration.value.copy(showSideMenu = showSideMenu)
-    }
 
     override suspend fun updateColorTheme(userId: String, colorThemeOption: ColorThemeOption) {
         uiConfiguration.value = uiConfiguration.value.copy(colorThemeOption = colorThemeOption)

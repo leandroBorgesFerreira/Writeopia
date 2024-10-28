@@ -10,8 +10,6 @@ interface UiConfigurationRepository {
 
     suspend fun getUiConfigurationEntity(userId: String): UiConfiguration?
 
-    suspend fun updateShowSideMenu(userId: String, showSideMenu: Boolean)
-
     suspend fun updateColorTheme(userId: String, colorThemeOption: ColorThemeOption)
 
     fun listenForUiConfiguration(
