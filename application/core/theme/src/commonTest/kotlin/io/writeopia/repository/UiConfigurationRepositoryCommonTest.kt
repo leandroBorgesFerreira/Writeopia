@@ -7,7 +7,7 @@ import kotlin.test.assertTrue
 object UiConfigurationRepositoryCommonTest {
 
     suspend fun shouldBePossibleToSaveAndGetColorTheme(repository: UiConfigurationRepository) {
-        val userId = "user_offline"
+        val userId = "disconnected_user"
         repository.run {
             val colorTheme = ColorThemeOption.DARK
 
@@ -21,7 +21,7 @@ object UiConfigurationRepositoryCommonTest {
     }
 
     suspend fun shouldBePossibleToKeepChoiceToHideSideMenu(repository: UiConfigurationRepository) {
-        val userId = "user_offline"
+        val userId = "disconnected_user"
         repository.run {
             updateShowSideMenu(userId, true)
             assertTrue(getUiConfigurationEntity(userId)?.showSideMenu == true)

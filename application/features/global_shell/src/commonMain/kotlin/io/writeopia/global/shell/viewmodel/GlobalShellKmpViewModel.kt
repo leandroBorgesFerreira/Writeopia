@@ -4,6 +4,8 @@ import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.common.utils.KmpViewModel
 import io.writeopia.common.utils.collections.reverseTraverse
 import io.writeopia.common.utils.collections.toNodeTree
+import io.writeopia.model.ColorThemeOption
+import io.writeopia.model.UiConfiguration
 import io.writeopia.note_menu.data.model.Folder
 import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.data.usecase.NotesNavigationUseCase
@@ -22,6 +24,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -39,6 +42,7 @@ class GlobalShellKmpViewModel(
 ) : GlobalShellViewModel, KmpViewModel(), FolderController by folderStateController {
 
     private var localUserId: String? = null
+    private var sideMenuWidthState = MutableStateFlow<Float?>(null)
 
     override fun initCoroutine(coroutineScope: CoroutineScope) {
         super.initCoroutine(coroutineScope)
@@ -73,11 +77,14 @@ class GlobalShellKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, null)
     }
 
-    override val showSideMenu: StateFlow<Boolean> by lazy {
-        uiConfigurationRepo.listenForUiConfiguration(::getUserId, coroutineScope)
-            .map { configuration ->
-                configuration?.showSideMenu ?: true
-            }.stateIn(coroutineScope, SharingStarted.Lazily, false)
+    override val showSideMenu: StateFlow<Pair<Boolean, Float>> by lazy {
+        combine(
+            uiConfigurationRepo.listenForUiConfiguration(::getUserId, coroutineScope)
+                .filterNotNull(),
+            sideMenuWidthState.asStateFlow()
+        ) { configuration, width ->
+            configuration.showSideMenu to (width ?: configuration.sideMenuWidth)
+        }.stateIn(coroutineScope, SharingStarted.Lazily, false to 280F)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -151,7 +158,7 @@ class GlobalShellKmpViewModel(
     }
 
     override fun toggleSideMenu() {
-        setShowSideMenu(!showSideMenu.value)
+        setShowSideMenu(!showSideMenu.value.first)
     }
 
     override fun showSettings() {
@@ -160,6 +167,23 @@ class GlobalShellKmpViewModel(
 
     override fun hideSettings() {
         _showSettingsState.value = false
+    }
+
+    override fun saveMenuWidth(width: Float) {
+        coroutineScope.launch(Dispatchers.Default) {
+            val uiConfiguration = uiConfigurationRepo.getUiConfigurationEntity("disconnected_user")
+                ?: UiConfiguration(
+                    userId = "disconnected_user",
+                    showSideMenu = true,
+                    colorThemeOption = ColorThemeOption.SYSTEM,
+                    sideMenuWidth = 280F
+                )
+            uiConfigurationRepo.insertUiConfiguration(uiConfiguration.copy(sideMenuWidth = width))
+        }
+    }
+
+    override fun moveSideMenu(width: Float) {
+        sideMenuWidthState.value = width
     }
 
     private suspend fun getUserId(): String =

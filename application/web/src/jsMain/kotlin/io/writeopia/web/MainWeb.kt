@@ -36,7 +36,7 @@ fun CreateAppInMemory(repositoryInjection: SqlDelightDaoInjector) {
         .provideUiConfigurationViewModel(coroutineScope = coroutineScope)
 
     val colorTheme =
-        uiConfigurationViewModel.listenForColorTheme { "user_offline" }
+        uiConfigurationViewModel.listenForColorTheme { "disconnected_user" }
 
     App(
         notesInjector = NotesInjector.noop(),

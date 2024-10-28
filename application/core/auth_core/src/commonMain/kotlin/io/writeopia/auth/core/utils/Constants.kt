@@ -1,3 +1,3 @@
 package io.writeopia.auth.core.utils
 
-const val USER_OFFLINE = "user_offline"
+const val USER_OFFLINE = "disconnected_user"

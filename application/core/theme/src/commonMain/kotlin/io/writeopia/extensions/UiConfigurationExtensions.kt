@@ -7,13 +7,15 @@ import io.writeopia.model.UiConfiguration
 fun UiConfiguration.toEntity() = UiConfigurationEntity(
     user_id = userId,
     show_side_menu = showSideMenu.toLong(),
-    color_theme_option = colorThemeOption.theme
+    color_theme_option = colorThemeOption.theme,
+    side_menu_width = sideMenuWidth.toLong()
 )
 
 fun UiConfigurationEntity.toModel() = UiConfiguration(
     userId = user_id,
     showSideMenu = show_side_menu.toBoolean(),
-    colorThemeOption = ColorThemeOption.fromText(color_theme_option) ?: ColorThemeOption.SYSTEM
+    colorThemeOption = ColorThemeOption.fromText(color_theme_option) ?: ColorThemeOption.SYSTEM,
+    sideMenuWidth = side_menu_width?.toFloat() ?: 280F
 )
 
 fun Boolean?.toLong(): Long = if (this == true) 1 else 0

@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.runBlocking
 
+private const val COLOR_THEME_OPTION = "colorThemeOption"
+
 class UiConfigurationPreferenceDao(
     private val sharedPreferences: SharedPreferences
 ) : UiConfigurationDao {
@@ -18,7 +20,7 @@ class UiConfigurationPreferenceDao(
 
     override suspend fun saveUiConfiguration(configuration: UiConfigurationEntity) {
         sharedPreferences.edit()
-            .putString("colorThemeOption", configuration.colorThemeOption)
+            .putString(COLOR_THEME_OPTION, configuration.colorThemeOption)
             .apply()
 
         themeState.value = configuration
@@ -28,7 +30,7 @@ class UiConfigurationPreferenceDao(
         UiConfigurationEntity(
             userId = "disconnected_user",
             sharedPreferences.getString(
-                "colorThemeOption",
+                COLOR_THEME_OPTION,
                 ColorThemeOption.LIGHT.theme
             ) ?: ColorThemeOption.LIGHT.theme
         )

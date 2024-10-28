@@ -29,6 +29,7 @@ class UiConfigurationRepositoryImpl(
                     userId = userId,
                     showSideMenu = showSideMenu,
                     colorThemeOption = ColorThemeOption.SYSTEM,
+                    sideMenuWidth = 280F
                 )
             )
         }
@@ -45,6 +46,7 @@ class UiConfigurationRepositoryImpl(
                     userId = userId,
                     showSideMenu = true,
                     colorThemeOption = colorThemeOption,
+                    sideMenuWidth = 280F
                 )
             )
         }

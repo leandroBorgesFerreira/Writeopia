@@ -2,6 +2,9 @@ package io.writeopia.notes.desktop.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -115,7 +118,6 @@ fun App(
         sideMenuInjector.provideSideMenuViewModel(coroutineScope)
     val colorTheme = colorThemeOption.collectAsState().value
     val navigationController: NavHostController = rememberNavController()
-    val showOptions by globalShellViewModel.showSideMenu.collectAsState()
 
     coroutineScope.launch {
         navigationController.currentBackStackEntryFlow.collect { navEntry ->
@@ -134,11 +136,14 @@ fun App(
         val globalBackground = WriteopiaTheme.colorScheme.globalBackground
         DraggableScreen {
             Row(Modifier.background(globalBackground)) {
+                val optionsState by globalShellViewModel.showSideMenu.collectAsState()
+                val (showOptions, sideMenuWidth) = optionsState
+
                 SideGlobalMenu(
                     modifier = Modifier.fillMaxHeight(),
                     foldersState = globalShellViewModel.sideMenuItems,
                     showOptions = showOptions,
-                    width = 280.dp,
+                    width = sideMenuWidth.dp,
                     homeClick = {
                         val navType = navigationController.currentBackStackEntry
                             ?.arguments
@@ -192,22 +197,6 @@ fun App(
                             navController = navigationController
                         ) {}
 
-                        Box(
-                            modifier = Modifier
-                                .height(60.dp)
-                                .width(16.dp)
-                                .align(alignment = Alignment.CenterStart)
-                                .clip(RoundedCornerShape(100))
-                                .clickable(onClick = globalShellViewModel::toggleSideMenu)
-                                .padding(vertical = 6.dp),
-                        ) {
-                            RoundedVerticalDivider(
-                                modifier = Modifier.height(60.dp).align(Alignment.Center),
-                                thickness = 4.dp,
-                                color = MaterialTheme.colorScheme.surfaceVariant
-                            )
-                        }
-
                         val folderEdit = globalShellViewModel.editFolderState.collectAsState().value
 
                         if (folderEdit != null) {
@@ -226,6 +215,31 @@ fun App(
                                 selectedThemePosition = MutableStateFlow(2),
                                 onDismissRequest = globalShellViewModel::hideSettings,
                                 selectColorTheme = selectColorTheme
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .height(60.dp)
+                                .width(16.dp)
+                                .align(alignment = Alignment.CenterStart)
+                                .clip(RoundedCornerShape(100))
+                                .clickable(onClick = globalShellViewModel::toggleSideMenu)
+                                .padding(vertical = 6.dp)
+                                .draggable(
+                                    orientation = Orientation.Horizontal,
+                                    state = rememberDraggableState { delta ->
+                                        globalShellViewModel.moveSideMenu(sideMenuWidth + delta / 2)
+                                    },
+                                    onDragStopped = {
+                                        globalShellViewModel.saveMenuWidth(sideMenuWidth)
+                                    },
+                                ),
+                        ) {
+                            RoundedVerticalDivider(
+                                modifier = Modifier.height(60.dp).align(Alignment.Center),
+                                thickness = 4.dp,
+                                color = MaterialTheme.colorScheme.surfaceVariant
                             )
                         }
                     }

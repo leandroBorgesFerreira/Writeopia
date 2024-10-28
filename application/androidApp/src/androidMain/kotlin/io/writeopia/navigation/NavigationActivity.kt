@@ -113,7 +113,7 @@ fun NavigationGraph(
     val navigationViewModel = viewModel { NavigationViewModel() }
     val uiConfigViewModel =
         UiConfigurationInjector(sharedPreferences).provideUiConfigurationViewModel()
-    val colorTheme by uiConfigViewModel.listenForColorTheme { "user_offline" }.collectAsState()
+    val colorTheme by uiConfigViewModel.listenForColorTheme { "disconnected_user" }.collectAsState()
 
     WrieopiaTheme(darkTheme = colorTheme.isDarkTheme()) {
         Scaffold(

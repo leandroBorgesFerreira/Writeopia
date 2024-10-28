@@ -31,6 +31,7 @@ class UiConfigurationSqlDelightRepository internal constructor(
                     userId = userId,
                     showSideMenu = showSideMenu,
                     colorThemeOption = ColorThemeOption.SYSTEM,
+                    sideMenuWidth = 280F
                 )
             )
         }
@@ -47,6 +48,7 @@ class UiConfigurationSqlDelightRepository internal constructor(
                     userId = userId,
                     showSideMenu = true,
                     colorThemeOption = colorThemeOption,
+                    sideMenuWidth = 280F
                 )
             )
         }

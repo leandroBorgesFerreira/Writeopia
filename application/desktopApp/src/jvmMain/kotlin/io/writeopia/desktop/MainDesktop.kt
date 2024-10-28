@@ -35,7 +35,7 @@ import java.io.File
 import androidx.compose.ui.input.key.KeyEvent as AndroidKeyEvent
 
 private const val APP_DIRECTORY = ".writeopia"
-private const val DB_VERSION = 2
+private const val DB_VERSION = 3
 
 fun main() = application {
     val coroutineScope = rememberCoroutineScope()
@@ -118,7 +118,7 @@ fun main() = application {
                     .provideUiConfigurationViewModel(coroutineScope = coroutineScope)
 
                 val colorTheme =
-                    uiConfigurationViewModel.listenForColorTheme { "user_offline" }
+                    uiConfigurationViewModel.listenForColorTheme { "disconnected_user" }
 
                 App(
                     notesInjector = NotesInjector(database),
