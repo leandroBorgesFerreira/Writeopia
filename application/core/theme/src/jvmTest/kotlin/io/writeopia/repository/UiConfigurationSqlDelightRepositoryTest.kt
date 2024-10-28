@@ -14,8 +14,8 @@ class UiConfigurationSqlDelightRepositoryTest {
     }
 
     @Test
-    fun shouldBePossibleToKeepChoiceToHideSideMenu() = runTest {
-        UiConfigurationRepositoryCommonTest.shouldBePossibleToKeepChoiceToHideSideMenu(
+    fun shouldBePossibleToKeepChoiceToMoveSideMenu() = runTest {
+        UiConfigurationRepositoryCommonTest.shouldBePossibleToKeepChoiceToMoveSideMenu(
             getRepository()
         )
     }
