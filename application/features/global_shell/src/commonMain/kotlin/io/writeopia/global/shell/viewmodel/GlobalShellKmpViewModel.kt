@@ -1,5 +1,6 @@
 package io.writeopia.global.shell.viewmodel
 
+import androidx.compose.ui.unit.dp
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.common.utils.KmpViewModel
 import io.writeopia.common.utils.collections.reverseTraverse
@@ -77,14 +78,14 @@ class GlobalShellKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, null)
     }
 
-    override val showSideMenu: StateFlow<Pair<Boolean, Float>> by lazy {
+    override val showSideMenuState: StateFlow<Float> by lazy {
         combine(
             uiConfigurationRepo.listenForUiConfiguration(::getUserId, coroutineScope)
                 .filterNotNull(),
             sideMenuWidthState.asStateFlow()
         ) { configuration, width ->
-            configuration.showSideMenu to (width ?: configuration.sideMenuWidth)
-        }.stateIn(coroutineScope, SharingStarted.Lazily, false to 280F)
+            width ?: configuration.sideMenuWidth
+        }.stateIn(coroutineScope, SharingStarted.Lazily, 280F)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -158,7 +159,29 @@ class GlobalShellKmpViewModel(
     }
 
     override fun toggleSideMenu() {
-        setShowSideMenu(!showSideMenu.value.first)
+        val width = sideMenuWidthState.value
+
+        sideMenuWidthState.value = if ((width ?: 0F).dp < 5.dp) 280F else 0F
+        saveMenuWidth()
+    }
+
+    override fun saveMenuWidth() {
+        val width = sideMenuWidthState.value ?: 280F
+
+        coroutineScope.launch(Dispatchers.Default) {
+            val uiConfiguration =
+                uiConfigurationRepo.getUiConfigurationEntity("disconnected_user")
+                    ?: UiConfiguration(
+                        userId = "disconnected_user",
+                        colorThemeOption = ColorThemeOption.SYSTEM,
+                        sideMenuWidth = width
+                    )
+            uiConfigurationRepo.insertUiConfiguration(uiConfiguration.copy(sideMenuWidth = width))
+        }
+    }
+
+    override fun moveSideMenu(width: Float) {
+        sideMenuWidthState.value = width
     }
 
     override fun showSettings() {
@@ -169,31 +192,8 @@ class GlobalShellKmpViewModel(
         _showSettingsState.value = false
     }
 
-    override fun saveMenuWidth(width: Float) {
-        coroutineScope.launch(Dispatchers.Default) {
-            val uiConfiguration = uiConfigurationRepo.getUiConfigurationEntity("disconnected_user")
-                ?: UiConfiguration(
-                    userId = "disconnected_user",
-                    showSideMenu = true,
-                    colorThemeOption = ColorThemeOption.SYSTEM,
-                    sideMenuWidth = 280F
-                )
-            uiConfigurationRepo.insertUiConfiguration(uiConfiguration.copy(sideMenuWidth = width))
-        }
-    }
-
-    override fun moveSideMenu(width: Float) {
-        sideMenuWidthState.value = width
-    }
-
     private suspend fun getUserId(): String =
         localUserId ?: authManager.getUser().id.also { id ->
             localUserId = id
         }
-
-    private fun setShowSideMenu(enabled: Boolean) {
-        coroutineScope.launch(Dispatchers.Default) {
-            uiConfigurationRepo.updateShowSideMenu(userId = getUserId(), showSideMenu = enabled)
-        }
-    }
 }

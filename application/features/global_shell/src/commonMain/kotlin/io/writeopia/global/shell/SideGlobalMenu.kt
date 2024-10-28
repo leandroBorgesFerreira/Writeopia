@@ -65,7 +65,6 @@ fun SideGlobalMenu(
     modifier: Modifier = Modifier,
     foldersState: StateFlow<List<MenuItemUi>>,
     background: Color = WriteopiaTheme.colorScheme.globalBackground,
-    showOptions: Boolean,
     width: Dp = FINAL_WIDTH.dp,
     homeClick: () -> Unit,
     favoritesClick: () -> Unit,
@@ -78,9 +77,7 @@ fun SideGlobalMenu(
     moveRequest: (MenuItemUi, String) -> Unit,
     expandFolder: (String) -> Unit
 ) {
-    val widthState by derivedStateOf {
-        if (showOptions) width else 0.dp
-    }
+    val widthState by derivedStateOf { width }
 
     val widthAnimatedState by animateDpAsState(widthState)
     val showContent by derivedStateOf {
@@ -440,7 +437,6 @@ fun SideGlobalMenuPreview() {
     SideGlobalMenu(
         modifier = Modifier.background(Color.Cyan),
         foldersState = MutableStateFlow(emptyList()),
-        showOptions = true,
         homeClick = {},
         favoritesClick = {},
         settingsClick = {},

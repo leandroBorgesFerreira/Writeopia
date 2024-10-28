@@ -35,7 +35,7 @@ import java.io.File
 import androidx.compose.ui.input.key.KeyEvent as AndroidKeyEvent
 
 private const val APP_DIRECTORY = ".writeopia"
-private const val DB_VERSION = 3
+private const val DB_VERSION = 4
 
 fun main() = application {
     val coroutineScope = rememberCoroutineScope()

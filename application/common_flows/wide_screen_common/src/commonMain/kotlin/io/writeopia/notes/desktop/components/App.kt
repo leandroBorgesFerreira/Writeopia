@@ -22,6 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -136,13 +138,11 @@ fun App(
         val globalBackground = WriteopiaTheme.colorScheme.globalBackground
         DraggableScreen {
             Row(Modifier.background(globalBackground)) {
-                val optionsState by globalShellViewModel.showSideMenu.collectAsState()
-                val (showOptions, sideMenuWidth) = optionsState
+                val sideMenuWidth by globalShellViewModel.showSideMenuState.collectAsState()
 
                 SideGlobalMenu(
                     modifier = Modifier.fillMaxHeight(),
                     foldersState = globalShellViewModel.sideMenuItems,
-                    showOptions = showOptions,
                     width = sideMenuWidth.dp,
                     homeClick = {
                         val navType = navigationController.currentBackStackEntry
@@ -229,12 +229,13 @@ fun App(
                                 .draggable(
                                     orientation = Orientation.Horizontal,
                                     state = rememberDraggableState { delta ->
-                                        globalShellViewModel.moveSideMenu(sideMenuWidth + delta / 2)
+                                        globalShellViewModel.moveSideMenu(sideMenuWidth + delta / 1.8F)
                                     },
                                     onDragStopped = {
-                                        globalShellViewModel.saveMenuWidth(sideMenuWidth)
+                                        globalShellViewModel.saveMenuWidth()
                                     },
-                                ),
+                                )
+                                .pointerHoverIcon(PointerIcon.Crosshair),
                         ) {
                             RoundedVerticalDivider(
                                 modifier = Modifier.height(60.dp).align(Alignment.Center),
