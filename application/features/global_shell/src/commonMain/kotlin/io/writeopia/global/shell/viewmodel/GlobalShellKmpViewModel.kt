@@ -73,11 +73,11 @@ class GlobalShellKmpViewModel(
         }.stateIn(coroutineScope, SharingStarted.Lazily, null)
     }
 
-    override val showSideMenu: StateFlow<Boolean> by lazy {
+    override val showSideMenu: StateFlow<Pair<Boolean, Float>> by lazy {
         uiConfigurationRepo.listenForUiConfiguration(::getUserId, coroutineScope)
             .map { configuration ->
-                configuration?.showSideMenu ?: true
-            }.stateIn(coroutineScope, SharingStarted.Lazily, false)
+                (configuration?.showSideMenu ?: true) to (configuration?.sideMenuWidth ?: 280F)
+            }.stateIn(coroutineScope, SharingStarted.Lazily, false to 280F)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -151,7 +151,7 @@ class GlobalShellKmpViewModel(
     }
 
     override fun toggleSideMenu() {
-        setShowSideMenu(!showSideMenu.value)
+        setShowSideMenu(!showSideMenu.value.first)
     }
 
     override fun showSettings() {
@@ -160,6 +160,14 @@ class GlobalShellKmpViewModel(
 
     override fun hideSettings() {
         _showSettingsState.value = false
+    }
+
+    override fun saveMenuWidth(width: Float) {
+        coroutineScope.launch(Dispatchers.Default) {
+            uiConfigurationRepo.getUiConfigurationEntity("disconnected_user")?.let { uiConfiguration ->
+                uiConfigurationRepo.insertUiConfiguration(uiConfiguration.copy(sideMenuWidth = width))
+            }
+        }
     }
 
     private suspend fun getUserId(): String =

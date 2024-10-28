@@ -53,7 +53,9 @@ import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.draganddrop.target.DragRowTargetWithDragItem
 import io.writeopia.ui.draganddrop.target.DropTarget
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val finalWidth = 300
 
@@ -430,4 +432,24 @@ private fun title(
             trailingContent()
         }
     }
+}
+
+@Preview
+@Composable
+fun SideGlobalMenuPreview() {
+    SideGlobalMenu(
+        modifier = Modifier.background(Color.Cyan),
+        foldersState = MutableStateFlow(emptyList()),
+        showOptions = true,
+        homeClick = {},
+        favoritesClick = {},
+        settingsClick = {},
+        addFolder = {},
+        highlightContent = {},
+        editFolder = {},
+        navigateToFolder = {},
+        navigateToEditDocument = {_, _ -> },
+        moveRequest = { _, _ -> },
+        expandFolder = {}
+    )
 }

@@ -11,7 +11,8 @@ class UiConfigurationMemoryRepository : UiConfigurationRepository {
         UiConfiguration(
             userId = "userId",
             showSideMenu = true,
-            colorThemeOption = ColorThemeOption.SYSTEM
+            colorThemeOption = ColorThemeOption.SYSTEM,
+            sideMenuWidth = 280F
         )
     )
 

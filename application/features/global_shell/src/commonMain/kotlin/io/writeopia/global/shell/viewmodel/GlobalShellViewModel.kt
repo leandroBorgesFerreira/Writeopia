@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface GlobalShellViewModel : FolderController {
     val sideMenuItems: StateFlow<List<MenuItemUi>>
-    val showSideMenu: StateFlow<Boolean>
+    val showSideMenu: StateFlow<Pair<Boolean, Float>>
     val highlightItem: StateFlow<String?>
     val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>>
     val editFolderState: StateFlow<Folder?>
@@ -22,4 +22,6 @@ interface GlobalShellViewModel : FolderController {
     fun showSettings()
 
     fun hideSettings()
+
+    fun saveMenuWidth(width: Float)
 }
