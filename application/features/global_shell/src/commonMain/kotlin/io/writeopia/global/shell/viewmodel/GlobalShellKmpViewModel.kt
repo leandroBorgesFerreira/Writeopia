@@ -83,7 +83,8 @@ class GlobalShellKmpViewModel(
             uiConfigurationRepo.listenForUiConfiguration(::getUserId, coroutineScope)
                 .filterNotNull(),
             sideMenuWidthState.asStateFlow()
-        ) { configuration, width -> width ?: configuration.sideMenuWidth.also { println("configuration.sideMenuWidth: $it") }
+        ) { configuration, width ->
+            width ?: configuration.sideMenuWidth
         }.stateIn(coroutineScope, SharingStarted.Lazily, 280F)
     }
 
@@ -168,13 +169,14 @@ class GlobalShellKmpViewModel(
         val width = sideMenuWidthState.value ?: 280F
 
         coroutineScope.launch(Dispatchers.Default) {
-            val uiConfiguration = uiConfigurationRepo.getUiConfigurationEntity("disconnected_user")
-                ?: UiConfiguration(
-                    userId = "disconnected_user",
-                    colorThemeOption = ColorThemeOption.SYSTEM,
-                    sideMenuWidth = width
-                )
-            uiConfigurationRepo.insertUiConfiguration(uiConfiguration.copy(sideMenuWidth = width).also { println("width: $width") })
+            val uiConfiguration =
+                uiConfigurationRepo.getUiConfigurationEntity("disconnected_user")
+                    ?: UiConfiguration(
+                        userId = "disconnected_user",
+                        colorThemeOption = ColorThemeOption.SYSTEM,
+                        sideMenuWidth = width
+                    )
+            uiConfigurationRepo.insertUiConfiguration(uiConfiguration.copy(sideMenuWidth = width))
         }
     }
 

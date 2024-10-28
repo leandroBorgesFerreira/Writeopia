@@ -49,6 +49,6 @@
         <error line="50" column="17" source="standard:class-naming" />
     </file>
     <file name="src/commonMain/kotlin/io/writeopia/global/shell/viewmodel/GlobalShellKmpViewModel.kt">
-        <error line="55" column="17" source="standard:property-naming" />
+        <error line="56" column="17" source="standard:property-naming" />
     </file>
 </baseline>
