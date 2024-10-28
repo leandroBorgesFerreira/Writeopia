@@ -57,7 +57,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-private const val finalWidth = 300
+private const val FINAL_WIDTH = 300
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -66,7 +66,7 @@ fun SideGlobalMenu(
     foldersState: StateFlow<List<MenuItemUi>>,
     background: Color = WriteopiaTheme.colorScheme.globalBackground,
     showOptions: Boolean,
-    width: Dp = finalWidth.dp,
+    width: Dp = FINAL_WIDTH.dp,
     homeClick: () -> Unit,
     favoritesClick: () -> Unit,
     settingsClick: () -> Unit,
@@ -448,7 +448,7 @@ fun SideGlobalMenuPreview() {
         highlightContent = {},
         editFolder = {},
         navigateToFolder = {},
-        navigateToEditDocument = {_, _ -> },
+        navigateToEditDocument = { _, _ -> },
         moveRequest = { _, _ -> },
         expandFolder = {}
     )

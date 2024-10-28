@@ -25,7 +25,7 @@ class UiConfigurationKmpViewModel(
     override fun changeColorTheme(colorThemeOption: ColorThemeOption) {
         coroutineScope.launch(Dispatchers.Default) {
             uiConfigurationSqlDelightRepository.updateColorTheme(
-                "user_offline",
+                "disconnected_user",
                 colorThemeOption = colorThemeOption
             )
         }

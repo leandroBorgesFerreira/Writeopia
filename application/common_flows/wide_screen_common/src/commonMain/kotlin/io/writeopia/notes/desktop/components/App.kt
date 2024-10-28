@@ -5,10 +5,19 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -109,8 +118,6 @@ fun App(
         sideMenuInjector.provideSideMenuViewModel(coroutineScope)
     val colorTheme = colorThemeOption.collectAsState().value
     val navigationController: NavHostController = rememberNavController()
-    val optionsState by globalShellViewModel.showSideMenu.collectAsState()
-    val (showOptions, menuWidth) = optionsState
 
     coroutineScope.launch {
         navigationController.currentBackStackEntryFlow.collect { navEntry ->
@@ -129,15 +136,14 @@ fun App(
         val globalBackground = WriteopiaTheme.colorScheme.globalBackground
         DraggableScreen {
             Row(Modifier.background(globalBackground)) {
-                var sideMenuWidth by remember {
-                    mutableStateOf(menuWidth.dp)
-                }
+                val optionsState by globalShellViewModel.showSideMenu.collectAsState()
+                val (showOptions, sideMenuWidth) = optionsState
 
                 SideGlobalMenu(
                     modifier = Modifier.fillMaxHeight(),
                     foldersState = globalShellViewModel.sideMenuItems,
                     showOptions = showOptions,
-                    width = sideMenuWidth,
+                    width = sideMenuWidth.dp,
                     homeClick = {
                         val navType = navigationController.currentBackStackEntry
                             ?.arguments
@@ -223,10 +229,10 @@ fun App(
                                 .draggable(
                                     orientation = Orientation.Horizontal,
                                     state = rememberDraggableState { delta ->
-                                        sideMenuWidth += delta.dp / 2
+                                        globalShellViewModel.moveSideMenu(sideMenuWidth + delta / 2)
                                     },
                                     onDragStopped = {
-                                        globalShellViewModel.saveMenuWidth(sideMenuWidth.value)
+                                        globalShellViewModel.saveMenuWidth(sideMenuWidth)
                                     },
                                 ),
                         ) {

@@ -62,7 +62,7 @@ class UiConfigurationSqlDelightRepository internal constructor(
             .map { entity ->
                 entity?.toModel()
             }
-   
+
     companion object {
         var instance: UiConfigurationSqlDelightRepository? = null
 

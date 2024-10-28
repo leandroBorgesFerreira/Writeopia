@@ -24,4 +24,6 @@ interface GlobalShellViewModel : FolderController {
     fun hideSettings()
 
     fun saveMenuWidth(width: Float)
+
+    fun moveSideMenu(width: Float)
 }

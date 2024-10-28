@@ -118,7 +118,7 @@ fun main() = application {
                     .provideUiConfigurationViewModel(coroutineScope = coroutineScope)
 
                 val colorTheme =
-                    uiConfigurationViewModel.listenForColorTheme { "user_offline" }
+                    uiConfigurationViewModel.listenForColorTheme { "disconnected_user" }
 
                 App(
                     notesInjector = NotesInjector(database),
