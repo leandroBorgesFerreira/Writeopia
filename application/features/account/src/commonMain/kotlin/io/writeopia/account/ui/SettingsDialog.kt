@@ -12,10 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Contrast
-import androidx.compose.material.icons.outlined.DarkMode
-import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +23,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.model.ColorThemeOption
 import kotlinx.coroutines.flow.StateFlow
 
@@ -83,7 +80,7 @@ private fun ColorThemeOptions(
     Row(modifier = Modifier.fillMaxWidth().height(90.dp)) {
         Option(
             text = "Light",
-            imageVector = Icons.Outlined.LightMode,
+            imageVector = WrIcons.colorModeLight,
             contextDescription = "light",
             selectColorTheme = {
                 selectColorTheme(ColorThemeOption.LIGHT)
@@ -94,7 +91,7 @@ private fun ColorThemeOptions(
 
         Option(
             text = "Dark",
-            imageVector = Icons.Outlined.DarkMode,
+            imageVector =WrIcons.colorModeDark,
             contextDescription = "dark",
             selectColorTheme = {
                 selectColorTheme(ColorThemeOption.DARK)
@@ -105,7 +102,7 @@ private fun ColorThemeOptions(
 
         Option(
             text = "System",
-            imageVector = Icons.Outlined.Contrast,
+            imageVector = WrIcons.colorModeSystem,
             contextDescription = "system",
             selectColorTheme = {
                 selectColorTheme(ColorThemeOption.SYSTEM)

@@ -21,17 +21,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
-import androidx.compose.material.icons.filled.MoreHoriz
-import androidx.compose.material.icons.outlined.AddCircleOutline
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.FilterCenterFocus
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -48,6 +37,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.theme.WriteopiaTheme
@@ -96,21 +86,21 @@ fun SideGlobalMenu(
                     Spacer(modifier = Modifier.height(10.dp))
 
                     settingsOptions(
-                        iconVector = Icons.Outlined.Home,
+                        iconVector = WrIcons.home,
                         contentDescription = "Home",
                         text = "Home",
                         click = homeClick
                     )
 
                     settingsOptions(
-                        iconVector = Icons.Outlined.FavoriteBorder,
+                        iconVector = WrIcons.favorites,
                         contentDescription = "Favorites",
                         text = "Favorites",
                         click = favoritesClick
                     )
 
                     settingsOptions(
-                        iconVector = Icons.Outlined.Settings,
+                        iconVector = WrIcons.settings,
                         contentDescription = "Settings",
                         text = "Settings",
                         click = settingsClick,
@@ -120,7 +110,7 @@ fun SideGlobalMenu(
                         text = "Folder",
                         trailingContent = {
                             Icon(
-                                imageVector = Icons.Outlined.FilterCenterFocus,
+                                imageVector = WrIcons.target,
                                 contentDescription = "Select opened file",
                                 tint = MaterialTheme.colorScheme.onBackground,
                                 modifier = Modifier.size(30.dp)
@@ -130,7 +120,7 @@ fun SideGlobalMenu(
                             )
 
                             Icon(
-                                imageVector = Icons.Outlined.AddCircleOutline,
+                                imageVector = WrIcons.addCircle,
                                 contentDescription = "Add Folder",
                                 tint = MaterialTheme.colorScheme.onBackground,
                                 modifier = Modifier.size(30.dp)
@@ -227,9 +217,9 @@ private fun FolderItem(
             Spacer(modifier = Modifier.width(4.dp + 12.dp * depth))
 
             val imageVector = if (folder.expanded) {
-                Icons.Outlined.KeyboardArrowDown
+                WrIcons.smallArrowDown
             } else {
-                Icons.AutoMirrored.Outlined.KeyboardArrowRight
+                WrIcons.smallArrowRight
             }
 
             Icon(
@@ -248,7 +238,7 @@ private fun FolderItem(
             Spacer(modifier = Modifier.width(8.dp))
 
             Icon(
-                imageVector = Icons.Outlined.Folder,
+                imageVector = WrIcons.folder,
                 contentDescription = "Folder",
                 tint = WriteopiaTheme.colorScheme.textLight,
                 modifier = Modifier.size(16.dp)
@@ -268,7 +258,7 @@ private fun FolderItem(
             Spacer(modifier = Modifier.weight(1F))
 
             Icon(
-                imageVector = Icons.Default.MoreHoriz,
+                imageVector = WrIcons.moreHoriz,
                 contentDescription = "More",
                 tint = WriteopiaTheme.colorScheme.textLight,
                 modifier = Modifier
@@ -323,7 +313,7 @@ private fun DocumentItem(
         Spacer(modifier = Modifier.width(4.dp + 12.dp * depth))
 
         Icon(
-            imageVector = Icons.Outlined.Description,
+            imageVector = WrIcons.file,
             contentDescription = "Folder",
             tint = WriteopiaTheme.colorScheme.textLight,
             modifier = Modifier.size(16.dp)

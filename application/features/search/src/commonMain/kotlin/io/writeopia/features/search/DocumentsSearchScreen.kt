@@ -10,6 +10,6 @@ import androidx.compose.ui.Modifier
 @Composable
 fun DocumentsSearchScreen() {
     Box(modifier = Modifier.fillMaxSize()) {
-        Text("Search is yet to be implemented", modifier = Modifier.align(Alignment.Center))
+        Text("io.writeopia.common.utils.icons.all.getSearch is yet to be implemented", modifier = Modifier.align(Alignment.Center))
     }
 }

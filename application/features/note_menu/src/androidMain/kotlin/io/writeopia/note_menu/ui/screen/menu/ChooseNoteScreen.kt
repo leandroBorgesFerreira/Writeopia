@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.valentinilk.shimmer.shimmer
+import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.note_menu.ui.screen.configuration.molecules.MobileConfigurationsMenu
 import io.writeopia.note_menu.ui.screen.configuration.molecules.NotesSelectionMenu
 import io.writeopia.note_menu.ui.screen.documents.ADD_NOTE_TEST_TAG
@@ -126,7 +127,7 @@ private fun TopBar(
                 modifier = Modifier.clickable(onClick = accountClick),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val userIcon = Icons.Outlined.Person
+                val userIcon = WrIcons.person
 
                 val fallbackPainter = rememberVectorPainter(
                     defaultWidth = userIcon.defaultWidth,
@@ -210,7 +211,7 @@ private fun FloatingActionButton(newNoteClick: () -> Unit) {
         onClick = newNoteClick,
         content = {
             Icon(
-                imageVector = Icons.Default.Add,
+                imageVector = WrIcons.add,
                 contentDescription = "Add note"
 //                stringResource(R.string.add_note)
             )

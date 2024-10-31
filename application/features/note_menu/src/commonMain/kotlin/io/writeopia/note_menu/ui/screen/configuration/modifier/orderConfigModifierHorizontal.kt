@@ -25,6 +25,5 @@ fun Modifier.orderConfigModifierVertical(onClick: () -> Unit): Modifier =
     composed {
         clip(RoundedCornerShape(6.dp))
             .clickable(onClick = onClick)
-            .padding(6.dp)
             .fillMaxWidth()
     }

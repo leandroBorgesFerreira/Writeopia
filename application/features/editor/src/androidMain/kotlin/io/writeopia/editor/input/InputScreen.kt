@@ -11,9 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Redo
-import androidx.compose.material.icons.automirrored.outlined.Undo
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -23,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import io.writeopia.common.utils.icons.WrIcons
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -56,7 +54,7 @@ internal fun InputScreen(
                                 onBackPress()
                             }
                         }),
-                    imageVector = Icons.AutoMirrored.Outlined.Undo,
+                    imageVector = WrIcons.undo,
                     contentDescription = "",
 //                    stringResource(R.string.undo),
                     tint = if (canUndo) buttonColor else disabledColor
@@ -70,7 +68,7 @@ internal fun InputScreen(
                                 onForwardPress()
                             }
                         }),
-                    imageVector = Icons.AutoMirrored.Outlined.Redo,
+                    imageVector = WrIcons.redo,
                     contentDescription = "",
 //                    stringResource(R.string.redo),
                     tint = if (canRedo) buttonColor else disabledColor

@@ -4,9 +4,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -14,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.note_menu.ui.screen.configuration.modifier.icon
 import io.writeopia.note_menu.viewmodel.SyncState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,9 +42,10 @@ fun DesktopNoteActionsMenu(
 
         LoadingBox(showSyncLoading == SyncState.LoadingWrite) {
             Icon(
-                imageVector = Icons.Outlined.Save,
+                imageVector = WrIcons.save,
                 contentDescription = "Save",
                 modifier = Modifier.icon(onWriteLocallySelected)
+                    .padding(2.dp)
                     .testTag("writeWorkspaceLocally"),
                 tint = MaterialTheme.colorScheme.onBackground
             )
@@ -48,9 +53,10 @@ fun DesktopNoteActionsMenu(
 
         LoadingBox(showSyncLoading == SyncState.LoadingSync) {
             Icon(
-                imageVector = Icons.Outlined.Sync,
-                contentDescription = "Save",
+                imageVector = WrIcons.sync,
+                contentDescription = "Sync",
                 modifier = Modifier.icon(onSyncLocallySelected)
+                    .padding(2.dp)
                     .testTag("syncWorkspaceLocally"),
                 tint = MaterialTheme.colorScheme.onBackground
             )
@@ -78,9 +84,9 @@ private fun MoreOptions(
 ) {
     Box {
         Icon(
-            imageVector = Icons.Outlined.MoreVert,
+            imageVector = WrIcons.moreVert,
             contentDescription = "Export",
-            modifier = Modifier.icon(showExtraOptionsRequest),
+            modifier = Modifier.icon(showExtraOptionsRequest).padding(2.dp),
             tint = MaterialTheme.colorScheme.onBackground
         )
 
@@ -92,7 +98,7 @@ private fun MoreOptions(
             DropdownMenuItem(
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Outlined.Folder,
+                        imageVector = WrIcons.folder,
                         contentDescription = "Configure directory",
                         tint = iconTintColor
                     )
@@ -109,8 +115,8 @@ private fun MoreOptions(
             DropdownMenuItem(
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Outlined.AttachFile,
-                        contentDescription = "Export",
+                        imageVector = WrIcons.exportFile,
+                        contentDescription = "Export file",
                         tint = iconTintColor
                     )
                 },
@@ -123,8 +129,8 @@ private fun MoreOptions(
             DropdownMenuItem(
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Outlined.FileDownload,
-                        contentDescription = "Export",
+                        imageVector = WrIcons.fileDownload,
+                        contentDescription = "Import file",
                         tint = iconTintColor
                     )
                 },
