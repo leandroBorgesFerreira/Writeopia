@@ -340,7 +340,7 @@ private fun FolderItem(
                     .clip(MaterialTheme.shapes.large),
                 position = position,
                 dataToDrop = DropInfo(folderUi, position),
-                tintColor = if (folderUi.selected) {
+                iconTintOnHover = if (folderUi.selected) {
                     MaterialTheme.colorScheme.onPrimary
                 } else {
                     MaterialTheme.colorScheme.onBackground
@@ -437,7 +437,7 @@ private fun DocumentItem(
         DragCardTargetWithDragItem(
             position = position,
             dataToDrop = DropInfo(documentUi, position),
-            tintColor = if (documentUi.selected) {
+            iconTintOnHover = if (documentUi.selected) {
                 MaterialTheme.colorScheme.onPrimary
             } else {
                 MaterialTheme.colorScheme.onBackground

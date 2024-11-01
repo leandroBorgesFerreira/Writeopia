@@ -29,7 +29,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.onPointerEvent
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -70,7 +72,6 @@ fun DragRowTargetWithDragItem(
             currentState.isDragging && position == currentState.dataToDrop?.positionFrom
 
         var active by remember { mutableStateOf(false) }
-
         val tintColor by derivedStateOf {
             if (active) iconTintOnHover else iconTint
         }
@@ -84,6 +85,7 @@ fun DragRowTargetWithDragItem(
                 Icon(
                     modifier = Modifier
                         .width(dragIconWidth)
+                        .pointerHoverIcon(PointerIcon.Hand)
                         .onPointerEvent(PointerEventType.Enter) { active = true }
                         .onPointerEvent(PointerEventType.Exit) { active = false }
                         .pointerInput(Unit) {
