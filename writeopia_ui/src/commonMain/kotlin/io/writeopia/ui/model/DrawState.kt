@@ -5,6 +5,6 @@ package io.writeopia.ui.model
  * updated state and which one has the current focus.
  */
 data class DrawState(
-    val stories: Map<Int, DrawStory> = emptyMap(),
+    val stories: List<DrawStory> = emptyList(),
     val focus: Int? = null
 )

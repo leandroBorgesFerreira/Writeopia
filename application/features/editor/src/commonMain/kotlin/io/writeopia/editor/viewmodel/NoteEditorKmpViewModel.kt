@@ -76,7 +76,7 @@ class NoteEditorKmpViewModel(
         writeopiaManager.toDraw.stateIn(
             coroutineScope,
             started = SharingStarted.Lazily,
-            initialValue = DrawState(emptyMap())
+            initialValue = DrawState(emptyList())
         )
     }
     private val _documentToShareInfo = MutableStateFlow<ShareDocument?>(null)

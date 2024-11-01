@@ -23,7 +23,7 @@ fun WriteopiaEditor(
     drawers: Map<Int, StoryStepDrawer>,
     storyState: DrawState
 ) {
-    val content = storyState.stories.values.toList()
+    val content = storyState.stories
 
     DraggableScreen(modifier = modifier) {
         LazyColumn(
@@ -34,12 +34,12 @@ fun WriteopiaEditor(
                 itemsIndexed(
                     content,
                     key = { index, drawStory -> drawStory.key + index },
-                    itemContent = { index, drawStory ->
+                    itemContent = { _, drawStory ->
                         buildList {
                             add(drawers[drawStory.storyStep.type.number])
                             add(drawers[StoryTypes.SPACE.type.number])
 
-                            if (index == content.lastIndex) {
+                            if (drawStory.position == content.lastIndex) {
                                 add(drawers[StoryTypes.LAST_SPACE.type.number])
                             }
                         }.filterNotNull()
@@ -49,7 +49,7 @@ fun WriteopiaEditor(
                                     drawInfo = DrawInfo(
                                         editable = editable,
                                         focus = storyState.focus,
-                                        position = index,
+                                        position = drawStory.position,
                                         extraData = mapOf("listSize" to storyState.stories.size),
                                         selectMode = drawStory.isSelected,
                                         selection = drawStory.cursor

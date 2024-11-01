@@ -154,13 +154,17 @@ class WriteopiaStateManager(
         combine(_positionsOnEdit, currentStory) { positions, storyState ->
             val focus = storyState.focus
 
-            val toDrawStories = storyState.stories.mapValues { (position, storyStep) ->
-                DrawStory(
-                    storyStep = storyStep,
-                    cursor = storyState.selection,
-                    isSelected = positions.contains(position)
-                )
-            }
+            val toDrawStories = storyState.stories
+                .mapValues { (position, storyStep) ->
+                    DrawStory(
+                        storyStep = storyStep,
+                        cursor = storyState.selection,
+                        isSelected = positions.contains(position),
+                        position = position
+                    )
+                }
+                .values
+                .toList()
 
             DrawState(toDrawStories, focus)
         }
