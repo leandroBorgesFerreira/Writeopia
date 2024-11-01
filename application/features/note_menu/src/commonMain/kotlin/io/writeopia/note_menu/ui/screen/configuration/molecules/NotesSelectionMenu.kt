@@ -6,14 +6,14 @@ import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.icons.filled.DeleteOutline
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.commonui.SlideInBox
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -75,7 +76,7 @@ internal fun NotesSelectionMenu(
                         .clickable(onClick = onCopy)
                         .weight(1F)
                         .padding(vertical = 25.dp),
-                    imageVector = Icons.Default.ContentCopy,
+                    imageVector = WrIcons.copy,
                     contentDescription = "Copy note",
 //                    stringResource(R.string.copy_note),
                     tint = tintColor
@@ -86,7 +87,7 @@ internal fun NotesSelectionMenu(
                         .clickable(onClick = onFavorite)
                         .weight(1F)
                         .padding(vertical = 25.dp),
-                    imageVector = Icons.Default.FavoriteBorder,
+                    imageVector = WrIcons.favorites,
                     contentDescription = "favorite",
 //                    stringResource(R.string.favorite),
                     tint = tintColor
@@ -97,7 +98,7 @@ internal fun NotesSelectionMenu(
                         .clickable(onClick = onDelete)
                         .weight(1F)
                         .padding(vertical = 25.dp),
-                    imageVector = Icons.Default.DeleteOutline,
+                    imageVector = WrIcons.delete,
                     contentDescription = "Delete",
 //                    stringResource(R.string.delete),
                     tint = tintColor
@@ -108,7 +109,7 @@ internal fun NotesSelectionMenu(
                         .clickable(onClick = onClose)
                         .weight(1F)
                         .padding(vertical = 25.dp),
-                    imageVector = Icons.Outlined.Close,
+                    imageVector = WrIcons.close,
                     contentDescription = "Close",
 //                    stringResource(R.string.delete),
                     tint = tintColor

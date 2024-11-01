@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.note_menu.data.model.NotesNavigation
 import io.writeopia.note_menu.ui.screen.actions.DesktopNoteActionsMenu
 import io.writeopia.note_menu.ui.screen.configuration.molecules.NotesConfigurationMenu
@@ -127,7 +126,7 @@ fun DesktopNotesMenu(
             onClick = onNewNoteClick,
             content = {
                 Icon(
-                    imageVector = Icons.Default.Add,
+                    imageVector = WrIcons.add,
                     contentDescription = "New note",
                     tint = MaterialTheme.colorScheme.onPrimary
                 )

@@ -21,9 +21,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.ResultData
+import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.note_menu.ui.dto.NotesUi
@@ -357,8 +355,8 @@ private fun FolderItem(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Icon(
-                        modifier = Modifier.size(70.dp).padding(12.dp),
-                        imageVector = Icons.Outlined.Folder,
+                        modifier = Modifier.size(65.dp).padding(12.dp),
+                        imageVector = WrIcons.folder,
                         contentDescription = "Folder",
                         tint = tintColor
                     )
@@ -385,7 +383,7 @@ private fun FolderItem(
             if (folderUi.isFavorite) {
                 Icon(
                     modifier = Modifier.align(Alignment.TopEnd).size(40.dp).padding(12.dp),
-                    imageVector = Icons.Outlined.Favorite,
+                    imageVector = WrIcons.favorites,
                     contentDescription = "Favorite",
                     tint = if (folderUi.selected) {
                         MaterialTheme.colorScheme.onPrimary
@@ -468,7 +466,7 @@ private fun DocumentItem(
             if (documentUi.isFavorite) {
                 Icon(
                     modifier = Modifier.align(Alignment.TopEnd).size(40.dp).padding(12.dp),
-                    imageVector = Icons.Outlined.Favorite,
+                    imageVector = WrIcons.favorites,
                     contentDescription = "Favorite",
                     tint = if (documentUi.selected) {
                         MaterialTheme.colorScheme.onPrimary

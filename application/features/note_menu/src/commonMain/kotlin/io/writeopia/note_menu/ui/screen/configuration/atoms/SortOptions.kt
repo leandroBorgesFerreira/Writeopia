@@ -1,9 +1,7 @@
 package io.writeopia.note_menu.ui.screen.configuration.atoms
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.SwapVert
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -16,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.note_menu.ui.screen.configuration.modifier.icon
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import kotlinx.coroutines.flow.StateFlow
@@ -32,9 +31,9 @@ internal fun SortOptions(
 
     Box(modifier = modifier) {
         Icon(
-            imageVector = Icons.Outlined.SwapVert,
+            imageVector = WrIcons.sort,
             contentDescription = "Sort Options",
-            modifier = Modifier.icon(showSortOptionsRequest).align(Alignment.Center),
+            modifier = Modifier.icon(showSortOptionsRequest).align(Alignment.Center).padding(2.dp),
             tint = MaterialTheme.colorScheme.onBackground,
         )
 
@@ -48,7 +47,7 @@ internal fun SortOptions(
             DropdownMenuItem(
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Outlined.Folder,
+                        imageVector = WrIcons.sortByName,
                         contentDescription = "Sort by name",
                         tint = iconTintColor
                     )
@@ -64,7 +63,7 @@ internal fun SortOptions(
             DropdownMenuItem(
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Outlined.Folder,
+                        imageVector = WrIcons.sortByCreated,
                         contentDescription = "Sort by creation",
                         tint = iconTintColor
                     )
@@ -80,7 +79,7 @@ internal fun SortOptions(
             DropdownMenuItem(
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Outlined.Folder,
+                        imageVector = WrIcons.sortByUpdate,
                         contentDescription = "Sort by last update",
                         tint = iconTintColor
                     )

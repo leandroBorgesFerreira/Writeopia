@@ -10,10 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -42,6 +38,7 @@ import io.writeopia.auth.core.token.FirebaseTokenHandler
 import io.writeopia.auth.di.AuthInjection
 import io.writeopia.auth.navigation.authNavigation
 import io.writeopia.common.utils.Destinations
+import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.editor.di.EditorInjector
 import io.writeopia.model.isDarkTheme
 import io.writeopia.navigation.notes.navigateToNoteMenu
@@ -198,7 +195,7 @@ private fun NavHostController.navigateToItem(
 
 private fun NavItemName.iconForNavItem(): ImageVector =
     when (this) {
-        NavItemName.HOME -> Icons.Outlined.Home
-        NavItemName.SEARCH -> Icons.Outlined.Search
-        NavItemName.NOTIFICATIONS -> Icons.Outlined.Notifications
+        NavItemName.HOME -> WrIcons.home
+        NavItemName.SEARCH -> WrIcons.search
+        NavItemName.NOTIFICATIONS -> WrIcons.notifications
     }

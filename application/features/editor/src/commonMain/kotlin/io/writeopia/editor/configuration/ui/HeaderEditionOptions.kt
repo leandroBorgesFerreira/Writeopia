@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.FormatColorReset
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import io.writeopia.common.utils.icons.WrIcons
 
 @Composable
 fun HeaderEditionOptions(
@@ -65,7 +64,7 @@ fun HeaderEditionOptions(
                         modifier = Modifier
                             .align(Alignment.Center)
                             .size(40.dp),
-                        imageVector = Icons.Outlined.FormatColorReset,
+                        imageVector = WrIcons.transparent,
                         contentDescription = "Remove color",
                         tint = MaterialTheme.colorScheme.onBackground
                     )

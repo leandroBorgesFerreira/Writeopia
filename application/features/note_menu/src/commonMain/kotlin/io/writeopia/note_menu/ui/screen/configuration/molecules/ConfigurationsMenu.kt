@@ -14,10 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.List
-import androidx.compose.material.icons.outlined.Dashboard
-import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +28,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.commonui.SlideInBox
 import io.writeopia.commonui.options.slide.HorizontalOptions
 import io.writeopia.note_menu.ui.screen.configuration.modifier.orderConfigModifierHorizontal
@@ -114,7 +111,7 @@ fun ArrangementOptions(
                     modifier = Modifier
                         .orderConfigModifierHorizontal(clickable = gridOptionClick)
                         .weight(1F),
-                    imageVector = Icons.Outlined.Dashboard,
+                    imageVector = WrIcons.layoutStaggeredGrid,
                     contentDescription = "staggered card",
                     //            stringResource(R.string.staggered_card),
                     tint = MaterialTheme.colorScheme.onPrimary
@@ -125,7 +122,7 @@ fun ArrangementOptions(
                     modifier = Modifier
                         .orderConfigModifierHorizontal(clickable = gridOptionClick)
                         .weight(1F),
-                    imageVector = Icons.Outlined.GridView,
+                    imageVector = WrIcons.layoutGrid,
                     contentDescription = "staggered card",
                     //            stringResource(R.string.staggered_card),
                     tint = MaterialTheme.colorScheme.onPrimary
@@ -136,7 +133,7 @@ fun ArrangementOptions(
                     modifier = Modifier
                         .orderConfigModifierHorizontal(clickable = listOptionClick)
                         .weight(1F),
-                    imageVector = Icons.AutoMirrored.Outlined.List,
+                    imageVector = WrIcons.layoutList,
                     contentDescription = "note list",
                     //            stringResource(R.string.note_list),
                     tint = MaterialTheme.colorScheme.onPrimary

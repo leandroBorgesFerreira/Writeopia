@@ -27,7 +27,6 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -51,6 +50,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.editor.ColorUtils
 import io.writeopia.editor.configuration.ui.HeaderEdition
 import io.writeopia.editor.configuration.ui.NoteGlobalActionsMenu
@@ -220,7 +220,7 @@ private fun TopBar(
                         .clip(CircleShape)
                         .clickable(onClick = navigationClick)
                         .padding(10.dp),
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    imageVector = WrIcons.backArrowAndroid,
                     contentDescription = "",
 //                    stringResource(R.string.back),
                     tint = MaterialTheme.colorScheme.onBackground

@@ -18,15 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.List
-import androidx.compose.material.icons.outlined.CheckBox
-import androidx.compose.material.icons.outlined.Code
-import androidx.compose.material.icons.outlined.FontDownload
-import androidx.compose.material.icons.outlined.FormatBold
-import androidx.compose.material.icons.outlined.FormatItalic
-import androidx.compose.material.icons.outlined.FormatUnderlined
-import androidx.compose.material.icons.outlined.Style
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -38,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import io.writeopia.common.utils.icons.WrIcons
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -120,7 +112,7 @@ fun SideEditorOptions(
             }
 
             Icon(
-                imageVector = Icons.Outlined.Style,
+                imageVector = WrIcons.pageStyle,
                 contentDescription = "Document Style",
                 modifier = Modifier
                     .padding(horizontal = spacing)
@@ -134,7 +126,7 @@ fun SideEditorOptions(
             Spacer(modifier = Modifier.height(1.dp))
 
             Icon(
-                imageVector = Icons.Outlined.FontDownload,
+                imageVector = WrIcons.textStyle,
                 contentDescription = "Font Style",
                 modifier = Modifier
                     .padding(horizontal = spacing)
@@ -142,7 +134,7 @@ fun SideEditorOptions(
                     .background(background)
                     .clickable(onClick = fontClick)
                     .size(40.dp)
-                    .padding(10.dp),
+                    .padding(9.dp),
                 tint = tint
             )
 
@@ -158,35 +150,35 @@ private fun TextChanges() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            imageVector = Icons.Outlined.FormatBold,
-            contentDescription = "Bold text",
+            imageVector = WrIcons.bold,
+            contentDescription = "Bold",
             modifier = Modifier.weight(1F)
                 .clip(RoundedCornerShape(topStart = 6.dp, bottomStart = 6.dp))
                 .size(32.dp)
                 .clickable { }
-                .padding(horizontal = 8.dp, vertical = 6.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                .padding(horizontal = 8.dp, vertical = 8.dp),
+            tint = MaterialTheme.colorScheme.onBackground
         )
 
         Icon(
-            imageVector = Icons.Outlined.FormatItalic,
-            contentDescription = "Italic text",
+            imageVector = WrIcons.italic,
+            contentDescription = "Italic",
             modifier = Modifier.weight(1F)
                 .size(32.dp)
                 .clickable { }
-                .padding(horizontal = 8.dp, vertical = 6.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                .padding(horizontal = 8.dp, vertical = 8.dp),
+            tint = MaterialTheme.colorScheme.onBackground
         )
 
         Icon(
-            imageVector = Icons.Outlined.FormatUnderlined,
+            imageVector = WrIcons.underline,
             contentDescription = "Underlined text",
             modifier = Modifier.weight(1F)
                 .clip(RoundedCornerShape(topEnd = 6.dp, bottomEnd = 6.dp))
                 .size(32.dp)
                 .clickable { }
-                .padding(horizontal = 8.dp, vertical = 6.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                .padding(horizontal = 8.dp, vertical = 8.dp),
+            tint = MaterialTheme.colorScheme.onBackground
         )
     }
 }
@@ -199,35 +191,35 @@ private fun InsertCommand(
 ) {
     Row(modifier = Modifier.horizontalOptionsRow()) {
         Icon(
-            imageVector = Icons.Outlined.CheckBox,
+            imageVector = WrIcons.checkbox,
             contentDescription = "Check box",
             modifier = Modifier.weight(1F)
                 .clip(RoundedCornerShape(topStart = 6.dp, bottomStart = 6.dp))
                 .size(32.dp)
                 .clickable(onClick = checkItemClick)
-                .padding(horizontal = 8.dp, vertical = 6.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                .padding(horizontal = 8.dp, vertical = 7.dp),
+            tint = MaterialTheme.colorScheme.onBackground
         )
 
         Icon(
-            imageVector = Icons.AutoMirrored.Outlined.List,
+            imageVector = WrIcons.list,
             contentDescription = "List item",
             modifier = Modifier.weight(1F)
                 .size(32.dp)
                 .clickable(onClick = listItemClick)
                 .padding(horizontal = 8.dp, vertical = 6.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
+            tint = MaterialTheme.colorScheme.onBackground
         )
 
         Icon(
-            imageVector = Icons.Outlined.Code,
+            imageVector = WrIcons.code,
             contentDescription = "Code block",
             modifier = Modifier.weight(1F)
                 .clip(RoundedCornerShape(topEnd = 6.dp, bottomEnd = 6.dp))
                 .size(32.dp)
                 .clickable(onClick = codeBlockClick)
-                .padding(horizontal = 8.dp, vertical = 6.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                .padding(horizontal = 8.dp, vertical = 7.dp),
+            tint = MaterialTheme.colorScheme.onBackground
         )
     }
 }
