@@ -5,7 +5,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -16,19 +15,23 @@ import androidx.compose.material.icons.filled.DragIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
@@ -36,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.draganddrop.DropInfo
 
 // Todo: Review this name
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DragRowTargetWithDragItem(
     modifier: Modifier = Modifier,
@@ -44,7 +48,9 @@ fun DragRowTargetWithDragItem(
     position: Int,
     emptySpaceClick: () -> Unit,
     dragIconWidth: Dp = 16.dp,
-    content: @Composable RowScope.() -> Unit
+    iconTintOnHover: Color = MaterialTheme.colorScheme.onBackground,
+    iconTint: Color = Color.Gray,
+    content: @Composable RowScope.() -> Unit,
 ) {
     var currentPosition by remember { mutableStateOf(Offset.Zero) }
     var maxSize by remember { mutableStateOf(DpSize(0.dp, 0.dp)) }
@@ -63,6 +69,12 @@ fun DragRowTargetWithDragItem(
         val showDragIcon = showIcon ||
             currentState.isDragging && position == currentState.dataToDrop?.positionFrom
 
+        var active by remember { mutableStateOf(false) }
+
+        val tintColor by derivedStateOf {
+            if (active) iconTintOnHover else iconTint
+        }
+
         Crossfade(
             targetState = showDragIcon,
             label = "iconCrossFade",
@@ -72,6 +84,8 @@ fun DragRowTargetWithDragItem(
                 Icon(
                     modifier = Modifier
                         .width(dragIconWidth)
+                        .onPointerEvent(PointerEventType.Enter) { active = true }
+                        .onPointerEvent(PointerEventType.Exit) { active = false }
                         .pointerInput(Unit) {
                             detectDragGestures(onDragStart = { offset ->
                                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -105,7 +119,7 @@ fun DragRowTargetWithDragItem(
                         },
                     imageVector = Icons.Default.DragIndicator,
                     contentDescription = "Drag icon",
-                    tint = MaterialTheme.colorScheme.onBackground
+                    tint = tintColor
                 )
             } else {
                 Spacer(
