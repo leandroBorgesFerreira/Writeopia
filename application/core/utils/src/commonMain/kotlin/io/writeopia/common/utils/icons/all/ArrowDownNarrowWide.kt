@@ -12,13 +12,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
-internal val List: ImageVector
+internal val ArrowDownNarrowWide: ImageVector
     get() {
-        if (_List != null) {
-            return _List!!
+        if (_ArrowDownNarrowWide != null) {
+            return _ArrowDownNarrowWide!!
         }
-        _List = ImageVector.Builder(
-            name = "List",
+        _ArrowDownNarrowWide = ImageVector.Builder(
+            name = "io.writeopia.common.utils.icons.all.getArrowDownNarrowWide",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
             viewportWidth = 24f,
@@ -35,8 +35,9 @@ internal val List: ImageVector
                 strokeLineMiter = 1.0f,
                 pathFillType = PathFillType.NonZero
             ) {
-                moveTo(3f, 12f)
-                horizontalLineToRelative(0.01f)
+                moveTo(3f, 16f)
+                lineToRelative(4f, 4f)
+                lineToRelative(4f, -4f)
             }
             path(
                 fill = null,
@@ -49,8 +50,8 @@ internal val List: ImageVector
                 strokeLineMiter = 1.0f,
                 pathFillType = PathFillType.NonZero
             ) {
-                moveTo(3f, 18f)
-                horizontalLineToRelative(0.01f)
+                moveTo(7f, 20f)
+                verticalLineTo(4f)
             }
             path(
                 fill = null,
@@ -63,8 +64,8 @@ internal val List: ImageVector
                 strokeLineMiter = 1.0f,
                 pathFillType = PathFillType.NonZero
             ) {
-                moveTo(3f, 6f)
-                horizontalLineToRelative(0.01f)
+                moveTo(11f, 4f)
+                horizontalLineToRelative(4f)
             }
             path(
                 fill = null,
@@ -77,8 +78,8 @@ internal val List: ImageVector
                 strokeLineMiter = 1.0f,
                 pathFillType = PathFillType.NonZero
             ) {
-                moveTo(8f, 12f)
-                horizontalLineToRelative(13f)
+                moveTo(11f, 8f)
+                horizontalLineToRelative(7f)
             }
             path(
                 fill = null,
@@ -91,25 +92,11 @@ internal val List: ImageVector
                 strokeLineMiter = 1.0f,
                 pathFillType = PathFillType.NonZero
             ) {
-                moveTo(8f, 18f)
-                horizontalLineToRelative(13f)
-            }
-            path(
-                fill = null,
-                fillAlpha = 1.0f,
-                stroke = SolidColor(Color(0xFF000000)),
-                strokeAlpha = 1.0f,
-                strokeLineWidth = 2f,
-                strokeLineCap = StrokeCap.Round,
-                strokeLineJoin = StrokeJoin.Round,
-                strokeLineMiter = 1.0f,
-                pathFillType = PathFillType.NonZero
-            ) {
-                moveTo(8f, 6f)
-                horizontalLineToRelative(13f)
+                moveTo(11f, 12f)
+                horizontalLineToRelative(10f)
             }
         }.build()
-        return _List!!
+        return _ArrowDownNarrowWide!!
     }
 
-private var _List: ImageVector? = null
+private var _ArrowDownNarrowWide: ImageVector? = null

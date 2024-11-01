@@ -1,6 +1,7 @@
 package io.writeopia.common.utils.icons
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.FormatColorReset
@@ -10,12 +11,15 @@ import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.writeopia.common.utils.icons.all.ALargeSmall
+import io.writeopia.common.utils.icons.all.ArrowDownAZ
 import io.writeopia.common.utils.icons.all.ArrowDownUp
 import io.writeopia.common.utils.icons.all.Bold
 import io.writeopia.common.utils.icons.all.Bolt
+import io.writeopia.common.utils.icons.all.CalendarArrowDown
 import io.writeopia.common.utils.icons.all.ChevronDown
 import io.writeopia.common.utils.icons.all.ChevronRight
 import io.writeopia.common.utils.icons.all.CirclePlus
+import io.writeopia.common.utils.icons.all.ClockArrowDown
 import io.writeopia.common.utils.icons.all.Contrast
 import io.writeopia.common.utils.icons.all.Crosshair
 import io.writeopia.common.utils.icons.all.FileDown
@@ -29,6 +33,7 @@ import io.writeopia.common.utils.icons.all.Italic
 import io.writeopia.common.utils.icons.all.LayoutGrid
 import io.writeopia.common.utils.icons.all.LayoutPanelLeft
 import io.writeopia.common.utils.icons.all.Moon
+import io.writeopia.common.utils.icons.all.MoveLeft
 import io.writeopia.common.utils.icons.all.NotebookText
 import io.writeopia.common.utils.icons.all.Plus
 import io.writeopia.common.utils.icons.all.Redo2
@@ -122,4 +127,14 @@ object WrIcons {
     val undo: ImageVector = Undo2
 
     val redo: ImageVector = Redo2
+
+    val sortByName: ImageVector = ArrowDownAZ
+
+    val sortByCreated: ImageVector = CalendarArrowDown
+
+    val sortByUpdate: ImageVector = ClockArrowDown
+
+    val backArrowDesktop: ImageVector = MoveLeft
+
+    val backArrowAndroid: ImageVector = Icons.AutoMirrored.Filled.ArrowBack
 }

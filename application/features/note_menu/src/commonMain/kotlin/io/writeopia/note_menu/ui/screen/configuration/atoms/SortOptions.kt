@@ -47,7 +47,7 @@ internal fun SortOptions(
             DropdownMenuItem(
                 leadingIcon = {
                     Icon(
-                        imageVector = WrIcons.folder,
+                        imageVector = WrIcons.sortByName,
                         contentDescription = "Sort by name",
                         tint = iconTintColor
                     )
@@ -63,7 +63,7 @@ internal fun SortOptions(
             DropdownMenuItem(
                 leadingIcon = {
                     Icon(
-                        imageVector = WrIcons.folder,
+                        imageVector = WrIcons.sortByCreated,
                         contentDescription = "Sort by creation",
                         tint = iconTintColor
                     )
@@ -79,7 +79,7 @@ internal fun SortOptions(
             DropdownMenuItem(
                 leadingIcon = {
                     Icon(
-                        imageVector = WrIcons.folder,
+                        imageVector = WrIcons.sortByUpdate,
                         contentDescription = "Sort by last update",
                         tint = iconTintColor
                     )

@@ -91,7 +91,7 @@ private fun ColorThemeOptions(
 
         Option(
             text = "Dark",
-            imageVector =WrIcons.colorModeDark,
+            imageVector = WrIcons.colorModeDark,
             contextDescription = "dark",
             selectColorTheme = {
                 selectColorTheme(ColorThemeOption.DARK)

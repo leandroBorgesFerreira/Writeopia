@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.note_menu.ui.screen.configuration.modifier.icon
 import kotlinx.coroutines.flow.StateFlow
 
@@ -37,7 +37,7 @@ fun GlobalHeader(
                     navigationController.navigateUp()
                 }
             },
-            imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+            imageVector = WrIcons.backArrowDesktop,
             contentDescription = "Navigate back",
             tint = MaterialTheme.colorScheme.onBackground
         )

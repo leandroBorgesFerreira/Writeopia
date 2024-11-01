@@ -79,6 +79,8 @@
     <file name="src/androidMain/kotlin/io/writeopia/note_menu/ui/screen/menu/ChooseNoteScreen.kt">
         <error line="1" column="9" source="standard:package-name" />
         <error line="6" column="1" source="standard:no-wildcard-imports" />
+        <error line="9" column="1" source="standard:no-unused-imports" />
+        <error line="11" column="1" source="standard:no-unused-imports" />
         <error line="12" column="1" source="standard:no-wildcard-imports" />
     </file>
     <file name="src/androidMain/kotlin/io/writeopia/note_menu/ui/screen/menu/NotesMenuScreen.android.kt">
@@ -167,8 +169,6 @@
     </file>
     <file name="src/commonMain/kotlin/io/writeopia/note_menu/ui/screen/actions/DesktopNoteActionsMenu.kt">
         <error line="1" column="9" source="standard:package-name" />
-        <error line="8" column="1" source="standard:no-wildcard-imports" />
-        <error line="9" column="1" source="standard:no-wildcard-imports" />
     </file>
     <file name="src/commonMain/kotlin/io/writeopia/note_menu/ui/screen/configuration/atoms/ArrangementOptionsMenu.kt">
         <error line="1" column="9" source="standard:package-name" />
@@ -192,12 +192,9 @@
     </file>
     <file name="src/commonMain/kotlin/io/writeopia/note_menu/ui/screen/configuration/molecules/NotesSelectionMenu.kt">
         <error line="1" column="9" source="standard:package-name" />
-        <error line="9" column="1" source="standard:no-wildcard-imports" />
     </file>
     <file name="src/commonMain/kotlin/io/writeopia/note_menu/ui/screen/configuration/molecules/WorkspaceConfigurationDialog.kt">
         <error line="1" column="9" source="standard:package-name" />
-        <error line="4" column="1" source="standard:no-wildcard-imports" />
-        <error line="10" column="1" source="standard:no-wildcard-imports" />
     </file>
     <file name="src/commonMain/kotlin/io/writeopia/note_menu/ui/screen/documents/NoteItems.kt">
         <error line="1" column="9" source="standard:package-name" />

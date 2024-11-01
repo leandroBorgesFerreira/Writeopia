@@ -12,13 +12,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
-internal val List: ImageVector
+internal val CalendarArrowDown: ImageVector
     get() {
-        if (_List != null) {
-            return _List!!
+        if (_CalendarArrowDown != null) {
+            return _CalendarArrowDown!!
         }
-        _List = ImageVector.Builder(
-            name = "List",
+        _CalendarArrowDown = ImageVector.Builder(
+            name = "io.writeopia.common.utils.icons.all.getCalendarArrowDown",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
             viewportWidth = 24f,
@@ -35,8 +35,9 @@ internal val List: ImageVector
                 strokeLineMiter = 1.0f,
                 pathFillType = PathFillType.NonZero
             ) {
-                moveTo(3f, 12f)
-                horizontalLineToRelative(0.01f)
+                moveTo(14f, 18f)
+                lineToRelative(4f, 4f)
+                lineToRelative(4f, -4f)
             }
             path(
                 fill = null,
@@ -49,8 +50,8 @@ internal val List: ImageVector
                 strokeLineMiter = 1.0f,
                 pathFillType = PathFillType.NonZero
             ) {
-                moveTo(3f, 18f)
-                horizontalLineToRelative(0.01f)
+                moveTo(16f, 2f)
+                verticalLineToRelative(4f)
             }
             path(
                 fill = null,
@@ -63,8 +64,8 @@ internal val List: ImageVector
                 strokeLineMiter = 1.0f,
                 pathFillType = PathFillType.NonZero
             ) {
-                moveTo(3f, 6f)
-                horizontalLineToRelative(0.01f)
+                moveTo(18f, 14f)
+                verticalLineToRelative(8f)
             }
             path(
                 fill = null,
@@ -77,8 +78,14 @@ internal val List: ImageVector
                 strokeLineMiter = 1.0f,
                 pathFillType = PathFillType.NonZero
             ) {
-                moveTo(8f, 12f)
-                horizontalLineToRelative(13f)
+                moveTo(21f, 11.354f)
+                verticalLineTo(6f)
+                arcToRelative(2f, 2f, 0f, isMoreThanHalf = false, isPositiveArc = false, -2f, -2f)
+                horizontalLineTo(5f)
+                arcToRelative(2f, 2f, 0f, isMoreThanHalf = false, isPositiveArc = false, -2f, 2f)
+                verticalLineToRelative(14f)
+                arcToRelative(2f, 2f, 0f, isMoreThanHalf = false, isPositiveArc = false, 2f, 2f)
+                horizontalLineToRelative(7.343f)
             }
             path(
                 fill = null,
@@ -91,8 +98,8 @@ internal val List: ImageVector
                 strokeLineMiter = 1.0f,
                 pathFillType = PathFillType.NonZero
             ) {
-                moveTo(8f, 18f)
-                horizontalLineToRelative(13f)
+                moveTo(3f, 10f)
+                horizontalLineToRelative(18f)
             }
             path(
                 fill = null,
@@ -105,11 +112,11 @@ internal val List: ImageVector
                 strokeLineMiter = 1.0f,
                 pathFillType = PathFillType.NonZero
             ) {
-                moveTo(8f, 6f)
-                horizontalLineToRelative(13f)
+                moveTo(8f, 2f)
+                verticalLineToRelative(4f)
             }
         }.build()
-        return _List!!
+        return _CalendarArrowDown!!
     }
 
-private var _List: ImageVector? = null
+private var _CalendarArrowDown: ImageVector? = null

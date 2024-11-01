@@ -12,13 +12,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
-internal val Code: ImageVector
+internal val MoveLeft: ImageVector
     get() {
-        if (_Code != null) {
-            return _Code!!
+        if (_MoveLeft != null) {
+            return _MoveLeft!!
         }
-        _Code = ImageVector.Builder(
-            name = "io.writeopia.common.utils.icons.getCode",
+        _MoveLeft = ImageVector.Builder(
+            name = "io.writeopia.common.utils.icons.all.getMoveLeft",
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
             viewportWidth = 24f,
@@ -35,9 +35,9 @@ internal val Code: ImageVector
                 strokeLineMiter = 1.0f,
                 pathFillType = PathFillType.NonZero
             ) {
-                moveTo(16f, 18f)
-                lineTo(22f, 12f)
-                lineTo(16f, 6f)
+                moveTo(6f, 8f)
+                lineTo(2f, 12f)
+                lineTo(6f, 16f)
             }
             path(
                 fill = null,
@@ -50,12 +50,11 @@ internal val Code: ImageVector
                 strokeLineMiter = 1.0f,
                 pathFillType = PathFillType.NonZero
             ) {
-                moveTo(8f, 6f)
-                lineTo(2f, 12f)
-                lineTo(8f, 18f)
+                moveTo(2f, 12f)
+                horizontalLineTo(22f)
             }
         }.build()
-        return _Code!!
+        return _MoveLeft!!
     }
 
-private var _Code: ImageVector? = null
+private var _MoveLeft: ImageVector? = null
