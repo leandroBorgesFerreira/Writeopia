@@ -9,9 +9,9 @@ import io.writeopia.sdk.models.story.StoryStep
  */
 data class DrawStory(
     val storyStep: StoryStep,
-    val cursor: Selection,
-    val isSelected: Boolean,
-    val position: Int
+    val position: Int,
+    val isSelected: Boolean = false,
+    val cursor: Selection? = null
 ) {
 
     val key = storyStep.key + isSelected.let { if (it) 1 else 0 } + cursor.hashCode()

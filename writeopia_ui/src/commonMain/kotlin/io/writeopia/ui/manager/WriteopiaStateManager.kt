@@ -64,6 +64,7 @@ class WriteopiaStateManager(
     private val writeopiaManager: WriteopiaManager,
     val selectionState: StateFlow<Boolean>,
     private val keyboardEventFlow: Flow<KeyboardEvent>,
+    private val drawStateModify: (List<DrawStory>) -> (List<DrawStory>) = ::addSpacesModifier
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     init {
@@ -165,6 +166,7 @@ class WriteopiaStateManager(
                 }
                 .values
                 .toList()
+                .let(drawStateModify)
 
             DrawState(toDrawStories, focus)
         }
@@ -740,9 +742,23 @@ class WriteopiaStateManager(
             userId,
             writeopiaManager,
             selectionState,
-            keyboardEventFlow.filterNotNull()
+            keyboardEventFlow.filterNotNull(),
+            ::addSpacesModifier
         )
     }
+}
+
+private fun addSpacesModifier(stories: List<DrawStory>): List<DrawStory> {
+    val space = StoryStep(type = StoryTypes.SPACE.type)
+    val lastSpace = StoryStep(type = StoryTypes.LAST_SPACE.type)
+
+    val parsed = stories.foldIndexed(emptyList<DrawStory>()) { index, acc, drawStory ->
+        acc + drawStory + DrawStory(storyStep = space, position = index)
+    }
+
+    val lastIndex = parsed.lastIndex
+
+    return parsed + DrawStory(storyStep = lastSpace, position = lastIndex)
 }
 
 private class LineBreakCommand(val text: String, val position: Int, val time: Instant)
