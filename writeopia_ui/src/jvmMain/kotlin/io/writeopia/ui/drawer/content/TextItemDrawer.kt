@@ -17,6 +17,7 @@ import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.components.SwipeBox
 import io.writeopia.ui.draganddrop.target.DragRowTargetWithDragItem
+import io.writeopia.ui.draganddrop.target.DropTarget
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 
@@ -30,6 +31,7 @@ actual class TextItemDrawer actual constructor(
     private val clickable: Boolean,
     private val onSelected: (Boolean, Int) -> Unit,
     private val dragIconWidth: Dp,
+    private val onDragHover: (Int) -> Unit,
     private val startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
     private val messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ) : StoryStepDrawer {
@@ -41,26 +43,14 @@ actual class TextItemDrawer actual constructor(
         val interactionSource = remember { MutableInteractionSource() }
         val isHovered by interactionSource.collectIsHoveredAsState()
 
-        SwipeBox(
-            modifier = modifier
-                .hoverable(interactionSource)
-                .apply {
-                    if (clickable) {
-                        clickable {
-                            focusRequester.requestFocus()
-                        }
-                    }
-                },
-            defaultColor = customBackgroundColor,
-            activeColor = MaterialTheme.colorScheme.primary,
-            isOnEditState = drawInfo.selectMode,
-            swipeListener = { isSelected ->
-                onSelected(isSelected, drawInfo.position)
+        DropTarget { inBound, data ->
+            if (inBound) {
+                onDragHover(drawInfo.position)
             }
-        ) {
-            DragRowTargetWithDragItem(
-                modifier = Modifier
-                    .fillMaxWidth()
+
+            SwipeBox(
+                modifier = modifier
+                    .hoverable(interactionSource)
                     .apply {
                         if (clickable) {
                             clickable {
@@ -68,25 +58,46 @@ actual class TextItemDrawer actual constructor(
                             }
                         }
                     },
-                dataToDrop = dropInfo,
-                showIcon = isHovered,
-                position = drawInfo.position,
-                dragIconWidth = dragIconWidth,
-                emptySpaceClick = {
-                    focusRequester.requestFocus()
+                defaultColor = customBackgroundColor,
+                activeColor = MaterialTheme.colorScheme.primary,
+                isOnEditState = drawInfo.selectMode,
+                swipeListener = { isSelected ->
+                    onSelected(isSelected, drawInfo.position)
                 }
             ) {
-                val interactionSourceText = remember { MutableInteractionSource() }
+                DragRowTargetWithDragItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .apply {
+                            if (clickable) {
+                                clickable {
+                                    focusRequester.requestFocus()
+                                }
+                            }
+                        },
+                    dataToDrop = dropInfo,
+                    showIcon = isHovered,
+                    position = drawInfo.position,
+                    dragIconWidth = dragIconWidth,
+                    emptySpaceClick = {
+                        focusRequester.requestFocus()
+                    }
+                ) {
+                    val interactionSourceText = remember { MutableInteractionSource() }
 
-                startContent?.invoke(step, drawInfo)
-                messageDrawer().Text(
-                    step = step,
-                    drawInfo = drawInfo,
-                    interactionSource = interactionSourceText,
-                    focusRequester = focusRequester,
-                    decorationBox = @Composable { innerTextField -> innerTextField() }
-                )
+                    startContent?.invoke(step, drawInfo)
+
+                    messageDrawer().Text(
+                        step = step,
+                        drawInfo = drawInfo,
+                        interactionSource = interactionSourceText,
+                        focusRequester = focusRequester,
+                        decorationBox = @Composable { innerTextField -> innerTextField() },
+                    )
+                }
             }
         }
+
+
     }
 }

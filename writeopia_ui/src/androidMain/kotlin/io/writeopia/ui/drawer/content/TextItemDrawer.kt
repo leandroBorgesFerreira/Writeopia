@@ -32,6 +32,7 @@ actual class TextItemDrawer actual constructor(
     private val clickable: Boolean,
     private val onSelected: (Boolean, Int) -> Unit,
     private val dragIconWidth: Dp,
+    private val onDragHover: (Int) -> Unit,
     private val startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
     private val messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ) : StoryStepDrawer {

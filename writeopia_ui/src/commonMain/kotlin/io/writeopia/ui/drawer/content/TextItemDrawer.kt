@@ -21,6 +21,7 @@ expect class TextItemDrawer(
     clickable: Boolean = true,
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     dragIconWidth: Dp = 16.dp,
+    onDragHover: (Int) -> Unit,
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ) : StoryStepDrawer {

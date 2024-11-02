@@ -34,6 +34,7 @@ fun checkItemDrawer(
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     dragIconWidth: Dp = 16.dp,
     onCheckedChange: (Action.StoryStateChange) -> Unit = {},
+    onDragHover: (Int) -> Unit,
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)? = { step, drawInfo ->
         CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
             Spacer(modifier = Modifier.width(8.dp))
@@ -55,11 +56,12 @@ fun checkItemDrawer(
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer =
     TextItemDrawer(
-        modifier,
+        modifier = modifier,
         customBackgroundColor,
         clickable,
         onSelected,
         dragIconWidth,
+        onDragHover,
         startContent,
         messageDrawer
     )
@@ -68,14 +70,15 @@ fun checkItemDrawer(
     manager: WriteopiaStateManager,
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
-    messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
-
-    ): StoryStepDrawer = checkItemDrawer(
+    onDragHover: (Int) -> Unit,
+    messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
+): StoryStepDrawer = checkItemDrawer(
     modifier = modifier,
     onCheckedChange = manager::changeStoryState,
     onSelected = manager::onSelected,
     customBackgroundColor = Color.Transparent,
     dragIconWidth = dragIconWidth,
+    onDragHover = onDragHover,
     messageDrawer = {
         messageDrawer()
     },
@@ -85,6 +88,8 @@ fun checkItemDrawer(
 @Composable
 fun CheckItemDrawerStepPreview() {
     checkItemDrawer(
+        modifier = Modifier,
+        onDragHover = {},
         messageDrawer = {
             TextDrawer(
                 selectionState = MutableStateFlow(false),
@@ -95,6 +100,6 @@ fun CheckItemDrawerStepPreview() {
             type = StoryTypes.CHECK_ITEM.type,
             text = "This is a check item"
         ),
-        drawInfo = DrawInfo()
+        drawInfo = DrawInfo(),
     )
 }

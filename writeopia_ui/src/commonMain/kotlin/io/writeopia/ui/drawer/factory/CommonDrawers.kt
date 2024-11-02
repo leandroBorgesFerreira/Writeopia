@@ -57,6 +57,7 @@ object CommonDrawers {
                 .clip(shape = defaultBorder)
                 .background(groupsBackgroundColor),
             dragIconWidth = DRAG_ICON_WIDTH.dp,
+            onDragHover = manager::onDragHover,
             onSelected = manager::onSelected,
             messageDrawer = {
                 messageDrawer(
@@ -65,6 +66,7 @@ object CommonDrawers {
                     allowLineBreaks = true,
                     lineBreakByContent = lineBreakByContent,
                     emptyErase = EmptyErase.CHANGE_TYPE,
+
                     onSelectionLister = manager::toggleSelection
                 )
             }
@@ -76,6 +78,7 @@ object CommonDrawers {
                 .clip(MaterialTheme.shapes.medium)
                 .background(Color.Gray),
             dragIconWidth = dragIconWidth,
+            onDragHover = manager::onDragHover,
             onSelected = manager::onSelected,
             messageDrawer = {
                 messageDrawer(
@@ -93,7 +96,8 @@ object CommonDrawers {
         val swipeTextDrawer = swipeTextDrawer(
             manager,
             modifier = Modifier.padding(start = MEDIUM_START_PADDING.dp),
-            dragIconWidth = dragIconWidth
+            dragIconWidth = dragIconWidth,
+            onDragHover = manager::onDragHover,
         ) {
             messageDrawer(
                 manager = manager,
@@ -108,6 +112,7 @@ object CommonDrawers {
             manager,
             Modifier.padding(horizontal = LARGE_START_PADDING.dp),
             dragIconWidth = dragIconWidth,
+            onDragHover = manager::onDragHover,
         ) {
             messageDrawer(
                 manager,
@@ -123,6 +128,7 @@ object CommonDrawers {
                 manager,
                 Modifier.padding(horizontal = LARGE_START_PADDING.dp),
                 dragIconWidth = dragIconWidth,
+                onDragHover = manager::onDragHover,
             ) {
                 messageDrawer(
                     manager,
@@ -154,6 +160,7 @@ object CommonDrawers {
             put(StoryTypes.TEXT.type.number, swipeTextDrawer)
             put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
             put(StoryTypes.SPACE.type.number, SpaceDrawer(manager::moveRequest))
+            put(StoryTypes.ON_DRAG_SPACE.type.number, SpaceDrawer(manager::moveRequest, Color.Gray))
             put(
                 StoryTypes.LAST_SPACE.type.number,
                 LastEmptySpace(
@@ -187,7 +194,7 @@ object CommonDrawers {
             textStyle = textStyle,
             onFocusChanged = { position, focus ->
                 manager.onFocusChange(position, focus.isFocused)
-            } ,
+            },
             allowLineBreaks = allowLineBreaks,
             lineBreakByContent = lineBreakByContent,
             emptyErase = emptyErase,

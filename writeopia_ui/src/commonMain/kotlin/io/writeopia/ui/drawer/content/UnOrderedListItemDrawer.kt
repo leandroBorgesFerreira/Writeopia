@@ -27,11 +27,13 @@ fun unOrderedListItemDrawer(
     manager: WriteopiaStateManager,
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
+    onDragHover: (Int) -> Unit,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer = unOrderedListItemDrawer(
     modifier = modifier,
     onSelected = manager::onSelected,
     customBackgroundColor = Color.Transparent,
+    onDragHover = onDragHover,
     dragIconWidth = dragIconWidth,
     messageDrawer = messageDrawer,
 )
@@ -42,6 +44,7 @@ fun unOrderedListItemDrawer(
     clickable: Boolean = true,
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     dragIconWidth: Dp = 16.dp,
+    onDragHover: (Int) -> Unit,
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)? = { _, _ ->
         Spacer(modifier = Modifier.width(8.dp))
         Text(
@@ -59,6 +62,7 @@ fun unOrderedListItemDrawer(
         clickable,
         onSelected,
         dragIconWidth,
+        onDragHover,
         startContent,
         messageDrawer
     )
@@ -73,6 +77,7 @@ private fun UnOrderedListItemPreview() {
 
     unOrderedListItemDrawer(
         modifier,
+        onDragHover = {},
         messageDrawer = {
             TextDrawer(
                 selectionState = MutableStateFlow(false),

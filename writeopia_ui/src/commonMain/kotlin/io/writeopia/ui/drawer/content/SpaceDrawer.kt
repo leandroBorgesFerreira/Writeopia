@@ -22,7 +22,10 @@ import io.writeopia.ui.drawer.StoryStepDrawer
  * reorder purposes. A space create a move request when dropping Composables in it while the other
  * story units create a mergeRequest.
  */
-class SpaceDrawer(private val moveRequest: (Action.Move) -> Unit = {}) : StoryStepDrawer {
+class SpaceDrawer(
+    private val moveRequest: (Action.Move) -> Unit = {},
+    private val backgroundColor: Color = Color.Transparent
+) : StoryStepDrawer {
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
@@ -37,20 +40,13 @@ class SpaceDrawer(private val moveRequest: (Action.Move) -> Unit = {}) : StorySt
                 )
             }
 
-            val spaceBgColor =
-                when {
-                    inBound -> Color.LightGray
-//                    BuildConfig.DEBUG -> Color.Cyan
-                    else -> Color.Transparent
-                }
-
             Box(
                 modifier = Modifier
                     .height(10.dp)
                     .fillMaxWidth()
                     .padding(top = 3.dp, bottom = 3.dp, start = 12.dp)
                     .clip(MaterialTheme.shapes.medium)
-                    .background(spaceBgColor)
+                    .background(backgroundColor)
             )
         }
     }

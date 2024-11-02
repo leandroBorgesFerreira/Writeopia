@@ -24,6 +24,7 @@ fun swipeTextDrawer(
     clickable: Boolean = true,
     dragIconWidth: Dp = 16.dp,
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
+    onDragHover: (Int) -> Unit,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer =
     TextItemDrawer(
@@ -32,6 +33,7 @@ fun swipeTextDrawer(
         clickable,
         onSelected,
         dragIconWidth,
+        onDragHover,
         null,
         messageDrawer
     )
@@ -40,12 +42,14 @@ fun swipeTextDrawer(
     manager: WriteopiaStateManager,
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
+    onDragHover: (Int) -> Unit,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer {
     return swipeTextDrawer(
         modifier = modifier,
         onSelected = manager::onSelected,
         dragIconWidth = dragIconWidth,
+        onDragHover = onDragHover,
         customBackgroundColor = Color.Transparent,
         messageDrawer = {
             messageDrawer()
@@ -57,11 +61,12 @@ fun swipeTextDrawer(
 @Composable
 private fun SwipeMessageDrawerPreview() {
     swipeTextDrawer(
+        onDragHover = {},
         messageDrawer = {
             TextDrawer(selectionState = MutableStateFlow(false), onSelectionLister = {})
         },
     ).Step(
         step = StoryStep(text = "Some text", type = StoryTypes.TEXT.type),
-        drawInfo = DrawInfo(selectMode = true)
+        drawInfo = DrawInfo(selectMode = true),
     )
 }

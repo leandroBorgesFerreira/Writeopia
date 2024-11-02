@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -64,7 +65,7 @@ class WriteopiaStateManager(
     private val writeopiaManager: WriteopiaManager,
     val selectionState: StateFlow<Boolean>,
     private val keyboardEventFlow: Flow<KeyboardEvent>,
-    private val drawStateModify: (List<DrawStory>) -> (List<DrawStory>) = ::addSpacesModifier
+    private val drawStateModify: (List<DrawStory>, Int) -> (List<DrawStory>) = ::addSpacesModifier
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     init {
@@ -103,6 +104,8 @@ class WriteopiaStateManager(
         mapOf(0 to StoryStep(text = "", type = StoryTypes.TITLE.type))
 
     private var localUserId: String? = null
+
+    private val _dragPosition = MutableStateFlow(-1)
 
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
     val scrollToPosition: StateFlow<Int?> = _scrollToPosition.asStateFlow()
@@ -152,7 +155,11 @@ class WriteopiaStateManager(
         }
 
     val toDraw: Flow<DrawState> =
-        combine(_positionsOnEdit, currentStory) { positions, storyState ->
+        combine(
+            _positionsOnEdit,
+            currentStory,
+            _dragPosition.filterNotNull()
+        ) { positions, storyState, dragPosition ->
             val focus = storyState.focus
 
             val toDrawStories = storyState.stories
@@ -166,7 +173,7 @@ class WriteopiaStateManager(
                 }
                 .values
                 .toList()
-                .let(drawStateModify)
+                .let { drawStories -> drawStateModify(drawStories, dragPosition) }
 
             DrawState(toDrawStories, focus)
         }
@@ -558,6 +565,10 @@ class WriteopiaStateManager(
         }
     }
 
+    fun onDragHover(position: Int) {
+        _dragPosition.value = position
+    }
+
     /**
      * Clears the [WriteopiaStateManager]. Use this in the onCleared of your ViewModel.
      */
@@ -748,12 +759,15 @@ class WriteopiaStateManager(
     }
 }
 
-private fun addSpacesModifier(stories: List<DrawStory>): List<DrawStory> {
-    val space = StoryStep(type = StoryTypes.SPACE.type)
+private fun addSpacesModifier(stories: List<DrawStory>, dragPosition: Int): List<DrawStory> {
+    val space = StoryStep(type = StoryTypes.SPACE.type,  localId = "empty_space")
+    val onDragSpace = StoryStep(type = StoryTypes.ON_DRAG_SPACE.type, localId = "empty_space")
     val lastSpace = StoryStep(type = StoryTypes.LAST_SPACE.type)
 
     val parsed = stories.foldIndexed(emptyList<DrawStory>()) { index, acc, drawStory ->
-        acc + drawStory + DrawStory(storyStep = space, position = index)
+        val spaceStory =
+            if (index == dragPosition) onDragSpace else space.copy(localId = drawStory.key.toString())
+        acc + drawStory + DrawStory(storyStep = spaceStory, position = index)
     }
 
     val lastIndex = parsed.lastIndex
