@@ -104,7 +104,5 @@ actual class TextItemDrawer actual constructor(
                 }
             }
         }
-
-
     }
 }

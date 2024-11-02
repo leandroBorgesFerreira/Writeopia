@@ -149,14 +149,7 @@ object CommonDrawers {
 
         val headerDrawer = headerDrawer(
             manager,
-            modifier = Modifier.clip(
-                RoundedCornerShape(
-                    0.dp,
-                    0.dp,
-                    8.dp,
-                    8.dp
-                )
-            ),
+            modifier = Modifier.clip(RoundedCornerShape(0.dp, 0.dp, 8.dp, 8.dp)),
             headerClick = onHeaderClick,
             onKeyEvent = eventListener,
             lineBreakByContent = lineBreakByContent,
