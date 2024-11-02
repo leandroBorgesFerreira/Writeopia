@@ -18,6 +18,8 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.components.SwipeBox
 import io.writeopia.ui.draganddrop.target.DragRowTargetWithDragItem
 import io.writeopia.ui.draganddrop.target.DropTarget
+import io.writeopia.ui.draganddrop.target.DropTargetHorizontalDivision
+import io.writeopia.ui.draganddrop.target.InBounds
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 
@@ -43,9 +45,11 @@ actual class TextItemDrawer actual constructor(
         val interactionSource = remember { MutableInteractionSource() }
         val isHovered by interactionSource.collectIsHoveredAsState()
 
-        DropTarget { inBound, data ->
-            if (inBound) {
-                onDragHover(drawInfo.position)
+        DropTargetHorizontalDivision { inBound, data ->
+            when (inBound) {
+                InBounds.OUTSIDE -> {}
+                InBounds.INSIDE_UP -> onDragHover(drawInfo.position - 1)
+                InBounds.INSIDE_DOWN -> onDragHover(drawInfo.position)
             }
 
             SwipeBox(
