@@ -25,6 +25,8 @@ fun swipeTextDrawer(
     dragIconWidth: Dp = 16.dp,
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     onDragHover: (Int) -> Unit,
+    onDragStart: () -> Unit = {},
+    onDragStop: () -> Unit = {},
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer =
     TextItemDrawer(
@@ -34,6 +36,8 @@ fun swipeTextDrawer(
         onSelected,
         dragIconWidth,
         onDragHover,
+        onDragStart,
+        onDragStop,
         null,
         messageDrawer
     )
@@ -43,6 +47,8 @@ fun swipeTextDrawer(
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
     onDragHover: (Int) -> Unit,
+    onDragStart: () -> Unit,
+    onDragStop: () -> Unit,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer {
     return swipeTextDrawer(
@@ -50,6 +56,8 @@ fun swipeTextDrawer(
         onSelected = manager::onSelected,
         dragIconWidth = dragIconWidth,
         onDragHover = onDragHover,
+        onDragStart = onDragStart,
+        onDragStop = onDragStop,
         customBackgroundColor = Color.Transparent,
         messageDrawer = {
             messageDrawer()

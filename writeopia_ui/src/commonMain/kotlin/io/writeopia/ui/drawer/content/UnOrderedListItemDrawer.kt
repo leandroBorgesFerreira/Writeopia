@@ -28,12 +28,16 @@ fun unOrderedListItemDrawer(
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
     onDragHover: (Int) -> Unit,
+    onDragStart: () -> Unit,
+    onDragStop: () -> Unit,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer = unOrderedListItemDrawer(
     modifier = modifier,
     onSelected = manager::onSelected,
     customBackgroundColor = Color.Transparent,
     onDragHover = onDragHover,
+    onDragStart = onDragStart,
+    onDragStop = onDragStop,
     dragIconWidth = dragIconWidth,
     messageDrawer = messageDrawer,
 )
@@ -45,6 +49,8 @@ fun unOrderedListItemDrawer(
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     dragIconWidth: Dp = 16.dp,
     onDragHover: (Int) -> Unit,
+    onDragStart: () -> Unit,
+    onDragStop: () -> Unit,
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)? = { _, _ ->
         Spacer(modifier = Modifier.width(8.dp))
         Text(
@@ -63,6 +69,8 @@ fun unOrderedListItemDrawer(
         onSelected,
         dragIconWidth,
         onDragHover,
+        onDragStart,
+        onDragStop,
         startContent,
         messageDrawer
     )
@@ -78,6 +86,8 @@ private fun UnOrderedListItemPreview() {
     unOrderedListItemDrawer(
         modifier,
         onDragHover = {},
+        onDragStart = {},
+        onDragStop = {},
         messageDrawer = {
             TextDrawer(
                 selectionState = MutableStateFlow(false),

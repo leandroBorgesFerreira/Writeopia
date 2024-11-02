@@ -106,6 +106,11 @@ class WriteopiaStateManager(
     private var localUserId: String? = null
 
     private val _dragPosition = MutableStateFlow(-1)
+    private val _isDragging = MutableStateFlow(false)
+
+    private val dragRealPosition = combine(_dragPosition, _isDragging) { position, isDragging ->
+        if (isDragging) position else -1
+    }
 
     private val _scrollToPosition: MutableStateFlow<Int?> = MutableStateFlow(null)
     val scrollToPosition: StateFlow<Int?> = _scrollToPosition.asStateFlow()
@@ -158,7 +163,7 @@ class WriteopiaStateManager(
         combine(
             _positionsOnEdit,
             currentStory,
-            _dragPosition.filterNotNull()
+            dragRealPosition
         ) { positions, storyState, dragPosition ->
             val focus = storyState.focus
 
@@ -567,6 +572,14 @@ class WriteopiaStateManager(
 
     fun onDragHover(position: Int) {
         _dragPosition.value = position
+    }
+
+    fun onDragStart() {
+        _isDragging.value = true
+    }
+
+    fun onDragStop() {
+        _isDragging.value = false
     }
 
     /**

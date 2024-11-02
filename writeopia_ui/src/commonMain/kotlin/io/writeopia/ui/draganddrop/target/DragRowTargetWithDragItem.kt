@@ -52,6 +52,8 @@ fun DragRowTargetWithDragItem(
     dragIconWidth: Dp = 16.dp,
     iconTintOnHover: Color = MaterialTheme.colorScheme.onBackground,
     iconTint: Color = Color.Gray,
+    onDragStart: () -> Unit = {},
+    onDragStop: () -> Unit = {},
     content: @Composable RowScope.() -> Unit,
 ) {
     var currentPosition by remember { mutableStateOf(Offset.Zero) }
@@ -90,6 +92,7 @@ fun DragRowTargetWithDragItem(
                         .onPointerEvent(PointerEventType.Exit) { active = false }
                         .pointerInput(Unit) {
                             detectDragGestures(onDragStart = { offset ->
+                                onDragStart()
                                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
 
                                 currentState.dataToDrop = dataToDrop
@@ -112,9 +115,11 @@ fun DragRowTargetWithDragItem(
                                 change.consume()
                                 currentState.dragOffset += Offset(dragAmount.x, dragAmount.y)
                             }, onDragEnd = {
+                                onDragStop()
                                 currentState.isDragging = false
                                 currentState.dragOffset = Offset.Zero
                             }, onDragCancel = {
+                                onDragStop()
                                 currentState.dragOffset = Offset.Zero
                                 currentState.isDragging = false
                             })

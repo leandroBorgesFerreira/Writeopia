@@ -35,6 +35,8 @@ fun checkItemDrawer(
     dragIconWidth: Dp = 16.dp,
     onCheckedChange: (Action.StoryStateChange) -> Unit = {},
     onDragHover: (Int) -> Unit,
+    onDragStart: () -> Unit,
+    onDragStop: () -> Unit,
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)? = { step, drawInfo ->
         CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
             Spacer(modifier = Modifier.width(8.dp))
@@ -62,6 +64,8 @@ fun checkItemDrawer(
         onSelected,
         dragIconWidth,
         onDragHover,
+        onDragStart,
+        onDragStop,
         startContent,
         messageDrawer
     )
@@ -71,6 +75,8 @@ fun checkItemDrawer(
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
     onDragHover: (Int) -> Unit,
+    onDragStart: () -> Unit,
+    onDragStop: () -> Unit,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer = checkItemDrawer(
     modifier = modifier,
@@ -79,6 +85,8 @@ fun checkItemDrawer(
     customBackgroundColor = Color.Transparent,
     dragIconWidth = dragIconWidth,
     onDragHover = onDragHover,
+    onDragStart = onDragStart,
+    onDragStop = onDragStop,
     messageDrawer = {
         messageDrawer()
     },
@@ -90,6 +98,8 @@ fun CheckItemDrawerStepPreview() {
     checkItemDrawer(
         modifier = Modifier,
         onDragHover = {},
+        onDragStart = {},
+        onDragStop = {},
         messageDrawer = {
             TextDrawer(
                 selectionState = MutableStateFlow(false),

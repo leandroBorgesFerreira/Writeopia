@@ -17,7 +17,6 @@ import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.components.SwipeBox
 import io.writeopia.ui.draganddrop.target.DragRowTargetWithDragItem
-import io.writeopia.ui.draganddrop.target.DropTarget
 import io.writeopia.ui.draganddrop.target.DropTargetHorizontalDivision
 import io.writeopia.ui.draganddrop.target.InBounds
 import io.writeopia.ui.drawer.SimpleTextDrawer
@@ -34,6 +33,8 @@ actual class TextItemDrawer actual constructor(
     private val onSelected: (Boolean, Int) -> Unit,
     private val dragIconWidth: Dp,
     private val onDragHover: (Int) -> Unit,
+    private val onDragStart: () -> Unit,
+    private val onDragStop: () -> Unit,
     private val startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
     private val messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ) : StoryStepDrawer {
@@ -83,6 +84,8 @@ actual class TextItemDrawer actual constructor(
                     showIcon = isHovered,
                     position = drawInfo.position,
                     dragIconWidth = dragIconWidth,
+                    onDragStart = onDragStart,
+                    onDragStop = onDragStop,
                     emptySpaceClick = {
                         focusRequester.requestFocus()
                     }
