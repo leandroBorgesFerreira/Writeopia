@@ -581,7 +581,12 @@ class WriteopiaStateManager(
     }
 
     fun onDragStop() {
-        _isDragging.value = false
+        coroutineScope.launch {
+            // It is necessary to delay the stop dragging event to wait for the move request to
+            // be received.
+            delay(100)
+            _isDragging.value = false
+        }
     }
 
     /**
@@ -775,13 +780,13 @@ class WriteopiaStateManager(
 }
 
 private fun addSpacesModifier(stories: List<DrawStory>, dragPosition: Int): List<DrawStory> {
-    val space = StoryStep(type = StoryTypes.SPACE.type, localId = "empty_space")
-    val onDragSpace = StoryStep(type = StoryTypes.ON_DRAG_SPACE.type, localId = "empty_space")
+    val space = StoryStep(type = StoryTypes.SPACE.type)
+    val onDragSpace = StoryStep(type = StoryTypes.ON_DRAG_SPACE.type)
     val lastSpace = StoryStep(type = StoryTypes.LAST_SPACE.type)
 
     val parsed = stories.foldIndexed(emptyList<DrawStory>()) { index, acc, drawStory ->
         val spaceStory =
-            if (index == dragPosition) onDragSpace else space.copy(localId = drawStory.key.toString())
+            if (index == dragPosition) onDragSpace else space
         acc + drawStory + DrawStory(storyStep = spaceStory, position = index)
     }
 
