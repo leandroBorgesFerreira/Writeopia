@@ -17,7 +17,7 @@ import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.components.SwipeBox
-import io.writeopia.ui.draganddrop.target.DragRowTargetWithDragItem
+import io.writeopia.ui.draganddrop.target.DragRowTarget
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 
@@ -63,7 +63,7 @@ actual class TextItemDrawer actual constructor(
                 onSelected(isSelected, drawInfo.position)
             }
         ) {
-            DragRowTargetWithDragItem(
+            DragRowTarget(
                 modifier = Modifier
                     .fillMaxWidth()
                     .apply {

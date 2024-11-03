@@ -45,7 +45,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.components.SwipeBox
-import io.writeopia.ui.draganddrop.target.DragCardTargetWithDragItem
+import io.writeopia.ui.draganddrop.target.DragCardTarget
 import io.writeopia.ui.draganddrop.target.DropTarget
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.preview.CheckItemPreviewDrawer
@@ -335,7 +335,7 @@ private fun FolderItem(
             cornersShape = MaterialTheme.shapes.large,
             defaultColor = MaterialTheme.colorScheme.surfaceVariant
         ) {
-            DragCardTargetWithDragItem(
+            DragCardTarget(
                 modifier = modifier
                     .clip(MaterialTheme.shapes.large),
                 position = position,
@@ -434,7 +434,7 @@ private fun DocumentItem(
         cornersShape = MaterialTheme.shapes.large,
         defaultColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
-        DragCardTargetWithDragItem(
+        DragCardTarget(
             position = position,
             dataToDrop = DropInfo(documentUi, position),
             iconTintOnHover = if (documentUi.selected) {

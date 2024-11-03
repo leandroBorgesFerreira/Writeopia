@@ -41,7 +41,7 @@ import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.note_menu.ui.dto.MenuItemUi
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.theme.WriteopiaTheme
-import io.writeopia.ui.draganddrop.target.DragRowTargetWithDragItem
+import io.writeopia.ui.draganddrop.target.DragRowTarget
 import io.writeopia.ui.draganddrop.target.DropTarget
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -199,7 +199,7 @@ private fun FolderItem(
         val interactionSource = remember { MutableInteractionSource() }
         val isHovered by interactionSource.collectIsHoveredAsState()
 
-        DragRowTargetWithDragItem(
+        DragRowTarget(
             modifier = modifier
                 .padding(start = 4.dp)
                 .clip(MaterialTheme.shapes.medium)
@@ -295,7 +295,7 @@ private fun DocumentItem(
             WriteopiaTheme.colorScheme.globalBackground
         }
 
-    DragRowTargetWithDragItem(
+    DragRowTarget(
         modifier = modifier
             .padding(start = 4.dp)
             .clip(MaterialTheme.shapes.medium)
