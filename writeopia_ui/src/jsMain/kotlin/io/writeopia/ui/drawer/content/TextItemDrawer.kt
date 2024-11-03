@@ -77,6 +77,8 @@ actual class TextItemDrawer actual constructor(
                 showIcon = isHovered,
                 position = drawInfo.position,
                 dragIconWidth = dragIconWidth,
+                onDragStart = onDragStart,
+                onDragStop = onDragStop,
                 emptySpaceClick = {
                     focusRequester.requestFocus()
                 }

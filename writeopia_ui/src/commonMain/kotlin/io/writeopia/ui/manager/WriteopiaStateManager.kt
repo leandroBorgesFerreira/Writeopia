@@ -292,7 +292,9 @@ class WriteopiaStateManager(
 
             _currentStory.value = writeopiaManager.moveRequest(bulkMove, _currentStory.value)
         } else {
-            _currentStory.value = writeopiaManager.moveRequest(fixedMove, _currentStory.value)
+            _currentStory.value = writeopiaManager
+                .moveRequest(fixedMove, _currentStory.value)
+                .copy(focus = fixedMove.positionTo)
 
             val backStackAction = BackstackAction.Move(
                 storyStep = fixedMove.storyStep,
@@ -773,7 +775,7 @@ class WriteopiaStateManager(
 }
 
 private fun addSpacesModifier(stories: List<DrawStory>, dragPosition: Int): List<DrawStory> {
-    val space = StoryStep(type = StoryTypes.SPACE.type,  localId = "empty_space")
+    val space = StoryStep(type = StoryTypes.SPACE.type, localId = "empty_space")
     val onDragSpace = StoryStep(type = StoryTypes.ON_DRAG_SPACE.type, localId = "empty_space")
     val lastSpace = StoryStep(type = StoryTypes.LAST_SPACE.type)
 

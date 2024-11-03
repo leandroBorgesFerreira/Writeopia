@@ -26,7 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.PointerIcon
-import androidx.compose.ui.input.pointer.onPointerEvent
+//import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -85,8 +85,8 @@ fun DragCardTargetWithDragItem(
                         .size(20.dp)
                         .width(dragIconWidth)
                         .pointerHoverIcon(PointerIcon.Hand)
-                        .onPointerEvent(PointerEventType.Enter) { active = true }
-                        .onPointerEvent(PointerEventType.Exit) { active = false }
+//                        .onPointerEvent(PointerEventType.Enter) { active = true }
+//                        .onPointerEvent(PointerEventType.Exit) { active = false }
                         .pointerInput(Unit) {
                             detectDragGestures(onDragStart = { offset ->
                                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
