@@ -49,6 +49,7 @@ enum class StoryTypes(val type: StoryType) {
             1
         )
     ),
+    ON_DRAG_SPACE(StoryType("on_drag_space", 17)),
     ;
 
     companion object {

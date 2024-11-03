@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.writeopia.sdk.model.action.Action
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.drawer.SimpleTextDrawer
@@ -21,6 +22,10 @@ expect class TextItemDrawer(
     clickable: Boolean = true,
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     dragIconWidth: Dp = 16.dp,
+    onDragHover: (Int) -> Unit,
+    onDragStart: () -> Unit = {},
+    onDragStop: () -> Unit = {},
+    moveRequest: (Action.Move) -> Unit,
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ) : StoryStepDrawer {

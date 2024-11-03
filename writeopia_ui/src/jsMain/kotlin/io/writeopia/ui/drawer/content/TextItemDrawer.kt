@@ -12,11 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.components.SwipeBox
-import io.writeopia.ui.draganddrop.target.DragRowTargetWithDragItem
+import io.writeopia.ui.draganddrop.target.DragRowTarget
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 
@@ -30,6 +31,10 @@ actual class TextItemDrawer actual constructor(
     private val clickable: Boolean,
     private val onSelected: (Boolean, Int) -> Unit,
     private val dragIconWidth: Dp,
+    private val onDragHover: (Int) -> Unit,
+    private val onDragStart: () -> Unit,
+    private val onDragStop: () -> Unit,
+    private val moveRequest: (Action.Move) -> Unit,
     private val startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
     private val messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ) : StoryStepDrawer {
@@ -58,7 +63,7 @@ actual class TextItemDrawer actual constructor(
                 onSelected(isSelected, drawInfo.position)
             }
         ) {
-            DragRowTargetWithDragItem(
+            DragRowTarget(
                 modifier = Modifier
                     .fillMaxWidth()
                     .apply {
@@ -72,6 +77,8 @@ actual class TextItemDrawer actual constructor(
                 showIcon = isHovered,
                 position = drawInfo.position,
                 dragIconWidth = dragIconWidth,
+                onDragStart = onDragStart,
+                onDragStop = onDragStop,
                 emptySpaceClick = {
                     focusRequester.requestFocus()
                 }

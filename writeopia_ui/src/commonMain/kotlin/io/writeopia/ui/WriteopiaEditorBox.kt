@@ -13,19 +13,19 @@ fun WriteopiaEditorBox(
     modifier: Modifier = Modifier,
     editable: Boolean = true,
     drawers: Map<Int, StoryStepDrawer>,
-    storyState: DrawState = DrawState(emptyMap())
+    storyState: DrawState = DrawState(emptyList())
 ) {
     DraggableScreen(modifier = modifier) {
         Column(
             modifier = modifier,
             content = {
-                storyState.stories.values.toList().forEachIndexed { index, drawStory ->
+                storyState.stories.forEachIndexed { _, drawStory ->
                     drawers[drawStory.storyStep.type.number]?.Step(
                         step = drawStory.storyStep,
                         drawInfo = DrawInfo(
                             editable = editable,
                             focus = storyState.focus,
-                            position = index,
+                            position = drawStory.position,
                             extraData = mapOf("listSize" to storyState.stories.size),
                             selectMode = drawStory.isSelected
                         )
