@@ -40,7 +40,7 @@ fun DropTargetHorizontalDivision(
             }
         }
     ) {
-        val data = if (isCurrentDropTarget.isInBounds() && !dragInfo.isDragging) {
+        val data = if (isCurrentDropTarget.isInside() && !dragInfo.isDragging) {
             dragInfo.dataToDrop
         } else {
             null
@@ -61,5 +61,5 @@ fun DropTargetHorizontalDivision(
 enum class InBounds {
     OUTSIDE, INSIDE_UP, INSIDE_DOWN;
 
-    fun isInBounds() = this == INSIDE_UP || this == INSIDE_DOWN
+    fun isInside() = this == INSIDE_UP || this == INSIDE_DOWN
 }

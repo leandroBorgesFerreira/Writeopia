@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
@@ -35,6 +36,7 @@ actual class TextItemDrawer actual constructor(
     private val onDragHover: (Int) -> Unit,
     private val onDragStart: () -> Unit,
     private val onDragStop: () -> Unit,
+    private val moveRequest: (Action.Move) -> Unit,
     private val startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
     private val messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ) : StoryStepDrawer {
@@ -49,8 +51,14 @@ actual class TextItemDrawer actual constructor(
         DropTargetHorizontalDivision { inBound, data ->
             when (inBound) {
                 InBounds.OUTSIDE -> {}
-                InBounds.INSIDE_UP -> onDragHover(drawInfo.position - 1)
-                InBounds.INSIDE_DOWN -> onDragHover(drawInfo.position)
+                InBounds.INSIDE_UP -> {
+                    val position = drawInfo.position - 1
+                    handleDrag(position, data)
+                }
+                InBounds.INSIDE_DOWN -> {
+                    val position = drawInfo.position
+                    handleDrag(position, data)
+                }
             }
 
             SwipeBox(
@@ -103,6 +111,20 @@ actual class TextItemDrawer actual constructor(
                     )
                 }
             }
+        }
+    }
+
+    private fun handleDrag(position: Int, data: DropInfo?) {
+        onDragHover(position)
+
+        if (data != null) {
+            moveRequest(
+                Action.Move(
+                    data.info as StoryStep,
+                    positionFrom = data.positionFrom,
+                    positionTo = position
+                )
+            )
         }
     }
 }

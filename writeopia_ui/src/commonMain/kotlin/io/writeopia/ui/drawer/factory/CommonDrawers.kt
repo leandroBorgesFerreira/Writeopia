@@ -99,9 +99,6 @@ object CommonDrawers {
             manager,
             modifier = Modifier.padding(start = MEDIUM_START_PADDING.dp),
             dragIconWidth = dragIconWidth,
-            onDragStart = manager::onDragStart,
-            onDragStop = manager::onDragStop,
-            onDragHover = manager::onDragHover,
         ) {
             messageDrawer(
                 manager = manager,
@@ -116,9 +113,6 @@ object CommonDrawers {
             manager,
             Modifier.padding(horizontal = LARGE_START_PADDING.dp),
             dragIconWidth = dragIconWidth,
-            onDragHover = manager::onDragHover,
-            onDragStart = manager::onDragStart,
-            onDragStop = manager::onDragStop,
         ) {
             messageDrawer(
                 manager,
@@ -134,9 +128,6 @@ object CommonDrawers {
                 manager,
                 Modifier.padding(horizontal = LARGE_START_PADDING.dp),
                 dragIconWidth = dragIconWidth,
-                onDragHover = manager::onDragHover,
-                onDragStart = manager::onDragStart,
-                onDragStop = manager::onDragStop,
             ) {
                 messageDrawer(
                     manager,

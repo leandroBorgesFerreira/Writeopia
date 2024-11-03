@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.writeopia.sdk.model.action.Action
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
@@ -27,6 +28,7 @@ fun swipeTextDrawer(
     onDragHover: (Int) -> Unit,
     onDragStart: () -> Unit = {},
     onDragStop: () -> Unit = {},
+    moveRequest: (Action.Move) -> Unit = {},
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer =
     TextItemDrawer(
@@ -38,6 +40,7 @@ fun swipeTextDrawer(
         onDragHover,
         onDragStart,
         onDragStop,
+        moveRequest,
         null,
         messageDrawer
     )
@@ -46,18 +49,16 @@ fun swipeTextDrawer(
     manager: WriteopiaStateManager,
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
-    onDragHover: (Int) -> Unit,
-    onDragStart: () -> Unit,
-    onDragStop: () -> Unit,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer {
     return swipeTextDrawer(
         modifier = modifier,
         onSelected = manager::onSelected,
         dragIconWidth = dragIconWidth,
-        onDragHover = onDragHover,
-        onDragStart = onDragStart,
-        onDragStop = onDragStop,
+        onDragHover = manager::onDragHover,
+        onDragStart = manager::onDragStart,
+        onDragStop = manager::onDragStop,
+        moveRequest = manager::moveRequest,
         customBackgroundColor = Color.Transparent,
         messageDrawer = {
             messageDrawer()
