@@ -44,4 +44,3 @@ data class PresentationProps(
     val colorPrimary: Color = Color.Black,
     val colorSecondary: Color = Color.White
 )
-

@@ -21,11 +21,13 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
             id = id,
             title = "Document1",
             content = listOf(
-                (0 to StoryStep(
-                    type = StoryTypes.TEXT.type,
-                    text = "text",
-                    tags = setOf(Tags.H1.tag)
-                ))
+                (
+                    0 to StoryStep(
+                        type = StoryTypes.TEXT.type,
+                        text = "text",
+                        tags = setOf(Tags.H1.tag)
+                    )
+                )
             ).toMap(),
             createdAt = now,
             lastUpdatedAt = now,

@@ -5,9 +5,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.Tags
 import io.writeopia.sdk.presentation.model.SlidePage
 
-
 object Fixture {
-
     fun document(): Pair<List<StoryStep>, List<SlidePage>> {
         val step1 = StoryStep(
             localId = "0",

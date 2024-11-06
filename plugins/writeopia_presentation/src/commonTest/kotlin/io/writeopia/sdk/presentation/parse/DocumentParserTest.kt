@@ -13,5 +13,4 @@ class DocumentParserTest {
         assertEquals(presentation.size, 3)
         assertEquals(presentation, expected)
     }
-
 }

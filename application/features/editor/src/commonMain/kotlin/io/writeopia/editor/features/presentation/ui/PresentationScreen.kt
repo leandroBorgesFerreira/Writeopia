@@ -64,5 +64,3 @@ fun PresentationScreen(presentationViewModel: PresentationViewModel) {
         }
     }
 }
-
-

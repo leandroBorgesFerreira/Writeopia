@@ -54,11 +54,11 @@ import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.editor.ColorUtils
 import io.writeopia.editor.configuration.ui.HeaderEdition
 import io.writeopia.editor.configuration.ui.NoteGlobalActionsMenu
-import io.writeopia.editor.input.InputScreen
-import io.writeopia.editor.model.EditState
 import io.writeopia.editor.features.editor.ui.TextEditor
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.editor.features.editor.viewmodel.ShareDocument
+import io.writeopia.editor.input.InputScreen
+import io.writeopia.editor.model.EditState
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.ui.drawer.factory.DefaultDrawersAndroid
 import kotlinx.coroutines.flow.StateFlow
