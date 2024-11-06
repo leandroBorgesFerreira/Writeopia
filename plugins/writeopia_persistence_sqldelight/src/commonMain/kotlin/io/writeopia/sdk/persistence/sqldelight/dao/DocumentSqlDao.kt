@@ -90,7 +90,11 @@ class DocumentSqlDao(
                                 backgroundColor = innerContent.background_color?.toInt(),
                                 textSize = 16
                             ),
-                            tags = innerContent.tags?.split(",")?.toSet() ?: emptySet()
+                            tags = innerContent.tags
+                                ?.split(",")
+                                ?.filter { it.isNotEmpty() }
+                                ?.toSet()
+                                ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -132,7 +136,11 @@ class DocumentSqlDao(
                                 backgroundColor = innerContent.background_color?.toInt(),
                                 textSize = 16
                             ),
-                            tags = innerContent.tags?.split(",")?.toSet() ?: emptySet()
+                            tags = innerContent.tags
+                                ?.split(",")
+                                ?.filter { it.isNotEmpty() }
+                                ?.toSet()
+                                ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -180,7 +188,11 @@ class DocumentSqlDao(
                                 backgroundColor = innerContent.background_color?.toInt(),
                                 textSize = 16
                             ),
-                            tags = innerContent.tags?.split(",")?.toSet() ?: emptySet()
+                            tags = innerContent.tags
+                                ?.split(",")
+                                ?.filter { it.isNotEmpty() }
+                                ?.toSet()
+                                ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -228,7 +240,11 @@ class DocumentSqlDao(
                                 backgroundColor = innerContent.background_color?.toInt(),
                                 textSize = 16
                             ),
-                            tags = innerContent.tags?.split(",")?.toSet() ?: emptySet()
+                            tags = innerContent.tags
+                                ?.split(",")
+                                ?.filter { it.isNotEmpty() }
+                                ?.toSet()
+                                ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -279,7 +295,11 @@ class DocumentSqlDao(
                                 backgroundColor = innerContent.background_color?.toInt(),
                                 textSize = 16
                             ),
-                            tags = innerContent.tags?.split(",")?.toSet() ?: emptySet()
+                            tags = innerContent.tags
+                                ?.split(",")
+                                ?.filter { it.isNotEmpty() }
+                                ?.toSet()
+                                ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -306,12 +326,12 @@ class DocumentSqlDao(
             ?.mapNotNull { (documentId, content) ->
                 content.firstOrNull()?.let { document ->
                     val innerContent = content.filter { innerContent ->
-                        !innerContent.id_.isNullOrEmpty()
+                        innerContent.id_.isNotEmpty()
                     }.associate { innerContent ->
                         val storyStep = StoryStep(
-                            id = innerContent.id_!!,
-                            localId = innerContent.local_id!!,
-                            type = StoryTypes.fromNumber(innerContent.type!!.toInt()).type,
+                            id = innerContent.id_,
+                            localId = innerContent.local_id,
+                            type = StoryTypes.fromNumber(innerContent.type.toInt()).type,
                             parentId = innerContent.parent_id,
                             url = innerContent.url,
                             path = innerContent.path,
@@ -322,7 +342,10 @@ class DocumentSqlDao(
                                 backgroundColor = innerContent.background_color?.toInt(),
                                 textSize = 16
                             ),
-                            tags = innerContent.tags.split(",").toSet()
+                            tags = innerContent.tags
+                                .split(",")
+                                .filter { it.isNotEmpty() }
+                                .toSet()
                         )
 
                         innerContent.position.toInt() to storyStep
