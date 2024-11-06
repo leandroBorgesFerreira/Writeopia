@@ -40,6 +40,8 @@ class DocumentSqlDao(
 
     suspend fun insertStoryStep(storyStep: StoryStep, position: Long, documentId: String) {
         storyStep.run {
+            println("insertStoryStep - tags: ${tags.joinToString(",")}")
+
             storyStepQueries?.insert(
                 id = id,
                 local_id = localId,
@@ -54,6 +56,7 @@ class DocumentSqlDao(
                 is_group = isGroup.toLong(),
                 has_inner_steps = steps.isNotEmpty().toLong(),
                 background_color = decoration.backgroundColor?.toLong(),
+                tags = tags.joinToString(separator = ",")
             )
         }
     }
@@ -87,6 +90,7 @@ class DocumentSqlDao(
                                 backgroundColor = innerContent.background_color?.toInt(),
                                 textSize = 16
                             ),
+                            tags = innerContent.tags?.split(",")?.toSet() ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -127,7 +131,8 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                                 textSize = 16
-                            )
+                            ),
+                            tags = innerContent.tags?.split(",")?.toSet() ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -174,7 +179,8 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                                 textSize = 16
-                            )
+                            ),
+                            tags = innerContent.tags?.split(",")?.toSet() ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -221,7 +227,8 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                                 textSize = 16
-                            )
+                            ),
+                            tags = innerContent.tags?.split(",")?.toSet() ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -271,7 +278,8 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                                 textSize = 16
-                            )
+                            ),
+                            tags = innerContent.tags?.split(",")?.toSet() ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -313,10 +321,11 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                                 textSize = 16
-                            )
+                            ),
+                            tags = innerContent.tags.split(",").toSet()
                         )
 
-                        innerContent.position!!.toInt() to storyStep
+                        innerContent.position.toInt() to storyStep
                     }
 
                     Document(

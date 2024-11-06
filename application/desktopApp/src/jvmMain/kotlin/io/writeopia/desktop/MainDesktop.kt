@@ -14,6 +14,7 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isMetaPressed
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
@@ -35,9 +36,34 @@ import java.io.File
 import androidx.compose.ui.input.key.KeyEvent as AndroidKeyEvent
 
 private const val APP_DIRECTORY = ".writeopia"
-private const val DB_VERSION = 4
+private const val DB_VERSION = 5
 
 fun main() = application {
+    DesktopApp()
+//    val pageState = MutableStateFlow(0)
+//    val slides = Fixture.document().second
+//
+//    Window(onCloseRequest = ::exitApplication, title = "Writeopia") {
+//        WrieopiaTheme(darkTheme = true) {
+//            WriteopiaPresentationScreen(
+//                modifier = Modifier.fillMaxSize().background(Color(0xFF252525)),
+//                currentPage = pageState,
+//                moveSlide = { page ->
+//                    val lastIndex = slides.lastIndex
+//                    val limitTop = if (page >= lastIndex) lastIndex else page
+//                    val limit = if (limitTop < 0) 0 else limitTop
+//
+//                    println("lastIndex: $lastIndex, limitTop: $limitTop, limit: $limit")
+//                    pageState.value = limit
+//                },
+//                data = slides
+//            )
+//        }
+//    }
+}
+
+@Composable
+private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitApplication) {
     val coroutineScope = rememberCoroutineScope()
 
     val homeDirectory: String = System.getProperty("user.home")
@@ -53,7 +79,7 @@ fun main() = application {
     val keyboardEventFlow = MutableStateFlow<KeyboardEvent?>(null)
 
     Window(
-        onCloseRequest = ::exitApplication,
+        onCloseRequest = onCloseRequest,
         title = "Writeopia",
         state = rememberWindowState(width = 1100.dp, height = 800.dp),
         onPreviewKeyEvent = { keyEvent ->

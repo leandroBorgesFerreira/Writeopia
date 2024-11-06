@@ -71,19 +71,22 @@ class ContentHandler(
             }
 
             val decoration = typeInfo.decoration
-
+            val tags = commandInfo?.tags?.plus(storyStep.tags) ?: storyStep.tags
             val newCheck = if (decoration != null) {
+
                 storyStep.copy(
                     localId = GenerateId.generate(),
                     type = typeInfo.storyType,
                     text = newText,
-                    decoration = decoration
+                    decoration = decoration,
+                    tags = tags
                 )
             } else {
                 storyStep.copy(
                     localId = GenerateId.generate(),
                     type = typeInfo.storyType,
                     text = newText,
+                    tags = tags
                 )
             }
 

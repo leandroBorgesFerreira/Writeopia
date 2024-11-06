@@ -37,12 +37,13 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -134,7 +135,7 @@ class WriteopiaStateManager(
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
 
-    val currentDocument: Flow<Document?> = combine(_documentInfo, _currentStory) { info, state ->
+    val currentDocument: StateFlow<Document?> = combine(_documentInfo, _currentStory) { info, state ->
         val titleFromContent = state.stories.values.firstOrNull { storyStep ->
             // Todo: Change the type of change to allow different types. The client code should decide what is a title
             // It is also interesting to inv
@@ -152,7 +153,7 @@ class WriteopiaStateManager(
             },
             parentId = info.parentId
         )
-    }
+    }.stateIn(coroutineScope, SharingStarted.Lazily, null)
 
     private val _documentEditionState: Flow<Pair<StoryState, DocumentInfo>> =
         combine(currentStory, _documentInfo) { storyState, documentInfo ->

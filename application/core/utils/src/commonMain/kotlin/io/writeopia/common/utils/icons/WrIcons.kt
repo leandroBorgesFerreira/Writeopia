@@ -18,6 +18,8 @@ import io.writeopia.common.utils.icons.all.Bolt
 import io.writeopia.common.utils.icons.all.CalendarArrowDown
 import io.writeopia.common.utils.icons.all.ChevronDown
 import io.writeopia.common.utils.icons.all.ChevronRight
+import io.writeopia.common.utils.icons.all.CircleArrowLeft
+import io.writeopia.common.utils.icons.all.CircleArrowRight
 import io.writeopia.common.utils.icons.all.CirclePlus
 import io.writeopia.common.utils.icons.all.ClockArrowDown
 import io.writeopia.common.utils.icons.all.Contrast
@@ -35,6 +37,7 @@ import io.writeopia.common.utils.icons.all.LayoutPanelLeft
 import io.writeopia.common.utils.icons.all.Moon
 import io.writeopia.common.utils.icons.all.MoveLeft
 import io.writeopia.common.utils.icons.all.NotebookText
+import io.writeopia.common.utils.icons.all.Play
 import io.writeopia.common.utils.icons.all.Plus
 import io.writeopia.common.utils.icons.all.Redo2
 import io.writeopia.common.utils.icons.all.Rows3
@@ -137,4 +140,10 @@ object WrIcons {
     val backArrowDesktop: ImageVector = MoveLeft
 
     val backArrowAndroid: ImageVector = Icons.AutoMirrored.Filled.ArrowBack
+
+    val play: ImageVector = Play
+
+    val circularArrowLeft = CircleArrowLeft
+
+    val circularArrowRight = CircleArrowRight
 }
