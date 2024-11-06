@@ -56,9 +56,11 @@ class EditorKmpInjector(
             parentFolderId = parentFolder
         )
 
-    override fun providePresentationViewModel(coroutineScope: CoroutineScope): PresentationViewModel =
+    override fun providePresentationViewModel(coroutineScope: CoroutineScope?): PresentationViewModel =
         PresentationKmpViewModel(documentRepository = provideDocumentRepository()).apply {
-            initCoroutine(coroutineScope)
+            if (coroutineScope != null) {
+                initCoroutine(coroutineScope)
+            }
         }
 
     @Composable
