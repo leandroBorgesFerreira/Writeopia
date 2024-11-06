@@ -22,6 +22,7 @@ actual fun TextEditorScreen(
         noteEditorViewModel = noteEditorViewModel,
         drawersFactory = DefaultDrawersJs,
         isUndoKeyEvent = isUndoKeyEvent,
+        onPresentationClick = playPresentation,
         modifier = modifier
     )
 }
