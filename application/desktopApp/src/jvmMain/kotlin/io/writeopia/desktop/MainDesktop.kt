@@ -40,26 +40,6 @@ private const val DB_VERSION = 5
 
 fun main() = application {
     DesktopApp()
-//    val pageState = MutableStateFlow(0)
-//    val slides = Fixture.document().second
-//
-//    Window(onCloseRequest = ::exitApplication, title = "Writeopia") {
-//        WrieopiaTheme(darkTheme = true) {
-//            WriteopiaPresentationScreen(
-//                modifier = Modifier.fillMaxSize().background(Color(0xFF252525)),
-//                currentPage = pageState,
-//                moveSlide = { page ->
-//                    val lastIndex = slides.lastIndex
-//                    val limitTop = if (page >= lastIndex) lastIndex else page
-//                    val limit = if (limitTop < 0) 0 else limitTop
-//
-//                    println("lastIndex: $lastIndex, limitTop: $limitTop, limit: $limit")
-//                    pageState.value = limit
-//                },
-//                data = slides
-//            )
-//        }
-//    }
 }
 
 @Composable

@@ -18,7 +18,7 @@ fun WriteopiaPresentationScreen(
     modifier: Modifier = Modifier,
     currentPage: StateFlow<Int>,
     fontsConfiguration: PresentationProps = PresentationProps(),
-    data: List<SlidePage> = Fixture.document().second,
+    data: List<SlidePage>,
     pageDraw: @Composable (SlidePage, PresentationProps) -> Unit = { slide, props ->
         PageModels.twoColors(slide, props)
     }
