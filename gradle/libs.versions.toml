@@ -1,6 +1,6 @@
 [versions]
 accompanist = "0.36.0"
-coilVersion = "2.6.0"
+coilVersion = "3.0.0"
 composeBom = "2024.10.00"
 composeShimmer = "1.0.5"
 espressoCore = "3.6.1"
@@ -55,8 +55,9 @@ androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-ru
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-material3 = { module = "androidx.compose.material3:material3" }
 appCompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appCompat" }
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVersion" }
-coil-video = { module = "io.coil-kt:coil-video", version.ref = "coilVersion" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilVersion" }
+coil-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coilVersion" }
+coil-video = { module = "io.coil-kt.coil3:coil-video", version.ref = "coilVersion" }
 compose-shimmer = { module = "com.valentinilk.shimmer:compose-shimmer", version.ref = "composeShimmer" }
 firebase-admin = { module = "com.google.firebase:firebase-admin", version.ref = "firebaseAdmin" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }

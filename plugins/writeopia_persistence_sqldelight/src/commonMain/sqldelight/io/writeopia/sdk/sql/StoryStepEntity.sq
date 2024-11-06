@@ -11,7 +11,8 @@ CREATE TABLE storyStepEntity (
   document_id TEXT NOT NULL,
   is_group INTEGER NOT NULL,
   has_inner_steps INTEGER NOT NULL,
-  background_color INTEGER
+  background_color INTEGER,
+  tags TEXT NOT NULL
 );
 
 selectByDocumentId:
@@ -20,10 +21,10 @@ FROM storyStepEntity
 WHERE document_id = ?;
 
 insert:
-INSERT INTO storyStepEntity(id, local_id, type, parent_id, url, path, text, checked, position, document_id, is_group, has_inner_steps, background_color)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+INSERT INTO storyStepEntity(id, local_id, type, parent_id, url, path, text, checked, position, document_id, is_group, has_inner_steps, background_color, tags)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ON CONFLICT(id) DO
 UPDATE SET id=excluded.id, local_id=excluded.local_id, type=excluded.type, parent_id=excluded.parent_id,
 url=excluded.url, path=excluded.path, text=excluded.text, checked=excluded.checked, position=excluded.position,
 document_id=excluded.document_id, is_group=excluded.is_group, has_inner_steps=excluded.has_inner_steps,
-background_color=excluded.background_color;
+background_color=excluded.background_color, tags=excluded.tags;

@@ -26,6 +26,7 @@ kotlin {
                 implementation(project(":application:common_flows:wide_screen_common"))
                 implementation(project(":application:features:note_menu"))
                 implementation(project(":writeopia_ui"))
+                implementation(project(":plugins:writeopia_presentation"))
             }
         }
     }

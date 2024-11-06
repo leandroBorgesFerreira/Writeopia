@@ -4,6 +4,7 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.models.story.Tags
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -19,11 +20,19 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
         val document = Document(
             id = id,
             title = "Document1",
-            content = listOf((0 to StoryStep(type = StoryTypes.TEXT.type, text = "text"))).toMap(),
+            content = listOf(
+                (
+                    0 to StoryStep(
+                        type = StoryTypes.TEXT.type,
+                        text = "text",
+                        tags = setOf(Tags.H1.tag)
+                    )
+                )
+            ).toMap(),
             createdAt = now,
             lastUpdatedAt = now,
             userId = "userId",
-            parentId = "root"
+            parentId = "root",
         )
 
         documentRepository.saveDocument(document)

@@ -2,6 +2,7 @@ package io.writeopia.common.utils
 
 enum class Destinations(val id: String, val root: String) {
     EDITOR("note_details", "Home"),
+    PRESENTATION("presentations", "Home"),
     CHOOSE_NOTE("choose_note", "Home"),
     SEARCH("search", "io.writeopia.common.utils.icons.all.getSearch"),
     NOTIFICATIONS("notifications", "Notifications"),
