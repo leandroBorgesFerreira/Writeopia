@@ -6,16 +6,19 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.sdk.models.story.Tags
 import io.writeopia.ui.components.SwipeBox
 import io.writeopia.ui.draganddrop.target.DragRowTarget
 import io.writeopia.ui.draganddrop.target.DropTargetHorizontalDivision
@@ -48,13 +51,24 @@ actual class TextItemDrawer actual constructor(
         val interactionSource = remember { MutableInteractionSource() }
         val isHovered by interactionSource.collectIsHoveredAsState()
 
-        DropTargetHorizontalDivision { inBound, data ->
+        val (paddingBottom, paddingTop) = step.tags
+            .asSequence()
+            .map(Tags::fromString)
+            .any { it.isTitle() }
+            .takeIf { it }
+            ?.let { 4 to 16 }
+            ?: (0 to 0)
+
+        DropTargetHorizontalDivision(
+            modifier = Modifier.padding(bottom = paddingBottom.dp, top = paddingTop.dp)
+        ) { inBound, data ->
             when (inBound) {
                 InBounds.OUTSIDE -> {}
                 InBounds.INSIDE_UP -> {
                     val position = drawInfo.position - 1
                     handleDrag(position, data)
                 }
+
                 InBounds.INSIDE_DOWN -> {
                     val position = drawInfo.position
                     handleDrag(position, data)
