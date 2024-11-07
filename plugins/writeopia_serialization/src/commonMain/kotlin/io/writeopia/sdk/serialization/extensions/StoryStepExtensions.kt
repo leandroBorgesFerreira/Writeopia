@@ -52,15 +52,11 @@ fun StoryTypeApi.toModel(): StoryType =
     )
 
 fun Decoration.toApi(): DecorationApi = DecorationApi(
-    this.backgroundColor,
-    this.textSize,
-    this.fontWeight
+    this.backgroundColor
 )
 
 fun DecorationApi.toModel(): Decoration = Decoration(
     this.backgroundColor,
-    this.textSize,
-    this.fontWeight
 )
 
 fun Document.toApi(): DocumentApi =

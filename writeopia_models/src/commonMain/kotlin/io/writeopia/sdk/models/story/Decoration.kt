@@ -7,6 +7,4 @@ package io.writeopia.sdk.models.story
  */
 data class Decoration(
     val backgroundColor: Int? = null,
-    val textSize: Int,
-    val fontWeight: WriteopiaFontWeight = WriteopiaFontWeight.NORMAL
 )

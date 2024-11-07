@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -25,13 +23,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
+import io.writeopia.ui.model.DrawInfo
 import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.utils.transparentTextInputColors
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -117,7 +115,7 @@ fun headerDrawer(
                 lineBreakByContent = lineBreakByContent,
                 emptyErase = EmptyErase.DISABLED,
                 textStyle = {
-                    MaterialTheme.typography.headlineMedium.copy(
+                    MaterialTheme.typography.displayMedium.copy(
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground
                     )
@@ -181,7 +179,6 @@ private fun sampleStoryStep() = StoryStep(
     type = StoryTypes.TITLE.type,
     decoration = Decoration(
         backgroundColor = Color.Blue.toArgb(),
-        textSize = 16
     ),
     text = "Document Title",
 )
