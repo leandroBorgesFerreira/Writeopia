@@ -34,9 +34,7 @@ data class StoryStep(
     val checked: Boolean? = false,
     val steps: List<StoryStep> = emptyList(),
     val tags: Set<String> = emptySet(),
-    val decoration: Decoration = Decoration(
-        textSize = 16
-    )
+    val decoration: Decoration = Decoration()
 ) {
 
     val key: Int = localId.hashCode()

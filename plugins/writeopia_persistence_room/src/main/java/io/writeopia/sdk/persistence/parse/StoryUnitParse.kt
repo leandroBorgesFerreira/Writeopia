@@ -35,7 +35,6 @@ fun StoryStepEntity.toModel(
         steps = steps.map { storyUnitEntity -> storyUnitEntity.toModel() },
         decoration = Decoration(
             backgroundColor = backgroundColor,
-            textSize = fontSize
         ),
         tags = tags.split(",").toSet()
     )
@@ -55,6 +54,5 @@ fun StoryStep.toEntity(position: Int, documentId: String): StoryStepEntity =
         isGroup = false,
         hasInnerSteps = this.steps.isNotEmpty(),
         backgroundColor = this.decoration.backgroundColor,
-        fontSize = this.decoration.textSize,
         tags = this.tags.joinToString(separator = ",")
     )

@@ -60,7 +60,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                             position,
                             TypeInfo(
                                 StoryTypes.TEXT.type,
-                                Decoration(textSize = 28)
+                                Decoration()
                             ),
                             CommandInfo(
                                 CommandFactory.h1(),
@@ -74,7 +74,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                             position,
                             TypeInfo(
                                 StoryTypes.TEXT.type,
-                                Decoration(textSize = 24)
+                                Decoration()
                             ),
                             CommandInfo(
                                 CommandFactory.h2(),
@@ -88,7 +88,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                             position,
                             TypeInfo(
                                 StoryTypes.TEXT.type,
-                                Decoration(textSize = 20)
+                                Decoration()
                             ),
                             CommandInfo(
                                 CommandFactory.h3(),
@@ -102,7 +102,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                             position,
                             TypeInfo(
                                 StoryTypes.TEXT.type,
-                                Decoration(textSize = 18)
+                                Decoration()
                             ),
                             CommandInfo(
                                 CommandFactory.h4(),
@@ -116,7 +116,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                             position,
                             TypeInfo(
                                 StoryTypes.CODE_BLOCK.type,
-                                Decoration(textSize = 16)
+                                Decoration()
                             ),
                             CommandInfo(
                                 CommandFactory.codeBlock(),

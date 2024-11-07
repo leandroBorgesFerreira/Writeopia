@@ -10,6 +10,7 @@ import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.models.story.Tags
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.previousTextStory
 import io.writeopia.sdk.utils.extensions.toEditState
@@ -71,7 +72,7 @@ class ContentHandler(
             }
 
             val decoration = typeInfo.decoration
-            val tags = commandInfo?.tags?.plus(storyStep.tags) ?: storyStep.tags
+            val tags = storyStep.tags.merge(commandInfo?.tags ?: emptySet())
             val newCheck = if (decoration != null) {
                 storyStep.copy(
                     localId = GenerateId.generate(),
@@ -94,6 +95,13 @@ class ContentHandler(
 
         return StoryState(newMap, LastEdit.Whole, position)
     }
+
+    private fun Set<String>.merge(tag2: Set<String>): Set<String> =
+        if (tag2.any { Tags.fromString(it).isTitle() }) {
+            this.filterNot { Tags.fromString(it).isTitle() }.toSet() + tag2
+        } else {
+            this + tag2
+        }
 
     // Todo: Add unit test
     fun addNewContent(
