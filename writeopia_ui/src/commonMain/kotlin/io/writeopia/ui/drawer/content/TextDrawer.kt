@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
@@ -32,8 +33,10 @@ import io.writeopia.ui.model.DrawInfo
 import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.model.TextInput
 import io.writeopia.ui.utils.defaultTextStyle
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
@@ -74,6 +77,8 @@ class TextDrawer(
             }
         }
 
+        val coroutineScope = rememberCoroutineScope()
+
         BasicTextField(
             modifier = modifier
                 .padding(start = 16.dp)
@@ -101,12 +106,28 @@ class TextDrawer(
             value = inputText,
             enabled = !selectionState,
             onValueChange = { value ->
-                onTextEdit(
-                    TextInput(value.text, value.selection.start, value.selection.end),
-                    drawInfo.position,
-                    lineBreakByContent,
-                    allowLineBreaks
-                )
+                val text = value.text
+                val start = value.selection.start
+                val end = value.selection.end
+
+                val edit = {
+                    onTextEdit(
+                        TextInput(value.text, value.selection.start, value.selection.end),
+                        drawInfo.position,
+                        lineBreakByContent,
+                        allowLineBreaks
+                    )
+                }
+
+                if (text.isEmpty() && start == 0 && end == 0) {
+                    coroutineScope.launch {
+                        // Delay to avoid jumping to previous line when erasing text
+                        delay(70)
+                        edit()
+                    }
+                } else {
+                    edit()
+                }
             },
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences
