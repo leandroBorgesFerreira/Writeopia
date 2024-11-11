@@ -159,11 +159,11 @@ private fun isUndoKeyboardEvent(keyEvent: AndroidKeyEvent) =
         keyEvent.type == KeyEventType.KeyDown
 
 private fun isSelectionKeyEventStart(keyEvent: AndroidKeyEvent) =
-    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_META &&
+    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_ALT &&
         keyEvent.type == KeyEventType.KeyDown
 
 private fun isSelectionKeyEventStop(keyEvent: AndroidKeyEvent) =
-    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_META &&
+    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_ALT &&
         keyEvent.type == KeyEventType.KeyUp
 
 private fun isMoveDownEvent(keyEvent: AndroidKeyEvent) =
