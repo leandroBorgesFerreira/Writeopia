@@ -28,3 +28,8 @@ UPDATE SET id=excluded.id, local_id=excluded.local_id, type=excluded.type, paren
 url=excluded.url, path=excluded.path, text=excluded.text, checked=excluded.checked, position=excluded.position,
 document_id=excluded.document_id, is_group=excluded.is_group, has_inner_steps=excluded.has_inner_steps,
 background_color=excluded.background_color, tags=excluded.tags;
+
+deleteByDocumentId:
+DELETE
+FROM storyStepEntity
+WHERE document_id = ?;

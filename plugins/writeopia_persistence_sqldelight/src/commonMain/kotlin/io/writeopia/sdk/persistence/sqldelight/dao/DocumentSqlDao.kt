@@ -19,6 +19,7 @@ class DocumentSqlDao(
 ) {
 
     suspend fun insertDocumentWithContent(document: Document) {
+        storyStepQueries?.deleteByDocumentId(document.id)
         document.content.values.forEachIndexed { i, storyStep ->
             insertStoryStep(storyStep, i.toLong(), document.id)
         }
