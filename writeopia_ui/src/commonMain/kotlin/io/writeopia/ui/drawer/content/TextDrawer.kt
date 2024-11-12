@@ -96,8 +96,7 @@ class TextDrawer(
 
                     cursorLine == 0 -> EndOfText.FIRST_LINE
 
-                    (lineCount?.minus(1)) == cursorLine ->
-                        EndOfText.LAST_LINE
+                    (lineCount?.minus(1)) == cursorLine -> EndOfText.LAST_LINE
 
                     else -> EndOfText.UNKNOWN
                 }

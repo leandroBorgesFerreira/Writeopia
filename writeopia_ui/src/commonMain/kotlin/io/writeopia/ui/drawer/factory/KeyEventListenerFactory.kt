@@ -80,8 +80,6 @@ object KeyEventListenerFactory {
                         }
 
                         EmptyErase.DISABLED -> {}
-
-
                     }
 
                     true
