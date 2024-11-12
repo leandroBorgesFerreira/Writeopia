@@ -66,8 +66,8 @@ object KeyEventListenerFactory {
     fun android(
         manager: WriteopiaStateManager,
         isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
-    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int) -> Boolean {
-        return { keyEvent, inputText, step, position, onEmptyErase, cursorPosition ->
+    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, Boolean) -> Boolean {
+        return { keyEvent, inputText, step, position, onEmptyErase, cursorPosition, isInLastLine ->
             when {
                 isEmptyErase(keyEvent, inputText) -> {
                     when (onEmptyErase) {
@@ -80,8 +80,30 @@ object KeyEventListenerFactory {
                         }
 
                         EmptyErase.DISABLED -> {}
+
+
                     }
 
+                    true
+                }
+
+                isMoveUpEventEnd(keyEvent) -> {
+                    manager.moveToPrevious(cursor = cursorPosition)
+                    true
+                }
+
+                isMoveStrongUpEvent(keyEvent) -> {
+                    manager.moveToPrevious(cursor = cursorPosition, 10)
+                    true
+                }
+
+                isMoveDownEventEnd(keyEvent) && isInLastLine -> {
+                    manager.moveToNext(cursor = cursorPosition)
+                    true
+                }
+
+                isMoveStrongDownEvent(keyEvent) && isInLastLine -> {
+                    manager.moveToNext(cursor = cursorPosition, 10)
                     true
                 }
 
@@ -92,8 +114,8 @@ object KeyEventListenerFactory {
 
     fun js(
         manager: WriteopiaStateManager,
-    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int) -> Boolean {
-        return { keyEvent, inputText, step, position, onEmptyErase, cursorPosition ->
+    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, Boolean) -> Boolean {
+        return { keyEvent, inputText, step, position, onEmptyErase, _, _ ->
             when {
                 isLineBreak(keyEvent) -> {
                     manager.onLineBreak(Action.LineBreak(step, position = position))
