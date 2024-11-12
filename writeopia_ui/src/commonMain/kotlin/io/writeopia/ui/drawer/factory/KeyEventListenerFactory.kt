@@ -129,22 +129,22 @@ object KeyEventListenerFactory {
 
     private fun isMoveUpEventEnd(keyEvent: KeyEvent) =
         keyEvent.key == Key.DirectionUp
-            && keyEvent.type == KeyEventType.KeyUp
+            && keyEvent.type == KeyEventType.KeyDown
             && !keyEvent.isMetaPressed
 
     private fun isMoveDownEventEnd(keyEvent: KeyEvent) =
         keyEvent.key == Key.DirectionDown
-            && keyEvent.type == KeyEventType.KeyUp
+            && keyEvent.type == KeyEventType.KeyDown
             && !keyEvent.isMetaPressed
 
     private fun isMoveStrongUpEvent(keyEvent: KeyEvent) =
         keyEvent.key == Key.DirectionUp
-            && keyEvent.type == KeyEventType.KeyUp
+            && keyEvent.type == KeyEventType.KeyDown
             && keyEvent.isMetaPressed
 
     private fun isMoveStrongDownEvent(keyEvent: KeyEvent) =
         keyEvent.key == Key.DirectionDown
-//            && keyEvent.type == KeyEventType.KeyUp
+            && keyEvent.type == KeyEventType.KeyDown
             && keyEvent.isMetaPressed
 
     private fun isLineBreak(keyEvent: KeyEvent): Boolean = keyEvent.key == Key.Enter
