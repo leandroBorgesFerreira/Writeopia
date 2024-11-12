@@ -57,6 +57,13 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
 
     val selectionState = MutableStateFlow(false)
     val keyboardEventFlow = MutableStateFlow<KeyboardEvent?>(null)
+    val sendEvent = { keyboardEvent: KeyboardEvent ->
+        coroutineScope.launch(Dispatchers.IO) {
+            keyboardEventFlow.tryEmit(keyboardEvent)
+            delay(20)
+            keyboardEventFlow.tryEmit(KeyboardEvent.IDLE)
+        }
+    }
 
     Window(
         onCloseRequest = onCloseRequest,
@@ -80,33 +87,8 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                     false
                 }
 
-                isMoveDownEvent(keyEvent) -> {
-                    coroutineScope.launch(Dispatchers.IO) {
-                        keyboardEventFlow.tryEmit(KeyboardEvent.MOVE_DOWN)
-                        delay(30)
-                        keyboardEventFlow.tryEmit(KeyboardEvent.IDLE)
-                    }
-
-                    true
-                }
-
-                isMoveUpEvent(keyEvent) -> {
-                    coroutineScope.launch(Dispatchers.IO) {
-                        keyboardEventFlow.tryEmit(KeyboardEvent.MOVE_UP)
-                        delay(30)
-                        keyboardEventFlow.tryEmit(KeyboardEvent.IDLE)
-                    }
-
-                    true
-                }
-
                 isDeleteEvent(keyEvent) -> {
-                    coroutineScope.launch(Dispatchers.IO) {
-                        keyboardEventFlow.tryEmit(KeyboardEvent.DELETE)
-                        delay(30)
-                        keyboardEventFlow.tryEmit(KeyboardEvent.IDLE)
-                    }
-
+                    sendEvent(KeyboardEvent.DELETE)
                     false
                 }
 
@@ -166,12 +148,6 @@ private fun isSelectionKeyEventStop(keyEvent: AndroidKeyEvent) =
     keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_ALT &&
         keyEvent.type == KeyEventType.KeyUp
 
-private fun isMoveDownEvent(keyEvent: AndroidKeyEvent) =
-    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_DOWN
-
 private fun isDeleteEvent(keyEvent: AndroidKeyEvent) =
     keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_DELETE ||
         keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE
-
-private fun isMoveUpEvent(keyEvent: AndroidKeyEvent) =
-    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_UP

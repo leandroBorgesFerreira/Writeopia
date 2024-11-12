@@ -68,7 +68,6 @@ object CommonDrawers {
                     allowLineBreaks = true,
                     lineBreakByContent = lineBreakByContent,
                     emptyErase = EmptyErase.CHANGE_TYPE,
-
                     onSelectionLister = manager::toggleSelection
                 )
             }

@@ -9,9 +9,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
@@ -19,8 +22,10 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
@@ -69,6 +74,26 @@ class TextDrawer(
         val text = step.text ?: ""
         val inputText = TextFieldValue(text, drawInfo.selection.toTextRange())
 
+        var textLayoutResult by remember {
+            mutableStateOf<TextLayoutResult?>(null)
+        }
+        val cursorLine by remember {
+            derivedStateOf {
+                textLayoutResult?.getLineForOffset(inputText.selection.start)
+            }
+        }
+        val realPosition by remember {
+            derivedStateOf {
+                val lineStart = textLayoutResult?.multiParagraph?.getLineStart(cursorLine ?: 0)
+                inputText.selection.start - (lineStart ?: 0)
+            }
+        }
+        val isInLastLine by remember {
+            derivedStateOf {
+                textLayoutResult?.multiParagraph?.lineCount == cursorLine
+            }
+        }
+
         val selectionState by selectionState.collectAsState()
 
         if (drawInfo.hasFocus()) {
@@ -90,6 +115,7 @@ class TextDrawer(
                     }
                 }
                 .onKeyEvent { keyEvent ->
+                    println("keyEvent. ${keyEvent.key.keyCode}")
                     onKeyEvent(keyEvent, inputText, step, drawInfo.position, emptyErase)
                 }
                 .onFocusChanged { focusState ->
@@ -105,14 +131,22 @@ class TextDrawer(
                 },
             value = inputText,
             enabled = !selectionState,
+            onTextLayout = {
+                textLayoutResult = it
+            },
             onValueChange = { value ->
                 val text = value.text
                 val start = value.selection.start
                 val end = value.selection.end
 
                 val edit = {
+                    println("realPosition: $realPosition")
                     onTextEdit(
-                        TextInput(value.text, value.selection.start, value.selection.end),
+                        TextInput(
+                            value.text,
+                            value.selection.start,
+                            value.selection.end
+                        ),
                         drawInfo.position,
                         lineBreakByContent,
                         allowLineBreaks

@@ -49,6 +49,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.math.max
+import kotlin.math.min
 
 /**
  * This is the entry class of the framework. It follows the Controller pattern, redirecting all the
@@ -75,14 +76,6 @@ class WriteopiaStateManager(
                 .onEach { delay(60) }
                 .collect { event ->
                     when (event) {
-                        KeyboardEvent.MOVE_UP -> {
-                            moveToPrevious()
-                        }
-
-                        KeyboardEvent.MOVE_DOWN -> {
-                            moveToNext()
-                        }
-
                         KeyboardEvent.DELETE -> {
                             if (_positionsOnEdit.value.isNotEmpty()) {
                                 deleteSelection()
@@ -614,14 +607,16 @@ class WriteopiaStateManager(
         }
     }
 
-    private fun moveToNext() {
+    fun moveToNext(positions: Int = 1) {
+        val lastIndex = _currentStory.value.stories.size - 1
+
         val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
-        nextFocusOrCreate(focusPosition + 1)
+        nextFocusOrCreate(min(focusPosition + positions, lastIndex))
     }
 
-    private fun moveToPrevious() {
+    fun moveToPrevious(positions: Int = 1) {
         val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
-        nextFocusOrCreate(max(focusPosition - 1, 0))
+        nextFocusOrCreate(max(focusPosition - positions, 0))
     }
 
     private fun toggleStateForStories(onEdit: Set<Int>, storyTypes: StoryTypes) {
@@ -694,7 +689,7 @@ class WriteopiaStateManager(
             _currentStory.value = state.copy(
                 selection = Selection(
                     stateChange.selectionStart ?: 0,
-                    stateChange.selectionEnd ?: 0
+                    stateChange.selectionEnd ?: 0,
                 )
             )
             backstackAction?.let(backStackManager::addAction)
@@ -728,7 +723,7 @@ class WriteopiaStateManager(
                         newStep,
                         position,
                         selectionStart = input.start,
-                        selectionEnd = input.end
+                        selectionEnd = input.end,
                     )
                 )
             }
