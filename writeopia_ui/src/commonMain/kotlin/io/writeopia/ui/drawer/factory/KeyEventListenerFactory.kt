@@ -19,8 +19,8 @@ object KeyEventListenerFactory {
 
     fun desktop(
         manager: WriteopiaStateManager,
-    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int) -> Boolean {
-        return { keyEvent, inputText, step, position, onEmptyErase, cursorPosition ->
+    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, Boolean) -> Boolean {
+        return { keyEvent, inputText, step, position, onEmptyErase, cursorPosition, isInLastLine ->
             when {
                 isEmptyErase(keyEvent, inputText) -> {
                     when (onEmptyErase) {
@@ -48,12 +48,12 @@ object KeyEventListenerFactory {
                     true
                 }
 
-                isMoveDownEventEnd(keyEvent) -> {
+                isMoveDownEventEnd(keyEvent) && isInLastLine -> {
                     manager.moveToNext(cursor = cursorPosition)
                     true
                 }
 
-                isMoveStrongDownEvent(keyEvent) -> {
+                isMoveStrongDownEvent(keyEvent) && isInLastLine -> {
                     manager.moveToNext(cursor = cursorPosition, 10)
                     true
                 }

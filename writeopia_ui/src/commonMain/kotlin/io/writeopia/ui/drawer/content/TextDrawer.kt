@@ -50,8 +50,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  */
 class TextDrawer(
     private val modifier: Modifier = Modifier,
-    private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int) -> Boolean =
-        { _, _, _, _, _, _ -> false },
+    private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, Boolean) -> Boolean =
+        { _, _, _, _, _, _, _ -> false },
     private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
     private val onTextEdit: (TextInput, Int, Boolean, Boolean) -> Unit = { _, _, _, _ -> },
     private val allowLineBreaks: Boolean = false,
@@ -89,7 +89,7 @@ class TextDrawer(
         }
         val isInLastLine by remember {
             derivedStateOf {
-                textLayoutResult?.multiParagraph?.lineCount == cursorLine
+                (textLayoutResult?.multiParagraph?.lineCount?.minus(1)) == cursorLine
             }
         }
 
@@ -120,7 +120,8 @@ class TextDrawer(
                         step,
                         drawInfo.position,
                         emptyErase,
-                        realPosition
+                        realPosition,
+                        isInLastLine
                     )
                 }
                 .onFocusChanged { focusState ->
