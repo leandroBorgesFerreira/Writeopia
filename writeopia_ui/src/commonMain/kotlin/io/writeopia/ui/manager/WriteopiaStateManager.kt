@@ -149,9 +149,7 @@ class WriteopiaStateManager(
     }.stateIn(coroutineScope, SharingStarted.Lazily, null)
 
     private val _documentEditionState: Flow<Pair<StoryState, DocumentInfo>> =
-        combine(currentStory, _documentInfo) { storyState, documentInfo ->
-            storyState to documentInfo
-        }
+        combine(currentStory, _documentInfo, ::Pair)
 
     val toDraw: Flow<DrawState> =
         combine(
