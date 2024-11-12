@@ -594,29 +594,29 @@ class WriteopiaStateManager(
         }
     }
 
+    fun moveToNext(cursor: Int, positions: Int = 1) {
+        val lastIndex = _currentStory.value.stories.size - 1
+
+        val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
+        nextFocusOrCreate(min(focusPosition + positions, lastIndex), cursor)
+    }
+
+    fun moveToPrevious(cursor: Int, positions: Int = 1) {
+        val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
+        nextFocusOrCreate(max(focusPosition - positions, 0), cursor)
+    }
+
     /**
      * Moves the focus to the next available [StoryStep] if it can't find a step to focus, it
      * creates a new [StoryStep] at the end of the document.
      *
      * @param position Int
      */
-    private fun nextFocusOrCreate(position: Int) {
+    private fun nextFocusOrCreate(position: Int, cursor: Int) {
         coroutineScope.launch(dispatcher) {
             _currentStory.value =
-                writeopiaManager.nextFocusOrCreate(position, _currentStory.value)
+                writeopiaManager.nextFocusOrCreate(position, cursor, _currentStory.value)
         }
-    }
-
-    fun moveToNext(positions: Int = 1) {
-        val lastIndex = _currentStory.value.stories.size - 1
-
-        val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
-        nextFocusOrCreate(min(focusPosition + positions, lastIndex))
-    }
-
-    fun moveToPrevious(positions: Int = 1) {
-        val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
-        nextFocusOrCreate(max(focusPosition - positions, 0))
     }
 
     private fun toggleStateForStories(onEdit: Set<Int>, storyTypes: StoryTypes) {

@@ -13,13 +13,14 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.EmptyErase
+
 ////
 object KeyEventListenerFactory {
 
     fun desktop(
         manager: WriteopiaStateManager,
-    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean {
-        return { keyEvent, inputText, step, position, onEmptyErase ->
+    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int) -> Boolean {
+        return { keyEvent, inputText, step, position, onEmptyErase, cursorPosition ->
             when {
                 isEmptyErase(keyEvent, inputText) -> {
                     when (onEmptyErase) {
@@ -38,22 +39,22 @@ object KeyEventListenerFactory {
                 }
 
                 isMoveUpEventEnd(keyEvent) -> {
-                    manager.moveToPrevious()
+                    manager.moveToPrevious(cursor = cursorPosition)
                     true
                 }
 
                 isMoveStrongUpEvent(keyEvent) -> {
-                    manager.moveToPrevious(10)
+                    manager.moveToPrevious(cursor = cursorPosition, 10)
                     true
                 }
 
                 isMoveDownEventEnd(keyEvent) -> {
-                    manager.moveToNext()
+                    manager.moveToNext(cursor = cursorPosition)
                     true
                 }
 
                 isMoveStrongDownEvent(keyEvent) -> {
-                    manager.moveToNext(10)
+                    manager.moveToNext(cursor = cursorPosition, 10)
                     true
                 }
 
@@ -65,8 +66,8 @@ object KeyEventListenerFactory {
     fun android(
         manager: WriteopiaStateManager,
         isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
-    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean {
-        return { keyEvent, inputText, step, position, onEmptyErase ->
+    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int) -> Boolean {
+        return { keyEvent, inputText, step, position, onEmptyErase, cursorPosition ->
             when {
                 isEmptyErase(keyEvent, inputText) -> {
                     when (onEmptyErase) {
@@ -91,8 +92,8 @@ object KeyEventListenerFactory {
 
     fun js(
         manager: WriteopiaStateManager,
-    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean {
-        return { keyEvent, inputText, step, position, onEmptyErase ->
+    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int) -> Boolean {
+        return { keyEvent, inputText, step, position, onEmptyErase, cursorPosition ->
             when {
                 isLineBreak(keyEvent) -> {
                     manager.onLineBreak(Action.LineBreak(step, position = position))
@@ -119,34 +120,34 @@ object KeyEventListenerFactory {
             }
         }
     }
-
-    private fun isEmptyErase(
-        keyEvent: KeyEvent,
-        input: TextFieldValue
-    ): Boolean = keyEvent.key == Key.Backspace
-        && keyEvent.type== KeyEventType.KeyUp
-        && input.selection.start == 0
-
-    private fun isMoveUpEventEnd(keyEvent: KeyEvent) =
-        keyEvent.key == Key.DirectionUp
-            && keyEvent.type == KeyEventType.KeyDown
-            && !keyEvent.isMetaPressed
-
-    private fun isMoveDownEventEnd(keyEvent: KeyEvent) =
-        keyEvent.key == Key.DirectionDown
-            && keyEvent.type == KeyEventType.KeyDown
-            && !keyEvent.isMetaPressed
-
-    private fun isMoveStrongUpEvent(keyEvent: KeyEvent) =
-        keyEvent.key == Key.DirectionUp
-            && keyEvent.type == KeyEventType.KeyDown
-            && keyEvent.isMetaPressed
-
-    private fun isMoveStrongDownEvent(keyEvent: KeyEvent) =
-        keyEvent.key == Key.DirectionDown
-            && keyEvent.type == KeyEventType.KeyDown
-            && keyEvent.isMetaPressed
-
-    private fun isLineBreak(keyEvent: KeyEvent): Boolean = keyEvent.key == Key.Enter
 }
+
+private fun isEmptyErase(
+    keyEvent: KeyEvent,
+    input: TextFieldValue
+): Boolean = keyEvent.key == Key.Backspace
+    && keyEvent.type == KeyEventType.KeyUp
+    && input.selection.start == 0
+
+private fun isMoveUpEventEnd(keyEvent: KeyEvent) =
+    keyEvent.key == Key.DirectionUp
+        && keyEvent.type == KeyEventType.KeyDown
+        && !keyEvent.isMetaPressed
+
+private fun isMoveDownEventEnd(keyEvent: KeyEvent) =
+    keyEvent.key == Key.DirectionDown
+        && keyEvent.type == KeyEventType.KeyDown
+        && !keyEvent.isMetaPressed
+
+private fun isMoveStrongUpEvent(keyEvent: KeyEvent) =
+    keyEvent.key == Key.DirectionUp
+        && keyEvent.type == KeyEventType.KeyDown
+        && keyEvent.isMetaPressed
+
+private fun isMoveStrongDownEvent(keyEvent: KeyEvent) =
+    keyEvent.key == Key.DirectionDown
+        && keyEvent.type == KeyEventType.KeyDown
+        && keyEvent.isMetaPressed
+
+private fun isLineBreak(keyEvent: KeyEvent): Boolean = keyEvent.key == Key.Enter
 

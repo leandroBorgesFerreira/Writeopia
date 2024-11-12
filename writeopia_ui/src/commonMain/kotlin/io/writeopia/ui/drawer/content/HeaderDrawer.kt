@@ -100,7 +100,7 @@ class HeaderDrawer(
 fun headerDrawer(
     manager: WriteopiaStateManager,
     headerClick: () -> Unit,
-    onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean,
+    onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int) -> Boolean,
     modifier: Modifier = Modifier,
     lineBreakByContent: Boolean,
     selectionState: StateFlow<Boolean>,

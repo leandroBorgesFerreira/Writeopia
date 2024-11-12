@@ -22,8 +22,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.KeyEvent
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextLayoutResult
@@ -52,8 +50,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  */
 class TextDrawer(
     private val modifier: Modifier = Modifier,
-    private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean =
-        { _, _, _, _, _ -> false },
+    private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int) -> Boolean =
+        { _, _, _, _, _, _ -> false },
     private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
     private val onTextEdit: (TextInput, Int, Boolean, Boolean) -> Unit = { _, _, _, _ -> },
     private val allowLineBreaks: Boolean = false,
@@ -116,8 +114,14 @@ class TextDrawer(
                     }
                 }
                 .onPreviewKeyEvent { keyEvent ->
-                    println("keyEvent. ${keyEvent.key.keyCode}")
-                    onKeyEvent(keyEvent, inputText, step, drawInfo.position, emptyErase)
+                    onKeyEvent(
+                        keyEvent,
+                        inputText,
+                        step,
+                        drawInfo.position,
+                        emptyErase,
+                        realPosition
+                    )
                 }
                 .onFocusChanged { focusState ->
                     onFocusChanged(drawInfo.position, focusState)
@@ -141,7 +145,6 @@ class TextDrawer(
                 val end = value.selection.end
 
                 val edit = {
-                    println("realPosition: $realPosition")
                     onTextEdit(
                         TextInput(
                             value.text,
