@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
+import io.writeopia.ui.drawer.factory.EndOfText
 import io.writeopia.ui.extensions.toTextRange
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.ui.model.EmptyErase
@@ -50,7 +51,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  */
 class TextDrawer(
     private val modifier: Modifier = Modifier,
-    private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, Boolean) -> Boolean =
+    private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean =
         { _, _, _, _, _, _, _ -> false },
     private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
     private val onTextEdit: (TextInput, Int, Boolean, Boolean) -> Unit = { _, _, _, _ -> },
@@ -89,7 +90,17 @@ class TextDrawer(
         }
         val isInLastLine by remember {
             derivedStateOf {
-                (textLayoutResult?.multiParagraph?.lineCount?.minus(1)) == cursorLine
+                val lineCount = textLayoutResult?.multiParagraph?.lineCount
+                when {
+                    lineCount == 1 -> EndOfText.SINGLE_LINE
+
+                    cursorLine == 0 -> EndOfText.FIRST_LINE
+
+                    (lineCount?.minus(1)) == cursorLine ->
+                        EndOfText.LAST_LINE
+
+                    else -> EndOfText.UNKNOWN
+                }
             }
         }
 

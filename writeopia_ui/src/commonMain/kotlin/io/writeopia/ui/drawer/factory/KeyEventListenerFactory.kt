@@ -19,8 +19,8 @@ object KeyEventListenerFactory {
 
     fun desktop(
         manager: WriteopiaStateManager,
-    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, Boolean) -> Boolean {
-        return { keyEvent, inputText, step, position, onEmptyErase, cursorPosition, isInLastLine ->
+    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean {
+        return { keyEvent, inputText, step, position, onEmptyErase, cursorPosition, endOfText ->
             when {
                 isEmptyErase(keyEvent, inputText) -> {
                     when (onEmptyErase) {
@@ -38,7 +38,7 @@ object KeyEventListenerFactory {
                     true
                 }
 
-                isMoveUpEventEnd(keyEvent) -> {
+                isMoveUpEventEnd(keyEvent) && endOfText.shouldMoveUp() -> {
                     manager.moveToPrevious(cursor = cursorPosition)
                     true
                 }
@@ -48,12 +48,12 @@ object KeyEventListenerFactory {
                     true
                 }
 
-                isMoveDownEventEnd(keyEvent) && isInLastLine -> {
+                isMoveDownEventEnd(keyEvent) && endOfText.shouldMoveDown() -> {
                     manager.moveToNext(cursor = cursorPosition)
                     true
                 }
 
-                isMoveStrongDownEvent(keyEvent) && isInLastLine -> {
+                isMoveStrongDownEvent(keyEvent) -> {
                     manager.moveToNext(cursor = cursorPosition, 10)
                     true
                 }
@@ -66,8 +66,8 @@ object KeyEventListenerFactory {
     fun android(
         manager: WriteopiaStateManager,
         isEmptyErase: (KeyEvent, TextFieldValue) -> Boolean = { _, _ -> false },
-    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, Boolean) -> Boolean {
-        return { keyEvent, inputText, step, position, onEmptyErase, cursorPosition, isInLastLine ->
+    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean {
+        return { keyEvent, inputText, step, position, onEmptyErase, cursorPosition, endOfText ->
             when {
                 isEmptyErase(keyEvent, inputText) -> {
                     when (onEmptyErase) {
@@ -87,7 +87,7 @@ object KeyEventListenerFactory {
                     true
                 }
 
-                isMoveUpEventEnd(keyEvent) -> {
+                isMoveUpEventEnd(keyEvent) && endOfText.shouldMoveUp() -> {
                     manager.moveToPrevious(cursor = cursorPosition)
                     true
                 }
@@ -97,12 +97,12 @@ object KeyEventListenerFactory {
                     true
                 }
 
-                isMoveDownEventEnd(keyEvent) && isInLastLine -> {
+                isMoveDownEventEnd(keyEvent) && endOfText.shouldMoveDown() -> {
                     manager.moveToNext(cursor = cursorPosition)
                     true
                 }
 
-                isMoveStrongDownEvent(keyEvent) && isInLastLine -> {
+                isMoveStrongDownEvent(keyEvent) -> {
                     manager.moveToNext(cursor = cursorPosition, 10)
                     true
                 }
@@ -114,8 +114,8 @@ object KeyEventListenerFactory {
 
     fun js(
         manager: WriteopiaStateManager,
-    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, Boolean) -> Boolean {
-        return { keyEvent, inputText, step, position, onEmptyErase, _, _ ->
+    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean {
+        return { keyEvent, inputText, step, position, onEmptyErase, cursorPosition, endOfText ->
             when {
                 isLineBreak(keyEvent) -> {
                     manager.onLineBreak(Action.LineBreak(step, position = position))
@@ -138,10 +138,38 @@ object KeyEventListenerFactory {
                     true
                 }
 
+                isMoveUpEventEnd(keyEvent) && endOfText.shouldMoveUp() -> {
+                    manager.moveToPrevious(cursor = cursorPosition)
+                    true
+                }
+
+                isMoveStrongUpEvent(keyEvent) -> {
+                    manager.moveToPrevious(cursor = cursorPosition, 10)
+                    true
+                }
+
+                isMoveDownEventEnd(keyEvent) && endOfText.shouldMoveDown() -> {
+                    manager.moveToNext(cursor = cursorPosition)
+                    true
+                }
+
+                isMoveStrongDownEvent(keyEvent) -> {
+                    manager.moveToNext(cursor = cursorPosition, 10)
+                    true
+                }
+
                 else -> false
             }
         }
     }
+}
+
+enum class EndOfText {
+    SINGLE_LINE, FIRST_LINE, LAST_LINE, UNKNOWN;
+
+    fun shouldMoveDown() = this == SINGLE_LINE || this == LAST_LINE
+
+    fun shouldMoveUp() = this == SINGLE_LINE || this == FIRST_LINE
 }
 
 private fun isEmptyErase(
