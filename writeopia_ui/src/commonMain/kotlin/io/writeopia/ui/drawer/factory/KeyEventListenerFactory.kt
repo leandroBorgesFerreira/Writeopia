@@ -110,6 +110,7 @@ object KeyEventListenerFactory {
         }
     }
 
+    //Todo: Check if this function can be deleted and substituted by desktop version
     fun js(
         manager: WriteopiaStateManager,
     ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean {
