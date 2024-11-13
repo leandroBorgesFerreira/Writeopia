@@ -9,9 +9,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
@@ -19,8 +22,9 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.KeyEvent
-import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
@@ -28,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
+import io.writeopia.ui.drawer.factory.EndOfText
 import io.writeopia.ui.extensions.toTextRange
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.ui.model.EmptyErase
@@ -46,8 +51,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  */
 class TextDrawer(
     private val modifier: Modifier = Modifier,
-    private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean =
-        { _, _, _, _, _ -> false },
+    private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean =
+        { _, _, _, _, _, _, _ -> false },
     private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
     private val onTextEdit: (TextInput, Int, Boolean, Boolean) -> Unit = { _, _, _, _ -> },
     private val allowLineBreaks: Boolean = false,
@@ -69,6 +74,35 @@ class TextDrawer(
         val text = step.text ?: ""
         val inputText = TextFieldValue(text, drawInfo.selection.toTextRange())
 
+        var textLayoutResult by remember {
+            mutableStateOf<TextLayoutResult?>(null)
+        }
+        val cursorLine by remember {
+            derivedStateOf {
+                textLayoutResult?.getLineForOffset(inputText.selection.start)
+            }
+        }
+        val realPosition by remember {
+            derivedStateOf {
+                val lineStart = textLayoutResult?.multiParagraph?.getLineStart(cursorLine ?: 0)
+                inputText.selection.start - (lineStart ?: 0)
+            }
+        }
+        val isInLastLine by remember {
+            derivedStateOf {
+                val lineCount = textLayoutResult?.multiParagraph?.lineCount
+                when {
+                    lineCount == 1 -> EndOfText.SINGLE_LINE
+
+                    cursorLine == 0 -> EndOfText.FIRST_LINE
+
+                    (lineCount?.minus(1)) == cursorLine -> EndOfText.LAST_LINE
+
+                    else -> EndOfText.UNKNOWN
+                }
+            }
+        }
+
         val selectionState by selectionState.collectAsState()
 
         if (drawInfo.hasFocus()) {
@@ -89,8 +123,16 @@ class TextDrawer(
                         modifierLet
                     }
                 }
-                .onKeyEvent { keyEvent ->
-                    onKeyEvent(keyEvent, inputText, step, drawInfo.position, emptyErase)
+                .onPreviewKeyEvent { keyEvent ->
+                    onKeyEvent(
+                        keyEvent,
+                        inputText,
+                        step,
+                        drawInfo.position,
+                        emptyErase,
+                        realPosition,
+                        isInLastLine
+                    )
                 }
                 .onFocusChanged { focusState ->
                     onFocusChanged(drawInfo.position, focusState)
@@ -105,6 +147,9 @@ class TextDrawer(
                 },
             value = inputText,
             enabled = !selectionState,
+            onTextLayout = {
+                textLayoutResult = it
+            },
             onValueChange = { value ->
                 val text = value.text
                 val start = value.selection.start
@@ -112,7 +157,11 @@ class TextDrawer(
 
                 val edit = {
                     onTextEdit(
-                        TextInput(value.text, value.selection.start, value.selection.end),
+                        TextInput(
+                            value.text,
+                            value.selection.start,
+                            value.selection.end
+                        ),
                         drawInfo.position,
                         lineBreakByContent,
                         allowLineBreaks

@@ -49,6 +49,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.math.max
+import kotlin.math.min
 
 /**
  * This is the entry class of the framework. It follows the Controller pattern, redirecting all the
@@ -75,14 +76,6 @@ class WriteopiaStateManager(
                 .onEach { delay(60) }
                 .collect { event ->
                     when (event) {
-                        KeyboardEvent.MOVE_UP -> {
-                            moveToPrevious()
-                        }
-
-                        KeyboardEvent.MOVE_DOWN -> {
-                            moveToNext()
-                        }
-
                         KeyboardEvent.DELETE -> {
                             if (_positionsOnEdit.value.isNotEmpty()) {
                                 deleteSelection()
@@ -156,9 +149,7 @@ class WriteopiaStateManager(
     }.stateIn(coroutineScope, SharingStarted.Lazily, null)
 
     private val _documentEditionState: Flow<Pair<StoryState, DocumentInfo>> =
-        combine(currentStory, _documentInfo) { storyState, documentInfo ->
-            storyState to documentInfo
-        }
+        combine(currentStory, _documentInfo, ::Pair)
 
     val toDraw: Flow<DrawState> =
         combine(
@@ -601,27 +592,29 @@ class WriteopiaStateManager(
         }
     }
 
+    fun moveToNext(cursor: Int, positions: Int = 1) {
+        val lastIndex = _currentStory.value.stories.size - 1
+
+        val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
+        nextFocusOrCreate(min(focusPosition + positions, lastIndex), cursor)
+    }
+
+    fun moveToPrevious(cursor: Int, positions: Int = 1) {
+        val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
+        nextFocusOrCreate(max(focusPosition - positions, 0), cursor)
+    }
+
     /**
      * Moves the focus to the next available [StoryStep] if it can't find a step to focus, it
      * creates a new [StoryStep] at the end of the document.
      *
      * @param position Int
      */
-    private fun nextFocusOrCreate(position: Int) {
+    private fun nextFocusOrCreate(position: Int, cursor: Int) {
         coroutineScope.launch(dispatcher) {
             _currentStory.value =
-                writeopiaManager.nextFocusOrCreate(position, _currentStory.value)
+                writeopiaManager.nextFocusOrCreate(position, cursor, _currentStory.value)
         }
-    }
-
-    private fun moveToNext() {
-        val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
-        nextFocusOrCreate(focusPosition + 1)
-    }
-
-    private fun moveToPrevious() {
-        val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
-        nextFocusOrCreate(max(focusPosition - 1, 0))
     }
 
     private fun toggleStateForStories(onEdit: Set<Int>, storyTypes: StoryTypes) {
@@ -694,7 +687,7 @@ class WriteopiaStateManager(
             _currentStory.value = state.copy(
                 selection = Selection(
                     stateChange.selectionStart ?: 0,
-                    stateChange.selectionEnd ?: 0
+                    stateChange.selectionEnd ?: 0,
                 )
             )
             backstackAction?.let(backStackManager::addAction)
@@ -728,7 +721,7 @@ class WriteopiaStateManager(
                         newStep,
                         position,
                         selectionStart = input.start,
-                        selectionEnd = input.end
+                        selectionEnd = input.end,
                     )
                 )
             }

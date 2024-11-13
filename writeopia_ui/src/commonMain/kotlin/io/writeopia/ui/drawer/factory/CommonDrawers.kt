@@ -49,7 +49,7 @@ object CommonDrawers {
         onHeaderClick: () -> Unit = {},
         dragIconWidth: Dp = DRAG_ICON_WIDTH.dp,
         lineBreakByContent: Boolean,
-        eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean,
+        eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean,
     ): Map<Int, StoryStepDrawer> {
         val textBoxDrawer = swipeTextDrawer(
             modifier = Modifier
@@ -68,7 +68,6 @@ object CommonDrawers {
                     allowLineBreaks = true,
                     lineBreakByContent = lineBreakByContent,
                     emptyErase = EmptyErase.CHANGE_TYPE,
-
                     onSelectionLister = manager::toggleSelection
                 )
             }
@@ -176,7 +175,7 @@ object CommonDrawers {
         allowLineBreaks: Boolean = false,
         lineBreakByContent: Boolean,
         emptyErase: EmptyErase,
-        eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase) -> Boolean,
+        eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean,
         onSelectionLister: (Int) -> Unit
     ): TextDrawer {
         return TextDrawer(

@@ -3,6 +3,7 @@ package io.writeopia.sdk.manager
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.model.story.LastEdit
+import io.writeopia.sdk.model.story.Selection
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.command.CommandInfo
 import io.writeopia.sdk.models.command.TypeInfo
@@ -65,15 +66,20 @@ class WriteopiaManager(
      * @param position Int
      * @param storyState [StoryState]
      */
-    fun nextFocusOrCreate(position: Int, storyState: StoryState): StoryState {
+    fun nextFocusOrCreate(position: Int, cursor: Int, storyState: StoryState): StoryState {
         val storyMap = storyState.stories
         val nextFocus = focusHandler.findNextFocus(position, storyMap)
+
         return if (nextFocus != null) {
             val (nextPosition, storyStep) = nextFocus
             val mutable = storyMap.toMutableMap()
             mutable[nextPosition] = storyStep.copy(localId = GenerateId.generate())
 
-            storyState.copy(stories = mutable, focus = nextPosition)
+            storyState.copy(
+                stories = mutable,
+                focus = nextPosition,
+                selection = Selection.fromPosition(cursor)
+            )
         } else {
             storyState
         }
