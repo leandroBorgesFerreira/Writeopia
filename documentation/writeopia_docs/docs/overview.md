@@ -1,5 +1,7 @@
 ---
-sidebar_position: 0
+title: Overview
+description: Description of Writeopia
+# hide_table_of_contents: true
 ---
 
 # Overview
