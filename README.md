@@ -60,6 +60,12 @@ To start the web app:
 ./gradlew jsBrowserRun
 ```
 
+Runnig the tests of the project: 
+
+```
+./gradlew jvmTest 
+```
+
 To start the android app use Android Studio.
 
 # SDK 
