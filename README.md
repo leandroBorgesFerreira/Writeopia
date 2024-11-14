@@ -9,9 +9,6 @@
   <a href="https://pinterest.github.io/ktlint/" target="_blank">
     <img src="https://img.shields.io/badge/ktlint%20code--style-%E2%9D%A4-FF4081" alt="ktlint badge" />
   </a>
-  <a href="https://kotlinlang.org/" target="_blank">
-    <img src="https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin badge" />
-  </a>
 </p>
 
 <p align="center" width="100%">
