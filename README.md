@@ -40,7 +40,7 @@ You can check how to [work locally](https://docs.writeopia.io) <!-- Todo: Change
 Writeopia is a free project, so we would love your participation. Please check our issues and suggest changes before using the issues tab so we can evaluate and architecture new solutions together. 
 
 If you're looking for a place to get started you can look at:
-- Issues with good first issue label
+- Issues with [good first issue](https://github.com/leandroBorgesFerreira/Writeopia/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) label
 - Documentation for the project
 - Bugs and other issues listed on GitHub
 - Analise the apps and looks for new bugs. 
