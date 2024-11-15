@@ -30,11 +30,13 @@
   font-size: calc(3vw + 3vh);
   padding-left: 10px;
   padding-right: 10px;
+  font-weight: bold;
 }
 
 .item {
   padding-left: 20px;
   padding-right: 20px;
+  font-weight: bold;
 }
 
 .sdk {
