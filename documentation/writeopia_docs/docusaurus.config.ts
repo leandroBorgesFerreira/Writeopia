@@ -68,8 +68,7 @@ const config: Config = {
           },
         ],
       },
-      footer: {
-        style: 'dark',
+      footer: {        
         links: [
           // {
           //   title: 'Docs',

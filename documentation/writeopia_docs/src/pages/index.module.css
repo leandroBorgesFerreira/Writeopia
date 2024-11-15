@@ -3,16 +3,25 @@
  * and scoped locally.
  */
 
-.heroBanner {
-  padding: 4rem 0;
+.appHeroBanner {
   text-align: center;
-  position: relative;
-  overflow: hidden;
+  height: 80vh;
+  display: flex;
+  background-color: gray;
+}
+
+.section {
+  text-align: center;
+  display: flex;
+  flex: 1;
+  color: gray;
+  justify-content: center;
+  background: gray;
 }
 
 @media screen and (max-width: 996px) {
   .heroBanner {
-    padding: 2rem;
+    padding: 1rem;
   }
 }
 
