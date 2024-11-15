@@ -48,13 +48,13 @@ const config: Config = {
         items: [
           {
             type: 'docSidebar',
-            sidebarId: 'applicationSidebar',
+            sidebarId: 'appSidebar',
             position: 'left',
             label: 'Application',
           },
           {
             type: 'docSidebar',
-            sidebarId: 'applicationSidebar',
+            sidebarId: 'sdkSidebar',
             position: 'left',
             label: 'SDK - Developers',
           },
