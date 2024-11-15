@@ -1,6 +1,6 @@
 import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 
-const sidebars = {
+const sidebars : SidebarsConfig = {
   sdkSidebar: [
     {
       type: 'doc',

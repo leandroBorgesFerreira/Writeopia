@@ -2,7 +2,6 @@ import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
-
 const config: Config = {
   title: 'Writeopia',
   tagline: 'Rich edit text for Kotlin',
@@ -32,7 +31,7 @@ const config: Config = {
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
-      },
+      } satisfies Preset.Options,
     ],
   ],
 
@@ -72,6 +71,7 @@ const config: Config = {
         ],
       },
       footer: {
+        style: 'dark',
         links: [
           // {
           //   title: 'Docs',
@@ -106,7 +106,7 @@ const config: Config = {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
       },
-    },
+    } satisfies Preset.ThemeConfig,
 };
 
 export default config;
