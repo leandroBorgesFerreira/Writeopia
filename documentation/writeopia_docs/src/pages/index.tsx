@@ -1,25 +1,16 @@
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
-import Heading from '@theme/Heading';
 import styles from './index.module.css';
 import React from 'react';
-import { Telescope } from 'lucide-react';
-
 
 function AppSection() {
   return (
     <div className={styles.app}>
-      <Heading as="h1" className="hero__title">
-        Application
-      </Heading>
-
-      <div>
-        <p>Keep your documents where you prefer</p>
-      </div>
-      
-
-      <p>Present your ideas with a click</p>
+      <h1 className={styles.title}>Application</h1>
+    
+      <p className={styles.item}>Keep your documents where you prefer</p>      
+      <p className={styles.item}>Present your ideas with a click</p>
 
       <div className={styles.buttons}>
         <Link
@@ -32,19 +23,14 @@ function AppSection() {
   );
 }
 
-
 function SdkSection() {
   return (
     <div className={styles.sdk}>
-      <Heading as="h1" className="hero__title">
-        SDK (Developers)
-      </Heading>
+      <h1 className={styles.title}>SDK (Developers)</h1>
 
-      <p>Focus on What Matters</p>
-
-      <p>Robust and very customizable</p>
-
-      <p>Powered by Kotlin</p>
+      <p className={styles.item}>Focus on What Matters</p>
+      <p className={styles.item}>Robust and very customizable</p>
+      <p className={styles.item}>Powered by Kotlin</p>
 
       <div className={styles.buttons}>
         <Link

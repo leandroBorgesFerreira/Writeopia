@@ -26,14 +26,25 @@
   flex: 1;
 }
 
+.title {
+  font-size: calc(3vw + 3vh);
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.item {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 .sdk {
-  background-color: #E15CBF;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   flex: 1;
+  background-color: #E15CBF;
   color: white;
 }
 
