@@ -1,8 +1,7 @@
-import clsx from 'clsx';
+
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
 import styles from './index.module.css';
 import React from 'react';
@@ -10,31 +9,35 @@ import React from 'react';
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
   return (
-    <div className={clsx('hero hero--primary', styles.appHeroBanner)}>
+    <div className={styles.appHeroBanner}>
       <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/overview-app">
-            Documentation
-          </Link>
+        <div className={styles.app}>
+          <Heading as="h1" className="hero__title">
+            Application
+          </Heading>
+          <div className={styles.buttons}>
+            <Link
+              className="button button--secondary button--lg"
+              to="/docs/overview-app">
+              Documentation
+            </Link>
+          </div>
         </div>
       </div>
 
       <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/overview-app">
-            Documentation
-          </Link>
-        </div>
+        <div className={styles.sdk}>
+          <Heading as="h1" className="hero__title">
+            SDK (Developers)
+          </Heading>
+          <div className={styles.buttons}>
+            <Link
+              className="button button--secondary button--lg"
+              to="/docs/overview-app">
+              Documentation
+            </Link>
+          </div>
+          </div>
       </div>
     </div>
     

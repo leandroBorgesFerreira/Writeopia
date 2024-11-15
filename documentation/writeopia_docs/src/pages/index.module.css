@@ -7,16 +7,31 @@
   text-align: center;
   height: 80vh;
   display: flex;
-  background-color: gray;
+}
+
+.app {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.sdk {
+  background-color: #E15CBF;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .section {
   text-align: center;
+  color: rgb(206, 44, 44);
   display: flex;
-  flex: 1;
-  color: gray;
+  align-items: center;
   justify-content: center;
-  background: gray;
 }
 
 @media screen and (max-width: 996px) {
