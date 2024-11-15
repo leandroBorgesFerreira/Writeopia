@@ -13,6 +13,7 @@
   display: flex;
   flex-direction: row;
   width: 100%;
+  height: 81vh;
 }
 
 .app {
@@ -21,7 +22,6 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  height: 80vh;
   width: auto;
   flex: 1;
 }
@@ -33,8 +33,8 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  height: 80vh;
   flex: 1;
+  color: white;
 }
 
 .section {
