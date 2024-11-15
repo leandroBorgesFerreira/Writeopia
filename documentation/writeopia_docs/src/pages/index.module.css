@@ -3,16 +3,64 @@
  * and scoped locally.
  */
 
-.heroBanner {
-  padding: 4rem 0;
+.appHeroBanner {
   text-align: center;
-  position: relative;
-  overflow: hidden;
+  height: 80vh;
+  display: flex;
+}
+
+.sectionsContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 81vh;
+}
+
+.app {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: auto;
+  flex: 1;
+}
+
+.title {
+  font-size: calc(3vw + 3vh);
+  padding-left: 10px;
+  padding-right: 10px;
+  font-weight: bold;
+}
+
+.item {
+  padding-left: 20px;
+  padding-right: 20px;
+  font-weight: bold;
+}
+
+.sdk {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex: 1;
+  background-color: #E15CBF;
+  color: white;
+}
+
+.section {
+  text-align: center;
+  color: rgb(206, 44, 44);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media screen and (max-width: 996px) {
   .heroBanner {
-    padding: 2rem;
+    padding: 1rem;
   }
 }
 

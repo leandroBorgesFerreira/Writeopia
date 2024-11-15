@@ -1,32 +1,17 @@
-// @ts-check
-// Note: type annotations allow type checking and IDEs autocompletion
+import {themes as prismThemes} from 'prism-react-renderer';
+import type {Config} from '@docusaurus/types';
+import type * as Preset from '@docusaurus/preset-classic';
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
-
-/** @type {import('@docusaurus/types').Config} */
-const config = {
+const config: Config = {
   title: 'Writeopia',
   tagline: 'Rich edit text for Kotlin',
   favicon: 'img/favicon.ico',
-
-  // Set the production url of your site here
   url: 'https://docs.writeopia.io/',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
-
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'leandroborgesferreira', // Usually your GitHub org/user name.
+  organizationName: 'io.writeopia', // Usually your GitHub org/user name.
   projectName: 'Writeopia', // Usually your repo name.
-
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-
-  // Even if you don't use internalization, you can use this field to set useful
-  // metadata like html lang. For example, if your site is Chinese, you may want
-  // to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -35,39 +20,40 @@ const config = {
   presets: [
     [
       'classic',
-      /** @type {import('@docusaurus/preset-classic').Options} */
-      ({
+      {
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
+          sidebarPath: require.resolve('./sidebars.ts'),
           editUrl:
             'https://github.com/leandroBorgesFerreira/Writeopia/tree/main/documentation/writeopia_docs',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
-      }),
+      } satisfies Preset.Options,
     ],
   ],
 
-  themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-    ({
+  themeConfig: {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
         title: 'Writeopia',
         logo: {
-          alt: 'My Site Logo',
+          alt: 'Writeopia Logo',
           src: 'img/base_icon_transparent.svg',
         },
         items: [
           {
             type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
+            sidebarId: 'appSidebar',
             position: 'left',
-            label: 'Tutorial',
+            label: 'Application',
+          },
+          {
+            type: 'docSidebar',
+            sidebarId: 'sdkSidebar',
+            position: 'left',
+            label: 'SDK - Developers',
           },
           {
             href: 'https://sample.writeopia.io/',
@@ -82,8 +68,7 @@ const config = {
           },
         ],
       },
-      footer: {
-        style: 'dark',
+      footer: {        
         links: [
           // {
           //   title: 'Docs',
@@ -115,10 +100,10 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} Writeopia`,
       },
       prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+        theme: prismThemes.github,
+        darkTheme: prismThemes.dracula,
       },
-    }),
+    } satisfies Preset.ThemeConfig,
 };
 
-module.exports = config;
+export default config;

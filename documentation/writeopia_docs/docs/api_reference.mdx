@@ -1,5 +1,7 @@
 ---
-sidebar_position: 7
+title: API reference
+description: API reference
+# hide_table_of_contents: true
 ---
 
 # API reference
