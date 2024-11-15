@@ -9,8 +9,7 @@ import React from 'react';
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
   return (
-    <div className={styles.appHeroBanner}>
-      <div className="container">
+    <div className={styles.sectionsContainer}>
         <div className={styles.app}>
           <Heading as="h1" className="hero__title">
             Application
@@ -23,9 +22,7 @@ function HomepageHeader() {
             </Link>
           </div>
         </div>
-      </div>
-
-      <div className="container">
+      
         <div className={styles.sdk}>
           <Heading as="h1" className="hero__title">
             SDK (Developers)
@@ -37,8 +34,7 @@ function HomepageHeader() {
               Documentation
             </Link>
           </div>
-          </div>
-      </div>
+        </div>
     </div>
     
   );
