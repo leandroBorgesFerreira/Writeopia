@@ -53,7 +53,7 @@ const config: Config = {
             type: 'docSidebar',
             sidebarId: 'sdkSidebar',
             position: 'left',
-            label: 'SDK - Developers',
+            label: 'SDK',
           },
           {
             href: 'https://sample.writeopia.io/',
