@@ -15,7 +15,7 @@ function AppSection() {
       <div className={styles.buttons}>
         <Link
           className="button button--secondary button--lg"
-          to="/docs/application/overview-app">
+          to="/docs/application/overview">
           Documentation
         </Link>
       </div>
