@@ -9,30 +9,30 @@ const sidebars : SidebarsConfig = {
     {
       type: 'category',
       label: 'Getting started',
-      items: ['tutorial-basics/basics', 'tutorial-basics/persistence'],
+      items: ['sdk/tutorial-basics/basics', 'sdk/tutorial-basics/persistence'],
     },
     {
       type: 'category',
       label: 'Customize Drawing',
-      items: ['customize-drawing/customize-drawers', 'customize-drawing/default-drawers', 'customize-drawing/default-types'],
+      items: ['sdk/customize-drawing/customize-drawers', 'sdk/customize-drawing/default-drawers', 'sdk/customize-drawing/default-types'],
     }, 
     {
       type: 'doc',
-      id: 'customize-behaviour/customize-ui-commands',
+      id: 'sdk/customize-behaviour/sdk/ui-commands',
     },
     {
       type: 'category',
       label: 'Text Commands',
-      items: ['commands/default-commands', 'commands/command-samples', 'commands/customize-commands'],
+      items: ['sdk/commands/default-commands', 'sdk/commands/command-samples', 'sdk/commands/customize-commands'],
     },
     {
       type: 'category',
       label: 'Export Notes',
-      items: ['export/export-json', 'export/export-markdown'],
+      items: ['sdk/export/export-json', 'sdk/export/export-markdown'],
     },
     {
       type: 'doc',
-      id: 'api_reference',
+      id: 'sdk/api_reference',
     }
   ],
   
