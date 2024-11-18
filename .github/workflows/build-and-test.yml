@@ -120,4 +120,6 @@ jobs:
         run: npm ci
       - name: Test build website
         working-directory: ./documentation/writeopia_docs
-        run: npm run build
+        run: npm run build 
+
+        
