@@ -15,7 +15,7 @@ function AppSection() {
       <div className={styles.buttons}>
         <Link
           className="button button--secondary button--lg"
-          to="/docs/overview-app">
+          to="/docs/application/overview">
           Documentation
         </Link>
       </div>
@@ -35,7 +35,7 @@ function SdkSection() {
       <div className={styles.buttons}>
         <Link
           className="button button--secondary button--lg"
-          to="/docs/overview">
+          to="/docs/sdk/overview">
           Documentation
         </Link>
       </div>
