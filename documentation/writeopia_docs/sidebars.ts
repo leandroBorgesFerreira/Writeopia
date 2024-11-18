@@ -4,7 +4,7 @@ const sidebars : SidebarsConfig = {
   sdkSidebar: [
     {
       type: 'doc',
-      id: 'overview',
+      id: 'sdk/overview',
     },  
     {
       type: 'category',
@@ -18,7 +18,7 @@ const sidebars : SidebarsConfig = {
     }, 
     {
       type: 'doc',
-      id: 'sdk/customize-behaviour/sdk/ui-commands',
+      id: 'sdk/customize-behaviour/customize-ui-commands',
     },
     {
       type: 'category',
@@ -42,7 +42,7 @@ const sidebars : SidebarsConfig = {
       id: 'application/overview-app',
     },
     {
-      type: 'category',
+      type: 'doc',
       label: 'Text Commands',
       id: 'application/commands/commands',
     },
