@@ -34,7 +34,7 @@ You can check the documentation of the project in the [application documentation
 The sample app of the project is a great way to get a simple demo. You can have an experience like this those: [https://sample.writeopia.io](https://sample.writeopia.io) 
 
 ## Development
-You can check how to [work locally](https://docs.writeopia.io) <!-- Todo: Change this link!  --> if you would like to contribute with fixes, improvements or try Writeopia from source code. 
+You can check how to [work locally](https://docs.writeopia.io/docs/local-dev/getting-started) if you would like to contribute with fixes, improvements or try Writeopia from source code. 
 
 ## Contributing
 Writeopia is a free project, so we would love your participation. Please check our issues and suggest changes before using the issues tab so we can evaluate and architecture new solutions together. 
@@ -71,6 +71,6 @@ To start the android app use Android Studio.
 # SDK 
 The SDK allows you to create a text editor an use it instead of a simple `TextField`. You can use this library to create a better story editing experience within apps, such as social media (posts), travel logs, blog apps (like Medium), and chats (like Slack). By using this library, you can provide a great experience for editing text with media.
 
-You can more in the [SDK documentation]((https://docs.writeopia.io/docs/sdk/overview)
+You can more in the [SDK documentation](https://docs.writeopia.io/docs/sdk/overview)
 
 
