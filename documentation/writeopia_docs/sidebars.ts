@@ -39,7 +39,7 @@ const sidebars : SidebarsConfig = {
   appSidebar: [
     {
       type: 'doc',
-      id: 'application/overview-app',
+      id: 'application/overview',
     },
     {
       type: 'doc',

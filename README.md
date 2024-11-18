@@ -28,7 +28,7 @@ This is the source code for Writeopia, an text edition App and SDK.
 Writeopia is a project develop with Kotlin Multiplatform, most of the code is shared between all the apps. This is a project to save all your documents in one place providing you the freedom to choose where to store it. You can save your whole workspace with a button click and save it in git repository (like Github) or a storage system like Dropbox or Google Drive. A backend end is also understand develop so you can self host it and have full controll how you share your documentations with work teams and friends. 
 
 ## Documentation
-You can check the documentation of the project in: [https://docs.writeopia.io](https://docs.writeopia.io).
+You can check the documentation of the project in the [application documentation](https://docs.writeopia.io/docs/application/overview).
 
 ## Sample 
 The sample app of the project is a great way to get a simple demo. You can have an experience like this those: [https://sample.writeopia.io](https://sample.writeopia.io) 
@@ -70,5 +70,7 @@ To start the android app use Android Studio.
 
 # SDK 
 The SDK allows you to create a text editor an use it instead of a simple `TextField`. You can use this library to create a better story editing experience within apps, such as social media (posts), travel logs, blog apps (like Medium), and chats (like Slack). By using this library, you can provide a great experience for editing text with media.
+
+You can more in the [SDK documentation]((https://docs.writeopia.io/docs/sdk/overview)
 
 
