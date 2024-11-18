@@ -54,6 +54,13 @@ const sidebars : SidebarsConfig = {
       type: 'doc',
       id: 'application/slides/slides',
     }
+  ],
+
+  localDevSidebar: [
+    {
+      type: 'doc',
+      id: 'local-dev/getting-started',
+    }, 
   ]
   
 };

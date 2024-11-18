@@ -56,11 +56,16 @@ const config: Config = {
             label: 'SDK',
           },
           {
+            type: 'docSidebar',
+            sidebarId: 'localDevSidebar',
+            position: 'left',
+            label: 'Local Development',
+          },
+          {
             href: 'https://sample.writeopia.io/',
             label: 'Live Sample',
             position: 'left',
-          },
-          // {to: '/api_reference', label: 'API reference', position: 'left'},
+          },          
           {
             href: 'https://github.com/leandroBorgesFerreira/Writeopia',
             label: 'GitHub',
