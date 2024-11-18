@@ -22,9 +22,7 @@ const config: Config = {
       'classic',
       {
         docs: {
-          sidebarPath: require.resolve('./sidebars.ts'),
-          editUrl:
-            'https://github.com/leandroBorgesFerreira/Writeopia/tree/main/documentation/writeopia_docs',
+          sidebarPath: require.resolve('./sidebars.ts'),          
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
