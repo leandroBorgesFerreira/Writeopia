@@ -39,7 +39,20 @@ const sidebars : SidebarsConfig = {
   appSidebar: [
     {
       type: 'doc',
-      id: 'overview-app',
+      id: 'application/overview-app',
+    },
+    {
+      type: 'category',
+      label: 'Text Commands',
+      id: 'application/commands/commands',
+    },
+    {
+      type: 'doc',
+      id: 'application/ui-commands/ui-commands',
+    },
+    {
+      type: 'doc',
+      id: 'application/slides/slides',
     }
   ]
   

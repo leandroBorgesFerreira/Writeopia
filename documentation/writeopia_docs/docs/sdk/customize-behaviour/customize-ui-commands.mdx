@@ -1,7 +1,3 @@
----
-sidebar_position: 0
----
-
 # UI Commands
 
 The base class for behaviour controlling in Writeopia is [WriteopiaManager](https://kdocs.writeopia.io/writeopia/io.writeopia.sdk.manager/-writeopia-manager/index.html) and this is the entry point for all logic customization, with some exceptions. 
@@ -11,24 +7,20 @@ In this section you will learn the default behaviour of Writeopia and how to cus
 ## Swipe to Edit
 One way to edit messages, checkbox, images, etc, is to to horizontally swipe to select the content. 
 
-![swipe to edit sample](../../static/img/swipe_to_edit.gif)
+![swipe to edit sample](../../../static/img/swipe_to_edit.gif)
 
 This behaviour is provided by the default implementations [StoryStepDrawer](https://kdocs.writeopia.io/writeopia/io.writeopia.sdk.drawer/-story-step-drawer/index.html). To provide this behavior to a custom drawer, use [SwipeBox](https://kdocs.writeopia.io/writeopia/io.writeopia.sdk.uicomponents/-swipe-box.html) in your drawers.
 
 ## Drag and Drop
 The way to move content is to use the drag icon on the right side of it. Draging the icon will trigger the drag and drop action.
 
-![drag and drop sample](../../static/img/drag_and_drop.gif)
+![drag and drop sample](../../../static/img/drag_and_drop.gif)
 
 This behaviour is provided by the default implementations [StoryStepDrawer](https://kdocs.writeopia.io/writeopia/io.writeopia.sdk.drawer/-story-step-drawer/index.html). To provide this behavior to a custom drawer, use [DragTargetWithDragItem](https://kdocs.writeopia.io/writeopia/io.writeopia.sdk.draganddrop.target/-drag-target-with-drag-item.html) in your drawers.
-
-:::warning
-This feature is currently under development and its usage is discouraged as the drag experience is still far away from the intended one. This feature is available only for testing purposes. 
-:::
 
 ## Backstack
 Writeopia comes with a default implementation of Backstack that allows the user to undo and redo actions. You can call `WriteopiaManager.undo()` and `WriteopiaManager.redo()` to revert go to a previous stage or move to a forward stage, if there are stages available in the back stack. 
 
-![backstack sample](../../static/img/backstack_sample.gif)
+![backstack sample](../../../static/img/backstack_sample.gif)
 
 You can edit the default behaviour by injecting your own implementation of [BackstackManager](https://kdocs.writeopia.io/writeopia/io.writeopia.sdk.backstack/-backstack-manager/index.html) in [WriteopiaManager](https://kdocs.writeopia.io/writeopia/io.writeopia.sdk.manager/-writeopia-manager/index.html)
