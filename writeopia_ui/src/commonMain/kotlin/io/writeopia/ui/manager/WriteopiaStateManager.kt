@@ -128,25 +128,26 @@ class WriteopiaStateManager(
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
 
-    val currentDocument: StateFlow<Document?> = combine(_documentInfo, _currentStory) { info, state ->
-        val titleFromContent = state.stories.values.firstOrNull { storyStep ->
-            // Todo: Change the type of change to allow different types. The client code should decide what is a title
-            // It is also interesting to inv
-            storyStep.type == StoryTypes.TITLE.type
-        }?.text
+    val currentDocument: StateFlow<Document?> =
+        combine(_documentInfo, _currentStory) { info, state ->
+            val titleFromContent = state.stories.values.firstOrNull { storyStep ->
+                // Todo: Change the type of change to allow different types. The client code should decide what is a title
+                // It is also interesting to inv
+                storyStep.type == StoryTypes.TITLE.type
+            }?.text
 
-        Document(
-            id = info.id,
-            title = titleFromContent ?: info.title,
-            content = state.stories,
-            createdAt = info.createdAt,
-            lastUpdatedAt = info.lastUpdatedAt,
-            userId = localUserId ?: userId.invoke().also { id ->
-                localUserId = id
-            },
-            parentId = info.parentId
-        )
-    }.stateIn(coroutineScope, SharingStarted.Lazily, null)
+            Document(
+                id = info.id,
+                title = titleFromContent ?: info.title,
+                content = state.stories,
+                createdAt = info.createdAt,
+                lastUpdatedAt = info.lastUpdatedAt,
+                userId = localUserId ?: userId.invoke().also { id ->
+                    localUserId = id
+                },
+                parentId = info.parentId
+            )
+        }.stateIn(coroutineScope, SharingStarted.Lazily, null)
 
     private val _documentEditionState: Flow<Pair<StoryState, DocumentInfo>> =
         combine(currentStory, _documentInfo, ::Pair)
@@ -163,7 +164,7 @@ class WriteopiaStateManager(
                 .mapValues { (position, storyStep) ->
                     DrawStory(
                         storyStep = storyStep,
-                        cursor = storyState.selection,
+                        cursor = storyState.selection.takeIf { it.position == position },
                         isSelected = positions.contains(position),
                         position = position
                     )
@@ -520,13 +521,15 @@ class WriteopiaStateManager(
                 eraseStory.position
             )
             val previousStory = previousInfo?.first
+            val newFocus = previousInfo?.second
 
             _currentStory.value =
                 writeopiaManager.onErase(eraseStory, _currentStory.value).let { state ->
-                    if (previousStory != null) {
+                    if (previousStory != null && newFocus != null) {
                         state.copy(
                             selection = Selection.fromPosition(
-                                previousStory.text?.length ?: 0
+                                previousStory.text?.length ?: 0,
+                                newFocus
                             )
                         )
                     } else {
@@ -688,6 +691,7 @@ class WriteopiaStateManager(
                 selection = Selection(
                     stateChange.selectionStart ?: 0,
                     stateChange.selectionEnd ?: 0,
+                    stateChange.position
                 )
             )
             backstackAction?.let(backStackManager::addAction)

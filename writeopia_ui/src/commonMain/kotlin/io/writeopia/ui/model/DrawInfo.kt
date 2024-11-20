@@ -18,7 +18,7 @@ data class DrawInfo(
     val position: Int = 0,
     val extraData: Map<String, Any> = emptyMap(),
     val selectMode: Boolean = false,
-    val selection: Selection = Selection.start()
+    val selection: Selection? = null
 ) {
     fun hasFocus(): Boolean = position == focus
 }

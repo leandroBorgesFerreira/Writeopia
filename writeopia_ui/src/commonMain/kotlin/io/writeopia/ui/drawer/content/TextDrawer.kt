@@ -72,20 +72,23 @@ class TextDrawer(
         decorationBox: @Composable (innerTextField: @Composable () -> Unit) -> Unit
     ) {
         val text = step.text ?: ""
-        val inputText = TextFieldValue(text, drawInfo.selection.toTextRange())
+
+        val inputText = drawInfo.selection?.toTextRange()?.let { range ->
+            TextFieldValue(text, selection = range)
+        } ?: TextFieldValue(text)
 
         var textLayoutResult by remember {
             mutableStateOf<TextLayoutResult?>(null)
         }
         val cursorLine by remember {
             derivedStateOf {
-                textLayoutResult?.getLineForOffset(inputText.selection.start)
+                textLayoutResult?.getLineForOffset(inputText.selection.end)
             }
         }
         val realPosition by remember {
             derivedStateOf {
                 val lineStart = textLayoutResult?.multiParagraph?.getLineStart(cursorLine ?: 0)
-                inputText.selection.start - (lineStart ?: 0)
+                inputText.selection.end - (lineStart ?: 0)
             }
         }
         val isInLastLine by remember {
@@ -157,11 +160,7 @@ class TextDrawer(
 
                 val edit = {
                     onTextEdit(
-                        TextInput(
-                            value.text,
-                            value.selection.start,
-                            value.selection.end
-                        ),
+                        TextInput(text, start, end),
                         drawInfo.position,
                         lineBreakByContent,
                         allowLineBreaks
