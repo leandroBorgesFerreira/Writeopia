@@ -78,7 +78,7 @@ class WriteopiaManager(
             storyState.copy(
                 stories = mutable,
                 focus = nextPosition,
-                selection = Selection.fromPosition(cursor)
+                selection = Selection.fromPosition(cursor, position)
             )
         } else {
             storyState

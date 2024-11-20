@@ -1,11 +1,19 @@
 package io.writeopia.sdk.model.story
 
-data class Selection(val start: Int, val end: Int) {
+/**
+ * Class the descriptions the position of the text cursor.
+ *
+ * @property start the start of the cursor in the paragraph
+ * @property end the end of the cursor in the paragraph
+ * @property position the position of the paragraph (which line the cursor is)
+ */
+data class Selection(val start: Int, val end: Int, val position: Int) {
     companion object {
-        fun start(): Selection = Selection(0, 0)
+        fun start(): Selection = Selection(0, 0, 0)
 
-        fun end(): Selection = Selection(Int.MAX_VALUE, Int.MAX_VALUE)
+        fun end(position: Int): Selection = Selection(Int.MAX_VALUE, Int.MAX_VALUE, position)
 
-        fun fromPosition(position: Int) = Selection(position, position)
+        fun fromPosition(cursorPosition: Int, stepPosition: Int) =
+            Selection(cursorPosition, cursorPosition, stepPosition)
     }
 }
