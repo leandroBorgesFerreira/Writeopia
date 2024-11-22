@@ -86,7 +86,7 @@ android {
         }
         release {
             // Todo: Re enable the minification and fix R8 bugs
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

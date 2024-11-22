@@ -11,9 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.writeopia.appresourcers.R
 import io.writeopia.common.utils.ResultData
+import io.writeopia.common.utils.icons.WrIcons
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -153,7 +151,7 @@ private fun BoxScope.LoginContent(
                         modifier = Modifier.clickable {
                             showPassword = !showPassword
                         },
-                        imageVector = Icons.Default.VisibilityOff,
+                        imageVector = WrIcons.visibilityOff,
                         contentDescription = stringResource(
                             R.string.content_description_visibility_off
                         )
@@ -163,7 +161,7 @@ private fun BoxScope.LoginContent(
                         modifier = Modifier.clickable {
                             showPassword = !showPassword
                         },
-                        imageVector = Icons.Default.Visibility,
+                        imageVector = WrIcons.visibilityOn,
                         contentDescription = stringResource(
                             R.string.content_description_visibility_on
                         )

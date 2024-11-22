@@ -24,6 +24,8 @@ import io.writeopia.common.utils.icons.all.CirclePlus
 import io.writeopia.common.utils.icons.all.ClockArrowDown
 import io.writeopia.common.utils.icons.all.Contrast
 import io.writeopia.common.utils.icons.all.Crosshair
+import io.writeopia.common.utils.icons.all.Eye
+import io.writeopia.common.utils.icons.all.EyeClosed
 import io.writeopia.common.utils.icons.all.FileDown
 import io.writeopia.common.utils.icons.all.FileMinus
 import io.writeopia.common.utils.icons.all.FileUp
@@ -146,4 +148,8 @@ object WrIcons {
     val circularArrowLeft = CircleArrowLeft
 
     val circularArrowRight = CircleArrowRight
+
+    val visibilityOn = Eye
+
+    val visibilityOff = EyeClosed
 }

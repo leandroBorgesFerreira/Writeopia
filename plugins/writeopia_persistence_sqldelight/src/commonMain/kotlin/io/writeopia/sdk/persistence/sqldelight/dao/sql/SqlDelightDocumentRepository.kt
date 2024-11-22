@@ -24,9 +24,7 @@ class SqlDelightDocumentRepository(
         documentSqlDao.loadDocumentByParentId(folderId)
 
     override suspend fun loadFavDocumentsForUser(orderBy: String, userId: String): List<Document> =
-        documentSqlDao.loadFavDocumentsWithContentByUserId(orderBy, userId).also {
-            "loadFavDocumentsForUser size: ${it.size}"
-        }
+        documentSqlDao.loadFavDocumentsWithContentByUserId(orderBy, userId)
 
     override suspend fun loadDocumentsByParentId(parentId: String): List<Document> =
         documentSqlDao.loadDocumentByParentId(parentId)

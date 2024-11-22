@@ -62,7 +62,7 @@ fun unOrderedListItemDrawer(
     },
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer =
-    TextItemDrawer(
+    DesktopTextItemDrawer(
         modifier,
         customBackgroundColor,
         clickable,

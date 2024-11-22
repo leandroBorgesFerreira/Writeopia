@@ -5,11 +5,18 @@ import io.writeopia.sdk.models.story.StoryStep
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 
 class InMemoryDocumentRepository : DocumentRepository {
 
     private val documentsMap: MutableMap<String, Document> = mutableMapOf()
+    private val _documentsMapState = MutableStateFlow(documentsMap)
+    private val documentsMapState = _documentsMapState.map { map ->
+        map.mapValues { (_, document) ->
+            listOf(document)
+        }
+    }
 
     override suspend fun loadDocumentsForUser(folderId: String): List<Document> =
         documentsMap.values.toList()
@@ -26,7 +33,7 @@ class InMemoryDocumentRepository : DocumentRepository {
         instant: Instant
     ): List<Document> = documentsMap.values.toList()
 
-    override suspend fun loadDocumentById(id: String): Document? = documentsMap[id]
+    override suspend fun loadDocumentById(id: String): Document? = documentsMap["root"]
 
     override suspend fun loadDocumentByIds(ids: List<String>): List<Document> =
         ids.mapNotNull { id ->
@@ -36,8 +43,7 @@ class InMemoryDocumentRepository : DocumentRepository {
     override fun listenForDocumentsByParentId(
         parentId: String,
         coroutineScope: CoroutineScope?
-    ): Flow<Map<String, List<Document>>> =
-        MutableStateFlow(emptyMap())
+    ): Flow<Map<String, List<Document>>> = documentsMapState
 
     override suspend fun loadDocumentsWithContentByIds(
         ids: List<String>,
@@ -49,19 +55,19 @@ class InMemoryDocumentRepository : DocumentRepository {
     }
 
     override suspend fun saveDocument(document: Document) {
-        documentsMap[document.id] = document
+        documentsMap["root"] = document
     }
 
     override suspend fun saveDocumentMetadata(document: Document) {
-        documentsMap[document.id]?.let { currentDocument ->
-            documentsMap[document.id] = currentDocument.copy(title = document.title)
+        documentsMap["root"]?.let { currentDocument ->
+            documentsMap["root"] = currentDocument.copy(title = document.title)
         }
     }
 
     override suspend fun saveStoryStep(storyStep: StoryStep, position: Int, documentId: String) {
-        documentsMap[documentId]?.let { document ->
+        documentsMap["root"]?.let { document ->
             val newContent = document.content + (position to storyStep)
-            documentsMap[documentId] = document.copy(content = newContent)
+            documentsMap["root"] = document.copy(content = newContent)
         }
     }
 
@@ -93,8 +99,8 @@ class InMemoryDocumentRepository : DocumentRepository {
 
     private fun setFavorite(ids: Set<String>, isFavorite: Boolean) {
         ids.forEach { id ->
-            documentsMap[id]?.copy(favorite = isFavorite)?.let { document ->
-                documentsMap[id] = document
+            documentsMap["root"]?.copy(favorite = isFavorite)?.let { document ->
+                documentsMap["root"] = document
             }
         }
     }
@@ -106,11 +112,12 @@ class InMemoryDocumentRepository : DocumentRepository {
     }
 
     override suspend fun refreshDocuments() {
+        _documentsMapState.value = documentsMap
     }
 
     override suspend fun stopListeningForFoldersByParentId(parentId: String) {
     }
 
     override suspend fun loadDocumentsByParentId(parentId: String): List<Document> =
-        emptyList()
+        documentsMap.values.toList()
 }
