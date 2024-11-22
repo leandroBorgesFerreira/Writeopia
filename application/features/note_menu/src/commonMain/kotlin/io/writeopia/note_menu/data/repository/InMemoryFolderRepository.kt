@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 class InMemoryFolderRepository : FolderRepository {
 
     private val mutableMap = mutableMapOf<String, List<Folder>>()
-    private val _foldersStateFlow = MutableStateFlow<Map<String, List<Folder>>>(mutableMap)
+    private val foldersStateFlow = MutableStateFlow<Map<String, List<Folder>>>(mutableMap)
 
     override suspend fun createFolder(folder: Folder) {
         println("createFolder")
@@ -26,7 +26,7 @@ class InMemoryFolderRepository : FolderRepository {
         parentId: String,
         coroutineScope: CoroutineScope?
     ): Flow<Map<String, List<Folder>>> {
-        return _foldersStateFlow.asStateFlow()
+        return foldersStateFlow.asStateFlow()
     }
 
     override suspend fun deleteFolderById(folderId: String) {
@@ -35,28 +35,18 @@ class InMemoryFolderRepository : FolderRepository {
     }
 
     override suspend fun refreshFolders() {
-        _foldersStateFlow.value = mutableMap
+        foldersStateFlow.value = mutableMap
     }
 
-    override suspend fun moveToFolder(documentId: String, parentId: String) {
+    override suspend fun moveToFolder(documentId: String, parentId: String) {}
 
-    }
+    override suspend fun deleteFolderByParent(folderId: String) {}
 
-    override suspend fun deleteFolderByParent(folderId: String) {
+    override suspend fun setLastUpdated(folderId: String, long: Long) {}
 
-    }
+    override suspend fun favoriteDocumentByIds(ids: Set<String>) {}
 
-    override suspend fun setLastUpdated(folderId: String, long: Long) {
-
-    }
-
-    override suspend fun favoriteDocumentByIds(ids: Set<String>) {
-
-    }
-
-    override suspend fun unFavoriteDocumentByIds(ids: Set<String>) {
-
-    }
+    override suspend fun unFavoriteDocumentByIds(ids: Set<String>) {}
 
     override suspend fun getFolderById(id: String): Folder =
         Folder.fromName("folder", "disconnecter_user").copy(id = id)
@@ -64,7 +54,7 @@ class InMemoryFolderRepository : FolderRepository {
     override suspend fun getFolderByParentId(parentId: String): List<Folder> = emptyList()
 
     private fun refreshState() {
-        _foldersStateFlow.value = mutableMap
+        foldersStateFlow.value = mutableMap
     }
 
     companion object {
