@@ -29,7 +29,7 @@ object DefaultDrawersJs : DrawersFactory {
             groupsBackgroundColor,
             onHeaderClick,
             dragIconWidth = 16.dp,
-            lineBreakByContent = false,
-            eventListener = KeyEventListenerFactory.js(manager),
+            lineBreakByContent = true,
+            eventListener = KeyEventListenerFactory.desktop(manager),
         )
 }

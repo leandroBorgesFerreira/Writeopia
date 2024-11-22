@@ -31,7 +31,7 @@ fun swipeTextDrawer(
     moveRequest: (Action.Move) -> Unit = {},
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer =
-    TextItemDrawer(
+    DesktopTextItemDrawer(
         modifier,
         customBackgroundColor,
         clickable,

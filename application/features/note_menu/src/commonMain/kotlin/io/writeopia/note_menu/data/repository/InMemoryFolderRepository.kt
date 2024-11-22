@@ -4,19 +4,21 @@ import io.writeopia.note_menu.data.model.Folder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class InMemoryFolderRepository : FolderRepository {
 
-    private val mutableMap = mutableMapOf<String, Folder>()
-    private val _foldersStateFlow = MutableStateFlow<Map<String, Folder>>(mutableMap)
+    private val mutableMap = mutableMapOf<String, List<Folder>>()
+    private val _foldersStateFlow = MutableStateFlow<Map<String, List<Folder>>>(mutableMap)
 
     override suspend fun createFolder(folder: Folder) {
-        mutableMap[folder.id] = folder
+        println("createFolder")
+        mutableMap[folder.id] = listOf(folder)
         refreshState()
     }
 
     override suspend fun updateFolder(folder: Folder) {
-        mutableMap[folder.id] = folder
+        mutableMap[folder.id] = listOf(folder)
         refreshState()
     }
 
@@ -24,7 +26,7 @@ class InMemoryFolderRepository : FolderRepository {
         parentId: String,
         coroutineScope: CoroutineScope?
     ): Flow<Map<String, List<Folder>>> {
-        return MutableStateFlow(emptyMap())
+        return _foldersStateFlow.asStateFlow()
     }
 
     override suspend fun deleteFolderById(folderId: String) {
@@ -33,36 +35,33 @@ class InMemoryFolderRepository : FolderRepository {
     }
 
     override suspend fun refreshFolders() {
-        TODO("Not yet implemented")
+        _foldersStateFlow.value = mutableMap
     }
 
     override suspend fun moveToFolder(documentId: String, parentId: String) {
-        TODO("Not yet implemented")
+
     }
 
     override suspend fun deleteFolderByParent(folderId: String) {
-        TODO("Not yet implemented")
+
     }
 
     override suspend fun setLastUpdated(folderId: String, long: Long) {
-        TODO("Not yet implemented")
+
     }
 
     override suspend fun favoriteDocumentByIds(ids: Set<String>) {
-        TODO("Not yet implemented")
+
     }
 
     override suspend fun unFavoriteDocumentByIds(ids: Set<String>) {
-        TODO("Not yet implemented")
+
     }
 
-    override suspend fun getFolderById(id: String): Folder? {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getFolderById(id: String): Folder =
+        Folder.fromName("folder", "disconnecter_user").copy(id = id)
 
-    override suspend fun getFolderByParentId(parentId: String): List<Folder> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getFolderByParentId(parentId: String): List<Folder> = emptyList()
 
     private fun refreshState() {
         _foldersStateFlow.value = mutableMap

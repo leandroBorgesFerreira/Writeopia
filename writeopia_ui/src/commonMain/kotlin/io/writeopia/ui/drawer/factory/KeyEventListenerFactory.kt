@@ -14,7 +14,6 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.EmptyErase
 
-////
 object KeyEventListenerFactory {
 
     fun desktop(
@@ -69,58 +68,6 @@ object KeyEventListenerFactory {
     ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean {
         return { keyEvent, inputText, step, position, onEmptyErase, cursorPosition, endOfText ->
             when {
-                isEmptyErase(keyEvent, inputText) -> {
-                    when (onEmptyErase) {
-                        EmptyErase.DELETE -> {
-                            manager.onErase(Action.EraseStory(step, position))
-                        }
-
-                        EmptyErase.CHANGE_TYPE -> {
-                            manager.changeStoryType(position, TypeInfo(StoryTypes.TEXT.type), null)
-                        }
-
-                        EmptyErase.DISABLED -> {}
-                    }
-
-                    true
-                }
-
-                isMoveUpEventEnd(keyEvent) && endOfText.shouldMoveUp() -> {
-                    manager.moveToPrevious(cursor = cursorPosition)
-                    true
-                }
-
-                isMoveStrongUpEvent(keyEvent) -> {
-                    manager.moveToPrevious(cursor = cursorPosition, 10)
-                    true
-                }
-
-                isMoveDownEventEnd(keyEvent) && endOfText.shouldMoveDown() -> {
-                    manager.moveToNext(cursor = cursorPosition)
-                    true
-                }
-
-                isMoveStrongDownEvent(keyEvent) -> {
-                    manager.moveToNext(cursor = cursorPosition, 10)
-                    true
-                }
-
-                else -> false
-            }
-        }
-    }
-
-    //Todo: Check if this function can be deleted and substituted by desktop version
-    fun js(
-        manager: WriteopiaStateManager,
-    ): (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean {
-        return { keyEvent, inputText, step, position, onEmptyErase, cursorPosition, endOfText ->
-            when {
-                isLineBreak(keyEvent) -> {
-                    manager.onLineBreak(Action.LineBreak(step, position = position))
-                    true
-                }
-
                 isEmptyErase(keyEvent, inputText) -> {
                     when (onEmptyErase) {
                         EmptyErase.DELETE -> {

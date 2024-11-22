@@ -4,6 +4,7 @@ import io.writeopia.note_menu.data.repository.ConfigurationRepository
 import io.writeopia.note_menu.data.repository.ConfigurationSqlDelightRepository
 import io.writeopia.note_menu.data.repository.FolderRepository
 import io.writeopia.note_menu.data.repository.FolderRepositorySqlDelight
+import io.writeopia.note_menu.data.repository.InMemoryConfigurationRepository
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.dao.ConfigurationSqlDelightDao
 import io.writeopia.sqldelight.dao.FolderSqlDelightDao
@@ -19,7 +20,7 @@ actual class NotesInjector(private val writeopiaDb: WriteopiaDb?) {
 
     actual fun provideNotesConfigurationRepository(): ConfigurationRepository =
         configurationRepository ?: kotlin.run {
-            ConfigurationSqlDelightRepository(provideNotesConfigurationSqlDelightDao()).also {
+            InMemoryConfigurationRepository.singleton().also {
                 configurationRepository = it
             }
         }

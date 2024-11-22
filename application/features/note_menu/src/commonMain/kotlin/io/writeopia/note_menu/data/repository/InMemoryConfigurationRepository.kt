@@ -4,6 +4,8 @@ import io.writeopia.note_menu.data.model.NotesArrangement
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class InMemoryConfigurationRepository private constructor() : ConfigurationRepository {
 
@@ -11,15 +13,20 @@ class InMemoryConfigurationRepository private constructor() : ConfigurationRepos
     private val sortPrefs = mutableMapOf<String, String>()
     private val workSpacePrefs = mutableMapOf<String, String>()
 
+    private val arrangementPrefsState = MutableStateFlow(NotesArrangement.STAGGERED_GRID.type)
+    private val sortPrefsState = MutableStateFlow(OrderBy.UPDATE.type)
+
     override suspend fun saveDocumentArrangementPref(
         arrangement: NotesArrangement,
         userId: String
     ) {
         arrangementPrefs[userId] = arrangement.type
+        arrangementPrefsState.value = arrangement.type
     }
 
     override suspend fun saveDocumentSortingPref(orderBy: OrderBy, userId: String) {
         sortPrefs[userId] = orderBy.type
+        sortPrefsState.value = orderBy.type
     }
 
     override suspend fun arrangementPref(userId: String): String =
@@ -38,16 +45,12 @@ class InMemoryConfigurationRepository private constructor() : ConfigurationRepos
     override fun listenForArrangementPref(
         userId: String,
         coroutineScope: CoroutineScope?
-    ): Flow<String> {
-        TODO("Not yet implemented")
-    }
+    ): Flow<String> = arrangementPrefsState.asStateFlow()
 
     override fun listenOrderPreference(
         userId: String,
         coroutineScope: CoroutineScope?
-    ): Flow<String> {
-        TODO("Not yet implemented")
-    }
+    ): Flow<String> = sortPrefsState.asStateFlow()
 
     companion object {
         private var instance: InMemoryConfigurationRepository? = null

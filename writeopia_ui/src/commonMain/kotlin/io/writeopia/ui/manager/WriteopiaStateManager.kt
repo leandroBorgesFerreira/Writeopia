@@ -399,6 +399,7 @@ class WriteopiaStateManager(
             && (Clock.System.now()
                 .toEpochMilliseconds() - lastBreak.time.toEpochMilliseconds() < 100)
         ) {
+            println("onLineBreak return")
             return
         }
 
@@ -711,11 +712,7 @@ class WriteopiaStateManager(
             val newStep = step.copy(text = text)
             onLineBreak(Action.LineBreak(newStep, position))
         } else {
-            val newText = if (allowLineBreaks) {
-                text
-            } else {
-                text.replace("\n", "")
-            }
+            val newText = if (allowLineBreaks) text else text.replace("\n", "")
             val newStep = step.copy(text = newText)
             val handled = commandHandler.handleCommand(text, newStep, position)
 

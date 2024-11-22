@@ -58,7 +58,7 @@ fun checkItemDrawer(
     },
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer =
-    TextItemDrawer(
+    DesktopTextItemDrawer(
         modifier = modifier,
         customBackgroundColor,
         clickable,

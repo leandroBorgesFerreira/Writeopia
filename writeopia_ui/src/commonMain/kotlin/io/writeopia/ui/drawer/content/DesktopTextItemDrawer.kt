@@ -1,23 +1,24 @@
 package io.writeopia.ui.drawer.content
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.sdk.models.story.Tags
 import io.writeopia.ui.components.SwipeBox
 import io.writeopia.ui.draganddrop.target.DragRowTarget
 import io.writeopia.ui.draganddrop.target.DropTargetHorizontalDivision
@@ -29,7 +30,7 @@ import io.writeopia.ui.drawer.StoryStepDrawer
  * Drawer for a complex message with swipe action, drag and drop logic and a start content to add functionality
  * like a checkbox or a different Composable.
  */
-actual class TextItemDrawer actual constructor(
+class DesktopTextItemDrawer(
     private val modifier: Modifier,
     private val customBackgroundColor: Color,
     private val clickable: Boolean,
@@ -44,12 +45,23 @@ actual class TextItemDrawer actual constructor(
 ) : StoryStepDrawer {
 
     @Composable
-    actual override fun Step(step: StoryStep, drawInfo: DrawInfo) {
+    override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         val focusRequester = remember { FocusRequester() }
         val dropInfo = DropInfo(step, drawInfo.position)
-        var showDragIcon by remember { mutableStateOf(false) }
+        val interactionSource = remember { MutableInteractionSource() }
+        val isHovered by interactionSource.collectIsHoveredAsState()
 
-        DropTargetHorizontalDivision { inBound, data ->
+        val (paddingBottom, paddingTop) = step.tags
+            .asSequence()
+            .map(Tags::fromString)
+            .any { it.isTitle() }
+            .takeIf { it }
+            ?.let { 4 to 16 }
+            ?: (0 to 0)
+
+        DropTargetHorizontalDivision(
+            modifier = Modifier.padding(bottom = paddingBottom.dp, top = paddingTop.dp)
+        ) { inBound, data ->
             when (inBound) {
                 InBounds.OUTSIDE -> {}
                 InBounds.INSIDE_UP -> {
@@ -65,6 +77,7 @@ actual class TextItemDrawer actual constructor(
 
             SwipeBox(
                 modifier = modifier
+                    .hoverable(interactionSource)
                     .apply {
                         if (clickable) {
                             clickable {
@@ -90,7 +103,7 @@ actual class TextItemDrawer actual constructor(
                             }
                         },
                     dataToDrop = dropInfo,
-                    showIcon = showDragIcon,
+                    showIcon = isHovered,
                     position = drawInfo.position,
                     dragIconWidth = dragIconWidth,
                     onDragStart = onDragStart,
@@ -99,19 +112,16 @@ actual class TextItemDrawer actual constructor(
                         focusRequester.requestFocus()
                     }
                 ) {
+                    val interactionSourceText = remember { MutableInteractionSource() }
+
                     startContent?.invoke(step, drawInfo)
 
-                    val interactionSource = remember { MutableInteractionSource() }
-                    messageDrawer().apply {
-                        onFocusChanged = { _, focusState ->
-                            showDragIcon = focusState.hasFocus
-                        }
-                    }.Text(
+                    messageDrawer().Text(
                         step = step,
                         drawInfo = drawInfo,
-                        interactionSource = interactionSource,
+                        interactionSource = interactionSourceText,
                         focusRequester = focusRequester,
-                        decorationBox = @Composable { innerTextField -> innerTextField() }
+                        decorationBox = @Composable { innerTextField -> innerTextField() },
                     )
                 }
             }
