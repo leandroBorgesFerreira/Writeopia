@@ -55,7 +55,6 @@ compose.desktop {
                 isEnabled = true
                 configurationFiles.from("proguard-rules.pro")
             }
-
         }
     }
 }
