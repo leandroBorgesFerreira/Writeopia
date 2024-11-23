@@ -1,16 +1,43 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     kotlin("multiplatform")
     alias(libs.plugins.dokka)
     alias(libs.plugins.ktlint)
+    id("com.vanniktech.maven.publish") version "0.30.0"
 }
 
-// rootProject.extra.apply {
-//    set("PUBLISH_GROUP_ID", "io.writeopia")
-//    set("PUBLISH_ARTIFACT_ID", "writeopia-core")
-//    set("PUBLISH_VERSION", libs.versions.writeopia.get())
-// }
-//
-// apply(from = "${rootDir}/scripts/publish-module.gradle")
+mavenPublishing {
+    val artifactId = "io.writeopia"
+
+    coordinates(
+        groupId = "io.writeopia",
+        artifactId = artifactId,
+        version = "0.5.0"
+    )
+
+    pom {
+        name = artifactId
+        description = "Core module of Writeopia"
+        url = "https://writeopia.io"
+
+        developers {
+            developer {
+                id = "leandroBorgesFerreira"
+                name = "Leandro Borges Ferreira"
+                url = "https://github.com/leandroBorgesFerreira"
+            }
+        }
+
+        scm {
+            connection = "scm:git@github.com:leandroBorgesFerreira/Writeopia.git"
+            developerConnection = "scm:git:ssh://github.com/leandroBorgesFerreira/Writeopia.git"
+            url = "https://github.com/leandroBorgesFerreira/Writeopia"
+        }
+    }
+
+    publishToMavenCentral(SonatypeHost.S01)
+}
 
 kotlin {
     jvm {}

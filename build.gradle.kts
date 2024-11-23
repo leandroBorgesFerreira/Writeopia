@@ -15,8 +15,6 @@ plugins {
     alias(libs.plugins.ktlint)
 }
 
-apply(from = "$rootDir/scripts/publish-root.gradle")
-
 dagCommand {
     defaultBranch = "origin/main"
     outputType = "json_pretty_print"
