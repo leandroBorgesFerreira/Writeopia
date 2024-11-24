@@ -1,36 +1,55 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     kotlin("multiplatform")
     alias(libs.plugins.dokka)
     alias(libs.plugins.ktlint)
-//    alias(libs.plugins.nativeCocoapods)
+    alias(libs.plugins.sonatype.publish)
 }
 
-// rootProject.extra.apply {
-//    set("PUBLISH_GROUP_ID", "io.writeopia")
-//    set("PUBLISH_ARTIFACT_ID", "writeopia-models")
-//    set("PUBLISH_VERSION", libs.versions.writeopia.get())
-// }
+mavenPublishing {
+    val artifactId = "writeopia-models"
 
-// apply(from = "${rootDir}/scripts/publish-module.gradle")
+    coordinates(
+        groupId = "io.writeopia",
+        artifactId = artifactId,
+        version = "0.5.0"
+    )
+
+    pom {
+        name = artifactId
+        description = "Models module of Writeopia"
+        url = "https://writeopia.io"
+
+        developers {
+            developer {
+                id = "leandroBorgesFerreira"
+                name = "Leandro Borges Ferreira"
+                url = "https://github.com/leandroBorgesFerreira"
+            }
+        }
+
+        licenses {
+            license {
+                name = "The Apache Software License, Version 2.0"
+                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+
+        scm {
+            connection = "scm:git@github.com:leandroBorgesFerreira/Writeopia.git"
+            developerConnection = "scm:git:ssh://github.com/leandroBorgesFerreira/Writeopia.git"
+            url = "https://github.com/leandroBorgesFerreira/Writeopia"
+        }
+    }
+
+    signAllPublications()
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = false)
+}
 
 kotlin {
     jvm {}
-
-//    val dummy = Attribute.of("dummy", String::class.java)
-
-//    listOf(
-//        iosX64(),
-//        iosArm64 {
-//            attributes.attribute(dummy, "KT-55751")
-//        },
-//        iosSimulatorArm64()
-//    ).forEach { iosTarget ->
-//        iosTarget.binaries.framework {
-// //            baseName = "shared"
-//            isStatic = true
-//        }
-//    }
 
     js(IR) {
         browser()
@@ -43,20 +62,6 @@ kotlin {
                 implementation(libs.kotlinx.datetime)
             }
         }
-
-//        val iosMain by creating {
-//            dependsOn(commonMain)
-//            dependencies {}
-//        }
-//        val iosX64Main by getting {
-//            dependsOn(iosMain)
-//        }
-//        val iosArm64Main by getting {
-//            dependsOn(iosMain)
-//        }
-//        val iosSimulatorArm64Main by getting {
-//            dependsOn(iosMain)
-//        }
 
         val jsMain by getting {
             dependencies {

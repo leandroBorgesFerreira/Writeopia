@@ -1,18 +1,53 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     kotlin("multiplatform")
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.multiplatform.compiler)
     alias(libs.plugins.dokka)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.sonatype.publish)
 }
 
-// rootProject.extra.apply {
-//    set("PUBLISH_GROUP_ID", "io.writeopia")
-//    set("PUBLISH_ARTIFACT_ID", "writeopia-serialization")
-//    set("PUBLISH_VERSION", libs.versions.writeopia.get())
-// }
-//
-// apply(from = "${rootDir}/scripts/publish-module.gradle")
+mavenPublishing {
+    val artifactId = "writeopia-presentations"
+
+    coordinates(
+        groupId = "io.writeopia",
+        artifactId = artifactId,
+        version = "0.5.0"
+    )
+
+    pom {
+        name = artifactId
+        description = "Writeopia plugin - presentations"
+        url = "https://writeopia.io"
+
+        developers {
+            developer {
+                id = "leandroBorgesFerreira"
+                name = "Leandro Borges Ferreira"
+                url = "https://github.com/leandroBorgesFerreira"
+            }
+        }
+
+        licenses {
+            license {
+                name = "The Apache Software License, Version 2.0"
+                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+
+        scm {
+            connection = "scm:git@github.com:leandroBorgesFerreira/Writeopia.git"
+            developerConnection = "scm:git:ssh://github.com/leandroBorgesFerreira/Writeopia.git"
+            url = "https://github.com/leandroBorgesFerreira/Writeopia"
+        }
+    }
+
+    signAllPublications()
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = false)
+}
 
 kotlin {
     jvm {}

@@ -41,6 +41,7 @@ logback-classic = "1.5.0"
 hikaricp = "5.1.0"
 postgresql = "42.6.0"
 compose-navigation = "2.7.0-alpha07"
+publish = "0.30.0"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
@@ -123,3 +124,4 @@ google-services = { id = "com.google.gms.google-services", version.ref = "google
 ktor-framework = { id = "io.ktor.plugin", version.ref = "ktor" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint"}
 compose-multiplatform-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+sonatype-publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }

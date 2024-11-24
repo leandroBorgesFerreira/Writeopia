@@ -18,7 +18,7 @@ jobs:
           distribution: adopt
           java-version: '21'
       - name: Release build
-        run: ./gradlew writeopia:assemble
+        run: ./gradlew writeopia:assemble writeopia_models:assemble writeopia_ui:assemble plugins:writeopia_export:assemble plugins:writeopia_import_document:assemble plugins:writeopia_network:assemble plugins:writeopia_persistence_core:assemble plugins:writeopia_persistence_sqldelight:assemble plugins:writeopia_presentation:assemble plugins:writeopia_serialization:assemble
       - name: Publish to MavenCentral
         run: ./gradlew publishAllPublicationsToMavenCentralRepository --no-configuration-cache
         env:

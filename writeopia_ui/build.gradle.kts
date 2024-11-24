@@ -1,3 +1,5 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     kotlin("multiplatform")
@@ -5,16 +7,49 @@ plugins {
     alias(libs.plugins.compose.multiplatform.compiler)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.dokka)
-//    alias(libs.plugins.nativeCocoapods)
+    alias(libs.plugins.sonatype.publish)
 }
 
-// rootProject.extra.apply {
-//    set("PUBLISH_GROUP_ID", "io.writeopia")
-//    set("PUBLISH_ARTIFACT_ID", "writeopia-models")
-//    set("PUBLISH_VERSION", libs.versions.writeopia.get())
-// }
+mavenPublishing {
+    val artifactId = "writeopia-ui"
 
-// apply(from = "${rootDir}/scripts/publish-module.gradle")
+    coordinates(
+        groupId = "io.writeopia",
+        artifactId = artifactId,
+        version = "0.5.0"
+    )
+
+    pom {
+        name = artifactId
+        description = "UI module of Writeopia using Jetpack Compose"
+        url = "https://writeopia.io"
+
+        developers {
+            developer {
+                id = "leandroBorgesFerreira"
+                name = "Leandro Borges Ferreira"
+                url = "https://github.com/leandroBorgesFerreira"
+            }
+        }
+
+        licenses {
+            license {
+                name = "The Apache Software License, Version 2.0"
+                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+
+        scm {
+            connection = "scm:git@github.com:leandroBorgesFerreira/Writeopia.git"
+            developerConnection = "scm:git:ssh://github.com/leandroBorgesFerreira/Writeopia.git"
+            url = "https://github.com/leandroBorgesFerreira/Writeopia"
+        }
+    }
+
+    signAllPublications()
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = false)
+}
+
 
 kotlin {
     jvm {}

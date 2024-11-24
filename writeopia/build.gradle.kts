@@ -4,11 +4,11 @@ plugins {
     kotlin("multiplatform")
     alias(libs.plugins.dokka)
     alias(libs.plugins.ktlint)
-    id("com.vanniktech.maven.publish") version "0.30.0"
+    alias(libs.plugins.sonatype.publish)
 }
 
 mavenPublishing {
-    val artifactId = "io.writeopia"
+    val artifactId = "writeopia-core"
 
     coordinates(
         groupId = "io.writeopia",
@@ -29,6 +29,13 @@ mavenPublishing {
             }
         }
 
+        licenses {
+            license {
+                name = "The Apache Software License, Version 2.0"
+                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+
         scm {
             connection = "scm:git@github.com:leandroBorgesFerreira/Writeopia.git"
             developerConnection = "scm:git:ssh://github.com/leandroBorgesFerreira/Writeopia.git"
@@ -36,7 +43,8 @@ mavenPublishing {
         }
     }
 
-    publishToMavenCentral(SonatypeHost.S01)
+    signAllPublications()
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = false)
 }
 
 kotlin {
