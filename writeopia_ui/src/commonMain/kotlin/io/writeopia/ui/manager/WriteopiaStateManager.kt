@@ -71,7 +71,7 @@ class WriteopiaStateManager(
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     init {
-        coroutineScope.launch(Dispatchers.Default) {
+        coroutineScope.launch(dispatcher) {
             keyboardEventFlow
                 .onEach { delay(60) }
                 .collect { event ->
@@ -399,7 +399,6 @@ class WriteopiaStateManager(
             && (Clock.System.now()
                 .toEpochMilliseconds() - lastBreak.time.toEpochMilliseconds() < 100)
         ) {
-            println("onLineBreak return")
             return
         }
 
@@ -462,13 +461,30 @@ class WriteopiaStateManager(
             val newStoriesState = stories.toMutableMap().apply {
                 this[lastPosition] = lastContentStory.copyNewLocalId()
             }
+            val cursor = lastContentStory.text?.length ?: 0
 
-            _currentStory.value.copy(focus = lastPosition, stories = newStoriesState)
+            _currentStory.value.copy(
+                focus = lastPosition,
+                stories = newStoriesState,
+                selection = Selection.fromPosition(
+                    cursorPosition = cursor,
+                    stepPosition = lastPosition
+                )
+            )
         } else {
             val newLastMessage = StoryStep(type = StoryTypes.TEXT.type)
             val newStories = stories + mapOf(stories.size to newLastMessage)
+            val cursor = newLastMessage.text?.length ?: 0
 
-            StoryState(newStories, LastEdit.Whole, lastPosition)
+            StoryState(
+                newStories,
+                LastEdit.Whole,
+                lastPosition,
+                selection = Selection.fromPosition(
+                    cursorPosition = cursor,
+                    stepPosition = lastPosition
+                )
+            )
         }
 
         _currentStory.value = newState
