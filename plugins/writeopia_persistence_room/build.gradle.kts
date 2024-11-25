@@ -1,4 +1,4 @@
- import com.vanniktech.maven.publish.SonatypeHost
+import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
     kotlin("multiplatform")
@@ -9,7 +9,7 @@ plugins {
     alias(libs.plugins.sonatype.publish)
 }
 
- mavenPublishing {
+mavenPublishing {
     val artifactId = "writeopia-persistence-room"
 
     coordinates(
@@ -47,7 +47,7 @@ plugins {
 
     signAllPublications()
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = false)
- }
+}
 
 android {
     namespace = "io.writeopia.sdk.persistence_room"
@@ -78,16 +78,10 @@ android {
     }
 }
 
-
 kotlin {
     jvm {}
 
     androidTarget()
-
-//    js(IR) {
-//        browser()
-//        binaries.library()
-//    }
 
     sourceSets {
         val commonMain by getting {
@@ -105,21 +99,15 @@ kotlin {
         }
 
         val commonTest by getting {
-            dependencies {
-
-            }
+            dependencies {}
         }
 
         val jvmMain by getting {
-            dependencies {
-
-            }
+            dependencies {}
         }
 
         val androidMain by getting {
-            dependencies {
-
-            }
+            dependencies {}
         }
 
         val jvmTest by getting {
