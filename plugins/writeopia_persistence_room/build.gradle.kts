@@ -1,4 +1,4 @@
-//import com.vanniktech.maven.publish.SonatypeHost
+// import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
     alias(libs.plugins.androidLibrary)
@@ -9,7 +9,7 @@ plugins {
 //    alias(libs.plugins.sonatype.publish)
 }
 //
-//mavenPublishing {
+// mavenPublishing {
 //    val artifactId = "writeopia-persistence-room"
 //
 //    coordinates(
@@ -47,7 +47,7 @@ plugins {
 //
 //    signAllPublications()
 //    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = false)
-//}
+// }
 
 android {
     namespace = "io.writeopia.sdk.persistence"

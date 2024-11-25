@@ -14,5 +14,5 @@ data class DrawStory(
     val cursor: Selection? = null
 ) {
 
-    val key = storyStep.key + isSelected.let { if (it) 1 else 0 }
+    val key = storyStep.key + isSelected.let { if (it) 1 else 0 } + (cursor?.key() ?: 0)
 }

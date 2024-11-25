@@ -8,7 +8,6 @@ plugins {
     alias(libs.plugins.sonatype.publish)
 }
 
-
 mavenPublishing {
     val artifactId = "writeopia-serialization"
 

@@ -8,6 +8,8 @@ package io.writeopia.sdk.model.story
  * @property position the position of the paragraph (which line the cursor is)
  */
 data class Selection(val start: Int, val end: Int, val position: Int) {
+    fun key() = if (start == end) hashCode() else 0
+
     companion object {
         fun start(): Selection = Selection(0, 0, 0)
 
