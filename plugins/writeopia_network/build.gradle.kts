@@ -1,6 +1,5 @@
 import com.vanniktech.maven.publish.SonatypeHost
 
-
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.kotlinSerialization)
@@ -9,7 +8,6 @@ plugins {
     alias(libs.plugins.ktlint)
     alias(libs.plugins.sonatype.publish)
 }
-
 
 mavenPublishing {
     val artifactId = "writeopia-network"
