@@ -41,3 +41,5 @@ amplifytools.xcconfig
 
 
 application/desktopApp/writeopia.db_1
+/application/androidApp/release
+application/androidApp/upload-keystore.jks
