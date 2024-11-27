@@ -17,6 +17,6 @@ enum class Tags(val tag: String) {
     companion object {
         fun titleTags(): Set<Tags> = setOf(H1, H2, H3, H4)
 
-        fun fromString(fromTag: String): Tags = entries.first { it.tag == fromTag }
+        fun fromString(fromTag: String): Tags? = entries.firstOrNull { it.tag == fromTag }
     }
 }

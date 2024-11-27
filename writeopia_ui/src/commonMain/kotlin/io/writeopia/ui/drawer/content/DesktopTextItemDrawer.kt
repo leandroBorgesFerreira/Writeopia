@@ -54,7 +54,7 @@ class DesktopTextItemDrawer(
         val (paddingBottom, paddingTop) = step.tags
             .asSequence()
             .map(Tags::fromString)
-            .any { it.isTitle() }
+            .any { it?.isTitle() == true }
             .takeIf { it }
             ?.let { 4 to 16 }
             ?: (0 to 0)

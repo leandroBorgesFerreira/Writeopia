@@ -97,8 +97,8 @@ class ContentHandler(
     }
 
     private fun Set<String>.merge(tag2: Set<String>): Set<String> =
-        if (tag2.any { Tags.fromString(it).isTitle() }) {
-            this.filterNot { Tags.fromString(it).isTitle() }.toSet() + tag2
+        if (tag2.any { Tags.fromString(it)?.isTitle() == true }) {
+            this.filterNot { Tags.fromString(it)?.isTitle() == true }.toSet() + tag2
         } else {
             this + tag2
         }

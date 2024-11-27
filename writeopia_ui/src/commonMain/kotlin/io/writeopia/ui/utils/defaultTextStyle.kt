@@ -28,9 +28,7 @@ fun codeBlockStyle() =
 private fun textSizeFromTags(tags: Iterable<String>) =
     tags.asSequence()
         .map(Tags::fromString)
-        .firstOrNull { tag ->
-            tag.isTitle()
-        }
+        .firstOrNull { tag -> tag?.isTitle() == true }
         ?.let(::textSizeFromTag)
         ?: 16.sp
 
