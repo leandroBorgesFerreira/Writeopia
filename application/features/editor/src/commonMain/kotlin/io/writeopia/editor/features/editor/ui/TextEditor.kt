@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.ui.WriteopiaEditor
 import io.writeopia.ui.drawer.factory.DrawersFactory
+import io.writeopia.ui.model.DrawStory
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -20,6 +21,7 @@ internal fun TextEditor(
     noteEditorViewModel: NoteEditorViewModel,
     drawersFactory: DrawersFactory,
     modifier: Modifier = Modifier,
+    keyFn: (Int, DrawStory) -> Int = { index, drawStory -> drawStory.desktopKey + index }
 ) {
     val storyState by noteEditorViewModel.toDraw.collectAsState()
     val editable by noteEditorViewModel.isEditable.collectAsState()
@@ -40,6 +42,7 @@ internal fun TextEditor(
         modifier = modifier,
         editable = editable,
         listState = listState,
+        keyFn = keyFn,
         drawers = drawersFactory.create(
             noteEditorViewModel.writeopiaManager,
             defaultBorder = clipShape,

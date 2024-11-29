@@ -53,7 +53,7 @@ class CheckItemPreviewDrawer(
             ) {
                 Checkbox(
                     modifier = Modifier.size(25.dp),
-                    checked = step.checked ?: false,
+                    checked = step.checked == true,
                     onCheckedChange = {},
                     enabled = false,
                 )

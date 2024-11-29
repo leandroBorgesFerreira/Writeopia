@@ -6,6 +6,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -20,22 +21,23 @@ class TextPreviewDrawer(
     private val style: @Composable () -> TextStyle = {
         MaterialTheme.typography.bodyMedium.copy(fontSize = 15.sp)
     },
-    private val maxLines: Int = Int.MAX_VALUE
-) : StoryStepDrawer {
-
-    @Composable
-    override fun Step(step: StoryStep, drawInfo: DrawInfo) {
-        val textColor = if (drawInfo.selectMode) {
+    private val maxLines: Int = Int.MAX_VALUE,
+    private val textColor: @Composable (DrawInfo) -> Color = { drawInfo ->
+        if (drawInfo.selectMode) {
             MaterialTheme.colorScheme.onPrimary
         } else {
             MaterialTheme.colorScheme.onBackground
         }
+    }
+) : StoryStepDrawer {
 
+    @Composable
+    override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         Text(
             modifier = modifier,
             text = step.text ?: "",
             style = style(),
-            color = textColor,
+            color = textColor(drawInfo),
             maxLines = maxLines
         )
     }

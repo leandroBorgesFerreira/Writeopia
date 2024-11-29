@@ -29,7 +29,8 @@ fun swipeTextDrawer(
     onDragStart: () -> Unit = {},
     onDragStop: () -> Unit = {},
     moveRequest: (Action.Move) -> Unit = {},
-    messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
+    messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
+    isDesktop: Boolean
 ): StoryStepDrawer =
     DesktopTextItemDrawer(
         modifier,
@@ -42,6 +43,7 @@ fun swipeTextDrawer(
         onDragStop,
         moveRequest,
         null,
+        isDesktop,
         messageDrawer
     )
 
@@ -49,6 +51,7 @@ fun swipeTextDrawer(
     manager: WriteopiaStateManager,
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
+    isDesktop: Boolean,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer {
     return swipeTextDrawer(
@@ -60,6 +63,7 @@ fun swipeTextDrawer(
         onDragStop = manager::onDragStop,
         moveRequest = manager::moveRequest,
         customBackgroundColor = Color.Transparent,
+        isDesktop = isDesktop,
         messageDrawer = {
             messageDrawer()
         }
@@ -71,6 +75,7 @@ fun swipeTextDrawer(
 private fun SwipeMessageDrawerPreview() {
     swipeTextDrawer(
         onDragHover = {},
+        isDesktop = true,
         messageDrawer = {
             TextDrawer(selectionState = MutableStateFlow(false), onSelectionLister = {})
         },

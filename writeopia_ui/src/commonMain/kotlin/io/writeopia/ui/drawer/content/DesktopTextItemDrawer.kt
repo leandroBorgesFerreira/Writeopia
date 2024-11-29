@@ -41,7 +41,8 @@ class DesktopTextItemDrawer(
     private val onDragStop: () -> Unit,
     private val moveRequest: (Action.Move) -> Unit,
     private val startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
-    private val messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
+    private val isDesktop: Boolean,
+    private val messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
 ) : StoryStepDrawer {
 
     @Composable
@@ -50,6 +51,7 @@ class DesktopTextItemDrawer(
         val dropInfo = DropInfo(step, drawInfo.position)
         val interactionSource = remember { MutableInteractionSource() }
         val isHovered by interactionSource.collectIsHoveredAsState()
+        var showDragIcon by remember { mutableStateOf(false) }
 
         val (paddingBottom, paddingTop) = step.tags
             .asSequence()
@@ -103,7 +105,7 @@ class DesktopTextItemDrawer(
                             }
                         },
                     dataToDrop = dropInfo,
-                    showIcon = isHovered,
+                    showIcon = showDragIcon || isHovered,
                     position = drawInfo.position,
                     dragIconWidth = dragIconWidth,
                     onDragStart = onDragStart,
@@ -116,7 +118,13 @@ class DesktopTextItemDrawer(
 
                     startContent?.invoke(step, drawInfo)
 
-                    messageDrawer().Text(
+                    messageDrawer().apply {
+                        onFocusChanged = { _, focusState ->
+                            if (!isDesktop) {
+                                showDragIcon = focusState.hasFocus
+                            }
+                        }
+                    }.Text(
                         step = step,
                         drawInfo = drawInfo,
                         interactionSource = interactionSourceText,

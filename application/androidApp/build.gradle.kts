@@ -70,10 +70,19 @@ android {
         applicationId = "io.writeopia"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "0.1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file("../../../upload-keystore.jks")
+            storePassword = System.getenv("WR_ANDROID_SIGNING_STORE_PASSWORD")
+            keyAlias = System.getenv("WR_ANDROID_SIGNING_KEY_ALIAS")
+            keyPassword = System.getenv("WR_ANDROID_SIGNING_KEY_PASSWORD")
+        }
     }
 
     buildTypes {
@@ -91,7 +100,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
