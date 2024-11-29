@@ -11,9 +11,9 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.story.Selection
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.ui.model.DrawState
-import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.draganddrop.target.DraggableScreen
 import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.model.DrawStory
 
 @Composable
 fun WriteopiaEditor(
@@ -22,7 +22,8 @@ fun WriteopiaEditor(
     editable: Boolean = true,
     listState: LazyListState = rememberLazyListState(),
     drawers: Map<Int, StoryStepDrawer>,
-    storyState: DrawState
+    storyState: DrawState,
+    keyFn: (Int, DrawStory) -> Int = { index, drawStory -> drawStory.desktopKey + index }
 ) {
     val content = storyState.stories
 
@@ -34,7 +35,7 @@ fun WriteopiaEditor(
             content = {
                 itemsIndexed(
                     content,
-                    key = { index, drawStory -> drawStory.key + index },
+                    key = keyFn,
                     itemContent = { _, drawStory ->
                         drawers[drawStory.storyStep.type.number]?.Step(
                             step = drawStory.storyStep,

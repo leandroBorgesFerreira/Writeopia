@@ -133,7 +133,12 @@ internal fun NoteEditorScreen(
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
             ) {
-                TextEditor(noteEditorViewModel, DefaultDrawersAndroid, Modifier.weight(1F))
+                TextEditor(
+                    noteEditorViewModel,
+                    DefaultDrawersAndroid,
+                    Modifier.weight(1F).padding(horizontal = 6.dp),
+                    keyFn = { index, drawStory -> drawStory.mobileKey + index }
+                )
 
                 BottomScreen(
                     noteEditorViewModel.isEditState,

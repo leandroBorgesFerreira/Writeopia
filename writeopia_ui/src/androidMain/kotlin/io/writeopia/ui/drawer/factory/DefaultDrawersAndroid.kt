@@ -14,6 +14,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.content.RowGroupDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
+import io.writeopia.ui.model.DrawConfig
 
 object DefaultDrawersAndroid : DrawersFactory {
 
@@ -43,6 +44,16 @@ object DefaultDrawersAndroid : DrawersFactory {
             groupsBackgroundColor,
             onHeaderClick,
             lineBreakByContent = true,
+            drawConfig = DrawConfig(
+                textDrawerStartPadding = 2,
+                textVerticalPadding = 4,
+                codeBlockStartPadding = 0,
+                checkBoxStartPadding = 0,
+                checkBoxEndPadding = 0,
+                checkBoxItemVerticalPadding = 0,
+                listItemStartPadding = 8
+            ),
+            isDesktop = false,
             eventListener = KeyEventListenerFactory.android(
                 manager,
                 isEmptyErase = DefaultDrawersAndroid::emptyErase

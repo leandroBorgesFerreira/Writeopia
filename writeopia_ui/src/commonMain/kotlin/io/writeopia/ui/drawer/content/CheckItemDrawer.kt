@@ -1,5 +1,6 @@
 package io.writeopia.ui.drawer.content
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -38,11 +39,13 @@ fun checkItemDrawer(
     onDragStart: () -> Unit,
     onDragStop: () -> Unit,
     moveRequest: (Action.Move) -> Unit,
+    checkBoxPadding: PaddingValues = PaddingValues(0.dp),
+    isDesktop: Boolean,
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)? = { step, drawInfo ->
         CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
-            Spacer(modifier = Modifier.width(8.dp))
+//            Spacer(modifier = Modifier.width(8.dp))
             Checkbox(
-                checked = step.checked ?: false,
+                checked = step.checked == true,
                 onCheckedChange = { checked ->
                     onCheckedChange(
                         Action.StoryStateChange(
@@ -51,7 +54,7 @@ fun checkItemDrawer(
                         )
                     )
                 },
-                modifier.padding(vertical = 4.dp),
+                modifier = Modifier.padding(checkBoxPadding),
                 enabled = drawInfo.editable,
             )
         }
@@ -69,6 +72,7 @@ fun checkItemDrawer(
         onDragStop,
         moveRequest,
         startContent,
+        isDesktop,
         messageDrawer
     )
 
@@ -76,6 +80,8 @@ fun checkItemDrawer(
     manager: WriteopiaStateManager,
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
+    checkBoxPadding: PaddingValues = PaddingValues(0.dp),
+    isDesktop: Boolean,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer = checkItemDrawer(
     modifier = modifier,
@@ -83,10 +89,12 @@ fun checkItemDrawer(
     onSelected = manager::onSelected,
     customBackgroundColor = Color.Transparent,
     dragIconWidth = dragIconWidth,
+    checkBoxPadding = checkBoxPadding,
     onDragHover = manager::onDragHover,
     onDragStart = manager::onDragStart,
     onDragStop = manager::onDragStop,
     moveRequest = manager::moveRequest,
+    isDesktop = isDesktop,
     messageDrawer = {
         messageDrawer()
     },
@@ -101,6 +109,7 @@ fun CheckItemDrawerStepPreview() {
         onDragStart = {},
         onDragStop = {},
         moveRequest = {},
+        isDesktop = true,
         messageDrawer = {
             TextDrawer(
                 selectionState = MutableStateFlow(false),

@@ -25,14 +25,18 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  */
 
 fun unOrderedListItemDrawer(
+    isDesktop: Boolean,
     manager: WriteopiaStateManager,
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
+    checkBoxPadding: PaddingValues = PaddingValues(0.dp),
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer = unOrderedListItemDrawer(
+    isDesktop = isDesktop,
     modifier = modifier,
     onSelected = manager::onSelected,
     customBackgroundColor = Color.Transparent,
+    checkBoxPadding = checkBoxPadding,
     onDragHover = manager::onDragHover,
     onDragStart = manager::onDragStart,
     onDragStop = manager::onDragStop,
@@ -42,19 +46,20 @@ fun unOrderedListItemDrawer(
 )
 
 fun unOrderedListItemDrawer(
+    isDesktop: Boolean,
     modifier: Modifier = Modifier,
     customBackgroundColor: Color = Color.Transparent,
     clickable: Boolean = true,
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     dragIconWidth: Dp = 16.dp,
+    checkBoxPadding: PaddingValues = PaddingValues(0.dp),
     onDragHover: (Int) -> Unit,
     onDragStart: () -> Unit,
     onDragStop: () -> Unit,
     moveRequest: (Action.Move) -> Unit = {},
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)? = { _, _ ->
-        Spacer(modifier = Modifier.width(8.dp))
         Text(
-            modifier = Modifier.padding(horizontal = 2.dp),
+            modifier = Modifier.padding(checkBoxPadding),
             text = "-",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground
@@ -73,6 +78,7 @@ fun unOrderedListItemDrawer(
         onDragStop,
         moveRequest,
         startContent,
+        isDesktop,
         messageDrawer
     )
 
@@ -85,7 +91,8 @@ private fun UnOrderedListItemPreview() {
         .fillMaxWidth()
 
     unOrderedListItemDrawer(
-        modifier,
+        modifier = modifier,
+        isDesktop = true,
         onDragHover = {},
         onDragStart = {},
         onDragStop = {},

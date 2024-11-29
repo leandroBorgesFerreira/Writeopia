@@ -220,6 +220,23 @@ fun App(
 
                         Box(
                             modifier = Modifier
+                                .fillMaxHeight()
+                                .width(10.dp)
+                                .align(alignment = Alignment.CenterStart)
+                                .draggable(
+                                    orientation = Orientation.Horizontal,
+                                    state = rememberDraggableState { delta ->
+                                        globalShellViewModel.moveSideMenu(sideMenuWidth + delta / 1.8F)
+                                    },
+                                    onDragStopped = {
+                                        globalShellViewModel.saveMenuWidth()
+                                    },
+                                )
+                                .pointerHoverIcon(PointerIcon.Crosshair),
+                        )
+
+                        Box(
+                            modifier = Modifier
                                 .height(60.dp)
                                 .width(16.dp)
                                 .align(alignment = Alignment.CenterStart)
@@ -229,7 +246,7 @@ fun App(
                                 .draggable(
                                     orientation = Orientation.Horizontal,
                                     state = rememberDraggableState { delta ->
-                                        globalShellViewModel.moveSideMenu(sideMenuWidth + delta / 1.8F)
+                                        globalShellViewModel.moveSideMenu(sideMenuWidth + delta / 2F)
                                     },
                                     onDragStopped = {
                                         globalShellViewModel.saveMenuWidth()

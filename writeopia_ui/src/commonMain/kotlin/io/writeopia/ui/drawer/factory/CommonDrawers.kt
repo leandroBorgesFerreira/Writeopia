@@ -1,6 +1,7 @@
 package io.writeopia.ui.drawer.factory
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,13 +28,10 @@ import io.writeopia.ui.drawer.content.headerDrawer
 import io.writeopia.ui.drawer.content.swipeTextDrawer
 import io.writeopia.ui.drawer.content.unOrderedListItemDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
+import io.writeopia.ui.model.DrawConfig
 import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.utils.codeBlockStyle
 import io.writeopia.ui.utils.defaultTextStyle
-
-private const val LARGE_START_PADDING = 16
-private const val MEDIUM_START_PADDING = 8
-private const val SMALL_START_PADDING = 4
 
 private const val DRAG_ICON_WIDTH = 24
 
@@ -49,11 +47,12 @@ object CommonDrawers {
         onHeaderClick: () -> Unit = {},
         dragIconWidth: Dp = DRAG_ICON_WIDTH.dp,
         lineBreakByContent: Boolean,
+        drawConfig: DrawConfig = DrawConfig(),
         eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean,
+        isDesktop: Boolean,
     ): Map<Int, StoryStepDrawer> {
         val textBoxDrawer = swipeTextDrawer(
             modifier = Modifier
-                .padding(horizontal = LARGE_START_PADDING.dp)
                 .clip(shape = defaultBorder)
                 .background(groupsBackgroundColor),
             dragIconWidth = DRAG_ICON_WIDTH.dp,
@@ -61,29 +60,45 @@ object CommonDrawers {
             onDragStart = manager::onDragStart,
             onDragStop = manager::onDragStop,
             onSelected = manager::onSelected,
+            isDesktop = isDesktop,
             messageDrawer = {
                 messageDrawer(
                     manager = manager,
+                    modifier = Modifier.padding(
+                        start = drawConfig.codeBlockStartPadding.dp,
+                        top = drawConfig.textVerticalPadding.dp,
+                        bottom = drawConfig.textVerticalPadding.dp,
+                    ),
                     eventListener = eventListener,
                     allowLineBreaks = true,
                     lineBreakByContent = lineBreakByContent,
                     emptyErase = EmptyErase.CHANGE_TYPE,
-                    onSelectionLister = manager::toggleSelection
+                    onSelectionLister = manager::toggleSelection,
                 )
             }
         )
 
         val codeBlockDrawer = swipeTextDrawer(
             modifier = Modifier
-                .padding(horizontal = LARGE_START_PADDING.dp)
-                .clip(MaterialTheme.shapes.medium)
-                .background(Color.Gray),
+                .clip(MaterialTheme.shapes.medium),
             dragIconWidth = dragIconWidth,
             onDragHover = manager::onDragHover,
             onSelected = manager::onSelected,
+            isDesktop = isDesktop,
             messageDrawer = {
                 messageDrawer(
                     manager = manager,
+                    modifier = Modifier.padding(
+                        start = drawConfig.codeBlockStartPadding.dp,
+                        top = drawConfig.textVerticalPadding.dp,
+                        bottom = drawConfig.textVerticalPadding.dp
+                    )
+                        .clip(MaterialTheme.shapes.large)
+                        .background(Color.Gray)
+                        .padding(
+                            horizontal = drawConfig.codeBlockHorizontalInnerPadding.dp,
+                            vertical = drawConfig.codeBlockVerticalInnerPadding.dp
+                        ),
                     eventListener = eventListener,
                     textStyle = { codeBlockStyle() },
                     allowLineBreaks = true,
@@ -95,12 +110,17 @@ object CommonDrawers {
         )
 
         val swipeTextDrawer = swipeTextDrawer(
-            manager,
-            modifier = Modifier.padding(start = MEDIUM_START_PADDING.dp),
+            manager = manager,
             dragIconWidth = dragIconWidth,
+            isDesktop = isDesktop,
         ) {
             messageDrawer(
                 manager = manager,
+                modifier = Modifier.padding(
+                    start = drawConfig.codeBlockStartPadding.dp,
+                    top = drawConfig.textVerticalPadding.dp,
+                    bottom = drawConfig.textVerticalPadding.dp
+                ),
                 eventListener = eventListener,
                 lineBreakByContent = lineBreakByContent,
                 emptyErase = EmptyErase.DELETE,
@@ -109,9 +129,14 @@ object CommonDrawers {
         }
 
         val checkItemDrawer = checkItemDrawer(
-            manager,
-            Modifier.padding(horizontal = LARGE_START_PADDING.dp),
+            manager = manager,
+            isDesktop = isDesktop,
+            modifier = Modifier.padding(vertical = drawConfig.checkBoxItemVerticalPadding.dp),
             dragIconWidth = dragIconWidth,
+            checkBoxPadding = PaddingValues(
+                start = drawConfig.checkBoxStartPadding.dp,
+                end = drawConfig.checkBoxEndPadding.dp
+            )
         ) {
             messageDrawer(
                 manager,
@@ -124,9 +149,13 @@ object CommonDrawers {
 
         val unOrderedListItemDrawer =
             unOrderedListItemDrawer(
-                manager,
-                Modifier.padding(horizontal = LARGE_START_PADDING.dp),
+                manager = manager,
+                isDesktop = isDesktop,
                 dragIconWidth = dragIconWidth,
+                checkBoxPadding = PaddingValues(
+                    start = drawConfig.listItemStartPadding.dp,
+                    end = drawConfig.listItemEndPadding.dp
+                )
             ) {
                 messageDrawer(
                     manager,
@@ -143,7 +172,8 @@ object CommonDrawers {
             headerClick = onHeaderClick,
             onKeyEvent = eventListener,
             lineBreakByContent = lineBreakByContent,
-            selectionState = manager.selectionState
+            selectionState = manager.selectionState,
+            drawConfig = drawConfig
         )
 
         return buildMap {

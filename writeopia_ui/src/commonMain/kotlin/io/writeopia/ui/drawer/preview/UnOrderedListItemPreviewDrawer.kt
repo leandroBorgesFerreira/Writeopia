@@ -3,6 +3,7 @@ package io.writeopia.ui.drawer.preview
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,12 +28,23 @@ class UnOrderedListItemPreviewDrawer(
 ) : StoryStepDrawer {
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
+        val textColor = if (drawInfo.selectMode) {
+            MaterialTheme.colorScheme.onPrimary
+        } else {
+            MaterialTheme.colorScheme.onBackground
+        }
+
         Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-            Text(modifier = Modifier.padding(end = 6.dp), text = startText, style = textStyle())
+            Text(
+                modifier = Modifier,
+                text = startText,
+                style = textStyle(),
+                color = textColor
+            )
             TextPreviewDrawer(
                 modifier = textModifier,
                 style = textStyle,
-                maxLines = maxLines
+                maxLines = maxLines,
             ).Step(
                 step = step,
                 drawInfo = drawInfo

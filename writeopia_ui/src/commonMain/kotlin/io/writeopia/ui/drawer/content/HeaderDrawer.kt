@@ -30,6 +30,7 @@ import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.factory.EndOfText
 import io.writeopia.ui.manager.WriteopiaStateManager
+import io.writeopia.ui.model.DrawConfig
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.utils.transparentTextInputColors
@@ -105,12 +106,14 @@ fun headerDrawer(
     modifier: Modifier = Modifier,
     lineBreakByContent: Boolean,
     selectionState: StateFlow<Boolean>,
+    drawConfig: DrawConfig
 ): StoryStepDrawer =
     HeaderDrawer(
         modifier = modifier,
         drawer = {
             TextDrawer(
-                modifier = Modifier.align(Alignment.BottomStart),
+                modifier = Modifier.align(Alignment.BottomStart)
+                    .padding(start = drawConfig.textDrawerStartPadding.dp),
                 onTextEdit = manager::handleTextInput,
                 onKeyEvent = onKeyEvent,
                 lineBreakByContent = lineBreakByContent,
@@ -136,7 +139,8 @@ private fun HeaderDrawerStepPreview() {
     HeaderDrawer(
         drawer = {
             TextDrawer(
-                modifier = Modifier.align(Alignment.BottomStart).padding(start = 16.dp, bottom = 16.dp),
+                modifier = Modifier.align(Alignment.BottomStart)
+                    .padding(start = 16.dp, bottom = 16.dp),
                 onTextEdit = { _, _, _, _ -> },
                 textStyle = {
                     MaterialTheme.typography.headlineMedium.copy(
@@ -160,7 +164,8 @@ private fun HeaderDrawerStepPreviewNoColor() {
     HeaderDrawer(
         drawer = {
             TextDrawer(
-                modifier = Modifier.align(Alignment.BottomStart).padding(start = 16.dp, bottom = 16.dp),
+                modifier = Modifier.align(Alignment.BottomStart)
+                    .padding(start = 16.dp, bottom = 16.dp),
                 onTextEdit = { _, _, _, _ -> },
                 textStyle = {
                     MaterialTheme.typography.headlineMedium.copy(

@@ -118,7 +118,6 @@ class TextDrawer(
 
         BasicTextField(
             modifier = modifier
-                .padding(start = 16.dp)
                 .let { modifierLet ->
                     if (focusRequester != null) {
                         modifierLet.focusRequester(focusRequester)
