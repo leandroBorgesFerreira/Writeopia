@@ -19,6 +19,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
@@ -45,6 +46,12 @@ class HeaderDrawer(
     private val modifier: Modifier = Modifier,
     private val headerClick: () -> Unit = {},
     private val drawer: BoxScope.() -> SimpleTextDrawer,
+    private val placeHolderStyle: @Composable () -> TextStyle = {
+        MaterialTheme.typography.displaySmall.copy(
+            fontWeight = FontWeight.Bold,
+            color = Color.LightGray
+        )
+    },
 ) : StoryStepDrawer {
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -85,10 +92,7 @@ class HeaderDrawer(
                         placeholder = {
                             Text(
                                 text = "Title",
-                                style = MaterialTheme.typography.headlineMedium.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.LightGray
-                                )
+                                style = placeHolderStyle(),
                             )
                         },
                         colors = transparentTextInputColors(),
@@ -106,7 +110,7 @@ fun headerDrawer(
     modifier: Modifier = Modifier,
     lineBreakByContent: Boolean,
     selectionState: StateFlow<Boolean>,
-    drawConfig: DrawConfig
+    drawConfig: DrawConfig,
 ): StoryStepDrawer =
     HeaderDrawer(
         modifier = modifier,
@@ -118,17 +122,13 @@ fun headerDrawer(
                 onKeyEvent = onKeyEvent,
                 lineBreakByContent = lineBreakByContent,
                 emptyErase = EmptyErase.DISABLED,
-                textStyle = {
-                    MaterialTheme.typography.displayMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                },
+                textStyle = { drawConfig.titleStyle() },
                 selectionState = selectionState,
                 onSelectionLister = {}
             )
         },
-        headerClick = headerClick
+        headerClick = headerClick,
+        placeHolderStyle = { drawConfig.titlePlaceHolderStyle() }
     )
 
 @Preview
@@ -177,8 +177,9 @@ private fun HeaderDrawerStepPreviewNoColor() {
                 onSelectionLister = {}
             )
         },
-        headerClick = {}
-    ).Step(step = step, drawInfo = DrawInfo())
+        headerClick = {},
+
+        ).Step(step = step, drawInfo = DrawInfo())
 }
 
 private fun sampleStoryStep() = StoryStep(
