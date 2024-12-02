@@ -9,10 +9,23 @@ plugins {
 
 kotlin {
     androidTarget()
+
     jvm()
+
     js(IR) {
         browser()
         binaries.library()
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "WriteopiaFeaturesEditor"
+            isStatic = true
+        }
     }
 
     sourceSets {
@@ -32,6 +45,7 @@ kotlin {
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:common_ui"))
                 implementation(project(":application:core:persistence_bridge"))
+                implementation(project(":application:core:theme"))
 
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.datetime)

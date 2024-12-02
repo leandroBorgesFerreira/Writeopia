@@ -8,9 +8,22 @@ plugins {
 
 kotlin {
     androidTarget()
+
     jvm {}
+
     js(IR) {
         browser()
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "WriteopiaFeaturesAccount"
+            isStatic = true
+        }
     }
 
     sourceSets {

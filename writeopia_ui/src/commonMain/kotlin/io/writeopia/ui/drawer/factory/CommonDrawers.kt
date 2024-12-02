@@ -56,6 +56,7 @@ object CommonDrawers {
                 .clip(shape = defaultBorder)
                 .background(groupsBackgroundColor),
             dragIconWidth = DRAG_ICON_WIDTH.dp,
+            config = drawConfig,
             onDragHover = manager::onDragHover,
             onDragStart = manager::onDragStart,
             onDragStop = manager::onDragStop,
@@ -82,6 +83,7 @@ object CommonDrawers {
             modifier = Modifier
                 .clip(MaterialTheme.shapes.medium),
             dragIconWidth = dragIconWidth,
+            config = drawConfig,
             onDragHover = manager::onDragHover,
             onSelected = manager::onSelected,
             isDesktop = isDesktop,
@@ -113,6 +115,7 @@ object CommonDrawers {
             manager = manager,
             dragIconWidth = dragIconWidth,
             isDesktop = isDesktop,
+            config = drawConfig,
         ) {
             messageDrawer(
                 manager = manager,
@@ -133,6 +136,7 @@ object CommonDrawers {
             isDesktop = isDesktop,
             modifier = Modifier.padding(vertical = drawConfig.checkBoxItemVerticalPadding.dp),
             dragIconWidth = dragIconWidth,
+            config = drawConfig,
             checkBoxPadding = PaddingValues(
                 start = drawConfig.checkBoxStartPadding.dp,
                 end = drawConfig.checkBoxEndPadding.dp
@@ -152,6 +156,7 @@ object CommonDrawers {
                 manager = manager,
                 isDesktop = isDesktop,
                 dragIconWidth = dragIconWidth,
+                config = drawConfig,
                 checkBoxPadding = PaddingValues(
                     start = drawConfig.listItemStartPadding.dp,
                     end = drawConfig.listItemEndPadding.dp
@@ -159,6 +164,11 @@ object CommonDrawers {
             ) {
                 messageDrawer(
                     manager,
+                    modifier = Modifier.padding(
+                        start = drawConfig.codeBlockStartPadding.dp,
+                        top = drawConfig.textVerticalPadding.dp,
+                        bottom = drawConfig.textVerticalPadding.dp
+                    ),
                     eventListener = eventListener,
                     emptyErase = EmptyErase.CHANGE_TYPE,
                     lineBreakByContent = lineBreakByContent,

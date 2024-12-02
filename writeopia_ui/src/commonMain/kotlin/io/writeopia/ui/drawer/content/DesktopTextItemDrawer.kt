@@ -25,6 +25,7 @@ import io.writeopia.ui.draganddrop.target.DropTargetHorizontalDivision
 import io.writeopia.ui.draganddrop.target.InBounds
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.model.DrawConfig
 
 /**
  * Drawer for a complex message with swipe action, drag and drop logic and a start content to add functionality
@@ -36,6 +37,7 @@ class DesktopTextItemDrawer(
     private val clickable: Boolean,
     private val onSelected: (Boolean, Int) -> Unit,
     private val dragIconWidth: Dp,
+    private val config: DrawConfig,
     private val onDragHover: (Int) -> Unit,
     private val onDragStart: () -> Unit,
     private val onDragStop: () -> Unit,
@@ -88,7 +90,8 @@ class DesktopTextItemDrawer(
                         }
                     },
                 defaultColor = customBackgroundColor,
-                activeColor = MaterialTheme.colorScheme.primary,
+                activeColor = config.selectedColor(),
+                activeBorderColor = config.selectedBorderColor(),
                 isOnEditState = drawInfo.selectMode,
                 swipeListener = { isSelected ->
                     onSelected(isSelected, drawInfo.position)

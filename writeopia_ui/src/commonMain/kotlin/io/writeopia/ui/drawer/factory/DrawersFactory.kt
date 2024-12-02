@@ -15,5 +15,7 @@ interface DrawersFactory {
         editable: Boolean,
         groupsBackgroundColor: Color,
         onHeaderClick: () -> Unit,
+        selectedColor: Color,
+        selectedBorderColor: Color,
     ): Map<Int, StoryStepDrawer>
 }

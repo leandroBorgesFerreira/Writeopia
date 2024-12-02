@@ -2,9 +2,7 @@ package io.writeopia.ui.drawer.content
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
@@ -15,12 +13,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.action.Action
-import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
+import io.writeopia.ui.model.DrawConfig
+import io.writeopia.ui.model.DrawInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -34,6 +33,7 @@ fun checkItemDrawer(
     clickable: Boolean = true,
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     dragIconWidth: Dp = 16.dp,
+    config: DrawConfig,
     onCheckedChange: (Action.StoryStateChange) -> Unit = {},
     onDragHover: (Int) -> Unit,
     onDragStart: () -> Unit,
@@ -67,6 +67,7 @@ fun checkItemDrawer(
         clickable,
         onSelected,
         dragIconWidth,
+        config,
         onDragHover,
         onDragStart,
         onDragStop,
@@ -80,6 +81,7 @@ fun checkItemDrawer(
     manager: WriteopiaStateManager,
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
+    config: DrawConfig,
     checkBoxPadding: PaddingValues = PaddingValues(0.dp),
     isDesktop: Boolean,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
@@ -90,6 +92,7 @@ fun checkItemDrawer(
     customBackgroundColor = Color.Transparent,
     dragIconWidth = dragIconWidth,
     checkBoxPadding = checkBoxPadding,
+    config = config,
     onDragHover = manager::onDragHover,
     onDragStart = manager::onDragStart,
     onDragStop = manager::onDragStop,
@@ -109,6 +112,7 @@ fun CheckItemDrawerStepPreview() {
         onDragStart = {},
         onDragStop = {},
         moveRequest = {},
+        config = DrawConfig(),
         isDesktop = true,
         messageDrawer = {
             TextDrawer(

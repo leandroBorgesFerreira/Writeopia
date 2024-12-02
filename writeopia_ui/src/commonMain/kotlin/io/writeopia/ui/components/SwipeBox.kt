@@ -6,6 +6,7 @@ import androidx.compose.animation.core.animateIntOffsetAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -24,6 +25,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 import kotlin.math.roundToInt
@@ -46,7 +48,8 @@ fun SwipeBox(
     modifier: Modifier = Modifier,
     isOnEditState: Boolean,
     defaultColor: Color = MaterialTheme.colorScheme.background,
-    activeColor: Color = MaterialTheme.colorScheme.primary,
+    activeColor: Color,
+    activeBorderColor: Color = MaterialTheme.colorScheme.primary,
     cornersShape: Shape = MaterialTheme.shapes.medium,
     swipeListener: (Boolean) -> Unit,
     content: @Composable BoxScope.() -> Unit
@@ -64,6 +67,10 @@ fun SwipeBox(
 
     val colorAnimated by transition.animateColor(label = "colorAnimation") { isEdit ->
         if (isEdit) activeColor else defaultColor
+    }
+
+    val colorBorderAnimated by transition.animateColor(label = "colorAnimation") { isEdit ->
+        if (isEdit) activeBorderColor else defaultColor
     }
 
     val animatedOffset by animateIntOffsetAsState(
@@ -90,6 +97,11 @@ fun SwipeBox(
             }
             .background(
                 colorAnimated,
+                shape = cornersShape
+            )
+            .border(
+                width = 1.dp,
+                color = colorBorderAnimated,
                 shape = cornersShape
             )
             .pointerInput(Unit) {

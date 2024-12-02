@@ -1,5 +1,6 @@
 package io.writeopia.ui.draganddrop.target
 
+import android.util.Log
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -88,6 +89,7 @@ actual fun DragCardTarget(
                             }, onDrag = { change, dragAmount ->
                                 change.consume()
                                 currentState.dragOffset += Offset(dragAmount.x, dragAmount.y)
+                                Log.d("Drag", "offset: ${currentState.dragOffset}")
                             }, onDragEnd = {
                                 currentState.isDragging = false
                                 currentState.dragOffset = Offset.Zero

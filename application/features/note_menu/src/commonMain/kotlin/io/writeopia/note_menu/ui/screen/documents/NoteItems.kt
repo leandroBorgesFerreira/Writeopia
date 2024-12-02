@@ -305,15 +305,11 @@ private fun FolderItem(
         val bgColor =
             when {
                 inBound && menuItemUI?.id != folderUi.id -> WriteopiaTheme.colorScheme.highlight
-                folderUi.selected -> MaterialTheme.colorScheme.primary
+                folderUi.selected -> WriteopiaTheme.colorScheme.selectedBg
                 else -> MaterialTheme.colorScheme.surfaceVariant
             }
 
-        val tintColor = if (folderUi.selected) {
-            MaterialTheme.colorScheme.onPrimary
-        } else {
-            MaterialTheme.colorScheme.primary
-        }
+        val tintColor = MaterialTheme.colorScheme.primary
 
         val textColor = if (folderUi.selected) {
             MaterialTheme.colorScheme.onPrimary
@@ -333,7 +329,9 @@ private fun FolderItem(
                 selectionListener(folderUi.documentId, state)
             },
             cornersShape = MaterialTheme.shapes.large,
-            defaultColor = MaterialTheme.colorScheme.surfaceVariant
+            defaultColor = MaterialTheme.colorScheme.surfaceVariant,
+            activeColor = bgColor,
+            activeBorderColor = MaterialTheme.colorScheme.primary
         ) {
             DragCardTarget(
                 modifier = modifier
@@ -409,7 +407,7 @@ private fun DocumentItem(
 //        stringResource(R.string.untitled)
 
     val backgroundColor = if (documentUi.selected) {
-        MaterialTheme.colorScheme.primary
+        WriteopiaTheme.colorScheme.selectedBg
     } else {
         MaterialTheme.colorScheme.surfaceVariant
     }
@@ -432,7 +430,8 @@ private fun DocumentItem(
             selectionListener(documentUi.documentId, state)
         },
         cornersShape = MaterialTheme.shapes.large,
-        defaultColor = MaterialTheme.colorScheme.surfaceVariant
+        defaultColor = MaterialTheme.colorScheme.surfaceVariant,
+        activeColor = backgroundColor
     ) {
         DragCardTarget(
             position = position,

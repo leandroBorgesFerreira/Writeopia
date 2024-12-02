@@ -1,6 +1,7 @@
 package io.writeopia.ui.drawer.factory
 
 import android.view.KeyEvent
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,6 +26,8 @@ object DefaultDrawersAndroid : DrawersFactory {
         editable: Boolean,
         groupsBackgroundColor: Color,
         onHeaderClick: () -> Unit,
+        selectedColor: Color,
+        selectedBorderColor: Color,
     ): Map<Int, StoryStepDrawer> {
         val imageDrawer = ImageDrawer(
             containerModifier = Modifier::defaultImageShape,
@@ -51,7 +54,9 @@ object DefaultDrawersAndroid : DrawersFactory {
                 checkBoxStartPadding = 0,
                 checkBoxEndPadding = 0,
                 checkBoxItemVerticalPadding = 0,
-                listItemStartPadding = 8
+                listItemStartPadding = 8,
+                selectedColor = { selectedColor },
+                selectedBorderColor = { selectedBorderColor }
             ),
             isDesktop = false,
             eventListener = KeyEventListenerFactory.android(

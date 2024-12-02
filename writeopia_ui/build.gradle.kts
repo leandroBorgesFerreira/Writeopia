@@ -54,13 +54,22 @@ mavenPublishing {
 kotlin {
     jvm {}
 
-    val dummy = Attribute.of("dummy", String::class.java)
-
     androidTarget()
 
     js(IR) {
         browser()
         binaries.library()
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "WriteopiaUi"
+            isStatic = true
+        }
     }
 
     sourceSets {

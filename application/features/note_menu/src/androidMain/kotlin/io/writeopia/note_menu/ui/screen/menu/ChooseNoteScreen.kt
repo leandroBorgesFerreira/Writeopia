@@ -33,6 +33,7 @@ import io.writeopia.note_menu.ui.screen.documents.NotesCards
 import io.writeopia.note_menu.viewmodel.ChooseNoteViewModel
 import io.writeopia.note_menu.viewmodel.UserState
 import io.writeopia.note_menu.viewmodel.toNumberDesktop
+import io.writeopia.ui.draganddrop.target.DraggableScreen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -77,12 +78,14 @@ internal fun ChooseNoteScreen(
                 FloatingActionButton(newNoteClick = newNote)
             }
         ) { paddingValues ->
-            Content(
-                chooseNoteViewModel = chooseNoteViewModel,
-                loadNote = navigateToNote,
-                selectionListener = chooseNoteViewModel::onDocumentSelected,
-                paddingValues = paddingValues,
-            )
+            DraggableScreen {
+                Content(
+                    chooseNoteViewModel = chooseNoteViewModel,
+                    loadNote = navigateToNote,
+                    selectionListener = chooseNoteViewModel::onDocumentSelected,
+                    paddingValues = paddingValues,
+                )
+            }
         }
 
         NotesSelectionMenu(

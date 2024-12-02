@@ -62,6 +62,8 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
     fun onAddListItemClick()
 
     fun onAddCodeBlockClick()
+
+    fun clearSelections()
 }
 
 data class ShareDocument(val content: String, val title: String, val type: String)
