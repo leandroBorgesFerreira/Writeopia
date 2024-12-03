@@ -50,84 +50,17 @@ actual fun DragRowTarget(
     onDragStop: () -> Unit,
     content: @Composable RowScope.() -> Unit
 ) {
-    var currentPosition by remember { mutableStateOf(Offset.Zero) }
-    var maxSize by remember { mutableStateOf(DpSize(0.dp, 0.dp)) }
-    val currentState = LocalDragTargetInfo.current
-    val haptic = LocalHapticFeedback.current
-
-    Row(
-        modifier = modifier
-            .onGloballyPositioned { layoutCoordinates ->
-                // Todo: Offset.Zero Is wrong!
-                currentPosition = layoutCoordinates.localToWindow(Offset.Zero)
-                maxSize = DpSize(layoutCoordinates.size.width.dp, layoutCoordinates.size.height.dp)
-            },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        val showDragIcon = showIcon ||
-            currentState.isDragging && position == currentState.dataToDrop?.positionFrom
-
-        Crossfade(
-            targetState = showDragIcon,
-            label = "iconCrossFade",
-            animationSpec = tween(durationMillis = 200)
-        ) { show ->
-            if (show) {
-                Icon(
-                    modifier = Modifier
-                        .width(dragIconWidth)
-                        .pointerHoverIcon(PointerIcon.Hand)
-                        .pointerInput(Unit) {
-                            detectDragGestures(onDragStart = { offset ->
-                                onDragStart()
-                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-
-                                currentState.dataToDrop = dataToDrop
-                                currentState.isDragging = true
-                                currentState.dragPosition = currentPosition + offset
-                                currentState.draggableComposable = {
-                                    Row(
-                                        modifier = Modifier.size(maxSize)
-                                            .clip(MaterialTheme.shapes.medium)
-                                            .background(
-                                                MaterialTheme.colorScheme
-                                                    .surfaceVariant
-                                                    .copy(alpha = 0.6F)
-                                            )
-                                    ) {
-                                        content()
-                                    }
-                                }
-                            }, onDrag = { change, dragAmount ->
-                                change.consume()
-                                currentState.dragOffset += Offset(dragAmount.x, dragAmount.y)
-                            }, onDragEnd = {
-                                onDragStop()
-                                currentState.isDragging = false
-                                currentState.dragOffset = Offset.Zero
-                            }, onDragCancel = {
-                                onDragStop()
-                                currentState.dragOffset = Offset.Zero
-                                currentState.isDragging = false
-                            })
-                        },
-                    imageVector = Icons.Default.DragIndicator,
-                    contentDescription = "Drag icon",
-                    tint = iconTintOnHover
-                )
-            } else {
-                Spacer(
-                    modifier = Modifier.width(dragIconWidth).clickable(onClick = emptySpaceClick)
-                )
-            }
-        }
-
-        if (currentState.isDragging && position == currentState.dataToDrop?.positionFrom) {
-            Row(modifier = Modifier.alpha(0.7F), verticalAlignment = Alignment.CenterVertically) {
-                content()
-            }
-        } else {
-            content()
-        }
-    }
+    DragRowTargetMobile(
+        modifier,
+        dataToDrop,
+        showIcon,
+        position,
+        emptySpaceClick,
+        dragIconWidth,
+        iconTintOnHover,
+        iconTint,
+        onDragStart,
+        onDragStop,
+        content
+    )
 }

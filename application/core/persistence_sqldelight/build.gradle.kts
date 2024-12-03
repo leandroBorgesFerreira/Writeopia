@@ -54,6 +54,10 @@ kotlin {
             }
         }
     }
+
+    sourceSets.nativeMain.dependencies {
+        implementation(libs.sqldelight.native)
+    }
 }
 
 sqldelight {
