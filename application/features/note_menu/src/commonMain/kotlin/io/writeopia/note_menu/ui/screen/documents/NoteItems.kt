@@ -310,12 +310,7 @@ private fun FolderItem(
             }
 
         val tintColor = MaterialTheme.colorScheme.primary
-
-        val textColor = if (folderUi.selected) {
-            MaterialTheme.colorScheme.onPrimary
-        } else {
-            WriteopiaTheme.colorScheme.textLight
-        }
+        val textColor = WriteopiaTheme.colorScheme.textLight
 
         SwipeBox(
             modifier = modifier
@@ -334,15 +329,10 @@ private fun FolderItem(
             activeBorderColor = MaterialTheme.colorScheme.primary
         ) {
             DragCardTarget(
-                modifier = modifier
-                    .clip(MaterialTheme.shapes.large),
+                modifier = modifier.clip(MaterialTheme.shapes.large),
                 position = position,
                 dataToDrop = DropInfo(folderUi, position),
-                iconTintOnHover = if (folderUi.selected) {
-                    MaterialTheme.colorScheme.onPrimary
-                } else {
-                    MaterialTheme.colorScheme.onBackground
-                }
+                iconTintOnHover = MaterialTheme.colorScheme.onBackground
             ) {
                 Column(
                     modifier = Modifier
@@ -383,11 +373,7 @@ private fun FolderItem(
                     modifier = Modifier.align(Alignment.TopEnd).size(40.dp).padding(12.dp),
                     imageVector = WrIcons.favorites,
                     contentDescription = "Favorite",
-                    tint = if (folderUi.selected) {
-                        MaterialTheme.colorScheme.onPrimary
-                    } else {
-                        MaterialTheme.colorScheme.onBackground
-                    }
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
         }
@@ -436,11 +422,7 @@ private fun DocumentItem(
         DragCardTarget(
             position = position,
             dataToDrop = DropInfo(documentUi, position),
-            iconTintOnHover = if (documentUi.selected) {
-                MaterialTheme.colorScheme.onPrimary
-            } else {
-                MaterialTheme.colorScheme.onBackground
-            }
+            iconTintOnHover = MaterialTheme.colorScheme.onBackground
         ) {
             Column(
                 modifier = Modifier.background(
@@ -467,11 +449,7 @@ private fun DocumentItem(
                     modifier = Modifier.align(Alignment.TopEnd).size(40.dp).padding(12.dp),
                     imageVector = WrIcons.favorites,
                     contentDescription = "Favorite",
-                    tint = if (documentUi.selected) {
-                        MaterialTheme.colorScheme.onPrimary
-                    } else {
-                        MaterialTheme.colorScheme.onBackground
-                    }
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
         }

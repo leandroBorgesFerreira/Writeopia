@@ -134,12 +134,12 @@ object CommonDrawers {
         val checkItemDrawer = checkItemDrawer(
             manager = manager,
             isDesktop = isDesktop,
-            modifier = Modifier.padding(vertical = drawConfig.checkBoxItemVerticalPadding.dp),
+            modifier = Modifier,
             dragIconWidth = dragIconWidth,
             config = drawConfig,
             checkBoxPadding = PaddingValues(
                 start = drawConfig.checkBoxStartPadding.dp,
-                end = drawConfig.checkBoxEndPadding.dp
+                end = drawConfig.checkBoxEndPadding.dp,
             )
         ) {
             messageDrawer(

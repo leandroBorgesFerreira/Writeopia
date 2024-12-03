@@ -27,11 +27,7 @@ class CheckItemPreviewDrawer(
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
-        val textColor = if (drawInfo.selectMode) {
-            MaterialTheme.colorScheme.onPrimary
-        } else {
-            MaterialTheme.colorScheme.onBackground
-        }
+        val textColor = MaterialTheme.colorScheme.onBackground
 
         val textStyle = if (step.checked == true) {
             MaterialTheme.typography.bodyMedium.copy(

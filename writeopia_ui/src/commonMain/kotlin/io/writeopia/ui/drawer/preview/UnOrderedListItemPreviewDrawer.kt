@@ -28,11 +28,7 @@ class UnOrderedListItemPreviewDrawer(
 ) : StoryStepDrawer {
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
-        val textColor = if (drawInfo.selectMode) {
-            MaterialTheme.colorScheme.onPrimary
-        } else {
-            MaterialTheme.colorScheme.onBackground
-        }
+        val textColor = MaterialTheme.colorScheme.onBackground
 
         Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
             Text(
@@ -41,6 +37,7 @@ class UnOrderedListItemPreviewDrawer(
                 style = textStyle(),
                 color = textColor
             )
+
             TextPreviewDrawer(
                 modifier = textModifier,
                 style = textStyle,

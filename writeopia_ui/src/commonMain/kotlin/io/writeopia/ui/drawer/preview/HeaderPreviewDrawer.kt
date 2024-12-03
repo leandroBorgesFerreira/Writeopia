@@ -30,11 +30,7 @@ class HeaderPreviewDrawer(
 
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
-        val textColor = if (drawInfo.selectMode) {
-            MaterialTheme.colorScheme.onPrimary
-        } else {
-            MaterialTheme.colorScheme.onBackground
-        }
+        val textColor = MaterialTheme.colorScheme.onBackground
 
         Box(
             modifier = modifier
