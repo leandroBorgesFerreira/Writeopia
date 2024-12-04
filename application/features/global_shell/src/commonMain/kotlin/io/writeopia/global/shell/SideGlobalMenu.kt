@@ -38,7 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.icons.WrIcons
-import io.writeopia.note_menu.ui.dto.MenuItemUi
+import io.writeopia.notemenu.ui.dto.MenuItemUi
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.draganddrop.target.DragRowTarget

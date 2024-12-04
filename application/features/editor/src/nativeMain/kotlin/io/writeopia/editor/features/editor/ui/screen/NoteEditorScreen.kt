@@ -231,9 +231,7 @@ private fun TopBar(
     )
 }
 
-private fun shareDocument(shareDocument: ShareDocument) {
-
-}
+private fun shareDocument(shareDocument: ShareDocument) {}
 
 // @Preview
 // @Composable

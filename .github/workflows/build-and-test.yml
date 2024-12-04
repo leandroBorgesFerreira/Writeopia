@@ -65,6 +65,21 @@ jobs:
           java-version: '21'
       - name: Build debug
         run: ./gradlew assembleDebug test --no-daemon
+  ios_build:
+    name: iOS build
+    runs-on: ubuntu-22.04
+    env:
+      isCI: "true"
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: adopt
+          java-version: '21'
+      - name: Build debug
+        run: ./gradlew compileKotlinIosArm64 --no-daemon
   backend_build_and_test:
     name: Backend - build
     runs-on: ubuntu-22.04
@@ -120,6 +135,6 @@ jobs:
         run: npm ci
       - name: Test build website
         working-directory: ./documentation/writeopia_docs
-        run: npm run build 
+        run: npm run build
 
-        
+

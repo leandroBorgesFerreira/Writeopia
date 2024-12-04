@@ -18,8 +18,8 @@ import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import io.writeopia.note_menu.di.NotesInjector
-import io.writeopia.note_menu.di.UiConfigurationInjector
+import io.writeopia.notemenu.di.NotesInjector
+import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.App
 import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory

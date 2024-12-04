@@ -15,5 +15,4 @@ actual class KmpFileWriter actual constructor(fileName: String) : KmpClosable {
 
     actual inline fun <reified T> writeObject(data: T, json: Json) {
     }
-
 }
