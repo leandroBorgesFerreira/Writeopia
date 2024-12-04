@@ -59,7 +59,9 @@ internal fun InputScreen(
 //                    stringResource(R.string.undo),
                     tint = if (canUndo) buttonColor else disabledColor
                 )
+
                 Spacer(modifier = Modifier.width(15.dp))
+
                 Icon(
                     modifier = Modifier
                         .padding(10.dp)

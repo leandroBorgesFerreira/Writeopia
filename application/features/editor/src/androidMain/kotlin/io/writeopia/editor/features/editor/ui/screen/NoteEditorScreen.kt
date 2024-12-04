@@ -61,6 +61,7 @@ import io.writeopia.editor.features.editor.viewmodel.ShareDocument
 import io.writeopia.editor.input.InputScreen
 import io.writeopia.editor.model.EditState
 import io.writeopia.sdk.models.id.GenerateId
+import io.writeopia.ui.components.EditionScreen
 import io.writeopia.ui.drawer.factory.DefaultDrawersAndroid
 import kotlinx.coroutines.flow.StateFlow
 
@@ -147,7 +148,8 @@ internal fun NoteEditorScreen(
                     noteEditorViewModel::redo,
                     noteEditorViewModel.canUndo,
                     noteEditorViewModel.canRedo,
-                    noteEditorViewModel::deleteSelection
+                    noteEditorViewModel::deleteSelection,
+                    noteEditorViewModel::clearSelections
                 )
             }
 
@@ -281,7 +283,8 @@ private fun BottomScreen(
     reDo: () -> Unit = {},
     canUndo: StateFlow<Boolean>,
     canRedo: StateFlow<Boolean>,
-    deleteSelection: () -> Unit = {}
+    deleteSelection: () -> Unit = {},
+    onClose: () -> Unit = {}
 ) {
     val edit by editState.collectAsState()
 
@@ -318,9 +321,10 @@ private fun BottomScreen(
             }
 
             EditState.SELECTED_TEXT -> {
-                io.writeopia.ui.components.EditionScreen(
+                EditionScreen(
                     modifier = containerModifier,
-                    onDelete = deleteSelection
+                    onDelete = deleteSelection,
+                    onClose = onClose
                 )
             }
         }

@@ -13,6 +13,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
+import io.writeopia.ui.model.DrawConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -24,6 +25,7 @@ fun swipeTextDrawer(
     customBackgroundColor: Color = Color.Transparent,
     clickable: Boolean = true,
     dragIconWidth: Dp = 16.dp,
+    config: DrawConfig,
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     onDragHover: (Int) -> Unit,
     onDragStart: () -> Unit = {},
@@ -38,6 +40,7 @@ fun swipeTextDrawer(
         clickable,
         onSelected,
         dragIconWidth,
+        config,
         onDragHover,
         onDragStart,
         onDragStop,
@@ -51,6 +54,7 @@ fun swipeTextDrawer(
     manager: WriteopiaStateManager,
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
+    config: DrawConfig,
     isDesktop: Boolean,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer {
@@ -58,6 +62,7 @@ fun swipeTextDrawer(
         modifier = modifier,
         onSelected = manager::onSelected,
         dragIconWidth = dragIconWidth,
+        config = config,
         onDragHover = manager::onDragHover,
         onDragStart = manager::onDragStart,
         onDragStop = manager::onDragStop,
@@ -76,6 +81,7 @@ private fun SwipeMessageDrawerPreview() {
     swipeTextDrawer(
         onDragHover = {},
         isDesktop = true,
+        config = DrawConfig(),
         messageDrawer = {
             TextDrawer(selectionState = MutableStateFlow(false), onSelectionLister = {})
         },

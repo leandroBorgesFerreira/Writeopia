@@ -22,12 +22,8 @@ class TextPreviewDrawer(
         MaterialTheme.typography.bodyMedium.copy(fontSize = 15.sp)
     },
     private val maxLines: Int = Int.MAX_VALUE,
-    private val textColor: @Composable (DrawInfo) -> Color = { drawInfo ->
-        if (drawInfo.selectMode) {
-            MaterialTheme.colorScheme.onPrimary
-        } else {
-            MaterialTheme.colorScheme.onBackground
-        }
+    private val textColor: @Composable (DrawInfo) -> Color = {
+        MaterialTheme.colorScheme.onBackground
     }
 ) : StoryStepDrawer {
 

@@ -16,6 +16,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
+import io.writeopia.ui.model.DrawConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -30,6 +31,7 @@ fun unOrderedListItemDrawer(
     modifier: Modifier = Modifier,
     dragIconWidth: Dp = 16.dp,
     checkBoxPadding: PaddingValues = PaddingValues(0.dp),
+    config: DrawConfig,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer = unOrderedListItemDrawer(
     isDesktop = isDesktop,
@@ -37,6 +39,7 @@ fun unOrderedListItemDrawer(
     onSelected = manager::onSelected,
     customBackgroundColor = Color.Transparent,
     checkBoxPadding = checkBoxPadding,
+    config = config,
     onDragHover = manager::onDragHover,
     onDragStart = manager::onDragStart,
     onDragStop = manager::onDragStop,
@@ -53,6 +56,7 @@ fun unOrderedListItemDrawer(
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
     dragIconWidth: Dp = 16.dp,
     checkBoxPadding: PaddingValues = PaddingValues(0.dp),
+    config: DrawConfig,
     onDragHover: (Int) -> Unit,
     onDragStart: () -> Unit,
     onDragStop: () -> Unit,
@@ -73,6 +77,7 @@ fun unOrderedListItemDrawer(
         clickable,
         onSelected,
         dragIconWidth,
+        config,
         onDragHover,
         onDragStart,
         onDragStop,
@@ -96,6 +101,7 @@ private fun UnOrderedListItemPreview() {
         onDragHover = {},
         onDragStart = {},
         onDragStop = {},
+        config = DrawConfig(),
         messageDrawer = {
             TextDrawer(
                 selectionState = MutableStateFlow(false),

@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import io.writeopia.common.utils.icons.WrIcons
-import io.writeopia.note_menu.ui.screen.configuration.modifier.icon
+import io.writeopia.notemenu.ui.screen.configuration.modifier.icon
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable

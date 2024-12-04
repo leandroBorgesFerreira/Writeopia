@@ -30,4 +30,6 @@ data class DrawConfig(
     val listItemStartPadding: Int = 16,
     val listItemEndPadding: Int = 8,
     val listItemItemVerticalPadding: Int = 8,
+    val selectedColor: @Composable () -> Color = { MaterialTheme.colorScheme.primary },
+    val selectedBorderColor: @Composable () -> Color = { MaterialTheme.colorScheme.primary },
 )

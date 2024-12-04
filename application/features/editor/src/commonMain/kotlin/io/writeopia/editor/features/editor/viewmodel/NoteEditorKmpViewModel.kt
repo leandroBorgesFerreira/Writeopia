@@ -192,6 +192,10 @@ class NoteEditorKmpViewModel(
         _showTextOptionsMenu.value = false
     }
 
+    override fun clearSelections() {
+        writeopiaManager.cancelSelection()
+    }
+
     private fun documentToJson(document: Document, json: Json = writeopiaJson): String {
         val request = document.toApi().wrapInRequest()
         return json.encodeToString(request)

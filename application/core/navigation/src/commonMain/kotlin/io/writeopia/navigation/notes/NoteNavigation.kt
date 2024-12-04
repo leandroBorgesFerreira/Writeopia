@@ -2,7 +2,7 @@ package io.writeopia.navigation.notes
 
 import androidx.navigation.NavController
 import io.writeopia.common.utils.Destinations
-import io.writeopia.note_menu.data.usecase.NotesNavigationUseCase
+import io.writeopia.notemenu.data.usecase.NotesNavigationUseCase
 
 fun NavController.navigateToNewNote() {
     val folderId = NotesNavigationUseCase.singleton().navigationState.value.id

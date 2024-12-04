@@ -749,7 +749,7 @@ class WriteopiaStateManager(
     /**
      * Cancels the current selection.
      */
-    private fun cancelSelection() {
+    public fun cancelSelection() {
         _positionsOnEdit.value = emptySet()
     }
 

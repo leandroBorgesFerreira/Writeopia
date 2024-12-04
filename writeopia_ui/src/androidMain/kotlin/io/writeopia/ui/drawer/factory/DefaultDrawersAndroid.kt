@@ -7,12 +7,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import io.writeopia.ui.drawer.content.ImageDrawer
 import io.writeopia.sdk.drawer.content.VideoDrawer
-import io.writeopia.ui.drawer.content.defaultImageShape
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.drawer.content.ImageDrawer
 import io.writeopia.ui.drawer.content.RowGroupDrawer
+import io.writeopia.ui.drawer.content.defaultImageShape
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.DrawConfig
 
@@ -25,6 +25,8 @@ object DefaultDrawersAndroid : DrawersFactory {
         editable: Boolean,
         groupsBackgroundColor: Color,
         onHeaderClick: () -> Unit,
+        selectedColor: Color,
+        selectedBorderColor: Color,
     ): Map<Int, StoryStepDrawer> {
         val imageDrawer = ImageDrawer(
             containerModifier = Modifier::defaultImageShape,
@@ -51,7 +53,9 @@ object DefaultDrawersAndroid : DrawersFactory {
                 checkBoxStartPadding = 0,
                 checkBoxEndPadding = 0,
                 checkBoxItemVerticalPadding = 0,
-                listItemStartPadding = 8
+                listItemStartPadding = 8,
+                selectedColor = { selectedColor },
+                selectedBorderColor = { selectedBorderColor }
             ),
             isDesktop = false,
             eventListener = KeyEventListenerFactory.android(

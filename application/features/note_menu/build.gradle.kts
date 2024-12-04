@@ -8,10 +8,23 @@ plugins {
 
 kotlin {
     androidTarget()
+
     jvm()
+
     js(IR) {
         browser()
         binaries.library()
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "WriteopiaFeaturesNoteMenu"
+            isStatic = true
+        }
     }
 
     sourceSets {

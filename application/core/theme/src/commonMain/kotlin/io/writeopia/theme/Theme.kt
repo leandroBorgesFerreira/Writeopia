@@ -35,7 +35,8 @@ data class WriteopiaColors(
     val globalBackground: Color,
     val optionsSelector: Color,
     val textLight: Color,
-    val highlight: Color
+    val highlight: Color,
+    val selectedBg: Color
 )
 
 val LocalWriteopiaColors = staticCompositionLocalOf {
@@ -44,6 +45,7 @@ val LocalWriteopiaColors = staticCompositionLocalOf {
         optionsSelector = Color.Unspecified,
         textLight = Color.Unspecified,
         highlight = Color.Unspecified,
+        selectedBg = Color.Unspecified,
     )
 }
 
@@ -68,6 +70,7 @@ fun WrieopiaTheme(
         optionsSelector = optionsSelector,
         textLight = textLight,
         highlight = highlight,
+        selectedBg = SELECTED_BG
     )
 
     CompositionLocalProvider(LocalWriteopiaColors provides writeopiaColors) {

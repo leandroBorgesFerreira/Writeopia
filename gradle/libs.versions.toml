@@ -14,8 +14,6 @@ ktlint = "12.1.1"
 ktx = "1.13.1"
 appCompat = "1.7.0"
 material = "1.12.0"
-material3Desktop = "1.6.11"
-materialIconsExtended = "1.7.4"
 postgresSocketFactory = "1.15.1"
 room = "2.7.0-alpha10"
 compose = "2.8.6"
@@ -95,6 +93,7 @@ runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-comp
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 sqldelight-jvm = { group = "app.cash.sqldelight", name = "sqlite-driver", version.ref = "sqldelight" }
+sqldelight-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
 sqldelight-jdbc-driver = { group = "app.cash.sqldelight", name = "jdbc-driver", version.ref = "sqldelight" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback-classic" }

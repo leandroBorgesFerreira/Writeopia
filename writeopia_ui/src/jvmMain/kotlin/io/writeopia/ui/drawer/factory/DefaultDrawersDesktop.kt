@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
+import io.writeopia.ui.model.DrawConfig
 
 object DefaultDrawersDesktop : DrawersFactory {
 
@@ -16,6 +17,8 @@ object DefaultDrawersDesktop : DrawersFactory {
         editable: Boolean,
         groupsBackgroundColor: Color,
         onHeaderClick: () -> Unit,
+        selectedColor: Color,
+        selectedBorderColor: Color,
     ): Map<Int, StoryStepDrawer> =
         CommonDrawers.create(
             manager,
@@ -27,6 +30,10 @@ object DefaultDrawersDesktop : DrawersFactory {
             dragIconWidth = 16.dp,
             lineBreakByContent = true,
             isDesktop = true,
+            drawConfig = DrawConfig(
+                selectedColor = { selectedColor },
+                selectedBorderColor = { selectedBorderColor }
+            ),
             eventListener = KeyEventListenerFactory.desktop(
                 manager = manager,
 //                isLineBreakKey = ::isLineBreak,

@@ -2,8 +2,8 @@ package io.writeopia.menu
 
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import io.writeopia.model.ColorThemeOption
-import io.writeopia.note_menu.di.NotesInjector
-import io.writeopia.note_menu.di.UiConfigurationInjector
+import io.writeopia.notemenu.di.NotesInjector
+import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.App
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.database.DatabaseFactory

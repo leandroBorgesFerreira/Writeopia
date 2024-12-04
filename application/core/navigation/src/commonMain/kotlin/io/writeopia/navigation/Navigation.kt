@@ -18,8 +18,8 @@ import io.writeopia.navigation.notes.navigateToAccount
 import io.writeopia.navigation.notes.navigateToNewNote
 import io.writeopia.navigation.notes.navigateToNote
 import io.writeopia.navigation.presentation.navigateToPresentation
-import io.writeopia.note_menu.di.NotesMenuInjection
-import io.writeopia.note_menu.navigation.notesMenuNavigation
+import io.writeopia.notemenu.di.NotesMenuInjection
+import io.writeopia.notemenu.navigation.notesMenuNavigation
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
