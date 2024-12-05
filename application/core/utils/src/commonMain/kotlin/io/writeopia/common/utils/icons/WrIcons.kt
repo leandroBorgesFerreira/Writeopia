@@ -45,7 +45,6 @@ import io.writeopia.common.utils.icons.all.Redo2
 import io.writeopia.common.utils.icons.all.Rows3
 import io.writeopia.common.utils.icons.all.Save
 import io.writeopia.common.utils.icons.all.Search
-import io.writeopia.common.utils.icons.all.SquareCheck
 import io.writeopia.common.utils.icons.all.SquareCode
 import io.writeopia.common.utils.icons.all.Sun
 import io.writeopia.common.utils.icons.all.Underline
@@ -98,10 +97,6 @@ object WrIcons {
     val pageStyle: ImageVector = NotebookText
 
     val code: ImageVector = SquareCode
-
-    val list: ImageVector = io.writeopia.common.utils.icons.all.List
-
-    val checkbox: ImageVector = SquareCheck
 
     val addCircle: ImageVector = CirclePlus
 

@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.icons.WrIcons
+import io.writeopia.ui.icons.WrSdkIcons
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -191,7 +192,7 @@ private fun InsertCommand(
 ) {
     Row(modifier = Modifier.horizontalOptionsRow()) {
         Icon(
-            imageVector = WrIcons.checkbox,
+            imageVector = WrSdkIcons.checkbox,
             contentDescription = "Check box",
             modifier = Modifier.weight(1F)
                 .clip(RoundedCornerShape(topStart = 6.dp, bottomStart = 6.dp))
@@ -202,7 +203,7 @@ private fun InsertCommand(
         )
 
         Icon(
-            imageVector = WrIcons.list,
+            imageVector = WrSdkIcons.list,
             contentDescription = "List item",
             modifier = Modifier.weight(1F)
                 .size(32.dp)

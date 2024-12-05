@@ -149,7 +149,9 @@ internal fun NoteEditorScreen(
                     noteEditorViewModel.canUndo,
                     noteEditorViewModel.canRedo,
                     noteEditorViewModel::deleteSelection,
-                    noteEditorViewModel::clearSelections
+                    noteEditorViewModel::clearSelections,
+                    noteEditorViewModel::onAddCheckListClick,
+                    noteEditorViewModel::onAddListItemClick
                 )
             }
 
@@ -284,7 +286,9 @@ private fun BottomScreen(
     canUndo: StateFlow<Boolean>,
     canRedo: StateFlow<Boolean>,
     deleteSelection: () -> Unit = {},
-    onClose: () -> Unit = {}
+    onClose: () -> Unit = {},
+    onCheckItem: () -> Unit = {},
+    onListItem: () -> Unit = {}
 ) {
     val edit by editState.collectAsState()
 
@@ -324,7 +328,9 @@ private fun BottomScreen(
                 EditionScreen(
                     modifier = containerModifier,
                     onDelete = deleteSelection,
-                    onClose = onClose
+                    onClose = onClose,
+                    checkboxClick = onCheckItem,
+                    listItemClick = onListItem
                 )
             }
         }
