@@ -1,13 +1,13 @@
 package io.writeopia.sdk.models.story
 
-class TagInfo(val tag: Tag)
+data class TagInfo(val tag: Tag, val position: Int = 0)
 
-enum class Tag(val tag: String, var position: Int = 0) {
+enum class Tag(val label: String) {
     H1("H1"),
     H2("H2"),
     H3("H3"),
     H4("H4"),
-    HIGH_LIGHT_BLOCK("HIGH_LIGHT_BLOCK", 0);
+    HIGH_LIGHT_BLOCK("HIGH_LIGHT_BLOCK");
 
     fun isTitle() =
         when (this) {
@@ -24,6 +24,6 @@ enum class Tag(val tag: String, var position: Int = 0) {
     companion object {
         fun titleTags(): Set<Tag> = setOf(H1, H2, H3, H4)
 
-        fun fromString(fromTag: String): Tag? = entries.firstOrNull { it.tag == fromTag }
+        fun fromString(fromTag: String): Tag? = entries.firstOrNull { it.label == fromTag }
     }
 }

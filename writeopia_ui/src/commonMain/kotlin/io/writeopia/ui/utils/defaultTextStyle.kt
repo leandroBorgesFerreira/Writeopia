@@ -14,7 +14,7 @@ fun defaultTextStyle(storyStep: StoryStep) =
     TextStyle(
         textDecoration = if (storyStep.checked == true) TextDecoration.LineThrough else null,
         color = MaterialTheme.colorScheme.onBackground,
-        fontSize = textSizeFromTags(storyStep.tags)
+        fontSize = textSizeFromTags(storyStep.tags.map { it.tag })
     )
 
 @Composable

@@ -19,6 +19,7 @@ import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.Tag
+import io.writeopia.sdk.models.story.TagInfo
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
 import io.writeopia.sdk.sharededition.SharedEditionManager
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
@@ -348,7 +349,7 @@ class WriteopiaStateManager(
         val onEdit = _positionsOnEdit.value
 
         if (onEdit.isNotEmpty()) {
-            toggleTagForStories(onEdit, Tag.HIGH_LIGHT_BLOCK)
+            toggleTagForStories(onEdit, TagInfo(Tag.HIGH_LIGHT_BLOCK))
         } else {
 //            changeCurrentStoryType(StoryTypes.UNORDERED_LIST_ITEM)
         }
@@ -671,7 +672,7 @@ class WriteopiaStateManager(
         }
     }
 
-    private fun toggleTagForStories(onEdit: Set<Int>, tag: Tag) {
+    private fun toggleTagForStories(onEdit: Set<Int>, tag: TagInfo) {
         val currentStories = currentStory.value.stories
 
         onEdit.forEach { position ->
@@ -679,7 +680,7 @@ class WriteopiaStateManager(
             if (story != null) {
                 val currentTags = story.tags
                 val newTags = if (currentTags.contains(tag)) {
-                    currentTags.filterNot { it == tag }.toSet()
+                    currentTags.filterNot { it.tag == tag.tag }.toSet()
                 } else {
                     currentTags + tag
                 }

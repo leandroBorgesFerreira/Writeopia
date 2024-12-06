@@ -47,14 +47,14 @@ object Fixture {
                 localId = "0",
                 type = StoryTypes.TEXT.type,
                 text = title2,
-                tags = setOf(Tag.H1.tag)
+                tags = setOf(Tag.H1.label)
             ),
             step2,
             step3,
             StoryStep(
                 localId = "0",
                 type = StoryTypes.TEXT.type,
-                tags = setOf(Tag.H2.tag),
+                tags = setOf(Tag.H2.label),
                 text = title3,
             ),
             step4,

@@ -10,6 +10,7 @@ import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.Tag
+import io.writeopia.sdk.models.story.TagInfo
 import io.writeopia.ui.manager.WriteopiaStateManager
 
 class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) -> Unit>) {
@@ -65,7 +66,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                             CommandInfo(
                                 CommandFactory.h1(),
                                 CommandTrigger.WRITTEN,
-                                tags = setOf(Tag.H1)
+                                tags = setOf(TagInfo(Tag.H1))
                             )
                         )
                     },
@@ -79,7 +80,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                             CommandInfo(
                                 CommandFactory.h2(),
                                 CommandTrigger.WRITTEN,
-                                tags = setOf(Tag.H2)
+                                tags = setOf(TagInfo(Tag.H2))
                             )
                         )
                     },
@@ -93,7 +94,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                             CommandInfo(
                                 CommandFactory.h3(),
                                 CommandTrigger.WRITTEN,
-                                tags = setOf(Tag.H3)
+                                tags = setOf(TagInfo(Tag.H3))
                             )
                         )
                     },
@@ -107,7 +108,7 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                             CommandInfo(
                                 CommandFactory.h4(),
                                 CommandTrigger.WRITTEN,
-                                tags = setOf(Tag.H4)
+                                tags = setOf(TagInfo(Tag.H4))
                             )
                         )
                     },

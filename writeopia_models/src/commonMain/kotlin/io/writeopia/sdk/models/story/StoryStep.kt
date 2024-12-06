@@ -33,7 +33,7 @@ data class StoryStep(
     val title: String? = null,
     val checked: Boolean? = false,
     val steps: List<StoryStep> = emptyList(),
-    val tags: Set<Tag> = emptySet(),
+    val tags: Set<TagInfo> = emptySet(),
     val decoration: Decoration = Decoration()
 ) {
 

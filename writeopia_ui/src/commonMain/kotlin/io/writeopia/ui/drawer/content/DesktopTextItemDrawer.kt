@@ -57,7 +57,7 @@ class DesktopTextItemDrawer(
         var showDragIcon by remember { mutableStateOf(false) }
 
         val (paddingBottom, paddingTop) = step.tags
-            .any { it.isTitle() }
+            .any { it.tag.isTitle() }
             .takeIf { it }
             ?.let { 4 to 16 }
             ?: (0 to 0)

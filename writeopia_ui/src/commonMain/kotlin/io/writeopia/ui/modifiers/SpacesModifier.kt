@@ -3,6 +3,7 @@ package io.writeopia.ui.modifiers
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.Tag
+import io.writeopia.sdk.models.story.TagInfo
 import io.writeopia.ui.model.DrawStory
 
 object SpacesModifier {
@@ -36,59 +37,68 @@ object SpacesModifier {
         val lastIndex = parsed.lastIndex
         val fullStory = parsed + DrawStory(storyStep = lastSpace, position = lastIndex)
 
-        return addPositionToTags(fullStory)
+        val fixedPositions = addPositionToTags(fullStory)
+        return fixedPositions
     }
 
-    private fun mergeTags(tags1: Set<Tag>, tags2: Set<Tag>): Set<Tag> {
-        val enums1 = tags1.filter { it.hasPosition() }.toSet()
-        val enums2 = tags2.filter { it.hasPosition() }.toSet()
+    private fun mergeTags(tags1: Set<TagInfo>, tags2: Set<TagInfo>): Set<TagInfo> {
+        val enums1 = tags1.filter { it.tag.hasPosition() }.toSet()
+        val enums2 = tags2.filter { it.tag.hasPosition() }.toSet()
 
         return enums1.intersect(enums2)
     }
 
     private fun addPositionToTags(stories: List<DrawStory>): List<DrawStory> {
-        val setTagPosition : (Iterable<Tag>, Int) -> Unit = { tags, position ->
-            tags.filter { it.hasPosition() }.forEach { tag ->
-                if (tag.hasPosition()) {
-                    tag.position = position
+        val resultList = mutableListOf<DrawStory>()
+
+        val setTagPosition: (Iterable<TagInfo>, Int) -> List<TagInfo> = { tagInfoList, position ->
+            tagInfoList.filter { it.tag.hasPosition() }
+                .map { tagInfo ->
+                    if (tagInfo.tag.hasPosition()) tagInfo.copy(position = position) else tagInfo
                 }
-            }
         }
 
         val hasPositionTagFn: (DrawStory) -> Boolean = { draw ->
-            draw.storyStep
-                .tags
-                .any { it.hasPosition() }
+            draw.storyStep.tags.any { it.tag.hasPosition() }
         }
-
 
         for (i in 0..stories.lastIndex) {
             val draw = stories[i]
-
             val tags = draw.storyStep.tags
-            val hasPositionTag = tags.any { it.hasPosition() }
 
-            val previousTags = if (i > 0) hasPositionTagFn(stories[i - 1]) else false
-            val nextTags = if (i < stories.lastIndex) hasPositionTagFn(stories[i + 1]) else false
+            if (tags.isNotEmpty()) {
+                val hasPositionTag = tags.any { it.tag.hasPosition() }
 
-            if (hasPositionTag) {
-                when {
-                    i == 0 -> { setTagPosition(tags, -1) }
+                val previousTags = if (i > 0) hasPositionTagFn(stories[i - 1]) else false
+                val nextTags =
+                    if (i < stories.lastIndex) hasPositionTagFn(stories[i + 1]) else false
 
-                    i == stories.lastIndex -> { setTagPosition(tags, 1) }
+                val newTags = if (hasPositionTag) {
+                    when {
+                        i == 0 -> setTagPosition(tags, -1)
 
-                    previousTags && !nextTags -> { setTagPosition(tags, -1) }
+                        i == stories.lastIndex -> setTagPosition(tags, 1)
 
-                    previousTags && nextTags -> { setTagPosition(tags, 0) }
+                        previousTags && !nextTags -> setTagPosition(tags, 1)
 
-                    !previousTags && nextTags -> { setTagPosition(tags, 1) }
+                        previousTags && nextTags -> setTagPosition(tags, 0)
 
-                    else -> { setTagPosition(tags, 0) }
+                        !previousTags && nextTags -> setTagPosition(tags, -1)
+
+                        else -> setTagPosition(tags, 0)
+                    }
+                } else {
+                    tags
                 }
+
+                val newStep = draw.storyStep.copy(tags = newTags.toSet())
+                resultList.add(draw.copy(storyStep = newStep))
+            } else {
+                resultList.add(draw)
             }
         }
 
-        return stories
+        return resultList
     }
 }
 

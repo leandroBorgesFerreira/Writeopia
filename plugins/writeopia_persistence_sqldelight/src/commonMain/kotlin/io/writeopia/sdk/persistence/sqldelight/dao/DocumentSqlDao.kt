@@ -88,10 +88,11 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = innerContent.tags
-                                ?.split(",")
-                                ?.filter { it.isNotEmpty() }
-                                ?.toSet()
+                            tags = emptySet()
+//                            innerContent.tags
+//                                ?.split(",")
+//                                ?.filter { it.isNotEmpty() }
+//                                ?.toSet()
                                 ?: emptySet()
                         )
 
@@ -133,10 +134,11 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = innerContent.tags
-                                ?.split(",")
-                                ?.filter { it.isNotEmpty() }
-                                ?.toSet()
+                            tags = emptySet()
+//                            innerContent.tags
+//                                ?.split(",")
+//                                ?.filter { it.isNotEmpty() }
+//                                ?.toSet()
                                 ?: emptySet()
                         )
 
@@ -184,10 +186,11 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = innerContent.tags
-                                ?.split(",")
-                                ?.filter { it.isNotEmpty() }
-                                ?.toSet()
+                            tags = emptySet()
+//                            innerContent.tags
+//                                ?.split(",")
+//                                ?.filter { it.isNotEmpty() }
+//                                ?.toSet()
                                 ?: emptySet()
                         )
 
@@ -235,10 +238,11 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = innerContent.tags
-                                ?.split(",")
-                                ?.filter { it.isNotEmpty() }
-                                ?.toSet()
+                            tags = emptySet()
+//                            innerContent.tags
+//                                ?.split(",")
+//                                ?.filter { it.isNotEmpty() }
+//                                ?.toSet()
                                 ?: emptySet()
                         )
 
@@ -289,10 +293,11 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = innerContent.tags
-                                ?.split(",")
-                                ?.filter { it.isNotEmpty() }
-                                ?.toSet()
+                            tags = emptySet()
+//                            innerContent.tags
+//                                ?.split(",")
+//                                ?.filter { it.isNotEmpty() }
+//                                ?.toSet()
                                 ?: emptySet()
                         )
 
@@ -335,10 +340,11 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = innerContent.tags
-                                .split(",")
-                                .filter { it.isNotEmpty() }
-                                .toSet()
+                            tags = emptySet()
+//                            innerContent.tags
+//                                .split(",")
+//                                .filter { it.isNotEmpty() }
+//                                .toSet()
                         )
 
                         innerContent.position.toInt() to storyStep

@@ -14,13 +14,13 @@ class DocumentToMarkdownTest {
             0 to StoryStep(
                 type = StoryTypes.TEXT.type,
                 text = "Title!!",
-                tags = setOf(Tag.H1.tag)
+                tags = setOf(Tag.H1.label)
             ),
             1 to StoryStep(type = StoryTypes.TEXT.type, text = "some text"),
             2 to StoryStep(
                 type = StoryTypes.TEXT.type,
                 text = "Subtitle!!",
-                tags = setOf(Tag.H2.tag)
+                tags = setOf(Tag.H2.label)
             )
         )
 
@@ -44,13 +44,13 @@ class DocumentToMarkdownTest {
             0 to StoryStep(
                 type = StoryTypes.TEXT.type,
                 text = "Title!!",
-                tags = setOf(Tag.H1.tag)
+                tags = setOf(Tag.H1.label)
             ),
             1 to StoryStep(type = StoryTypes.TEXT.type, text = "some text"),
             2 to StoryStep(
                 type = StoryTypes.TEXT.type,
                 text = "Subtitle!!",
-                tags = setOf(Tag.H2.tag)
+                tags = setOf(Tag.H2.label)
             )
         )
 

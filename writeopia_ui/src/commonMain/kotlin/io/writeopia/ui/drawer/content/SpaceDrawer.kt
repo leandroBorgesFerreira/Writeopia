@@ -47,7 +47,13 @@ class SpaceDrawer(
 
             Box(
                 modifier = Modifier
-                    .background(tagDecoration.background(Color.Transparent, step.tags, config))
+                    .background(
+                        tagDecoration.background(
+                            Color.Transparent,
+                            step.tags.map { it.tag },
+                            config
+                        )
+                    )
                     .height(10.dp)
                     .fillMaxWidth()
                     .padding(top = 3.dp, bottom = 3.dp, start = 12.dp)

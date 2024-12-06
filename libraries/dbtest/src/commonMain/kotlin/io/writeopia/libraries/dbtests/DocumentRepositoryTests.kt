@@ -5,6 +5,7 @@ import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.Tag
+import io.writeopia.sdk.models.story.TagInfo
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -25,7 +26,7 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
                     0 to StoryStep(
                         type = StoryTypes.TEXT.type,
                         text = "text",
-                        tags = setOf(Tag.H1.tag)
+                        tags = setOf(TagInfo(Tag.H1))
                     )
                 )
             ).toMap(),
