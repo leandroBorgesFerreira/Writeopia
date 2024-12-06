@@ -78,7 +78,7 @@ class MovementHandler {
 
 fun Action.Move.fixMove(): Action.Move =
     if (this.positionTo < this.positionFrom) {
-        this.copy(positionTo = this.positionTo + 1)
+        this.copy(positionTo = this.positionTo)
     } else {
-        this
+        this.copy(positionTo = this.positionTo)
     }

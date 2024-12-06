@@ -2,7 +2,7 @@ package io.writeopia.sdk.export
 
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.models.story.Tags
+import io.writeopia.sdk.models.story.Tag
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -14,13 +14,13 @@ class DocumentToMarkdownTest {
             0 to StoryStep(
                 type = StoryTypes.TEXT.type,
                 text = "Title!!",
-                tags = setOf(Tags.H1.tag)
+                tags = setOf(Tag.H1.tag)
             ),
             1 to StoryStep(type = StoryTypes.TEXT.type, text = "some text"),
             2 to StoryStep(
                 type = StoryTypes.TEXT.type,
                 text = "Subtitle!!",
-                tags = setOf(Tags.H2.tag)
+                tags = setOf(Tag.H2.tag)
             )
         )
 
@@ -44,13 +44,13 @@ class DocumentToMarkdownTest {
             0 to StoryStep(
                 type = StoryTypes.TEXT.type,
                 text = "Title!!",
-                tags = setOf(Tags.H1.tag)
+                tags = setOf(Tag.H1.tag)
             ),
             1 to StoryStep(type = StoryTypes.TEXT.type, text = "some text"),
             2 to StoryStep(
                 type = StoryTypes.TEXT.type,
                 text = "Subtitle!!",
-                tags = setOf(Tags.H2.tag)
+                tags = setOf(Tag.H2.tag)
             )
         )
 

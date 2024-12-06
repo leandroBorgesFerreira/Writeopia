@@ -7,7 +7,6 @@ import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -18,13 +17,14 @@ import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.models.story.Tags
 import io.writeopia.ui.components.SwipeBox
 import io.writeopia.ui.draganddrop.target.DragRowTarget
 import io.writeopia.ui.draganddrop.target.DropTargetHorizontalDivision
 import io.writeopia.ui.draganddrop.target.InBounds
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.drawer.decorations.DefaultTagDecoration
+import io.writeopia.ui.drawer.decorations.TagDecoration
 import io.writeopia.ui.model.DrawConfig
 
 /**
@@ -45,6 +45,7 @@ class DesktopTextItemDrawer(
     private val startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
     private val isDesktop: Boolean,
     private val messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
+    private val tagDecoration: TagDecoration = DefaultTagDecoration,
 ) : StoryStepDrawer {
 
     @Composable
@@ -56,9 +57,7 @@ class DesktopTextItemDrawer(
         var showDragIcon by remember { mutableStateOf(false) }
 
         val (paddingBottom, paddingTop) = step.tags
-            .asSequence()
-            .map(Tags::fromString)
-            .any { it?.isTitle() == true }
+            .any { it.isTitle() }
             .takeIf { it }
             ?.let { 4 to 16 }
             ?: (0 to 0)
@@ -100,6 +99,9 @@ class DesktopTextItemDrawer(
                 DragRowTarget(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .let { modifierLet ->
+                            tagDecoration.decorate(modifierLet, step.tags, config)
+                        }
                         .apply {
                             if (clickable) {
                                 clickable {

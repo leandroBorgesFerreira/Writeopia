@@ -74,7 +74,8 @@ fun DesktopNoteEditorScreen(
             fontClick = noteEditorViewModel::toggleOptionsMenu,
             checkItemClick = noteEditorViewModel::onAddCheckListClick,
             listItemClick = noteEditorViewModel::onAddListItemClick,
-            codeBlockClick = noteEditorViewModel::onAddCodeBlockClick
+            codeBlockClick = noteEditorViewModel::onAddCodeBlockClick,
+            highLightBlockClick = noteEditorViewModel::onAddHighLightBlockClick
         )
 
         Icon(

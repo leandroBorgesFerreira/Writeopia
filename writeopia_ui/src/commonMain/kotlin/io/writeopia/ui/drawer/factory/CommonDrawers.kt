@@ -190,8 +190,11 @@ object CommonDrawers {
             put(StoryTypes.TEXT_BOX.type.number, textBoxDrawer)
             put(StoryTypes.TEXT.type.number, swipeTextDrawer)
             put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
-            put(StoryTypes.SPACE.type.number, SpaceDrawer(manager::moveRequest))
-            put(StoryTypes.ON_DRAG_SPACE.type.number, SpaceDrawer(manager::moveRequest, Color.Gray))
+            put(StoryTypes.SPACE.type.number, SpaceDrawer(drawConfig, manager::moveRequest))
+            put(
+                StoryTypes.ON_DRAG_SPACE.type.number,
+                SpaceDrawer(drawConfig, manager::moveRequest, Color.Gray)
+            )
             put(
                 StoryTypes.LAST_SPACE.type.number,
                 LastEmptySpace(

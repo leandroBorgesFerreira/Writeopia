@@ -18,6 +18,7 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.models.story.Tag
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
 import io.writeopia.sdk.sharededition.SharedEditionManager
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
@@ -30,6 +31,7 @@ import io.writeopia.ui.keyboard.KeyboardEvent
 import io.writeopia.ui.model.DrawState
 import io.writeopia.ui.model.DrawStory
 import io.writeopia.ui.model.TextInput
+import io.writeopia.ui.modifiers.SpacesModifier
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
@@ -66,7 +68,8 @@ class WriteopiaStateManager(
     private val writeopiaManager: WriteopiaManager,
     val selectionState: StateFlow<Boolean>,
     private val keyboardEventFlow: Flow<KeyboardEvent>,
-    private val drawStateModify: (List<DrawStory>, Int) -> (List<DrawStory>) = ::addSpacesModifier
+    private val drawStateModify: (List<DrawStory>, Int) -> (List<DrawStory>) =
+        SpacesModifier::modify
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     init {
@@ -170,7 +173,7 @@ class WriteopiaStateManager(
                 }
                 .values
                 .toList()
-                .let { drawStories -> drawStateModify(drawStories, dragPosition) }
+                .let { drawStories -> drawStateModify(drawStories, dragPosition).drop(1) }
 
             DrawState(toDrawStories, focus)
         }
@@ -338,6 +341,16 @@ class WriteopiaStateManager(
             toggleStateForStories(onEdit, StoryTypes.UNORDERED_LIST_ITEM)
         } else {
             changeCurrentStoryType(StoryTypes.UNORDERED_LIST_ITEM)
+        }
+    }
+
+    fun onHighLightBlockClicked() {
+        val onEdit = _positionsOnEdit.value
+
+        if (onEdit.isNotEmpty()) {
+            toggleTagForStories(onEdit, Tag.HIGH_LIGHT_BLOCK)
+        } else {
+//            changeCurrentStoryType(StoryTypes.UNORDERED_LIST_ITEM)
         }
     }
 
@@ -658,6 +671,29 @@ class WriteopiaStateManager(
         }
     }
 
+    private fun toggleTagForStories(onEdit: Set<Int>, tag: Tag) {
+        val currentStories = currentStory.value.stories
+
+        onEdit.forEach { position ->
+            val story = currentStories[position]
+            if (story != null) {
+                val currentTags = story.tags
+                val newTags = if (currentTags.contains(tag)) {
+                    currentTags.filterNot { it == tag }.toSet()
+                } else {
+                    currentTags + tag
+                }
+
+                changeStoryState(
+                    Action.StoryStateChange(
+                        storyStep = story.copy(tags = newTags),
+                        position = position,
+                    )
+                )
+            }
+        }
+    }
+
     private fun changeCurrentStoryType(storyTypes: StoryTypes) {
         changeCurrentStoryState { storyStep ->
             val newType = if (storyStep.type == storyTypes.type) {
@@ -784,25 +820,9 @@ class WriteopiaStateManager(
             writeopiaManager,
             selectionState,
             keyboardEventFlow.filterNotNull(),
-            ::addSpacesModifier
+            SpacesModifier::modify
         )
     }
-}
-
-private fun addSpacesModifier(stories: List<DrawStory>, dragPosition: Int): List<DrawStory> {
-    val space = StoryStep(type = StoryTypes.SPACE.type)
-    val onDragSpace = StoryStep(type = StoryTypes.ON_DRAG_SPACE.type)
-    val lastSpace = StoryStep(type = StoryTypes.LAST_SPACE.type)
-
-    val parsed = stories.foldIndexed(emptyList<DrawStory>()) { index, acc, drawStory ->
-        val spaceStory =
-            if (index == dragPosition) onDragSpace else space
-        acc + drawStory + DrawStory(storyStep = spaceStory, position = index)
-    }
-
-    val lastIndex = parsed.lastIndex
-
-    return parsed + DrawStory(storyStep = lastSpace, position = lastIndex)
 }
 
 private class LineBreakCommand(val text: String, val position: Int, val time: Instant)

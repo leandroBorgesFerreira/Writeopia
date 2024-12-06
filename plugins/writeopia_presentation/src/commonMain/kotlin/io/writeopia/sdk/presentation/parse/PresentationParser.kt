@@ -2,7 +2,7 @@ package io.writeopia.sdk.presentation.parse
 
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.models.story.Tags
+import io.writeopia.sdk.models.story.Tag
 import io.writeopia.sdk.presentation.model.SlidePage
 
 object PresentationParser {
@@ -24,7 +24,7 @@ object PresentationParser {
 
 private fun StoryStep.isTitle() =
     when (StoryTypes.fromNumber(this.type.number)) {
-        StoryTypes.TEXT -> Tags.titleTags().any { titleTag -> tags.contains(titleTag.tag) }
+        StoryTypes.TEXT -> Tag.titleTags().any { titleTag -> tags.contains(titleTag.tag) }
         StoryTypes.TITLE -> true
         else -> false
     }

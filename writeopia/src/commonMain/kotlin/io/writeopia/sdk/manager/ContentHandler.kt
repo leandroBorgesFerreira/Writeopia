@@ -10,7 +10,7 @@ import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.models.story.Tags
+import io.writeopia.sdk.models.story.Tag
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.previousTextStory
 import io.writeopia.sdk.utils.extensions.toEditState
@@ -96,9 +96,9 @@ class ContentHandler(
         return StoryState(newMap, LastEdit.Whole, position)
     }
 
-    private fun Set<String>.merge(tag2: Set<String>): Set<String> =
-        if (tag2.any { Tags.fromString(it)?.isTitle() == true }) {
-            this.filterNot { Tags.fromString(it)?.isTitle() == true }.toSet() + tag2
+    private fun Set<Tag>.merge(tag2: Set<Tag>): Set<Tag> =
+        if (tag2.any { it.isTitle() }) {
+            this.filterNot { it.isTitle() }.toSet() + tag2
         } else {
             this + tag2
         }

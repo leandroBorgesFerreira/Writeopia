@@ -164,6 +164,10 @@ class NoteEditorKmpViewModel(
         writeopiaManager.onCodeBlockClicked()
     }
 
+    override fun onAddHighLightBlockClick() {
+        writeopiaManager.onHighLightBlockClicked()
+    }
+
     override fun onHeaderEditionCancel() {
         _editHeader.value = false
     }
