@@ -5,6 +5,7 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.models.story.TagInfo
 import io.writeopia.sdk.persistence.core.extensions.sortWithOrderBy
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.persistence.sqldelight.toLong
@@ -16,6 +17,8 @@ import kotlinx.datetime.Instant
 class DocumentSqlDao(
     private val documentQueries: DocumentEntityQueries?,
     private val storyStepQueries: StoryStepEntityQueries?,
+    private val tagsSerializer: (Set<TagInfo>) -> String,
+    private val tagsDeserializer: (String) -> Set<TagInfo>,
 ) {
 
     suspend fun insertDocumentWithContent(document: Document) {
@@ -55,7 +58,7 @@ class DocumentSqlDao(
                 is_group = isGroup.toLong(),
                 has_inner_steps = steps.isNotEmpty().toLong(),
                 background_color = decoration.backgroundColor?.toLong(),
-                tags = tags.joinToString(separator = ",")
+                tags = tagsSerializer(tags)
             )
         }
     }
@@ -88,12 +91,7 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = emptySet()
-//                            innerContent.tags
-//                                ?.split(",")
-//                                ?.filter { it.isNotEmpty() }
-//                                ?.toSet()
-                                ?: emptySet()
+                            tags = innerContent.tags?.let(tagsDeserializer) ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -134,12 +132,7 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = emptySet()
-//                            innerContent.tags
-//                                ?.split(",")
-//                                ?.filter { it.isNotEmpty() }
-//                                ?.toSet()
-                                ?: emptySet()
+                            tags = innerContent.tags?.let(tagsDeserializer) ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -186,12 +179,7 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = emptySet()
-//                            innerContent.tags
-//                                ?.split(",")
-//                                ?.filter { it.isNotEmpty() }
-//                                ?.toSet()
-                                ?: emptySet()
+                            tags = innerContent.tags?.let(tagsDeserializer) ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -238,12 +226,7 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = emptySet()
-//                            innerContent.tags
-//                                ?.split(",")
-//                                ?.filter { it.isNotEmpty() }
-//                                ?.toSet()
-                                ?: emptySet()
+                            tags = innerContent.tags?.let(tagsDeserializer) ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -293,12 +276,7 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = emptySet()
-//                            innerContent.tags
-//                                ?.split(",")
-//                                ?.filter { it.isNotEmpty() }
-//                                ?.toSet()
-                                ?: emptySet()
+                            tags = innerContent.tags?.let(tagsDeserializer) ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep

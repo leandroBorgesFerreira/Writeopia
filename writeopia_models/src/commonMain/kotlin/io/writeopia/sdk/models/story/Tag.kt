@@ -1,7 +1,11 @@
 package io.writeopia.sdk.models.story
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class TagInfo(val tag: Tag, val position: Int = 0)
 
+@Serializable
 enum class Tag(val label: String) {
     H1("H1"),
     H2("H2"),
