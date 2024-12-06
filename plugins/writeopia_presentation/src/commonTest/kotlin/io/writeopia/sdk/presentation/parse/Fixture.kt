@@ -48,7 +48,7 @@ object Fixture {
                 localId = "0",
                 type = StoryTypes.TEXT.type,
                 text = title2,
-                tags = setOf(TagInfo( Tag.H1))
+                tags = setOf(TagInfo(Tag.H1))
             ),
             step2,
             step3,
