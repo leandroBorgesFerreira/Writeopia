@@ -12,7 +12,7 @@ import kotlinx.serialization.encodeToString
 
 class SqlDelightDaoInjector(
     private val database: WriteopiaDb?,
-    private val tagsSerializer: (Set<TagInfo>) -> String = writeopiaJson::encodeToString,
+    private val tagsSerializer: (Set<TagInfo>) -> String = { writeopiaJson.encodeToString(it) },
     private val tagsDeserializer: (String) -> Set<TagInfo> = { jsonText ->
         writeopiaJson.decodeFromString<Set<TagInfo>>(jsonText)
     },
