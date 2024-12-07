@@ -71,10 +71,6 @@ class WriteopiaEditorApi(
             val documentSqlDao = DocumentSqlDao(
                 database.documentEntityQueries,
                 database.storyStepEntityQueries,
-                { writeopiaJson.encodeToString(it) },
-                { jsonText ->
-                    writeopiaJson.decodeFromString<Set<TagInfo>>(jsonText)
-                }
             )
             val documentRepository = SqlDelightDocumentRepository(documentSqlDao)
             return WriteopiaEditorApi(documentRepository)

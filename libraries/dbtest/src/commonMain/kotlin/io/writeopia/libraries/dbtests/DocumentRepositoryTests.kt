@@ -53,7 +53,7 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
             createdAt = now,
             lastUpdatedAt = now,
             userId = "userId",
-            parentId = "root"
+            parentId = "root",
         )
 
         documentRepository.saveDocument(document)

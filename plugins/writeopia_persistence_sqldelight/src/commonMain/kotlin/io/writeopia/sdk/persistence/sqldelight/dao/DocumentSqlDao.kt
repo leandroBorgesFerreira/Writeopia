@@ -17,8 +17,6 @@ import kotlinx.datetime.Instant
 class DocumentSqlDao(
     private val documentQueries: DocumentEntityQueries?,
     private val storyStepQueries: StoryStepEntityQueries?,
-    private val tagsSerializer: (Set<TagInfo>) -> String,
-    private val tagsDeserializer: (String) -> Set<TagInfo>,
 ) {
 
     suspend fun insertDocumentWithContent(document: Document) {
@@ -58,7 +56,7 @@ class DocumentSqlDao(
                 is_group = isGroup.toLong(),
                 has_inner_steps = steps.isNotEmpty().toLong(),
                 background_color = decoration.backgroundColor?.toLong(),
-                tags = tagsSerializer(tags)
+                tags = tags.joinToString(separator = ",") { it.tag.label }
             )
         }
     }
@@ -91,7 +89,12 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = innerContent.tags?.let(tagsDeserializer) ?: emptySet()
+                            tags = innerContent.tags
+                                ?.split(",")
+                                ?.filter { it.isNotEmpty() }
+                                ?.mapNotNull(TagInfo.Companion::fromString)
+                                ?.toSet()
+                                ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -132,7 +135,12 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = innerContent.tags?.let(tagsDeserializer) ?: emptySet()
+                            tags = innerContent.tags
+                                ?.split(",")
+                                ?.filter { it.isNotEmpty() }
+                                ?.mapNotNull(TagInfo.Companion::fromString)
+                                ?.toSet()
+                                ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -179,7 +187,12 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = innerContent.tags?.let(tagsDeserializer) ?: emptySet()
+                            tags = innerContent.tags
+                                ?.split(",")
+                                ?.filter { it.isNotEmpty() }
+                                ?.mapNotNull(TagInfo.Companion::fromString)
+                                ?.toSet()
+                                ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -226,7 +239,12 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = innerContent.tags?.let(tagsDeserializer) ?: emptySet()
+                            tags = innerContent.tags
+                                ?.split(",")
+                                ?.filter { it.isNotEmpty() }
+                                ?.mapNotNull(TagInfo.Companion::fromString)
+                                ?.toSet()
+                                ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -276,7 +294,12 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = innerContent.tags?.let(tagsDeserializer) ?: emptySet()
+                            tags = innerContent.tags
+                                ?.split(",")
+                                ?.filter { it.isNotEmpty() }
+                                ?.mapNotNull(TagInfo.Companion::fromString)
+                                ?.toSet()
+                                ?: emptySet()
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -318,11 +341,11 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = emptySet()
-//                            innerContent.tags
-//                                .split(",")
-//                                .filter { it.isNotEmpty() }
-//                                .toSet()
+                            tags = innerContent.tags
+                                .split(",")
+                                .filter { it.isNotEmpty() }
+                                .mapNotNull(TagInfo.Companion::fromString)
+                                .toSet()
                         )
 
                         innerContent.position.toInt() to storyStep
