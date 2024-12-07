@@ -56,7 +56,7 @@ class DocumentSqlDao(
                 is_group = isGroup.toLong(),
                 has_inner_steps = steps.isNotEmpty().toLong(),
                 background_color = decoration.backgroundColor?.toLong(),
-                tags = tags.joinToString(separator = ",")
+                tags = tags.joinToString(separator = ",") { it.tag.label }
             )
         }
     }
