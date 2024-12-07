@@ -12,10 +12,6 @@ import kotlinx.serialization.encodeToString
 
 class SqlDelightDaoInjector(
     private val database: WriteopiaDb?,
-    private val tagsSerializer: (Set<TagInfo>) -> String = { writeopiaJson.encodeToString(it) },
-    private val tagsDeserializer: (String) -> Set<TagInfo> = { jsonText ->
-        writeopiaJson.decodeFromString<Set<TagInfo>>(jsonText)
-    },
 ) : RepositoryInjector {
 
     private var documentSqlDao: DocumentSqlDao? = null
@@ -28,8 +24,6 @@ class SqlDelightDaoInjector(
                 documentSqlDao = DocumentSqlDao(
                     documentEntityQueries,
                     storyStepEntityQueries,
-                    tagsSerializer,
-                    tagsDeserializer
                 )
 
                 documentSqlDao
@@ -42,6 +36,6 @@ class SqlDelightDaoInjector(
             ?: inMemoryDocumentRepository
 
     companion object {
-        fun noop() = SqlDelightDaoInjector(null, { "" }, { emptySet() })
+        fun noop() = SqlDelightDaoInjector(null)
     }
 }
