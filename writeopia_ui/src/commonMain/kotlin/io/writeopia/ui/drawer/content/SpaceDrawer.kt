@@ -16,6 +16,9 @@ import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.draganddrop.target.DropTarget
 import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.drawer.decorations.DefaultTagDecoration
+import io.writeopia.ui.drawer.decorations.TagDecoration
+import io.writeopia.ui.model.DrawConfig
 
 /**
  * Draws a white space. This Drawer is very important for accepting drop os other Composables for
@@ -23,8 +26,10 @@ import io.writeopia.ui.drawer.StoryStepDrawer
  * story units create a mergeRequest.
  */
 class SpaceDrawer(
+    private val config: DrawConfig,
     private val moveRequest: (Action.Move) -> Unit = {},
-    private val backgroundColor: Color = Color.Transparent
+    private val backgroundColor: Color = Color.Transparent,
+    private val tagDecoration: TagDecoration = DefaultTagDecoration,
 ) : StoryStepDrawer {
 
     @Composable
@@ -42,11 +47,17 @@ class SpaceDrawer(
 
             Box(
                 modifier = Modifier
+                    .background(
+                        tagDecoration.background(
+                            Color.Transparent,
+                            step.tags.map { it.tag },
+                            config
+                        )
+                    )
                     .height(10.dp)
                     .fillMaxWidth()
                     .padding(top = 3.dp, bottom = 3.dp, start = 12.dp)
-                    .clip(MaterialTheme.shapes.medium)
-                    .background(backgroundColor)
+                    .background(backgroundColor, MaterialTheme.shapes.medium)
             )
         }
     }

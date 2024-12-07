@@ -25,7 +25,9 @@ class SqlDelightDocumentRepositoryTest {
         )
     private val documentSqlDao: DocumentSqlDao = DocumentSqlDao(
         database.documentEntityQueries,
-        database.storyStepEntityQueries
+        database.storyStepEntityQueries,
+        { "" },
+        { emptySet() }
     )
 
     private val documentRepository = SqlDelightDocumentRepository(documentSqlDao)

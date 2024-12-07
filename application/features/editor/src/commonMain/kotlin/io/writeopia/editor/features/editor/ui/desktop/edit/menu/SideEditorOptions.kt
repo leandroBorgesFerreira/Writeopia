@@ -27,9 +27,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import io.writeopia.common.utils.collections.inBatches
 import io.writeopia.common.utils.icons.WrIcons
+import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.icons.WrSdkIcons
 import kotlinx.coroutines.flow.StateFlow
 
@@ -41,6 +45,7 @@ fun SideEditorOptions(
     checkItemClick: () -> Unit,
     listItemClick: () -> Unit,
     codeBlockClick: () -> Unit,
+    highLightBlockClick: () -> Unit,
 ) {
     val showSubMenu by showState.collectAsState()
 
@@ -62,28 +67,35 @@ fun SideEditorOptions(
                     MaterialTheme.colorScheme.surfaceVariant,
                     MaterialTheme.shapes.medium
                 ).background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.medium)
-                    .width(160.dp)
+                    .width(250.dp)
                     .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp)
             ) {
-                Text(
-                    "Text",
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                Title("Text")
 
                 Spacer(modifier = Modifier.height(4.dp))
 
                 TextChanges()
 
-                Text(
-                    "Insert",
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                Title("Insert")
 
                 Spacer(modifier = Modifier.height(4.dp))
 
                 InsertCommand(checkItemClick, listItemClick, codeBlockClick)
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Title("Decoration")
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                DecorationCommands(
+                    commands = listOf(
+                        "Highlight" to highLightBlockClick,
+                        "Warning" to {},
+                        "Tip" to {},
+                        "Block" to {}
+                    )
+                )
             }
         }
 
@@ -145,6 +157,15 @@ fun SideEditorOptions(
 }
 
 @Composable
+private fun Title(text: String) {
+    Text(
+        text,
+        style = MaterialTheme.typography.titleSmall,
+        color = MaterialTheme.colorScheme.onBackground
+    )
+}
+
+@Composable
 private fun TextChanges() {
     Row(
         modifier = Modifier.horizontalOptionsRow(),
@@ -181,6 +202,35 @@ private fun TextChanges() {
                 .padding(horizontal = 8.dp, vertical = 8.dp),
             tint = MaterialTheme.colorScheme.onBackground
         )
+    }
+}
+
+@Composable
+private fun DecorationCommands(commands: Iterable<Pair<String, () -> Unit>>) {
+    Column {
+        commands.inBatches(2)
+            .forEach { line ->
+                Row {
+                    line.forEach { (command, listener) ->
+                        Text(
+                            modifier = Modifier
+                                .weight(1F)
+                                .padding(start = 2.dp, end = 2.dp, bottom = 3.dp)
+                                .clickable(onClick = listener)
+                                .background(
+                                    WriteopiaTheme.colorScheme.optionsSelector,
+                                    MaterialTheme.shapes.medium
+                                )
+                                .padding(horizontal = 8.dp, vertical = 8.dp),
+                            text = command,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+            }
     }
 }
 

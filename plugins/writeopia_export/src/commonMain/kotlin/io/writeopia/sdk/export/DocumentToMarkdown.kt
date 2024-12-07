@@ -5,7 +5,8 @@ import io.writeopia.sdk.export.files.name
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.models.story.Tags
+import io.writeopia.sdk.models.story.Tag
+import io.writeopia.sdk.models.story.TagInfo
 import io.writeopia.sdk.utils.files.useKmp
 
 /**
@@ -87,16 +88,16 @@ object DocumentToMarkdown : DocumentWriter {
 
     private fun parseText(storyStep: StoryStep): Pair<ContentAdd, String?> =
         when {
-            storyStep.tags.contains(Tags.H1.tag) ->
+            storyStep.tags.contains(TagInfo(Tag.H1)) ->
                 ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER to "# ${storyStep.text}"
 
-            storyStep.tags.contains(Tags.H2.tag) ->
+            storyStep.tags.contains(TagInfo(Tag.H2)) ->
                 ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER to "## ${storyStep.text}"
 
-            storyStep.tags.contains(Tags.H3.tag) ->
+            storyStep.tags.contains(TagInfo(Tag.H3)) ->
                 ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER to "### ${storyStep.text}"
 
-            storyStep.tags.contains(Tags.H4.tag) ->
+            storyStep.tags.contains(TagInfo(Tag.H4)) ->
                 ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER to "#### ${storyStep.text}"
 
             else -> ContentAdd.NOTHING to storyStep.text

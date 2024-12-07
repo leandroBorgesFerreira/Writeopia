@@ -7,14 +7,14 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.sp
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.models.story.Tags
+import io.writeopia.sdk.models.story.Tag
 
 @Composable
 fun defaultTextStyle(storyStep: StoryStep) =
     TextStyle(
         textDecoration = if (storyStep.checked == true) TextDecoration.LineThrough else null,
         color = MaterialTheme.colorScheme.onBackground,
-        fontSize = textSizeFromTags(storyStep.tags)
+        fontSize = textSizeFromTags(storyStep.tags.map { it.tag })
     )
 
 @Composable
@@ -25,17 +25,16 @@ fun codeBlockStyle() =
         fontFamily = FontFamily.Serif
     )
 
-private fun textSizeFromTags(tags: Iterable<String>) =
-    tags.asSequence()
-        .map(Tags::fromString)
-        .firstOrNull { tag -> tag?.isTitle() == true }
+private fun textSizeFromTags(tags: Iterable<Tag>) =
+    tags.firstOrNull { tag -> tag.isTitle() }
         ?.let(::textSizeFromTag)
         ?: 16.sp
 
-private fun textSizeFromTag(tags: Tags) =
+private fun textSizeFromTag(tags: Tag) =
     when (tags) {
-        Tags.H1 -> 32.sp
-        Tags.H2 -> 28.sp
-        Tags.H3 -> 24.sp
-        Tags.H4 -> 20.sp
+        Tag.H1 -> 32.sp
+        Tag.H2 -> 28.sp
+        Tag.H3 -> 24.sp
+        Tag.H4 -> 20.sp
+        else -> 20.sp
     }

@@ -63,6 +63,8 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
 
     fun onAddCodeBlockClick()
 
+    fun onAddHighLightBlockClick()
+
     fun clearSelections()
 }
 

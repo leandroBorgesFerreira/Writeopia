@@ -2,7 +2,8 @@ package io.writeopia.sdk.presentation.parse
 
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.models.story.Tags
+import io.writeopia.sdk.models.story.Tag
+import io.writeopia.sdk.models.story.TagInfo
 import io.writeopia.sdk.presentation.model.SlidePage
 
 object Fixture {
@@ -47,14 +48,14 @@ object Fixture {
                 localId = "0",
                 type = StoryTypes.TEXT.type,
                 text = title2,
-                tags = setOf(Tags.H1.tag)
+                tags = setOf(TagInfo(Tag.H1))
             ),
             step2,
             step3,
             StoryStep(
                 localId = "0",
                 type = StoryTypes.TEXT.type,
-                tags = setOf(Tags.H2.tag),
+                tags = setOf(TagInfo(Tag.H2)),
                 text = title3,
             ),
             step4,

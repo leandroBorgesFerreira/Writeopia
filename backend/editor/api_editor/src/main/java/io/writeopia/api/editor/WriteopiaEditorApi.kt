@@ -5,14 +5,17 @@ import io.writeopia.api.utils.example
 import io.writeopia.database.connection.SqlDelightJdbcConnection
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.models.story.TagInfo
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import io.writeopia.sdk.persistence.sqldelight.dao.sql.SqlDelightDocumentRepository
 import io.writeopia.sdk.serialization.data.DocumentApi
 import io.writeopia.sdk.serialization.extensions.toApi
 import io.writeopia.sdk.serialization.extensions.toModel
+import io.writeopia.sdk.serialization.json.writeopiaJson
 import io.writeopia.sdk.sql.WriteopiaDb
 import kotlinx.datetime.Clock
+import kotlinx.serialization.encodeToString
 
 class WriteopiaEditorApi(
     private val documentRepository: DocumentRepository,
@@ -34,7 +37,7 @@ class WriteopiaEditorApi(
             createdAt = now.toEpochMilliseconds(),
             lastUpdatedAt = now.toEpochMilliseconds(),
             userId = "null",
-            parentId = "" 
+            parentId = ""
         ).let(::listOf)
     }
 
@@ -67,7 +70,11 @@ class WriteopiaEditorApi(
             val database: WriteopiaDb = createDatabase(logger, inMemory)
             val documentSqlDao = DocumentSqlDao(
                 database.documentEntityQueries,
-                database.storyStepEntityQueries
+                database.storyStepEntityQueries,
+                { writeopiaJson.encodeToString(it) },
+                { jsonText ->
+                    writeopiaJson.decodeFromString<Set<TagInfo>>(jsonText)
+                }
             )
             val documentRepository = SqlDelightDocumentRepository(documentSqlDao)
             return WriteopiaEditorApi(documentRepository)

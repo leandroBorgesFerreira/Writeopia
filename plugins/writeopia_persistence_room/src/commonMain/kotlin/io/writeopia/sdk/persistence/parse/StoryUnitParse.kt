@@ -36,7 +36,7 @@ fun StoryStepEntity.toModel(
         decoration = Decoration(
             backgroundColor = backgroundColor,
         ),
-        tags = tags.split(",").toSet()
+        tags = emptySet()
     )
 
 fun StoryStep.toEntity(position: Int, documentId: String): StoryStepEntity =
