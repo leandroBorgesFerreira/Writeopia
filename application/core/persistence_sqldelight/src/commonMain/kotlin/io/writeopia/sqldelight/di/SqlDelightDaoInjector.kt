@@ -1,14 +1,11 @@
 package io.writeopia.sqldelight.di
 
-import io.writeopia.sdk.models.story.TagInfo
-import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
+import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.repository.InMemoryDocumentRepository
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import io.writeopia.sdk.persistence.sqldelight.dao.sql.SqlDelightDocumentRepository
-import io.writeopia.sdk.serialization.json.writeopiaJson
 import io.writeopia.sql.WriteopiaDb
-import kotlinx.serialization.encodeToString
 
 class SqlDelightDaoInjector(
     private val database: WriteopiaDb?,
