@@ -2,11 +2,10 @@ package io.writeopia.ui.modifiers
 
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.models.story.Tag
 import io.writeopia.sdk.models.story.TagInfo
 import io.writeopia.ui.model.DrawStory
 
-object SpacesModifier {
+object StepsModifier {
 
     fun modify(stories: List<DrawStory>, dragPosition: Int): List<DrawStory> {
         val space = StoryStep(type = StoryTypes.SPACE.type)
@@ -85,7 +84,9 @@ object SpacesModifier {
 
                         !previousTags && nextTags -> setTagPosition(tags, -1)
 
-                        else -> setTagPosition(tags, 0)
+                        !previousTags && !nextTags -> setTagPosition(tags, 2)
+
+                        else -> setTagPosition(tags, 2)
                     }
                 } else {
                     tags

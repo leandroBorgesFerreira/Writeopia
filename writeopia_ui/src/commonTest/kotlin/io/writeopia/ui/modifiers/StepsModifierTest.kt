@@ -8,7 +8,7 @@ import io.writeopia.ui.model.DrawStory
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class SpacesModifierTest {
+class StepsModifierTest {
 
     @Test
     fun `tags should be merged correctly`() {
@@ -19,7 +19,7 @@ class SpacesModifierTest {
             DrawStory(it, 0)
         }
 
-        val result = SpacesModifier.modify(input, 0).map { it.storyStep.tags }.flatten()
+        val result = StepsModifier.modify(input, 0).map { it.storyStep.tags }.flatten()
         val expected = listOf(
             TagInfo(Tag.HIGH_LIGHT_BLOCK, -1),
             TagInfo(Tag.HIGH_LIGHT_BLOCK, 0),

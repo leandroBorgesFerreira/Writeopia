@@ -32,7 +32,7 @@ import io.writeopia.ui.keyboard.KeyboardEvent
 import io.writeopia.ui.model.DrawState
 import io.writeopia.ui.model.DrawStory
 import io.writeopia.ui.model.TextInput
-import io.writeopia.ui.modifiers.SpacesModifier
+import io.writeopia.ui.modifiers.StepsModifier
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
@@ -69,8 +69,7 @@ class WriteopiaStateManager(
     private val writeopiaManager: WriteopiaManager,
     val selectionState: StateFlow<Boolean>,
     private val keyboardEventFlow: Flow<KeyboardEvent>,
-    private val drawStateModify: (List<DrawStory>, Int) -> (List<DrawStory>) =
-        SpacesModifier::modify
+    private val drawStateModify: (List<DrawStory>, Int) -> (List<DrawStory>) = StepsModifier::modify
 ) : BackstackHandler, BackstackInform by backStackManager {
 
     init {
@@ -821,7 +820,7 @@ class WriteopiaStateManager(
             writeopiaManager,
             selectionState,
             keyboardEventFlow.filterNotNull(),
-            SpacesModifier::modify
+            StepsModifier::modify
         )
     }
 }

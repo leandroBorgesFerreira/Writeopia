@@ -44,6 +44,7 @@ object DefaultTagDecoration : TagDecoration {
         return when (tagInfo.position) {
             -1 -> RoundedCornerShape(topStart = corner, topEnd = corner)
             1 -> RoundedCornerShape(bottomStart = corner, bottomEnd = corner)
+            2 -> RoundedCornerShape(corner)
             else -> RoundedCornerShape(0)
         }
     }
@@ -58,6 +59,7 @@ object DefaultTagDecoration : TagDecoration {
         return when (tagInfo.position) {
             -1 -> PaddingValues(top = padding)
             1 -> PaddingValues(bottom = padding)
+            2 -> PaddingValues(padding)
             else -> PaddingValues(0.dp)
         }
     }
