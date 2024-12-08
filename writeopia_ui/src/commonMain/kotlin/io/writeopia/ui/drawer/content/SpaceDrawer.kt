@@ -30,6 +30,7 @@ class SpaceDrawer(
     private val moveRequest: (Action.Move) -> Unit = {},
     private val backgroundColor: Color = Color.Transparent,
     private val tagDecoration: TagDecoration = DefaultTagDecoration,
+    private val modifier: Modifier = Modifier,
 ) : StoryStepDrawer {
 
     @Composable
@@ -46,7 +47,7 @@ class SpaceDrawer(
             }
 
             Box(
-                modifier = Modifier
+                modifier = modifier
                     .background(
                         tagDecoration.background(
                             Color.Transparent,

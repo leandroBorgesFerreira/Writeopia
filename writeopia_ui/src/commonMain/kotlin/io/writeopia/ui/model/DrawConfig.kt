@@ -20,6 +20,7 @@ data class DrawConfig(
         )
     },
     val textDrawerStartPadding: Int = 8,
+    val textDrawerInnerStartPadding: Int = 4,
     val textVerticalPadding: Int = 0,
     val codeBlockStartPadding: Int = 8,
     val codeBlockHorizontalInnerPadding: Int = 12,

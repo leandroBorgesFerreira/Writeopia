@@ -49,6 +49,24 @@ class ContentHandler(
         }
     }
 
+    fun removeTags(currentStory: Map<Int, StoryStep>, position: Int): StoryState {
+        val newMap = currentStory.toMutableMap()
+        val storyStep = newMap[position]
+
+        val newStory = storyStep?.copy(
+            localId = GenerateId.generate(),
+            tags = emptySet()
+        )
+
+        return if (newStory != null) {
+            newMap[position] = newStory
+
+            StoryState(newMap, LastEdit.LineEdition(position, newStory), position)
+        } else {
+            StoryState(newMap, LastEdit.Nothing, position)
+        }
+    }
+
     fun changeStoryType(
         currentStory: Map<Int, StoryStep>,
         typeInfo: TypeInfo,
@@ -121,6 +139,8 @@ class ContentHandler(
     ): Pair<Pair<Int, StoryStep>, StoryState>? {
         val storyStep = lineBreakInfo.storyStep
 
+        val carryOverTags = storyStep.tags.filterTo(mutableSetOf()) { it.tag.mustCarryOver() }
+
         return storyStep.text?.split("\n", limit = 2)?.let { list ->
             val firstText = list.elementAtOrNull(0) ?: ""
             val secondText = list.elementAtOrNull(1) ?: ""
@@ -128,6 +148,7 @@ class ContentHandler(
                 localId = GenerateId.generate(),
                 type = lineBreakMap(storyStep.type),
                 text = secondText,
+                tags = carryOverTags
             )
 
             val addPosition = lineBreakInfo.position + 1

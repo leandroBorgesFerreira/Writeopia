@@ -24,7 +24,11 @@ object KeyEventListenerFactory {
                 isEmptyErase(keyEvent, inputText) -> {
                     when (onEmptyErase) {
                         EmptyErase.DELETE -> {
-                            manager.onErase(Action.EraseStory(step, position))
+                            if (step.tags.any { it.tag.isErasable() }) {
+                                manager.removeTags(position)
+                            } else {
+                                manager.onErase(Action.EraseStory(step, position))
+                            }
                         }
 
                         EmptyErase.CHANGE_TYPE -> {
@@ -71,7 +75,11 @@ object KeyEventListenerFactory {
                 isEmptyErase(keyEvent, inputText) -> {
                     when (onEmptyErase) {
                         EmptyErase.DELETE -> {
-                            manager.onErase(Action.EraseStory(step, position))
+                            if (step.tags.any { it.tag.isErasable() }) {
+                                manager.removeTags(position)
+                            } else {
+                                manager.onErase(Action.EraseStory(step, position))
+                            }
                         }
 
                         EmptyErase.CHANGE_TYPE -> {

@@ -397,6 +397,11 @@ class WriteopiaStateManager(
             writeopiaManager.changeStoryType(position, typeInfo, commandInfo, _currentStory.value)
     }
 
+    fun removeTags(position: Int) {
+        _currentStory.value =
+            writeopiaManager.removeTags(position, _currentStory.value)
+    }
+
     /**
      * Creates a line break. When a line break happens, the line it divided into two [StoryStep]s
      * of the same, if possible, or the next line will be a Message.
@@ -414,8 +419,10 @@ class WriteopiaStateManager(
             return
         }
 
-        lastLineBreak =
-            LineBreakCommand(lineBreak.storyStep.text ?: "", lineBreak.position, Clock.System.now())
+        lastLineBreak = LineBreakCommand(
+            lineBreak.storyStep.text ?: "",
+            lineBreak.position, Clock.System.now()
+        )
 
         if (isOnSelection) {
             cancelSelection()
