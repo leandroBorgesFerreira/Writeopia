@@ -12,6 +12,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -29,6 +33,10 @@ fun EditFileScreen(
     Dialog(onDismissRequest = onDismissRequest) {
         Card(modifier = modifier) {
             Column(modifier = Modifier.padding(20.dp).width(400.dp)) {
+                var fileText by remember {
+                    mutableStateOf(folderEdit.title)
+                }
+
                 Text("Update Folder")
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -38,8 +46,9 @@ fun EditFileScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 OutlinedTextField(
-                    value = folderEdit.title,
+                    value = fileText,
                     onValueChange = { title ->
+                        fileText = title
                         editFolder(folderEdit.copy(title = title.takeIf { it.isNotEmpty() } ?: " "))
                     }
                 )
