@@ -25,9 +25,9 @@ object DefaultTagDecoration : TagDecoration {
         if (tags.mapTo(mutableSetOf()) { it.tag }.contains(Tag.HIGH_LIGHT_BLOCK)) {
             modifier
                 .background(config.selectedColor(), shareForTagInfo(tags))
-                .padding(paddingForTagInfo(tags))
+                .padding(paddingForTagInfo(tags, config))
         } else {
-            modifier
+            modifier.padding(start = config.textDrawerInnerStartPadding.dp)
         }
 
     @Composable
@@ -49,18 +49,19 @@ object DefaultTagDecoration : TagDecoration {
         }
     }
 
-    private fun paddingForTagInfo(tagInfoList: Iterable<TagInfo>): PaddingValues {
+    private fun paddingForTagInfo(tagInfoList: Iterable<TagInfo>, drawConfig: DrawConfig): PaddingValues {
         val padding = 8.dp
+        val startPadding = drawConfig.textDrawerInnerStartPadding
 
         val tagInfo = tagInfoList.firstOrNull { info ->
             info.tag.hasPosition()
         } ?: return PaddingValues(0.dp)
 
         return when (tagInfo.position) {
-            -1 -> PaddingValues(top = padding)
-            1 -> PaddingValues(bottom = padding)
-            2 -> PaddingValues(padding)
-            else -> PaddingValues(0.dp)
+            -1 -> PaddingValues(start = startPadding.dp, top = padding)
+            1 -> PaddingValues(start = startPadding.dp, bottom = padding)
+            2 -> PaddingValues(start = startPadding.dp,top = padding, bottom = padding)
+            else -> PaddingValues(start = startPadding.dp)
         }
     }
 }

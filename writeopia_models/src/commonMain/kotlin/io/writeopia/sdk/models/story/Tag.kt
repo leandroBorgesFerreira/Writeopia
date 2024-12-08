@@ -19,11 +19,20 @@ enum class Tag(val label: String) {
             HIGH_LIGHT_BLOCK -> false
         }
 
-    fun hasPosition() =
-        when (this) {
-            H1, H2, H3, H4 -> false
-            HIGH_LIGHT_BLOCK -> true
-        }
+    fun hasPosition() = when (this) {
+        H1, H2, H3, H4 -> false
+        HIGH_LIGHT_BLOCK -> true
+    }
+
+    fun isErasable() = when (this) {
+        H1, H2, H3, H4 -> false
+        HIGH_LIGHT_BLOCK -> true
+    }
+
+    fun mustCarryOver() = when (this) {
+        H1, H2, H3, H4 -> false
+        HIGH_LIGHT_BLOCK -> true
+    }
 
     companion object {
         fun titleTags(): Set<Tag> = setOf(H1, H2, H3, H4)

@@ -5,5 +5,6 @@ import io.writeopia.sdk.models.story.TagInfo
 data class CommandInfo(
     val command: Command,
     val commandTrigger: CommandTrigger,
-    val tags: Set<TagInfo> = emptySet()
+    val tags: Set<TagInfo> = emptySet(),
+    val replaceTags: Boolean = false,
 )

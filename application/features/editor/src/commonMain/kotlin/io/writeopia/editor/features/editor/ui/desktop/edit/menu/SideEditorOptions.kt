@@ -90,10 +90,10 @@ fun SideEditorOptions(
 
                 DecorationCommands(
                     commands = listOf(
-                        "Highlight" to highLightBlockClick,
+                        "Box" to highLightBlockClick,
                         "Warning" to {},
                         "Tip" to {},
-                        "Block" to {}
+                        "Code" to {}
                     )
                 )
             }

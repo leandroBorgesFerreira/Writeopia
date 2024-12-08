@@ -163,6 +163,9 @@ class WriteopiaManager(
             commandInfo
         )
 
+    fun removeTags(position: Int, storyState: StoryState): StoryState =
+        contentHandler.removeTags(storyState.stories, position)
+
     /**
      * Creates a line break. When a line break happens, the line it divided into two [StoryStep]s
      * of the same, if possible, or the next line will be a Message.
