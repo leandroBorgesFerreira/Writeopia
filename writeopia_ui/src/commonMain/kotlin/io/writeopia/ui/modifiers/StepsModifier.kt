@@ -44,7 +44,7 @@ object StepsModifier {
         val enums1 = tags1.filter { it.tag.hasPosition() }.toSet()
         val enums2 = tags2.filter { it.tag.hasPosition() }.toSet()
 
-        return enums1.intersect(enums2)
+        return enums1.intersect(enums2) + tags2.filter { it.tag.isHidden() }
     }
 
     private fun addPositionToTags(stories: List<DrawStory>): List<DrawStory> {

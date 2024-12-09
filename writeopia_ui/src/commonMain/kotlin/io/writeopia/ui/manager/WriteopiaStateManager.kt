@@ -124,8 +124,6 @@ class WriteopiaStateManager(
     private val _positionsOnEdit = MutableStateFlow(setOf<Int>())
     val onEditPositions = _positionsOnEdit.asStateFlow()
 
-//    private val selection = MutableStateFlow(Selection.start())
-
     private var sharedEditionManager: SharedEditionManager? = null
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
@@ -361,6 +359,20 @@ class WriteopiaStateManager(
         //Todo: This change needs to take into account that code block is a multi line block and then
         //it needs to be have the relation N -> 1 and 1 -> N when transforming.
 //        changeCurrentStoryType(StoryTypes.CODE_BLOCK)
+    }
+
+    fun toggleCollapseItem(position: Int) {
+        val state = _currentStory.value
+        val isCollapsed = currentStory.value
+            .stories[position]
+            ?.tags
+            ?.any { it.tag == Tag.COLLAPSED } == true
+
+        _currentStory.value = if (isCollapsed) {
+            writeopiaManager.expandItem(state, position)
+        } else {
+            writeopiaManager.collapseItem(state, position)
+        }
     }
 
     /**

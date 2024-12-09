@@ -1,6 +1,11 @@
 package io.writeopia.ui.drawer.content
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -10,8 +15,10 @@ import io.writeopia.sdk.model.action.Action
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.models.story.Tag
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.icons.WrSdkIcons
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.DrawConfig
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +39,8 @@ fun swipeTextDrawer(
     onDragStop: () -> Unit = {},
     moveRequest: (Action.Move) -> Unit = {},
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
-    isDesktop: Boolean
+    isDesktop: Boolean,
+    startContent: @Composable ((StoryStep, DrawInfo) -> Unit)? = null,
 ): StoryStepDrawer =
     DesktopTextItemDrawer(
         modifier,
@@ -45,7 +53,7 @@ fun swipeTextDrawer(
         onDragStart,
         onDragStop,
         moveRequest,
-        null,
+        startContent,
         isDesktop,
         messageDrawer
     )
@@ -68,6 +76,25 @@ fun swipeTextDrawer(
         onDragStop = manager::onDragStop,
         moveRequest = manager::moveRequest,
         customBackgroundColor = Color.Transparent,
+        startContent = { storyStep, drawInfo ->
+            if (storyStep.tags.any { it.tag.isTitle() }) {
+                val isCollapsed = storyStep.tags.any { it.tag == Tag.COLLAPSED }
+
+                Icon(
+                    modifier = Modifier
+                        .clickable(onClick = { manager.toggleCollapseItem(drawInfo.position) })
+                        .size(24.dp)
+                        .padding(4.dp),
+                    imageVector = if (isCollapsed) {
+                        WrSdkIcons.smallArrowRight
+                    } else {
+                        WrSdkIcons.smallArrowDown
+                    },
+                    contentDescription = "Small arrow right",
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+            }
+        },
         isDesktop = isDesktop,
         messageDrawer = {
             messageDrawer()

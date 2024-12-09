@@ -206,4 +206,10 @@ class WriteopiaManager(
         positions: Iterable<Int>,
         stories: Map<Int, StoryStep>
     ) = contentHandler.bulkDeletion(positions, stories)
+
+    fun collapseItem(storyState: StoryState, position: Int) =
+        contentHandler.collapseItem(storyState.stories, position)
+
+    fun expandItem(storyState: StoryState, position: Int) =
+        contentHandler.expandItem(storyState.stories, position)
 }

@@ -43,6 +43,7 @@ import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.draganddrop.target.DragRowTarget
 import io.writeopia.ui.draganddrop.target.DropTarget
+import io.writeopia.ui.icons.WrSdkIcons
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -217,9 +218,9 @@ private fun FolderItem(
             Spacer(modifier = Modifier.width(4.dp + 12.dp * depth))
 
             val imageVector = if (folder.expanded) {
-                WrIcons.smallArrowDown
+                WrSdkIcons.smallArrowDown
             } else {
-                WrIcons.smallArrowRight
+                WrSdkIcons.smallArrowRight
             }
 
             Icon(

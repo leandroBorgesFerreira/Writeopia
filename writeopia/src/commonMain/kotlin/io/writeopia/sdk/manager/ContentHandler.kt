@@ -10,6 +10,7 @@ import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.models.story.Tag
 import io.writeopia.sdk.models.story.TagInfo
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.previousTextStory
@@ -258,6 +259,76 @@ class ContentHandler(
         storyMap: Map<Int, StoryStep>,
         position: Int
     ) = storyMap.previousTextStory(position, isTextStory)
+
+    fun collapseItem(
+        storyMap: Map<Int, StoryStep>,
+        position: Int
+    ): StoryState {
+        val mutable = storyMap.toMutableMap()
+        storyMap[position]?.let { step ->
+            val tagInfo = setOf(TagInfo(tag = Tag.COLLAPSED))
+            mutable[position] = step.copy(tags = step.tags.merge(tagInfo))
+        }
+
+        var i = position + 1
+        var nextHeaderFound = false
+
+        while (!nextHeaderFound && storyMap.containsKey(i)) {
+            val step = storyMap[i]
+
+            if (step != null) {
+                if (step.tags.any { it.tag.isTitle() }) {
+                    nextHeaderFound = true
+                } else {
+                    val tagInfo = setOf(TagInfo(tag = Tag.HIDDEN_HX))
+                    mutable[i] = step.copy(tags = step.tags.merge(tagInfo))
+                }
+            }
+
+            i += 1
+        }
+
+        return StoryState(
+            mutable.toMap(),
+            lastEdit = LastEdit.LineEdition(position, storyMap[position]!!),
+            focus = position
+        )
+    }
+
+    fun expandItem(
+        storyMap: Map<Int, StoryStep>,
+        position: Int
+    ): StoryState {
+        val mutable = storyMap.toMutableMap()
+        storyMap[position]?.let { step ->
+            mutable[position] =
+                step.copy(tags = step.tags.filterNotTo(mutableSetOf()) { it.tag == Tag.COLLAPSED })
+        }
+
+        var i = position + 1
+        var nextHeaderFound = false
+
+        while (!nextHeaderFound && storyMap.containsKey(i)) {
+            val step = storyMap[i]
+
+            if (step != null) {
+                if (step.tags.any { it.tag.isTitle() }) {
+                    nextHeaderFound = true
+                } else {
+                    val tagInfo = step.tags.filterNotTo(mutableSetOf()) { it.tag == Tag.HIDDEN_HX }
+                    mutable[i] = step.copy(tags = tagInfo)
+                }
+            }
+
+            i += 1
+        }
+
+        return StoryState(
+            mutable.toMap(),
+            lastEdit = LastEdit.LineEdition(position, storyMap[position]!!),
+            focus = position
+        )
+    }
 }
 
 private fun defaultLineBreakMap(storyType: StoryType): StoryType =
