@@ -442,7 +442,15 @@ class WriteopiaStateManager(
 
         coroutineScope.launch(dispatcher) {
             val state = _currentStory.value
-            writeopiaManager.onLineBreak(lineBreak, state)?.let { (info, newState) ->
+            val story = getStory(position = lineBreak.position)
+
+            val expanded = if (story?.tags?.any { it.tag.isTitle() } == true) {
+                writeopiaManager.expandItem(state, lineBreak.position)
+            } else {
+                state
+            }
+            
+            writeopiaManager.onLineBreak(lineBreak, expanded)?.let { (info, newState) ->
                 val (newPosition, newStory) = info
                 // Todo: Fix this when the inner position are completed
                 backStackManager.addAction(BackstackAction.Add(newStory, newPosition))
