@@ -18,7 +18,7 @@ enum class Tag(val label: String) {
     fun isTitle() =
         when (this) {
             H1, H2, H3, H4 -> true
-            HIGH_LIGHT_BLOCK, HIDDEN_HX, COLLAPSED -> false
+            else -> false
         }
 
     fun hasPosition() = when (this) {

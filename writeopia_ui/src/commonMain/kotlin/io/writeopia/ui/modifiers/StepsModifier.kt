@@ -51,7 +51,7 @@ object StepsModifier {
         val resultList = mutableListOf<DrawStory>()
 
         val setTagPosition: (Iterable<TagInfo>, Int) -> List<TagInfo> = { tagInfoList, position ->
-            tagInfoList.filter { it.tag.hasPosition() }
+            tagInfoList
                 .map { tagInfo ->
                     if (tagInfo.tag.hasPosition()) tagInfo.copy(position = position) else tagInfo
                 }
