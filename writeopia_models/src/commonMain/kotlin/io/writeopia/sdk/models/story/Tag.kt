@@ -11,27 +11,34 @@ enum class Tag(val label: String) {
     H2("H2"),
     H3("H3"),
     H4("H4"),
-    HIGH_LIGHT_BLOCK("HIGH_LIGHT_BLOCK");
+    HIGH_LIGHT_BLOCK("HIGH_LIGHT_BLOCK"),
+    HIDDEN_HX("HIGH_LIGHT_BLOCK"),
+    COLLAPSED("COLLAPSED");
 
     fun isTitle() =
         when (this) {
             H1, H2, H3, H4 -> true
-            HIGH_LIGHT_BLOCK -> false
+            else -> false
         }
 
     fun hasPosition() = when (this) {
-        H1, H2, H3, H4 -> false
+        H1, H2, H3, H4, HIDDEN_HX, COLLAPSED -> false
         HIGH_LIGHT_BLOCK -> true
     }
 
     fun isErasable() = when (this) {
-        H1, H2, H3, H4 -> false
+        H1, H2, H3, H4, HIDDEN_HX, COLLAPSED -> false
         HIGH_LIGHT_BLOCK -> true
     }
 
     fun mustCarryOver() = when (this) {
-        H1, H2, H3, H4 -> false
+        H1, H2, H3, H4, HIDDEN_HX, COLLAPSED -> false
         HIGH_LIGHT_BLOCK -> true
+    }
+
+    fun isHidden() = when (this) {
+        HIDDEN_HX -> true
+        else -> false
     }
 
     companion object {

@@ -43,6 +43,7 @@ class DesktopTextItemDrawer(
     private val onDragStop: () -> Unit,
     private val moveRequest: (Action.Move) -> Unit,
     private val startContent: @Composable ((StoryStep, DrawInfo) -> Unit)?,
+    private val endContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
     private val isDesktop: Boolean,
     private val messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
     private val tagDecoration: TagDecoration = DefaultTagDecoration,
@@ -120,7 +121,6 @@ class DesktopTextItemDrawer(
                     }
                 ) {
                     val interactionSourceText = remember { MutableInteractionSource() }
-
                     startContent?.invoke(step, drawInfo)
 
                     messageDrawer().apply {
@@ -136,6 +136,8 @@ class DesktopTextItemDrawer(
                         focusRequester = focusRequester,
                         decorationBox = @Composable { innerTextField -> innerTextField() },
                     )
+
+                    endContent?.invoke(step, drawInfo, isHovered)
                 }
             }
         }

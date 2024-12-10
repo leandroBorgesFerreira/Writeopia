@@ -7,13 +7,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.action.Action
-import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.DrawConfig
+import io.writeopia.ui.model.DrawInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -32,7 +32,8 @@ fun swipeTextDrawer(
     onDragStop: () -> Unit = {},
     moveRequest: (Action.Move) -> Unit = {},
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
-    isDesktop: Boolean
+    isDesktop: Boolean,
+    endContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
 ): StoryStepDrawer =
     DesktopTextItemDrawer(
         modifier,
@@ -46,6 +47,7 @@ fun swipeTextDrawer(
         onDragStop,
         moveRequest,
         null,
+        endContent,
         isDesktop,
         messageDrawer
     )
@@ -56,7 +58,8 @@ fun swipeTextDrawer(
     dragIconWidth: Dp = 16.dp,
     config: DrawConfig,
     isDesktop: Boolean,
-    messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
+    endContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
+    messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
 ): StoryStepDrawer {
     return swipeTextDrawer(
         modifier = modifier,
@@ -68,6 +71,7 @@ fun swipeTextDrawer(
         onDragStop = manager::onDragStop,
         moveRequest = manager::moveRequest,
         customBackgroundColor = Color.Transparent,
+        endContent = endContent,
         isDesktop = isDesktop,
         messageDrawer = {
             messageDrawer()

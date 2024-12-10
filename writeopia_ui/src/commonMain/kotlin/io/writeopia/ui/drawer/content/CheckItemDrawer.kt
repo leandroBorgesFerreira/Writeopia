@@ -73,6 +73,7 @@ fun checkItemDrawer(
         onDragStop,
         moveRequest,
         startContent,
+        null,
         isDesktop,
         messageDrawer
     )

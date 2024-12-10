@@ -3,6 +3,8 @@ package io.writeopia.utils
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.models.story.Tag
+import io.writeopia.sdk.models.story.TagInfo
 
 object MapStoryData {
 
@@ -218,6 +220,41 @@ object MapStoryData {
             localId = "2",
             type = StoryTypes.TEXT.type,
             text = "message2",
+        ),
+        2 to StoryStep(
+            localId = "4",
+            type = StoryTypes.TEXT.type,
+            text = "message3",
+        ),
+        3 to StoryStep(
+            localId = "6",
+            type = StoryTypes.TEXT.type,
+            text = "message4",
+        ),
+        4 to StoryStep(
+            localId = "7",
+            type = StoryTypes.TEXT.type,
+            text = "message5",
+        ),
+        5 to StoryStep(
+            localId = "8",
+            type = StoryTypes.TEXT.type,
+            text = "message6",
+        )
+    )
+
+    fun messagesWithHeader(): Map<Int, StoryStep> = mapOf(
+        0 to StoryStep(
+            localId = "0",
+            type = StoryTypes.TEXT.type,
+            text = "message1",
+            tags = setOf(TagInfo(Tag.H1))
+        ),
+        1 to StoryStep(
+            localId = "2",
+            type = StoryTypes.TEXT.type,
+            text = "message2",
+            tags = setOf(TagInfo(Tag.HIGH_LIGHT_BLOCK, 3))
         ),
         2 to StoryStep(
             localId = "4",

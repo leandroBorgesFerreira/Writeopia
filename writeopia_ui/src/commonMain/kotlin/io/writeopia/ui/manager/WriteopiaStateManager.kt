@@ -124,8 +124,6 @@ class WriteopiaStateManager(
     private val _positionsOnEdit = MutableStateFlow(setOf<Int>())
     val onEditPositions = _positionsOnEdit.asStateFlow()
 
-//    private val selection = MutableStateFlow(Selection.start())
-
     private var sharedEditionManager: SharedEditionManager? = null
 
     val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
@@ -363,6 +361,20 @@ class WriteopiaStateManager(
 //        changeCurrentStoryType(StoryTypes.CODE_BLOCK)
     }
 
+    fun toggleCollapseItem(position: Int) {
+        val state = _currentStory.value
+        val isCollapsed = currentStory.value
+            .stories[position]
+            ?.tags
+            ?.any { it.tag == Tag.COLLAPSED } == true
+
+        _currentStory.value = if (isCollapsed) {
+            writeopiaManager.expandItem(state, position)
+        } else {
+            writeopiaManager.collapseItem(state, position)
+        }
+    }
+
     /**
      * At the moment it is only possible to check items not inside groups. Todo: Fix it!
      *
@@ -430,7 +442,15 @@ class WriteopiaStateManager(
 
         coroutineScope.launch(dispatcher) {
             val state = _currentStory.value
-            writeopiaManager.onLineBreak(lineBreak, state)?.let { (info, newState) ->
+            val story = getStory(position = lineBreak.position)
+
+            val expanded = if (story?.tags?.any { it.tag.isTitle() } == true) {
+                writeopiaManager.expandItem(state, lineBreak.position)
+            } else {
+                state
+            }
+
+            writeopiaManager.onLineBreak(lineBreak, expanded)?.let { (info, newState) ->
                 val (newPosition, newStory) = info
                 // Todo: Fix this when the inner position are completed
                 backStackManager.addAction(BackstackAction.Add(newStory, newPosition))

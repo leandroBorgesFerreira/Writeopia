@@ -60,7 +60,7 @@ class TextDrawer(
     private val emptyErase: EmptyErase = EmptyErase.CHANGE_TYPE,
     override var onFocusChanged: (Int, FocusState) -> Unit = { _, _ -> },
     private val selectionState: StateFlow<Boolean>,
-    private val onSelectionLister: (Int) -> Unit
+    private val onSelectionLister: (Int) -> Unit,
 ) : SimpleTextDrawer {
 
     @Composable

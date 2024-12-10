@@ -8,11 +8,13 @@ import io.writeopia.sdk.models.command.CommandTrigger
 import io.writeopia.sdk.models.command.TypeInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.models.story.Tag
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.utils.MapStoryData
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class ContentHandlerTest {
 
@@ -134,6 +136,17 @@ class ContentHandlerTest {
         val newState = contentHandler.eraseStory(Action.EraseStory(lastStory, lastIndex), input)
 
         assertEquals(secondLastStory!!.text + lastStory.text, newState.stories.values.last().text)
+    }
+
+    @Test
+    fun `when a header is collapsed, all text bellow it should be hidden`() {
+        val input = MapStoryData.messagesWithHeader()
+        val contentHandler = ContentHandler(stepsNormalizer = normalizer())
+
+        val state = contentHandler.collapseItem(input, 0)
+
+        assertTrue { state.stories[0]!!.tags.any { it.tag == Tag.COLLAPSED } }
+        state.stories.values.drop(0).all { it.tags.any { it.tag.isHidden() } }
     }
 }
 

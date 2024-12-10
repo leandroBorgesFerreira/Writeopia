@@ -1,18 +1,26 @@
 package io.writeopia.ui.drawer.factory
 
 import android.view.KeyEvent
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.content.VideoDrawer
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.models.story.Tag
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.content.ImageDrawer
 import io.writeopia.ui.drawer.content.RowGroupDrawer
 import io.writeopia.ui.drawer.content.defaultImageShape
+import io.writeopia.ui.icons.WrSdkIcons
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.DrawConfig
 
@@ -61,7 +69,29 @@ object DefaultDrawersAndroid : DrawersFactory {
             eventListener = KeyEventListenerFactory.android(
                 manager,
                 isEmptyErase = DefaultDrawersAndroid::emptyErase
-            )
+            ),
+            headerEndContent = { storyStep, drawInfo, _ ->
+                val isTitle = storyStep.tags.any { it.tag.isTitle() }
+                val isCollapsed by lazy { storyStep.tags.any { it.tag == Tag.COLLAPSED } }
+                if (isTitle) {
+                    val iconTintOnHover = MaterialTheme.colorScheme.onBackground
+
+                    Icon(
+                        modifier = Modifier
+                            .clip(MaterialTheme.shapes.medium)
+                            .clickable(onClick = { manager.toggleCollapseItem(drawInfo.position) })
+                            .size(24.dp)
+                            .padding(4.dp),
+                        imageVector = if (isCollapsed) {
+                            WrSdkIcons.smallArrowUp
+                        } else {
+                            WrSdkIcons.smallArrowDown
+                        },
+                        contentDescription = "Small arrow right",
+                        tint = iconTintOnHover
+                    )
+                }
+            }
         )
 
         return mapOf(

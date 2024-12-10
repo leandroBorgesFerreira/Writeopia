@@ -26,6 +26,9 @@ fun WriteopiaEditor(
     keyFn: (Int, DrawStory) -> Int = { index, drawStory -> drawStory.desktopKey + index }
 ) {
     val content = storyState.stories
+        .filterNot { draw ->
+            draw.storyStep.tags.any { it.tag.isHidden() }
+        }
 
     DraggableScreen(modifier = modifier) {
         LazyColumn(
