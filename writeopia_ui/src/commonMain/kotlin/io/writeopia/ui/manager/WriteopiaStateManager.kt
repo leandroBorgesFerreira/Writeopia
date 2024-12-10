@@ -449,7 +449,7 @@ class WriteopiaStateManager(
             } else {
                 state
             }
-            
+
             writeopiaManager.onLineBreak(lineBreak, expanded)?.let { (info, newState) ->
                 val (newPosition, newStory) = info
                 // Todo: Fix this when the inner position are completed

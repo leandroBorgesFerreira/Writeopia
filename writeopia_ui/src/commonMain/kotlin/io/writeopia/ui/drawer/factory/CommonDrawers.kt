@@ -29,6 +29,7 @@ import io.writeopia.ui.drawer.content.swipeTextDrawer
 import io.writeopia.ui.drawer.content.unOrderedListItemDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.DrawConfig
+import io.writeopia.ui.model.DrawInfo
 import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.utils.codeBlockStyle
 import io.writeopia.ui.utils.defaultTextStyle
@@ -50,6 +51,7 @@ object CommonDrawers {
         drawConfig: DrawConfig = DrawConfig(),
         eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean,
         isDesktop: Boolean,
+        headerEndContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
     ): Map<Int, StoryStepDrawer> {
         val textBoxDrawer = swipeTextDrawer(
             modifier = Modifier
@@ -116,6 +118,7 @@ object CommonDrawers {
             dragIconWidth = dragIconWidth,
             isDesktop = isDesktop,
             config = drawConfig,
+            endContent = headerEndContent
         ) {
             messageDrawer(
                 manager = manager,

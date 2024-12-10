@@ -4,6 +4,7 @@ import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.sdk.models.story.TagInfo
 import io.writeopia.sdk.persistence.entity.story.StoryStepEntity
 
 fun Map<Int, StoryStep>.toEntity(documentId: String): List<StoryStepEntity> =
@@ -36,7 +37,11 @@ fun StoryStepEntity.toModel(
         decoration = Decoration(
             backgroundColor = backgroundColor,
         ),
-        tags = emptySet()
+        tags = tags
+            .split(",")
+            .filter { it.isNotEmpty() }
+            .mapNotNull(TagInfo.Companion::fromString)
+            .toSet()
     )
 
 fun StoryStep.toEntity(position: Int, documentId: String): StoryStepEntity =
@@ -54,5 +59,5 @@ fun StoryStep.toEntity(position: Int, documentId: String): StoryStepEntity =
         isGroup = false,
         hasInnerSteps = this.steps.isNotEmpty(),
         backgroundColor = this.decoration.backgroundColor,
-        tags = this.tags.joinToString(separator = ",")
+        tags = this.tags.joinToString(separator = ",") { it.tag.label }
     )
