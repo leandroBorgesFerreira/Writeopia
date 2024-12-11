@@ -46,6 +46,23 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                             )
                         )
                     },
+                    CommandFactory.checkItem2() to { _, position ->
+                        manager.changeStoryType(
+                            position,
+                            TypeInfo(StoryTypes.CHECK_ITEM.type),
+                            CommandInfo(
+                                CommandFactory.checkItem2(),
+                                CommandTrigger.WRITTEN
+                            )
+                        )
+                    },
+                    CommandFactory.box() to { _, position ->
+                        manager.toggleTagForPosition(
+                            position,
+                            TagInfo(Tag.HIGH_LIGHT_BLOCK),
+                            CommandInfo(CommandFactory.box(), CommandTrigger.WRITTEN)
+                        )
+                    },
                     CommandFactory.unOrderedList() to { _, position ->
                         manager.changeStoryType(
                             position,

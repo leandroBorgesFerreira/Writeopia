@@ -12,7 +12,9 @@ import io.writeopia.sdk.model.document.info
 import io.writeopia.sdk.model.story.LastEdit
 import io.writeopia.sdk.model.story.Selection
 import io.writeopia.sdk.model.story.StoryState
+import io.writeopia.sdk.models.command.Command
 import io.writeopia.sdk.models.command.CommandInfo
+import io.writeopia.sdk.models.command.CommandTrigger
 import io.writeopia.sdk.models.command.TypeInfo
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.id.GenerateId
@@ -350,6 +352,32 @@ class WriteopiaStateManager(
         } else {
 //            changeCurrentStoryType(StoryTypes.UNORDERED_LIST_ITEM)
         }
+    }
+
+    fun toggleTagForPosition(position: Int, tag: TagInfo, commandInfo: CommandInfo? = null) {
+        val story = getStory(position)
+        val storyText = story?.text
+
+        val newState = if (commandInfo != null && storyText != null) {
+            val commandText = commandInfo.command.commandText.trim()
+
+            val newText = if (
+                commandInfo.commandTrigger == CommandTrigger.WRITTEN &&
+                story.text?.trim()?.startsWith(commandText.trim()) == true
+            ) {
+                storyText.subSequence(commandText.length, storyText.length).toString()
+            } else {
+                storyText
+            }
+
+            val mutable = currentStory.value.stories.toMutableMap()
+            mutable[position] = story.copy(text = newText)
+            mutable
+        } else {
+            currentStory.value.stories
+        }
+
+        toggleTagForStories(setOf(position), tag, newState)
     }
 
     /**
@@ -698,8 +726,11 @@ class WriteopiaStateManager(
         }
     }
 
-    private fun toggleTagForStories(onEdit: Set<Int>, tag: TagInfo) {
-        val currentStories = currentStory.value.stories
+    private fun toggleTagForStories(
+        onEdit: Set<Int>,
+        tag: TagInfo,
+        currentStories: Map<Int, StoryStep> = currentStory.value.stories
+    ) {
 
         onEdit.forEach { position ->
             val story = currentStories[position]

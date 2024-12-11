@@ -8,7 +8,7 @@ import io.writeopia.sdk.models.story.StoryStep
  */
 data class StoryState(
     val stories: Map<Int, StoryStep>,
-    val lastEdit: LastEdit,
+    val lastEdit: LastEdit = LastEdit.Nothing,
     val focus: Int? = null,
     val selection: Selection = Selection.start()
 )
