@@ -10,6 +10,10 @@ enum class WhereToFind {
 object CommandFactory {
     fun checkItem() = Command(1, "-[] ", WhereToFind.START)
 
+    fun checkItem2() = Command(8, "[] ", WhereToFind.START)
+
+    fun box() = Command(9, "/box ", WhereToFind.START)
+
     fun unOrderedList() = Command(2, "- ", WhereToFind.START)
 
     fun h1() = Command(3, "# ", WhereToFind.START)
