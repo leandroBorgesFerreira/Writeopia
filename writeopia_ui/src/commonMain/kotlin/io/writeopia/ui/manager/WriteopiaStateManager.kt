@@ -350,7 +350,9 @@ class WriteopiaStateManager(
         if (onEdit.isNotEmpty()) {
             toggleTagForStories(onEdit, TagInfo(Tag.HIGH_LIGHT_BLOCK))
         } else {
-//            changeCurrentStoryType(StoryTypes.UNORDERED_LIST_ITEM)
+            currentFocus()?.first?.let { currentPosition ->
+                toggleTagForStories(setOf(currentPosition), TagInfo(Tag.HIGH_LIGHT_BLOCK))
+            }
         }
     }
 
