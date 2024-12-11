@@ -33,6 +33,7 @@ import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
 import io.writeopia.common.utils.Destinations
 import io.writeopia.editor.di.EditorKmpInjector
+import io.writeopia.features.search.ui.SearchDialog
 import io.writeopia.global.shell.SideGlobalMenu
 import io.writeopia.global.shell.di.SideMenuKmpInjector
 import io.writeopia.global.shell.viewmodel.GlobalShellViewModel
@@ -174,6 +175,7 @@ fun App(
                     navigateToEditDocument = navigationController::navigateToNote,
                     moveRequest = globalShellViewModel::moveToFolder,
                     expandFolder = globalShellViewModel::expandFolder,
+                    searchClick = globalShellViewModel::showSearch,
                     highlightContent = {}
                 )
 
@@ -215,6 +217,16 @@ fun App(
                                 selectedThemePosition = MutableStateFlow(2),
                                 onDismissRequest = globalShellViewModel::hideSettings,
                                 selectColorTheme = selectColorTheme
+                            )
+                        }
+
+                        val showSearchState by globalShellViewModel.showSearchDialog.collectAsState()
+
+                        if (showSearchState) {
+                            SearchDialog(
+                                searchState = globalShellViewModel.searchState,
+                                onSearchType = globalShellViewModel::onSearchType,
+                                onDismissRequest = globalShellViewModel::hideSearch
                             )
                         }
 
