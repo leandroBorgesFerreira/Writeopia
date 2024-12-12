@@ -14,10 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,6 +30,7 @@ import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
 import io.writeopia.common.utils.Destinations
 import io.writeopia.editor.di.EditorKmpInjector
+import io.writeopia.features.search.di.SearchInjection
 import io.writeopia.features.search.ui.SearchDialog
 import io.writeopia.global.shell.SideGlobalMenu
 import io.writeopia.global.shell.di.SideMenuKmpInjector
@@ -54,6 +52,7 @@ import io.writeopia.notemenu.ui.screen.menu.EditFileScreen
 import io.writeopia.notemenu.ui.screen.menu.RoundedVerticalDivider
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
+import io.writeopia.sql.WriteopiaDb
 import io.writeopia.theme.WrieopiaTheme
 import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.draganddrop.target.DraggableScreen
@@ -66,6 +65,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun App(
+    writeopiaDb: WriteopiaDb,
     notesInjector: NotesInjector,
     repositoryInjection: RepositoryInjector,
     uiConfigurationInjector: UiConfigurationInjector,
@@ -117,10 +117,13 @@ fun App(
         )
     }
 
+    val searchInjection = remember { SearchInjection(writeopiaDb) }
+
     val globalShellViewModel: GlobalShellViewModel =
         sideMenuInjector.provideSideMenuViewModel(coroutineScope)
     val colorTheme = colorThemeOption.collectAsState().value
     val navigationController: NavHostController = rememberNavController()
+    val searchViewModel = searchInjection.provideViewModel(coroutineScope)
 
     coroutineScope.launch {
         navigationController.currentBackStackEntryFlow.collect { navEntry ->
@@ -223,9 +226,14 @@ fun App(
                         val showSearchState by globalShellViewModel.showSearchDialog.collectAsState()
 
                         if (showSearchState) {
+                            LaunchedEffect(true) {
+                                searchViewModel.init()
+                            }
+
                             SearchDialog(
-                                searchState = globalShellViewModel.searchState,
-                                onSearchType = globalShellViewModel::onSearchType,
+                                searchState = searchViewModel.searchState,
+                                searchResults = searchViewModel.queryResults,
+                                onSearchType = searchViewModel::onSearchType,
                                 onDismissRequest = globalShellViewModel::hideSearch
                             )
                         }

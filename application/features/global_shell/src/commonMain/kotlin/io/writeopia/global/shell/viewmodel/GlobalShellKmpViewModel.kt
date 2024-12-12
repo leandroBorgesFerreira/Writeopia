@@ -58,9 +58,6 @@ class GlobalShellKmpViewModel(
     private val _showSearch = MutableStateFlow(false)
     override val showSearchDialog: StateFlow<Boolean> = _showSearch.asStateFlow()
 
-    private val _searchState = MutableStateFlow("")
-    override val searchState: StateFlow<String> = _searchState.asStateFlow()
-
     override val highlightItem: StateFlow<String?> by lazy {
         notesNavigationUseCase.navigationState
             .map { navigation -> navigation.id }
@@ -204,10 +201,6 @@ class GlobalShellKmpViewModel(
 
     override fun hideSearch() {
         _showSearch.value = false
-    }
-
-    override fun onSearchType(query: String) {
-        _searchState.value = query
     }
 
     private suspend fun getUserId(): String =

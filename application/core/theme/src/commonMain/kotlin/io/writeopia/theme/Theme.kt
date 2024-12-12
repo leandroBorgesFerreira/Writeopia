@@ -35,6 +35,8 @@ data class WriteopiaColors(
     val globalBackground: Color,
     val optionsSelector: Color,
     val textLight: Color,
+    val textLighter: Color,
+    val tintLight: Color,
     val highlight: Color,
     val selectedBg: Color
 )
@@ -44,6 +46,8 @@ val LocalWriteopiaColors = staticCompositionLocalOf {
         globalBackground = Color.Unspecified,
         optionsSelector = Color.Unspecified,
         textLight = Color.Unspecified,
+        textLighter = Color.Unspecified,
+        tintLight = Color.Unspecified,
         highlight = Color.Unspecified,
         selectedBg = Color.Unspecified,
     )
@@ -57,6 +61,8 @@ fun WrieopiaTheme(
     val globalBackground = if (darkTheme) Color(0xFF252525) else Color(0xFFEEEEEE)
     val optionsSelector = if (darkTheme) Color(0x22FFFFFF) else Color(0x22000000)
     val textLight = if (darkTheme) Color(0xFFDFDFDF) else Color(0xFF444444)
+    val textLighter = if (darkTheme) Color(0xFFAAAAAA) else Color(0xFF666666)
+    val tintLight = if (darkTheme) Color(0xFFDFDFDF) else Color(0xFF444444)
     val highlight = if (darkTheme) Color(0xFF616161) else Color(0xFFE0E0E0)
 
     val colors = if (darkTheme) {
@@ -69,6 +75,8 @@ fun WrieopiaTheme(
         globalBackground = globalBackground,
         optionsSelector = optionsSelector,
         textLight = textLight,
+        textLighter = textLighter,
+        tintLight = tintLight,
         highlight = highlight,
         selectedBg = SELECTED_BG
     )

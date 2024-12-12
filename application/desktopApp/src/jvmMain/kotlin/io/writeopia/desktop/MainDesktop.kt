@@ -117,7 +117,8 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                     coroutineScope = coroutineScope,
                     isUndoKeyEvent = ::isUndoKeyboardEvent,
                     colorThemeOption = colorTheme,
-                    selectColorTheme = uiConfigurationViewModel::changeColorTheme
+                    selectColorTheme = uiConfigurationViewModel::changeColorTheme,
+                    writeopiaDb = database
                 )
             }
 

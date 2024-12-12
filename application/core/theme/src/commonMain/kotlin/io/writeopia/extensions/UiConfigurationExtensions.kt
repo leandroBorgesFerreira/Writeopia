@@ -15,7 +15,3 @@ fun UiConfigurationEntity.toModel() = UiConfiguration(
     colorThemeOption = ColorThemeOption.fromText(color_theme_option) ?: ColorThemeOption.SYSTEM,
     sideMenuWidth = side_menu_width?.toFloat() ?: 280F
 )
-
-fun Boolean?.toLong(): Long = if (this == true) 1 else 0
-
-fun Long?.toBoolean() = this == 1L

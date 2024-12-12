@@ -33,6 +33,10 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
         refreshFolders()
     }
 
+    fun search(query: String) = folderEntityQueries?.query(query)?.executeAsList() ?: emptyList()
+
+    fun getLastUpdated() = folderEntityQueries?.getLastUpdated()?.executeAsList() ?: emptyList()
+
     suspend fun updateFolder(folder: FolderEntity) {
         folderEntityQueries?.insert(
             id = folder.id,

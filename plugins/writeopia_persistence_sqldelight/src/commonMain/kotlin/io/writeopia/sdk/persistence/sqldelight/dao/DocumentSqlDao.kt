@@ -19,6 +19,36 @@ class DocumentSqlDao(
     private val storyStepQueries: StoryStepEntityQueries?,
 ) {
 
+    fun search(query: String): List<Document> = documentQueries?.query(query)
+        ?.executeAsList()
+        ?.map { entity ->
+            Document(
+                id = entity.id,
+                title = entity.title,
+                createdAt = Instant.fromEpochMilliseconds(entity.created_at),
+                lastUpdatedAt = Instant.fromEpochMilliseconds(entity.last_updated_at),
+                userId = entity.user_id,
+                favorite = entity.favorite == 1L,
+                parentId = entity.parent_document_id,
+            )
+        }
+        ?: emptyList()
+
+    fun getLastUpdatedAt() = documentQueries?.selectLastUpdatedAt()
+        ?.executeAsList()
+        ?.map { entity ->
+            Document(
+                id = entity.id,
+                title = entity.title,
+                createdAt = Instant.fromEpochMilliseconds(entity.created_at),
+                lastUpdatedAt = Instant.fromEpochMilliseconds(entity.last_updated_at),
+                userId = entity.user_id,
+                favorite = entity.favorite == 1L,
+                parentId = entity.parent_document_id,
+            )
+        }
+        ?: emptyList()
+
     suspend fun insertDocumentWithContent(document: Document) {
         storyStepQueries?.deleteByDocumentId(document.id)
         document.content.values.forEachIndexed { i, storyStep ->

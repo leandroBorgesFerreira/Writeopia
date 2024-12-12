@@ -37,7 +37,10 @@ kotlin {
 
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:persistence_bridge"))
+                implementation(project(":application:core:theme"))
+                implementation(project(":application:features:note_menu"))
                 implementation(project(":application:core:utils"))
+                implementation(project(":plugins:writeopia_persistence_sqldelight"))
 
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.datetime)

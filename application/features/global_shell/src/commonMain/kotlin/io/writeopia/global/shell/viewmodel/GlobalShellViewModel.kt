@@ -24,8 +24,6 @@ interface GlobalShellViewModel : FolderController {
 
     val showSearchDialog: StateFlow<Boolean>
 
-    val searchState: StateFlow<String>
-
     fun expandFolder(id: String)
 
     fun toggleSideMenu()
@@ -41,6 +39,4 @@ interface GlobalShellViewModel : FolderController {
     fun showSearch()
 
     fun hideSearch()
-
-    fun onSearchType(query: String)
 }
