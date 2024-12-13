@@ -33,7 +33,6 @@ suspend fun startApp(
             selectColorTheme = {},
             selectionState = MutableStateFlow(false),
             keyboardEventFlow = MutableStateFlow(KeyboardEvent.IDLE),
-
         )
     }
 }
