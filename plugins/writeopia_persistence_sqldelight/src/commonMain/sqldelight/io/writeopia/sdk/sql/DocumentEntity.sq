@@ -21,7 +21,8 @@ LIMIT 10;
 query:
 SELECT *
 FROM documentEntity
-WHERE title = ?;
+WHERE title LIKE '%' || ? || '%'
+ORDER BY last_updated_at;
 
 selectWithContent:
 SELECT *

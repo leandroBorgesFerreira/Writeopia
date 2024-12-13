@@ -17,7 +17,7 @@ actual fun NotesMenuScreen(
     onNoteClick: (String, String) -> Unit,
     onAccountClick: () -> Unit,
     selectColorTheme: (ColorThemeOption) -> Unit,
-    navigateToNotes: (NotesNavigation) -> Unit,
+    navigateToFolders: (NotesNavigation) -> Unit,
     addFolder: () -> Unit,
     editFolder: (MenuItemUi.FolderUi) -> Unit,
     modifier: Modifier
@@ -26,7 +26,7 @@ actual fun NotesMenuScreen(
         chooseNoteViewModel = chooseNoteViewModel,
         onNewNoteClick = onNewNoteClick,
         onNoteClick = onNoteClick,
-        navigateToNotes = navigateToNotes,
+        navigateToNotes = navigateToFolders,
 //        addFolder = addFolder,
 //        editFolder = editFolder,
         modifier = modifier,

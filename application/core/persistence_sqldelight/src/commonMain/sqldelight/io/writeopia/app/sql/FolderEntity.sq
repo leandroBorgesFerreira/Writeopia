@@ -11,7 +11,7 @@ CREATE TABLE folderEntity (
 query:
 SELECT *
 FROM folderEntity
-WHERE title = ?
+WHERE title LIKE '%' || ? || '%'
 ORDER BY last_updated_at
 LIMIT 10;
 

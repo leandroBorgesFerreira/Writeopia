@@ -38,6 +38,7 @@ import io.writeopia.global.shell.viewmodel.GlobalShellViewModel
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.model.isDarkTheme
 import io.writeopia.navigation.Navigation
+import io.writeopia.navigation.notes.navigateToFolder
 import io.writeopia.navigation.notes.navigateToNote
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.model.NotesNavigationType
@@ -234,7 +235,9 @@ fun App(
                                 searchState = searchViewModel.searchState,
                                 searchResults = searchViewModel.queryResults,
                                 onSearchType = searchViewModel::onSearchType,
-                                onDismissRequest = globalShellViewModel::hideSearch
+                                onDismissRequest = globalShellViewModel::hideSearch,
+                                documentClick = navigationController::navigateToNote,
+                                onFolderClick = navigationController::navigateToFolder
                             )
                         }
 

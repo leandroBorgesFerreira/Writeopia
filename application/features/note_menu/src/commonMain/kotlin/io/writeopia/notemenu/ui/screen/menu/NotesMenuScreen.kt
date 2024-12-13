@@ -16,7 +16,7 @@ expect fun NotesMenuScreen(
     onNoteClick: (String, String) -> Unit,
     onAccountClick: () -> Unit,
     selectColorTheme: (ColorThemeOption) -> Unit,
-    navigateToNotes: (NotesNavigation) -> Unit,
+    navigateToFolders: (NotesNavigation) -> Unit,
     addFolder: () -> Unit,
     editFolder: (MenuItemUi.FolderUi) -> Unit,
     modifier: Modifier = Modifier,

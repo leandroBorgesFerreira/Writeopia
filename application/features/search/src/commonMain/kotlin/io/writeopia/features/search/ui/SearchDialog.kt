@@ -23,6 +23,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.features.search.repository.SearchItem
+import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.StateFlow
 
@@ -33,6 +34,8 @@ fun SearchDialog(
     searchResults: StateFlow<List<SearchItem>>,
     onSearchType: (String) -> Unit,
     onDismissRequest: () -> Unit,
+    documentClick: (String, String) -> Unit,
+    onFolderClick:  (NotesNavigation) -> Unit,
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -100,8 +103,14 @@ fun SearchDialog(
                                 modifier = Modifier.fillMaxWidth()
                                     .padding(horizontal = horizontalPadding)
                                     .clip(MaterialTheme.shapes.medium)
-                                    .clickable { }
-                                    .padding(horizontal = innerHorizontalPadding, vertical = innerVerticalPadding)
+                                    .clickable {
+                                        documentClick(item.id, item.label)
+                                        onDismissRequest()
+                                    }
+                                    .padding(
+                                        horizontal = innerHorizontalPadding,
+                                        vertical = innerVerticalPadding
+                                    )
                             ) {
                                 Icon(
                                     modifier = Modifier.size(20.dp),
@@ -125,8 +134,14 @@ fun SearchDialog(
                                 modifier = Modifier.fillMaxWidth()
                                     .padding(horizontal = horizontalPadding)
                                     .clip(MaterialTheme.shapes.medium)
-                                    .clickable { }
-                                    .padding(horizontal = innerHorizontalPadding, vertical = innerVerticalPadding)
+                                    .clickable {
+                                        onFolderClick(NotesNavigation.Folder(item.id))
+                                        onDismissRequest()
+                                    }
+                                    .padding(
+                                        horizontal = innerHorizontalPadding,
+                                        vertical = innerVerticalPadding
+                                    )
                             ) {
                                 Icon(
                                     modifier = Modifier.size(20.dp),

@@ -2,6 +2,7 @@ package io.writeopia.navigation.notes
 
 import androidx.navigation.NavController
 import io.writeopia.common.utils.Destinations
+import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.usecase.NotesNavigationUseCase
 
 fun NavController.navigateToNewNote() {
@@ -19,4 +20,16 @@ fun NavController.navigateToNote(id: String, title: String) {
 
 fun NavController.navigateToAccount() {
     navigate(Destinations.ACCOUNT.id)
+}
+
+fun NavController.navigateToFolder(navigation: NotesNavigation) {
+    when (navigation) {
+        is NotesNavigation.Folder -> this.navigate(
+            "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/${navigation.id}",
+        )
+
+        NotesNavigation.Favorites, NotesNavigation.Root -> this.navigate(
+            "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/path",
+        )
+    }
 }
