@@ -66,7 +66,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun App(
-    writeopiaDb: WriteopiaDb,
+    writeopiaDb: WriteopiaDb? = null,
     notesInjector: NotesInjector,
     repositoryInjection: RepositoryInjector,
     uiConfigurationInjector: UiConfigurationInjector,

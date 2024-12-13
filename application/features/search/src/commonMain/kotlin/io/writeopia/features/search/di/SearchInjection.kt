@@ -8,13 +8,13 @@ import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.dao.FolderSqlDelightDao
 import kotlinx.coroutines.CoroutineScope
 
-class SearchInjection(private val writeopiaDb: WriteopiaDb) {
+class SearchInjection(private val writeopiaDb: WriteopiaDb?) {
 
     private fun provideFolderSqlDelightDao() = FolderSqlDelightDao(writeopiaDb)
 
     private fun provideDocumentSqlDao() = DocumentSqlDao(
-        writeopiaDb.documentEntityQueries,
-        writeopiaDb.storyStepEntityQueries
+        writeopiaDb?.documentEntityQueries,
+        writeopiaDb?.storyStepEntityQueries
     )
 
     private fun provideRepository(
