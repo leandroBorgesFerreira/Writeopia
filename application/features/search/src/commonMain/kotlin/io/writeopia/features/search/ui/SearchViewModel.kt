@@ -4,7 +4,6 @@ import io.writeopia.features.search.repository.SearchItem
 import kotlinx.coroutines.flow.StateFlow
 
 interface SearchViewModel {
-
     val searchState: StateFlow<String>
 
     val queryResults: StateFlow<List<SearchItem>>

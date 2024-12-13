@@ -1,7 +1,6 @@
 package io.writeopia.features.search.ui
 
 import io.writeopia.common.utils.KmpViewModel
-import io.writeopia.features.search.repository.SearchItem
 import io.writeopia.features.search.repository.SearchRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -25,9 +24,7 @@ class SearchKmpViewModel(private val searchRepository: SearchRepository) : Searc
         }.stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
     }
 
-    override fun init() {
-
-    }
+    override fun init() {}
 
     override fun onSearchType(query: String) {
         _searchState.value = query

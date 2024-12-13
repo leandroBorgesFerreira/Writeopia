@@ -10,7 +10,6 @@ class SearchRepository(
     private val folderDao: FolderSqlDelightDao,
     private val documentSqlDao: DocumentSqlDao
 ) {
-
     fun getNotesAndFolders(): List<SearchItem> {
         val folders = folderDao.getLastUpdated().map { folderEntity -> folderEntity.toModel(0) }
         val documents = documentSqlDao.getLastUpdatedAt()
@@ -36,6 +35,7 @@ fun List<MenuItem>.toSearchItems(): List<SearchItem> =
     }.take(12)
 
 sealed interface SearchItem {
-    data class FolderInfo(val id: String, val label: String): SearchItem
-    data class DocumentInfo(val id: String, val label: String): SearchItem
+    data class FolderInfo(val id: String, val label: String) : SearchItem
+
+    data class DocumentInfo(val id: String, val label: String) : SearchItem
 }
