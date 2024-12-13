@@ -57,6 +57,7 @@ fun SideGlobalMenu(
     foldersState: StateFlow<List<MenuItemUi>>,
     background: Color = WriteopiaTheme.colorScheme.globalBackground,
     width: Dp = FINAL_WIDTH.dp,
+    searchClick: () -> Unit,
     homeClick: () -> Unit,
     favoritesClick: () -> Unit,
     settingsClick: () -> Unit,
@@ -85,6 +86,13 @@ fun SideGlobalMenu(
 
                 Column {
                     Spacer(modifier = Modifier.height(10.dp))
+
+                    settingsOptions(
+                        iconVector = WrIcons.search,
+                        contentDescription = "Search",
+                        text = "Search",
+                        click = searchClick
+                    )
 
                     settingsOptions(
                         iconVector = WrIcons.home,
@@ -428,6 +436,7 @@ fun SideGlobalMenuPreview() {
     SideGlobalMenu(
         modifier = Modifier.background(Color.Cyan),
         foldersState = MutableStateFlow(emptyList()),
+        searchClick = {},
         homeClick = {},
         favoritesClick = {},
         settingsClick = {},

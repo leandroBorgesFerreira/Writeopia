@@ -1,8 +1,7 @@
-package io.writeopia.notemenu.extensions
+package io.writeopia.features.search.extensions
 
 import io.writeopia.app.sql.FolderEntity
 import io.writeopia.common.utils.extensions.toBoolean
-import io.writeopia.common.utils.extensions.toLong
 import io.writeopia.notemenu.data.model.Folder
 import kotlinx.datetime.Instant
 
@@ -17,13 +16,3 @@ fun FolderEntity.toModel(count: Long) =
         itemCount = count,
         favorite = favorite.toBoolean(),
     )
-
-fun Folder.toEntity() = FolderEntity(
-    id = id,
-    parent_id = parentId,
-    user_id = userId,
-    title = title,
-    created_at = createdAt.toEpochMilliseconds(),
-    last_updated_at = lastUpdatedAt.toEpochMilliseconds(),
-    favorite = favorite.toLong(),
-)

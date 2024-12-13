@@ -15,6 +15,7 @@ import io.writeopia.features.notifications.navigation.notificationsNavigation
 import io.writeopia.features.search.navigation.searchNavigation
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.navigation.notes.navigateToAccount
+import io.writeopia.navigation.notes.navigateToFolder
 import io.writeopia.navigation.notes.navigateToNewNote
 import io.writeopia.navigation.notes.navigateToNote
 import io.writeopia.navigation.presentation.navigateToPresentation
@@ -42,7 +43,8 @@ fun Navigation(
             coroutineScope = coroutineScope,
             navigateToNote = navController::navigateToNote,
             navigateToAccount = navController::navigateToAccount,
-            navigateToNewNote = navController::navigateToNewNote
+            navigateToNewNote = navController::navigateToNewNote,
+            navigateToFolders = navController::navigateToFolder
         )
 
         editorNavigation(

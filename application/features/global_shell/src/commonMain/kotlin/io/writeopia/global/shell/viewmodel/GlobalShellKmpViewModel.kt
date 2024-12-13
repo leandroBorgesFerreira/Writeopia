@@ -55,6 +55,9 @@ class GlobalShellKmpViewModel(
 
     private val _expandedFolders = MutableStateFlow(setOf<String>())
 
+    private val _showSearch = MutableStateFlow(false)
+    override val showSearchDialog: StateFlow<Boolean> = _showSearch.asStateFlow()
+
     override val highlightItem: StateFlow<String?> by lazy {
         notesNavigationUseCase.navigationState
             .map { navigation -> navigation.id }
@@ -190,6 +193,14 @@ class GlobalShellKmpViewModel(
 
     override fun hideSettings() {
         _showSettingsState.value = false
+    }
+
+    override fun showSearch() {
+        _showSearch.value = true
+    }
+
+    override fun hideSearch() {
+        _showSearch.value = false
     }
 
     private suspend fun getUserId(): String =
