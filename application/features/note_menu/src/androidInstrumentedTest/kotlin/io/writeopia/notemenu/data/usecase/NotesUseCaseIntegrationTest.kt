@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import io.writeopia.common.utils.DISCONNECTED_USER_ID
-import io.writeopia.notemenu.data.model.Folder
 import io.writeopia.notemenu.data.repository.ConfigurationRepository
 import io.writeopia.notemenu.data.repository.ConfigurationRoomRepository
 import io.writeopia.notemenu.data.repository.RoomFolderRepository

@@ -38,8 +38,10 @@ kotlin {
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:persistence_bridge"))
                 implementation(project(":application:core:theme"))
+                implementation(project(":application:core:models"))
                 implementation(project(":application:features:note_menu"))
                 implementation(project(":application:core:utils"))
+                implementation(project(":plugins:writeopia_persistence_core"))
                 implementation(project(":plugins:writeopia_persistence_sqldelight"))
 
                 implementation(libs.kotlinx.serialization.json)
@@ -59,6 +61,7 @@ kotlin {
                 implementation(libs.appCompat)
                 implementation(libs.viewmodel.compose)
                 implementation(project.dependencies.platform(libs.androidx.compose.bom))
+                implementation(project(":plugins:writeopia_persistence_room"))
             }
         }
 

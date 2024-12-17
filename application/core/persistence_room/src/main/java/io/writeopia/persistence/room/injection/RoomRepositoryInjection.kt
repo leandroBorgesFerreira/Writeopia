@@ -5,7 +5,7 @@ import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.dao.room.RoomDocumentRepository
 
-class RoomRespositoryInjection(
+class RoomRepositoryInjection(
     private val database: WriteopiaApplicationDatabase
 ) : RepositoryInjector {
 

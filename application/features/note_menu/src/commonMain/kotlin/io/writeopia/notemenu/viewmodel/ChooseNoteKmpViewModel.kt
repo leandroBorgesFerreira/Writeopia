@@ -7,7 +7,7 @@ import io.writeopia.common.utils.KmpViewModel
 import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.map
 import io.writeopia.common.utils.toBoolean
-import io.writeopia.notemenu.data.model.Folder
+import io.writeopia.models.Folder
 import io.writeopia.notemenu.data.model.NotesArrangement
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.repository.ConfigurationRepository

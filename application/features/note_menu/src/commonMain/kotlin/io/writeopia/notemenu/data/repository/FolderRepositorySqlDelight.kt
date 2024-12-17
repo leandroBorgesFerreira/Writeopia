@@ -1,6 +1,6 @@
 package io.writeopia.notemenu.data.repository
 
-import io.writeopia.notemenu.data.model.Folder
+import io.writeopia.models.Folder
 import io.writeopia.notemenu.extensions.toEntity
 import io.writeopia.notemenu.extensions.toModel
 import io.writeopia.sqldelight.dao.FolderSqlDelightDao

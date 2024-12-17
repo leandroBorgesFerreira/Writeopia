@@ -1,7 +1,7 @@
 package io.writeopia.notemenu.ui.dto
 
 import io.writeopia.common.utils.Node
-import io.writeopia.notemenu.data.model.Folder
+import io.writeopia.models.Folder
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.utils.Traversable
 

@@ -2,6 +2,7 @@ package io.writeopia.sdk.persistence.dao.room
 
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.sdk.persistence.core.DocumentSearch
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.dao.DocumentEntityDao
 import io.writeopia.sdk.persistence.dao.StoryUnitEntityDao
@@ -17,8 +18,8 @@ import kotlinx.datetime.Instant
 
 class RoomDocumentRepository(
     private val documentEntityDao: DocumentEntityDao,
-    private val storyUnitEntityDao: StoryUnitEntityDao
-) : DocumentRepository {
+    private val storyUnitEntityDao: StoryUnitEntityDao? = null
+) : DocumentRepository, DocumentSearch {
 
     private val documentsState: MutableStateFlow<Map<String, List<Document>>> =
         MutableStateFlow(emptyMap())
@@ -31,6 +32,12 @@ class RoomDocumentRepository(
 
     override suspend fun deleteDocumentByFolder(folderId: String) {
     }
+
+    override suspend fun search(query: String): List<Document> =
+        documentEntityDao.search(query).map { it.toModel() }
+
+    override suspend fun getLastUpdatedAt(): List<Document> =
+        documentEntityDao.selectByLastUpdated().map { it.toModel() }
 
     override fun listenForDocumentsByParentId(
         parentId: String,
@@ -69,13 +76,17 @@ class RoomDocumentRepository(
 
     override suspend fun loadDocumentById(id: String): Document? =
         documentEntityDao.loadDocumentById(id)?.let { documentEntity ->
-            val content = loadInnerSteps(storyUnitEntityDao.loadDocumentContent(documentEntity.id))
+            val content = loadInnerSteps(
+                storyUnitEntityDao?.loadDocumentContent(documentEntity.id) ?: emptyList()
+            )
             documentEntity.toModel(content)
         }
 
     override suspend fun loadDocumentByIds(ids: List<String>): List<Document> =
         documentEntityDao.loadDocumentByIds(ids).map { documentEntity ->
-            val content = loadInnerSteps(storyUnitEntityDao.loadDocumentContent(documentEntity.id))
+            val content = loadInnerSteps(
+                storyUnitEntityDao?.loadDocumentContent(documentEntity.id) ?: emptyList()
+            )
             documentEntity.toModel(content)
         }
 
@@ -94,8 +105,8 @@ class RoomDocumentRepository(
         saveDocumentMetadata(document)
 
         document.content.toEntity(document.id).let { data ->
-            storyUnitEntityDao.deleteDocumentContent(documentId = document.id)
-            storyUnitEntityDao.insertStoryUnits(*data.toTypedArray())
+            storyUnitEntityDao?.deleteDocumentContent(documentId = document.id)
+            storyUnitEntityDao?.insertStoryUnits(*data.toTypedArray())
         }
     }
 
@@ -121,11 +132,11 @@ class RoomDocumentRepository(
     }
 
     override suspend fun saveStoryStep(storyStep: StoryStep, position: Int, documentId: String) {
-        storyUnitEntityDao.insertStoryUnits(storyStep.toEntity(position, documentId))
+        storyUnitEntityDao?.insertStoryUnits(storyStep.toEntity(position, documentId))
     }
 
     override suspend fun updateStoryStep(storyStep: StoryStep, position: Int, documentId: String) {
-        storyUnitEntityDao.updateStoryStep(storyStep.toEntity(position, documentId))
+        storyUnitEntityDao?.updateStoryStep(storyStep.toEntity(position, documentId))
     }
 
     override suspend fun deleteByUserId(userId: String) {
@@ -152,7 +163,7 @@ class RoomDocumentRepository(
             .associateBy { entity -> entity.position }
             .mapValues { (_, entity) ->
                 if (entity.hasInnerSteps) {
-                    val innerSteps = storyUnitEntityDao.queryInnerSteps(entity.id)
+                    val innerSteps = storyUnitEntityDao?.queryInnerSteps(entity.id) ?: emptyList()
 
                     entity.toModel(innerSteps)
                 } else {

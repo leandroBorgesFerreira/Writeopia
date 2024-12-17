@@ -1,6 +1,6 @@
 package io.writeopia.global.shell.viewmodel
 
-import io.writeopia.notemenu.data.model.Folder
+import io.writeopia.models.Folder
 import io.writeopia.notemenu.ui.dto.MenuItemUi
 import io.writeopia.notemenu.viewmodel.FolderController
 import io.writeopia.sdk.models.document.MenuItem

@@ -39,10 +39,12 @@ kotlin {
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:resources"))
                 implementation(project(":application:core:theme"))
+                implementation(project(":application:core:models"))
                 implementation(project(":application:features:note_menu"))
                 implementation(project(":application:features:editor"))
                 implementation(project(":application:features:auth"))
                 implementation(project(":application:features:account"))
+                implementation(project(":application:features:search"))
 
                 implementation(libs.androidx.ktx)
                 implementation(libs.appCompat)

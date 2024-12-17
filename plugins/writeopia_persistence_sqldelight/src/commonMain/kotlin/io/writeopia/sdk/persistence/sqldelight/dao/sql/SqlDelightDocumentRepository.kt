@@ -2,6 +2,7 @@ package io.writeopia.sdk.persistence.sqldelight.dao.sql
 
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.sdk.persistence.core.DocumentSearch
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
@@ -13,7 +14,7 @@ import kotlinx.datetime.Instant
 
 class SqlDelightDocumentRepository(
     private val documentSqlDao: DocumentSqlDao
-) : DocumentRepository {
+) : DocumentRepository, DocumentSearch by documentSqlDao {
 
     private val _documentState = MutableStateFlow<Map<String, List<Document>>>(emptyMap())
 

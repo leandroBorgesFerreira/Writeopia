@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import io.writeopia.notemenu.data.model.Folder
+import io.writeopia.models.Folder
 
 @Composable
 fun EditFileScreen(

@@ -1,6 +1,6 @@
 package io.writeopia.notemenu.data.repository
 
-import io.writeopia.notemenu.data.model.Folder
+import io.writeopia.models.Folder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

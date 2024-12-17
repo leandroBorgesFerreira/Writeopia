@@ -30,7 +30,7 @@ import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
 import io.writeopia.common.utils.Destinations
 import io.writeopia.editor.di.EditorKmpInjector
-import io.writeopia.features.search.di.SearchInjection
+import io.writeopia.features.search.di.KmpSearchInjection
 import io.writeopia.features.search.ui.SearchDialog
 import io.writeopia.global.shell.SideGlobalMenu
 import io.writeopia.global.shell.di.SideMenuKmpInjector
@@ -118,7 +118,7 @@ fun App(
         )
     }
 
-    val searchInjection = remember { SearchInjection(writeopiaDb) }
+    val searchInjection = KmpSearchInjection(writeopiaDb)
 
     val globalShellViewModel: GlobalShellViewModel =
         sideMenuInjector.provideSideMenuViewModel(coroutineScope)

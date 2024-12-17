@@ -2,7 +2,10 @@ package io.writeopia.sqldelight.dao
 
 import io.writeopia.app.sql.FolderEntity
 import io.writeopia.app.sql.FolderEntityQueries
+import io.writeopia.models.Folder
+import io.writeopia.models.search.FolderSearch
 import io.writeopia.sql.WriteopiaDb
+import io.writeopia.sqldelight.extensions.toModel
 import io.writeopia.sqldelight.utils.sumValues
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -10,14 +13,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 
-class FolderSqlDelightDao(database: WriteopiaDb?) {
+class FolderSqlDelightDao(database: WriteopiaDb?) : FolderSearch {
 
     private val _foldersStateFlow =
         MutableStateFlow<Map<String, List<Pair<FolderEntity, Long>>>>(emptyMap())
 
     private val folderEntityQueries: FolderEntityQueries? = database?.folderEntityQueries
 
-    suspend fun getFolderById(id: String) : FolderEntity? =
+    suspend fun getFolderById(id: String): FolderEntity? =
         folderEntityQueries?.selectFolderById(id)?.executeAsOneOrNull()
 
     suspend fun createFolder(folder: FolderEntity) {
@@ -33,9 +36,15 @@ class FolderSqlDelightDao(database: WriteopiaDb?) {
         refreshFolders()
     }
 
-    fun search(query: String) = folderEntityQueries?.query(query)?.executeAsList() ?: emptyList()
+    override suspend fun search(query: String): List<Folder> = folderEntityQueries?.query(query)
+        ?.executeAsList()
+        ?.map { folderEntity -> folderEntity.toModel(0) }
+        ?: emptyList()
 
-    fun getLastUpdated() = folderEntityQueries?.getLastUpdated()?.executeAsList() ?: emptyList()
+    override suspend fun getLastUpdated(): List<Folder> = folderEntityQueries?.getLastUpdated()
+        ?.executeAsList()
+        ?.map { folderEntity -> folderEntity.toModel(0) }
+        ?: emptyList()
 
     suspend fun updateFolder(folder: FolderEntity) {
         folderEntityQueries?.insert(

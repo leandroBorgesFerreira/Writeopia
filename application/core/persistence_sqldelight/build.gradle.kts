@@ -30,6 +30,8 @@ kotlin {
                 implementation(project(":plugins:writeopia_persistence_sqldelight"))
                 implementation(project(":plugins:writeopia_serialization"))
                 implementation(project(":libraries:dbtest"))
+                implementation(project(":application:core:models"))
+                implementation(project(":application:core:utils"))
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.kotlinx.serialization.json)
             }

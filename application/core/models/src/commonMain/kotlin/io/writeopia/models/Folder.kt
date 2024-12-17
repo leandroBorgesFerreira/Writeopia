@@ -1,4 +1,4 @@
-package io.writeopia.notemenu.data.model
+package io.writeopia.models
 
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem

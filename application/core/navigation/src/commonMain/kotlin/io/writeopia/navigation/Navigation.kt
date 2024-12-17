@@ -12,6 +12,7 @@ import io.writeopia.common.utils.Destinations
 import io.writeopia.editor.di.TextEditorInjector
 import io.writeopia.editor.navigation.editorNavigation
 import io.writeopia.features.notifications.navigation.notificationsNavigation
+import io.writeopia.features.search.di.SearchInjection
 import io.writeopia.features.search.navigation.searchNavigation
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.navigation.notes.navigateToAccount
@@ -30,6 +31,7 @@ fun Navigation(
     notesMenuInjection: NotesMenuInjection,
     editorInjector: TextEditorInjector,
     accountMenuInjector: AccountMenuInjector,
+    searchInjection: SearchInjection? = null,
     isUndoKeyEvent: (KeyEvent) -> Boolean,
     selectColorTheme: (ColorThemeOption) -> Unit,
     coroutineScope: CoroutineScope? = null,
@@ -62,7 +64,13 @@ fun Navigation(
             selectColorTheme = selectColorTheme
         )
 
-        searchNavigation()
+        if (searchInjection != null) {
+            searchNavigation(
+                searchInjection,
+                navController::navigateToNote,
+                navController::navigateToFolder
+            )
+        }
 
         notificationsNavigation()
 
