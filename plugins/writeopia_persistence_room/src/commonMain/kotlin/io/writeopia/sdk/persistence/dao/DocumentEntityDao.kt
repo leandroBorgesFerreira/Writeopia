@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.persistence.core.CREATED_AT
 import io.writeopia.sdk.persistence.core.DOCUMENT_ENTITY
 import io.writeopia.sdk.persistence.core.LAST_UPDATED_AT
