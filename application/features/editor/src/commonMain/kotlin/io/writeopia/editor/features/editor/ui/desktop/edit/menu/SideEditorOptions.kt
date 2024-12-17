@@ -46,6 +46,7 @@ fun SideEditorOptions(
     listItemClick: () -> Unit,
     codeBlockClick: () -> Unit,
     highLightBlockClick: () -> Unit,
+    onPresentationClick: () -> Unit,
 ) {
     val showSubMenu by showState.collectAsState()
 
@@ -152,6 +153,19 @@ fun SideEditorOptions(
             )
 
             Spacer(modifier = Modifier.height(spacing))
+
+            Icon(
+                imageVector = WrIcons.play,
+                contentDescription = "Presentation",
+                modifier = Modifier
+                    .padding(horizontal = spacing)
+                    .clip(MaterialTheme.shapes.medium)
+                    .background(background)
+                    .clickable(onClick = onPresentationClick)
+                    .size(40.dp)
+                    .padding(9.dp),
+                tint = tint
+            )
         }
     }
 }

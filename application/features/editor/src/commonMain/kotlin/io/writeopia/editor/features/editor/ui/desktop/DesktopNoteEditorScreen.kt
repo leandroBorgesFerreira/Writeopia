@@ -6,18 +6,14 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.unit.dp
-import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.editor.features.editor.ui.desktop.edit.menu.SideEditorOptions
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.ui.drawer.factory.DrawersFactory
@@ -75,19 +71,8 @@ fun DesktopNoteEditorScreen(
             checkItemClick = noteEditorViewModel::onAddCheckListClick,
             listItemClick = noteEditorViewModel::onAddListItemClick,
             codeBlockClick = noteEditorViewModel::onAddCodeBlockClick,
-            highLightBlockClick = noteEditorViewModel::onAddHighLightBlockClick
-        )
-
-        Icon(
-            imageVector = WrIcons.play,
-            contentDescription = "Presentation",
-            modifier = Modifier.padding(12.dp)
-                .clip(MaterialTheme.shapes.large)
-                .align(Alignment.BottomEnd)
-                .clickable(onClick = onPresentationClick)
-                .size(40.dp)
-                .padding(4.dp),
-            tint = MaterialTheme.colorScheme.onBackground
+            highLightBlockClick = noteEditorViewModel::onAddHighLightBlockClick,
+            onPresentationClick = onPresentationClick
         )
     }
 }
