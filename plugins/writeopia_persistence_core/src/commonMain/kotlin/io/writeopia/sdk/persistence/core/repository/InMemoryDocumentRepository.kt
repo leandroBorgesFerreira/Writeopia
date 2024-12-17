@@ -89,9 +89,11 @@ class InMemoryDocumentRepository : DocumentRepository {
     override suspend fun updateStoryStep(storyStep: StoryStep, position: Int, documentId: String) {
     }
 
-    override suspend fun search(query: String): List<Document> = emptyList()
+    override suspend fun search(query: String): List<Document> =
+        documentsMap.values.filter { it.title.contains("query") }
 
-    override suspend fun getLastUpdatedAt(): List<Document> = emptyList()
+    override suspend fun getLastUpdatedAt(): List<Document> =
+        documentsMap.values.sortedByDescending { it.lastUpdatedAt }
 
     override suspend fun favoriteDocumentByIds(ids: Set<String>) {
         setFavorite(ids, true)
