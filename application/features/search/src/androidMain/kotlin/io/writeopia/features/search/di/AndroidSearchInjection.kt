@@ -31,6 +31,6 @@ class AndroidSearchInjection(
     }
 
     override fun provideViewModel(coroutineScope: CoroutineScope?): SearchViewModel {
-        TODO("Not yet implemented")
+        throw IllegalStateException("This injection should not be used")
     }
 }

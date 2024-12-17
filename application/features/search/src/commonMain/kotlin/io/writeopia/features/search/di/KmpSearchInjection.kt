@@ -36,6 +36,6 @@ class KmpSearchInjection(private val writeopiaDb: WriteopiaDb? = null) : SearchI
 
     @Composable
     override fun provideViewModelMobile(coroutineScope: CoroutineScope?): SearchViewModel {
-        TODO("Not yet implemented")
+        throw IllegalStateException("This injection should not be used")
     }
 }
