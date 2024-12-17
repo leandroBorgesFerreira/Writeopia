@@ -9,7 +9,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
-class SearchKmpViewModel(private val searchRepository: SearchRepository) : SearchViewModel, KmpViewModel() {
+class SearchKmpViewModel(
+    private val searchRepository: SearchRepository
+) : SearchViewModel, KmpViewModel() {
 
     private val _searchState = MutableStateFlow("")
     override val searchState: StateFlow<String> = _searchState.asStateFlow()

@@ -6,6 +6,7 @@ import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.TagInfo
+import io.writeopia.sdk.persistence.core.DocumentSearch
 import io.writeopia.sdk.persistence.core.extensions.sortWithOrderBy
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.persistence.sqldelight.toLong
@@ -17,9 +18,9 @@ import kotlinx.datetime.Instant
 class DocumentSqlDao(
     private val documentQueries: DocumentEntityQueries?,
     private val storyStepQueries: StoryStepEntityQueries?,
-) {
+): DocumentSearch {
 
-    fun search(query: String): List<Document> = documentQueries?.query(query)
+    override suspend fun search(query: String): List<Document> = documentQueries?.query(query)
         ?.executeAsList()
         ?.map { entity ->
             Document(
@@ -34,7 +35,7 @@ class DocumentSqlDao(
         }
         ?: emptyList()
 
-    fun getLastUpdatedAt() = documentQueries?.selectLastUpdatedAt()
+    override suspend fun getLastUpdatedAt(): List<Document> = documentQueries?.selectLastUpdatedAt()
         ?.executeAsList()
         ?.map { entity ->
             Document(

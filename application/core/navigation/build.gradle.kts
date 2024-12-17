@@ -36,6 +36,7 @@ kotlin {
                 implementation(project(":application:features:search"))
                 implementation(project(":application:core:utils"))
                 implementation(project(":application:core:theme"))
+                implementation(project(":application:core:models"))
             }
         }
     }

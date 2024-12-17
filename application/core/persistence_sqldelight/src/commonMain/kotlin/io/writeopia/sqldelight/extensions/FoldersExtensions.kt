@@ -1,8 +1,8 @@
-package io.writeopia.features.search.extensions
+package io.writeopia.sqldelight.extensions
 
 import io.writeopia.app.sql.FolderEntity
 import io.writeopia.common.utils.extensions.toBoolean
-import io.writeopia.notemenu.data.model.Folder
+import io.writeopia.models.Folder
 import kotlinx.datetime.Instant
 
 fun FolderEntity.toModel(count: Long) =

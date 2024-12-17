@@ -18,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -37,6 +38,8 @@ import io.writeopia.auth.navigation.authNavigation
 import io.writeopia.common.utils.Destinations
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.editor.di.EditorInjector
+import io.writeopia.features.search.di.AndroidSearchInjection
+import io.writeopia.features.search.di.KmpSearchInjection
 import io.writeopia.model.isDarkTheme
 import io.writeopia.navigation.notes.navigateToNoteMenu
 import io.writeopia.navigation.notifications.navigateToNotifications
@@ -49,7 +52,7 @@ import io.writeopia.notemenu.navigation.NoteMenuDestiny
 import io.writeopia.notemenu.navigation.navigateToNotes
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
-import io.writeopia.persistence.room.injection.RoomRespositoryInjection
+import io.writeopia.persistence.room.injection.RoomRepositoryInjection
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.theme.WrieopiaTheme
 
@@ -90,7 +93,7 @@ fun NavigationGraph(
         baseUrl = BuildConfig.BASE_URL
     )
     val authCoreInjection = AndroidAuthCoreInjection(sharedPreferences)
-    val repositoryInjection = RoomRespositoryInjection(database)
+    val repositoryInjection = RoomRepositoryInjection(database)
     val authInjection = AuthInjection(authCoreInjection, connectionInjector, repositoryInjection)
     val editorInjector = EditorInjector.create(
         authCoreInjection,
@@ -103,6 +106,14 @@ fun NavigationGraph(
         authCoreInjection,
         repositoryInjection,
     )
+
+    val searchInjector = remember {
+        AndroidSearchInjection(
+            searchInjection = KmpSearchInjection(),
+            appRoomDaosInjection = appDaosInjection,
+            roomInjector = repositoryInjection
+        )
+    }
 
     val navigationViewModel = viewModel { NavigationViewModel() }
     val uiConfigViewModel =
@@ -166,6 +177,7 @@ fun NavigationGraph(
                     accountMenuInjector = accountMenuInjector,
                     startDestination = startDestination,
                     selectColorTheme = uiConfigViewModel::changeColorTheme,
+                    searchInjection = searchInjector,
                     isUndoKeyEvent = { false },
                 ) {
                     authNavigation(navController, authInjection) {

@@ -1,6 +1,6 @@
 package io.writeopia.notemenu.extensions
 
-import io.writeopia.notemenu.data.model.Folder
+import io.writeopia.models.Folder
 import io.writeopia.persistence.room.data.entities.FolderEntity
 import kotlinx.datetime.Instant
 

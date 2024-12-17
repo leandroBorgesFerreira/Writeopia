@@ -1,7 +1,7 @@
 package io.writeopia.notemenu.data.usecase
 
 import io.writeopia.common.utils.collections.merge
-import io.writeopia.notemenu.data.model.Folder
+import io.writeopia.models.Folder
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.repository.ConfigurationRepository
 import io.writeopia.notemenu.data.repository.FolderRepository

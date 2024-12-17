@@ -1,6 +1,7 @@
 package io.writeopia.notemenu.data.repository
 
-import io.writeopia.notemenu.data.model.Folder
+import io.writeopia.models.Folder
+import io.writeopia.models.search.FolderSearch
 import io.writeopia.notemenu.extensions.toModel
 import io.writeopia.notemenu.extensions.toRoomEntity
 import io.writeopia.persistence.room.data.daos.FolderRoomDao
@@ -11,7 +12,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 
-class RoomFolderRepository(private val folderRoomDao: FolderRoomDao) : FolderRepository {
+class RoomFolderRepository(
+    private val folderRoomDao: FolderRoomDao
+) : FolderRepository, FolderSearch {
 
     override suspend fun createFolder(folder: Folder) {
         updateFolder(folder)
@@ -90,6 +93,12 @@ class RoomFolderRepository(private val folderRoomDao: FolderRoomDao) : FolderRep
     override suspend fun stopListeningForFoldersByParentId(parentId: String) {
         SelectedIds.ids.remove(parentId)
     }
+
+    override suspend fun search(query: String): List<Folder> =
+        folderRoomDao.search(query).map { it.toModel(0) }
+
+    override suspend fun getLastUpdated(): List<Folder> =
+        folderRoomDao.getLastUpdated().map { it.toModel(0) }
 
     private suspend fun updateFolderById(id: String, func: (Folder) -> Folder) {
         folderRoomDao.getFolderById(id = id)

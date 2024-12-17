@@ -3,7 +3,7 @@ package io.writeopia.notemenu.extensions
 import io.writeopia.app.sql.FolderEntity
 import io.writeopia.common.utils.extensions.toBoolean
 import io.writeopia.common.utils.extensions.toLong
-import io.writeopia.notemenu.data.model.Folder
+import io.writeopia.models.Folder
 import kotlinx.datetime.Instant
 
 fun FolderEntity.toModel(count: Long) =

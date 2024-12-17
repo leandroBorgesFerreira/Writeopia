@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.persistence.core.CREATED_AT
 import io.writeopia.sdk.persistence.core.DOCUMENT_ENTITY
 import io.writeopia.sdk.persistence.core.LAST_UPDATED_AT
@@ -29,6 +30,12 @@ interface DocumentEntityDao {
 
     @Query("DELETE FROM $DOCUMENT_ENTITY WHERE user_id = :userId")
     suspend fun deleteDocumentsByUserId(userId: String)
+
+    @Query("SELECT * FROM $DOCUMENT_ENTITY ORDER BY $DOCUMENT_ENTITY.last_updated_at LIMIT 10")
+    suspend fun selectByLastUpdated(): List<DocumentEntity>
+
+    @Query("SELECT * FROM $DOCUMENT_ENTITY WHERE title LIKE '%' || :query || '%' ORDER BY last_updated_at")
+    suspend fun search(query: String): List<DocumentEntity>
 
     @Query("SELECT * FROM $DOCUMENT_ENTITY WHERE $DOCUMENT_ENTITY.id = :id")
     suspend fun loadDocumentById(id: String): DocumentEntity?

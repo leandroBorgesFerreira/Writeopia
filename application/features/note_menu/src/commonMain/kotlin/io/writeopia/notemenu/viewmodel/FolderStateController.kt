@@ -1,7 +1,7 @@
 package io.writeopia.notemenu.viewmodel
 
 import io.writeopia.auth.core.manager.AuthManager
-import io.writeopia.notemenu.data.model.Folder
+import io.writeopia.models.Folder
 import io.writeopia.notemenu.data.usecase.NotesUseCase
 import io.writeopia.notemenu.ui.dto.MenuItemUi
 import kotlinx.coroutines.CoroutineScope

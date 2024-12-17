@@ -1,25 +1,24 @@
 package io.writeopia.features.search.repository
 
-import io.writeopia.features.search.extensions.toModel
-import io.writeopia.notemenu.data.model.Folder
+import io.writeopia.models.Folder
+import io.writeopia.models.search.FolderSearch
 import io.writeopia.sdk.models.document.MenuItem
-import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
-import io.writeopia.sqldelight.dao.FolderSqlDelightDao
+import io.writeopia.sdk.persistence.core.DocumentSearch
 
 class SearchRepository(
-    private val folderDao: FolderSqlDelightDao,
-    private val documentSqlDao: DocumentSqlDao
+    private val folderSearch: FolderSearch,
+    private val documentSearch: DocumentSearch
 ) {
-    fun getNotesAndFolders(): List<SearchItem> {
-        val folders = folderDao.getLastUpdated().map { folderEntity -> folderEntity.toModel(0) }
-        val documents = documentSqlDao.getLastUpdatedAt()
+    suspend fun getNotesAndFolders(): List<SearchItem> {
+        val folders = folderSearch.getLastUpdated()
+        val documents = documentSearch.getLastUpdatedAt()
 
         return (folders + documents).toSearchItems()
     }
 
-    fun searchNotesAndFolders(query: String): List<SearchItem> {
-        val folders = folderDao.search(query).map { folderEntity -> folderEntity.toModel(0) }
-        val documents = documentSqlDao.search(query)
+    suspend fun searchNotesAndFolders(query: String): List<SearchItem> {
+        val folders = folderSearch.search(query)
+        val documents = documentSearch.search(query)
 
         return (folders + documents).toSearchItems()
     }

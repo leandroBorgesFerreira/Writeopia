@@ -89,6 +89,14 @@ class InMemoryDocumentRepository : DocumentRepository {
     override suspend fun updateStoryStep(storyStep: StoryStep, position: Int, documentId: String) {
     }
 
+    override suspend fun search(query: String): List<Document> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getLastUpdatedAt(): List<Document> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun favoriteDocumentByIds(ids: Set<String>) {
         setFavorite(ids, true)
     }
