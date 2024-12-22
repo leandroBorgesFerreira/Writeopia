@@ -44,9 +44,25 @@ compose.desktop {
             modules("java.sql")
 
             val iconsRoot = project.file("./src/jvmMain/resources/images")
+
             macOS {
+                bundleID = "io.writeopia.notesApp"
+
                 iconFile.set(iconsRoot.resolve("icon-mac.icns"))
                 jvmArgs("-Dapple.awt.application.appearance=system")
+
+                signing {
+                    val providers = project.providers
+                    sign.set(true)
+                    identity.set(providers.environmentVariable("SIGN_IDENTITY"))
+                }
+
+                notarization {
+                    val providers = project.providers
+                    appleID.set(providers.environmentVariable("NOTARIZATION_APPLE_ID"))
+                    password.set(providers.environmentVariable("NOTARIZATION_PASSWORD"))
+                    teamID.set(providers.environmentVariable("NOTARIZATION_TEAM_ID"))
+                }
             }
         }
 
