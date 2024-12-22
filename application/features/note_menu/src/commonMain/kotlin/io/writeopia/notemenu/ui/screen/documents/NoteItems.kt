@@ -344,7 +344,7 @@ private fun FolderItem(
                 ) {
                     Icon(
                         modifier = Modifier.size(65.dp).padding(12.dp),
-                        imageVector = WrIcons.folder,
+                        imageVector = folderUi.icon?.let(WrIcons::fromName) ?: WrIcons.folder,
                         contentDescription = "Folder",
                         tint = tintColor
                     )

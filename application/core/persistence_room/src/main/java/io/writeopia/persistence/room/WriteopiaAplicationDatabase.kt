@@ -24,7 +24,7 @@ private const val DATABASE_NAME = "WriteopiaDatabase"
         NotesConfigurationEntity::class,
         FolderEntity::class,
     ],
-    version = 13,
+    version = 14,
     exportSchema = false
 )
 @TypeConverters(IdListConverter::class)
