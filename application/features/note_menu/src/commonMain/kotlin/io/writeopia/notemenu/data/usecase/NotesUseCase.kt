@@ -46,10 +46,7 @@ class NotesUseCase private constructor(
     suspend fun updateDocumentById(id: String, documentChange: (Document) -> Document) {
         documentRepository.loadDocumentById(id)
             ?.let(documentChange)
-            ?.let { newDocument ->
-                println("newDocument.icon, ${newDocument.icon}")
-                documentRepository.saveDocumentMetadata(newDocument)
-            }
+            ?.let { newDocument -> documentRepository.saveDocumentMetadata(newDocument) }
             ?.also { documentRepository.refreshDocuments() }
     }
 

@@ -521,6 +521,6 @@ fun SideGlobalMenuPreview() {
         navigateToEditDocument = { _, _ -> },
         moveRequest = { _, _ -> },
         expandFolder = {},
-        changeIcon = { _, _ , _-> }
+        changeIcon = { _, _, _ -> }
     )
 }

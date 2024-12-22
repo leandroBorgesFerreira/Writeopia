@@ -209,6 +209,7 @@ class GlobalShellKmpViewModel(
                 IconChange.FOLDER -> notesUseCase.updateFolderById(menuItemId) { folder ->
                     folder.copy(icon = icon)
                 }
+
                 IconChange.DOCUMENT -> notesUseCase.updateDocumentById(menuItemId) { document ->
                     document.copy(icon = icon)
                 }
@@ -222,6 +223,7 @@ class GlobalShellKmpViewModel(
         }
 
     enum class IconChange {
-        FOLDER, DOCUMENT
+        FOLDER,
+        DOCUMENT
     }
 }
