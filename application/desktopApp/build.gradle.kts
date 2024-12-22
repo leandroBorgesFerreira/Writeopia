@@ -50,7 +50,7 @@ compose.desktop {
 
                 iconFile.set(iconsRoot.resolve("icon-mac.icns"))
                 jvmArgs("-Dapple.awt.application.appearance=system")
-                
+
                 signing {
                     val providers = project.providers
                     sign.set(true)
@@ -61,7 +61,7 @@ compose.desktop {
                     val providers = project.providers
                     appleID.set(providers.environmentVariable("NOTARIZATION_APPLE_ID"))
                     password.set(providers.environmentVariable("NOTARIZATION_PASSWORD"))
-//                    teamId.set(providers.environmentVariable("NOTARIZATION_TEAM_ID"))
+                    teamID.set(providers.environmentVariable("NOTARIZATION_TEAM_ID"))
                 }
             }
         }
