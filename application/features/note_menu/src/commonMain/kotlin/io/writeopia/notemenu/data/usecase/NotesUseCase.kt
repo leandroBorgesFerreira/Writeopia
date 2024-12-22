@@ -36,6 +36,23 @@ class NotesUseCase private constructor(
         folderRepository.updateFolder(folder)
     }
 
+    suspend fun updateFolderById(id: String, folderChange: (Folder) -> Folder) {
+        folderRepository.getFolderById(id)
+            ?.let(folderChange)
+            ?.let { newFolder -> folderRepository.updateFolder(newFolder) }
+            ?.also { folderRepository.refreshFolders() }
+    }
+
+    suspend fun updateDocumentById(id: String, documentChange: (Document) -> Document) {
+        documentRepository.loadDocumentById(id)
+            ?.let(documentChange)
+            ?.let { newDocument ->
+                println("newDocument.icon, ${newDocument.icon}")
+                documentRepository.saveDocumentMetadata(newDocument)
+            }
+            ?.also { documentRepository.refreshDocuments() }
+    }
+
     suspend fun moveItem(menuItem: MenuItemUi, parentId: String) {
         when (menuItem) {
             is MenuItemUi.DocumentUi -> {
@@ -86,6 +103,8 @@ class NotesUseCase private constructor(
 
             folders.merge(documents).mapValues { (_, menuItems) ->
                 menuItems.sortedWithOrderBy(order)
+            }.also {
+                it.values.flatten().joinToString { "title: ${it.title}, icon: ${it.icon}" }
             }
         }
 

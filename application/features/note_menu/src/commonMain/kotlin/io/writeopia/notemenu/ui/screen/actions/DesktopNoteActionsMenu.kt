@@ -85,7 +85,7 @@ private fun MoreOptions(
     Box {
         Icon(
             imageVector = WrIcons.moreVert,
-            contentDescription = "Export",
+            contentDescription = "More options",
             modifier = Modifier.icon(showExtraOptionsRequest).padding(2.dp),
             tint = MaterialTheme.colorScheme.onBackground
         )

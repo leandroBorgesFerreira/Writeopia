@@ -203,8 +203,25 @@ class GlobalShellKmpViewModel(
         _showSearch.value = false
     }
 
+    override fun changeIcons(menuItemId: String, icon: String, iconChange: IconChange) {
+        coroutineScope.launch {
+            when (iconChange) {
+                IconChange.FOLDER -> notesUseCase.updateFolderById(menuItemId) { folder ->
+                    folder.copy(icon = icon)
+                }
+                IconChange.DOCUMENT -> notesUseCase.updateDocumentById(menuItemId) { document ->
+                    document.copy(icon = icon)
+                }
+            }
+        }
+    }
+
     private suspend fun getUserId(): String =
         localUserId ?: authManager.getUser().id.also { id ->
             localUserId = id
         }
+
+    enum class IconChange {
+        FOLDER, DOCUMENT
+    }
 }

@@ -8,6 +8,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import io.writeopia.sdk.sql.WriteopiaDb
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import java.util.Properties
 import kotlin.test.Test
@@ -46,7 +47,7 @@ class SqlDelightDocumentRepositoryTest {
 
             val bigContent = smallContent + (
                 2 to StoryStep(type = StoryTypes.TEXT.type, text = "text2")
-            )
+                )
 
             val instant = Instant.parse("2023-01-01T12:05:30Z")
             val userId = "disconnected_user"
@@ -69,4 +70,26 @@ class SqlDelightDocumentRepositoryTest {
 
             assertEquals(result1?.content, smallContent)
         }
+
+    @Test
+    fun `it shouold be possible to save icon`() = runTest {
+        val now = Clock.System.now()
+        val documentId = "asdasdasdgf"
+        val icon = "newIcon"
+
+        val userId = "disconnected_user"
+        val document = Document(
+            id = documentId,
+            createdAt = now,
+            lastUpdatedAt = now,
+            userId = userId,
+            parentId = "",
+            icon = icon
+        )
+
+        documentRepository.saveDocument(document)
+
+        val newDocument = documentRepository.loadDocumentById(documentId)
+        assertEquals(newDocument?.icon, icon)
+    }
 }

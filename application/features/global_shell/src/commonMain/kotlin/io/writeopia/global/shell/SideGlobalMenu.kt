@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,7 +29,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,8 +39,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.icons.WrIcons
+import io.writeopia.commonui.IconsPicker
+import io.writeopia.global.shell.viewmodel.GlobalShellKmpViewModel.IconChange
 import io.writeopia.notemenu.ui.dto.MenuItemUi
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.theme.WriteopiaTheme
@@ -50,7 +56,6 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val FINAL_WIDTH = 300
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SideGlobalMenu(
     modifier: Modifier = Modifier,
@@ -67,7 +72,8 @@ fun SideGlobalMenu(
     navigateToFolder: (String) -> Unit,
     navigateToEditDocument: (String, String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
-    expandFolder: (String) -> Unit
+    expandFolder: (String) -> Unit,
+    changeIcon: (String, String, IconChange) -> Unit,
 ) {
     val widthState by derivedStateOf { width }
 
@@ -140,37 +146,65 @@ fun SideGlobalMenu(
                         }
                     )
 
-                    LazyColumn(Modifier.fillMaxWidth()) {
-                        itemsIndexed(
-                            menuItems,
-                            key = { _, item -> item.id }
-                        ) { i, item ->
-                            val itemModifier = Modifier.animateItemPlacement()
+                    DocumentList(
+                        menuItems = menuItems,
+                        editFolder = editFolder,
+                        navigateToFolder = navigateToFolder,
+                        navigateToEditDocument = navigateToEditDocument,
+                        moveRequest = moveRequest,
+                        expandFolder = expandFolder,
+                        changeIcon = changeIcon
+                    )
+                }
+            }
+        }
+    }
+}
 
-                            when (item) {
-                                is MenuItemUi.DocumentUi -> {
-                                    DocumentItem(
-                                        item,
-                                        navigateToEditDocument,
-                                        position = i,
-                                        modifier = itemModifier
-                                    )
-                                }
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun DocumentList(
+    menuItems: List<MenuItemUi>,
+    editFolder: (MenuItemUi.FolderUi) -> Unit,
+    navigateToFolder: (String) -> Unit,
+    navigateToEditDocument: (String, String) -> Unit,
+    moveRequest: (MenuItemUi, String) -> Unit,
+    expandFolder: (String) -> Unit,
+    changeIcon: (String, String, IconChange) -> Unit,
+) {
+    LazyColumn(Modifier.fillMaxWidth()) {
+        itemsIndexed(
+            menuItems,
+            key = { _, item -> item.id }
+        ) { i, item ->
+            val itemModifier = Modifier.animateItemPlacement()
 
-                                is MenuItemUi.FolderUi -> {
-                                    FolderItem(
-                                        item,
-                                        editFolder,
-                                        navigateToFolder,
-                                        moveRequest,
-                                        expandFolder = expandFolder,
-                                        position = i,
-                                        modifier = itemModifier
-                                    )
-                                }
-                            }
-                        }
-                    }
+            when (item) {
+                is MenuItemUi.DocumentUi -> {
+                    DocumentItem(
+                        item,
+                        position = i,
+                        navigateToEditDocument,
+                        changeIcon = { id, icon ->
+                            changeIcon(id, icon, IconChange.DOCUMENT)
+                        },
+                        modifier = itemModifier
+                    )
+                }
+
+                is MenuItemUi.FolderUi -> {
+                    FolderItem(
+                        item,
+                        position = i,
+                        editFolder,
+                        navigateToFolder,
+                        moveRequest,
+                        expandFolder = expandFolder,
+                        changeIcon = { id, icon ->
+                            changeIcon(id, icon, IconChange.FOLDER)
+                        },
+                        modifier = itemModifier
+                    )
                 }
             }
         }
@@ -180,11 +214,12 @@ fun SideGlobalMenu(
 @Composable
 private fun FolderItem(
     folder: MenuItemUi.FolderUi,
+    position: Int,
     editFolder: (MenuItemUi.FolderUi) -> Unit,
     navigateToFolder: (String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
     expandFolder: (String) -> Unit,
-    position: Int,
+    changeIcon: (String, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val depth = folder.depth
@@ -246,12 +281,31 @@ private fun FolderItem(
 
             Spacer(modifier = Modifier.width(8.dp))
 
+            var showIconsOptions by remember {
+                mutableStateOf(false)
+            }
+
             Icon(
-                imageVector = WrIcons.folder,
+                imageVector = folder.icon?.let(WrIcons::fromName) ?: WrIcons.folder,
                 contentDescription = "Folder",
                 tint = WriteopiaTheme.colorScheme.textLight,
                 modifier = Modifier.size(16.dp)
+                    .clip(MaterialTheme.shapes.medium)
+                    .clickable {
+                        showIconsOptions = !showIconsOptions
+                    }
             )
+
+            DropdownMenu(
+                expanded = showIconsOptions,
+                onDismissRequest = { showIconsOptions = false },
+                modifier = Modifier.background(MaterialTheme.colorScheme.background),
+                offset = DpOffset(y = 6.dp, x = 6.dp)
+            ) {
+                IconsPicker(
+                    iconSelect = { icon -> changeIcon(folder.id, icon) }
+                )
+            }
 
             Spacer(modifier = Modifier.width(6.dp))
 
@@ -287,8 +341,9 @@ private fun FolderItem(
 @Composable
 private fun DocumentItem(
     document: MenuItemUi.DocumentUi,
-    navigateToEditDocument: (String, String) -> Unit,
     position: Int,
+    navigateToEditDocument: (String, String) -> Unit,
+    changeIcon: (String, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val depth = document.depth
@@ -321,12 +376,31 @@ private fun DocumentItem(
     ) {
         Spacer(modifier = Modifier.width(4.dp + 12.dp * depth))
 
+        var showIconsOptions by remember {
+            mutableStateOf(false)
+        }
+
         Icon(
-            imageVector = WrIcons.file,
-            contentDescription = "Folder",
+            imageVector = document.icon?.let(WrIcons::fromName) ?: WrIcons.file,
+            contentDescription = "File",
             tint = WriteopiaTheme.colorScheme.textLight,
             modifier = Modifier.size(16.dp)
+                .clip(MaterialTheme.shapes.medium)
+                .clickable {
+                    showIconsOptions = !showIconsOptions
+                }
         )
+
+        DropdownMenu(
+            expanded = showIconsOptions,
+            onDismissRequest = { showIconsOptions = false },
+            modifier = Modifier.background(MaterialTheme.colorScheme.background),
+            offset = DpOffset(y = 6.dp, x = 6.dp)
+        ) {
+            IconsPicker(
+                iconSelect = { icon -> changeIcon(document.documentId, icon) }
+            )
+        }
 
         Spacer(modifier = Modifier.width(6.dp))
 
@@ -446,6 +520,7 @@ fun SideGlobalMenuPreview() {
         navigateToFolder = {},
         navigateToEditDocument = { _, _ -> },
         moveRequest = { _, _ -> },
-        expandFolder = {}
+        expandFolder = {},
+        changeIcon = { _, _ , _-> }
     )
 }

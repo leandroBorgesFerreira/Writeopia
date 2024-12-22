@@ -32,6 +32,7 @@ class FolderSqlDelightDao(database: WriteopiaDb?) : FolderSearch {
             created_at = folder.created_at,
             last_updated_at = folder.last_updated_at,
             favorite = folder.favorite,
+            icon = folder.icon
         )
         refreshFolders()
     }
@@ -55,6 +56,7 @@ class FolderSqlDelightDao(database: WriteopiaDb?) : FolderSearch {
             created_at = folder.created_at,
             last_updated_at = folder.last_updated_at,
             favorite = folder.favorite,
+            icon = folder.icon
         )
         refreshFolders()
     }

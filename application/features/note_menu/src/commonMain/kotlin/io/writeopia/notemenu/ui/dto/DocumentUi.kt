@@ -11,6 +11,7 @@ sealed interface MenuItemUi : Node, Traversable {
     val selected: Boolean
     val isFavorite: Boolean
     val highlighted: Boolean
+    val icon: String?
 
     data class DocumentUi(
         override val documentId: String,
@@ -21,7 +22,8 @@ sealed interface MenuItemUi : Node, Traversable {
         override val parentId: String,
         val preview: List<StoryStep>,
         override var depth: Int = 0,
-        override val highlighted: Boolean
+        override val highlighted: Boolean,
+        override val icon: String? = null
     ) : MenuItemUi {
 
         override val id: String = documentId
@@ -45,7 +47,8 @@ sealed interface MenuItemUi : Node, Traversable {
         val expanded: Boolean,
         override var depth: Int = 0,
         val insideContent: MutableList<MenuItemUi> = mutableListOf(),
-        override val highlighted: Boolean
+        override val highlighted: Boolean,
+        override val icon: String? = null
     ) : MenuItemUi, Traversable {
 
         override val id: String = documentId

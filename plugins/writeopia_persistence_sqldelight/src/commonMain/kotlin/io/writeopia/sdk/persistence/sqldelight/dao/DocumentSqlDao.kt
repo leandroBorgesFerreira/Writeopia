@@ -31,6 +31,7 @@ class DocumentSqlDao(
                 userId = entity.user_id,
                 favorite = entity.favorite == 1L,
                 parentId = entity.parent_document_id,
+                icon = entity.icon
             )
         }
         ?: emptyList()
@@ -46,6 +47,7 @@ class DocumentSqlDao(
                 userId = entity.user_id,
                 favorite = entity.favorite == 1L,
                 parentId = entity.parent_document_id,
+                icon = entity.icon
             )
         }
         ?: emptyList()
@@ -67,7 +69,8 @@ class DocumentSqlDao(
             last_updated_at = document.lastUpdatedAt.toEpochMilliseconds(),
             user_id = document.userId,
             favorite = document.favorite.toLong(),
-            parent_document_id = document.parentId
+            parent_document_id = document.parentId,
+            icon = document.icon
         )
     }
 
@@ -140,6 +143,7 @@ class DocumentSqlDao(
                         userId = document.user_id,
                         favorite = document.favorite == 1L,
                         parentId = document.parent_document_id,
+                        icon = document.icon
                     )
                 }
             } ?: emptyList()
@@ -186,6 +190,7 @@ class DocumentSqlDao(
                         userId = document.user_id,
                         favorite = document.favorite == 1L,
                         parentId = document.parent_document_id,
+                        icon = document.icon
                     )
                 }
             }
@@ -238,6 +243,7 @@ class DocumentSqlDao(
                         userId = document.user_id,
                         favorite = document.favorite == 1L,
                         parentId = document.parent_document_id,
+                        icon = document.icon
                     )
                 }
             }
@@ -290,6 +296,7 @@ class DocumentSqlDao(
                         userId = document.user_id,
                         favorite = document.favorite == 1L,
                         parentId = document.parent_document_id,
+                        icon = document.icon
                     )
                 }
             } ?: emptyList()
@@ -345,6 +352,7 @@ class DocumentSqlDao(
                         userId = document.user_id,
                         favorite = document.favorite == 1L,
                         parentId = document.parent_document_id,
+                        icon = document.icon
                     )
                 }
             }
@@ -391,6 +399,7 @@ class DocumentSqlDao(
                         userId = document.user_id,
                         favorite = document.favorite == 1L,
                         parentId = document.parent_document_id,
+                        icon = document.icon
                     )
                 }
             } ?: emptyList()

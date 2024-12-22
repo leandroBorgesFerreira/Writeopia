@@ -36,7 +36,7 @@ import java.io.File
 import androidx.compose.ui.input.key.KeyEvent as AndroidKeyEvent
 
 private const val APP_DIRECTORY = ".writeopia"
-private const val DB_VERSION = 6
+private const val DB_VERSION = 7
 
 fun main() = application {
     DesktopApp()

@@ -16,6 +16,7 @@ fun FolderEntity.toModel(count: Long) =
         userId = user_id,
         itemCount = count,
         favorite = favorite.toBoolean(),
+        icon = icon
     )
 
 fun Folder.toEntity() = FolderEntity(
@@ -26,4 +27,5 @@ fun Folder.toEntity() = FolderEntity(
     created_at = createdAt.toEpochMilliseconds(),
     last_updated_at = lastUpdatedAt.toEpochMilliseconds(),
     favorite = favorite.toLong(),
+    icon = icon
 )
