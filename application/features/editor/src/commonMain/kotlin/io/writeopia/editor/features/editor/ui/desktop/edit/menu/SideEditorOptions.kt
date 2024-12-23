@@ -11,6 +11,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -33,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -75,7 +77,10 @@ fun SideEditorOptions(
                 ),
             ),
         ) {
-            Crossfade(menuType, animationSpec = tween(200)) { type ->
+            Crossfade(
+                menuType,
+                animationSpec = tween(200),
+                modifier = Modifier.pointerInput(Unit) { detectTapGestures { } }) { type ->
                 when (type) {
                     OptionsType.NONE -> {}
                     OptionsType.PAGE_STYLE -> {
@@ -241,9 +246,10 @@ private fun DecorationCommands(commands: Iterable<Pair<String, () -> Unit>>) {
                             modifier = Modifier
                                 .weight(1F)
                                 .padding(start = 2.dp, end = 2.dp, bottom = 3.dp)
+                                .clip(MaterialTheme.shapes.medium)
                                 .clickable(onClick = listener)
                                 .background(
-                                    WriteopiaTheme.colorScheme.optionsSelector,
+                                    MaterialTheme.colorScheme.surfaceVariant,
                                     MaterialTheme.shapes.medium
                                 )
                                 .padding(horizontal = 8.dp, vertical = 8.dp),
@@ -319,14 +325,36 @@ private fun PageStyleOptions(modifier: Modifier = Modifier) {
             .width(250.dp)
             .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp)
     ) {
-        Title("Insert")
+        Title("Font")
         Spacer(modifier = Modifier.height(4.dp))
-        Text("System", fontFamily = FontFamily.Default)
-        Text("Serif", fontFamily = FontFamily.Serif)
-        Text("SansSerif", fontFamily = FontFamily.SansSerif)
-        Text("Monospace", fontFamily = FontFamily.Monospace)
-        Text("Cursive", fontFamily = FontFamily.Cursive)
-        Spacer(modifier = Modifier.height(8.dp))
+
+        mapOf(
+            "System" to FontFamily.Default,
+            "Serif" to FontFamily.Serif,
+            "Monospace" to FontFamily.Monospace,
+            "Cursive" to FontFamily.Cursive,
+        ).toList()
+            .inBatches(2)
+            .forEach { items ->
+                Row {
+                    items.forEach { (name, family) ->
+                        Text(
+                            name,
+                            fontFamily = family,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .padding(2.dp)
+                                .background(
+                                    MaterialTheme.colorScheme.surfaceVariant,
+                                    MaterialTheme.shapes.medium
+                                ).weight(1F)
+                                .clip(MaterialTheme.shapes.medium)
+                                .clickable {  }
+                                .padding(4.dp)
+                        )
+                    }
+                }
+            }
     }
 }
 

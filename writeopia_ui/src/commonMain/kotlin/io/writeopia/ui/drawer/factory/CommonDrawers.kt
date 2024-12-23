@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
+import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.content.AddButtonDrawer
 import io.writeopia.ui.drawer.content.LastEmptySpace
@@ -44,7 +45,6 @@ object CommonDrawers {
         marginAtBottom: Dp,
         defaultBorder: Shape = MaterialTheme.shapes.medium,
         editable: Boolean = false,
-        groupsBackgroundColor: Color = Color.Transparent,
         onHeaderClick: () -> Unit = {},
         dragIconWidth: Dp = DRAG_ICON_WIDTH.dp,
         lineBreakByContent: Boolean,
@@ -53,33 +53,16 @@ object CommonDrawers {
         isDesktop: Boolean,
         headerEndContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
     ): Map<Int, StoryStepDrawer> {
-        val textBoxDrawer = swipeTextDrawer(
-            modifier = Modifier
-                .clip(shape = defaultBorder)
-                .background(groupsBackgroundColor),
-            dragIconWidth = DRAG_ICON_WIDTH.dp,
-            config = drawConfig,
-            onDragHover = manager::onDragHover,
-            onDragStart = manager::onDragStart,
-            onDragStop = manager::onDragStop,
-            onSelected = manager::onSelected,
-            isDesktop = isDesktop,
-            messageDrawer = {
-                messageDrawer(
-                    manager = manager,
-                    modifier = Modifier.padding(
-                        start = drawConfig.codeBlockStartPadding.dp,
-                        top = drawConfig.textVerticalPadding.dp,
-                        bottom = drawConfig.textVerticalPadding.dp,
-                    ),
-                    eventListener = eventListener,
-                    allowLineBreaks = true,
-                    lineBreakByContent = lineBreakByContent,
-                    emptyErase = EmptyErase.CHANGE_TYPE,
-                    onSelectionLister = manager::toggleSelection,
-                )
-            }
-        )
+        val innerMessageDrawer: @Composable RowScope.(Modifier) -> SimpleTextDrawer = { modifier ->
+            messageDrawer(
+                manager = manager,
+                modifier = modifier,
+                eventListener = eventListener,
+                lineBreakByContent = lineBreakByContent,
+                emptyErase = EmptyErase.CHANGE_TYPE,
+                onSelectionLister = manager::toggleSelection,
+            )
+        }
 
         val codeBlockDrawer = swipeTextDrawer(
             modifier = Modifier
@@ -105,7 +88,6 @@ object CommonDrawers {
                         ),
                     eventListener = eventListener,
                     textStyle = { codeBlockStyle() },
-                    allowLineBreaks = true,
                     lineBreakByContent = lineBreakByContent,
                     emptyErase = EmptyErase.CHANGE_TYPE,
                     onSelectionLister = manager::toggleSelection,
@@ -145,13 +127,7 @@ object CommonDrawers {
                 end = drawConfig.checkBoxEndPadding.dp,
             )
         ) {
-            messageDrawer(
-                manager,
-                eventListener = eventListener,
-                emptyErase = EmptyErase.CHANGE_TYPE,
-                lineBreakByContent = lineBreakByContent,
-                onSelectionLister = manager::toggleSelection,
-            )
+            innerMessageDrawer(Modifier)
         }
 
         val unOrderedListItemDrawer =
@@ -165,17 +141,12 @@ object CommonDrawers {
                     end = drawConfig.listItemEndPadding.dp
                 )
             ) {
-                messageDrawer(
-                    manager,
-                    modifier = Modifier.padding(
+                innerMessageDrawer(
+                    Modifier.padding(
                         start = drawConfig.codeBlockStartPadding.dp,
                         top = drawConfig.textVerticalPadding.dp,
-                        bottom = drawConfig.textVerticalPadding.dp
-                    ),
-                    eventListener = eventListener,
-                    emptyErase = EmptyErase.CHANGE_TYPE,
-                    lineBreakByContent = lineBreakByContent,
-                    onSelectionLister = manager::toggleSelection,
+                        bottom = drawConfig.textVerticalPadding.dp,
+                    )
                 )
             }
 
@@ -190,7 +161,6 @@ object CommonDrawers {
         )
 
         return buildMap {
-            put(StoryTypes.TEXT_BOX.type.number, textBoxDrawer)
             put(StoryTypes.TEXT.type.number, swipeTextDrawer)
             put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
             put(StoryTypes.SPACE.type.number, SpaceDrawer(drawConfig, manager::moveRequest))
@@ -212,31 +182,29 @@ object CommonDrawers {
             put(StoryTypes.CODE_BLOCK.type.number, codeBlockDrawer)
         }
     }
+}
 
-    @Composable
-    private fun RowScope.messageDrawer(
-        manager: WriteopiaStateManager,
-        modifier: Modifier = Modifier,
-        textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
-        allowLineBreaks: Boolean = false,
-        lineBreakByContent: Boolean,
-        emptyErase: EmptyErase,
-        eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean,
-        onSelectionLister: (Int) -> Unit
-    ): TextDrawer {
-        return TextDrawer(
-            modifier = modifier.weight(1F),
-            onKeyEvent = eventListener,
-            onTextEdit = manager::handleTextInput,
-            textStyle = textStyle,
-            onFocusChanged = { position, focus ->
-                manager.onFocusChange(position, focus.isFocused)
-            },
-            allowLineBreaks = allowLineBreaks,
-            lineBreakByContent = lineBreakByContent,
-            emptyErase = emptyErase,
-            selectionState = manager.selectionState,
-            onSelectionLister = onSelectionLister
-        )
-    }
+@Composable
+private fun RowScope.messageDrawer(
+    manager: WriteopiaStateManager,
+    modifier: Modifier = Modifier,
+    textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
+    lineBreakByContent: Boolean,
+    emptyErase: EmptyErase,
+    eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean,
+    onSelectionLister: (Int) -> Unit
+): TextDrawer {
+    return TextDrawer(
+        modifier = modifier.weight(1F),
+        onKeyEvent = eventListener,
+        onTextEdit = manager::handleTextInput,
+        textStyle = textStyle,
+        onFocusChanged = { position, focus ->
+            manager.onFocusChange(position, focus.isFocused)
+        },
+        lineBreakByContent = lineBreakByContent,
+        emptyErase = emptyErase,
+        selectionState = manager.selectionState,
+        onSelectionLister = onSelectionLister
+    )
 }

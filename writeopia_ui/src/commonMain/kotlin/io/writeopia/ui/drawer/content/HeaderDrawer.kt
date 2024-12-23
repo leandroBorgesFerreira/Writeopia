@@ -141,7 +141,7 @@ private fun HeaderDrawerStepPreview() {
             TextDrawer(
                 modifier = Modifier.align(Alignment.BottomStart)
                     .padding(start = 16.dp, bottom = 16.dp),
-                onTextEdit = { _, _, _, _ -> },
+                onTextEdit = { _, _, _ -> },
                 textStyle = {
                     MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Bold,
@@ -166,7 +166,7 @@ private fun HeaderDrawerStepPreviewNoColor() {
             TextDrawer(
                 modifier = Modifier.align(Alignment.BottomStart)
                     .padding(start = 16.dp, bottom = 16.dp),
-                onTextEdit = { _, _, _, _ -> },
+                onTextEdit = { _, _, _ -> },
                 textStyle = {
                     MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Bold,
