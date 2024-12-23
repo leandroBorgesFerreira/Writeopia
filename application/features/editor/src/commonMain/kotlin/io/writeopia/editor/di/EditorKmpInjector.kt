@@ -7,6 +7,7 @@ import io.writeopia.editor.features.editor.viewmodel.NoteEditorKmpViewModel
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.editor.features.presentation.viewmodel.PresentationKmpViewModel
 import io.writeopia.editor.features.presentation.viewmodel.PresentationViewModel
+import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
@@ -25,6 +26,7 @@ class EditorKmpInjector(
     private val connectionInjection: ConnectionInjector,
     private val selectionState: StateFlow<Boolean>,
     private val keyboardEventFlow: Flow<KeyboardEvent>,
+    private val uiConfigurationRepository: UiConfigurationRepository
 ) : TextEditorInjector {
 
     private fun provideDocumentRepository(): DocumentRepository =
@@ -53,7 +55,8 @@ class EditorKmpInjector(
             writeopiaManager,
             documentRepository,
             sharedEditionManager = sharedEditionManager,
-            parentFolderId = parentFolder
+            parentFolderId = parentFolder,
+            uiConfigurationRepository = uiConfigurationRepository
         )
 
     override fun providePresentationViewModel(coroutineScope: CoroutineScope?): PresentationViewModel =

@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.models.story.Tag
 import io.writeopia.ui.drawer.StoryStepDrawer
@@ -37,13 +38,13 @@ object DefaultDrawersDesktop : DrawersFactory {
         onHeaderClick: () -> Unit,
         selectedColor: Color,
         selectedBorderColor: Color,
+        fontFamily: FontFamily?,
     ): Map<Int, StoryStepDrawer> =
         CommonDrawers.create(
             manager,
             30.dp,
             defaultBorder,
             editable,
-            groupsBackgroundColor,
             onHeaderClick,
             dragIconWidth = 16.dp,
             lineBreakByContent = true,
@@ -55,6 +56,7 @@ object DefaultDrawersDesktop : DrawersFactory {
             eventListener = KeyEventListenerFactory.desktop(
                 manager = manager,
             ),
+            fontFamily = fontFamily,
             headerEndContent = { storyStep, drawInfo, isHovered ->
                 val isTitle = storyStep.tags.any { it.tag.isTitle() }
                 val isCollapsed by lazy { storyStep.tags.any { it.tag == Tag.COLLAPSED } }

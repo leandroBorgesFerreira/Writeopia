@@ -22,8 +22,11 @@ class UiConfigurationMemoryRepository : UiConfigurationRepository {
     override suspend fun getUiConfigurationEntity(userId: String): UiConfiguration =
         uiConfiguration.value
 
-    override suspend fun updateColorTheme(userId: String, colorThemeOption: ColorThemeOption) {
-        uiConfiguration.value = uiConfiguration.value.copy(colorThemeOption = colorThemeOption)
+    override suspend fun updateConfiguration(
+        userId: String,
+        change: (UiConfiguration) -> UiConfiguration
+    ) {
+        uiConfiguration.value = uiConfiguration.value.let(change)
     }
 
     override fun listenForUiConfiguration(

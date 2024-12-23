@@ -54,8 +54,7 @@ class TextDrawer(
     private val onKeyEvent: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean =
         { _, _, _, _, _, _, _ -> false },
     private val textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
-    private val onTextEdit: (TextInput, Int, Boolean, Boolean) -> Unit = { _, _, _, _ -> },
-    private val allowLineBreaks: Boolean = false,
+    private val onTextEdit: (TextInput, Int, Boolean) -> Unit = { _, _, _ -> },
     private val lineBreakByContent: Boolean = true,
     private val emptyErase: EmptyErase = EmptyErase.CHANGE_TYPE,
     override var onFocusChanged: (Int, FocusState) -> Unit = { _, _ -> },
@@ -162,7 +161,6 @@ class TextDrawer(
                         TextInput(text, start, end),
                         drawInfo.position,
                         lineBreakByContent,
-                        allowLineBreaks
                     )
                 }
 

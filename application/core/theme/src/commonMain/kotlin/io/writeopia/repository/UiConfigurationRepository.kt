@@ -1,6 +1,5 @@
 package io.writeopia.repository
 
-import io.writeopia.model.ColorThemeOption
 import io.writeopia.model.UiConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -10,7 +9,7 @@ interface UiConfigurationRepository {
 
     suspend fun getUiConfigurationEntity(userId: String): UiConfiguration?
 
-    suspend fun updateColorTheme(userId: String, colorThemeOption: ColorThemeOption)
+    suspend fun updateConfiguration(userId: String, change: (UiConfiguration) -> UiConfiguration)
 
     fun listenForUiConfiguration(
         getUserId: suspend () -> String,

@@ -66,13 +66,12 @@ fun DesktopNoteEditorScreen(
             modifier = Modifier
                 .padding(horizontal = 10.dp, vertical = 40.dp)
                 .align(Alignment.TopEnd),
-            showState = noteEditorViewModel.showTextOptionsMenu,
-            fontClick = noteEditorViewModel::toggleOptionsMenu,
             checkItemClick = noteEditorViewModel::onAddCheckListClick,
             listItemClick = noteEditorViewModel::onAddListItemClick,
             codeBlockClick = noteEditorViewModel::onAddCodeBlockClick,
             highLightBlockClick = noteEditorViewModel::onAddHighLightBlockClick,
-            onPresentationClick = onPresentationClick
+            onPresentationClick = onPresentationClick,
+            changeFontFamily = noteEditorViewModel::changeFontFamily
         )
     }
 }

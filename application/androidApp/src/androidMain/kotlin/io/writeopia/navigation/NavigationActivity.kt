@@ -93,12 +93,15 @@ fun NavigationGraph(
         baseUrl = BuildConfig.BASE_URL
     )
     val authCoreInjection = AndroidAuthCoreInjection(sharedPreferences)
+    val uiConfigInjection = UiConfigurationInjector(sharedPreferences)
+    val uiConfigViewModel = uiConfigInjection.provideUiConfigurationViewModel()
     val repositoryInjection = RoomRepositoryInjection(database)
     val authInjection = AuthInjection(authCoreInjection, connectionInjector, repositoryInjection)
     val editorInjector = EditorInjector.create(
         authCoreInjection,
         repositoryInjection,
-        connectionInjector
+        connectionInjector,
+        uiConfigInjection.provideUiConfigurationRepository()
     )
     val accountMenuInjector = AndroidAccountMenuInjector.create(authCoreInjection)
     val notesMenuInjection = NotesMenuAndroidInjection.create(
@@ -116,8 +119,7 @@ fun NavigationGraph(
     }
 
     val navigationViewModel = viewModel { NavigationViewModel() }
-    val uiConfigViewModel =
-        UiConfigurationInjector(sharedPreferences).provideUiConfigurationViewModel()
+
     val colorTheme by uiConfigViewModel.listenForColorTheme { "disconnected_user" }.collectAsState()
 
     WrieopiaTheme(darkTheme = colorTheme.isDarkTheme()) {
