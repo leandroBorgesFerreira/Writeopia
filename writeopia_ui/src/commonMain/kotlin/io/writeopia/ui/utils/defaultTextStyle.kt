@@ -10,11 +10,12 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.Tag
 
 @Composable
-fun defaultTextStyle(storyStep: StoryStep) =
+fun defaultTextStyle(storyStep: StoryStep, fontFamily: FontFamily? = null) =
     TextStyle(
         textDecoration = if (storyStep.checked == true) TextDecoration.LineThrough else null,
         color = MaterialTheme.colorScheme.onBackground,
-        fontSize = textSizeFromTags(storyStep.tags.map { it.tag })
+        fontSize = textSizeFromTags(storyStep.tags.map { it.tag }),
+        fontFamily = fontFamily
     )
 
 @Composable

@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -51,18 +52,27 @@ object CommonDrawers {
         drawConfig: DrawConfig = DrawConfig(),
         eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean,
         isDesktop: Boolean,
+        fontFamily: FontFamily? = null,
         headerEndContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
     ): Map<Int, StoryStepDrawer> {
-        val innerMessageDrawer: @Composable RowScope.(Modifier) -> SimpleTextDrawer = { modifier ->
-            messageDrawer(
-                manager = manager,
-                modifier = modifier,
-                eventListener = eventListener,
-                lineBreakByContent = lineBreakByContent,
-                emptyErase = EmptyErase.CHANGE_TYPE,
-                onSelectionLister = manager::toggleSelection,
-            )
-        }
+        val commonTextModifier = Modifier.padding(
+            start = drawConfig.codeBlockStartPadding.dp,
+            top = drawConfig.textVerticalPadding.dp,
+            bottom = drawConfig.textVerticalPadding.dp,
+        )
+
+        val innerMessageDrawer: @Composable RowScope.(Modifier, EmptyErase) -> SimpleTextDrawer =
+            { modifier, emptyErase ->
+                messageDrawer(
+                    manager = manager,
+                    modifier = modifier,
+                    eventListener = eventListener,
+                    lineBreakByContent = lineBreakByContent,
+                    emptyErase = emptyErase,
+                    onSelectionLister = manager::toggleSelection,
+                    textStyle = { defaultTextStyle(it, fontFamily) }
+                )
+            }
 
         val codeBlockDrawer = swipeTextDrawer(
             modifier = Modifier
@@ -102,18 +112,7 @@ object CommonDrawers {
             config = drawConfig,
             endContent = headerEndContent
         ) {
-            messageDrawer(
-                manager = manager,
-                modifier = Modifier.padding(
-                    start = drawConfig.codeBlockStartPadding.dp,
-                    top = drawConfig.textVerticalPadding.dp,
-                    bottom = drawConfig.textVerticalPadding.dp
-                ),
-                eventListener = eventListener,
-                lineBreakByContent = lineBreakByContent,
-                emptyErase = EmptyErase.DELETE,
-                onSelectionLister = manager::toggleSelection,
-            )
+            innerMessageDrawer(commonTextModifier, EmptyErase.DELETE)
         }
 
         val checkItemDrawer = checkItemDrawer(
@@ -127,7 +126,7 @@ object CommonDrawers {
                 end = drawConfig.checkBoxEndPadding.dp,
             )
         ) {
-            innerMessageDrawer(Modifier)
+            innerMessageDrawer(Modifier, EmptyErase.CHANGE_TYPE)
         }
 
         val unOrderedListItemDrawer =
@@ -141,13 +140,7 @@ object CommonDrawers {
                     end = drawConfig.listItemEndPadding.dp
                 )
             ) {
-                innerMessageDrawer(
-                    Modifier.padding(
-                        start = drawConfig.codeBlockStartPadding.dp,
-                        top = drawConfig.textVerticalPadding.dp,
-                        bottom = drawConfig.textVerticalPadding.dp,
-                    )
-                )
+                innerMessageDrawer(commonTextModifier, EmptyErase.CHANGE_TYPE)
             }
 
         val headerDrawer = headerDrawer(
@@ -158,6 +151,7 @@ object CommonDrawers {
             lineBreakByContent = lineBreakByContent,
             selectionState = manager.selectionState,
             drawConfig = drawConfig,
+            fontFamily = fontFamily
         )
 
         return buildMap {

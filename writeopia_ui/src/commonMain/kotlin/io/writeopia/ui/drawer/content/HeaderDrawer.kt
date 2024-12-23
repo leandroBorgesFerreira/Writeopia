@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
@@ -111,6 +112,7 @@ fun headerDrawer(
     lineBreakByContent: Boolean,
     selectionState: StateFlow<Boolean>,
     drawConfig: DrawConfig,
+    fontFamily: FontFamily? = null
 ): StoryStepDrawer =
     HeaderDrawer(
         modifier = modifier,
@@ -122,7 +124,7 @@ fun headerDrawer(
                 onKeyEvent = onKeyEvent,
                 lineBreakByContent = lineBreakByContent,
                 emptyErase = EmptyErase.DISABLED,
-                textStyle = { drawConfig.titleStyle() },
+                textStyle = { drawConfig.titleStyle(fontFamily) },
                 selectionState = selectionState,
                 onSelectionLister = {}
             )

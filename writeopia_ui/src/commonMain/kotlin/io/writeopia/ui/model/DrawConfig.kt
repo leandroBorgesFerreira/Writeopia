@@ -4,13 +4,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 
 data class DrawConfig(
-    val titleStyle: @Composable () -> TextStyle = {
+    val titleStyle: @Composable (FontFamily?) -> TextStyle = { font ->
         MaterialTheme.typography.displaySmall.copy(
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.onBackground,
+            fontFamily = font
         )
     },
     val titlePlaceHolderStyle: @Composable () -> TextStyle = {

@@ -10,6 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.WriteopiaEditor
@@ -52,6 +53,7 @@ internal fun TextEditor(
             groupsBackgroundColor = Color.Transparent,
             selectedColor = WriteopiaTheme.colorScheme.selectedBg,
             selectedBorderColor = MaterialTheme.colorScheme.primary,
+            fontFamily = FontFamily.Monospace
         ),
         storyState = storyState,
     )
