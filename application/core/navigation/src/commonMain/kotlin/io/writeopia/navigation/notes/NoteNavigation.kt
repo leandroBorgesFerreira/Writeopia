@@ -4,6 +4,8 @@ import androidx.navigation.NavController
 import io.writeopia.common.utils.Destinations
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.usecase.NotesNavigationUseCase
+import io.writeopia.notemenu.navigation.NAVIGATION_PATH
+import io.writeopia.notemenu.navigation.NAVIGATION_TYPE
 
 fun NavController.navigateToNewNote() {
     val folderId = NotesNavigationUseCase.singleton().navigationState.value.id
@@ -11,11 +13,11 @@ fun NavController.navigateToNewNote() {
 }
 
 fun NavController.navigateToNote(id: String, title: String) {
-//    val noteId = this.currentBackStackEntry?.arguments?.getString("noteId")
+    val noteId = this.currentBackStackEntry?.arguments?.getString("noteId")
 
-//    if (noteId != id) {
-    navigate("${Destinations.EDITOR.id}/$id/$title")
-//    }
+    if (noteId != id) {
+        navigate("${Destinations.EDITOR.id}/$id/$title")
+    }
 }
 
 fun NavController.navigateToAccount() {
@@ -24,12 +26,24 @@ fun NavController.navigateToAccount() {
 
 fun NavController.navigateToFolder(navigation: NotesNavigation) {
     when (navigation) {
-        is NotesNavigation.Folder -> this.navigate(
-            "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/${navigation.id}",
-        )
+        is NotesNavigation.Folder -> {
+            val id = this.currentBackStackEntry?.arguments?.getString(NAVIGATION_PATH)
 
-        NotesNavigation.Favorites, NotesNavigation.Root -> this.navigate(
-            "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/path",
-        )
+            if (id != navigation.id) {
+                this.navigate(
+                    "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/${navigation.id}",
+                )
+            }
+        }
+
+        NotesNavigation.Favorites, NotesNavigation.Root -> {
+            val type = this.currentBackStackEntry?.arguments?.getString(NAVIGATION_TYPE)
+
+            if (type != navigation.navigationType.type) {
+                this.navigate(
+                    "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/path",
+                )
+            }
+        }
     }
 }
