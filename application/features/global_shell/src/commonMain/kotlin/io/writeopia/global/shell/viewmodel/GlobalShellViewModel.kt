@@ -1,6 +1,5 @@
 package io.writeopia.global.shell.viewmodel
 
-import io.writeopia.global.shell.viewmodel.GlobalShellKmpViewModel.IconChange
 import io.writeopia.models.Folder
 import io.writeopia.notemenu.ui.dto.MenuItemUi
 import io.writeopia.notemenu.viewmodel.FolderController
@@ -39,6 +38,4 @@ interface GlobalShellViewModel : FolderController {
     fun showSearch()
 
     fun hideSearch()
-
-    fun changeIcons(menuItemId: String, icon: String, iconChange: IconChange)
 }

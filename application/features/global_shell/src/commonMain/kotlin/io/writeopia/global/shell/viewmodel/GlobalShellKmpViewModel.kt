@@ -2,6 +2,7 @@ package io.writeopia.global.shell.viewmodel
 
 import androidx.compose.ui.unit.dp
 import io.writeopia.auth.core.manager.AuthManager
+import io.writeopia.common.utils.IconChange
 import io.writeopia.common.utils.KmpViewModel
 import io.writeopia.common.utils.collections.reverseTraverse
 import io.writeopia.common.utils.collections.toNodeTree
@@ -221,9 +222,4 @@ class GlobalShellKmpViewModel(
         localUserId ?: authManager.getUser().id.also { id ->
             localUserId = id
         }
-
-    enum class IconChange {
-        FOLDER,
-        DOCUMENT
-    }
 }

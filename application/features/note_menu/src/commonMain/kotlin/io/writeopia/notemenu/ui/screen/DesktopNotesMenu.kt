@@ -99,7 +99,8 @@ fun DesktopNotesMenu(
                     moveRequest = { item, parentId ->
                         chooseNoteViewModel.moveToFolder(item, parentId)
                     },
-                    modifier = Modifier.weight(1F).fillMaxHeight()
+                    modifier = Modifier.weight(1F).fillMaxHeight(),
+                    changeIcon = chooseNoteViewModel::changeIcons
                 )
 
                 Spacer(modifier = Modifier.width(20.dp))

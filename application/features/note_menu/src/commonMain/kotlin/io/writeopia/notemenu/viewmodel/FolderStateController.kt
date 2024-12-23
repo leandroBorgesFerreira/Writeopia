@@ -1,6 +1,7 @@
 package io.writeopia.notemenu.viewmodel
 
 import io.writeopia.auth.core.manager.AuthManager
+import io.writeopia.common.utils.IconChange
 import io.writeopia.models.Folder
 import io.writeopia.notemenu.data.usecase.NotesUseCase
 import io.writeopia.notemenu.ui.dto.MenuItemUi
@@ -57,6 +58,20 @@ class FolderStateController(
         if (menuItemUi.documentId != parentId) {
             coroutineScope.launch(Dispatchers.Default) {
                 notesUseCase.moveItem(menuItemUi, parentId)
+            }
+        }
+    }
+
+    override fun changeIcons(menuItemId: String, icon: String, iconChange: IconChange) {
+        coroutineScope.launch {
+            when (iconChange) {
+                IconChange.FOLDER -> notesUseCase.updateFolderById(menuItemId) { folder ->
+                    folder.copy(icon = icon)
+                }
+
+                IconChange.DOCUMENT -> notesUseCase.updateDocumentById(menuItemId) { document ->
+                    document.copy(icon = icon)
+                }
             }
         }
     }

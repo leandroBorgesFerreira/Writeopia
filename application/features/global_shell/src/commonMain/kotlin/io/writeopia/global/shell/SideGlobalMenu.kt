@@ -41,9 +41,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import io.writeopia.common.utils.IconChange
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.commonui.IconsPicker
-import io.writeopia.global.shell.viewmodel.GlobalShellKmpViewModel.IconChange
 import io.writeopia.notemenu.ui.dto.MenuItemUi
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.theme.WriteopiaTheme

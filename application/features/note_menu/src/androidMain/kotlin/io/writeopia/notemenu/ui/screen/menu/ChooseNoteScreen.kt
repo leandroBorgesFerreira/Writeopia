@@ -232,6 +232,7 @@ private fun Content(
         loadNote = loadNote,
         selectionListener = selectionListener,
         folderClick = {},
+        changeIcon = { _, _, _ -> },
         moveRequest = { _, _ -> },
         modifier = Modifier
             .padding(paddingValues)
