@@ -79,7 +79,10 @@ fun SideEditorOptions(
             Crossfade(
                 menuType,
                 animationSpec = tween(200),
-                modifier = Modifier.pointerInput(Unit) { detectTapGestures { } }) { type ->
+                modifier = Modifier.pointerInput(Unit) {
+                    detectTapGestures { }
+                }
+            ) { type ->
                 when (type) {
                     OptionsType.NONE -> {}
                     OptionsType.PAGE_STYLE -> {
