@@ -3,6 +3,7 @@ package io.writeopia.sdk.persistence.sqldelight.dao.sql
 import app.cash.sqldelight.async.coroutines.synchronous
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
@@ -10,6 +11,7 @@ import io.writeopia.sdk.sql.WriteopiaDb
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import java.awt.Menu
 import java.util.Properties
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -76,6 +78,7 @@ class SqlDelightDocumentRepositoryTest {
         val now = Clock.System.now()
         val documentId = "asdasdasdgf"
         val icon = "newIcon"
+        val tint = 123
 
         val userId = "disconnected_user"
         val document = Document(
@@ -84,12 +87,13 @@ class SqlDelightDocumentRepositoryTest {
             lastUpdatedAt = now,
             userId = userId,
             parentId = "",
-            icon = icon
+            icon = MenuItem.Icon(icon, tint)
         )
 
         documentRepository.saveDocument(document)
 
         val newDocument = documentRepository.loadDocumentById(documentId)
-        assertEquals(newDocument?.icon, icon)
+        assertEquals(newDocument?.icon?.label, icon)
+        assertEquals(newDocument?.icon?.tint, tint)
     }
 }
