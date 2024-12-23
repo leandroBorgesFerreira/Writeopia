@@ -17,5 +17,5 @@ interface FolderController {
 
     fun moveToFolder(menuItemUi: MenuItemUi, parentId: String)
 
-    fun changeIcons(menuItemId: String, icon: String, iconChange: IconChange)
+    fun changeIcons(menuItemId: String, icon: String, tint: Int, iconChange: IconChange)
 }

@@ -73,7 +73,7 @@ fun SideGlobalMenu(
     navigateToEditDocument: (String, String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
     expandFolder: (String) -> Unit,
-    changeIcon: (String, String, IconChange) -> Unit,
+    changeIcon: (String, String, Int, IconChange) -> Unit,
 ) {
     val widthState by derivedStateOf { width }
 
@@ -170,7 +170,7 @@ private fun DocumentList(
     navigateToEditDocument: (String, String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
     expandFolder: (String) -> Unit,
-    changeIcon: (String, String, IconChange) -> Unit,
+    changeIcon: (String, String, Int, IconChange) -> Unit,
 ) {
     LazyColumn(Modifier.fillMaxWidth()) {
         itemsIndexed(
@@ -185,8 +185,8 @@ private fun DocumentList(
                         item,
                         position = i,
                         navigateToEditDocument,
-                        changeIcon = { id, icon ->
-                            changeIcon(id, icon, IconChange.DOCUMENT)
+                        changeIcon = { id, icon, tint ->
+                            changeIcon(id, icon, tint, IconChange.DOCUMENT)
                         },
                         modifier = itemModifier
                     )
@@ -200,8 +200,8 @@ private fun DocumentList(
                         navigateToFolder,
                         moveRequest,
                         expandFolder = expandFolder,
-                        changeIcon = { id, icon ->
-                            changeIcon(id, icon, IconChange.FOLDER)
+                        changeIcon = { id, icon, tint ->
+                            changeIcon(id, icon, tint, IconChange.FOLDER)
                         },
                         modifier = itemModifier
                     )
@@ -219,7 +219,7 @@ private fun FolderItem(
     navigateToFolder: (String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
     expandFolder: (String) -> Unit,
-    changeIcon: (String, String) -> Unit,
+    changeIcon: (String, String, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val depth = folder.depth
@@ -285,10 +285,12 @@ private fun FolderItem(
                 mutableStateOf(false)
             }
 
+            val tint = folder.icon?.tint?.let(::Color) ?: WriteopiaTheme.colorScheme.textLight
+
             Icon(
-                imageVector = folder.icon?.let(WrIcons::fromName) ?: WrIcons.folder,
+                imageVector = folder.icon?.label?.let(WrIcons::fromName) ?: WrIcons.folder,
                 contentDescription = "Folder",
-                tint = WriteopiaTheme.colorScheme.textLight,
+                tint = tint,
                 modifier = Modifier.size(16.dp)
                     .clip(MaterialTheme.shapes.medium)
                     .clickable {
@@ -303,7 +305,7 @@ private fun FolderItem(
                 offset = DpOffset(y = 6.dp, x = 6.dp)
             ) {
                 IconsPicker(
-                    iconSelect = { icon -> changeIcon(folder.id, icon) }
+                    iconSelect = { icon, tint -> changeIcon(folder.id, icon, tint) }
                 )
             }
 
@@ -343,7 +345,7 @@ private fun DocumentItem(
     document: MenuItemUi.DocumentUi,
     position: Int,
     navigateToEditDocument: (String, String) -> Unit,
-    changeIcon: (String, String) -> Unit,
+    changeIcon: (String, String, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val depth = document.depth
@@ -380,10 +382,12 @@ private fun DocumentItem(
             mutableStateOf(false)
         }
 
+        val tint = document.icon?.tint?.let(::Color) ?: WriteopiaTheme.colorScheme.textLight
+
         Icon(
-            imageVector = document.icon?.let(WrIcons::fromName) ?: WrIcons.file,
+            imageVector = document.icon?.label?.let(WrIcons::fromName) ?: WrIcons.file,
             contentDescription = "File",
-            tint = WriteopiaTheme.colorScheme.textLight,
+            tint = tint,
             modifier = Modifier.size(16.dp)
                 .clip(MaterialTheme.shapes.medium)
                 .clickable {
@@ -398,7 +402,7 @@ private fun DocumentItem(
             offset = DpOffset(y = 6.dp, x = 6.dp)
         ) {
             IconsPicker(
-                iconSelect = { icon -> changeIcon(document.documentId, icon) }
+                iconSelect = { icon, tint -> changeIcon(document.documentId, icon, tint) }
             )
         }
 
@@ -521,6 +525,6 @@ fun SideGlobalMenuPreview() {
         navigateToEditDocument = { _, _ -> },
         moveRequest = { _, _ -> },
         expandFolder = {},
-        changeIcon = { _, _, _ -> }
+        changeIcon = { _, _, _, _ -> }
     )
 }

@@ -204,15 +204,15 @@ class GlobalShellKmpViewModel(
         _showSearch.value = false
     }
 
-    override fun changeIcons(menuItemId: String, icon: String, iconChange: IconChange) {
+    override fun changeIcons(menuItemId: String, icon: String, tint: Int, iconChange: IconChange) {
         coroutineScope.launch {
             when (iconChange) {
                 IconChange.FOLDER -> notesUseCase.updateFolderById(menuItemId) { folder ->
-                    folder.copy(icon = icon)
+                    folder.copy(icon = MenuItem.Icon(icon, tint))
                 }
 
                 IconChange.DOCUMENT -> notesUseCase.updateDocumentById(menuItemId) { document ->
-                    document.copy(icon = icon)
+                    document.copy(icon = MenuItem.Icon(icon, tint))
                 }
             }
         }

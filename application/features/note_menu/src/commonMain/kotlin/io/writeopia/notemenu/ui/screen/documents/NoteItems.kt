@@ -35,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -73,7 +74,7 @@ fun NotesCards(
     selectionListener: (String, Boolean) -> Unit,
     folderClick: (String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
-    changeIcon: (String, String, IconChange) -> Unit,
+    changeIcon: (String, String, Int, IconChange) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (documents) {
@@ -159,7 +160,7 @@ private fun LazyStaggeredGridNotes(
     selectionListener: (String, Boolean) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
     folderClick: (String) -> Unit,
-    changeIcon: (String, String, IconChange) -> Unit,
+    changeIcon: (String, String, Int, IconChange) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val spacing = 6.dp
@@ -195,8 +196,8 @@ private fun LazyStaggeredGridNotes(
                             position = i,
                             selectionListener = selectionListener,
                             moveRequest = moveRequest,
-                            changeIcon = { id, icon ->
-                                changeIcon(id, icon, IconChange.FOLDER)
+                            changeIcon = { id, icon, tint ->
+                                changeIcon(id, icon, tint, IconChange.FOLDER)
                             },
                             modifier = itemModifier
                         )
@@ -215,7 +216,7 @@ private fun LazyGridNotes(
     folderClick: (String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
-    changeIcon: (String, String, IconChange) -> Unit,
+    changeIcon: (String, String, Int, IconChange) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val spacing = Arrangement.spacedBy(6.dp)
@@ -248,8 +249,8 @@ private fun LazyGridNotes(
                             folderClick = folderClick,
                             moveRequest = moveRequest,
                             selectionListener = selectionListener,
-                            changeIcon = { id, icon ->
-                                changeIcon(id, icon, IconChange.FOLDER)
+                            changeIcon = { id, icon, tint ->
+                                changeIcon(id, icon, tint, IconChange.FOLDER)
                             },
                             position = i
                         )
@@ -268,7 +269,7 @@ private fun LazyColumnNotes(
     folderClick: (String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
-    changeIcon: (String, String, IconChange) -> Unit,
+    changeIcon: (String, String, Int, IconChange) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -297,8 +298,8 @@ private fun LazyColumnNotes(
                             folderClick,
                             selectionListener = selectionListener,
                             moveRequest = moveRequest,
-                            changeIcon = { id, icon ->
-                                changeIcon(id, icon, IconChange.FOLDER)
+                            changeIcon = { id, icon, tint ->
+                                changeIcon(id, icon, tint, IconChange.FOLDER)
                             },
                             position = i
                         )
@@ -316,7 +317,7 @@ private fun FolderItem(
     position: Int,
     moveRequest: (MenuItemUi, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
-    changeIcon: (String, String) -> Unit,
+    changeIcon: (String, String, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DropTarget { inBound, data ->
@@ -334,7 +335,6 @@ private fun FolderItem(
                 else -> MaterialTheme.colorScheme.surfaceVariant
             }
 
-        val tintColor = MaterialTheme.colorScheme.primary
         val textColor = WriteopiaTheme.colorScheme.textLight
 
         SwipeBox(
@@ -368,6 +368,8 @@ private fun FolderItem(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     var showIconsOptions by remember { mutableStateOf(false) }
+                    val tint = folderUi.icon?.tint?.let(::Color)
+                        ?: MaterialTheme.colorScheme.primary
 
                     Icon(
                         modifier = Modifier
@@ -376,9 +378,9 @@ private fun FolderItem(
                             .clickable { showIconsOptions = !showIconsOptions }
                             .size(56.dp)
                             .padding(6.dp),
-                        imageVector = folderUi.icon?.let(WrIcons::fromName) ?: folder,
+                        imageVector = folderUi.icon?.label?.let(WrIcons::fromName) ?: folder,
                         contentDescription = "Folder",
-                        tint = tintColor
+                        tint = tint
                     )
 
                     DropdownMenu(
@@ -386,7 +388,9 @@ private fun FolderItem(
                         onDismissRequest = { showIconsOptions = false },
                         modifier = Modifier.background(MaterialTheme.colorScheme.background),
                     ) {
-                        IconsPicker(iconSelect = { icon -> changeIcon(folderUi.id, icon) })
+                        IconsPicker(
+                            iconSelect = { icon, tint -> changeIcon(folderUi.id, icon, tint) }
+                        )
                     }
 
                     Text(

@@ -10,6 +10,8 @@ interface MenuItem : Traversable {
     val lastUpdatedAt: Instant
     val userId: String
     val favorite: Boolean
-    val icon: String?
+    val icon: Icon?
     override val parentId: String
+
+    data class Icon(val label: String, val tint: Int?)
 }

@@ -32,7 +32,8 @@ class FolderSqlDelightDao(database: WriteopiaDb?) : FolderSearch {
             created_at = folder.created_at,
             last_updated_at = folder.last_updated_at,
             favorite = folder.favorite,
-            icon = folder.icon
+            icon = folder.icon,
+            icon_tint = folder.icon_tint
         )
         refreshFolders()
     }
@@ -56,7 +57,8 @@ class FolderSqlDelightDao(database: WriteopiaDb?) : FolderSearch {
             created_at = folder.created_at,
             last_updated_at = folder.last_updated_at,
             favorite = folder.favorite,
-            icon = folder.icon
+            icon = folder.icon,
+            icon_tint = folder.icon_tint
         )
         refreshFolders()
     }
@@ -140,7 +142,6 @@ class FolderSqlDelightDao(database: WriteopiaDb?) : FolderSearch {
         )
     }
 }
-
 
 private object SelectedIds {
     val ids = mutableSetOf<String>()

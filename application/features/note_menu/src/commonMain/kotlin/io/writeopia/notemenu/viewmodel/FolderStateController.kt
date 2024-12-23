@@ -5,6 +5,7 @@ import io.writeopia.common.utils.IconChange
 import io.writeopia.models.Folder
 import io.writeopia.notemenu.data.usecase.NotesUseCase
 import io.writeopia.notemenu.ui.dto.MenuItemUi
+import io.writeopia.sdk.models.document.MenuItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -62,15 +63,20 @@ class FolderStateController(
         }
     }
 
-    override fun changeIcons(menuItemId: String, icon: String, iconChange: IconChange) {
+    override fun changeIcons(
+        menuItemId: String,
+        icon: String,
+        tint: Int,
+        iconChange: IconChange
+    ) {
         coroutineScope.launch {
             when (iconChange) {
                 IconChange.FOLDER -> notesUseCase.updateFolderById(menuItemId) { folder ->
-                    folder.copy(icon = icon)
+                    folder.copy(icon = MenuItem.Icon(icon, tint))
                 }
 
                 IconChange.DOCUMENT -> notesUseCase.updateDocumentById(menuItemId) { document ->
-                    document.copy(icon = icon)
+                    document.copy(icon = MenuItem.Icon(icon, tint))
                 }
             }
         }

@@ -14,7 +14,7 @@ data class Folder(
     override val lastUpdatedAt: Instant,
     override val userId: String,
     override val favorite: Boolean = false,
-    override val icon: String? = null,
+    override val icon: MenuItem.Icon? = null,
     val itemCount: Long,
     val documentList: List<Document> = emptyList()
 ) : MenuItem {
