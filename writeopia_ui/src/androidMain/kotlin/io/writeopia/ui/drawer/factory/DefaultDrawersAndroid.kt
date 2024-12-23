@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.drawer.content.VideoDrawer
@@ -35,6 +36,7 @@ object DefaultDrawersAndroid : DrawersFactory {
         onHeaderClick: () -> Unit,
         selectedColor: Color,
         selectedBorderColor: Color,
+        fontFamily: FontFamily?,
     ): Map<Int, StoryStepDrawer> {
         val imageDrawer = ImageDrawer(
             containerModifier = Modifier::defaultImageShape,
@@ -51,7 +53,6 @@ object DefaultDrawersAndroid : DrawersFactory {
             marginAtBottom = 500.dp,
             defaultBorder,
             editable,
-            groupsBackgroundColor,
             onHeaderClick,
             lineBreakByContent = true,
             drawConfig = DrawConfig(
@@ -70,6 +71,7 @@ object DefaultDrawersAndroid : DrawersFactory {
                 manager,
                 isEmptyErase = DefaultDrawersAndroid::emptyErase
             ),
+            fontFamily = fontFamily,
             headerEndContent = { storyStep, drawInfo, _ ->
                 val isTitle = storyStep.tags.any { it.tag.isTitle() }
                 val isCollapsed by lazy { storyStep.tags.any { it.tag == Tag.COLLAPSED } }
