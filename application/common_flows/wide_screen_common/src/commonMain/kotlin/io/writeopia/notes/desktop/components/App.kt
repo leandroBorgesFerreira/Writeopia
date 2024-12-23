@@ -94,7 +94,8 @@ fun App(
             repositoryInjection = repositoryInjection,
             connectionInjection = connectionInjection,
             selectionState = selectionState,
-            keyboardEventFlow = keyboardEventFlow
+            keyboardEventFlow = keyboardEventFlow,
+            uiConfigurationInjector.provideUiConfigurationRepository()
         )
     }
     val accountInjector = remember { AccountMenuKmpInjector(authCoreInjection) }

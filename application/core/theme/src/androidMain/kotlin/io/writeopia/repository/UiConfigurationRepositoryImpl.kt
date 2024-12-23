@@ -18,7 +18,7 @@ class UiConfigurationRepositoryImpl(
     override suspend fun getUiConfigurationEntity(userId: String): UiConfiguration? =
         uiConfigurationDao.getConfigurationByUserId(userId)?.toModel()
 
-    override suspend fun updateColorTheme(userId: String, colorThemeOption: ColorThemeOption) {
+    override suspend fun updateConfiguration(userId: String, colorThemeOption: ColorThemeOption) {
         val entity = getUiConfigurationEntity(userId)
 
         if (entity != null) {

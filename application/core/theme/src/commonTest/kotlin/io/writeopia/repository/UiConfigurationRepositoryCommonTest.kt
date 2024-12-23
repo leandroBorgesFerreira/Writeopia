@@ -11,7 +11,7 @@ object UiConfigurationRepositoryCommonTest {
         repository.run {
             val colorTheme = ColorThemeOption.DARK
 
-            this.updateColorTheme(userId, colorTheme)
+            this.updateConfiguration(userId, colorTheme)
 
             assertEquals(
                 colorTheme,

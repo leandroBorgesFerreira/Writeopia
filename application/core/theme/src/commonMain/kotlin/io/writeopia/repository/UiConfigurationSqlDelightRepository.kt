@@ -20,18 +20,21 @@ class UiConfigurationSqlDelightRepository internal constructor(
     override suspend fun getUiConfigurationEntity(userId: String): UiConfiguration? =
         uiConfigurationDao.getConfigurationByUserId(userId)?.toModel()
 
-    override suspend fun updateColorTheme(userId: String, colorThemeOption: ColorThemeOption) {
+    override suspend fun updateConfiguration(
+        userId: String,
+        change: (UiConfiguration) -> UiConfiguration
+    ) {
         val entity = getUiConfigurationEntity(userId)
 
         if (entity != null) {
-            insertUiConfiguration(entity.copy(colorThemeOption = colorThemeOption))
+            insertUiConfiguration(entity.let(change))
         } else {
             insertUiConfiguration(
                 UiConfiguration(
                     userId = userId,
-                    colorThemeOption = colorThemeOption,
-                    sideMenuWidth = 280F
-                )
+                    colorThemeOption = ColorThemeOption.SYSTEM,
+                    sideMenuWidth = 280F,
+                ).let(change)
             )
         }
     }

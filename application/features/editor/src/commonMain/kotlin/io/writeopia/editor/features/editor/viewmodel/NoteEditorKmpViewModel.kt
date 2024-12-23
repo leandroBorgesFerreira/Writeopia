@@ -1,7 +1,10 @@
 package io.writeopia.editor.features.editor.viewmodel
 
+import io.writeopia.auth.core.utils.USER_OFFLINE
 import io.writeopia.common.utils.KmpViewModel
 import io.writeopia.editor.model.EditState
+import io.writeopia.model.Font
+import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.filter.DocumentFilter
 import io.writeopia.sdk.filter.DocumentFilterObject
@@ -31,7 +34,8 @@ class NoteEditorKmpViewModel(
     private val documentRepository: DocumentRepository,
     private val documentFilter: DocumentFilter = DocumentFilterObject,
     private val sharedEditionManager: SharedEditionManager,
-    private val parentFolderId: String
+    private val parentFolderId: String,
+    private val uiConfigurationRepository: UiConfigurationRepository
 ) : NoteEditorViewModel,
     KmpViewModel(),
     BackstackInform by writeopiaManager,
@@ -187,6 +191,21 @@ class NoteEditorKmpViewModel(
 
     override fun clearSelections() {
         writeopiaManager.cancelSelection()
+    }
+
+    override val fontFamily: StateFlow<Font> by lazy {
+        uiConfigurationRepository.listenForUiConfiguration({ USER_OFFLINE }, coroutineScope)
+            .filterNotNull()
+            .map { it.font }
+            .stateIn(coroutineScope, SharingStarted.Lazily, Font.SYSTEM)
+    }
+
+    override fun changeFontFamily(font: Font) {
+        coroutineScope.launch {
+            uiConfigurationRepository.updateConfiguration(USER_OFFLINE) { config ->
+                config.copy(font = font)
+            }
+        }
     }
 
     private fun documentToJson(document: Document, json: Json = writeopiaJson): String {

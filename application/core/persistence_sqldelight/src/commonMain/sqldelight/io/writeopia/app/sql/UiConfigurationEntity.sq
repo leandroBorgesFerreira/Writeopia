@@ -1,7 +1,8 @@
 CREATE TABLE uiConfigurationEntity (
   user_id TEXT PRIMARY KEY,
   color_theme_option TEXT,
-  side_menu_width INTEGER DEFAULT 280
+  side_menu_width INTEGER DEFAULT 280,
+  font_family TEXT NOT NULL
 );
 
 selectConfigurationByUserId:
@@ -10,8 +11,8 @@ FROM uiConfigurationEntity
 WHERE uiConfigurationEntity.user_id = ?;
 
 insert:
-INSERT INTO uiConfigurationEntity(user_id, color_theme_option, side_menu_width)
-VALUES (?, ?, ?)
+INSERT INTO uiConfigurationEntity(user_id, color_theme_option, side_menu_width, font_family)
+VALUES (?, ?, ?, ?)
 ON CONFLICT(user_id) DO
-UPDATE SET user_id=excluded.user_id, color_theme_option=excluded.color_theme_option, side_menu_width=excluded.side_menu_width;
+UPDATE SET user_id=excluded.user_id, color_theme_option=excluded.color_theme_option, side_menu_width=excluded.side_menu_width, font_family=excluded.font_family;
 

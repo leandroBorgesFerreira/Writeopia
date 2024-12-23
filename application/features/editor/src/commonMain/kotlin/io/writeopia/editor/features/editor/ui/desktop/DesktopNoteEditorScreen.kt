@@ -70,7 +70,8 @@ fun DesktopNoteEditorScreen(
             listItemClick = noteEditorViewModel::onAddListItemClick,
             codeBlockClick = noteEditorViewModel::onAddCodeBlockClick,
             highLightBlockClick = noteEditorViewModel::onAddHighLightBlockClick,
-            onPresentationClick = onPresentationClick
+            onPresentationClick = onPresentationClick,
+            changeFontFamily = noteEditorViewModel::changeFontFamily
         )
     }
 }

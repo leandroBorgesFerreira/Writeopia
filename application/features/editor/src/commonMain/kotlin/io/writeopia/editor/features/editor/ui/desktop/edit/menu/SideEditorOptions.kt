@@ -25,7 +25,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,9 +41,8 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.collections.inBatches
 import io.writeopia.common.utils.icons.WrIcons
-import io.writeopia.theme.WriteopiaTheme
+import io.writeopia.model.Font
 import io.writeopia.ui.icons.WrSdkIcons
-import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun SideEditorOptions(
@@ -54,6 +52,7 @@ fun SideEditorOptions(
     codeBlockClick: () -> Unit,
     highLightBlockClick: () -> Unit,
     onPresentationClick: () -> Unit,
+    changeFontFamily: (Font) -> Unit,
 ) {
     var menuType by remember {
         mutableStateOf(OptionsType.NONE)
@@ -84,7 +83,7 @@ fun SideEditorOptions(
                 when (type) {
                     OptionsType.NONE -> {}
                     OptionsType.PAGE_STYLE -> {
-                        PageStyleOptions()
+                        PageStyleOptions(changeFontFamily)
                     }
 
                     OptionsType.TEXT_OPTIONS -> {
@@ -315,7 +314,7 @@ private fun Modifier.horizontalOptionsRow() =
         )
 
 @Composable
-private fun PageStyleOptions(modifier: Modifier = Modifier) {
+private fun PageStyleOptions(changeFontFamily: (Font) -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.border(
             1.dp,
@@ -329,10 +328,10 @@ private fun PageStyleOptions(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(4.dp))
 
         mapOf(
-            "System" to FontFamily.Default,
-            "Serif" to FontFamily.Serif,
-            "Monospace" to FontFamily.Monospace,
-            "Cursive" to FontFamily.Cursive,
+            Font.SYSTEM.label to FontFamily.Default,
+            Font.SERIF.label to FontFamily.Serif,
+            Font.MONOSPACE.label to FontFamily.Monospace,
+            Font.CURSIVE.label to FontFamily.Cursive,
         ).toList()
             .inBatches(2)
             .forEach { items ->
@@ -349,8 +348,11 @@ private fun PageStyleOptions(modifier: Modifier = Modifier) {
                                     MaterialTheme.shapes.medium
                                 ).weight(1F)
                                 .clip(MaterialTheme.shapes.medium)
-                                .clickable {  }
-                                .padding(4.dp)
+                                .clickable {
+                                    changeFontFamily(Font.fromLabel(name))
+                                }
+                                .padding(4.dp),
+                            color = MaterialTheme.colorScheme.onBackground,
                         )
                     }
                 }

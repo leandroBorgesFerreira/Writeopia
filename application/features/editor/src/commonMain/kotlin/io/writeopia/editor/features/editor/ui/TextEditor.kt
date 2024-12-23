@@ -7,11 +7,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
+import io.writeopia.model.Font
 import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.WriteopiaEditor
 import io.writeopia.ui.drawer.factory.DrawersFactory
@@ -38,6 +41,18 @@ internal fun TextEditor(
         })
     }
 
+    val fontFamilyEnum by noteEditorViewModel.fontFamily.collectAsState()
+    val fontFamily by remember {
+        derivedStateOf {
+            when (fontFamilyEnum) {
+                Font.SYSTEM -> FontFamily.Default
+                Font.SERIF -> FontFamily.Serif
+                Font.MONOSPACE -> FontFamily.Monospace
+                Font.CURSIVE -> FontFamily.Cursive
+            }
+        }
+    }
+
     val clipShape = MaterialTheme.shapes.medium
 
     WriteopiaEditor(
@@ -53,7 +68,7 @@ internal fun TextEditor(
             groupsBackgroundColor = Color.Transparent,
             selectedColor = WriteopiaTheme.colorScheme.selectedBg,
             selectedBorderColor = MaterialTheme.colorScheme.primary,
-            fontFamily = FontFamily.Monospace
+            fontFamily = fontFamily
         ),
         storyState = storyState,
     )

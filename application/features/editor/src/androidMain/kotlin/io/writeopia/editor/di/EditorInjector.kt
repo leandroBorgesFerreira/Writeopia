@@ -6,6 +6,7 @@ import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.editor.AndroidNoteEditorViewModel
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.editor.features.presentation.viewmodel.PresentationViewModel
+import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.ui.keyboard.KeyboardEvent
@@ -33,14 +34,16 @@ class EditorInjector internal constructor(
         fun create(
             authCoreInjection: AuthCoreInjection,
             daosInjection: RepositoryInjector,
-            connectionInjector: ConnectionInjector
+            connectionInjector: ConnectionInjector,
+            uiConfigurationRepository: UiConfigurationRepository
         ) = EditorInjector(
             EditorKmpInjector(
                 authCoreInjection,
                 daosInjection,
                 connectionInjector,
                 MutableStateFlow(false),
-                MutableStateFlow(KeyboardEvent.IDLE)
+                MutableStateFlow(KeyboardEvent.IDLE),
+                uiConfigurationRepository
             )
         )
     }

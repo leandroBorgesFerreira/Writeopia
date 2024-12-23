@@ -1,6 +1,7 @@
 package io.writeopia.editor.features.editor.viewmodel
 
 import io.writeopia.editor.model.EditState
+import io.writeopia.model.Font
 import io.writeopia.ui.backstack.BackstackHandler
 import io.writeopia.ui.backstack.BackstackInform
 import io.writeopia.ui.manager.WriteopiaStateManager
@@ -28,6 +29,8 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
     val toDraw: StateFlow<DrawState>
 
     val documentToShareInfo: StateFlow<ShareDocument?>
+
+    val fontFamily: StateFlow<Font>
 
     fun deleteSelection()
 
@@ -60,6 +63,8 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
     fun onAddHighLightBlockClick()
 
     fun clearSelections()
+
+    fun changeFontFamily(font: Font)
 }
 
 data class ShareDocument(val content: String, val title: String, val type: String)
