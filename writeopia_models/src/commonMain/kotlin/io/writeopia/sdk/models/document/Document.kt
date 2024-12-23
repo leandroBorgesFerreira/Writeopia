@@ -12,5 +12,6 @@ data class Document(
     override val lastUpdatedAt: Instant,
     override val userId: String,
     override val parentId: String,
-    override val favorite: Boolean = false
+    override val favorite: Boolean = false,
+    override val icon: MenuItem.Icon? = null,
 ) : MenuItem

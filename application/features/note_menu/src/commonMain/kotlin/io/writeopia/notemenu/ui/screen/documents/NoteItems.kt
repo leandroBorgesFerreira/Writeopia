@@ -22,21 +22,30 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import io.writeopia.common.utils.IconChange
 import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.icons.WrIcons
+import io.writeopia.common.utils.icons.WrIcons.folder
+import io.writeopia.commonui.IconsPicker
 import io.writeopia.notemenu.data.model.NotesArrangement
 import io.writeopia.notemenu.ui.dto.MenuItemUi
 import io.writeopia.notemenu.ui.dto.NotesUi
@@ -65,6 +74,7 @@ fun NotesCards(
     selectionListener: (String, Boolean) -> Unit,
     folderClick: (String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
+    changeIcon: (String, String, Int, IconChange) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (documents) {
@@ -87,6 +97,7 @@ fun NotesCards(
                                 onDocumentClick = loadNote,
                                 folderClick = folderClick,
                                 moveRequest = moveRequest,
+                                changeIcon = changeIcon,
                                 modifier = listModifier,
                             )
                         }
@@ -98,6 +109,7 @@ fun NotesCards(
                                 onDocumentClick = loadNote,
                                 folderClick = folderClick,
                                 moveRequest = moveRequest,
+                                changeIcon = changeIcon,
                                 modifier = listModifier,
                             )
                         }
@@ -109,6 +121,7 @@ fun NotesCards(
                                 onDocumentClick = loadNote,
                                 folderClick = folderClick,
                                 moveRequest = moveRequest,
+                                changeIcon = changeIcon,
                                 modifier = listModifier,
                             )
                         }
@@ -147,6 +160,7 @@ private fun LazyStaggeredGridNotes(
     selectionListener: (String, Boolean) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
     folderClick: (String) -> Unit,
+    changeIcon: (String, String, Int, IconChange) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val spacing = 6.dp
@@ -182,6 +196,9 @@ private fun LazyStaggeredGridNotes(
                             position = i,
                             selectionListener = selectionListener,
                             moveRequest = moveRequest,
+                            changeIcon = { id, icon, tint ->
+                                changeIcon(id, icon, tint, IconChange.FOLDER)
+                            },
                             modifier = itemModifier
                         )
                     }
@@ -199,6 +216,7 @@ private fun LazyGridNotes(
     folderClick: (String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
+    changeIcon: (String, String, Int, IconChange) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val spacing = Arrangement.spacedBy(6.dp)
@@ -231,6 +249,9 @@ private fun LazyGridNotes(
                             folderClick = folderClick,
                             moveRequest = moveRequest,
                             selectionListener = selectionListener,
+                            changeIcon = { id, icon, tint ->
+                                changeIcon(id, icon, tint, IconChange.FOLDER)
+                            },
                             position = i
                         )
                     }
@@ -248,6 +269,7 @@ private fun LazyColumnNotes(
     folderClick: (String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
+    changeIcon: (String, String, Int, IconChange) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -276,6 +298,9 @@ private fun LazyColumnNotes(
                             folderClick,
                             selectionListener = selectionListener,
                             moveRequest = moveRequest,
+                            changeIcon = { id, icon, tint ->
+                                changeIcon(id, icon, tint, IconChange.FOLDER)
+                            },
                             position = i
                         )
                     }
@@ -292,6 +317,7 @@ private fun FolderItem(
     position: Int,
     moveRequest: (MenuItemUi, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
+    changeIcon: (String, String, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DropTarget { inBound, data ->
@@ -309,7 +335,6 @@ private fun FolderItem(
                 else -> MaterialTheme.colorScheme.surfaceVariant
             }
 
-        val tintColor = MaterialTheme.colorScheme.primary
         val textColor = WriteopiaTheme.colorScheme.textLight
 
         SwipeBox(
@@ -342,12 +367,31 @@ private fun FolderItem(
                         .align(Alignment.Center),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    var showIconsOptions by remember { mutableStateOf(false) }
+                    val tint = folderUi.icon?.tint?.let(::Color)
+                        ?: MaterialTheme.colorScheme.primary
+
                     Icon(
-                        modifier = Modifier.size(65.dp).padding(12.dp),
-                        imageVector = WrIcons.folder,
+                        modifier = Modifier
+                            .padding(6.dp)
+                            .clip(MaterialTheme.shapes.large)
+                            .clickable { showIconsOptions = !showIconsOptions }
+                            .size(56.dp)
+                            .padding(6.dp),
+                        imageVector = folderUi.icon?.label?.let(WrIcons::fromName) ?: folder,
                         contentDescription = "Folder",
-                        tint = tintColor
+                        tint = tint
                     )
+
+                    DropdownMenu(
+                        expanded = showIconsOptions,
+                        onDismissRequest = { showIconsOptions = false },
+                        modifier = Modifier.background(MaterialTheme.colorScheme.background),
+                    ) {
+                        IconsPicker(
+                            iconSelect = { icon, tint -> changeIcon(folderUi.id, icon, tint) }
+                        )
+                    }
 
                     Text(
                         modifier = Modifier.padding(horizontal = 12.dp),

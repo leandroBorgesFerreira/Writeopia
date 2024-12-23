@@ -180,7 +180,8 @@ fun App(
                     moveRequest = globalShellViewModel::moveToFolder,
                     expandFolder = globalShellViewModel::expandFolder,
                     searchClick = globalShellViewModel::showSearch,
-                    highlightContent = {}
+                    highlightContent = {},
+                    changeIcon = globalShellViewModel::changeIcons
                 )
 
                 Column {

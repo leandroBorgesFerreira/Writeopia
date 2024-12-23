@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import io.writeopia.common.utils.DISCONNECTED_USER_ID
+import io.writeopia.models.Folder
 import io.writeopia.notemenu.data.repository.ConfigurationRepository
 import io.writeopia.notemenu.data.repository.ConfigurationRoomRepository
 import io.writeopia.notemenu.data.repository.RoomFolderRepository
@@ -16,6 +17,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
 import org.junit.Before
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class NotesUseCaseIntegrationTest {
@@ -105,5 +107,34 @@ class NotesUseCaseIntegrationTest {
         )
 
         assertTrue { flow.first().isNotEmpty() }
+    }
+
+    @Test
+    fun itShouldBePossibleToUpdateAnIcon() = runTest {
+        val now = Clock.System.now()
+        val documentId = "documentId"
+
+        notesUseCase.saveDocument(
+            Document(
+                id = documentId,
+                title = "Document1",
+                createdAt = now,
+                lastUpdatedAt = now,
+                userId = DISCONNECTED_USER_ID,
+                parentId = "root"
+            )
+        )
+
+        notesUseCase.updateDocumentById(documentId) { document ->
+            document.copy(icon = "newIcon")
+        }
+
+        val flow = notesUseCase.listenForMenuItemsByParentId(
+            "root",
+            DISCONNECTED_USER_ID,
+            null
+        )
+
+        assertEquals(flow.first().values.first().first().icon, "newIcon")
     }
 }

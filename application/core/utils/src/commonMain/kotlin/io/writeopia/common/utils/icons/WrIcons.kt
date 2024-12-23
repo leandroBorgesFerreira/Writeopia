@@ -147,4 +147,58 @@ object WrIcons {
     val visibilityOn = Eye
 
     val visibilityOff = EyeClosed
+
+    val allIcons: Map<String, ImageVector> =
+        mapOf(
+            "settings" to settings,
+            "home" to home,
+            "search" to search,
+            "notifications" to notifications,
+            "favorites" to favorites,
+            "file" to file,
+            "fileDownload" to fileDownload,
+            "folder" to folder,
+            "exportFile" to exportFile,
+            "save" to save,
+            "sync" to sync,
+            "moreVert" to moreVert,
+            "moreHoriz" to moreHoriz,
+            "sort" to sort,
+            "colorModeLight" to colorModeLight,
+            "colorModeDark" to colorModeDark,
+            "colorModeSystem" to colorModeSystem,
+            "bold" to bold,
+            "italic" to italic,
+            "underline" to underline,
+            "textStyle" to textStyle,
+            "pageStyle" to pageStyle,
+            "code" to code,
+            "addCircle" to addCircle,
+            "add" to add,
+            "target" to target,
+            "layoutStaggeredGrid" to layoutStaggeredGrid,
+            "layoutGrid" to layoutGrid,
+            "layoutList" to layoutList,
+            "copy" to copy,
+            "close" to close,
+            "delete" to delete,
+            "transparent" to transparent,
+            "person" to person,
+            "smallArrowRight" to smallArrowRight,
+            "smallArrowDown" to smallArrowDown,
+            "undo" to undo,
+            "redo" to redo,
+            "sortByName" to sortByName,
+            "sortByCreated" to sortByCreated,
+            "sortByUpdate" to sortByUpdate,
+            "backArrowDesktop" to backArrowDesktop,
+            "backArrowAndroid" to backArrowAndroid,
+            "play" to play,
+            "circularArrowLeft" to circularArrowLeft,
+            "circularArrowRight" to circularArrowRight,
+            "visibilityOn" to visibilityOn,
+            "visibilityOff" to visibilityOff
+        )
+
+    fun fromName(name: String): ImageVector? = allIcons[name]
 }

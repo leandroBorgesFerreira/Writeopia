@@ -32,6 +32,7 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
                 implementation(project(":application:core:theme"))
+                implementation(project(":application:core:utils"))
             }
         }
     }

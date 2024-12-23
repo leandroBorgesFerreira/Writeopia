@@ -15,6 +15,7 @@ data class DocumentEntity(
     @ColumnInfo(USER_ID) val userId: String,
     @ColumnInfo(FAVORITE) val favorite: Boolean,
     @ColumnInfo(PARENT_ID) val parentId: String,
+    @ColumnInfo(ICON) val icon: String? = null,
 ) {
     companion object {
         fun createById(id: String, userId: String, parentId: String): DocumentEntity {

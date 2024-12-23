@@ -16,7 +16,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import io.writeopia.editor.ColorUtils
+import io.writeopia.common.utils.ColorUtils
 import io.writeopia.editor.configuration.ui.HeaderEditionOptions
 import io.writeopia.editor.features.editor.ui.TextEditor
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorKmpViewModel

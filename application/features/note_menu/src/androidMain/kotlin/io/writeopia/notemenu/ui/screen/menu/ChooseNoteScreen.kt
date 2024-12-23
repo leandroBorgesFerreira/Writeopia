@@ -89,7 +89,9 @@ internal fun ChooseNoteScreen(
         }
 
         NotesSelectionMenu(
-            modifier = Modifier.align(Alignment.BottomCenter).padding(8.dp),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(8.dp),
             visibilityState = hasSelectedNotes,
             onDelete = chooseNoteViewModel::deleteSelectedNotes,
             onCopy = chooseNoteViewModel::copySelectedNotes,
@@ -232,6 +234,7 @@ private fun Content(
         loadNote = loadNote,
         selectionListener = selectionListener,
         folderClick = {},
+        changeIcon = { _, _, _, _ -> },
         moveRequest = { _, _ -> },
         modifier = Modifier
             .padding(paddingValues)

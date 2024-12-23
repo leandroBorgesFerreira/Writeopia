@@ -2,6 +2,7 @@ package io.writeopia.global.shell.viewmodel
 
 import androidx.compose.ui.unit.dp
 import io.writeopia.auth.core.manager.AuthManager
+import io.writeopia.common.utils.IconChange
 import io.writeopia.common.utils.KmpViewModel
 import io.writeopia.common.utils.collections.reverseTraverse
 import io.writeopia.common.utils.collections.toNodeTree
@@ -201,6 +202,20 @@ class GlobalShellKmpViewModel(
 
     override fun hideSearch() {
         _showSearch.value = false
+    }
+
+    override fun changeIcons(menuItemId: String, icon: String, tint: Int, iconChange: IconChange) {
+        coroutineScope.launch {
+            when (iconChange) {
+                IconChange.FOLDER -> notesUseCase.updateFolderById(menuItemId) { folder ->
+                    folder.copy(icon = MenuItem.Icon(icon, tint))
+                }
+
+                IconChange.DOCUMENT -> notesUseCase.updateDocumentById(menuItemId) { document ->
+                    document.copy(icon = MenuItem.Icon(icon, tint))
+                }
+            }
+        }
     }
 
     private suspend fun getUserId(): String =

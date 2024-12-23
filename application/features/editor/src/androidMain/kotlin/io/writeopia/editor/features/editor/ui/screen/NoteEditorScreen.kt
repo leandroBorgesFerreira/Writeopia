@@ -51,8 +51,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import io.writeopia.common.utils.ColorUtils
 import io.writeopia.common.utils.icons.WrIcons
-import io.writeopia.editor.ColorUtils
 import io.writeopia.editor.configuration.ui.HeaderEdition
 import io.writeopia.editor.configuration.ui.NoteGlobalActionsMenu
 import io.writeopia.editor.features.editor.ui.TextEditor
@@ -138,7 +138,9 @@ internal fun NoteEditorScreen(
                 TextEditor(
                     noteEditorViewModel,
                     DefaultDrawersAndroid,
-                    Modifier.weight(1F).padding(horizontal = 6.dp),
+                    Modifier
+                        .weight(1F)
+                        .padding(horizontal = 6.dp),
                     keyFn = { index, drawStory -> drawStory.mobileKey + index }
                 )
 

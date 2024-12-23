@@ -24,6 +24,7 @@ fun MenuItem.toUiCard(
                 expanded = expanded,
                 parentId = parentId,
                 highlighted = highlighted,
+                icon = icon
             )
         }
 
@@ -37,6 +38,7 @@ fun MenuItem.toUiCard(
                 parentId = parentId,
                 isFavorite = favorite,
                 highlighted = highlighted,
+                icon = icon
             )
         }
 
