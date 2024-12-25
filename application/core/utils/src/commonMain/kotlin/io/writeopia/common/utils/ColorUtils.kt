@@ -21,8 +21,8 @@ object ColorUtils {
     fun headerColors() = availableColor().map { it.toArgb() }
 
     fun tintColors() = listOf(
-        Color.White,
-        Color.Black,
+        Color.LightGray,
+        Color.DarkGray,
         Color.Blue,
         Color.Gray,
         Color.Yellow,
