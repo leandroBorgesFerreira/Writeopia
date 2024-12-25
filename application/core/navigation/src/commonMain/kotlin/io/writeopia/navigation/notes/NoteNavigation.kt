@@ -12,7 +12,17 @@ fun NavController.navigateToNewNote() {
     navigate("${Destinations.EDITOR.id}/$folderId")
 }
 
-fun NavController.navigateToNote(id: String, title: String) {
+expect fun NavController.navigateToNote(id: String, title: String)
+
+fun NavController.navigateToNoteDesktop(id: String, title: String) {
+    val noteId = this.currentBackStackEntry?.arguments?.getString("noteId")
+
+    if (noteId != id) {
+        navigate("${Destinations.EDITOR.id}/$id/$title")
+    }
+}
+
+fun NavController.navigateToNoteMobile(id: String, title: String) {
     val noteId = this.currentBackStackEntry?.arguments?.getString("noteId")
 
     if (noteId != id) {
@@ -44,6 +54,46 @@ fun NavController.navigateToFolder(navigation: NotesNavigation) {
                     "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/path",
                 )
             }
+        }
+    }
+}
+
+fun NavController.navigateToFolderDesktop(navigation: NotesNavigation) {
+    when (navigation) {
+        is NotesNavigation.Folder -> {
+            val id = this.currentBackStackEntry?.arguments?.getString(NAVIGATION_PATH)
+
+            if (id != navigation.id) {
+                this.navigate(
+                    "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/${navigation.id}",
+                )
+            }
+        }
+
+        NotesNavigation.Favorites, NotesNavigation.Root -> {
+            val type = this.currentBackStackEntry?.arguments?.getString(NAVIGATION_TYPE)
+
+            if (type != navigation.navigationType.type) {
+                this.navigate(
+                    "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/path",
+                )
+            }
+        }
+    }
+}
+
+fun NavController.navigateToFolderMobile(navigation: NotesNavigation) {
+    when (navigation) {
+        is NotesNavigation.Folder -> {
+            this.navigate(
+                "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/${navigation.id}",
+            )
+        }
+
+        NotesNavigation.Favorites, NotesNavigation.Root -> {
+            this.navigate(
+                "${Destinations.CHOOSE_NOTE.id}/${navigation.navigationType.type}/path",
+            )
         }
     }
 }
