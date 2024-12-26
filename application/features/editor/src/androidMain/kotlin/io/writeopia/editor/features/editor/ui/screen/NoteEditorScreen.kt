@@ -185,7 +185,9 @@ internal fun NoteEditorScreen(
             ) {
                 NoteGlobalActionsMenu(
                     onShareJson = { noteEditorViewModel.shareDocumentInJson() },
-                    onShareMd = { noteEditorViewModel.shareDocumentInMarkdown() }
+                    onShareMd = { noteEditorViewModel.shareDocumentInMarkdown() },
+                    changeFontFamily = noteEditorViewModel::changeFontFamily,
+                    selectedState = noteEditorViewModel.fontFamily
                 )
             }
         }
