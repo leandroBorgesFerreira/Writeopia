@@ -1,9 +1,18 @@
 package io.writeopia.features.search
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import io.writeopia.features.search.repository.SearchItem
+import io.writeopia.features.search.ui.SearchInput
 import io.writeopia.features.search.ui.SearchScreen
 import io.writeopia.notemenu.data.model.NotesNavigation
 import kotlinx.coroutines.flow.StateFlow
@@ -16,12 +25,25 @@ fun DocumentsSearchScreen(
     documentClick: (String, String) -> Unit,
     onFolderClick: (NotesNavigation) -> Unit,
 ) {
+    val search by searchState.collectAsState()
+
     SearchScreen(
         modifier = Modifier.fillMaxSize(),
-        searchState,
+        search,
         searchResults,
-        onSearchType,
         documentClick,
-        onFolderClick
+        onFolderClick,
+        searchInput = {
+            SearchInput(
+                search,
+                onSearchType,
+                Modifier.padding(12.dp)
+                    .shadow(10.dp, shape = MaterialTheme.shapes.large, spotColor = Color.Gray)
+                    .background(
+                        MaterialTheme.colorScheme.background,
+                        shape = MaterialTheme.shapes.large
+                    )
+            )
+        }
     )
 }
