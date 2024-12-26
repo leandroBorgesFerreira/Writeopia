@@ -34,22 +34,30 @@ private val LightColorPalette = lightColorScheme(
 data class WriteopiaColors(
     val globalBackground: Color,
     val optionsSelector: Color,
+    val lightBackground: Color,
     val textLight: Color,
     val textLighter: Color,
     val tintLight: Color,
     val highlight: Color,
-    val selectedBg: Color
+    val selectedBg: Color,
+    val cardBg: Color,
+    val cardShadow: Color,
+    val cardPlaceHolderBackground: Color,
 )
 
 val LocalWriteopiaColors = staticCompositionLocalOf {
     WriteopiaColors(
         globalBackground = Color.Unspecified,
         optionsSelector = Color.Unspecified,
+        lightBackground = Color.Unspecified,
         textLight = Color.Unspecified,
         textLighter = Color.Unspecified,
         tintLight = Color.Unspecified,
         highlight = Color.Unspecified,
         selectedBg = Color.Unspecified,
+        cardBg = Color.Unspecified,
+        cardShadow = Color.Unspecified,
+        cardPlaceHolderBackground = Color.Unspecified,
     )
 }
 
@@ -58,12 +66,7 @@ fun WrieopiaTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val globalBackground = if (darkTheme) Color(0xFF252525) else Color(0xFFEEEEEE)
-    val optionsSelector = if (darkTheme) Color(0x22FFFFFF) else Color(0x22000000)
-    val textLight = if (darkTheme) Color(0xFFDFDFDF) else Color(0xFF444444)
-    val textLighter = if (darkTheme) Color(0xFFAAAAAA) else Color(0xFF666666)
-    val tintLight = if (darkTheme) Color(0xFFDFDFDF) else Color(0xFF444444)
-    val highlight = if (darkTheme) Color(0xFF616161) else Color(0xFFE0E0E0)
+    val globalBackground = if (darkTheme) Color(0xFF252525) else Color(0xFFF8F0F9)
 
     val colors = if (darkTheme) {
         DarkColorPalette
@@ -71,14 +74,28 @@ fun WrieopiaTheme(
         LightColorPalette
     }.copy(surfaceVariant = globalBackground)
 
+    val optionsSelector = if (darkTheme) Color(0x22FFFFFF) else Color(0x22000000)
+    val textLight = if (darkTheme) Color(0xFFDFDFDF) else Color(0xFF444444)
+    val textLighter = if (darkTheme) Color(0xFFAAAAAA) else Color(0xFF666666)
+    val tintLight = if (darkTheme) Color(0xFFDFDFDF) else Color(0xFF444444)
+    val highlight = if (darkTheme) Color(0xFF616161) else Color(0xFFE0E0E0)
+    val lightBackground = if (darkTheme) Color(0xFFF1F1F1) else Color(0xFFF1F1F1)
+    val cardBackground = if (darkTheme) colors.surfaceVariant else colors.background
+    val cardShadow = if (darkTheme) colors.background else Color.Gray
+    val cardPlaceHolderBackground = if (darkTheme) colors.background else colors.surfaceVariant
+
     val writeopiaColors = WriteopiaColors(
         globalBackground = globalBackground,
+        lightBackground = lightBackground,
         optionsSelector = optionsSelector,
         textLight = textLight,
         textLighter = textLighter,
         tintLight = tintLight,
         highlight = highlight,
-        selectedBg = SELECTED_BG
+        selectedBg = SELECTED_BG,
+        cardBg = cardBackground,
+        cardShadow = cardShadow,
+        cardPlaceHolderBackground = cardPlaceHolderBackground,
     )
 
     CompositionLocalProvider(LocalWriteopiaColors provides writeopiaColors) {

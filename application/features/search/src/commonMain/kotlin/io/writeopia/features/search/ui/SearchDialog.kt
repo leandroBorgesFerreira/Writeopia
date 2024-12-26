@@ -1,5 +1,9 @@
 package io.writeopia.features.search.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,15 +48,15 @@ fun SearchDialog(
     documentClick: (String, String) -> Unit,
     onFolderClick: (NotesNavigation) -> Unit,
 ) {
+    val search by searchState.collectAsState()
+
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
         Card(modifier = modifier.width(750.dp).height(500.dp), shape = MaterialTheme.shapes.large) {
             SearchScreen(
-                searchState = searchState,
                 searchResults = searchResults,
-                onSearchType = onSearchType,
                 documentClick = { id, title ->
                     documentClick(id, title)
                     onDismissRequest()
@@ -60,6 +64,11 @@ fun SearchDialog(
                 onFolderClick = { navigation ->
                     onFolderClick(navigation)
                     onDismissRequest()
+                },
+                search = search,
+                searchInput = {
+                    SearchInput(search, onSearchType)
+                    HorizontalDivider(modifier = Modifier.fillMaxWidth())
                 }
             )
         }
@@ -69,44 +78,14 @@ fun SearchDialog(
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
-    searchState: StateFlow<String>,
+    search: String,
     searchResults: StateFlow<List<SearchItem>>,
-    onSearchType: (String) -> Unit,
     documentClick: (String, String) -> Unit,
     onFolderClick: (NotesNavigation) -> Unit,
+    searchInput: @Composable () -> Unit
 ) {
     Column(modifier = modifier) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = WrIcons.search,
-                contentDescription = "Search",
-                tint = MaterialTheme.colorScheme.onBackground
-            )
-
-            Spacer(modifier = Modifier.width(10.dp))
-
-            val search by searchState.collectAsState()
-
-            Box {
-                BasicTextField(
-                    modifier = Modifier.fillMaxWidth().align(Alignment.Center),
-                    value = search,
-                    onValueChange = onSearchType,
-                    singleLine = true,
-                    textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground),
-                    cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground)
-                )
-
-                if (search.isEmpty()) {
-                    Text("Search")
-                }
-            }
-        }
-
-        HorizontalDivider(modifier = Modifier.fillMaxWidth())
+        searchInput()
 
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -118,13 +97,15 @@ fun SearchScreen(
         val spaceWidth = 8.dp
         val iconTint = WriteopiaTheme.colorScheme.tintLight
 
-        Text(
-            text = "Recent",
-            color = WriteopiaTheme.colorScheme.textLighter,
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(horizontal = 10.dp),
-            fontWeight = FontWeight.Bold
-        )
+        if (search.isEmpty()) {
+            Text(
+                text = "Recent",
+                color = WriteopiaTheme.colorScheme.textLighter,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(horizontal = 10.dp),
+                fontWeight = FontWeight.Bold
+            )
+        }
 
         Spacer(Modifier.height(6.dp))
 
@@ -193,5 +174,56 @@ fun SearchScreen(
 
             Spacer(modifier = Modifier.height(2.dp))
         }
+    }
+}
+
+@Composable
+fun SearchInput(search: String, onSearchType: (String) -> Unit, modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier.padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = WrIcons.search,
+            contentDescription = "Search",
+            tint = MaterialTheme.colorScheme.onBackground
+        )
+
+        Spacer(modifier = Modifier.width(10.dp))
+
+        Box(modifier = Modifier.weight(1F)) {
+            BasicTextField(
+                modifier = Modifier.fillMaxWidth().align(Alignment.Center),
+                value = search,
+                onValueChange = onSearchType,
+                singleLine = true,
+                textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground),
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground)
+            )
+
+            if (search.isEmpty()) {
+                Text("Search")
+            }
+        }
+
+        Spacer(modifier = Modifier.width(10.dp))
+
+        AnimatedVisibility(
+            search.isNotEmpty(),
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            Icon(
+                modifier = Modifier
+                    .clip(MaterialTheme.shapes.medium)
+                    .clickable {
+                        onSearchType("")
+                    },
+                imageVector = WrIcons.close,
+                contentDescription = "Close",
+                tint = MaterialTheme.colorScheme.onBackground
+            )
+        }
+
     }
 }

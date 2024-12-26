@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -87,7 +89,7 @@ fun NotesCards(
                 } else {
                     val documentsUiList = notesUi.documentUiList
 
-                    val listModifier = Modifier.padding(4.dp)
+                    val listModifier = Modifier
 
                     when (notesUi.notesArrangement) {
                         NotesArrangement.STAGGERED_GRID -> {
@@ -161,15 +163,24 @@ private fun LazyStaggeredGridNotes(
     moveRequest: (MenuItemUi, String) -> Unit,
     folderClick: (String) -> Unit,
     changeIcon: (String, String, Int, IconChange) -> Unit,
-    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(12.dp),
+    modifier: Modifier = Modifier
 ) {
     val spacing = 6.dp
+
+    val boxModifier = Modifier.padding(4.dp)
+        .shadow(
+            8.dp,
+            shape = MaterialTheme.shapes.large,
+            spotColor = WriteopiaTheme.colorScheme.cardShadow
+        )
 
     LazyVerticalStaggeredGrid(
         modifier = modifier,
         columns = StaggeredGridCells.Adaptive(minSize = 150.dp),
         horizontalArrangement = Arrangement.spacedBy(spacing),
         verticalItemSpacing = spacing,
+        contentPadding = contentPadding,
         content = {
             itemsIndexed(
                 documents,
@@ -179,28 +190,32 @@ private fun LazyStaggeredGridNotes(
 
                 when (menuItem) {
                     is MenuItemUi.DocumentUi -> {
-                        DocumentItem(
-                            menuItem,
-                            onDocumentClick,
-                            selectionListener,
-                            previewDrawers(),
-                            position = i,
-                            modifier = itemModifier,
-                        )
+                        Box(modifier = boxModifier) {
+                            DocumentItem(
+                                menuItem,
+                                onDocumentClick,
+                                selectionListener,
+                                previewDrawers(),
+                                position = i,
+                                modifier = itemModifier,
+                            )
+                        }
                     }
 
                     is MenuItemUi.FolderUi -> {
-                        FolderItem(
-                            menuItem,
-                            folderClick = folderClick,
-                            position = i,
-                            selectionListener = selectionListener,
-                            moveRequest = moveRequest,
-                            changeIcon = { id, icon, tint ->
-                                changeIcon(id, icon, tint, IconChange.FOLDER)
-                            },
-                            modifier = itemModifier
-                        )
+                        Box(modifier = boxModifier) {
+                            FolderItem(
+                                menuItem,
+                                folderClick = folderClick,
+                                position = i,
+                                selectionListener = selectionListener,
+                                moveRequest = moveRequest,
+                                changeIcon = { id, icon, tint ->
+                                    changeIcon(id, icon, tint, IconChange.FOLDER)
+                                },
+                                modifier = itemModifier
+                            )
+                        }
                     }
                 }
             }
@@ -217,6 +232,7 @@ private fun LazyGridNotes(
     moveRequest: (MenuItemUi, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
     changeIcon: (String, String, Int, IconChange) -> Unit,
+    contentPadding: PaddingValues = PaddingValues(12.dp),
     modifier: Modifier = Modifier,
 ) {
     val spacing = Arrangement.spacedBy(6.dp)
@@ -226,6 +242,7 @@ private fun LazyGridNotes(
         columns = GridCells.Adaptive(minSize = 150.dp),
         horizontalArrangement = spacing,
         verticalArrangement = spacing,
+        contentPadding = contentPadding,
         content = {
             itemsIndexed(
                 documents,
@@ -270,11 +287,13 @@ private fun LazyColumnNotes(
     selectionListener: (String, Boolean) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
     changeIcon: (String, String, Int, IconChange) -> Unit,
+    contentPadding: PaddingValues = PaddingValues(12.dp),
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(6.dp),
+        contentPadding = contentPadding,
         content = {
             itemsIndexed(
                 documents,
@@ -332,7 +351,7 @@ private fun FolderItem(
             when {
                 inBound && menuItemUI?.id != folderUi.id -> WriteopiaTheme.colorScheme.highlight
                 folderUi.selected -> WriteopiaTheme.colorScheme.selectedBg
-                else -> MaterialTheme.colorScheme.surfaceVariant
+                else -> WriteopiaTheme.colorScheme.cardBg
             }
 
         val textColor = WriteopiaTheme.colorScheme.textLight
@@ -340,6 +359,7 @@ private fun FolderItem(
         SwipeBox(
             modifier = modifier
                 .fillMaxWidth()
+                .background(WriteopiaTheme.colorScheme.cardPlaceHolderBackground)
                 .clip(MaterialTheme.shapes.large)
                 .clickable {
                     folderClick(folderUi.documentId)
@@ -349,7 +369,7 @@ private fun FolderItem(
                 selectionListener(folderUi.documentId, state)
             },
             cornersShape = MaterialTheme.shapes.large,
-            defaultColor = MaterialTheme.colorScheme.surfaceVariant,
+            defaultColor = WriteopiaTheme.colorScheme.cardBg,
             activeColor = bgColor,
             activeBorderColor = MaterialTheme.colorScheme.primary
         ) {
@@ -386,7 +406,7 @@ private fun FolderItem(
                     DropdownMenu(
                         expanded = showIconsOptions,
                         onDismissRequest = { showIconsOptions = false },
-                        modifier = Modifier.background(MaterialTheme.colorScheme.background),
+                        modifier = Modifier.background(WriteopiaTheme.colorScheme.cardBg),
                     ) {
                         IconsPicker(
                             iconSelect = { icon, tint -> changeIcon(folderUi.id, icon, tint) }
@@ -439,13 +459,14 @@ private fun DocumentItem(
     val backgroundColor = if (documentUi.selected) {
         WriteopiaTheme.colorScheme.selectedBg
     } else {
-        MaterialTheme.colorScheme.surfaceVariant
+        WriteopiaTheme.colorScheme.cardBg
     }
 
     SwipeBox(
         modifier = modifier
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.large)
+            .background(WriteopiaTheme.colorScheme.cardPlaceHolderBackground)
             .clickable {
                 documentClick(
                     documentUi.documentId,
@@ -460,7 +481,7 @@ private fun DocumentItem(
             selectionListener(documentUi.documentId, state)
         },
         cornersShape = MaterialTheme.shapes.large,
-        defaultColor = MaterialTheme.colorScheme.surfaceVariant,
+        defaultColor = WriteopiaTheme.colorScheme.cardBg,
         activeColor = backgroundColor
     ) {
         DragCardTarget(
