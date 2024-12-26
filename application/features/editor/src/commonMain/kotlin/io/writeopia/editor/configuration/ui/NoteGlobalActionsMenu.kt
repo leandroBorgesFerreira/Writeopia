@@ -1,5 +1,6 @@
 package io.writeopia.editor.configuration.ui
 
+// import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -16,12 +17,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-// import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.writeopia.editor.features.editor.ui.desktop.edit.menu.FontOptions
+import io.writeopia.model.Font
+import io.writeopia.theme.WriteopiaTheme
+import kotlinx.coroutines.flow.StateFlow
 
 // @Preview
 @Composable
-internal fun NoteGlobalActionsMenu(onShareJson: () -> Unit = {}, onShareMd: () -> Unit = {}) {
+internal fun NoteGlobalActionsMenu(
+    onShareJson: () -> Unit = {},
+    onShareMd: () -> Unit = {},
+    changeFontFamily: (Font) -> Unit,
+    selectedState: StateFlow<Font>,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -30,12 +39,18 @@ internal fun NoteGlobalActionsMenu(onShareJson: () -> Unit = {}, onShareMd: () -
     ) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            text = "Export",
-//            stringResource(id = R.string.export),
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onBackground
+        Title("Font")
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        FontOptions(
+            changeFontFamily = changeFontFamily,
+            selectedState = selectedState,
+            selectedColor = WriteopiaTheme.colorScheme.highlight,
+            defaultColor = MaterialTheme.colorScheme.background
         )
+
+        Title("Export")
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -55,6 +70,15 @@ internal fun NoteGlobalActionsMenu(onShareJson: () -> Unit = {}, onShareMd: () -
             )
         }
     }
+}
+
+@Composable
+private fun Title(label: String) {
+    Text(
+        text = label,
+        style = MaterialTheme.typography.titleLarge,
+        color = MaterialTheme.colorScheme.onBackground
+    )
 }
 
 @Composable
