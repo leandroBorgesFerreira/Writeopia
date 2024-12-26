@@ -1,7 +1,6 @@
 package io.writeopia.features.search.ui
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
@@ -224,6 +223,5 @@ fun SearchInput(search: String, onSearchType: (String) -> Unit, modifier: Modifi
                 tint = MaterialTheme.colorScheme.onBackground
             )
         }
-
     }
 }
