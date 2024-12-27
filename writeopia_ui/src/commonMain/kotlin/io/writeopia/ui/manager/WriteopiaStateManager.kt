@@ -12,7 +12,6 @@ import io.writeopia.sdk.model.document.info
 import io.writeopia.sdk.model.story.LastEdit
 import io.writeopia.sdk.model.story.Selection
 import io.writeopia.sdk.model.story.StoryState
-import io.writeopia.sdk.models.command.Command
 import io.writeopia.sdk.models.command.CommandInfo
 import io.writeopia.sdk.models.command.CommandTrigger
 import io.writeopia.sdk.models.command.TypeInfo
@@ -23,6 +22,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.Tag
 import io.writeopia.sdk.models.story.TagInfo
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
+import io.writeopia.sdk.repository.DocumentIntoRepository
 import io.writeopia.sdk.sharededition.SharedEditionManager
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.toEditState
@@ -123,15 +123,32 @@ class WriteopiaStateManager(
     private val _documentInfo: MutableStateFlow<DocumentInfo> =
         MutableStateFlow(DocumentInfo.empty())
 
+    private var documentInfoRepository: DocumentIntoRepository? = null
+
     private val _positionsOnEdit = MutableStateFlow(setOf<Int>())
     val onEditPositions = _positionsOnEdit.asStateFlow()
 
     private var sharedEditionManager: SharedEditionManager? = null
 
-    val currentStory: StateFlow<StoryState> = _currentStory.asStateFlow()
+    val currentStory: StateFlow<StoryState> =
+        combine(_currentStory, getDocumentInfoState()) { state, info ->
+            val newStories = state.stories.mapValues { (_, storyStep) ->
+                if (storyStep.type == StoryTypes.TITLE.type) {
+                    storyStep.copy(icon = info.icon)
+                } else {
+                    storyStep
+                }
+            }
+
+            state.copy(stories = newStories)
+        }.stateIn(
+            coroutineScope,
+            SharingStarted.Lazily,
+            StoryState(stories = initialContent, lastEdit = LastEdit.Nothing)
+        )
 
     val currentDocument: StateFlow<Document?> =
-        combine(_documentInfo, _currentStory) { info, state ->
+        combine(getDocumentInfoState(), currentStory) { info, state ->
             val titleFromContent = state.stories.values.firstOrNull { storyStep ->
                 // Todo: Change the type of change to allow different types. The client code should decide what is a title
                 // It is also interesting to inv
@@ -152,7 +169,7 @@ class WriteopiaStateManager(
         }.stateIn(coroutineScope, SharingStarted.Lazily, null)
 
     private val _documentEditionState: Flow<Pair<StoryState, DocumentInfo>> =
-        combine(currentStory, _documentInfo, ::Pair)
+        combine(currentStory, getDocumentInfoState(), ::Pair)
 
     val toDraw: Flow<DrawState> =
         combine(
@@ -240,7 +257,7 @@ class WriteopiaStateManager(
      *
      * @param document [Document]
      */
-    fun loadDocument(document: Document) {
+    fun loadDocument(document: Document, documentInfoRepository: DocumentIntoRepository? = null) {
         if (isInitialized()) return
 
         _initialized = true
@@ -252,6 +269,10 @@ class WriteopiaStateManager(
 
         _currentStory.value = StoryState(normalized, LastEdit.Nothing)
         _documentInfo.value = document.info()
+
+        if (documentInfoRepository != null) {
+            this.documentInfoRepository = documentInfoRepository
+        }
     }
 
     /**
@@ -841,10 +862,15 @@ class WriteopiaStateManager(
 
     private fun selectedStories(): List<StoryStep> = _positionsOnEdit.value.mapNotNull(::getStory)
 
+    private fun getDocumentInfoState(): StateFlow<DocumentInfo> =
+        documentInfoRepository?.listenForDocumentInfoById(_documentInfo.value.id, coroutineScope)
+            ?.stateIn(coroutineScope, SharingStarted.Lazily, _documentInfo.value)
+            ?: _documentInfo
+
     /**
      * Cancels the current selection.
      */
-    public fun cancelSelection() {
+    fun cancelSelection() {
         _positionsOnEdit.value = emptySet()
     }
 

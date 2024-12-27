@@ -1,11 +1,14 @@
 package io.writeopia.sdk.persistence.core.repository
 
 import io.writeopia.sdk.manager.DocumentUpdate
+import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.persistence.core.DocumentSearch
+import io.writeopia.sdk.repository.DocumentIntoRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.datetime.Instant
 
 /**
@@ -13,7 +16,7 @@ import kotlinx.datetime.Instant
  * The implementations of this interface shouldn't control order (sorting) or oder configurations,
  * those need to be passed as parameters.
  */
-interface DocumentRepository : DocumentUpdate, DocumentSearch {
+interface DocumentRepository : DocumentUpdate, DocumentSearch, DocumentIntoRepository {
 
     suspend fun loadDocumentsForFolder(folderId: String): List<Document>
 

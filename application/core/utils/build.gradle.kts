@@ -27,6 +27,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":writeopia_models"))
+                implementation(project(":writeopia_ui"))
 
                 implementation(compose.foundation)
                 implementation(compose.material3)

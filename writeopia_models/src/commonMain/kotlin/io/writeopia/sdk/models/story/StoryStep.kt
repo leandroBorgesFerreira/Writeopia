@@ -1,5 +1,6 @@
 package io.writeopia.sdk.models.story
 
+import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
 
 /**
@@ -34,7 +35,8 @@ data class StoryStep(
     val checked: Boolean? = false,
     val steps: List<StoryStep> = emptyList(),
     val tags: Set<TagInfo> = emptySet(),
-    val decoration: Decoration = Decoration()
+    val decoration: Decoration = Decoration(),
+    val icon: MenuItem.Icon? = null
 ) {
 
     val key: Int = localId.hashCode()

@@ -1,10 +1,12 @@
 package io.writeopia.sdk.persistence.core.repository
 
+import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 
@@ -94,6 +96,13 @@ class InMemoryDocumentRepository : DocumentRepository {
 
     override suspend fun getLastUpdatedAt(): List<Document> =
         documentsMap.values.sortedByDescending { it.lastUpdatedAt }
+
+    override fun listenForDocumentInfoById(
+        id: String,
+        coroutineScope: CoroutineScope
+    ): Flow<DocumentInfo> {
+        TODO("Not yet implemented")
+    }
 
     override suspend fun favoriteDocumentByIds(ids: Set<String>) {
         setFavorite(ids, true)

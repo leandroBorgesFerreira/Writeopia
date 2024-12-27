@@ -67,6 +67,12 @@ LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
 WHERE documentEntity.id = ?
 ORDER BY position;
 
+selectById:
+SELECT *
+FROM documentEntity
+WHERE documentEntity.id = ?
+LIMIT 1;
+
 selectWithContentByParentId:
 SELECT *
 FROM documentEntity

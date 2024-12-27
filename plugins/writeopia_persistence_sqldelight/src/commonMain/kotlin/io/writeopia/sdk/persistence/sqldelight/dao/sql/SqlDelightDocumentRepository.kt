@@ -1,5 +1,7 @@
 package io.writeopia.sdk.persistence.sqldelight.dao.sql
 
+import io.writeopia.sdk.model.document.DocumentInfo
+import io.writeopia.sdk.model.document.info
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.persistence.core.DocumentSearch
@@ -9,6 +11,9 @@ import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
 
@@ -16,7 +21,7 @@ class SqlDelightDocumentRepository(
     private val documentSqlDao: DocumentSqlDao
 ) : DocumentRepository, DocumentSearch by documentSqlDao {
 
-    private val _documentState = MutableStateFlow<Map<String, List<Document>>>(emptyMap())
+    private val _documentByParentState = MutableStateFlow<Map<String, List<Document>>>(emptyMap())
 
     override suspend fun loadDocumentsForUser(userId: String): List<Document> =
         documentSqlDao.loadDocumentsWithContentByUserId(OrderBy.NAME.type, userId)
@@ -39,7 +44,27 @@ class SqlDelightDocumentRepository(
             refreshDocuments()
         }
 
-        return _documentState
+        return _documentByParentState
+    }
+
+    override fun listenForDocumentInfoById(
+        id: String,
+        coroutineScope: CoroutineScope
+    ): Flow<DocumentInfo> {
+        coroutineScope.launch {
+            val document = documentSqlDao.selectById(id)
+
+            if (document != null) {
+                refreshDocument(document)
+            }
+        }
+
+        return _documentByParentState.map { documentMap ->
+            documentMap.values
+                .flatten()
+                .find { document -> document.id == id }
+                ?.info()
+        }.filterNotNull()
     }
 
     override suspend fun stopListeningForFoldersByParentId(parentId: String) {
@@ -134,9 +159,18 @@ class SqlDelightDocumentRepository(
     }
 
     override suspend fun refreshDocuments() {
-        _documentState.value = SelectedIds.ids.associateWith { id ->
+        _documentByParentState.value = SelectedIds.ids.associateWith { id ->
             documentSqlDao.loadDocumentByParentId(id)
         }
+    }
+
+    private fun refreshDocument(document: Document) {
+        val documents = _documentByParentState.value
+        val filtered = documents[document.parentId]?.filter { it.id != document.id }
+
+        documents.toMutableMap()[document.parentId] = filtered?.plus(document) ?: emptyList()
+
+        _documentByParentState.value = documents
     }
 }
 

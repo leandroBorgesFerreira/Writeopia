@@ -437,6 +437,25 @@ class DocumentSqlDao(
             } ?: emptyList()
     }
 
+    suspend fun selectById(id: String): Document? =
+        documentQueries?.selectById(id)?.executeAsOne()?.let { document ->
+            Document(
+                id = document.id,
+                title = document.title,
+                createdAt = Instant.fromEpochMilliseconds(document.created_at),
+                lastUpdatedAt = Instant.fromEpochMilliseconds(document.last_updated_at),
+                userId = document.user_id,
+                favorite = document.favorite == 1L,
+                parentId = document.parent_document_id,
+                icon = document.icon?.let {
+                    MenuItem.Icon(
+                        it,
+                        document.icon_tint?.toInt()
+                    )
+                },
+            )
+    }
+
     suspend fun deleteDocumentsByUserId(userId: String) {
         documentQueries?.deleteByUserId(userId)
     }
