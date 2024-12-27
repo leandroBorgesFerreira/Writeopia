@@ -257,7 +257,7 @@ class WriteopiaStateManager(
      *
      * @param document [Document]
      */
-    fun loadDocument(document: Document, documentInfoRepository: DocumentIntoRepository? = null) {
+    fun loadDocument(document: Document) {
         if (isInitialized()) return
 
         _initialized = true
@@ -269,10 +269,6 @@ class WriteopiaStateManager(
 
         _currentStory.value = StoryState(normalized, LastEdit.Nothing)
         _documentInfo.value = document.info()
-
-        if (documentInfoRepository != null) {
-            this.documentInfoRepository = documentInfoRepository
-        }
     }
 
     /**
@@ -862,10 +858,7 @@ class WriteopiaStateManager(
 
     private fun selectedStories(): List<StoryStep> = _positionsOnEdit.value.mapNotNull(::getStory)
 
-    private fun getDocumentInfoState(): StateFlow<DocumentInfo> =
-        documentInfoRepository?.listenForDocumentInfoById(_documentInfo.value.id, coroutineScope)
-            ?.stateIn(coroutineScope, SharingStarted.Lazily, _documentInfo.value)
-            ?: _documentInfo
+    private fun getDocumentInfoState(): StateFlow<DocumentInfo> = _documentInfo
 
     /**
      * Cancels the current selection.
