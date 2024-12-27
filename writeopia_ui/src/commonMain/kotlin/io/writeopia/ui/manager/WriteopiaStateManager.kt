@@ -123,8 +123,6 @@ class WriteopiaStateManager(
     private val _documentInfo: MutableStateFlow<DocumentInfo> =
         MutableStateFlow(DocumentInfo.empty())
 
-    private var documentInfoRepository: DocumentIntoRepository? = null
-
     private val _positionsOnEdit = MutableStateFlow(setOf<Int>())
     val onEditPositions = _positionsOnEdit.asStateFlow()
 
