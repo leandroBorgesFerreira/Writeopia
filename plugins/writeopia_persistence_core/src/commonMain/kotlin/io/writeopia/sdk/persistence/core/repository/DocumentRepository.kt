@@ -36,10 +36,7 @@ interface DocumentRepository : DocumentUpdate, DocumentSearch {
 
     suspend fun loadDocumentsByParentId(parentId: String): List<Document>
 
-    fun listenForDocumentsByParentId(
-        parentId: String,
-        coroutineScope: CoroutineScope? = null
-    ): Flow<Map<String, List<Document>>>
+    suspend fun listenForDocumentsByParentId(parentId: String): Flow<Map<String, List<Document>>>
 
     suspend fun listenForDocumentInfoById(id: String): Flow<DocumentInfo>
 

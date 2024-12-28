@@ -12,7 +12,6 @@ import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.datetime.Clock
@@ -83,17 +82,15 @@ class NotesUseCase private constructor(
      * This will return all folders that this method was called for (using the parentId).
      *
      * @param parentId The id of the folder
-     * @param coroutineScope [CoroutineScope]
      */
-    fun listenForMenuItemsByParentId(
+    suspend fun listenForMenuItemsByParentId(
         parentId: String,
         userId: String,
-        coroutineScope: CoroutineScope?
     ): Flow<Map<String, List<MenuItem>>> =
         combine(
-            listenForFoldersByParentId(parentId, coroutineScope),
-            listenForDocumentsByParentId(parentId, coroutineScope),
-            notesConfig.listenOrderPreference(userId, coroutineScope)
+            listenForFoldersByParentId(parentId),
+            listenForDocumentsByParentId(parentId),
+            notesConfig.listenOrderPreference(userId)
         ) { folders, documents, orderPreference ->
             val order = orderPreference.takeIf { it.isNotEmpty() }?.let(OrderBy::fromString)
                 ?: OrderBy.CREATE
@@ -105,29 +102,16 @@ class NotesUseCase private constructor(
             }
         }
 
-    fun listenForMenuItemsPerFolderId(
+    suspend fun listenForMenuItemsPerFolderId(
         notesNavigation: NotesNavigation,
         userId: String,
-        coroutineScope: CoroutineScope? = null
     ): Flow<Map<String, List<MenuItem>>> =
         when (notesNavigation) {
-            NotesNavigation.Favorites -> listenForMenuItemsByParentId(
-                Folder.ROOT_PATH,
-                userId,
-                coroutineScope
-            )
+            NotesNavigation.Favorites -> listenForMenuItemsByParentId(Folder.ROOT_PATH, userId)
 
-            is NotesNavigation.Folder -> listenForMenuItemsByParentId(
-                notesNavigation.id,
-                userId,
-                coroutineScope
-            )
+            is NotesNavigation.Folder -> listenForMenuItemsByParentId(notesNavigation.id, userId)
 
-            NotesNavigation.Root -> listenForMenuItemsByParentId(
-                Folder.ROOT_PATH,
-                userId,
-                coroutineScope
-            )
+            NotesNavigation.Root -> listenForMenuItemsByParentId(Folder.ROOT_PATH, userId)
         }
 
     suspend fun stopListeningForMenuItemsByParentId(id: String) {
@@ -168,11 +152,10 @@ class NotesUseCase private constructor(
         folderRepository.unFavoriteDocumentByIds(ids)
     }
 
-    private fun listenForDocumentsByParentId(
-        parentId: String,
-        coroutineScope: CoroutineScope? = null
+    private suspend fun listenForDocumentsByParentId(
+        parentId: String
     ): Flow<Map<String, List<Document>>> =
-        documentRepository.listenForDocumentsByParentId(parentId, coroutineScope)
+        documentRepository.listenForDocumentsByParentId(parentId)
 
     private suspend fun duplicateNotes(ids: List<String>, userId: String) {
         notesConfig.getOrderPreference(userId).let { orderBy ->
@@ -243,13 +226,11 @@ class NotesUseCase private constructor(
      * This will return all folders that this method was called for (using the parentId).
      *
      * @param parentId The id of the folder
-     * @param coroutineScope [CoroutineScope]
      */
-    private fun listenForFoldersByParentId(
-        parentId: String,
-        coroutineScope: CoroutineScope? = null
+    private suspend fun listenForFoldersByParentId(
+        parentId: String
     ): Flow<Map<String, List<Folder>>> =
-        folderRepository.listenForFoldersByParentId(parentId, coroutineScope)
+        folderRepository.listenForFoldersByParentId(parentId)
 
     companion object {
         private var instance: NotesUseCase? = null

@@ -62,7 +62,7 @@ internal class ChooseNoteKmpViewModel(
     override val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>> by lazy {
         authManager.listenForUser()
             .flatMapLatest { user ->
-                notesUseCase.listenForMenuItemsPerFolderId(notesNavigation, user.id, coroutineScope)
+                notesUseCase.listenForMenuItemsPerFolderId(notesNavigation, user.id)
             }.stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
     }
 

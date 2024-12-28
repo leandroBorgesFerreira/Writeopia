@@ -1,8 +1,8 @@
 package io.writeopia.sdk.persistence.core.repository
 
+import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -40,10 +40,13 @@ class InMemoryDocumentRepository : DocumentRepository {
             documentsMap[id]
         }
 
-    override fun listenForDocumentsByParentId(
+    override suspend fun listenForDocumentsByParentId(
         parentId: String,
-        coroutineScope: CoroutineScope?
     ): Flow<Map<String, List<Document>>> = documentsMapState
+
+    override suspend fun listenForDocumentInfoById(id: String): Flow<DocumentInfo> {
+        TODO("Not yet implemented")
+    }
 
     override suspend fun loadDocumentsWithContentByIds(
         ids: List<String>,

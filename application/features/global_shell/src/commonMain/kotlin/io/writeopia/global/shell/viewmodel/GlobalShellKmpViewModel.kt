@@ -100,7 +100,7 @@ class GlobalShellKmpViewModel(
         ) { user, notesNavigation ->
             user to notesNavigation
         }.flatMapLatest { (user, notesNavigation) ->
-            notesUseCase.listenForMenuItemsPerFolderId(notesNavigation, user.id, coroutineScope)
+            notesUseCase.listenForMenuItemsPerFolderId(notesNavigation, user.id)
         }.stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
     }
 
@@ -156,7 +156,7 @@ class GlobalShellKmpViewModel(
             }
         } else {
             coroutineScope.launch {
-                notesUseCase.listenForMenuItemsByParentId(id, getUserId(), coroutineScope)
+                notesUseCase.listenForMenuItemsByParentId(id, getUserId())
                 _expandedFolders.value = expanded + id
             }
         }
