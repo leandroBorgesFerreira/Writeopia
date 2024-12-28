@@ -1,6 +1,7 @@
 package io.writeopia.sdk.persistence.core.repository
 
 import io.writeopia.sdk.manager.DocumentUpdate
+import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.persistence.core.DocumentSearch
@@ -39,6 +40,8 @@ interface DocumentRepository : DocumentUpdate, DocumentSearch {
         parentId: String,
         coroutineScope: CoroutineScope? = null
     ): Flow<Map<String, List<Document>>>
+
+    suspend fun listenForDocumentInfoById(id: String): Flow<DocumentInfo>
 
     suspend fun stopListeningForFoldersByParentId(parentId: String)
 
