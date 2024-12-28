@@ -77,8 +77,6 @@ class ConfigurationSqlDelightRepository(
     }
 
     private suspend fun refreshOrderPref(userId: String) {
-        val order = getOrderPreference(userId)
-        println("refreshOrderPref. order: $order")
-        _orderPreference.value = order
+        _orderPreference.value = getOrderPreference(userId)
     }
 }

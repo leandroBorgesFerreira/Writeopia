@@ -220,7 +220,6 @@ internal class ChooseNoteKmpViewModel(
 
     override fun sortingSelected(orderBy: OrderBy) {
         coroutineScope.launch {
-            println("sortingSelected. orderBy: ${orderBy.name}")
             notesConfig.saveDocumentSortingPref(orderBy, getUserId())
         }
     }
