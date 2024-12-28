@@ -62,7 +62,7 @@ internal class ChooseNoteKmpViewModel(
     override val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>> by lazy {
         authManager.listenForUser()
             .flatMapLatest { user ->
-                notesUseCase.listenForMenuItemsPerFolderId(notesNavigation, user.id, coroutineScope)
+                notesUseCase.listenForMenuItemsPerFolderId(notesNavigation, user.id)
             }.stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
     }
 
@@ -93,7 +93,7 @@ internal class ChooseNoteKmpViewModel(
     override val notesArrangement: StateFlow<NotesArrangement> by lazy {
         authManager.listenForUser()
             .flatMapLatest { user ->
-                notesConfig.listenForArrangementPref(user.id, coroutineScope)
+                notesConfig.listenForArrangementPref(user.id)
                     .map { arrangement ->
                         NotesArrangement.fromString(arrangement)
                     }
@@ -219,7 +219,7 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun sortingSelected(orderBy: OrderBy) {
-        coroutineScope.launch(Dispatchers.Default) {
+        coroutineScope.launch {
             notesConfig.saveDocumentSortingPref(orderBy, getUserId())
         }
     }

@@ -5,7 +5,6 @@ import io.writeopia.persistence.room.data.daos.NotesConfigurationRoomDao
 import io.writeopia.persistence.room.data.entities.NotesConfigurationEntity
 import io.writeopia.sdk.persistence.core.extensions.toEntityField
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -40,17 +39,15 @@ internal class ConfigurationRoomRepository(
         configurationDao.saveConfiguration(configuration)
     }
 
-    override fun listenForArrangementPref(
-        userId: String,
-        coroutineScope: CoroutineScope?
+    override suspend fun listenForArrangementPref(
+        userId: String
     ): Flow<String> = configurationDao.listenForConfigurationByUserId(userId)
         .map { configuration ->
             configuration?.arrangementType ?: NotesArrangement.GRID.type
         }
 
-    override fun listenOrderPreference(
-        userId: String,
-        coroutineScope: CoroutineScope?
+    override suspend fun listenOrderPreference(
+        userId: String
     ): Flow<String> = configurationDao.listenForConfigurationByUserId(userId)
         .map { configuration ->
             configuration?.orderByType ?: OrderBy.CREATE.type

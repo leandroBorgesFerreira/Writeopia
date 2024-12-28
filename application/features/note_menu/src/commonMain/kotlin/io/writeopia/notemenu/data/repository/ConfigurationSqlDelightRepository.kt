@@ -5,10 +5,8 @@ import io.writeopia.app.sql.WorkspaceConfiguration
 import io.writeopia.notemenu.data.model.NotesArrangement
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sqldelight.dao.ConfigurationSqlDelightDao
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 
 class ConfigurationSqlDelightRepository(
     private val configurationSqlDelightDao: ConfigurationSqlDelightDao
@@ -53,24 +51,14 @@ class ConfigurationSqlDelightRepository(
         configurationSqlDelightDao.getConfigurationByUserId(userId)?.order_by
             ?: OrderBy.CREATE.type
 
-    override fun listenForArrangementPref(
-        userId: String,
-        coroutineScope: CoroutineScope?
-    ): Flow<String> {
-        coroutineScope?.launch {
-            refreshArrangementPref(userId)
-        }
+    override suspend fun listenForArrangementPref(userId: String): Flow<String> {
+        refreshArrangementPref(userId)
 
         return _arrangementPref
     }
 
-    override fun listenOrderPreference(
-        userId: String,
-        coroutineScope: CoroutineScope?
-    ): Flow<String> {
-        coroutineScope?.launch {
-            refreshOrderPref(userId)
-        }
+    override suspend fun listenOrderPreference(userId: String): Flow<String> {
+        refreshOrderPref(userId)
 
         return _orderPreference
     }

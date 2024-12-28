@@ -101,6 +101,8 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                 val database = databaseState.writeopiaDb
 
                 val uiConfigurationInjector = remember { UiConfigurationInjector(database) }
+                val sqlDelightDaoInjector = remember { SqlDelightDaoInjector(database) }
+                val notesInjector = remember { NotesInjector(database) }
 
                 val uiConfigurationViewModel = uiConfigurationInjector
                     .provideUiConfigurationViewModel(coroutineScope = coroutineScope)
@@ -109,8 +111,8 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                     uiConfigurationViewModel.listenForColorTheme { "disconnected_user" }
 
                 App(
-                    notesInjector = NotesInjector(database),
-                    repositoryInjection = SqlDelightDaoInjector(database),
+                    notesInjector = notesInjector,
+                    repositoryInjection = sqlDelightDaoInjector,
                     uiConfigurationInjector = uiConfigurationInjector,
                     selectionState = selectionState,
                     keyboardEventFlow = keyboardEventFlow.filterNotNull(),

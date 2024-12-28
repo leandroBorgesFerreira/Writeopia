@@ -1,5 +1,6 @@
 package io.writeopia.sdk.persistence.dao.room
 
+import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.persistence.core.DocumentSearch
@@ -10,7 +11,6 @@ import io.writeopia.sdk.persistence.entity.document.DocumentEntity
 import io.writeopia.sdk.persistence.entity.story.StoryStepEntity
 import io.writeopia.sdk.persistence.parse.toEntity
 import io.writeopia.sdk.persistence.parse.toModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -39,9 +39,8 @@ class RoomDocumentRepository(
     override suspend fun getLastUpdatedAt(): List<Document> =
         documentEntityDao.selectByLastUpdated().map { it.toModel() }
 
-    override fun listenForDocumentsByParentId(
-        parentId: String,
-        coroutineScope: CoroutineScope?
+    override suspend fun listenForDocumentsByParentId(
+        parentId: String
     ): Flow<Map<String, List<Document>>> =
         documentEntityDao.listenForDocumentsWithContentByParentId(parentId)
             .map { resultsMap ->
@@ -50,6 +49,10 @@ class RoomDocumentRepository(
                     documentEntity.toModel(content)
                 }.groupBy { it.parentId }
             }
+
+    override suspend fun listenForDocumentInfoById(id: String): Flow<DocumentInfo> {
+        TODO("Not yet implemented")
+    }
 
     override suspend fun loadDocumentsForUser(userId: String): List<Document> =
         documentEntityDao.loadDocumentsWithContentForUser(userId)

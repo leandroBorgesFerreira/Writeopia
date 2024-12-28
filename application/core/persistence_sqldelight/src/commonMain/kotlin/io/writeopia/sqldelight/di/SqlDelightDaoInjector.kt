@@ -13,6 +13,8 @@ class SqlDelightDaoInjector(
 
     private var documentSqlDao: DocumentSqlDao? = null
 
+    private var sqlDelightDocumentRepository: SqlDelightDocumentRepository? = null
+
     private val inMemoryDocumentRepository = InMemoryDocumentRepository()
 
     private fun provideDocumentSqlDao(): DocumentSqlDao? =
@@ -29,8 +31,13 @@ class SqlDelightDaoInjector(
 
 
     override fun provideDocumentRepository(): DocumentRepository =
-        provideDocumentSqlDao()?.let(::SqlDelightDocumentRepository)
-            ?: inMemoryDocumentRepository
+        sqlDelightDocumentRepository ?: kotlin.run {
+            sqlDelightDocumentRepository =
+                provideDocumentSqlDao()?.let(::SqlDelightDocumentRepository)
+
+            sqlDelightDocumentRepository ?: inMemoryDocumentRepository
+        }
+
 
     companion object {
         fun noop() = SqlDelightDaoInjector(null)

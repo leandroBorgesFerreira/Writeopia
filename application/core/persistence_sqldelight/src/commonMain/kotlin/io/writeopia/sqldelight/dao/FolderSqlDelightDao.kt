@@ -7,10 +7,8 @@ import io.writeopia.models.search.FolderSearch
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.extensions.toModel
 import io.writeopia.sqldelight.utils.sumValues
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 
 class FolderSqlDelightDao(database: WriteopiaDb?) : FolderSearch {
@@ -75,14 +73,11 @@ class FolderSqlDelightDao(database: WriteopiaDb?) : FolderSearch {
         folderEntityQueries?.favoriteById(0, id)
     }
 
-    fun listenForFolderByParentId(
+    suspend fun listenForFolderByParentId(
         parentId: String,
-        coroutineScope: CoroutineScope?
     ): Flow<Map<String, List<Pair<FolderEntity, Long>>>> {
-        coroutineScope?.launch {
-            SelectedIds.ids.add(parentId)
-            refreshFolders()
-        }
+        SelectedIds.ids.add(parentId)
+        refreshFolders()
 
         return _foldersStateFlow
     }
