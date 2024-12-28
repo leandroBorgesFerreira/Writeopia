@@ -15,15 +15,9 @@ interface ConfigurationRepository {
 
     suspend fun getOrderPreference(userId: String): String
 
-    fun listenForArrangementPref(
-        userId: String,
-        coroutineScope: CoroutineScope? = null
-    ): Flow<String>
+    suspend fun listenForArrangementPref(userId: String): Flow<String>
 
-    fun listenOrderPreference(
-        userId: String,
-        coroutineScope: CoroutineScope? = null
-    ): Flow<String>
+    suspend fun listenOrderPreference(userId: String): Flow<String>
 
     suspend fun saveWorkspacePath(path: String, userId: String)
 

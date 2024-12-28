@@ -42,15 +42,11 @@ class InMemoryConfigurationRepository private constructor() : ConfigurationRepos
     override suspend fun loadWorkspacePath(userId: String): String? =
         workSpacePrefs[userId]
 
-    override fun listenForArrangementPref(
-        userId: String,
-        coroutineScope: CoroutineScope?
-    ): Flow<String> = arrangementPrefsState.asStateFlow()
+    override suspend fun listenForArrangementPref(userId: String): Flow<String> =
+        arrangementPrefsState.asStateFlow()
 
-    override fun listenOrderPreference(
-        userId: String,
-        coroutineScope: CoroutineScope?
-    ): Flow<String> = sortPrefsState.asStateFlow()
+    override suspend fun listenOrderPreference(userId: String): Flow<String> =
+        sortPrefsState.asStateFlow()
 
     companion object {
         private var instance: InMemoryConfigurationRepository? = null

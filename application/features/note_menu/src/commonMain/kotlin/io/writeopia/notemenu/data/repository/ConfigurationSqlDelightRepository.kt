@@ -53,24 +53,14 @@ class ConfigurationSqlDelightRepository(
         configurationSqlDelightDao.getConfigurationByUserId(userId)?.order_by
             ?: OrderBy.CREATE.type
 
-    override fun listenForArrangementPref(
-        userId: String,
-        coroutineScope: CoroutineScope?
-    ): Flow<String> {
-        coroutineScope?.launch {
-            refreshArrangementPref(userId)
-        }
+    override suspend fun listenForArrangementPref(userId: String): Flow<String> {
+        refreshArrangementPref(userId)
 
         return _arrangementPref
     }
 
-    override fun listenOrderPreference(
-        userId: String,
-        coroutineScope: CoroutineScope?
-    ): Flow<String> {
-        coroutineScope?.launch {
-            refreshOrderPref(userId)
-        }
+    override suspend fun listenOrderPreference(userId: String): Flow<String> {
+        refreshOrderPref(userId)
 
         return _orderPreference
     }
@@ -89,6 +79,8 @@ class ConfigurationSqlDelightRepository(
     }
 
     private suspend fun refreshOrderPref(userId: String) {
-        _orderPreference.value = getOrderPreference(userId)
+        val order = getOrderPreference(userId)
+        println("refreshOrderPref. order: $order")
+        _orderPreference.value = order
     }
 }

@@ -36,10 +36,8 @@ class SqlDelightDocumentRepository(
     override suspend fun listenForDocumentsByParentId(
         parentId: String,
     ): Flow<Map<String, List<Document>>> {
-        coroutineScope {
-            SelectedIds.ids.add(parentId)
-            refreshDocuments()
-        }
+        SelectedIds.ids.add(parentId)
+        refreshDocuments()
 
         return _documentByParentState
     }
