@@ -5,10 +5,8 @@ import io.writeopia.app.sql.WorkspaceConfiguration
 import io.writeopia.notemenu.data.model.NotesArrangement
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sqldelight.dao.ConfigurationSqlDelightDao
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 
 class ConfigurationSqlDelightRepository(
     private val configurationSqlDelightDao: ConfigurationSqlDelightDao

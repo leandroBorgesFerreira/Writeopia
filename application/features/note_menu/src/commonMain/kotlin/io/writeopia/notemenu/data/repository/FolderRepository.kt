@@ -1,7 +1,6 @@
 package io.writeopia.notemenu.data.repository
 
 import io.writeopia.models.Folder
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 interface FolderRepository {

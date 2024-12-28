@@ -10,6 +10,7 @@ import io.writeopia.notemenu.data.repository.ConfigurationRoomRepository
 import io.writeopia.notemenu.data.repository.RoomFolderRepository
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.dao.room.RoomDocumentRepository
 import kotlinx.coroutines.flow.first
@@ -88,7 +89,6 @@ class NotesUseCaseIntegrationTest {
         val flow = notesUseCase.listenForMenuItemsByParentId(
             "root",
             DISCONNECTED_USER_ID,
-            null
         )
 
         assertTrue { flow.first().isNotEmpty() }
@@ -103,7 +103,6 @@ class NotesUseCaseIntegrationTest {
         val flow = notesUseCase.listenForMenuItemsByParentId(
             "root",
             DISCONNECTED_USER_ID,
-            null
         )
 
         assertTrue { flow.first().isNotEmpty() }
@@ -126,15 +125,14 @@ class NotesUseCaseIntegrationTest {
         )
 
         notesUseCase.updateDocumentById(documentId) { document ->
-            document.copy(icon = "newIcon")
+            document.copy(icon = MenuItem.Icon("newIcon", null))
         }
 
         val flow = notesUseCase.listenForMenuItemsByParentId(
             "root",
             DISCONNECTED_USER_ID,
-            null
         )
 
-        assertEquals(flow.first().values.first().first().icon, "newIcon")
+        assertEquals(flow.first().values.first().first().icon?.label, "newIcon")
     }
 }

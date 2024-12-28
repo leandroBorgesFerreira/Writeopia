@@ -2,7 +2,6 @@ package io.writeopia.notemenu.data.repository
 
 import io.writeopia.notemenu.data.model.NotesArrangement
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

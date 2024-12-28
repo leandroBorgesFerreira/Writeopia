@@ -5,7 +5,6 @@ import io.writeopia.models.search.FolderSearch
 import io.writeopia.notemenu.extensions.toModel
 import io.writeopia.notemenu.extensions.toRoomEntity
 import io.writeopia.persistence.room.data.daos.FolderRoomDao
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
@@ -68,9 +67,8 @@ class RoomFolderRepository(
             folderEntity.toModel(0)
         }
 
-    override fun listenForFoldersByParentId(
-        parentId: String,
-        coroutineScope: CoroutineScope?
+    override suspend fun listenForFoldersByParentId(
+        parentId: String
     ): Flow<Map<String, List<Folder>>> {
         SelectedIds.ids.add(parentId)
 
