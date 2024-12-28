@@ -168,13 +168,6 @@ private fun LazyStaggeredGridNotes(
 ) {
     val spacing = 6.dp
 
-    val boxModifier = Modifier.padding(4.dp)
-        .shadow(
-            8.dp,
-            shape = MaterialTheme.shapes.large,
-            spotColor = WriteopiaTheme.colorScheme.cardShadow
-        )
-
     LazyVerticalStaggeredGrid(
         modifier = modifier,
         columns = StaggeredGridCells.Adaptive(minSize = 150.dp),
@@ -190,32 +183,28 @@ private fun LazyStaggeredGridNotes(
 
                 when (menuItem) {
                     is MenuItemUi.DocumentUi -> {
-                        Box(modifier = boxModifier) {
-                            DocumentItem(
-                                menuItem,
-                                onDocumentClick,
-                                selectionListener,
-                                previewDrawers(),
-                                position = i,
-                                modifier = itemModifier,
-                            )
-                        }
+                        DocumentItem(
+                            menuItem,
+                            onDocumentClick,
+                            selectionListener,
+                            previewDrawers(),
+                            position = i,
+                            modifier = itemModifier,
+                        )
                     }
 
                     is MenuItemUi.FolderUi -> {
-                        Box(modifier = boxModifier) {
-                            FolderItem(
-                                menuItem,
-                                folderClick = folderClick,
-                                position = i,
-                                selectionListener = selectionListener,
-                                moveRequest = moveRequest,
-                                changeIcon = { id, icon, tint ->
-                                    changeIcon(id, icon, tint, IconChange.FOLDER)
-                                },
-                                modifier = itemModifier
-                            )
-                        }
+                        FolderItem(
+                            menuItem,
+                            folderClick = folderClick,
+                            position = i,
+                            selectionListener = selectionListener,
+                            moveRequest = moveRequest,
+                            changeIcon = { id, icon, tint ->
+                                changeIcon(id, icon, tint, IconChange.FOLDER)
+                            },
+                            modifier = itemModifier
+                        )
                     }
                 }
             }
@@ -339,106 +328,108 @@ private fun FolderItem(
     changeIcon: (String, String, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    DropTarget { inBound, data ->
-        val menuItemUI = data?.info as? MenuItemUi
-        if (inBound && menuItemUI != null) {
-            LaunchedEffect(menuItemUI) {
-                moveRequest(menuItemUI, folderUi.documentId)
-            }
-        }
-
-        val bgColor =
-            when {
-                inBound && menuItemUI?.id != folderUi.id -> WriteopiaTheme.colorScheme.highlight
-                folderUi.selected -> WriteopiaTheme.colorScheme.selectedBg
-                else -> WriteopiaTheme.colorScheme.cardBg
-            }
-
-        val textColor = WriteopiaTheme.colorScheme.textLight
-
-        SwipeBox(
-            modifier = modifier
-                .fillMaxWidth()
-                .background(WriteopiaTheme.colorScheme.cardPlaceHolderBackground)
-                .clip(MaterialTheme.shapes.large)
-                .clickable {
-                    folderClick(folderUi.documentId)
-                },
-            isOnEditState = folderUi.selected,
-            swipeListener = { state ->
-                selectionListener(folderUi.documentId, state)
-            },
-            cornersShape = MaterialTheme.shapes.large,
-            defaultColor = WriteopiaTheme.colorScheme.cardBg,
-            activeColor = bgColor,
-            activeBorderColor = MaterialTheme.colorScheme.primary
-        ) {
-            DragCardTarget(
-                modifier = modifier.clip(MaterialTheme.shapes.large),
-                position = position,
-                dataToDrop = DropInfo(folderUi, position),
-                iconTintOnHover = MaterialTheme.colorScheme.onBackground
-            ) {
-                Column(
-                    modifier = Modifier
-                        .background(color = bgColor, shape = MaterialTheme.shapes.large)
-                        .fillMaxWidth()
-                        .padding(bottom = 26.dp, top = 10.dp)
-                        .align(Alignment.Center),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    var showIconsOptions by remember { mutableStateOf(false) }
-                    val tint = folderUi.icon?.tint?.let(::Color)
-                        ?: MaterialTheme.colorScheme.primary
-
-                    Icon(
-                        modifier = Modifier
-                            .padding(6.dp)
-                            .clip(MaterialTheme.shapes.large)
-                            .clickable { showIconsOptions = !showIconsOptions }
-                            .size(56.dp)
-                            .padding(6.dp),
-                        imageVector = folderUi.icon?.label?.let(WrIcons::fromName) ?: folder,
-                        contentDescription = "Folder",
-                        tint = tint
-                    )
-
-                    DropdownMenu(
-                        expanded = showIconsOptions,
-                        onDismissRequest = { showIconsOptions = false },
-                        modifier = Modifier.background(WriteopiaTheme.colorScheme.cardBg),
-                    ) {
-                        IconsPicker(
-                            iconSelect = { icon, tint -> changeIcon(folderUi.id, icon, tint) }
-                        )
-                    }
-
-                    Text(
-                        modifier = Modifier.padding(horizontal = 12.dp),
-                        text = folderUi.title,
-                        color = textColor,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    Text(
-                        text = "${folderUi.itemsCount} items",
-                        color = textColor,
-                        style = MaterialTheme.typography.bodySmall
-                    )
+    Box(shadowModifier()) {
+        DropTarget { inBound, data ->
+            val menuItemUI = data?.info as? MenuItemUi
+            if (inBound && menuItemUI != null) {
+                LaunchedEffect(menuItemUI) {
+                    moveRequest(menuItemUI, folderUi.documentId)
                 }
             }
 
-            if (folderUi.isFavorite) {
-                Icon(
-                    modifier = Modifier.align(Alignment.TopEnd).size(40.dp).padding(12.dp),
-                    imageVector = WrIcons.favorites,
-                    contentDescription = "Favorite",
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
+            val bgColor =
+                when {
+                    inBound && menuItemUI?.id != folderUi.id -> WriteopiaTheme.colorScheme.highlight
+                    folderUi.selected -> WriteopiaTheme.colorScheme.selectedBg
+                    else -> WriteopiaTheme.colorScheme.cardBg
+                }
+
+            val textColor = WriteopiaTheme.colorScheme.textLight
+
+            SwipeBox(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .background(WriteopiaTheme.colorScheme.cardPlaceHolderBackground)
+                    .clip(MaterialTheme.shapes.large)
+                    .clickable {
+                        folderClick(folderUi.documentId)
+                    },
+                isOnEditState = folderUi.selected,
+                swipeListener = { state ->
+                    selectionListener(folderUi.documentId, state)
+                },
+                cornersShape = MaterialTheme.shapes.large,
+                defaultColor = WriteopiaTheme.colorScheme.cardBg,
+                activeColor = bgColor,
+                activeBorderColor = MaterialTheme.colorScheme.primary
+            ) {
+                DragCardTarget(
+                    modifier = modifier.clip(MaterialTheme.shapes.large),
+                    position = position,
+                    dataToDrop = DropInfo(folderUi, position),
+                    iconTintOnHover = MaterialTheme.colorScheme.onBackground
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .background(color = bgColor, shape = MaterialTheme.shapes.large)
+                            .fillMaxWidth()
+                            .padding(bottom = 26.dp, top = 10.dp)
+                            .align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        var showIconsOptions by remember { mutableStateOf(false) }
+                        val tint = folderUi.icon?.tint?.let(::Color)
+                            ?: MaterialTheme.colorScheme.primary
+
+                        Icon(
+                            modifier = Modifier
+                                .padding(6.dp)
+                                .clip(MaterialTheme.shapes.large)
+                                .clickable { showIconsOptions = !showIconsOptions }
+                                .size(56.dp)
+                                .padding(6.dp),
+                            imageVector = folderUi.icon?.label?.let(WrIcons::fromName) ?: folder,
+                            contentDescription = "Folder",
+                            tint = tint
+                        )
+
+                        DropdownMenu(
+                            expanded = showIconsOptions,
+                            onDismissRequest = { showIconsOptions = false },
+                            modifier = Modifier.background(WriteopiaTheme.colorScheme.cardBg),
+                        ) {
+                            IconsPicker(
+                                iconSelect = { icon, tint -> changeIcon(folderUi.id, icon, tint) }
+                            )
+                        }
+
+                        Text(
+                            modifier = Modifier.padding(horizontal = 12.dp),
+                            text = folderUi.title,
+                            color = textColor,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Text(
+                            text = "${folderUi.itemsCount} items",
+                            color = textColor,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                }
+
+                if (folderUi.isFavorite) {
+                    Icon(
+                        modifier = Modifier.align(Alignment.TopEnd).size(40.dp).padding(12.dp),
+                        imageVector = WrIcons.favorites,
+                        contentDescription = "Favorite",
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
+                }
             }
         }
     }
@@ -462,60 +453,62 @@ private fun DocumentItem(
         WriteopiaTheme.colorScheme.cardBg
     }
 
-    SwipeBox(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(MaterialTheme.shapes.large)
-            .background(WriteopiaTheme.colorScheme.cardPlaceHolderBackground)
-            .clickable {
-                documentClick(
-                    documentUi.documentId,
-                    documentUi.title.takeIf { it.isNotEmpty() } ?: titleFallback
-                )
-            }
-            .semantics {
-                testTag = "$DOCUMENT_ITEM_TEST_TAG${documentUi.title}"
-            },
-        isOnEditState = documentUi.selected,
-        swipeListener = { state ->
-            selectionListener(documentUi.documentId, state)
-        },
-        cornersShape = MaterialTheme.shapes.large,
-        defaultColor = WriteopiaTheme.colorScheme.cardBg,
-        activeColor = backgroundColor
-    ) {
-        DragCardTarget(
-            position = position,
-            dataToDrop = DropInfo(documentUi, position),
-            iconTintOnHover = MaterialTheme.colorScheme.onBackground
-        ) {
-            Column(
-                modifier = Modifier.background(
-                    color = backgroundColor,
-                    shape = MaterialTheme.shapes.large
-                )
-            ) {
-                documentUi.preview.forEachIndexed { i, storyStep ->
-                    drawers[storyStep.type.number]?.Step(
-                        step = storyStep,
-                        drawInfo = DrawInfo(
-                            editable = false,
-                            position = i,
-                            selectMode = documentUi.selected
-                        ),
+    Box(shadowModifier()) {
+        SwipeBox(
+            modifier = modifier
+                .fillMaxWidth()
+                .clip(MaterialTheme.shapes.large)
+                .background(WriteopiaTheme.colorScheme.cardPlaceHolderBackground)
+                .clickable {
+                    documentClick(
+                        documentUi.documentId,
+                        documentUi.title.takeIf { it.isNotEmpty() } ?: titleFallback
                     )
                 }
+                .semantics {
+                    testTag = "$DOCUMENT_ITEM_TEST_TAG${documentUi.title}"
+                },
+            isOnEditState = documentUi.selected,
+            swipeListener = { state ->
+                selectionListener(documentUi.documentId, state)
+            },
+            cornersShape = MaterialTheme.shapes.large,
+            defaultColor = WriteopiaTheme.colorScheme.cardBg,
+            activeColor = backgroundColor
+        ) {
+            DragCardTarget(
+                position = position,
+                dataToDrop = DropInfo(documentUi, position),
+                iconTintOnHover = MaterialTheme.colorScheme.onBackground
+            ) {
+                Column(
+                    modifier = Modifier.background(
+                        color = backgroundColor,
+                        shape = MaterialTheme.shapes.large
+                    )
+                ) {
+                    documentUi.preview.forEachIndexed { i, storyStep ->
+                        drawers[storyStep.type.number]?.Step(
+                            step = storyStep,
+                            drawInfo = DrawInfo(
+                                editable = false,
+                                position = i,
+                                selectMode = documentUi.selected
+                            ),
+                        )
+                    }
 
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
 
-            if (documentUi.isFavorite) {
-                Icon(
-                    modifier = Modifier.align(Alignment.TopEnd).size(40.dp).padding(12.dp),
-                    imageVector = WrIcons.favorites,
-                    contentDescription = "Favorite",
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
+                if (documentUi.isFavorite) {
+                    Icon(
+                        modifier = Modifier.align(Alignment.TopEnd).size(40.dp).padding(12.dp),
+                        imageVector = WrIcons.favorites,
+                        contentDescription = "Favorite",
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
+                }
             }
         }
     }
@@ -610,3 +603,12 @@ private fun previewDrawers(): Map<Int, StoryStepDrawer> {
         StoryTypes.UNORDERED_LIST_ITEM.type.number to unOrderedListItemPreviewDrawer,
     )
 }
+
+@Composable
+private fun shadowModifier(): Modifier =
+    Modifier.padding(4.dp)
+        .shadow(
+            8.dp,
+            shape = MaterialTheme.shapes.large,
+            spotColor = WriteopiaTheme.colorScheme.cardShadow
+        )
