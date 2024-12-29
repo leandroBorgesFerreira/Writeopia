@@ -93,12 +93,18 @@ internal class ChooseNoteKmpViewModel(
     override val notesArrangement: StateFlow<NotesArrangement> by lazy {
         authManager.listenForUser()
             .flatMapLatest { user ->
-                notesConfig.listenForArrangementPref(user.id)
-                    .map { arrangement ->
-                        NotesArrangement.fromString(arrangement)
-                    }
+                notesConfig.listenForArrangementPref(user.id).map(NotesArrangement::fromString)
             }
             .stateIn(coroutineScope, SharingStarted.Lazily, NotesArrangement.GRID)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override val orderByState: StateFlow<OrderBy> by lazy {
+        authManager.listenForUser()
+            .flatMapLatest { user ->
+                notesConfig.listenOrderPreference(user.id).map(OrderBy::fromString)
+            }
+            .stateIn(coroutineScope, SharingStarted.Lazily, OrderBy.UPDATE)
     }
 
     private val _showLocalSyncConfig = MutableStateFlow<ConfigState>(ConfigState.Idle)

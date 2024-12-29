@@ -109,7 +109,8 @@ internal fun ChooseNoteScreen(
             staggeredGridOptionClick = chooseNoteViewModel::staggeredGridArrangementSelected,
             gridOptionClick = chooseNoteViewModel::gridArrangementSelected,
             listOptionClick = chooseNoteViewModel::listArrangementSelected,
-            sortingSelected = chooseNoteViewModel::sortingSelected
+            sortingSelected = chooseNoteViewModel::sortingSelected,
+            sortingState = chooseNoteViewModel.orderByState
         )
     }
 }

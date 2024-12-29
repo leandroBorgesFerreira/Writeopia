@@ -10,14 +10,25 @@ import kotlinx.coroutines.flow.map
 
 interface ChooseNoteViewModel : FolderController {
     val hasSelectedNotes: StateFlow<Boolean>
+
     val userName: StateFlow<UserState<String>>
+
     val documentsState: StateFlow<ResultData<NotesUi>>
+
     val menuItemsPerFolderId: StateFlow<Map<String, List<MenuItem>>>
+
     val menuItemsState: StateFlow<ResultData<List<MenuItem>>>
+
     val notesArrangement: StateFlow<NotesArrangement>
+
+    val orderByState: StateFlow<OrderBy>
+
     val editState: StateFlow<Boolean>
+
     val showSortMenuState: StateFlow<Boolean>
+
     val showLocalSyncConfigState: StateFlow<ConfigState>
+
     val syncInProgress: StateFlow<SyncState>
 
     //    fun requestDocuments(force: Boolean)

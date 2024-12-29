@@ -116,6 +116,7 @@ fun DesktopNotesMenu(
                     gridSelected = chooseNoteViewModel::gridArrangementSelected,
                     listSelected = chooseNoteViewModel::listArrangementSelected,
                     selectSortOption = chooseNoteViewModel::sortingSelected,
+                    sortOptionState = chooseNoteViewModel.orderByState
                 )
             }
         }

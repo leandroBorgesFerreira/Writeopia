@@ -19,6 +19,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +37,7 @@ import io.writeopia.notemenu.ui.screen.configuration.modifier.orderConfigModifie
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val INNER_PADDING = 3
@@ -48,6 +51,7 @@ internal fun BoxScope.MobileConfigurationsMenu(
     gridOptionClick: () -> Unit,
     listOptionClick: () -> Unit,
     sortingSelected: (OrderBy) -> Unit,
+    sortingState: StateFlow<OrderBy>,
     modifier: Modifier = Modifier,
 ) {
     SlideInBox(
@@ -73,7 +77,7 @@ internal fun BoxScope.MobileConfigurationsMenu(
         ) {
             ArrangementSection(selected, staggeredGridOptionClick, gridOptionClick, listOptionClick)
 
-            SortingSection(sortingSelected = sortingSelected)
+            SortingSection(sortingSelected = sortingSelected, sortingState)
 
             Spacer(modifier = Modifier.height(20.dp))
         }
@@ -168,7 +172,9 @@ private fun ArrangementSection(
 }
 
 @Composable
-private fun SortingSection(sortingSelected: (OrderBy) -> Unit) {
+private fun SortingSection(sortingSelected: (OrderBy) -> Unit, sortingState: StateFlow<OrderBy>) {
+    val order by sortingState.collectAsState()
+
     SectionText(
         text = "Sorting"
 //    stringResource(R.string.sorting)
@@ -177,6 +183,14 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit) {
         color = MaterialTheme.colorScheme.onPrimary,
         fontWeight = FontWeight.Bold
     )
+
+    val background = @Composable { orderBy: OrderBy ->
+        if (orderBy == order) {
+            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.25F)
+        } else {
+            MaterialTheme.colorScheme.inverseSurface
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -187,6 +201,7 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit) {
     ) {
         Text(
             modifier = Modifier
+                .background(background(OrderBy.UPDATE))
                 .clickable { sortingSelected(OrderBy.UPDATE) }
                 .sortingOptionModifier(),
             text = "Last updated",
@@ -198,6 +213,7 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit) {
 
         Text(
             modifier = Modifier
+                .background(background(OrderBy.CREATE))
                 .clickable { sortingSelected(OrderBy.CREATE) }
                 .sortingOptionModifier(),
             text = "Create",
@@ -209,6 +225,7 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit) {
 
         Text(
             modifier = Modifier
+                .background(background(OrderBy.NAME))
                 .clickable { sortingSelected(OrderBy.NAME) }
                 .sortingOptionModifier(),
             text = "Name",
@@ -228,7 +245,17 @@ private fun ConfigurationsMenu_Preview() {
             .fillMaxWidth()
             .background(Color.White)
     ) {
-        MobileConfigurationsMenu(MutableStateFlow(1), true, {}, {}, {}, {}, {}, Modifier)
+        MobileConfigurationsMenu(
+            MutableStateFlow(1),
+            true,
+            {},
+            {},
+            {},
+            {},
+            {},
+            MutableStateFlow(OrderBy.NAME),
+            Modifier
+        )
     }
 }
 
