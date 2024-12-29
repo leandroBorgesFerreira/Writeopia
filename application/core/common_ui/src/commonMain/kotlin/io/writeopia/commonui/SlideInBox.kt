@@ -59,7 +59,11 @@ fun SlideInBox(
     }
 
     AnimatedVisibility(
-        modifier = modifier,
+        modifier = modifier.clickable(
+            interactionSource = MutableInteractionSource(),
+            indication = null,
+            onClick = {}
+        ),
         visible = editState,
         label = animationLabel,
         enter = slideInVertically(

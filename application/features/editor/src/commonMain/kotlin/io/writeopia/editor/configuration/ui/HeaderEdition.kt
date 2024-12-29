@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.writeopia.commonui.SlideInBox
+import io.writeopia.theme.WriteopiaTheme
 
 // This screen could live in a module for extra Composables
 @Composable
@@ -47,7 +48,7 @@ fun BoxScope.HeaderEdition(
                         bottomCorner
                     )
                 )
-                .background(MaterialTheme.colorScheme.background)
+                .background(WriteopiaTheme.colorScheme.lightBackground)
                 .padding(vertical = 16.dp)
         ) {
             HeaderEditionOptions(availableColors, onColorSelection)
