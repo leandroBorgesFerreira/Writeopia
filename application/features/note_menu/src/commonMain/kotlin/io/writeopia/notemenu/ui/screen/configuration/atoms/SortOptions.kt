@@ -1,5 +1,6 @@
 package io.writeopia.notemenu.ui.screen.configuration.atoms
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenu
@@ -8,6 +9,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -25,6 +27,7 @@ internal fun SortOptions(
     showSortOptionsRequest: () -> Unit,
     hideSortOptionsRequest: () -> Unit,
     selectSortOption: (OrderBy) -> Unit,
+    sortOptionState: StateFlow<OrderBy>,
     modifier: Modifier = Modifier,
 ) {
     val showSorting by showSortingOption.collectAsState()
@@ -42,9 +45,19 @@ internal fun SortOptions(
             onDismissRequest = hideSortOptionsRequest,
             offset = DpOffset((-30).dp, (-6).dp)
         ) {
+            val sortOption by sortOptionState.collectAsState()
             val iconTintColor = MaterialTheme.colorScheme.onPrimary
 
+            val background = @Composable { orderBy: OrderBy ->
+                if (orderBy == sortOption) {
+                    MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.25F)
+                } else {
+                    MaterialTheme.colorScheme.primary
+                }
+            }
+
             DropdownMenuItem(
+                modifier = Modifier.background(background(OrderBy.NAME)),
                 leadingIcon = {
                     Icon(
                         imageVector = WrIcons.sortByName,
@@ -61,6 +74,7 @@ internal fun SortOptions(
             )
 
             DropdownMenuItem(
+                modifier = Modifier.background(background(OrderBy.CREATE)),
                 leadingIcon = {
                     Icon(
                         imageVector = WrIcons.sortByCreated,
@@ -77,6 +91,7 @@ internal fun SortOptions(
             )
 
             DropdownMenuItem(
+                modifier = Modifier.background(background(OrderBy.UPDATE)),
                 leadingIcon = {
                     Icon(
                         imageVector = WrIcons.sortByUpdate,

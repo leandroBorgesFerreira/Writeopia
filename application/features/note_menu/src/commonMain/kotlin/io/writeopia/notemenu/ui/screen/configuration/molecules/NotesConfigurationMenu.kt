@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.StateFlow
 fun NotesConfigurationMenu(
     showSortingOption: StateFlow<Boolean>,
     selectedState: Flow<Int>,
+    sortOptionState: StateFlow<OrderBy>,
     showSortOptionsRequest: () -> Unit,
     hideSortOptionsRequest: () -> Unit,
     selectSortOption: (OrderBy) -> Unit,
@@ -58,6 +59,7 @@ fun NotesConfigurationMenu(
             showSortOptionsRequest,
             hideSortOptionsRequest,
             selectSortOption,
+            sortOptionState,
             modifier = Modifier.background(
                 MaterialTheme.colorScheme.surfaceVariant,
                 shape = shape
