@@ -2,6 +2,7 @@ package io.writeopia.editor.features.editor.viewmodel
 
 import io.writeopia.auth.core.utils.USER_OFFLINE
 import io.writeopia.common.utils.KmpViewModel
+import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.editor.model.EditState
 import io.writeopia.model.Font
 import io.writeopia.repository.UiConfigurationRepository
@@ -11,6 +12,7 @@ import io.writeopia.sdk.filter.DocumentFilterObject
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
 import io.writeopia.sdk.serialization.extensions.toApi
@@ -23,6 +25,7 @@ import io.writeopia.ui.backstack.BackstackInform
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.DrawState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -76,13 +79,53 @@ class NoteEditorKmpViewModel(
     private val story: StateFlow<StoryState> = writeopiaManager.currentStory
     override val scrollToPosition = writeopiaManager.scrollToPosition
 
-    override val toDraw: StateFlow<DrawState> by lazy {
-        writeopiaManager.toDraw.stateIn(
-            coroutineScope,
-            started = SharingStarted.Lazily,
-            initialValue = DrawState(emptyList())
-        )
+    private val documentId: StateFlow<String> by lazy {
+        writeopiaManager.documentInfo
+            .map { it.id }
+            .filterNotNull()
+            .stateIn(coroutineScope, SharingStarted.Lazily, "")
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override val toDrawWithDecoration: StateFlow<DrawState> by lazy {
+        val infoFlow = documentId.flatMapLatest {
+            documentRepository.listenForDocumentInfoById(it)
+        }
+
+        writeopiaManager.toDraw.flatMapLatest { drawState ->
+            infoFlow.map { info ->
+                drawState to info
+            }
+        }.map { (drawState, info) ->
+            val imageVector = info?.icon
+                ?.label
+                ?.let(WrIcons::fromName)
+
+            val tint = info?.icon?.tint
+
+            val newStories = drawState.stories
+                .map { drawStory ->
+                    if (drawStory.storyStep.type == StoryTypes.TITLE.type) {
+                        val extraInfo = mutableMapOf<String, Any>()
+
+                        if (imageVector != null) {
+                            extraInfo["imageVector"] = imageVector
+                        }
+
+                        if (tint != null) {
+                            extraInfo["imageVectorTint"] = tint
+                        }
+
+                        drawStory.copy(extraInfo = extraInfo)
+                    } else {
+                        drawStory
+                    }
+                }
+
+            drawState.copy(stories = newStories)
+        }.stateIn(coroutineScope, SharingStarted.Lazily, DrawState(emptyList()))
+    }
+
     private val _documentToShareInfo = MutableStateFlow<ShareDocument?>(null)
     override val documentToShareInfo: StateFlow<ShareDocument?> = _documentToShareInfo.asStateFlow()
 

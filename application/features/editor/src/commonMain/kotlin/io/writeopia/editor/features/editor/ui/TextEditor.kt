@@ -28,9 +28,10 @@ internal fun TextEditor(
     modifier: Modifier = Modifier,
     keyFn: (Int, DrawStory) -> Int = { index, drawStory -> drawStory.desktopKey + index }
 ) {
-    val storyState by noteEditorViewModel.toDraw.collectAsState()
-    val editable by noteEditorViewModel.isEditable.collectAsState()
     val listState: LazyListState = rememberLazyListState()
+
+    val storyState by noteEditorViewModel.toDrawWithDecoration.collectAsState()
+    val editable by noteEditorViewModel.isEditable.collectAsState()
     val position by noteEditorViewModel.scrollToPosition.collectAsState()
 
     if (position != null) {

@@ -1,6 +1,7 @@
 package io.writeopia.sdk.model.document
 
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -13,7 +14,8 @@ data class DocumentInfo(
     val title: String = "",
     val createdAt: Instant,
     val lastUpdatedAt: Instant,
-    val parentId: String = "root"
+    val parentId: String = "root",
+    val icon: MenuItem.Icon? = null,
 ) {
     companion object {
         fun empty(): DocumentInfo {
@@ -31,5 +33,6 @@ fun Document.info(): DocumentInfo = DocumentInfo(
     title = this.title,
     createdAt = this.createdAt,
     lastUpdatedAt = this.lastUpdatedAt,
-    parentId = this.parentId
+    parentId = this.parentId,
+    icon = this.icon
 )

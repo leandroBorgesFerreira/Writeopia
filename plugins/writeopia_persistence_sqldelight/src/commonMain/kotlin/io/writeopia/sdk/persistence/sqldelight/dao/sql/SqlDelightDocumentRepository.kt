@@ -8,7 +8,6 @@ import io.writeopia.sdk.persistence.core.DocumentSearch
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
@@ -42,21 +41,19 @@ class SqlDelightDocumentRepository(
         return _documentByParentState
     }
 
-    override suspend fun listenForDocumentInfoById(id: String): Flow<DocumentInfo> {
-//        coroutineScope {
-//            val document = documentSqlDao.selectById(id)
-//
-//            if (document != null) {
-//                refreshDocument(document)
-//            }
-//        }
+    override suspend fun listenForDocumentInfoById(id: String): Flow<DocumentInfo?> {
+        val document = documentSqlDao.loadDocumentById(id)
+
+        if (document != null) {
+            refreshDocument(document)
+        }
 
         return _documentByParentState.map { documentMap ->
             documentMap.values
                 .flatten()
                 .find { document -> document.id == id }
                 ?.info()
-        }.filterNotNull()
+        }
     }
 
     override suspend fun stopListeningForFoldersByParentId(parentId: String) {
