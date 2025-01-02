@@ -3,11 +3,14 @@ package io.writeopia.ui.drawer.content
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -18,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -46,7 +50,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 class HeaderDrawer(
     private val modifier: Modifier = Modifier,
     private val headerClick: () -> Unit = {},
-    private val drawer: BoxScope.() -> SimpleTextDrawer,
+    private val textDrawer: () -> SimpleTextDrawer,
     private val placeHolderStyle: @Composable () -> TextStyle = {
         MaterialTheme.typography.displaySmall.copy(
             fontWeight = FontWeight.Bold,
@@ -61,7 +65,7 @@ class HeaderDrawer(
         val backgroundColor = step.decoration.backgroundColor
         val focusRequester = remember { FocusRequester() }
 
-        Box(
+        Row(
             modifier = modifier
                 .clickable(onClick = headerClick)
                 .let { modifierLet ->
@@ -73,11 +77,34 @@ class HeaderDrawer(
                         modifierLet.padding(top = 30.dp)
                     }
                 }
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             val interactionSource = remember { MutableInteractionSource() }
 
-            drawer().Text(
+            val extraData = drawInfo.extraData
+
+            if (extraData.containsKey("imageVector")) {
+                val imageVector = extraData["imageVector"] as ImageVector
+
+                val tint = if (extraData.containsKey("imageVectorTint")) {
+                    val tintColor = extraData["imageVectorTint"] as Int
+                    Color(tintColor)
+                } else {
+                    MaterialTheme.colorScheme.onBackground
+                }
+
+                Spacer(modifier = Modifier.width(20.dp))
+
+                Icon(
+                    imageVector = imageVector,
+                    "header icon",
+                    tint = tint,
+                    modifier = Modifier.size(42.dp)
+                )
+            }
+
+            textDrawer().Text(
                 step = step,
                 drawInfo = drawInfo,
                 interactionSource = interactionSource,
@@ -116,10 +143,9 @@ fun headerDrawer(
 ): StoryStepDrawer =
     HeaderDrawer(
         modifier = modifier,
-        drawer = {
+        textDrawer = {
             TextDrawer(
-                modifier = Modifier.align(Alignment.BottomStart)
-                    .padding(start = drawConfig.textDrawerStartPadding.dp),
+                modifier = Modifier.padding(start = drawConfig.textDrawerStartPadding.dp),
                 onTextEdit = manager::handleTextInput,
                 onKeyEvent = onKeyEvent,
                 lineBreakByContent = lineBreakByContent,
@@ -139,35 +165,9 @@ private fun HeaderDrawerStepPreview() {
     val step = sampleStoryStep()
 
     HeaderDrawer(
-        drawer = {
+        textDrawer = {
             TextDrawer(
-                modifier = Modifier.align(Alignment.BottomStart)
-                    .padding(start = 16.dp, bottom = 16.dp),
-                onTextEdit = { _, _, _ -> },
-                textStyle = {
-                    MaterialTheme.typography.headlineMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                },
-                selectionState = MutableStateFlow(false),
-                onSelectionLister = {}
-            )
-        },
-        headerClick = {}
-    ).Step(step = step, drawInfo = DrawInfo())
-}
-
-@Preview
-@Composable
-private fun HeaderDrawerStepPreviewNoColor() {
-    val step = sampleStoryStep()
-
-    HeaderDrawer(
-        drawer = {
-            TextDrawer(
-                modifier = Modifier.align(Alignment.BottomStart)
-                    .padding(start = 16.dp, bottom = 16.dp),
+                modifier = Modifier.padding(start = 16.dp, bottom = 16.dp),
                 onTextEdit = { _, _, _ -> },
                 textStyle = {
                     MaterialTheme.typography.headlineMedium.copy(
@@ -180,8 +180,31 @@ private fun HeaderDrawerStepPreviewNoColor() {
             )
         },
         headerClick = {},
+    ).Step(step = step, drawInfo = DrawInfo())
+}
 
-        ).Step(step = step, drawInfo = DrawInfo())
+@Preview
+@Composable
+private fun HeaderDrawerStepPreviewNoColor() {
+    val step = sampleStoryStep()
+
+    HeaderDrawer(
+        textDrawer = {
+            TextDrawer(
+                modifier = Modifier.padding(start = 16.dp, bottom = 16.dp),
+                onTextEdit = { _, _, _ -> },
+                textStyle = {
+                    MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                },
+                selectionState = MutableStateFlow(false),
+                onSelectionLister = {}
+            )
+        },
+        headerClick = {},
+    ).Step(step = step, drawInfo = DrawInfo())
 }
 
 private fun sampleStoryStep() = StoryStep(

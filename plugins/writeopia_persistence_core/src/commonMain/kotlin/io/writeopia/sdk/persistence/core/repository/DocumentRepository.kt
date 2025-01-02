@@ -37,7 +37,7 @@ interface DocumentRepository : DocumentUpdate, DocumentSearch {
 
     suspend fun listenForDocumentsByParentId(parentId: String): Flow<Map<String, List<Document>>>
 
-    suspend fun listenForDocumentInfoById(id: String): Flow<DocumentInfo>
+    suspend fun listenForDocumentInfoById(id: String): Flow<DocumentInfo?>
 
     suspend fun stopListeningForFoldersByParentId(parentId: String)
 

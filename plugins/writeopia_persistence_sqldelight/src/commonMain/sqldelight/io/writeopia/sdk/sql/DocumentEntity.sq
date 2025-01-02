@@ -26,6 +26,12 @@ FROM documentEntity
 WHERE title LIKE '%' || ? || '%'
 ORDER BY last_updated_at;
 
+selectById:
+SELECT *
+FROM documentEntity
+WHERE documentEntity.id=?
+LIMIT 1;
+
 selectWithContent:
 SELECT *
 FROM documentEntity

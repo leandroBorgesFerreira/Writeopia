@@ -40,13 +40,15 @@ fun WriteopiaEditor(
                     content,
                     key = keyFn,
                     itemContent = { _, drawStory ->
+                        val size = storyState.stories.size
+
                         drawers[drawStory.storyStep.type.number]?.Step(
                             step = drawStory.storyStep,
                             drawInfo = DrawInfo(
                                 editable = editable,
                                 focus = storyState.focus,
                                 position = drawStory.position,
-                                extraData = mapOf("listSize" to storyState.stories.size),
+                                extraData = drawStory.extraInfo + mapOf("listSize" to size),
                                 selectMode = drawStory.isSelected,
                                 selection = drawStory.cursor ?: Selection.start()
                             )

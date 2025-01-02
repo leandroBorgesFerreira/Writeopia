@@ -21,6 +21,8 @@ class DocumentSqlDao(
     private val storyStepQueries: StoryStepEntityQueries?,
 ) : DocumentSearch {
 
+
+
     override suspend fun search(query: String): List<Document> = documentQueries?.query(query)
         ?.executeAsList()
         ?.map { entity ->
@@ -102,6 +104,28 @@ class DocumentSqlDao(
             insertDocumentWithContent(document)
         }
     }
+
+    suspend fun loadDocumentById(id: String): Document? =
+        documentQueries?.selectById(id)
+            ?.executeAsOneOrNull()
+            ?.let { entity ->
+                Document(
+                    id = entity.id,
+                    title = entity.title,
+                    content = emptyMap(),
+                    createdAt = Instant.fromEpochMilliseconds(entity.created_at),
+                    lastUpdatedAt = Instant.fromEpochMilliseconds(entity.last_updated_at),
+                    userId = entity.user_id,
+                    favorite = entity.favorite == 1L,
+                    parentId = entity.parent_document_id,
+                    icon = entity.icon?.let {
+                        MenuItem.Icon(
+                            it,
+                            entity.icon_tint?.toInt()
+                        )
+                    },
+                )
+            }
 
     suspend fun loadDocumentWithContentByIds(id: List<String>): List<Document> =
         documentQueries?.selectWithContentByIds(id)

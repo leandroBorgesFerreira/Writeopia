@@ -26,7 +26,7 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
 
     val scrollToPosition: StateFlow<Int?>
 
-    val toDraw: StateFlow<DrawState>
+    val toDrawWithDecoration: StateFlow<DrawState>
 
     val documentToShareInfo: StateFlow<ShareDocument?>
 
