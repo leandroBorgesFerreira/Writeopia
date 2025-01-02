@@ -10,7 +10,6 @@ import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 
