@@ -161,17 +161,13 @@ android {
     buildTypes {
         debug {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
         }
         release {
             // Todo: Re enable the minification and fix R8 bugs
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules-android.pro"
             )
             signingConfig = signingConfigs.getByName("release")
         }
