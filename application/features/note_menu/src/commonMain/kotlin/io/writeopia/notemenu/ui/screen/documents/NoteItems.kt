@@ -488,12 +488,27 @@ private fun DocumentItem(
                     )
                 ) {
                     documentUi.preview.forEachIndexed { i, storyStep ->
+                        val extraData = mutableMapOf<String, Any>()
+
+                        if (storyStep.type == StoryTypes.TITLE.type) {
+                            documentUi.icon?.label?.let(WrIcons::fromName)?.let {
+                                extraData["imageVector"] = it
+                            }
+
+                            documentUi.icon?.tint?.let {
+                                extraData["imageVectorTint"] = it
+                            }
+                        }
+
+                        documentUi.icon
+
                         drawers[storyStep.type.number]?.Step(
                             step = storyStep,
                             drawInfo = DrawInfo(
                                 editable = false,
                                 position = i,
-                                selectMode = documentUi.selected
+                                selectMode = documentUi.selected,
+                                extraData = extraData
                             ),
                         )
                     }
