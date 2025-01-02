@@ -1,6 +1,0 @@
-platform :ios, '14.1'
-
-target 'notesApp' do
-    use_frameworks!
-    pod 'writeopia', :path => '../../writeopia'
-end

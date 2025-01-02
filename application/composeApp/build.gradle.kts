@@ -14,11 +14,6 @@ kotlin {
 
     androidTarget()
 
-    js(IR) {
-        browser()
-        binaries.executable()
-    }
-
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -26,19 +21,20 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material3)
 
-                implementation(project(":plugins:writeopia_persistence_core"))
                 implementation(project(":application:core:persistence_sqldelight"))
                 implementation(project(":application:core:theme"))
-                implementation(project(":application:core:models"))
                 implementation(project(":application:common_flows:wide_screen_common"))
                 implementation(project(":application:features:note_menu"))
                 implementation(project(":writeopia_ui"))
-                implementation(project(":plugins:writeopia_presentation"))
+                implementation(project(":plugins:writeopia_persistence_core"))
             }
         }
 
         val jvmMain by getting {
             dependencies {
+                implementation(project(":plugins:writeopia_persistence_core"))
+                implementation(project(":application:core:models"))
+                implementation(project(":plugins:writeopia_presentation"))
                 implementation(compose.desktop.currentOs)
             }
         }
@@ -65,6 +61,7 @@ kotlin {
 
                 implementation(project(":application:core:utils"))
                 implementation(project(":application:core:navigation"))
+                implementation(project(":plugins:writeopia_persistence_core"))
                 implementation(project(":application:core:persistence_bridge"))
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:resources"))
@@ -74,6 +71,7 @@ kotlin {
                 implementation(project(":application:features:auth"))
                 implementation(project(":application:features:account"))
                 implementation(project(":application:features:search"))
+                implementation(project(":plugins:writeopia_presentation"))
 
                 implementation(libs.androidx.ktx)
                 implementation(libs.appCompat)
