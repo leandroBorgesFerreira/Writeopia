@@ -125,7 +125,7 @@ compose.desktop {
             proguard {
                 version.set("7.5.0")
                 isEnabled = true
-                configurationFiles.from("proguard-rules.pro")
+                configurationFiles.from("proguard-rules-desktop.pro")
             }
         }
     }
