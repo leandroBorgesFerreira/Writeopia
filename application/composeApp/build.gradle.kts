@@ -131,7 +131,6 @@ compose.desktop {
     }
 }
 
-
 android {
     namespace = "io.writeopia"
     compileSdk = 34
@@ -195,4 +194,3 @@ android {
         }
     }
 }
-
