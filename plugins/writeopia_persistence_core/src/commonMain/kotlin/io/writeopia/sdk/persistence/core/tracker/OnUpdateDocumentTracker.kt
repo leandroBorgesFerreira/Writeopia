@@ -48,7 +48,8 @@ class OnUpdateDocumentTracker(
                             createdAt = documentInfo.createdAt,
                             lastUpdatedAt = Clock.System.now(),
                             userId = userId,
-                            parentId = documentInfo.parentId
+                            parentId = documentInfo.parentId,
+                            icon = documentInfo.icon
                         )
                     )
                 }
@@ -70,7 +71,8 @@ class OnUpdateDocumentTracker(
                         createdAt = documentInfo.createdAt,
                         lastUpdatedAt = Clock.System.now(),
                         userId = userId,
-                        parentId = documentInfo.parentId
+                        parentId = documentInfo.parentId,
+                        icon = documentInfo.icon
                     )
 
                     documentUpdate.saveDocument(document)
@@ -91,7 +93,8 @@ class OnUpdateDocumentTracker(
                             createdAt = documentInfo.createdAt,
                             lastUpdatedAt = Clock.System.now(),
                             userId = userId,
-                            parentId = documentInfo.parentId
+                            parentId = documentInfo.parentId,
+                            icon = documentInfo.icon
                         )
                     )
 

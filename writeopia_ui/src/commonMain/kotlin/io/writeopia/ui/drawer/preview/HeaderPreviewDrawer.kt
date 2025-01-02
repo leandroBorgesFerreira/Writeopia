@@ -1,17 +1,22 @@
-
 package io.writeopia.ui.drawer.preview
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import io.writeopia.ui.model.DrawInfo
@@ -46,14 +51,45 @@ class HeaderPreviewDrawer(
                     }
                 }
         ) {
-            Text(
+            Row(
                 modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 12.dp)
+                    .padding(vertical = 12.dp)
                     .align(Alignment.BottomStart),
-                text = step.text ?: "",
-                style = style ?: MaterialTheme.typography.titleLarge,
-                color = textColor,
-            )
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val extraData = drawInfo.extraData
+
+                if (extraData.containsKey("imageVector")) {
+                    val imageVector = extraData["imageVector"] as ImageVector
+
+                    val tint = if (extraData.containsKey("imageVectorTint")) {
+                        val tintColor = extraData["imageVectorTint"] as Int
+                        Color(tintColor)
+                    } else {
+                        MaterialTheme.colorScheme.onBackground
+                    }
+
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    Icon(
+                        imageVector = imageVector,
+                        "header icon",
+                        tint = tint,
+                        modifier = Modifier.size(20.dp)
+                    )
+
+                    Spacer(modifier = Modifier.width(8.dp))
+                } else {
+                    Spacer(modifier = Modifier.width(12.dp))
+                }
+
+                Text(
+                    text = step.text ?: "",
+                    style = style ?: MaterialTheme.typography.titleLarge,
+                    color = textColor,
+                    maxLines = 1
+                )
+            }
         }
     }
 }
