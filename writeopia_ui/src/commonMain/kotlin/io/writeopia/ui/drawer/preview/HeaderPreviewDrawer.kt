@@ -69,7 +69,7 @@ class HeaderPreviewDrawer(
                         MaterialTheme.colorScheme.onBackground
                     }
 
-                    Spacer(modifier = Modifier.width(20.dp))
+                    Spacer(modifier = Modifier.width(12.dp))
 
                     Icon(
                         imageVector = imageVector,
@@ -79,6 +79,8 @@ class HeaderPreviewDrawer(
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
+                } else {
+                    Spacer(modifier = Modifier.width(12.dp))
                 }
 
                 Text(
