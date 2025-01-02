@@ -133,7 +133,7 @@ compose.desktop {
 
 android {
     namespace = "io.writeopia"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         val baseUrl = System.getenv("WRITEOPIA_CLIENT_BASE_URL")
@@ -141,7 +141,7 @@ android {
 
         applicationId = "io.writeopia"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 10
         versionName = "0.1.9"
 
