@@ -120,6 +120,9 @@ interface DocumentEntityDao {
         parentId: String
     ): Flow<Map<DocumentEntity, List<StoryStepEntity>>>
 
+    @Query("SELECT * FROM $DOCUMENT_ENTITY WHERE $DOCUMENT_ENTITY.id = :id")
+    fun listenForDocumentById(id: String): Flow<DocumentEntity?>
+
     @Query("UPDATE $DOCUMENT_ENTITY set user_id = :newUserId WHERE user_id = :oldUserId")
     suspend fun moveDocumentsToNewUser(oldUserId: String, newUserId: String)
 }

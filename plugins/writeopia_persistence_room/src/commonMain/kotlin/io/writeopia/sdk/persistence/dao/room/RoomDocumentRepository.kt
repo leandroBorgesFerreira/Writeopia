@@ -1,6 +1,7 @@
 package io.writeopia.sdk.persistence.dao.room
 
 import io.writeopia.sdk.model.document.DocumentInfo
+import io.writeopia.sdk.model.document.info
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.persistence.core.DocumentSearch
@@ -50,9 +51,10 @@ class RoomDocumentRepository(
                 }.groupBy { it.parentId }
             }
 
-    override suspend fun listenForDocumentInfoById(id: String): Flow<DocumentInfo> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun listenForDocumentInfoById(id: String): Flow<DocumentInfo?> =
+        documentEntityDao.listenForDocumentById(id).map { entity ->
+            entity?.toModel()?.info()
+        }
 
     override suspend fun loadDocumentsForUser(userId: String): List<Document> =
         documentEntityDao.loadDocumentsWithContentForUser(userId)
