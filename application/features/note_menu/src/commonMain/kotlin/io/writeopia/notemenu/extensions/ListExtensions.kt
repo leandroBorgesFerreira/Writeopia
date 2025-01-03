@@ -1,4 +1,4 @@
-package io.writeopia.notemenu.utils
+package io.writeopia.notemenu.extensions
 
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.persistence.core.sorting.OrderBy

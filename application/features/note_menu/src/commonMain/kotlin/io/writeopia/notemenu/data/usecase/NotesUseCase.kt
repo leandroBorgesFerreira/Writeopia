@@ -6,7 +6,7 @@ import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.repository.ConfigurationRepository
 import io.writeopia.notemenu.data.repository.FolderRepository
 import io.writeopia.notemenu.ui.dto.MenuItemUi
-import io.writeopia.notemenu.utils.sortedWithOrderBy
+import io.writeopia.notemenu.extensions.sortedWithOrderBy
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId

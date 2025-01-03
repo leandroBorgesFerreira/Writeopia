@@ -42,6 +42,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.IconChange
 import io.writeopia.common.utils.ResultData
@@ -51,6 +52,7 @@ import io.writeopia.commonui.IconsPicker
 import io.writeopia.notemenu.data.model.NotesArrangement
 import io.writeopia.notemenu.ui.dto.MenuItemUi
 import io.writeopia.notemenu.ui.dto.NotesUi
+import io.writeopia.notemenu.utils.minimalNoteCardWidth
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
@@ -72,6 +74,7 @@ const val ADD_NOTE_TEST_TAG = "addNote"
 @Composable
 fun NotesCards(
     documents: ResultData<NotesUi>,
+    minimalNoteWidth: Dp = minimalNoteCardWidth(),
     loadNote: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
     folderClick: (String) -> Unit,
@@ -95,6 +98,7 @@ fun NotesCards(
                         NotesArrangement.STAGGERED_GRID -> {
                             LazyStaggeredGridNotes(
                                 documentsUiList,
+                                minimalNoteWidth = minimalNoteWidth,
                                 selectionListener = selectionListener,
                                 onDocumentClick = loadNote,
                                 folderClick = folderClick,
@@ -107,6 +111,7 @@ fun NotesCards(
                         NotesArrangement.GRID -> {
                             LazyGridNotes(
                                 documentsUiList,
+                                minimalNoteWidth = minimalNoteWidth,
                                 selectionListener = selectionListener,
                                 onDocumentClick = loadNote,
                                 folderClick = folderClick,
@@ -158,6 +163,7 @@ fun NotesCards(
 @Composable
 private fun LazyStaggeredGridNotes(
     documents: List<MenuItemUi>,
+    minimalNoteWidth: Dp,
     onDocumentClick: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
@@ -170,7 +176,7 @@ private fun LazyStaggeredGridNotes(
 
     LazyVerticalStaggeredGrid(
         modifier = modifier,
-        columns = StaggeredGridCells.Adaptive(minSize = 150.dp),
+        columns = StaggeredGridCells.Adaptive(minSize = minimalNoteWidth),
         horizontalArrangement = Arrangement.spacedBy(spacing),
         verticalItemSpacing = spacing,
         contentPadding = contentPadding,
@@ -216,6 +222,7 @@ private fun LazyStaggeredGridNotes(
 @Composable
 private fun LazyGridNotes(
     documents: List<MenuItemUi>,
+    minimalNoteWidth: Dp,
     onDocumentClick: (String, String) -> Unit,
     folderClick: (String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
@@ -228,7 +235,7 @@ private fun LazyGridNotes(
 
     LazyVerticalGrid(
         modifier = modifier,
-        columns = GridCells.Adaptive(minSize = 150.dp),
+        columns = GridCells.Adaptive(minSize = minimalNoteWidth),
         horizontalArrangement = spacing,
         verticalArrangement = spacing,
         contentPadding = contentPadding,
