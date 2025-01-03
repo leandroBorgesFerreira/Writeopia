@@ -6,4 +6,3 @@ expect fun minimalNoteCardWidth(): Dp
 
 const val DESKTOP_NOTE_WIDTH = 220
 const val MOBILE_NOTE_WIDTH = 150
-
