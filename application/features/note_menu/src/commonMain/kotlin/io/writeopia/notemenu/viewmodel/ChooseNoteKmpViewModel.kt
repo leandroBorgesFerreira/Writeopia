@@ -128,7 +128,7 @@ internal class ChooseNoteKmpViewModel(
             val previewLimit = when (arrangement) {
                 NotesArrangement.LIST -> 4
                 NotesArrangement.GRID -> 4
-                NotesArrangement.STAGGERED_GRID -> 10
+                NotesArrangement.STAGGERED_GRID -> 6
             }
 
             resultData.map { documentList ->
