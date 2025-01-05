@@ -68,7 +68,7 @@ dependencies {
 
     implementation(libs.viewmodel.compose)
     implementation(libs.runtime.compose)
-    implementation(libs.navigation.compose)
+    implementation(libs.navigation.compose.android)
     implementation("androidx.activity:activity-compose")
     implementation("androidx.compose.material3:material3")
 

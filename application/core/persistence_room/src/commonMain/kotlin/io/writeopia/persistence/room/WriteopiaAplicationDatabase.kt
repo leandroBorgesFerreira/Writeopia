@@ -1,8 +1,6 @@
 package io.writeopia.persistence.room
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import io.writeopia.persistence.room.data.daos.FolderRoomDao
@@ -15,7 +13,6 @@ import io.writeopia.sdk.persistence.dao.StoryUnitEntityDao
 import io.writeopia.sdk.persistence.entity.document.DocumentEntity
 import io.writeopia.sdk.persistence.entity.story.StoryStepEntity
 
-private const val DATABASE_NAME = "WriteopiaDatabase"
 
 @Database(
     entities = [
@@ -42,34 +39,19 @@ abstract class WriteopiaApplicationDatabase : RoomDatabase() {
         private var instance: WriteopiaApplicationDatabase? = null
 
         fun database(
-            databaseBuilder: RoomDatabase.Builder<AppDatabase>,
-            databaseName: String = DATABASE_NAME,
-            inMemory: Boolean = false,
+            databaseBuilder: Builder<WriteopiaApplicationDatabase>
         ): WriteopiaApplicationDatabase =
-            instance ?: createDatabase(context, databaseName, inMemory)
+            instance ?: createDatabase(databaseBuilder)
 
         private fun createDatabase(
-            context: Context,
-            databaseName: String,
-            inMemory: Boolean = false,
+            databaseBuilder: Builder<WriteopiaApplicationDatabase>,
         ): WriteopiaApplicationDatabase =
-            if (inMemory) {
-                Room.inMemoryDatabaseBuilder(
-                    context.applicationContext,
-                    WriteopiaApplicationDatabase::class.java
-                ).build()
-            } else {
-                Room.databaseBuilder(
-                    context.applicationContext,
-                    WriteopiaApplicationDatabase::class.java,
-                    databaseName
-                )
+            databaseBuilder
 //                    .createFromAsset("WriteopiaDatabase.db")
-                    .fallbackToDestructiveMigration(dropAllTables = true)
-                    .build()
-                    .also { database ->
-                        instance = database
-                    }
-            }
+                .fallbackToDestructiveMigration(dropAllTables = true)
+                .build()
+                .also { database ->
+                    instance = database
+                }
     }
 }

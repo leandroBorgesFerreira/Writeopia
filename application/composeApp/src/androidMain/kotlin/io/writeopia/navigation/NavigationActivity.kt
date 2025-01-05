@@ -50,6 +50,7 @@ import io.writeopia.notemenu.di.NotesMenuAndroidInjection
 import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notemenu.navigation.NoteMenuDestiny
 import io.writeopia.notemenu.navigation.navigateToNotes
+import io.writeopia.persistence.room.DatabaseConfig
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 import io.writeopia.persistence.room.injection.RoomRepositoryInjection
@@ -82,7 +83,11 @@ fun NavigationGraph(
         "io.writeopia.preferences",
         Context.MODE_PRIVATE
     ),
-    database: WriteopiaApplicationDatabase = WriteopiaApplicationDatabase.database(application),
+    database: WriteopiaApplicationDatabase = WriteopiaApplicationDatabase.database(
+        DatabaseConfig.roomBuilder(
+            application
+        )
+    ),
     startDestination: String = Destinations.AUTH_MENU_INNER_NAVIGATION.id
 ) {
     val appDaosInjection = AppRoomDaosInjection(database)

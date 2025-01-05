@@ -57,6 +57,8 @@ kotlin {
                 implementation(project(":application:features:auth"))
                 implementation(project(":application:features:account"))
                 implementation(project(":application:features:search"))
+
+                implementation(libs.compose.navigation)
             }
         }
 
@@ -89,10 +91,11 @@ kotlin {
                 implementation(libs.ktor.client.logging)
 
                 implementation(libs.androidx.lifecycle.runtime.compose)
-                implementation(libs.navigation.compose)
 
                 implementation(libs.androidx.material3)
                 implementation(project.dependencies.platform(libs.androidx.compose.bom))
+
+                implementation(libs.room.ktx)
             }
         }
     }

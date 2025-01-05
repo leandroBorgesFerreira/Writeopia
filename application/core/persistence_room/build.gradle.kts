@@ -9,6 +9,8 @@ plugins {
 kotlin {
     jvm {}
 
+    androidTarget()
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -51,7 +53,7 @@ kotlin {
 
 android {
     namespace = "io.writeopia.persistence"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24
