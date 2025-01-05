@@ -32,12 +32,31 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material3)
 
+                implementation(project(":writeopia_ui"))
+                implementation(project(":writeopia"))
+                implementation(project(":writeopia_models"))
+
                 implementation(project(":application:core:persistence_sqldelight"))
                 implementation(project(":application:core:theme"))
-                implementation(project(":application:common_flows:wide_screen_common"))
-                implementation(project(":application:features:note_menu"))
-                implementation(project(":writeopia_ui"))
+                implementation(project(":application:core:utils"))
+                implementation(project(":application:core:navigation"))
+
                 implementation(project(":plugins:writeopia_persistence_core"))
+                implementation(project(":plugins:writeopia_serialization"))
+                implementation(project(":plugins:writeopia_network"))
+                implementation(project(":plugins:writeopia_presentation"))
+
+                implementation(project(":application:common_flows:wide_screen_common"))
+                implementation(project(":application:core:persistence_bridge"))
+                implementation(project(":application:core:auth_core"))
+                implementation(project(":application:core:resources"))
+                implementation(project(":application:core:theme"))
+                implementation(project(":application:core:models"))
+                implementation(project(":application:features:note_menu"))
+                implementation(project(":application:features:editor"))
+                implementation(project(":application:features:auth"))
+                implementation(project(":application:features:account"))
+                implementation(project(":application:features:search"))
             }
         }
 
@@ -64,26 +83,6 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-                implementation(project(":writeopia"))
-                implementation(project(":writeopia_ui"))
-                implementation(project(":writeopia_models"))
-                implementation(project(":plugins:writeopia_serialization"))
-                implementation(project(":plugins:writeopia_network"))
-
-                implementation(project(":application:core:utils"))
-                implementation(project(":application:core:navigation"))
-                implementation(project(":plugins:writeopia_persistence_core"))
-                implementation(project(":application:core:persistence_bridge"))
-                implementation(project(":application:core:auth_core"))
-                implementation(project(":application:core:resources"))
-                implementation(project(":application:core:theme"))
-                implementation(project(":application:core:models"))
-                implementation(project(":application:features:editor"))
-                implementation(project(":application:features:auth"))
-                implementation(project(":application:features:account"))
-                implementation(project(":application:features:search"))
-                implementation(project(":plugins:writeopia_presentation"))
-
                 implementation(libs.androidx.ktx)
                 implementation(libs.appCompat)
 

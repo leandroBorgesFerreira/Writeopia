@@ -42,7 +42,7 @@ abstract class WriteopiaApplicationDatabase : RoomDatabase() {
         private var instance: WriteopiaApplicationDatabase? = null
 
         fun database(
-            context: Context,
+            databaseBuilder: RoomDatabase.Builder<AppDatabase>,
             databaseName: String = DATABASE_NAME,
             inMemory: Boolean = false,
         ): WriteopiaApplicationDatabase =

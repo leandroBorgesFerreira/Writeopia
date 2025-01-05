@@ -7,8 +7,6 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class NavigationViewModel : ViewModel() {
 
-    private val routeStack = MutableStateFlow(mutableSetOf<String>())
-
     private val _selectedNavigation = MutableStateFlow(bottomBatItems())
     val selectedNavigation = _selectedNavigation.asStateFlow()
 
