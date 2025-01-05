@@ -492,7 +492,7 @@ private fun DocumentItem(
                     modifier = Modifier.background(
                         color = backgroundColor,
                         shape = MaterialTheme.shapes.large
-                    )
+                    ).clip(MaterialTheme.shapes.large)
                 ) {
                     documentUi.preview.forEachIndexed { i, storyStep ->
                         val extraData = mutableMapOf<String, Any>()
