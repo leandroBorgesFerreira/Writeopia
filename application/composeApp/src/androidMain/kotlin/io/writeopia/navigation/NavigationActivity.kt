@@ -20,8 +20,8 @@ import io.writeopia.auth.core.token.FirebaseTokenHandler
 import io.writeopia.auth.di.AuthInjection
 import io.writeopia.auth.navigation.authNavigation
 import io.writeopia.common.utils.Destinations
-import io.writeopia.editor.di.EditorInjector
-import io.writeopia.features.search.di.AndroidSearchInjection
+import io.writeopia.editor.di.EditorKmpInjector
+import io.writeopia.features.search.di.MobileSearchInjection
 import io.writeopia.features.search.di.KmpSearchInjection
 import io.writeopia.mobile.AppMobile
 import io.writeopia.notemenu.data.model.NotesNavigation
@@ -35,6 +35,8 @@ import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 import io.writeopia.persistence.room.injection.RoomRepositoryInjection
 import io.writeopia.sdk.network.injector.ConnectionInjector
+import io.writeopia.ui.keyboard.KeyboardEvent
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class NavigationActivity : AppCompatActivity() {
 
@@ -82,10 +84,13 @@ fun NavigationGraph(
     val uiConfigViewModel = uiConfigInjection.provideUiConfigurationViewModel()
     val repositoryInjection = RoomRepositoryInjection(database)
     val authInjection = AuthInjection(authCoreInjection, connectionInjector, repositoryInjection)
-    val editorInjector = EditorInjector.create(
+
+    val editorInjector = EditorKmpInjector(
         authCoreInjection,
         repositoryInjection,
         connectionInjector,
+        MutableStateFlow(false),
+        MutableStateFlow(KeyboardEvent.IDLE),
         uiConfigInjection.provideUiConfigurationRepository()
     )
     val accountMenuInjector = AndroidAccountMenuInjector.create(authCoreInjection)
@@ -96,7 +101,7 @@ fun NavigationGraph(
     )
 
     val searchInjector = remember {
-        AndroidSearchInjection(
+        MobileSearchInjection(
             searchInjection = KmpSearchInjection(),
             appRoomDaosInjection = appDaosInjection,
             roomInjector = repositoryInjection

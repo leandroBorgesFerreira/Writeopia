@@ -125,7 +125,7 @@ fun App(
         sideMenuInjector.provideSideMenuViewModel(coroutineScope)
     val colorTheme = colorThemeOption.collectAsState().value
     val navigationController: NavHostController = rememberNavController()
-    val searchViewModel = searchInjection.provideViewModel(coroutineScope)
+    val searchViewModel = searchInjection.provideViewModel()
 
     coroutineScope.launch {
         navigationController.currentBackStackEntryFlow.collect { navEntry ->

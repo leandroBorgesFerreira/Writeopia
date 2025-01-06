@@ -6,8 +6,7 @@ import kotlinx.coroutines.CoroutineScope
 
 interface SearchInjection {
 
-    fun provideViewModel(coroutineScope: CoroutineScope? = null): SearchViewModel
-
     @Composable
-    fun provideViewModelMobile(coroutineScope: CoroutineScope?): SearchViewModel
+    fun provideViewModel(): SearchViewModel
+
 }

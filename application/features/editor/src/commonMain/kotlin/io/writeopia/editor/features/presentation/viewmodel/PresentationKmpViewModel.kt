@@ -1,5 +1,7 @@
 package io.writeopia.editor.features.presentation.viewmodel
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import io.writeopia.common.utils.KmpViewModel
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.presentation.model.SlidePage
@@ -12,7 +14,7 @@ import kotlinx.coroutines.launch
 class PresentationKmpViewModel(
     private val documentRepository: DocumentRepository,
     private val presentationParser: PresentationParser = PresentationParser
-) : KmpViewModel(), PresentationViewModel {
+) : ViewModel(), PresentationViewModel {
 
     private val _currentPage = MutableStateFlow(0)
 
@@ -37,7 +39,7 @@ class PresentationKmpViewModel(
     }
 
     override fun loadDocument(id: String) {
-        coroutineScope.launch {
+        viewModelScope.launch {
             documentRepository.loadDocumentById(id)?.let { document ->
                 _slidesState.value = presentationParser.parse(document.content.values)
             }

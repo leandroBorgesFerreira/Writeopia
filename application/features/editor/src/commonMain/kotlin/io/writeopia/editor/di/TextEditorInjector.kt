@@ -10,5 +10,6 @@ interface TextEditorInjector {
     @Composable
     fun provideNoteDetailsViewModel(parentFolderId: String): NoteEditorViewModel
 
-    fun providePresentationViewModel(coroutineScope: CoroutineScope? = null): PresentationViewModel
+    @Composable
+    fun providePresentationViewModel(): PresentationViewModel
 }

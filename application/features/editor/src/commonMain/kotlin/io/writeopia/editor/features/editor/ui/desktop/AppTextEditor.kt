@@ -44,8 +44,6 @@ fun AppTextEditor(
         }
     }
 
-    (viewModel as? NoteEditorKmpViewModel)?.initCoroutine(coroutine)
-
     if (loadNoteId == null) {
         viewModel.createNewDocument(GenerateId.generate(), "")
     } else {
