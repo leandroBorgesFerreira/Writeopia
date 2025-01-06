@@ -1,6 +1,7 @@
 package io.writeopia.features.search.di
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.features.search.repository.SearchRepository
 import io.writeopia.features.search.ui.SearchKmpViewModel
 import io.writeopia.features.search.ui.SearchViewModel
@@ -25,17 +26,16 @@ class KmpSearchInjection(private val writeopiaDb: WriteopiaDb? = null) : SearchI
         documentDao: DocumentSearch = provideDocumentSqlDao()
     ): SearchRepository = SearchRepository(folderDao, documentDao)
 
+    @Composable
     override fun provideViewModel(
-        coroutineScope: CoroutineScope?
-    ): SearchKmpViewModel =
-        SearchKmpViewModel(searchRepository = provideRepository()).apply {
-            if (coroutineScope != null) {
-                this.initCoroutine(coroutineScope)
-            }
-        }
+
+    ): SearchKmpViewModel = viewModel {
+        SearchKmpViewModel(searchRepository = provideRepository())
+    }
+
 
     @Composable
-    override fun provideViewModelMobile(coroutineScope: CoroutineScope?): SearchViewModel {
+    override fun provideViewModelMobile(): SearchViewModel {
         throw IllegalStateException("This injection should not be used")
     }
 }

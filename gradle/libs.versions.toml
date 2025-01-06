@@ -40,6 +40,7 @@ hikaricp = "5.1.0"
 postgresql = "42.6.0"
 compose-navigation = "2.7.0-alpha07"
 publish = "0.30.0"
+lifecycleViewmodelCompose = "2.8.4"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
@@ -101,7 +102,7 @@ database-hikaricp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hi
 database-postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
 compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "compose-navigation" }
 sqldelight-web-driver = { module = "app.cash.sqldelight:web-worker-driver", version.ref = "webWorkerDriver" }
-
+lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 
 [plugins]
 application = { id = "com.android.application", version.ref = "agp" }
