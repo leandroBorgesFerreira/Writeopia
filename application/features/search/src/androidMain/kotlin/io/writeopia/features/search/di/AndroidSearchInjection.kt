@@ -2,7 +2,6 @@ package io.writeopia.features.search.di
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.writeopia.features.search.ui.AndroidSearchViewModel
 import io.writeopia.features.search.ui.SearchKmpViewModel
 import io.writeopia.features.search.ui.SearchViewModel
 import io.writeopia.notemenu.data.repository.RoomFolderRepository
@@ -17,18 +16,15 @@ class AndroidSearchInjection(
 ) : SearchInjection {
 
     @Composable
-    override fun provideViewModelMobile(coroutineScope: CoroutineScope?): SearchViewModel {
-        val viewModel = SearchKmpViewModel(
-            searchInjection.provideRepository(
-                folderDao = RoomFolderRepository(appRoomDaosInjection.provideFolderDao()),
-                documentDao = roomInjector.provideDocumentRepository()
+    override fun provideViewModelMobile(): SearchViewModel =
+        viewModel {
+            SearchKmpViewModel(
+                searchInjection.provideRepository(
+                    folderDao = RoomFolderRepository(appRoomDaosInjection.provideFolderDao()),
+                    documentDao = roomInjector.provideDocumentRepository()
+                )
             )
-        )
-
-        return viewModel {
-            viewModel
         }
-    }
 
     @Composable
     override fun provideViewModel(): SearchViewModel {

@@ -27,9 +27,7 @@ class KmpSearchInjection(private val writeopiaDb: WriteopiaDb? = null) : SearchI
     ): SearchRepository = SearchRepository(folderDao, documentDao)
 
     @Composable
-    override fun provideViewModel(
-
-    ): SearchKmpViewModel = viewModel {
+    override fun provideViewModel(): SearchKmpViewModel = viewModel {
         SearchKmpViewModel(searchRepository = provideRepository())
     }
 
