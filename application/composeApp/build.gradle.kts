@@ -48,6 +48,7 @@ kotlin {
 
                 implementation(project(":application:common_flows:wide_screen_common"))
                 implementation(project(":application:core:persistence_bridge"))
+                implementation(project(":application:core:persistence_room"))
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:resources"))
                 implementation(project(":application:core:theme"))
@@ -59,6 +60,7 @@ kotlin {
                 implementation(project(":application:features:search"))
 
                 implementation(libs.compose.navigation)
+                implementation(libs.room.ktx)
             }
         }
 
@@ -94,8 +96,6 @@ kotlin {
 
                 implementation(libs.androidx.material3)
                 implementation(project.dependencies.platform(libs.androidx.compose.bom))
-
-                implementation(libs.room.ktx)
             }
         }
     }

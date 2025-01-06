@@ -43,6 +43,7 @@ kotlin {
                 implementation(project(":application:core:common_ui"))
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:persistence_bridge"))
+                implementation(project(":application:core:persistence_room"))
                 implementation(project(":application:core:theme"))
 
                 implementation(project(":application:features:account"))
@@ -102,6 +103,10 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.test)
                 implementation(libs.mockk)
             }
+        }
+
+        iosMain.dependencies {
+            implementation(project(":application:core:persistence_room"))
         }
     }
 }

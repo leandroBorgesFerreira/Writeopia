@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 
 private const val DATABASE_NAME = "WriteopiaDatabase"
 
-object DatabaseConfig {
+object DatabaseConfigAndroid {
     fun roomBuilder(context: Context): RoomDatabase.Builder<WriteopiaApplicationDatabase> =
         Room.databaseBuilder(
             context.applicationContext,
