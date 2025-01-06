@@ -2,6 +2,7 @@ package io.writeopia.global.shell.di
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.global.shell.viewmodel.GlobalShellKmpViewModel
 import io.writeopia.global.shell.viewmodel.GlobalShellViewModel
@@ -37,16 +38,12 @@ class SideMenuKmpInjector(
 
     @Composable
     override fun provideSideMenuViewModel(coroutineScope: CoroutineScope?): GlobalShellViewModel =
-        remember {
+        viewModel {
             GlobalShellKmpViewModel(
                 notesUseCase = provideNotesUseCase(),
                 uiConfigurationRepo = uiConfigurationInjector.provideUiConfigurationRepository(),
                 authManager = authCoreInjection.provideAccountManager(),
                 notesNavigationUseCase = NotesNavigationUseCase.singleton(),
-            ).apply {
-                if (coroutineScope != null) {
-                    this.initCoroutine(coroutineScope)
-                }
-            }
+            )
         }
 }
