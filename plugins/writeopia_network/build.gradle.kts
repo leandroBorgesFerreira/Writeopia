@@ -2,8 +2,9 @@ import com.vanniktech.maven.publish.SonatypeHost
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.kotlinSerialization)
     kotlin("multiplatform")
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.dokka)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.sonatype.publish)
@@ -57,6 +58,8 @@ kotlin {
         binaries.library()
     }
 
+    androidTarget()
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -80,6 +83,7 @@ kotlin {
 
                 implementation(libs.ktor.client.content.negotiation)
                 implementation(libs.ktor.client.auth)
+                implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.client.core)
 //                implementation(libs.ktor.client.cio)
@@ -90,16 +94,49 @@ kotlin {
             }
         }
 
-        val jvmMain by getting {
-            dependencies {
-                dependsOn(commonMain)
-                implementation(libs.ktor.client.okhttp)
-                implementation(libs.kotlinx.coroutines.android)
-            }
+
+        jvmMain.dependencies {}
+
+        androidMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.kotlinx.coroutines.android)
         }
     }
 }
 
 tasks.dokkaHtmlPartial {
     moduleName = "plugin:writeopia_network"
+}
+
+
+android {
+    namespace = "io.writeopia.sdk.plugins.network"
+    compileSdk = 35
+
+    defaultConfig {
+        minSdk = 24
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+    }
 }
