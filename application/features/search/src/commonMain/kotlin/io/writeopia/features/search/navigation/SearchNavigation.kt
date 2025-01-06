@@ -20,7 +20,7 @@ fun NavGraphBuilder.searchNavigation(
     composable(
         route = SearchDestiny.search(),
     ) { _ ->
-        val viewModel = searchInjection.provideViewModelMobile(rememberCoroutineScope())
+        val viewModel = searchInjection.provideViewModelMobile()
 
         DocumentsSearchScreen(
             searchState = viewModel.searchState,

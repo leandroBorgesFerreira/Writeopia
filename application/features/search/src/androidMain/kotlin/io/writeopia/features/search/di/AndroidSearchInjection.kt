@@ -26,11 +26,12 @@ class AndroidSearchInjection(
         )
 
         return viewModel {
-            AndroidSearchViewModel(viewModel)
+            viewModel
         }
     }
 
-    override fun provideViewModel(coroutineScope: CoroutineScope?): SearchViewModel {
-        throw IllegalStateException("This injection should not be used")
+    @Composable
+    override fun provideViewModel(): SearchViewModel {
+        TODO("Not yet implemented")
     }
 }
