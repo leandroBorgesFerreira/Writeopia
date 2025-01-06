@@ -11,6 +11,11 @@ kotlin {
 
     androidTarget()
 
+    js(IR) {
+        browser()
+        binaries.library()
+    }
+
     listOf(
         iosX64(),
         iosArm64(),
