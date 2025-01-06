@@ -13,6 +13,7 @@ ktor = "3.0.0"
 ktlint = "12.1.1"
 ktx = "1.15.0"
 appCompat = "1.7.0"
+lifecycleViewmodelCompose = "2.8.4"
 material = "1.12.0"
 postgresSocketFactory = "1.15.1"
 room = "2.7.0-alpha12"
@@ -80,6 +81,7 @@ ktor-server-core = { module = "io.ktor:ktor-server-core-jvm" }
 ktor-server-websocket = { module = "io.ktor:ktor-server-websockets-jvm" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm" }
 ktor-server-tests = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
+lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 #material3-desktop = { module = "org.jetbrains.compose.material3:material3-desktop", version.ref = "material3" }
 sql-postgres-socket-factory = { module = "com.google.cloud.sql:postgres-socket-factory", version.ref = "postgresSocketFactory" }

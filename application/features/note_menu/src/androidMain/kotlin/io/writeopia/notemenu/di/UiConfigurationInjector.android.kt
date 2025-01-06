@@ -3,7 +3,6 @@ package io.writeopia.notemenu.di
 import android.content.SharedPreferences
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.writeopia.notemenu.viewmodel.UiConfigurationAndroidViewModel
 import io.writeopia.repository.UiConfigurationPreferenceDao
 import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.repository.UiConfigurationRepositoryImpl
@@ -20,8 +19,6 @@ actual class UiConfigurationInjector(private val sharedPreferences: SharedPrefer
         uiConfigurationSqlDelightRepository: UiConfigurationRepository =
             provideUiConfigurationRepository(),
     ): UiConfigurationViewModel = viewModel {
-        UiConfigurationAndroidViewModel(
-            UiConfigurationKmpViewModel(uiConfigurationSqlDelightRepository)
-        )
+        UiConfigurationKmpViewModel(uiConfigurationSqlDelightRepository)
     }
 }

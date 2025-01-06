@@ -35,7 +35,10 @@ kotlin {
                 implementation(project(":application:core:persistence_sqldelight"))
                 implementation(project(":application:core:utils"))
 
+                implementation(compose.runtime)
+                implementation(compose.foundation)
                 implementation(compose.material3)
+                implementation(libs.lifecycle.viewmodel.compose)
             }
         }
 

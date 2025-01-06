@@ -2,7 +2,6 @@ package io.writeopia.account.di
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.writeopia.account.viewmodel.AccountMenuAndroidViewModel
 import io.writeopia.account.viewmodel.AccountMenuViewModel
 import io.writeopia.auth.core.di.AuthCoreInjection
 
@@ -11,9 +10,8 @@ class AndroidAccountMenuInjector(
 ) : AccountMenuInjector {
 
     @Composable
-    override fun provideAccountMenuViewModel(): AccountMenuViewModel = viewModel {
-        AccountMenuAndroidViewModel(accountMenuKmpInjector.provideAccountMenuKmpViewModel())
-    }
+    override fun provideAccountMenuViewModel(): AccountMenuViewModel =
+        accountMenuKmpInjector.provideAccountMenuViewModel()
 
     companion object {
         fun create(authCoreInjection: AuthCoreInjection) =

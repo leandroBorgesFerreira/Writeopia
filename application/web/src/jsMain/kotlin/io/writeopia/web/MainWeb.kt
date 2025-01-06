@@ -33,7 +33,7 @@ fun CreateAppInMemory(repositoryInjection: SqlDelightDaoInjector) {
     val selectionState = MutableStateFlow(false)
 
     val uiConfigurationViewModel = UiConfigurationInjector()
-        .provideUiConfigurationViewModel(coroutineScope = coroutineScope)
+        .provideUiConfigurationViewModel()
 
     val colorTheme =
         uiConfigurationViewModel.listenForColorTheme { "disconnected_user" }

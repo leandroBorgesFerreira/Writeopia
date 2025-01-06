@@ -2,6 +2,7 @@ package io.writeopia.notemenu.di
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.repository.UiConfigurationSqlDelightRepository
 import io.writeopia.sql.WriteopiaDb
@@ -20,13 +21,9 @@ actual class UiConfigurationInjector(private val writeopiaDb: WriteopiaDb?) {
 
     @Composable
     fun provideUiConfigurationViewModel(
-        uiConfigurationSqlDelightRepository: UiConfigurationRepository = provideUiConfigurationRepository(),
-        coroutineScope: CoroutineScope? = null
-    ): UiConfigurationViewModel = remember {
-        UiConfigurationKmpViewModel(uiConfigurationSqlDelightRepository).apply {
-            if (coroutineScope != null) {
-                initCoroutine(coroutineScope = coroutineScope)
-            }
-        }
+        uiConfigurationSqlDelightRepository: UiConfigurationRepository =
+            provideUiConfigurationRepository(),
+    ): UiConfigurationViewModel = viewModel {
+        UiConfigurationKmpViewModel(uiConfigurationSqlDelightRepository)
     }
 }
