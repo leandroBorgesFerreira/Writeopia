@@ -20,13 +20,13 @@ room = "2.7.0-alpha12"
 compose = "2.8.7"
 navigation-compose = "2.8.5"
 agp = "8.7.3"
-kotlin = "2.0.21"
+kotlin = "2.1.0"
 composeTest = "1.7.6"
 webWorkerDriver = "2.0.0"
 writeopia = "0.4.1"
 mockk = "1.13.8"
 sqldelight = "2.0.0"
-ksp = "2.0.21-1.0.25"
+ksp = "2.1.0-1.0.29"
 compose-multiplatform = "1.6.11"
 dag-command = "1.11.0"
 dokka = "1.9.20"
@@ -92,7 +92,7 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "compose" }
 runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "compose" }
-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
+navigation-compose-android = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 sqldelight-jvm = { group = "app.cash.sqldelight", name = "sqlite-driver", version.ref = "sqldelight" }
 sqldelight-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }

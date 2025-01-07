@@ -53,14 +53,13 @@ dependencies {
     implementation(libs.material)
 
     implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
     implementation(libs.kotlinx.datetime)
 
     implementation(libs.viewmodel.compose)
     implementation(libs.runtime.compose)
-    implementation(libs.navigation.compose)
+    implementation(libs.navigation.compose.android)
     implementation("androidx.activity:activity-compose")
     implementation("androidx.compose.material3:material3")
 

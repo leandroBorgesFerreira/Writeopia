@@ -3,14 +3,14 @@ package io.writeopia.navigation
 import androidx.lifecycle.ViewModel
 import io.writeopia.common.utils.Destinations
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class NavigationViewModel : ViewModel() {
-
-    private val routeStack = MutableStateFlow(mutableSetOf<String>())
+class AndroidNavigationViewModel : ViewModel(), NavigationViewModel {
 
     private val _selectedNavigation = MutableStateFlow(bottomBatItems())
-    val selectedNavigation = _selectedNavigation.asStateFlow()
+    override val selectedNavigation: StateFlow<List<BottomBarItem>> =
+        _selectedNavigation.asStateFlow()
 
     private fun bottomBatItems() =
         listOf(
@@ -28,8 +28,3 @@ class NavigationViewModel : ViewModel() {
             ),
         )
 }
-
-data class BottomBarItem(
-    val navItemName: NavItemName,
-    val destination: String,
-)

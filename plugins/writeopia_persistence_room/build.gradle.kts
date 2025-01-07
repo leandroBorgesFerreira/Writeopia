@@ -83,6 +83,17 @@ kotlin {
 
     androidTarget()
 
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "WriteopiaFeaturesSqldelight"
+            isStatic = true
+        }
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -93,7 +104,6 @@ kotlin {
                 implementation(libs.kotlinx.datetime)
 
                 implementation(libs.room.runtime)
-                implementation(libs.room.ktx)
                 implementation(libs.room.paging)
             }
         }

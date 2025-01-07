@@ -86,8 +86,6 @@ kotlin {
                 implementation(libs.androidx.compose.test)
                 implementation(project(":libraries:dbtest"))
                 implementation(libs.room.runtime)
-
-                implementation(libs.room.ktx)
             }
         }
 

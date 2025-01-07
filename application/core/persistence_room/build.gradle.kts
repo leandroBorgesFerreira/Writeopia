@@ -1,14 +1,61 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
+    kotlin("multiplatform")
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinAndroid)
+//    alias(libs.plugins.ktlint)
     id("com.google.devtools.ksp")
-    alias(libs.plugins.ktlint)
+}
+
+kotlin {
+    jvm {}
+
+    androidTarget()
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "WriteopiaFeaturesSqldelight"
+            isStatic = true
+        }
+    }
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(project(":writeopia"))
+                implementation(project(":writeopia_models"))
+                implementation(project(":plugins:writeopia_persistence_room"))
+                implementation(project(":plugins:writeopia_persistence_core"))
+                implementation(project(":application:core:theme"))
+
+                implementation(libs.room.runtime)
+                implementation(libs.room.paging)
+
+                implementation(libs.androidx.ktx)
+
+                implementation(libs.kotlinx.datetime)
+                implementation(libs.kotlinx.coroutines.core)
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+
+            }
+        }
+
+        androidMain.dependencies {
+            implementation(libs.kotlinx.coroutines.android)
+        }
+    }
 }
 
 android {
     namespace = "io.writeopia.persistence"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24
@@ -45,22 +92,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":writeopia"))
-    implementation(project(":writeopia_models"))
-    implementation(project(":plugins:writeopia_persistence_room"))
-    implementation(project(":plugins:writeopia_persistence_core"))
-    implementation(project(":application:core:theme"))
-
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    implementation(libs.room.paging)
     ksp(libs.room.compiler)
-
-    implementation(libs.androidx.ktx)
-    implementation(libs.appCompat)
-    implementation(libs.material)
-
-    implementation(libs.kotlinx.datetime)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
