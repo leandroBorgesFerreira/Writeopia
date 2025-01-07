@@ -57,7 +57,6 @@ kotlin {
                 implementation(libs.compose.navigation)
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.lifecycle.viewmodel.compose)
-                runtimeOnly(libs.kotlinx.coroutines.swing)
             }
         }
 
@@ -74,6 +73,7 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
+                runtimeOnly(libs.kotlinx.coroutines.swing)
             }
         }
     }
