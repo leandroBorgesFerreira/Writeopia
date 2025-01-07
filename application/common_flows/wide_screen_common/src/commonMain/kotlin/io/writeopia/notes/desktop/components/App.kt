@@ -198,7 +198,6 @@ fun App(
                             startDestination = startDestination,
                             notesMenuInjection = notesMenuInjection,
                             accountMenuInjector = accountInjector,
-                            coroutineScope = coroutineScope,
                             editorInjector = editorInjector,
                             isUndoKeyEvent = isUndoKeyEvent,
                             selectColorTheme = selectColorTheme,

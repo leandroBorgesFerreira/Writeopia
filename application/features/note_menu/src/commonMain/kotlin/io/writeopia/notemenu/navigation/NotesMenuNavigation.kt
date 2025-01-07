@@ -28,7 +28,6 @@ object NoteMenuDestiny {
 fun NavGraphBuilder.notesMenuNavigation(
     notesMenuInjection: NotesMenuInjection,
     navigationController: NavController,
-    coroutineScope: CoroutineScope?,
     selectColorTheme: (ColorThemeOption) -> Unit,
     navigateToNote: (String, String) -> Unit,
     navigateToNewNote: () -> Unit,
@@ -60,10 +59,7 @@ fun NavGraphBuilder.notesMenuNavigation(
         }
 
         val chooseNoteViewModel: ChooseNoteViewModel =
-            notesMenuInjection.provideChooseNoteViewModel(
-                coroutineScope = coroutineScope,
-                notesNavigation = notesNavigation
-            )
+            notesMenuInjection.provideChooseNoteViewModel(notesNavigation = notesNavigation)
 
         NotesMenuScreen(
             chooseNoteViewModel = chooseNoteViewModel,

@@ -8,8 +8,5 @@ import kotlinx.coroutines.CoroutineScope
 interface NotesMenuInjection {
 
     @Composable
-    fun provideChooseNoteViewModel(
-        coroutineScope: CoroutineScope?,
-        notesNavigation: NotesNavigation
-    ): ChooseNoteViewModel
+    fun provideChooseNoteViewModel(notesNavigation: NotesNavigation): ChooseNoteViewModel
 }

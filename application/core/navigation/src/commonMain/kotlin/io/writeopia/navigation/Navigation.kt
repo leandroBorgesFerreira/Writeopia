@@ -34,7 +34,6 @@ fun Navigation(
     searchInjection: SearchInjection? = null,
     isUndoKeyEvent: (KeyEvent) -> Boolean,
     selectColorTheme: (ColorThemeOption) -> Unit,
-    coroutineScope: CoroutineScope? = null,
     builder: NavGraphBuilder.() -> Unit
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
@@ -42,7 +41,6 @@ fun Navigation(
             notesMenuInjection = notesMenuInjection,
             navigationController = navController,
             selectColorTheme = selectColorTheme,
-            coroutineScope = coroutineScope,
             navigateToNote = navController::navigateToNote,
             navigateToAccount = navController::navigateToAccount,
             navigateToNewNote = navController::navigateToNewNote,

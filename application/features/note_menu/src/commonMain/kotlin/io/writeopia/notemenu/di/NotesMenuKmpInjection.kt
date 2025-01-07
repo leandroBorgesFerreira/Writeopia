@@ -2,6 +2,7 @@ package io.writeopia.notemenu.di
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.repository.ConfigurationRepository
@@ -57,14 +58,9 @@ class NotesMenuKmpInjection(
 
     @Composable
     override fun provideChooseNoteViewModel(
-        coroutineScope: CoroutineScope?,
         notesNavigation: NotesNavigation
     ): ChooseNoteViewModel =
-        remember {
-            provideChooseKmpNoteViewModel(notesNavigation).apply {
-                if (coroutineScope != null) {
-                    initCoroutine(coroutineScope)
-                }
-            }
+        viewModel {
+            provideChooseKmpNoteViewModel(notesNavigation)
         }
 }
