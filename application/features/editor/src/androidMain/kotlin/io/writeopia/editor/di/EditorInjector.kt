@@ -22,10 +22,9 @@ class EditorInjector internal constructor(
             editorKmpInjector.provideNoteEditorViewModel(parentFolder = parentFolderId)
         }
 
-    override fun providePresentationViewModel(
-        coroutineScope: CoroutineScope?
-    ): PresentationViewModel =
-        editorKmpInjector.providePresentationViewModel(coroutineScope)
+    @Composable
+    override fun providePresentationViewModel(): PresentationViewModel =
+        editorKmpInjector.providePresentationViewModel()
 
     companion object {
         fun create(
