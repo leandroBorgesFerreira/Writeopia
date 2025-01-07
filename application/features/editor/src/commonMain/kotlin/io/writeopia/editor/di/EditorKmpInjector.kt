@@ -16,7 +16,6 @@ import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.sharededition.SharedEditionManager
 import io.writeopia.ui.keyboard.KeyboardEvent
 import io.writeopia.ui.manager.WriteopiaStateManager
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -60,12 +59,10 @@ class EditorKmpInjector(
             uiConfigurationRepository = uiConfigurationRepository
         )
 
-    override fun providePresentationViewModel(coroutineScope: CoroutineScope?): PresentationViewModel =
-        PresentationKmpViewModel(documentRepository = provideDocumentRepository()).apply {
-            if (coroutineScope != null) {
-                initCoroutine(coroutineScope)
-            }
-        }
+    @Composable
+    override fun providePresentationViewModel(): PresentationViewModel = viewModel {
+        PresentationKmpViewModel(documentRepository = provideDocumentRepository())
+    }
 
     @Composable
     override fun provideNoteDetailsViewModel(parentFolder: String): NoteEditorViewModel =
@@ -73,3 +70,4 @@ class EditorKmpInjector(
             provideNoteEditorViewModel(parentFolder = parentFolder)
         }
 }
+
