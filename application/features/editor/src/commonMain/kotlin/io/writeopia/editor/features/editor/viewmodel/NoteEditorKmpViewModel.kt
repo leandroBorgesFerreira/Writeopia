@@ -1,7 +1,8 @@
 package io.writeopia.editor.features.editor.viewmodel
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import io.writeopia.auth.core.utils.USER_OFFLINE
-import io.writeopia.common.utils.KmpViewModel
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.editor.model.EditState
 import io.writeopia.model.Font
@@ -40,7 +41,7 @@ class NoteEditorKmpViewModel(
     private val parentFolderId: String,
     private val uiConfigurationRepository: UiConfigurationRepository
 ) : NoteEditorViewModel,
-    KmpViewModel(),
+    ViewModel(),
     BackstackInform by writeopiaManager,
     BackstackHandler by writeopiaManager {
 
@@ -60,7 +61,7 @@ class NoteEditorKmpViewModel(
     override val currentTitle by lazy {
         writeopiaManager.currentDocument.filterNotNull().map { document ->
             document.title
-        }.stateIn(coroutineScope, started = SharingStarted.Lazily, initialValue = "")
+        }.stateIn(viewModelScope, started = SharingStarted.Lazily, initialValue = "")
     }
 
     private val _shouldGoToNextScreen = MutableStateFlow(false)
@@ -73,7 +74,7 @@ class NoteEditorKmpViewModel(
 
                 else -> EditState.TEXT
             }
-        }.stateIn(coroutineScope, started = SharingStarted.Lazily, initialValue = EditState.TEXT)
+        }.stateIn(viewModelScope, started = SharingStarted.Lazily, initialValue = EditState.TEXT)
     }
 
     private val story: StateFlow<StoryState> = writeopiaManager.currentStory
@@ -83,7 +84,7 @@ class NoteEditorKmpViewModel(
         writeopiaManager.documentInfo
             .map { it.id }
             .filterNotNull()
-            .stateIn(coroutineScope, SharingStarted.Lazily, "")
+            .stateIn(viewModelScope, SharingStarted.Lazily, "")
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -123,7 +124,7 @@ class NoteEditorKmpViewModel(
                 }
 
             drawState.copy(stories = newStories)
-        }.stateIn(coroutineScope, SharingStarted.Lazily, DrawState(emptyList()))
+        }.stateIn(viewModelScope, SharingStarted.Lazily, DrawState(emptyList()))
     }
 
     private val _documentToShareInfo = MutableStateFlow<ShareDocument?>(null)
@@ -166,7 +167,7 @@ class NoteEditorKmpViewModel(
     override fun loadDocument(documentId: String) {
         if (writeopiaManager.isInitialized()) return
 
-        coroutineScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.Default) {
             val document = documentRepository.loadDocumentById(documentId)
 
             if (document != null) {
@@ -237,14 +238,14 @@ class NoteEditorKmpViewModel(
     }
 
     override val fontFamily: StateFlow<Font> by lazy {
-        uiConfigurationRepository.listenForUiConfiguration({ USER_OFFLINE }, coroutineScope)
+        uiConfigurationRepository.listenForUiConfiguration({ USER_OFFLINE }, viewModelScope)
             .filterNotNull()
             .map { it.font }
-            .stateIn(coroutineScope, SharingStarted.Lazily, Font.SYSTEM)
+            .stateIn(viewModelScope, SharingStarted.Lazily, Font.SYSTEM)
     }
 
     override fun changeFontFamily(font: Font) {
-        coroutineScope.launch {
+        viewModelScope.launch {
             uiConfigurationRepository.updateConfiguration(USER_OFFLINE) { config ->
                 config.copy(font = font)
             }
@@ -260,9 +261,9 @@ class NoteEditorKmpViewModel(
         DocumentToMarkdown.parse(document.content)
 
     private fun shareDocument(infoParse: (Document) -> String, type: String) {
-        coroutineScope.launch {
+        viewModelScope.launch {
             val document: Document = writeopiaManager.currentDocument
-                .stateIn(coroutineScope)
+                .stateIn(this)
                 .value ?: return@launch
 
             val documentTitle = document.title.replace(" ", "_")
@@ -276,7 +277,7 @@ class NoteEditorKmpViewModel(
     }
 
     private fun removeNoteIfEmpty(onComplete: () -> Unit) {
-        coroutineScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.Default) {
             val document = writeopiaManager.currentDocument.stateIn(this).value
 
             if (document != null && story.value.stories.noContent()) {
