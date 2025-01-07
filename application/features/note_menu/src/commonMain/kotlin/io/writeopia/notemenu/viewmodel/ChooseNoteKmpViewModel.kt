@@ -1,9 +1,10 @@
 package io.writeopia.notemenu.viewmodel
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.common.utils.DISCONNECTED_USER_ID
-import io.writeopia.common.utils.KmpViewModel
 import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.map
 import io.writeopia.common.utils.toBoolean
@@ -21,7 +22,6 @@ import io.writeopia.sdk.import.json.WriteopiaJsonParser
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,13 +49,17 @@ internal class ChooseNoteKmpViewModel(
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
     private val documentToJson: DocumentToJson = DocumentToJson(),
     private val writeopiaJsonParser: WriteopiaJsonParser = WriteopiaJsonParser()
-) : ChooseNoteViewModel, KmpViewModel(), FolderController by folderController {
+) : ChooseNoteViewModel, ViewModel(), FolderController by folderController {
+
+    init {
+        folderController.initCoroutine(viewModelScope)
+    }
 
     private val _selectedNotes = MutableStateFlow(setOf<String>())
     override val hasSelectedNotes: StateFlow<Boolean> by lazy {
         _selectedNotes.map { selectedIds ->
             selectedIds.isNotEmpty()
-        }.stateIn(coroutineScope, SharingStarted.Lazily, false)
+        }.stateIn(viewModelScope, SharingStarted.Lazily, false)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -63,7 +67,7 @@ internal class ChooseNoteKmpViewModel(
         authManager.listenForUser()
             .flatMapLatest { user ->
                 notesUseCase.listenForMenuItemsPerFolderId(notesNavigation, user.id)
-            }.stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
+            }.stateIn(viewModelScope, SharingStarted.Lazily, emptyMap())
     }
 
     override val menuItemsState: StateFlow<ResultData<List<MenuItem>>> by lazy {
@@ -77,7 +81,7 @@ internal class ChooseNoteKmpViewModel(
             }
 
             ResultData.Complete(pageItems ?: emptyList())
-        }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Loading())
+        }.stateIn(viewModelScope, SharingStarted.Lazily, ResultData.Loading())
     }
 
     private val _user: MutableStateFlow<UserState<User>> = MutableStateFlow(UserState.Idle())
@@ -86,7 +90,7 @@ internal class ChooseNoteKmpViewModel(
             userState.map { user ->
                 user.name
             }
-        }.stateIn(coroutineScope, SharingStarted.Lazily, UserState.Idle())
+        }.stateIn(viewModelScope, SharingStarted.Lazily, UserState.Idle())
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -95,7 +99,7 @@ internal class ChooseNoteKmpViewModel(
             .flatMapLatest { user ->
                 notesConfig.listenForArrangementPref(user.id).map(NotesArrangement::fromString)
             }
-            .stateIn(coroutineScope, SharingStarted.Lazily, NotesArrangement.GRID)
+            .stateIn(viewModelScope, SharingStarted.Lazily, NotesArrangement.GRID)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -104,7 +108,7 @@ internal class ChooseNoteKmpViewModel(
             .flatMapLatest { user ->
                 notesConfig.listenOrderPreference(user.id).map(OrderBy::fromString)
             }
-            .stateIn(coroutineScope, SharingStarted.Lazily, OrderBy.UPDATE)
+            .stateIn(viewModelScope, SharingStarted.Lazily, OrderBy.UPDATE)
     }
 
     private val _showLocalSyncConfig = MutableStateFlow<ConfigState>(ConfigState.Idle)
@@ -144,12 +148,7 @@ internal class ChooseNoteKmpViewModel(
                     notesArrangement = arrangement
                 )
             }
-        }.stateIn(coroutineScope, SharingStarted.Lazily, ResultData.Idle())
-    }
-
-    override fun initCoroutine(coroutineScope: CoroutineScope) {
-        super.initCoroutine(coroutineScope)
-        folderController.initCoroutine(coroutineScope)
+        }.stateIn(viewModelScope, SharingStarted.Lazily, ResultData.Idle())
     }
 
     override suspend fun requestUser() {
@@ -193,7 +192,7 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun onDocumentSelected(id: String, selected: Boolean) {
-        coroutineScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.Default) {
             if (selected) {
                 _selectedNotes.value += id
             } else {
@@ -207,31 +206,31 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun listArrangementSelected() {
-        coroutineScope.launch {
+        viewModelScope.launch {
             notesConfig.saveDocumentArrangementPref(NotesArrangement.LIST, getUserId())
         }
     }
 
     override fun gridArrangementSelected() {
-        coroutineScope.launch {
+        viewModelScope.launch {
             notesConfig.saveDocumentArrangementPref(NotesArrangement.GRID, getUserId())
         }
     }
 
     override fun staggeredGridArrangementSelected() {
-        coroutineScope.launch {
+        viewModelScope.launch {
             notesConfig.saveDocumentArrangementPref(NotesArrangement.STAGGERED_GRID, getUserId())
         }
     }
 
     override fun sortingSelected(orderBy: OrderBy) {
-        coroutineScope.launch {
+        viewModelScope.launch {
             notesConfig.saveDocumentSortingPref(orderBy, getUserId())
         }
     }
 
     override fun copySelectedNotes() {
-        coroutineScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.Default) {
             notesUseCase.duplicateDocuments(_selectedNotes.value.toList(), getUserId())
         }
     }
@@ -239,7 +238,7 @@ internal class ChooseNoteKmpViewModel(
     override fun deleteSelectedNotes() {
         val selected = _selectedNotes.value
 
-        coroutineScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.Default) {
             notesUseCase.deleteNotes(selected)
             clearSelection()
         }
@@ -256,7 +255,7 @@ internal class ChooseNoteKmpViewModel(
             ?.all { document -> document.favorite }
             ?: false
 
-        coroutineScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.Default) {
             if (allFavorites) {
                 notesUseCase.unFavoriteDocuments(selectedIds)
             } else {
@@ -278,7 +277,7 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun configureDirectory() {
-        coroutineScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.Default) {
             _showLocalSyncConfig.value =
                 ConfigState.Configure(
                     path = notesConfig.loadWorkspacePath(getUserId()) ?: "",
@@ -293,7 +292,7 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun loadFiles(filePaths: List<String>) {
-        coroutineScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.Default) {
             writeopiaJsonParser.readDocuments(filePaths)
                 .onCompletion { exception ->
                     if (exception == null) {
@@ -313,7 +312,7 @@ internal class ChooseNoteKmpViewModel(
         val path = _showLocalSyncConfig.value.getPath()
 
         if (path != null) {
-            coroutineScope.launch(Dispatchers.Default) {
+            viewModelScope.launch(Dispatchers.Default) {
                 notesConfig.saveWorkspacePath(path = path, userId = getUserId())
 
                 when (_showLocalSyncConfig.value.getSyncRequest()) {
@@ -346,7 +345,7 @@ internal class ChooseNoteKmpViewModel(
     }
 
     private fun handleStorage(workspaceFunc: suspend (String) -> Unit, syncRequest: SyncRequest) {
-        coroutineScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.Default) {
             val userId = getUserId()
             val workspacePath = notesConfig.loadWorkspacePath(userId)
 
@@ -397,7 +396,7 @@ internal class ChooseNoteKmpViewModel(
     }
 
     private fun directoryFilesAs(path: String, documentWriter: DocumentWriter) {
-        coroutineScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.Default) {
             val data = notesUseCase.loadDocumentsForUser(getUserId())
             documentWriter.writeDocuments(data, path)
         }

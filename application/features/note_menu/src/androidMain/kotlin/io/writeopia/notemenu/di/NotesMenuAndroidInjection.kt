@@ -4,10 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.notemenu.data.model.NotesNavigation
-import io.writeopia.notemenu.viewmodel.ChooseNoteAndroidViewModel
 import io.writeopia.notemenu.viewmodel.ChooseNoteViewModel
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class NotesMenuAndroidInjection(
@@ -16,12 +14,9 @@ class NotesMenuAndroidInjection(
 
     @Composable
     override fun provideChooseNoteViewModel(
-        coroutineScope: CoroutineScope?,
         notesNavigation: NotesNavigation
     ): ChooseNoteViewModel = viewModel {
-        ChooseNoteAndroidViewModel(
-            notesMenuKmpInjection.provideChooseKmpNoteViewModel(notesNavigation = notesNavigation),
-        )
+        notesMenuKmpInjection.provideChooseKmpNoteViewModel(notesNavigation = notesNavigation)
     }
 
     companion object {

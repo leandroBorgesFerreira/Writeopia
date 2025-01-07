@@ -19,7 +19,6 @@ import androidx.compose.ui.window.Dialog
 import io.writeopia.common.utils.ColorUtils
 import io.writeopia.editor.configuration.ui.HeaderEditionOptions
 import io.writeopia.editor.features.editor.ui.TextEditor
-import io.writeopia.editor.features.editor.viewmodel.NoteEditorKmpViewModel
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.ui.drawer.factory.DrawersFactory
@@ -43,8 +42,6 @@ fun AppTextEditor(
             listState.animateScrollBy(70F)
         }
     }
-
-    (viewModel as? NoteEditorKmpViewModel)?.initCoroutine(coroutine)
 
     if (loadNoteId == null) {
         viewModel.createNewDocument(GenerateId.generate(), "")

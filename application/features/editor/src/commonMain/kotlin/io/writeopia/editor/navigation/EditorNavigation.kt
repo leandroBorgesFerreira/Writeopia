@@ -2,7 +2,6 @@ package io.writeopia.editor.navigation
 
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.navigation.NavGraphBuilder
@@ -82,7 +81,7 @@ fun NavGraphBuilder.editorNavigation(
 
     composable(route = "${Destinations.PRESENTATION.id}/{documentId}") { backStackEntry ->
         val documentId = backStackEntry.arguments?.getString("documentId")
-        val viewModel = editorInjector.providePresentationViewModel(rememberCoroutineScope())
+        val viewModel = editorInjector.providePresentationViewModel()
 
         if (documentId != null) {
             viewModel.loadDocument(documentId)

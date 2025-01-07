@@ -7,6 +7,7 @@ espressoCore = "3.6.1"
 firebaseAdmin = "9.2.0"
 junit = "1.2.1"
 kotlinxCoroutines = "1.9.0"
+kotlinxCoroutinesSwing = "1.10.1"
 kotlinxDatetime = "0.6.0"
 kotlinxSerializationJson = "1.7.3"
 ktor = "3.0.0"
@@ -20,7 +21,6 @@ compose = "2.8.7"
 navigation-compose = "2.8.5"
 agp = "8.7.3"
 kotlin = "2.0.21"
-compose-compiler = "1.5.15"
 composeTest = "1.7.6"
 webWorkerDriver = "2.0.0"
 writeopia = "0.4.1"
@@ -40,6 +40,7 @@ hikaricp = "5.1.0"
 postgresql = "42.6.0"
 compose-navigation = "2.7.0-alpha07"
 publish = "0.30.0"
+lifecycleViewmodelCompose = "2.8.4"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
@@ -64,6 +65,7 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 kotlin-coroutines-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-flow = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-flow", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinxCoroutinesSwing" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
@@ -101,7 +103,7 @@ database-hikaricp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hi
 database-postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
 compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "compose-navigation" }
 sqldelight-web-driver = { module = "app.cash.sqldelight:web-worker-driver", version.ref = "webWorkerDriver" }
-
+lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 
 [plugins]
 application = { id = "com.android.application", version.ref = "agp" }

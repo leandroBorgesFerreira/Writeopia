@@ -35,9 +35,7 @@ class ChooseNoteViewModelTest {
                 notesConfig = notesConfig,
                 authManager = authManager,
                 selectionState = MutableStateFlow(false)
-            ).apply {
-                initCoroutine(this@runTest)
-            }
+            )
 
             val selectedNotesList = mutableListOf<Boolean>()
             backgroundScope.launch(testDispatcher) {

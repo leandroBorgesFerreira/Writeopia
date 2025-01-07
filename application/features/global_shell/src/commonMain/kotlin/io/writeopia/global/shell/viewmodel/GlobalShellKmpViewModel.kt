@@ -1,9 +1,10 @@
 package io.writeopia.global.shell.viewmodel
 
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.common.utils.IconChange
-import io.writeopia.common.utils.KmpViewModel
 import io.writeopia.common.utils.collections.reverseTraverse
 import io.writeopia.common.utils.collections.toNodeTree
 import io.writeopia.model.ColorThemeOption
@@ -18,7 +19,6 @@ import io.writeopia.notemenu.viewmodel.FolderController
 import io.writeopia.notemenu.viewmodel.FolderStateController
 import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.models.document.MenuItem
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,15 +41,10 @@ class GlobalShellKmpViewModel(
         notesUseCase,
         authManager
     ),
-) : GlobalShellViewModel, KmpViewModel(), FolderController by folderStateController {
+) : GlobalShellViewModel, ViewModel(), FolderController by folderStateController {
 
     private var localUserId: String? = null
     private var sideMenuWidthState = MutableStateFlow<Float?>(null)
-
-    override fun initCoroutine(coroutineScope: CoroutineScope) {
-        super.initCoroutine(coroutineScope)
-        folderStateController.initCoroutine(coroutineScope)
-    }
 
     private val _showSettingsState = MutableStateFlow(false)
     override val showSettingsState: StateFlow<Boolean> = _showSettingsState.asStateFlow()
@@ -62,7 +57,7 @@ class GlobalShellKmpViewModel(
     override val highlightItem: StateFlow<String?> by lazy {
         notesNavigationUseCase.navigationState
             .map { navigation -> navigation.id }
-            .stateIn(coroutineScope, SharingStarted.Lazily, NotesNavigation.Root.id)
+            .stateIn(viewModelScope, SharingStarted.Lazily, NotesNavigation.Root.id)
     }
 
     override val editFolderState: StateFlow<Folder?> by lazy {
@@ -79,17 +74,17 @@ class GlobalShellKmpViewModel(
             } else {
                 null
             }
-        }.stateIn(coroutineScope, SharingStarted.Lazily, null)
+        }.stateIn(viewModelScope, SharingStarted.Lazily, null)
     }
 
     override val showSideMenuState: StateFlow<Float> by lazy {
         combine(
-            uiConfigurationRepo.listenForUiConfiguration(::getUserId, coroutineScope)
+            uiConfigurationRepo.listenForUiConfiguration(::getUserId, viewModelScope)
                 .filterNotNull(),
             sideMenuWidthState.asStateFlow()
         ) { configuration, width ->
             width ?: configuration.sideMenuWidth
-        }.stateIn(coroutineScope, SharingStarted.Lazily, 280F)
+        }.stateIn(viewModelScope, SharingStarted.Lazily, 280F)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -101,7 +96,7 @@ class GlobalShellKmpViewModel(
             user to notesNavigation
         }.flatMapLatest { (user, notesNavigation) ->
             notesUseCase.listenForMenuItemsPerFolderId(notesNavigation, user.id)
-        }.stateIn(coroutineScope, SharingStarted.Lazily, emptyMap())
+        }.stateIn(viewModelScope, SharingStarted.Lazily, emptyMap())
     }
 
     override val sideMenuItems: StateFlow<List<MenuItemUi>> by lazy {
@@ -131,7 +126,7 @@ class GlobalShellKmpViewModel(
             itemsList.toMutableList().apply {
                 removeAt(0)
             }
-        }.stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
+        }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
     }
 
     override val folderPath: StateFlow<List<String>> by lazy {
@@ -145,17 +140,17 @@ class GlobalShellKmpViewModel(
                 filterPredicate = { item -> item is MenuItemUi.FolderUi },
                 mapFunc = { item -> item.title }
             )
-        }.stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
+        }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
     }
 
     override fun expandFolder(id: String) {
         val expanded = _expandedFolders.value
         if (expanded.contains(id)) {
-            coroutineScope.launch(Dispatchers.Default) {
+            viewModelScope.launch(Dispatchers.Default) {
                 _expandedFolders.value = expanded - id
             }
         } else {
-            coroutineScope.launch {
+            viewModelScope.launch {
                 notesUseCase.listenForMenuItemsByParentId(id, getUserId())
                 _expandedFolders.value = expanded + id
             }
@@ -172,7 +167,7 @@ class GlobalShellKmpViewModel(
     override fun saveMenuWidth() {
         val width = sideMenuWidthState.value ?: 280F
 
-        coroutineScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.Default) {
             val uiConfiguration =
                 uiConfigurationRepo.getUiConfigurationEntity("disconnected_user")
                     ?: UiConfiguration(
@@ -205,7 +200,7 @@ class GlobalShellKmpViewModel(
     }
 
     override fun changeIcons(menuItemId: String, icon: String, tint: Int, iconChange: IconChange) {
-        coroutineScope.launch {
+        viewModelScope.launch {
             when (iconChange) {
                 IconChange.FOLDER -> notesUseCase.updateFolderById(menuItemId) { folder ->
                     folder.copy(icon = MenuItem.Icon(icon, tint))
