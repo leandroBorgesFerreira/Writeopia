@@ -9,7 +9,6 @@ import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.ui.keyboard.KeyboardEvent
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class EditorInjector internal constructor(
