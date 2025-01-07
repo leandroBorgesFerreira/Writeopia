@@ -1,6 +1,7 @@
 package io.writeopia.viewmodel
 
-import io.writeopia.common.utils.KmpViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.repository.UiConfigurationRepository
 import kotlinx.coroutines.Dispatchers
@@ -12,18 +13,18 @@ import kotlinx.coroutines.launch
 
 class UiConfigurationKmpViewModel(
     private val uiConfigurationSqlDelightRepository: UiConfigurationRepository
-) : KmpViewModel(), UiConfigurationViewModel {
+) : ViewModel(), UiConfigurationViewModel {
 
     override fun listenForColorTheme(
         getUserId: suspend () -> String
     ): StateFlow<ColorThemeOption?> =
-        uiConfigurationSqlDelightRepository.listenForUiConfiguration(getUserId, coroutineScope)
+        uiConfigurationSqlDelightRepository.listenForUiConfiguration(getUserId, viewModelScope)
             .map { uiConfiguration ->
                 uiConfiguration?.colorThemeOption ?: ColorThemeOption.SYSTEM
-            }.stateIn(coroutineScope, SharingStarted.Lazily, null)
+            }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     override fun changeColorTheme(colorThemeOption: ColorThemeOption) {
-        coroutineScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.Default) {
             uiConfigurationSqlDelightRepository
                 .updateConfiguration("disconnected_user") { config ->
                     config.copy(colorThemeOption = colorThemeOption)

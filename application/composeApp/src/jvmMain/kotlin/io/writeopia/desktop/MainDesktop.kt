@@ -105,7 +105,7 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                 val notesInjector = remember { NotesInjector(database) }
 
                 val uiConfigurationViewModel = uiConfigurationInjector
-                    .provideUiConfigurationViewModel(coroutineScope = coroutineScope)
+                    .provideUiConfigurationViewModel()
 
                 val colorTheme =
                     uiConfigurationViewModel.listenForColorTheme { "disconnected_user" }

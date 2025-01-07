@@ -36,6 +36,7 @@ kotlin {
                 implementation(project(":application:core:utils"))
 
                 implementation(compose.material3)
+                implementation(libs.lifecycle.viewmodel.compose)
             }
         }
 

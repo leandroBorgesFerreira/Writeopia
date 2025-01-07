@@ -57,7 +57,7 @@ kotlin {
                 implementation(libs.compose.navigation)
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.lifecycle.viewmodel.compose)
-                runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.10.1")
+                runtimeOnly(libs.kotlinx.coroutines.swing)
             }
         }
 
