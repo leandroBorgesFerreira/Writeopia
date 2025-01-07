@@ -2,7 +2,7 @@
 plugins {
     kotlin("multiplatform")
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.ktlint)
+//    alias(libs.plugins.ktlint)
     id("com.google.devtools.ksp")
 }
 
@@ -102,11 +102,4 @@ dependencies {
     androidTestImplementation(project(":libraries:dbtest"))
 
     testImplementation(libs.kotlin.test)
-}
-
-configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-    filter {
-        exclude("**/generated/**")
-        include("**/kotlin/**")
-    }
 }
