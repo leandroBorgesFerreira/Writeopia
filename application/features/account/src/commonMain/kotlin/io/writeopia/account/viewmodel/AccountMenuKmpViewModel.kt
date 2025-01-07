@@ -1,8 +1,9 @@
 package io.writeopia.account.viewmodel
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.auth.core.repository.AuthRepository
-import io.writeopia.common.utils.KmpViewModel
 import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.toBoolean
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +14,7 @@ import kotlinx.coroutines.launch
 internal class AccountMenuKmpViewModel(
     private val authManager: AuthManager,
     private val authRepository: AuthRepository,
-) : AccountMenuViewModel, KmpViewModel() {
+) : AccountMenuViewModel, ViewModel() {
     private val _isLoggedIn: MutableStateFlow<ResultData<Boolean>> by lazy {
         MutableStateFlow(
             ResultData.Idle()
@@ -22,14 +23,14 @@ internal class AccountMenuKmpViewModel(
     override val isLoggedIn: StateFlow<ResultData<Boolean>> by lazy { _isLoggedIn.asStateFlow() }
 
     override fun checkLoggedIn() {
-        coroutineScope.launch {
+        viewModelScope.launch {
             _isLoggedIn.value = ResultData.Loading()
             _isLoggedIn.value = authManager.isLoggedIn()
         }
     }
 
     override fun logout(onLogOutSuccess: () -> Unit) {
-        coroutineScope.launch {
+        viewModelScope.launch {
             val result = authManager.logout()
 
             if (result.toBoolean()) {
@@ -39,7 +40,7 @@ internal class AccountMenuKmpViewModel(
     }
 
     override fun eraseOfflineByChoice(navigateToRegister: () -> Unit) {
-        coroutineScope.launch {
+        viewModelScope.launch {
             authRepository.eraseUserChoiceOffline()
             navigateToRegister()
         }
