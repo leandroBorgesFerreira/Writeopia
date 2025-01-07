@@ -3,6 +3,7 @@ package io.writeopia.ui.drawer.factory
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
@@ -19,13 +20,13 @@ object DefaultDrawersNative : DrawersFactory {
         onHeaderClick: () -> Unit,
         selectedColor: Color,
         selectedBorderColor: Color,
+        fontFamily: FontFamily?,
     ): Map<Int, StoryStepDrawer> {
         val commonDrawers = CommonDrawers.create(
             manager,
             marginAtBottom = 500.dp,
             defaultBorder,
             editable,
-            groupsBackgroundColor,
             onHeaderClick,
             lineBreakByContent = true,
             drawConfig = DrawConfig(

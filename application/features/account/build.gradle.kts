@@ -52,7 +52,6 @@ kotlin {
                 implementation(libs.androidx.activity.compose)
 
                 implementation(libs.viewmodel.compose)
-                implementation(libs.navigation.compose)
                 implementation(libs.runtime.compose)
 
                 implementation(project.dependencies.platform(libs.androidx.compose.bom))
