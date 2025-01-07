@@ -94,7 +94,6 @@ kotlin {
             }
         }
 
-
         jvmMain.dependencies {
             implementation(libs.ktor.client.okhttp)
         }
@@ -109,7 +108,6 @@ kotlin {
 tasks.dokkaHtmlPartial {
     moduleName = "plugin:writeopia_network"
 }
-
 
 android {
     namespace = "io.writeopia.sdk.plugins.network"
@@ -135,5 +133,4 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-
 }

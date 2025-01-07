@@ -10,7 +10,6 @@ import io.writeopia.sdk.persistence.core.DocumentSearch
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.dao.FolderSqlDelightDao
-import kotlinx.coroutines.CoroutineScope
 
 class KmpSearchInjection(private val writeopiaDb: WriteopiaDb? = null) : SearchInjection {
 
@@ -30,7 +29,6 @@ class KmpSearchInjection(private val writeopiaDb: WriteopiaDb? = null) : SearchI
     override fun provideViewModel(): SearchKmpViewModel = viewModel {
         SearchKmpViewModel(searchRepository = provideRepository())
     }
-
 
     @Composable
     override fun provideViewModelMobile(): SearchViewModel {

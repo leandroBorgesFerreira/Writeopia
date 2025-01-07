@@ -22,7 +22,6 @@ import io.writeopia.navigation.notes.navigateToNote
 import io.writeopia.navigation.presentation.navigateToPresentation
 import io.writeopia.notemenu.di.NotesMenuInjection
 import io.writeopia.notemenu.navigation.notesMenuNavigation
-import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun Navigation(

@@ -1,7 +1,6 @@
 package io.writeopia.global.shell.di
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.global.shell.viewmodel.GlobalShellKmpViewModel

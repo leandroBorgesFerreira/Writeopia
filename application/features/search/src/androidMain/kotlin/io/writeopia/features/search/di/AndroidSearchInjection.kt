@@ -7,7 +7,6 @@ import io.writeopia.features.search.ui.SearchViewModel
 import io.writeopia.notemenu.data.repository.RoomFolderRepository
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 import io.writeopia.persistence.room.injection.RoomRepositoryInjection
-import kotlinx.coroutines.CoroutineScope
 
 class AndroidSearchInjection(
     private val searchInjection: KmpSearchInjection,

@@ -70,4 +70,3 @@ class EditorKmpInjector(
             provideNoteEditorViewModel(parentFolder = parentFolder)
         }
 }
-
