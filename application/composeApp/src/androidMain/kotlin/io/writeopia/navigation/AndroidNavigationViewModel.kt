@@ -28,5 +28,3 @@ class AndroidNavigationViewModel : ViewModel(), NavigationViewModel {
             ),
         )
 }
-
-

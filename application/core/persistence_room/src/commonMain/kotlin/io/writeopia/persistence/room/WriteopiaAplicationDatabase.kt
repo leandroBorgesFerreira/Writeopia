@@ -1,7 +1,9 @@
 package io.writeopia.persistence.room
 
+import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
 import io.writeopia.persistence.room.data.daos.FolderRoomDao
 import io.writeopia.persistence.room.data.daos.NotesConfigurationRoomDao
@@ -13,6 +15,11 @@ import io.writeopia.sdk.persistence.dao.StoryUnitEntityDao
 import io.writeopia.sdk.persistence.entity.document.DocumentEntity
 import io.writeopia.sdk.persistence.entity.story.StoryStepEntity
 
+// The Room compiler generates the `actual` implementations.
+@Suppress("NO_ACTUAL_FOR_EXPECT")
+expect object AppDatabaseConstructor : RoomDatabaseConstructor<WriteopiaApplicationDatabase> {
+    override fun initialize(): WriteopiaApplicationDatabase
+}
 
 @Database(
     entities = [
@@ -25,6 +32,7 @@ import io.writeopia.sdk.persistence.entity.story.StoryStepEntity
     exportSchema = false
 )
 @TypeConverters(IdListConverter::class)
+@ConstructedBy(AppDatabaseConstructor::class)
 abstract class WriteopiaApplicationDatabase : RoomDatabase() {
 
     abstract fun documentDao(): DocumentEntityDao

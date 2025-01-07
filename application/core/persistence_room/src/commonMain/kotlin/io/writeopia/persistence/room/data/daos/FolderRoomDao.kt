@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.Flow
 interface FolderRoomDao {
 
     @Upsert
-    fun upsertFolder(folderEntity: FolderEntity)
+    suspend fun upsertFolder(folderEntity: FolderEntity)
 
     @Query("SELECT * FROM $FOLDER_ENTITY WHERE folder_id = :id")
-    fun getFolderById(id: String): FolderEntity?
+    suspend fun getFolderById(id: String): FolderEntity?
 
     @Query("SELECT * FROM $FOLDER_ENTITY WHERE title LIKE '%' || :query || '%' ORDER BY last_updated_at")
     suspend fun search(query: String): List<FolderEntity>
@@ -23,14 +23,14 @@ interface FolderRoomDao {
     suspend fun getLastUpdated(): List<FolderEntity>
 
     @Query("SELECT * FROM $FOLDER_ENTITY WHERE parent_id = :id")
-    fun getFolderByParentId(id: String): List<FolderEntity>
+    suspend fun getFolderByParentId(id: String): List<FolderEntity>
 
     @Query("SELECT * FROM $FOLDER_ENTITY WHERE parent_id = :id")
     fun listenForFolderByParentId(id: String): Flow<List<FolderEntity>>
 
     @Query("DELETE FROM $FOLDER_ENTITY WHERE folder_id = :id")
-    fun deleteById(id: String): Int
+    suspend fun deleteById(id: String): Int
 
     @Query("DELETE FROM $FOLDER_ENTITY WHERE parent_id = :id")
-    fun deleteByParentId(id: String): Int
+    suspend fun deleteByParentId(id: String): Int
 }

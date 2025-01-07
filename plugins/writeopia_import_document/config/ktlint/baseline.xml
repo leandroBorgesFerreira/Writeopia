@@ -1,21 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <baseline version="1.0">
-    <file name="src/commonMain/kotlin/io/writeopia/sdk/import_document/files/KmpFileReader.kt">
-        <error line="3" column="9" source="standard:package-name" />
-    </file>
-    <file name="src/commonMain/kotlin/io/writeopia/sdk/import_document/json/WriteopiaJsonParser.kt">
-        <error line="1" column="9" source="standard:package-name" />
-    </file>
-    <file name="src/commonMain/kotlin/io/writeopia/sdk/import_document/markdown/CharactersReverseIndex.kt">
-        <error line="1" column="9" source="standard:package-name" />
-    </file>
-    <file name="src/commonMain/kotlin/io/writeopia/sdk/import_document/markdown/MarkdownToDocument.kt">
-        <error line="1" column="9" source="standard:package-name" />
-    </file>
-    <file name="src/jsMain/kotlin/io/writeopia/sdk/import_document/files/KmpFileReader.js.kt">
-        <error line="1" column="9" source="standard:package-name" />
-    </file>
-    <file name="src/jvmMain/kotlin/io/writeopia/sdk/import_document/files/KmpFileReader.jvm.kt">
-        <error line="1" column="9" source="standard:package-name" />
-    </file>
 </baseline>

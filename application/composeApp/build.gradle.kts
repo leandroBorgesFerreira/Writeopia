@@ -56,6 +56,8 @@ kotlin {
                 implementation(project(":application:features:account"))
                 implementation(project(":application:features:search"))
 
+                implementation(libs.room.runtime)
+
                 implementation(libs.compose.navigation)
             }
         }
@@ -92,8 +94,6 @@ kotlin {
 
                 implementation(libs.androidx.material3)
                 implementation(project.dependencies.platform(libs.androidx.compose.bom))
-
-                implementation(libs.room.ktx)
 
                 implementation(project(":application:core:resources"))
                 implementation(project(":application:features:auth"))
@@ -200,5 +200,12 @@ android {
                 }
             }
         }
+    }
+}
+
+configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+    filter {
+        exclude("**/generated/**")
+        include("**/kotlin/**")
     }
 }

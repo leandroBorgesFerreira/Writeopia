@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<baseline version="1.0">
+    <file name="src/iosMain/kotlin/io/writeopia/MainViewController.kt">
+        <error line="5" column="5" source="standard:function-naming" />
+    </file>
+</baseline>

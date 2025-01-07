@@ -32,14 +32,12 @@ kotlin {
                 implementation(project(":application:core:theme"))
 
                 implementation(libs.room.runtime)
-                implementation(libs.room.ktx)
                 implementation(libs.room.paging)
 
                 implementation(libs.androidx.ktx)
-                implementation(libs.appCompat)
-                implementation(libs.material)
 
                 implementation(libs.kotlinx.datetime)
+                implementation(libs.kotlinx.coroutines.core)
             }
         }
 
@@ -47,6 +45,10 @@ kotlin {
             dependencies {
 
             }
+        }
+
+        androidMain.dependencies {
+            implementation(libs.kotlinx.coroutines.android)
         }
     }
 }
@@ -100,4 +102,11 @@ dependencies {
     androidTestImplementation(project(":libraries:dbtest"))
 
     testImplementation(libs.kotlin.test)
+}
+
+configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+    filter {
+        exclude("**/generated/**")
+        include("**/kotlin/**")
+    }
 }
