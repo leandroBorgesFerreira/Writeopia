@@ -6,10 +6,11 @@ import io.writeopia.account.viewmodel.AccountMenuKmpViewModel
 import io.writeopia.account.viewmodel.AccountMenuViewModel
 import io.writeopia.auth.core.di.AuthCoreInjection
 
-class AccountMenuKmpInjector(private val authCoreInjection: AuthCoreInjection) :
-    AccountMenuInjector {
+class AccountMenuKmpInjector(
+    private val authCoreInjection: AuthCoreInjection
+) : AccountMenuInjector {
 
-    internal fun provideAccountMenuKmpViewModel(): AccountMenuKmpViewModel =
+    private fun provideAccountMenuKmpViewModel(): AccountMenuKmpViewModel =
         AccountMenuKmpViewModel(
             authManager = authCoreInjection.provideAccountManager(),
             authRepository = authCoreInjection.provideAuthRepository()

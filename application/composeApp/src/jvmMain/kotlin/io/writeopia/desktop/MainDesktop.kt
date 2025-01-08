@@ -20,7 +20,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.UiConfigurationInjector
-import io.writeopia.notes.desktop.components.App
+import io.writeopia.notes.desktop.components.DesktopApp
 import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
@@ -110,7 +110,7 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                 val colorTheme =
                     uiConfigurationViewModel.listenForColorTheme { "disconnected_user" }
 
-                App(
+                DesktopApp(
                     notesInjector = notesInjector,
                     repositoryInjection = sqlDelightDaoInjector,
                     uiConfigurationInjector = uiConfigurationInjector,

@@ -14,19 +14,19 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import io.writeopia.AndroidLogger
 import io.writeopia.BuildConfig
-import io.writeopia.account.di.AndroidAccountMenuInjector
+import io.writeopia.account.di.AccountMenuKmpInjector
 import io.writeopia.auth.core.di.AndroidAuthCoreInjection
 import io.writeopia.auth.core.token.FirebaseTokenHandler
 import io.writeopia.auth.di.AuthInjection
 import io.writeopia.auth.navigation.authNavigation
 import io.writeopia.common.utils.Destinations
-import io.writeopia.editor.di.EditorInjector
-import io.writeopia.features.search.di.AndroidSearchInjection
+import io.writeopia.editor.di.EditorKmpInjector
 import io.writeopia.features.search.di.KmpSearchInjection
+import io.writeopia.features.search.di.MobileSearchInjection
 import io.writeopia.mobile.AppMobile
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.di.NotesInjector
-import io.writeopia.notemenu.di.NotesMenuAndroidInjection
+import io.writeopia.notemenu.di.NotesMenuKmpInjection
 import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notemenu.navigation.NoteMenuDestiny
 import io.writeopia.notemenu.navigation.navigateToNotes
@@ -82,21 +82,21 @@ fun NavigationGraph(
     val uiConfigViewModel = uiConfigInjection.provideUiConfigurationViewModel()
     val repositoryInjection = RoomRepositoryInjection(database)
     val authInjection = AuthInjection(authCoreInjection, connectionInjector, repositoryInjection)
-    val editorInjector = EditorInjector.create(
+    val editorInjector = EditorKmpInjector.mobile(
         authCoreInjection,
         repositoryInjection,
         connectionInjector,
         uiConfigInjection.provideUiConfigurationRepository()
     )
-    val accountMenuInjector = AndroidAccountMenuInjector.create(authCoreInjection)
-    val notesMenuInjection = NotesMenuAndroidInjection.create(
+    val accountMenuInjector = AccountMenuKmpInjector(authCoreInjection)
+    val notesMenuInjection = NotesMenuKmpInjection.mobile(
         notesInjector,
         authCoreInjection,
         repositoryInjection,
     )
 
     val searchInjector = remember {
-        AndroidSearchInjection(
+        MobileSearchInjection(
             searchInjection = KmpSearchInjection(),
             appRoomDaosInjection = appDaosInjection,
             roomInjector = repositoryInjection

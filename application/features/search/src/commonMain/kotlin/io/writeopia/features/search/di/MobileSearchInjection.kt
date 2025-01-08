@@ -8,7 +8,7 @@ import io.writeopia.notemenu.data.repository.RoomFolderRepository
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 import io.writeopia.persistence.room.injection.RoomRepositoryInjection
 
-class AndroidSearchInjection(
+class MobileSearchInjection(
     private val searchInjection: KmpSearchInjection,
     private val appRoomDaosInjection: AppRoomDaosInjection,
     private val roomInjector: RoomRepositoryInjection,

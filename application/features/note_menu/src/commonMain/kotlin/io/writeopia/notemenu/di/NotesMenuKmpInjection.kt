@@ -12,9 +12,10 @@ import io.writeopia.notemenu.viewmodel.ChooseNoteViewModel
 import io.writeopia.notemenu.viewmodel.FolderStateController
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class NotesMenuKmpInjection(
+class NotesMenuKmpInjection private constructor(
     private val notesInjector: NotesInjector,
     private val authCoreInjection: AuthCoreInjection,
     private val repositoryInjection: RepositoryInjector,
@@ -61,4 +62,29 @@ class NotesMenuKmpInjection(
         viewModel {
             provideChooseKmpNoteViewModel(notesNavigation)
         }
+
+    companion object {
+        fun mobile(
+            notesInjector: NotesInjector,
+            authCoreInjection: AuthCoreInjection,
+            repositoryInjection: RepositoryInjector,
+        ) = NotesMenuKmpInjection(
+            notesInjector = notesInjector,
+            authCoreInjection = authCoreInjection,
+            repositoryInjection = repositoryInjection,
+            selectionState = MutableStateFlow(false)
+        )
+
+        fun desktop(
+            notesInjector: NotesInjector,
+            authCoreInjection: AuthCoreInjection,
+            repositoryInjection: RepositoryInjector,
+            selectionState: StateFlow<Boolean>
+        ) = NotesMenuKmpInjection(
+            notesInjector = notesInjector,
+            authCoreInjection = authCoreInjection,
+            repositoryInjection = repositoryInjection,
+            selectionState = selectionState
+        )
+    }
 }
