@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class UiConfigurationMemoryRepository : UiConfigurationRepository {
     private var uiConfiguration = MutableStateFlow(
         UiConfiguration(
-            userId = "userId",
+            userId = "disconnected_user",
             colorThemeOption = ColorThemeOption.SYSTEM,
             sideMenuWidth = 280F
         )

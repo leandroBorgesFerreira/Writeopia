@@ -71,6 +71,7 @@ kotlin {
                 implementation(libs.compose.shimmer)
 
                 implementation(project.dependencies.platform(libs.androidx.compose.bom))
+                implementation(libs.room.runtime)
             }
         }
 
@@ -105,6 +106,7 @@ kotlin {
 
         iosMain.dependencies {
             implementation(project(":application:core:persistence_room"))
+            implementation(libs.room.runtime)
         }
     }
 }

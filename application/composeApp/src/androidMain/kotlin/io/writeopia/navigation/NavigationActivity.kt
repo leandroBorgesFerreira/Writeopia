@@ -70,7 +70,7 @@ fun NavigationGraph(
     startDestination: String = Destinations.AUTH_MENU_INNER_NAVIGATION.id
 ) {
     val authCoreInjection = AndroidAuthCoreInjection(sharedPreferences)
-    val uiConfigInjection = UiConfigurationInjector(sharedPreferences)
+    val uiConfigInjection = UiConfigurationInjector(database)
 
     val appDaosInjection = AppRoomDaosInjection(database)
     val notesInjector = NotesInjector(appDaosInjection)
