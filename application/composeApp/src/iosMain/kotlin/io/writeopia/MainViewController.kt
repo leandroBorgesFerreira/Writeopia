@@ -34,12 +34,12 @@ fun MainViewController() = ComposeUIViewController {
             )
         }
 
-    val editorInjector = EditorKmpInjector.mobile(
-        authCoreInjection,
-        repositoryInjection,
-        connectionInjection,
-        uiConfigInjection.provideUiConfigurationRepository()
-    )
+//    val editorInjector = EditorKmpInjector.mobile(
+//        authCoreInjection,
+//        repositoryInjection,
+//        connectionInjection,
+//        uiConfigInjection.provideUiConfigurationRepository()
+//    )
     val accountMenuInjector = AccountMenuKmpInjector(authCoreInjection)
     val notesMenuInjection = NotesMenuKmpInjection.mobile(
         notesInjector,
