@@ -103,7 +103,7 @@ fun NavigationGraph(
         )
     }
 
-    val navigationViewModel = viewModel { AndroidNavigationViewModel() }
+    val navigationViewModel = viewModel { MobileNavigationViewModel() }
 
     AppMobile(
         startDestination = startDestination,

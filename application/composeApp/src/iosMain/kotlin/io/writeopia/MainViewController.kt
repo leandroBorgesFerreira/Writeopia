@@ -8,6 +8,8 @@ import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
 import io.writeopia.editor.di.EditorKmpInjector
 import io.writeopia.features.search.di.KmpSearchInjection
+import io.writeopia.features.search.di.MobileSearchInjection
+import io.writeopia.navigation.MobileNavigationViewModel
 import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.NotesMenuKmpInjection
 import io.writeopia.persistence.room.DatabaseConfigIos
@@ -46,14 +48,14 @@ fun MainViewController() = ComposeUIViewController {
     )
 
     val searchInjector = remember {
-        AndroidSearchInjection(
+        MobileSearchInjection(
             searchInjection = KmpSearchInjection(),
             appRoomDaosInjection = appDaosInjection,
             roomInjector = repositoryInjection
         )
     }
 
-    val navigationViewModel = viewModel { AndroidNavigationViewModel() }
+    val navigationViewModel = viewModel { MobileNavigationViewModel() }
 
 
 //    AppMobile()

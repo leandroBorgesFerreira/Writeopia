@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class AndroidNavigationViewModel : ViewModel(), NavigationViewModel {
+class MobileNavigationViewModel : ViewModel(), NavigationViewModel {
 
     private val _selectedNavigation = MutableStateFlow(bottomBatItems())
     override val selectedNavigation: StateFlow<List<BottomBarItem>> =
