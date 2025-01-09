@@ -1,7 +1,9 @@
 package io.writeopia.persistence.room.data.daos
 
-import io.writeopia.common.utils.persistence.FolderCommonEntity
 import io.writeopia.common.utils.persistence.daos.FolderCommonDao
+import io.writeopia.common.utils.persistence.toModel
+import io.writeopia.common.utils.persistence.toRoomEntity
+import io.writeopia.models.Folder
 import io.writeopia.persistence.room.extensions.toEntity
 import io.writeopia.persistence.room.extensions.toCommonEntity
 import kotlinx.coroutines.flow.Flow
@@ -11,29 +13,29 @@ class FolderDaoDelegator(
     private val delegate: FolderRoomDao
 ) : FolderCommonDao {
 
-    override suspend fun upsertFolder(folderEntity: FolderCommonEntity) {
-        delegate.upsertFolder(folderEntity.toEntity())
+    override suspend fun upsertFolder(folderEntity: Folder) {
+        delegate.upsertFolder(folderEntity.toRoomEntity().toEntity())
     }
 
-    override suspend fun getFolderById(id: String): FolderCommonEntity? {
-        return delegate.getFolderById(id)?.toCommonEntity()
+    override suspend fun getFolderById(id: String): Folder? {
+        return delegate.getFolderById(id)?.toCommonEntity()?.toModel(0)
     }
 
-    override suspend fun search(query: String): List<FolderCommonEntity> {
-        return delegate.search(query).map { it.toCommonEntity() }
+    override suspend fun search(query: String): List<Folder> {
+        return delegate.search(query).map { it.toCommonEntity().toModel(0) }
     }
 
-    override suspend fun getLastUpdated(): List<FolderCommonEntity> {
-        return delegate.getLastUpdated().map { it.toCommonEntity() }
+    override suspend fun getLastUpdated(): List<Folder> {
+        return delegate.getLastUpdated().map { it.toCommonEntity().toModel(0) }
     }
 
-    override suspend fun getFolderByParentId(id: String): List<FolderCommonEntity> {
-        return delegate.getFolderByParentId(id).map { it.toCommonEntity() }
+    override suspend fun getFolderByParentId(id: String): List<Folder> {
+        return delegate.getFolderByParentId(id).map { it.toCommonEntity().toModel(0) }
     }
 
-    override fun listenForFolderByParentId(id: String): Flow<List<FolderCommonEntity>> {
+    override fun listenForFolderByParentId(id: String): Flow<List<Folder>> {
         return delegate.listenForFolderByParentId(id).map { list ->
-            list.map { it.toCommonEntity() }
+            list.map { it.toCommonEntity().toModel(0) }
         }
     }
 

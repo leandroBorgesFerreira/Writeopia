@@ -11,11 +11,6 @@ kotlin {
 
     androidTarget()
 
-    js(IR) {
-        browser()
-        binaries.library()
-    }
-
     listOf(
         iosX64(),
         iosArm64(),
@@ -35,6 +30,8 @@ kotlin {
                 implementation(project(":plugins:writeopia_persistence_room"))
                 implementation(project(":plugins:writeopia_persistence_core"))
                 implementation(project(":application:core:theme"))
+                implementation(project(":application:core:models"))
+                implementation(project(":application:core:utils"))
 
                 implementation(libs.room.runtime)
                 implementation(libs.room.paging)

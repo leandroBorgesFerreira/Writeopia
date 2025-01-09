@@ -1,12 +1,12 @@
 package io.writeopia.common.utils.persistence.daos
 
-import io.writeopia.common.utils.persistence.NotesConfigurationModel
+import io.writeopia.common.utils.persistence.NotesConfigurationCommonEntity
 import kotlinx.coroutines.flow.Flow
 
 interface NotesConfigurationCommonDao {
-    suspend fun saveConfiguration(configuration: NotesConfigurationModel)
+    suspend fun saveConfiguration(configuration: NotesConfigurationCommonEntity)
 
-    suspend fun getConfigurationByUserId(userId: String): NotesConfigurationModel?
+    suspend fun getConfigurationByUserId(userId: String): NotesConfigurationCommonEntity?
 
-    fun listenForConfigurationByUserId(userId: String): Flow<NotesConfigurationModel?>
+    fun listenForConfigurationByUserId(userId: String): Flow<NotesConfigurationCommonEntity?>
 }

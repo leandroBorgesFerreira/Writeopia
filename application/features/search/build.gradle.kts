@@ -37,7 +37,7 @@ kotlin {
 
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:persistence_bridge"))
-                implementation(project(":application:core:persistence_room"))
+//                implementation(project(":application:core:persistence_room"))
                 implementation(project(":application:core:theme"))
                 implementation(project(":application:core:models"))
                 implementation(project(":application:features:note_menu"))

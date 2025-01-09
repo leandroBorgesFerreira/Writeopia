@@ -1,17 +1,17 @@
 package io.writeopia.persistence.room.extensions
 
-import io.writeopia.common.utils.persistence.NotesConfigurationModel
+import io.writeopia.common.utils.persistence.NotesConfigurationCommonEntity
 import io.writeopia.persistence.room.data.entities.NotesConfigurationEntity
 
-fun NotesConfigurationEntity.toCommonEntity(): NotesConfigurationModel {
-    return NotesConfigurationModel(
+fun NotesConfigurationEntity.toCommonEntity(): NotesConfigurationCommonEntity {
+    return NotesConfigurationCommonEntity(
         userId = this.userId,
         arrangementType = this.arrangementType,
         orderByType = this.orderByType
     )
 }
 
-fun NotesConfigurationModel.toEntity(): NotesConfigurationEntity {
+fun NotesConfigurationCommonEntity.toEntity(): NotesConfigurationEntity {
     return NotesConfigurationEntity(
         userId = this.userId,
         arrangementType = this.arrangementType,

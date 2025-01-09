@@ -11,7 +11,7 @@ fun FolderEntity.toCommonEntity(): FolderCommonEntity {
         createdAt = this.createdAt,
         lastUpdatedAt = this.lastUpdatedAt,
         userId = this.userId,
-        favorite = this.favorite
+        favorite = this.favorite,
     )
 }
 

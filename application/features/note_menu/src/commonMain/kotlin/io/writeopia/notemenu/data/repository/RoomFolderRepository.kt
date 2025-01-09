@@ -3,10 +3,6 @@ package io.writeopia.notemenu.data.repository
 import io.writeopia.common.utils.persistence.daos.FolderCommonDao
 import io.writeopia.models.Folder
 import io.writeopia.models.search.FolderSearch
-import io.writeopia.notemenu.extensions.toModel
-import io.writeopia.notemenu.extensions.toRoomEntity
-import io.writeopia.persistence.room.extensions.toEntity
-import io.writeopia.persistence.room.extensions.toCommonEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
@@ -22,7 +18,7 @@ class RoomFolderRepository(
     }
 
     override suspend fun updateFolder(folder: Folder) {
-        folderRoomDao.upsertFolder(folder.toRoomEntity().toCommonEntity())
+        folderRoomDao.upsertFolder(folder)
     }
 
     override suspend fun setLastUpdated(folderId: String, long: Long) {
@@ -62,12 +58,10 @@ class RoomFolderRepository(
     override suspend fun refreshFolders() {}
 
     override suspend fun getFolderById(id: String): Folder? =
-        folderRoomDao.getFolderById(id)?.toEntity()?.toModel(0)
+        folderRoomDao.getFolderById(id)
 
     override suspend fun getFolderByParentId(parentId: String): List<Folder> =
-        folderRoomDao.getFolderByParentId(parentId).map { folderEntity ->
-            folderEntity.toEntity().toModel(0)
-        }
+        folderRoomDao.getFolderByParentId(parentId)
 
     override suspend fun listenForFoldersByParentId(
         parentId: String
@@ -81,9 +75,7 @@ class RoomFolderRepository(
         return if (flows.isNotEmpty()) {
             combine(flows) { arrayOfFolders -> arrayOfFolders.toList().flatten() }
                 .map { folders ->
-                    folders.map { folderEntity ->
-                        folderEntity.toEntity().toModel(0)
-                    }.groupBy { folder -> folder.parentId }
+                    folders.groupBy { folder -> folder.parentId }
                 }
         } else {
             flow { emit(emptyMap()) }
@@ -95,15 +87,13 @@ class RoomFolderRepository(
     }
 
     override suspend fun search(query: String): List<Folder> =
-        folderRoomDao.search(query).map { it.toEntity().toModel(0) }
+        folderRoomDao.search(query)
 
     override suspend fun getLastUpdated(): List<Folder> =
-        folderRoomDao.getLastUpdated().map { it.toEntity().toModel(0) }
+        folderRoomDao.getLastUpdated()
 
     private suspend fun updateFolderById(id: String, func: (Folder) -> Folder) {
         folderRoomDao.getFolderById(id = id)
-            ?.toEntity()
-            ?.toModel(0)
             ?.let(func)
             ?.let { folder ->
                 updateFolder(folder)
