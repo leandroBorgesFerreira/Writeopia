@@ -56,6 +56,5 @@ fun MainViewController() = ComposeUIViewController {
 
     val navigationViewModel = viewModel { MobileNavigationViewModel() }
 
-
 //    AppMobile()
 }
