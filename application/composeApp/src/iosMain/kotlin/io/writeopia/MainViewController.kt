@@ -13,7 +13,7 @@ import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.NotesMenuKmpInjection
 import io.writeopia.persistence.room.DatabaseConfigIos
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
-import io.writeopia.common.utils.persistence.di.AppDaosInjection
+import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 import io.writeopia.persistence.room.injection.RoomRepositoryInjection
 import io.writeopia.sdk.network.injector.ConnectionInjector
 
@@ -21,7 +21,7 @@ fun MainViewController() = ComposeUIViewController {
     val database = WriteopiaApplicationDatabase.database(DatabaseConfigIos.roomBuilder())
 
     val authCoreInjection = remember { KmpAuthCoreInjection() }
-    val appDaosInjection = AppDaosInjection(database)
+    val appDaosInjection = AppRoomDaosInjection(database)
     val notesInjector = NotesInjector(appDaosInjection)
     val repositoryInjection = RoomRepositoryInjection(database)
     val connectionInjection =
@@ -56,5 +56,5 @@ fun MainViewController() = ComposeUIViewController {
 
     val navigationViewModel = viewModel { MobileNavigationViewModel() }
 
-//    AppMobile()
+    App()
 }
