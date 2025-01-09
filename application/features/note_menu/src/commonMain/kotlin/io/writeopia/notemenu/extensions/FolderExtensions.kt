@@ -1,11 +1,8 @@
 package io.writeopia.notemenu.extensions
 
 import io.writeopia.app.sql.FolderEntity
-import io.writeopia.common.utils.extensions.toBoolean
 import io.writeopia.common.utils.extensions.toLong
 import io.writeopia.models.Folder
-import io.writeopia.sdk.models.document.MenuItem
-import kotlinx.datetime.Instant
 
 fun Folder.toEntity() = FolderEntity(
     id = id,
