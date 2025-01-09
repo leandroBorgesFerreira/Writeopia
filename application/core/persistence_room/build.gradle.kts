@@ -52,8 +52,6 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.kotlinx.coroutines.android)
         }
-
-        jsMain.dependencies {  }
     }
 }
 
