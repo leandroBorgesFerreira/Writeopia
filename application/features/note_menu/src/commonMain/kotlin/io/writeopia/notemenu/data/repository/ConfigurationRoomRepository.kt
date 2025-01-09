@@ -1,8 +1,9 @@
 package io.writeopia.notemenu.data.repository
 
+import io.writeopia.common.utils.persistence.daos.NotesConfigurationCommonDao
 import io.writeopia.notemenu.data.model.NotesArrangement
-import io.writeopia.persistence.room.data.daos.NotesConfigurationRoomDao
 import io.writeopia.persistence.room.data.entities.NotesConfigurationEntity
+import io.writeopia.persistence.room.extensions.toCommonEntity
 import io.writeopia.sdk.persistence.core.extensions.toEntityField
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +14,7 @@ import kotlinx.coroutines.flow.map
  * notes, like orderBy (creation, last edition, name...) and arrangement (cards, list...).
  */
 internal class ConfigurationRoomRepository(
-    private val configurationDao: NotesConfigurationRoomDao
+    private val configurationDao: NotesConfigurationCommonDao
 ) : ConfigurationRepository {
 
     override suspend fun saveDocumentArrangementPref(
@@ -26,7 +27,7 @@ internal class ConfigurationRoomRepository(
                 arrangementType = arrangement.type,
                 orderByType = getOrderPreference(userId)
             )
-        configurationDao.saveConfiguration(configuration)
+        configurationDao.saveConfiguration(configuration.toCommonEntity())
     }
 
     override suspend fun saveDocumentSortingPref(orderBy: OrderBy, userId: String) {
@@ -36,7 +37,7 @@ internal class ConfigurationRoomRepository(
                 arrangementType = arrangementPref(userId),
                 orderByType = orderBy.type.toEntityField()
             )
-        configurationDao.saveConfiguration(configuration)
+        configurationDao.saveConfiguration(configuration.toCommonEntity())
     }
 
     override suspend fun listenForArrangementPref(
