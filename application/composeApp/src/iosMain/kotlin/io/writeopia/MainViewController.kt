@@ -2,7 +2,6 @@ package io.writeopia
 
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.window.ComposeUIViewController
@@ -11,11 +10,9 @@ import androidx.navigation.compose.rememberNavController
 import io.writeopia.account.di.AccountMenuKmpInjector
 import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
-import io.writeopia.common.utils.Destinations
 import io.writeopia.editor.di.EditorKmpInjector
 import io.writeopia.features.search.di.KmpSearchInjection
 import io.writeopia.mobile.AppMobile
-import io.writeopia.model.isDarkTheme
 import io.writeopia.navigation.MobileNavigationViewModel
 import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.NotesMenuKmpInjection
@@ -26,7 +23,6 @@ import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
-import io.writeopia.theme.WrieopiaTheme
 
 fun MainViewController() = ComposeUIViewController {
     val coroutine = rememberCoroutineScope()

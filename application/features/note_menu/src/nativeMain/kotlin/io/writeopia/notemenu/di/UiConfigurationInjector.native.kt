@@ -24,4 +24,3 @@ actual class UiConfigurationInjector(private val writeopiaDb: WriteopiaDb?) {
         UiConfigurationKmpViewModel(uiConfigurationSqlDelightRepository)
     }
 }
-
