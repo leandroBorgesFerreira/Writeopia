@@ -46,10 +46,6 @@ kotlin {
                 api(project(":application:core:persistence_room"))
             }
         }
-
-        iosMain.dependencies {
-            api(project(":application:core:persistence_room"))
-        }
     }
 }
 
