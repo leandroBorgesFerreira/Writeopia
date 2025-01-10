@@ -291,5 +291,5 @@ fun DesktopApp(
     }
 }
 
-private fun startDestination() =
+fun startDestination() =
     "${Destinations.CHOOSE_NOTE.id}/${NotesNavigationType.ROOT.type}/path"
