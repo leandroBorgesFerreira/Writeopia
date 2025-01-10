@@ -1,5 +1,7 @@
 import com.vanniktech.maven.publish.SonatypeHost
 
+val sdkVersion: String by rootProject.extra
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     kotlin("multiplatform")
@@ -14,7 +16,7 @@ mavenPublishing {
     coordinates(
         groupId = "io.writeopia",
         artifactId = artifactId,
-        version = "0.5.0"
+        version = sdkVersion
     )
 
     pom {

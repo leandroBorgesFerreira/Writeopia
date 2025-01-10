@@ -20,3 +20,5 @@ dagCommand {
     outputType = "json_pretty_print"
     printModulesInfo = true
 }
+
+extra["sdkVersion"] = "0.6.0"

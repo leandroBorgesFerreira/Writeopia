@@ -1,5 +1,7 @@
 import com.vanniktech.maven.publish.SonatypeHost
 
+val sdkVersion: String by rootProject.extra
+
 plugins {
     kotlin("multiplatform")
     id("com.google.devtools.ksp")
@@ -15,7 +17,7 @@ mavenPublishing {
     coordinates(
         groupId = "io.writeopia",
         artifactId = artifactId,
-        version = "0.5.0"
+        version = sdkVersion
     )
 
     pom {
