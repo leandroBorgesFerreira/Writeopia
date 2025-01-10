@@ -4,7 +4,6 @@
         <error line="2" column="1" source="standard:indent" />
         <error line="3" column="1" source="standard:indent" />
         <error line="6" column="9" source="standard:package-name" />
-        <error line="8" column="1" source="standard:import-ordering" />
         <error line="16" column="1" source="standard:indent" />
         <error line="17" column="1" source="standard:indent" />
         <error line="18" column="1" source="standard:indent" />
@@ -47,8 +46,5 @@
         <error line="48" column="17" source="standard:class-naming" />
         <error line="50" column="1" source="standard:indent" />
         <error line="50" column="17" source="standard:class-naming" />
-    </file>
-    <file name="src/commonMain/kotlin/io/writeopia/global/shell/viewmodel/GlobalShellKmpViewModel.kt">
-        <error line="56" column="17" source="standard:property-naming" />
     </file>
 </baseline>

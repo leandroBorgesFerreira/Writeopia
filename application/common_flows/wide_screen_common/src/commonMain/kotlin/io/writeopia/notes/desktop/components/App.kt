@@ -65,7 +65,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @Composable
-fun App(
+fun DesktopApp(
     writeopiaDb: WriteopiaDb? = null,
     notesInjector: NotesInjector,
     repositoryInjection: RepositoryInjector,
@@ -89,7 +89,7 @@ fun App(
             )
         }
     val editorInjector = remember {
-        EditorKmpInjector(
+        EditorKmpInjector.desktop(
             authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,
             connectionInjection = connectionInjection,
@@ -101,7 +101,7 @@ fun App(
     val accountInjector = remember { AccountMenuKmpInjector(authCoreInjection) }
 
     val notesMenuInjection = remember {
-        NotesMenuKmpInjection(
+        NotesMenuKmpInjection.desktop(
             notesInjector = notesInjector,
             authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,

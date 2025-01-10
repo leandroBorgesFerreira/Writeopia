@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.map
 class UiConfigurationRepositoryImpl(
     private val uiConfigurationDao: UiConfigurationDao
 ) : UiConfigurationRepository {
+
     override suspend fun insertUiConfiguration(uiConfiguration: UiConfiguration) {
         uiConfigurationDao.saveUiConfiguration(uiConfiguration.toRoomEntity())
     }
@@ -41,7 +42,7 @@ class UiConfigurationRepositoryImpl(
         getUserId: suspend () -> String,
         coroutineScope: CoroutineScope
     ): Flow<UiConfiguration?> =
-        uiConfigurationDao.listenForConfigurationByUserId("")
+        uiConfigurationDao.listenForConfigurationByUserId("disconnected_user")
             .map { entity ->
                 entity?.toModel()
             }

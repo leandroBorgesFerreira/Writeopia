@@ -1,10 +1,10 @@
-package io.writeopia.notemenu.extensions
+package io.writeopia.common.utils.persistence
 
 import io.writeopia.models.Folder
-import io.writeopia.persistence.room.data.entities.FolderEntity
+
 import kotlinx.datetime.Instant
 
-fun FolderEntity.toModel(itemCount: Long): Folder {
+fun FolderCommonEntity.toModel(itemCount: Long): Folder {
     return Folder(
         id = id,
         parentId = parentId,
@@ -18,8 +18,8 @@ fun FolderEntity.toModel(itemCount: Long): Folder {
     )
 }
 
-fun Folder.toRoomEntity(): FolderEntity {
-    return FolderEntity(
+fun Folder.toRoomEntity(): FolderCommonEntity {
+    return FolderCommonEntity(
         id = id,
         parentId = parentId,
         title = title,

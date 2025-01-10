@@ -1,8 +1,8 @@
 package io.writeopia.notemenu.data.repository
 
+import io.writeopia.common.utils.persistence.NotesConfigurationCommonEntity
+import io.writeopia.common.utils.persistence.daos.NotesConfigurationCommonDao
 import io.writeopia.notemenu.data.model.NotesArrangement
-import io.writeopia.persistence.room.data.daos.NotesConfigurationRoomDao
-import io.writeopia.persistence.room.data.entities.NotesConfigurationEntity
 import io.writeopia.sdk.persistence.core.extensions.toEntityField
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
  * notes, like orderBy (creation, last edition, name...) and arrangement (cards, list...).
  */
 internal class ConfigurationRoomRepository(
-    private val configurationDao: NotesConfigurationRoomDao
+    private val configurationDao: NotesConfigurationCommonDao
 ) : ConfigurationRepository {
 
     override suspend fun saveDocumentArrangementPref(
@@ -21,7 +21,7 @@ internal class ConfigurationRoomRepository(
         userId: String
     ) {
         val configuration =
-            NotesConfigurationEntity(
+            NotesConfigurationCommonEntity(
                 userId = userId,
                 arrangementType = arrangement.type,
                 orderByType = getOrderPreference(userId)
@@ -31,7 +31,7 @@ internal class ConfigurationRoomRepository(
 
     override suspend fun saveDocumentSortingPref(orderBy: OrderBy, userId: String) {
         val configuration =
-            NotesConfigurationEntity(
+            NotesConfigurationCommonEntity(
                 userId = userId,
                 arrangementType = arrangementPref(userId),
                 orderByType = orderBy.type.toEntityField()

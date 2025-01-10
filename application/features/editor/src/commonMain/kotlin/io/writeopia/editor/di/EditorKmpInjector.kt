@@ -18,9 +18,10 @@ import io.writeopia.ui.keyboard.KeyboardEvent
 import io.writeopia.ui.manager.WriteopiaStateManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class EditorKmpInjector(
+class EditorKmpInjector private constructor(
     private val authCoreInjection: AuthCoreInjection,
     private val repositoryInjection: RepositoryInjector,
     private val connectionInjection: ConnectionInjector,
@@ -69,4 +70,36 @@ class EditorKmpInjector(
         viewModel {
             provideNoteEditorViewModel(parentFolder = parentFolder)
         }
+
+    companion object {
+        fun mobile(
+            authCoreInjection: AuthCoreInjection,
+            daosInjection: RepositoryInjector,
+            connectionInjector: ConnectionInjector,
+            uiConfigurationRepository: UiConfigurationRepository
+        ) = EditorKmpInjector(
+            authCoreInjection,
+            daosInjection,
+            connectionInjector,
+            MutableStateFlow(false),
+            MutableStateFlow(KeyboardEvent.IDLE),
+            uiConfigurationRepository
+        )
+
+        fun desktop(
+            authCoreInjection: AuthCoreInjection,
+            repositoryInjection: RepositoryInjector,
+            connectionInjection: ConnectionInjector,
+            selectionState: StateFlow<Boolean>,
+            keyboardEventFlow: Flow<KeyboardEvent>,
+            uiConfigurationRepository: UiConfigurationRepository
+        ) = EditorKmpInjector(
+            authCoreInjection,
+            repositoryInjection,
+            connectionInjection,
+            selectionState,
+            keyboardEventFlow,
+            uiConfigurationRepository
+        )
+    }
 }

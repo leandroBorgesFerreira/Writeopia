@@ -37,13 +37,11 @@ kotlin {
                 implementation(project(":plugins:writeopia_export"))
                 implementation(project(":plugins:writeopia_import_document"))
 
-//                implementation(project(":application:core:resources"))
                 implementation(project(":application:core:utils"))
                 implementation(project(":application:core:models"))
                 implementation(project(":application:core:common_ui"))
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:persistence_bridge"))
-                implementation(project(":application:core:persistence_room"))
                 implementation(project(":application:core:theme"))
 
                 implementation(project(":application:features:account"))
@@ -71,6 +69,7 @@ kotlin {
                 implementation(libs.compose.shimmer)
 
                 implementation(project.dependencies.platform(libs.androidx.compose.bom))
+                implementation(libs.room.runtime)
             }
         }
 
@@ -104,7 +103,7 @@ kotlin {
         }
 
         iosMain.dependencies {
-            implementation(project(":application:core:persistence_room"))
+            implementation(libs.room.runtime)
         }
     }
 }

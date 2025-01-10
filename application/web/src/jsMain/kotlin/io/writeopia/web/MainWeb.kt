@@ -12,7 +12,7 @@ import androidx.compose.ui.input.key.type
 import androidx.compose.ui.window.CanvasBasedWindow
 import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.UiConfigurationInjector
-import io.writeopia.notes.desktop.components.App
+import io.writeopia.notes.desktop.components.DesktopApp
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +38,7 @@ fun CreateAppInMemory(repositoryInjection: SqlDelightDaoInjector) {
     val colorTheme =
         uiConfigurationViewModel.listenForColorTheme { "disconnected_user" }
 
-    App(
+    DesktopApp(
         notesInjector = NotesInjector.noop(),
         repositoryInjection = repositoryInjection,
         uiConfigurationInjector = UiConfigurationInjector(),

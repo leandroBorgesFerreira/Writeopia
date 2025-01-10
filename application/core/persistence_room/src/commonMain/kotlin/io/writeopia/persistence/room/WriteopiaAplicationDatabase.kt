@@ -7,8 +7,10 @@ import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
 import io.writeopia.persistence.room.data.daos.FolderRoomDao
 import io.writeopia.persistence.room.data.daos.NotesConfigurationRoomDao
+import io.writeopia.persistence.room.data.daos.UiConfigurationRoomDao
 import io.writeopia.persistence.room.data.entities.FolderEntity
 import io.writeopia.persistence.room.data.entities.NotesConfigurationEntity
+import io.writeopia.persistence.room.data.entities.UiConfigurationRoomEntity
 import io.writeopia.sdk.persistence.converter.IdListConverter
 import io.writeopia.sdk.persistence.dao.DocumentEntityDao
 import io.writeopia.sdk.persistence.dao.StoryUnitEntityDao
@@ -27,8 +29,9 @@ expect object AppDatabaseConstructor : RoomDatabaseConstructor<WriteopiaApplicat
         StoryStepEntity::class,
         NotesConfigurationEntity::class,
         FolderEntity::class,
+        UiConfigurationRoomEntity::class,
     ],
-    version = 14,
+    version = 15,
     exportSchema = false
 )
 @TypeConverters(IdListConverter::class)
@@ -42,6 +45,8 @@ abstract class WriteopiaApplicationDatabase : RoomDatabase() {
     abstract fun notesConfigurationDao(): NotesConfigurationRoomDao
 
     abstract fun folderRoomDao(): FolderRoomDao
+
+    abstract fun uiConfigDao(): UiConfigurationRoomDao
 
     companion object {
         private var instance: WriteopiaApplicationDatabase? = null
