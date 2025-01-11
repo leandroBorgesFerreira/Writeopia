@@ -15,6 +15,7 @@ import io.writeopia.features.search.repository.SearchItem
 import io.writeopia.features.search.ui.SearchInput
 import io.writeopia.features.search.ui.SearchScreen
 import io.writeopia.notemenu.data.model.NotesNavigation
+import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -38,9 +39,13 @@ fun DocumentsSearchScreen(
                 search,
                 onSearchType,
                 Modifier.padding(12.dp)
-                    .shadow(10.dp, shape = MaterialTheme.shapes.large, spotColor = Color.Gray)
+                    .shadow(
+                        10.dp,
+                        shape = MaterialTheme.shapes.large,
+                        spotColor = WriteopiaTheme.colorScheme.cardShadow
+                    )
                     .background(
-                        MaterialTheme.colorScheme.background,
+                        WriteopiaTheme.colorScheme.searchBackground,
                         shape = MaterialTheme.shapes.large
                     )
             )
