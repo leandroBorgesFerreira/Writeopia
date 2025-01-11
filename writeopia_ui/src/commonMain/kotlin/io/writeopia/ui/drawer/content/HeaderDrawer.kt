@@ -51,6 +51,7 @@ class HeaderDrawer(
     private val modifier: Modifier = Modifier,
     private val headerClick: () -> Unit = {},
     private val textDrawer: () -> SimpleTextDrawer,
+//    private val multipleSelection: (Int) -> Unit,
     private val placeHolderStyle: @Composable () -> TextStyle = {
         MaterialTheme.typography.displaySmall.copy(
             fontWeight = FontWeight.Bold,
