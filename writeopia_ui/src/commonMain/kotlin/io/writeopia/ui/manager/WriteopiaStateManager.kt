@@ -12,7 +12,6 @@ import io.writeopia.sdk.model.document.info
 import io.writeopia.sdk.model.story.LastEdit
 import io.writeopia.sdk.model.story.Selection
 import io.writeopia.sdk.model.story.StoryState
-import io.writeopia.sdk.models.command.Command
 import io.writeopia.sdk.models.command.CommandInfo
 import io.writeopia.sdk.models.command.CommandTrigger
 import io.writeopia.sdk.models.command.TypeInfo
@@ -515,6 +514,29 @@ class WriteopiaStateManager(
         }
     }
 
+    fun onSectionSelected(position: Int) {
+        val isSelected = _positionsOnEdit.value.contains(position)
+        val stories = getStories()
+
+        val lastPosition = getStories().asSequence()
+            .filter { (posi, _) -> posi > position }
+            .find { (_, story) -> story.tags.any { it.tag.isTitle() } }
+            ?.key
+            ?: (stories.size - 1)
+
+        val newSelected = buildSet {
+            for (i in position .. lastPosition) {
+                add(i)
+            }
+        }
+
+        if (isSelected) {
+            _positionsOnEdit.value -= newSelected
+        } else {
+            _positionsOnEdit.value += newSelected
+        }
+    }
+
     fun toggleSelection(position: Int) {
         onSelected(!_positionsOnEdit.value.contains(position), position)
     }
@@ -851,6 +873,8 @@ class WriteopiaStateManager(
     }
 
     private fun getStory(position: Int): StoryStep? = _currentStory.value.stories[position]
+
+    private fun getStories() = _currentStory.value.stories
 
     companion object {
         fun create(

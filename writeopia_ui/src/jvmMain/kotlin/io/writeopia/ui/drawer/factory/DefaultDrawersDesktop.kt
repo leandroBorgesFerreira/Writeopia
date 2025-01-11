@@ -1,6 +1,8 @@
 package io.writeopia.ui.drawer.factory
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -28,7 +30,7 @@ import io.writeopia.ui.model.DrawConfig
 
 object DefaultDrawersDesktop : DrawersFactory {
 
-    @OptIn(ExperimentalComposeUiApi::class)
+    @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
     @Composable
     override fun create(
         manager: WriteopiaStateManager,
@@ -38,7 +40,7 @@ object DefaultDrawersDesktop : DrawersFactory {
         onHeaderClick: () -> Unit,
         selectedColor: Color,
         selectedBorderColor: Color,
-        fontFamily: FontFamily?,
+        fontFamily: FontFamily?
     ): Map<Int, StoryStepDrawer> =
         CommonDrawers.create(
             manager,
@@ -72,7 +74,10 @@ object DefaultDrawersDesktop : DrawersFactory {
                     Icon(
                         modifier = Modifier
                             .clip(MaterialTheme.shapes.medium)
-                            .clickable(onClick = { manager.toggleCollapseItem(drawInfo.position) })
+                            .combinedClickable(
+                                onClick = { manager.toggleCollapseItem(drawInfo.position) },
+                                onLongClick = { manager.onSectionSelected(drawInfo.position) }
+                            )
                             .onPointerEvent(PointerEventType.Enter) { active = true }
                             .onPointerEvent(PointerEventType.Exit) { active = false }
                             .size(24.dp)

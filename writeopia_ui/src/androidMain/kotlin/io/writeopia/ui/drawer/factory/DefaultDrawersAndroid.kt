@@ -1,7 +1,9 @@
 package io.writeopia.ui.drawer.factory
 
 import android.view.KeyEvent
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -27,6 +29,7 @@ import io.writeopia.ui.model.DrawConfig
 
 object DefaultDrawersAndroid : DrawersFactory {
 
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun create(
         manager: WriteopiaStateManager,
@@ -81,7 +84,10 @@ object DefaultDrawersAndroid : DrawersFactory {
                     Icon(
                         modifier = Modifier
                             .clip(MaterialTheme.shapes.medium)
-                            .clickable(onClick = { manager.toggleCollapseItem(drawInfo.position) })
+                            .combinedClickable(
+                                onClick = { manager.toggleCollapseItem(drawInfo.position) },
+                                onLongClick = { manager.onSectionSelected(drawInfo.position) }
+                            )
                             .size(24.dp)
                             .padding(4.dp),
                         imageVector = if (isCollapsed) {
