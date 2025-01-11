@@ -87,7 +87,6 @@ fun WrieopiaTheme(
     val cardPlaceHolderBackground = if (darkTheme) colors.background else colors.surfaceVariant
     val searchBackground = if (darkTheme) colors.surfaceVariant else colors.background
 
-
     val writeopiaColors = WriteopiaColors(
         globalBackground = globalBackground,
         lightBackground = lightBackground,
