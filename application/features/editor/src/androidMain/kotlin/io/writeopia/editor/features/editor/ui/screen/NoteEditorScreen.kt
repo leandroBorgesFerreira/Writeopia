@@ -19,15 +19,19 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -46,6 +50,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -116,6 +121,7 @@ internal fun NoteEditorScreen(
         topBar = {
             TopBar(
                 titleState = noteEditorViewModel.currentTitle,
+                editableState = noteEditorViewModel.isEditable,
                 navigationClick = {
                     systemUiController.setStatusBarColor(color = systemBarDefaultColor)
                     noteEditorViewModel.handleBackAction(navigateBack = navigateBack)
@@ -198,11 +204,13 @@ internal fun NoteEditorScreen(
 @Composable
 private fun TopBar(
     titleState: StateFlow<String>,
+    editableState: StateFlow<Boolean>,
     modifier: Modifier = Modifier,
     navigationClick: () -> Unit = {},
     shareDocument: () -> Unit
 ) {
     val title by titleState.collectAsState()
+    val isEditable by editableState.collectAsState()
 
     TopAppBar(
         modifier = modifier.height(44.dp),
@@ -219,8 +227,20 @@ private fun TopBar(
                     color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 18.sp,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.titleSmall.copy(textAlign = TextAlign.Center)
                 )
+
+                if (!isEditable) {
+                    Spacer(modifier.width(4.dp))
+
+                    Icon(
+                        imageVector = Icons.Outlined.Lock,
+                        contentDescription = "Lock",
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.size(14.dp)
+                    )
+                }
             }
         },
         navigationIcon = {

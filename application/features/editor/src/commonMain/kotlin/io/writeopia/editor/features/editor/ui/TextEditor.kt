@@ -55,6 +55,7 @@ internal fun TextEditor(
     }
 
     val clipShape = MaterialTheme.shapes.medium
+    val isEditable by noteEditorViewModel.isEditable.collectAsState()
 
     WriteopiaEditor(
         modifier = modifier,
@@ -65,7 +66,7 @@ internal fun TextEditor(
             noteEditorViewModel.writeopiaManager,
             defaultBorder = clipShape,
             onHeaderClick = noteEditorViewModel::onHeaderClick,
-            editable = true,
+            editable = isEditable,
             groupsBackgroundColor = Color.Transparent,
             selectedColor = WriteopiaTheme.colorScheme.selectedBg,
             selectedBorderColor = MaterialTheme.colorScheme.primary,

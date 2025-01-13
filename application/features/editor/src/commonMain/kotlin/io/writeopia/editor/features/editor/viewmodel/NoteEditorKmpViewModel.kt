@@ -45,7 +45,7 @@ class NoteEditorKmpViewModel(
     BackstackInform by writeopiaManager,
     BackstackHandler by writeopiaManager {
 
-    private val isEditableState = MutableStateFlow(true)
+    private val isEditableState = MutableStateFlow(false)
 
     /**
      * This property defines if the document should be edited (you can write in it, for example)
