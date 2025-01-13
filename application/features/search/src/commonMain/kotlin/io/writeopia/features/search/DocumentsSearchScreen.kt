@@ -9,7 +9,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.writeopia.features.search.repository.SearchItem
 import io.writeopia.features.search.ui.SearchInput
