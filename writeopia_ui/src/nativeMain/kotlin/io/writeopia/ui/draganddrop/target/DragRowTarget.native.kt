@@ -33,6 +33,7 @@ actual fun DragRowTarget(
         iconTint,
         onDragStart,
         onDragStop,
+        isHoldDraggable,
         content
     )
 }
