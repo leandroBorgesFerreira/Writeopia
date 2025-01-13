@@ -116,6 +116,7 @@ class DesktopTextItemDrawer(
                     dragIconWidth = dragIconWidth,
                     onDragStart = onDragStart,
                     onDragStop = onDragStop,
+                    isHoldDraggable = drawInfo.selectMode,
                     emptySpaceClick = {
                         focusRequester.requestFocus()
                     }

@@ -21,5 +21,6 @@ expect fun DragRowTarget(
     iconTint: Color = Color.Gray,
     onDragStart: () -> Unit = {},
     onDragStop: () -> Unit = {},
+    isHoldDraggable: Boolean,
     content: @Composable RowScope.() -> Unit,
 )

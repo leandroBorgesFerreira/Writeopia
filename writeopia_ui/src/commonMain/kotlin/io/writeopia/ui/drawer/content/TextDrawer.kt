@@ -147,7 +147,7 @@ class TextDrawer(
                     }
                 },
             value = inputText,
-            enabled = !selectionState,
+            enabled = !selectionState && !drawInfo.selectMode,
             onTextLayout = {
                 textLayoutResult = it
             },
