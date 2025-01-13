@@ -5,9 +5,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -27,6 +29,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.PointerInputChange
+import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -48,6 +52,7 @@ fun DragRowTargetMobile(
     iconTint: Color,
     onDragStart: () -> Unit,
     onDragStop: () -> Unit,
+    isHoldDraggable: Boolean,
     content: @Composable RowScope.() -> Unit
 ) {
     var currentPosition by remember { mutableStateOf(Offset.Zero) }
@@ -55,12 +60,75 @@ fun DragRowTargetMobile(
     val currentState = LocalDragTargetInfo.current
     val haptic = LocalHapticFeedback.current
 
+    val onDragStartInner: (Offset) -> Unit = { offset ->
+        onDragStart()
+        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+
+        currentState.dataToDrop = dataToDrop
+        currentState.isDragging = true
+        currentState.dragPosition = currentPosition + offset
+        currentState.draggableComposable = {
+            Row(
+                modifier = Modifier.size(maxSize)
+                    .clip(MaterialTheme.shapes.medium)
+                    .background(
+                        MaterialTheme.colorScheme
+                            .surfaceVariant
+                            .copy(alpha = 0.6F)
+                    )
+            ) {
+                content()
+            }
+        }
+    }
+
+    val onDrag: (change: PointerInputChange, dragAmount: Offset) -> Unit = { change, dragAmount ->
+        change.consume()
+        currentState.dragOffset += Offset(dragAmount.x, dragAmount.y)
+    }
+
+    val onDragEnd = {
+        onDragStop()
+        currentState.isDragging = false
+        currentState.dragOffset = Offset.Zero
+    }
+
+    val onDragCancel = {
+        onDragStop()
+        currentState.dragOffset = Offset.Zero
+        currentState.isDragging = false
+    }
+
+    val detectDrag: suspend PointerInputScope.() -> Unit = {
+        detectDragGestures(
+            onDragStart = onDragStartInner,
+            onDrag = onDrag,
+            onDragEnd = onDragEnd,
+            onDragCancel = onDragCancel
+        )
+    }
+
+    val detectDragLongPress: suspend PointerInputScope.() -> Unit = {
+        detectDragGesturesAfterLongPress(
+            onDragStart = onDragStartInner,
+            onDrag = onDrag,
+            onDragEnd = onDragEnd,
+            onDragCancel = onDragCancel
+        )
+    }
+
     Row(
         modifier = modifier
             .onGloballyPositioned { layoutCoordinates ->
                 // Todo: Offset.Zero Is wrong!
                 currentPosition = layoutCoordinates.localToWindow(Offset.Zero)
                 maxSize = DpSize(layoutCoordinates.size.width.dp, layoutCoordinates.size.height.dp)
+            }.let { modifierLet ->
+                if (isHoldDraggable) {
+                    modifierLet.pointerInput(Unit, block = detectDragLongPress)
+                } else {
+                    modifierLet
+                }
             },
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -77,40 +145,7 @@ fun DragRowTargetMobile(
                     modifier = Modifier
                         .width(dragIconWidth)
                         .pointerHoverIcon(PointerIcon.Hand)
-                        .pointerInput(Unit) {
-                            detectDragGestures(onDragStart = { offset ->
-                                onDragStart()
-                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-
-                                currentState.dataToDrop = dataToDrop
-                                currentState.isDragging = true
-                                currentState.dragPosition = currentPosition + offset
-                                currentState.draggableComposable = {
-                                    Row(
-                                        modifier = Modifier.size(maxSize)
-                                            .clip(MaterialTheme.shapes.medium)
-                                            .background(
-                                                MaterialTheme.colorScheme
-                                                    .surfaceVariant
-                                                    .copy(alpha = 0.6F)
-                                            )
-                                    ) {
-                                        content()
-                                    }
-                                }
-                            }, onDrag = { change, dragAmount ->
-                                change.consume()
-                                currentState.dragOffset += Offset(dragAmount.x, dragAmount.y)
-                            }, onDragEnd = {
-                                onDragStop()
-                                currentState.isDragging = false
-                                currentState.dragOffset = Offset.Zero
-                            }, onDragCancel = {
-                                onDragStop()
-                                currentState.dragOffset = Offset.Zero
-                                currentState.isDragging = false
-                            })
-                        },
+                        .pointerInput(Unit, block = detectDrag),
                     imageVector = Icons.Default.DragIndicator,
                     contentDescription = "Drag icon",
                     tint = iconTintOnHover
@@ -123,7 +158,10 @@ fun DragRowTargetMobile(
         }
 
         if (currentState.isDragging && position == currentState.dataToDrop?.positionFrom) {
-            Row(modifier = Modifier.alpha(0.7F), verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.alpha(0.7F).fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 content()
             }
         } else {

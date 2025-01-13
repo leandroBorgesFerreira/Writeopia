@@ -19,6 +19,7 @@ actual fun DragRowTarget(
     iconTint: Color,
     onDragStart: () -> Unit,
     onDragStop: () -> Unit,
+    isHoldDraggable: Boolean,
     content: @Composable RowScope.() -> Unit
 ) {
     DragRowTargetMobile(
@@ -32,6 +33,7 @@ actual fun DragRowTarget(
         iconTint,
         onDragStart,
         onDragStop,
+        isHoldDraggable,
         content
     )
 }

@@ -256,6 +256,7 @@ private fun FolderItem(
             emptySpaceClick = {
                 navigateToFolder(folder.id)
             },
+            isHoldDraggable = false,
             showIcon = isHovered,
         ) {
             Spacer(modifier = Modifier.width(4.dp + 12.dp * depth))
@@ -374,6 +375,7 @@ private fun DocumentItem(
         emptySpaceClick = {
             navigateToEditDocument(document.id, document.title)
         },
+        isHoldDraggable = false,
         showIcon = isHovered
     ) {
         Spacer(modifier = Modifier.width(4.dp + 12.dp * depth))

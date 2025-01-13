@@ -88,7 +88,7 @@ class HeaderPreviewDrawer(
                     text = step.text ?: "",
                     style = style ?: MaterialTheme.typography.titleLarge,
                     color = textColor,
-                    maxLines = 1,
+                    maxLines = 3,
                     overflow = TextOverflow.Ellipsis
                 )
             }
