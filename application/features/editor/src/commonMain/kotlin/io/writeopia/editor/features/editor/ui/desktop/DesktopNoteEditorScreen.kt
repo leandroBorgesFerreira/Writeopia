@@ -6,8 +6,14 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +34,7 @@ fun DesktopNoteEditorScreen(
     modifier: Modifier = Modifier,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
+    val isEditable by noteEditorViewModel.isEditable.collectAsState()
 
     Box(
         modifier = Modifier.clickable(
@@ -36,6 +43,8 @@ fun DesktopNoteEditorScreen(
             indication = null
         )
     ) {
+
+
         EditorScaffold(
             clickAtBottom = noteEditorViewModel.writeopiaManager::clickAtTheEnd,
             modifier = modifier.fillMaxSize()
@@ -67,6 +76,8 @@ fun DesktopNoteEditorScreen(
                 .padding(horizontal = 10.dp, vertical = 40.dp)
                 .align(Alignment.TopEnd),
             fontStyleSelected = { noteEditorViewModel.fontFamily },
+            isEditableState = noteEditorViewModel.isEditable,
+            setEditable = noteEditorViewModel::toggleEditable,
             checkItemClick = noteEditorViewModel::onAddCheckListClick,
             listItemClick = noteEditorViewModel::onAddListItemClick,
             codeBlockClick = noteEditorViewModel::onAddCodeBlockClick,
@@ -74,5 +85,15 @@ fun DesktopNoteEditorScreen(
             onPresentationClick = onPresentationClick,
             changeFontFamily = noteEditorViewModel::changeFontFamily
         )
+
+        if (!isEditable) {
+            Icon(
+                imageVector = Icons.Outlined.Lock,
+                contentDescription = "Lock",
+                tint = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.align(Alignment.TopStart).padding(8.dp)
+                    .size(16.dp)
+            )
+        }
     }
 }

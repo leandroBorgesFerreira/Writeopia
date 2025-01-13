@@ -21,8 +21,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -34,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontFamily
@@ -52,6 +57,8 @@ import kotlinx.coroutines.flow.StateFlow
 fun SideEditorOptions(
     modifier: Modifier = Modifier,
     fontStyleSelected: () -> StateFlow<Font>,
+    isEditableState: StateFlow<Boolean>,
+    setEditable: () -> Unit,
     checkItemClick: () -> Unit,
     listItemClick: () -> Unit,
     codeBlockClick: () -> Unit,
@@ -92,7 +99,12 @@ fun SideEditorOptions(
                     OptionsType.NONE -> {}
 
                     OptionsType.PAGE_STYLE -> {
-                        PageStyleOptions(changeFontFamily, fontStyleSelected())
+                        PageStyleOptions(
+                            changeFontFamily,
+                            isEditableState,
+                            setEditable,
+                            fontStyleSelected()
+                        )
                     }
 
                     OptionsType.TEXT_OPTIONS -> {
@@ -323,8 +335,10 @@ private fun Modifier.horizontalOptionsRow() =
         )
 
 @Composable
-public fun PageStyleOptions(
+fun PageStyleOptions(
     changeFontFamily: (Font) -> Unit,
+    isEditableState: StateFlow<Boolean>,
+    setEditable: () -> Unit,
     selectedState: StateFlow<Font>,
     modifier: Modifier = Modifier
 ) {
@@ -337,6 +351,46 @@ public fun PageStyleOptions(
             .width(250.dp)
             .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp)
     ) {
+        val isEditable by isEditableState.collectAsState()
+
+        Title("Actions")
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.let { modifierLet ->
+                if (!isEditable) {
+                    modifierLet.background(
+                        WriteopiaTheme.colorScheme.highlight,
+                        MaterialTheme.shapes.medium
+                    )
+                } else {
+                    modifierLet.border(
+                        2.dp,
+                        WriteopiaTheme.colorScheme.highlight,
+                        MaterialTheme.shapes.medium
+                    )
+                }.clickable {
+                    setEditable()
+                }.padding(horizontal = 10.dp, vertical = 6.dp)
+            }
+        ) {
+            Text(
+                "Lock",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onBackground,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.width(4.dp))
+
+            Icon(
+                imageVector = if (isEditable) Icons.Outlined.Lock else Icons.Outlined.LocationOn,
+                contentDescription = "Lock",
+                tint = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.size(12.dp)
+            )
+        }
+
         Title("Font")
         Spacer(modifier = Modifier.height(4.dp))
 
@@ -431,3 +485,4 @@ private enum class OptionsType {
     PAGE_STYLE,
     TEXT_OPTIONS
 }
+

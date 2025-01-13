@@ -45,7 +45,7 @@ class NoteEditorKmpViewModel(
     BackstackInform by writeopiaManager,
     BackstackHandler by writeopiaManager {
 
-    private val isEditableState = MutableStateFlow(false)
+    private val isEditableState = MutableStateFlow(true)
 
     /**
      * This property defines if the document should be edited (you can write in it, for example)
@@ -242,6 +242,10 @@ class NoteEditorKmpViewModel(
             .filterNotNull()
             .map { it.font }
             .stateIn(viewModelScope, SharingStarted.Lazily, Font.SYSTEM)
+    }
+
+    override fun toggleEditable() {
+        isEditableState.value = !isEditableState.value
     }
 
     override fun changeFontFamily(font: Font) {
