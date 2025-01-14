@@ -159,6 +159,8 @@ internal fun NoteEditorScreen(
                 )
             ) {
                 NoteGlobalActionsMenu(
+                    isEditableState = noteEditorViewModel.isEditable,
+                    setEditable = noteEditorViewModel::toggleEditable,
                     onShareJson = { noteEditorViewModel.shareDocumentInJson() },
                     onShareMd = { noteEditorViewModel.shareDocumentInMarkdown() },
                     changeFontFamily = noteEditorViewModel::changeFontFamily,
@@ -277,12 +279,10 @@ private fun BottomScreen(
         targetState = edit,
         label = "bottomSheetAnimation",
         transitionSpec = {
-            (
-                slideInVertically(
-                    animationSpec = spring(dampingRatio = 0.65F),
-                    initialOffsetY = { fullHeight -> fullHeight }
-                )
-                ) togetherWith slideOutVertically(
+            slideInVertically(
+                animationSpec = spring(dampingRatio = 0.65F),
+                initialOffsetY = { fullHeight -> fullHeight }
+            ) togetherWith slideOutVertically(
                 animationSpec = tween(durationMillis = 130),
                 targetOffsetY = { fullHeight -> fullHeight }
             )

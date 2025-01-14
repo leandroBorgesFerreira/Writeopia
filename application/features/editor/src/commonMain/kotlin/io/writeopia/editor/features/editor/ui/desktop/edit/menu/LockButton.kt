@@ -43,7 +43,6 @@ fun LockButton(
             .clip(shape)
             .clickable { setEditable() }
             .padding(horizontal = 10.dp, vertical = 6.dp)
-
     ) {
         Icon(
             imageVector = WrIcons.lock,

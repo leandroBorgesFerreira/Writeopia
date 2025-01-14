@@ -455,4 +455,3 @@ private enum class OptionsType {
     PAGE_STYLE,
     TEXT_OPTIONS
 }
-

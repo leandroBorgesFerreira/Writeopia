@@ -43,8 +43,6 @@ fun DesktopNoteEditorScreen(
             indication = null
         )
     ) {
-
-
         EditorScaffold(
             clickAtBottom = noteEditorViewModel.writeopiaManager::clickAtTheEnd,
             modifier = modifier.fillMaxSize()

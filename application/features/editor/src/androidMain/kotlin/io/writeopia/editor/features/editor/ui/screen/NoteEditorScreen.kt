@@ -252,9 +252,7 @@ private fun TopBar(
             ) {
                 Icon(
                     modifier = Modifier
-                        .semantics {
-                            testTag = NAVIGATE_BACK_TEST_TAG
-                        }
+                        .semantics { testTag = NAVIGATE_BACK_TEST_TAG }
                         .clip(CircleShape)
                         .clickable(onClick = navigationClick)
                         .padding(10.dp),
@@ -283,13 +281,14 @@ private fun TopBar(
 }
 
 private fun shareDocument(context: Context, shareDocument: ShareDocument) {
-    val intent = Intent(Intent.ACTION_SEND).apply {
-        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        putExtra(Intent.EXTRA_TEXT, shareDocument.content)
-        putExtra(Intent.EXTRA_TITLE, shareDocument.title)
-        action = Intent.ACTION_SEND
-        this.type = shareDocument.type
-    }
+    val intent = Intent(Intent.ACTION_SEND)
+        .apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            putExtra(Intent.EXTRA_TEXT, shareDocument.content)
+            putExtra(Intent.EXTRA_TITLE, shareDocument.title)
+            action = Intent.ACTION_SEND
+            this.type = shareDocument.type
+        }
 
     context.startActivity(
         Intent.createChooser(intent, "Export Document")
@@ -328,11 +327,9 @@ private fun BottomScreen(
         targetState = edit,
         label = "bottomSheetAnimation",
         transitionSpec = {
-            (
-                slideInVertically(
-                    animationSpec = spring(dampingRatio = 0.65F),
-                    initialOffsetY = { fullHeight -> fullHeight }
-                )
+            slideInVertically(
+                animationSpec = spring(dampingRatio = 0.65F),
+                initialOffsetY = { fullHeight -> fullHeight }
             ) togetherWith slideOutVertically(
                 animationSpec = tween(durationMillis = 130),
                 targetOffsetY = { fullHeight -> fullHeight }
