@@ -12,4 +12,5 @@ data class DocumentApi(
     val createdAt: Long = Clock.System.now().toEpochMilliseconds(),
     val lastUpdatedAt: Long = Clock.System.now().toEpochMilliseconds(),
     val parentId: String,
+    val isLocked: Boolean,
 )

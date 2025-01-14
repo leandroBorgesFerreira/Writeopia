@@ -125,6 +125,7 @@ class DocumentSqlDao(
                             entity.icon_tint?.toInt()
                         )
                     },
+                    isLocked = entity.is_locked == 1L
                 )
             }
 
@@ -176,6 +177,7 @@ class DocumentSqlDao(
                                 document.icon_tint?.toInt()
                             )
                         },
+                        isLocked = document.is_locked == 1L
                     )
                 }
             } ?: emptyList()

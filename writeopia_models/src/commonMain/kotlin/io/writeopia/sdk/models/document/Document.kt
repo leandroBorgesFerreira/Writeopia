@@ -14,5 +14,5 @@ data class Document(
     override val parentId: String,
     override val favorite: Boolean = false,
     override val icon: MenuItem.Icon? = null,
-    val isLocked: Boolean = false,
+    val isLocked: Boolean,
 ) : MenuItem
