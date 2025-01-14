@@ -107,6 +107,28 @@ class OnUpdateDocumentTracker(
                         documentId = documentInfo.id
                     )
                 }
+
+                LastEdit.Metadata -> {
+                    val stories = storyState.stories
+                    val titleFromContent = stories.values.firstOrNull { storyStep ->
+                        // Todo: Change the type of change to allow different types. The client code should decide what is a title
+                        // It is also interesting to inv
+                        storyStep.type == StoryTypes.TITLE.type
+                    }?.text
+
+                    documentUpdate.saveDocumentMetadata(
+                        Document(
+                            id = documentInfo.id,
+                            title = titleFromContent ?: documentInfo.title,
+                            createdAt = documentInfo.createdAt,
+                            lastUpdatedAt = Clock.System.now(),
+                            userId = userId,
+                            parentId = documentInfo.parentId,
+                            icon = documentInfo.icon,
+                            isLocked = documentInfo.isLocked
+                        )
+                    )
+                }
             }
         }
     }

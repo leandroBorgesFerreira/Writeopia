@@ -243,7 +243,6 @@ class WriteopiaStateManager(
      * @param document [Document]
      */
     fun loadDocument(document: Document) {
-        println("loadDocument")
         if (isInitialized()) return
 
         _initialized = true
@@ -252,7 +251,7 @@ class WriteopiaStateManager(
         _currentStory.value =
             StoryState(stepsNormalizer(stories.toEditState()), LastEdit.Nothing, null)
         val normalized = stepsNormalizer(stories.toEditState())
-        
+
         _currentStory.value = StoryState(normalized, LastEdit.Nothing)
         _documentInfo.value = document.info()
     }
@@ -723,6 +722,8 @@ class WriteopiaStateManager(
         val info = _documentInfo.value
 
         _documentInfo.value = info.copy(isLocked = !info.isLocked)
+        _currentStory.value = currentStory.value.copy(lastEdit = LastEdit.Metadata)
+
     }
 
     /**
