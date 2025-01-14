@@ -22,6 +22,7 @@ fun DocumentApi.Companion.example(id: String = "document_123"): DocumentApi {
         createdAt = now.toEpochMilliseconds(),
         lastUpdatedAt = now.toEpochMilliseconds(),
         userId = "user_123",
-        parentId = ""
+        parentId = "",
+        isLocked = false
     )
 }

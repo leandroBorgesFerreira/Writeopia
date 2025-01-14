@@ -27,7 +27,8 @@ class DocumentsRepository {
                     createdAt = now.toEpochMilliseconds(),
                     lastUpdatedAt = now.toEpochMilliseconds(),
                     userId = "null",
-                    parentId = ""
+                    parentId = "",
+                    isLocked = false
                 )
 
                 add(documentApi)
