@@ -15,6 +15,7 @@ import java.awt.Menu
 import java.util.Properties
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class SqlDelightDocumentRepositoryTest {
 
@@ -95,5 +96,29 @@ class SqlDelightDocumentRepositoryTest {
         val newDocument = documentRepository.loadDocumentById(documentId)
         assertEquals(newDocument?.icon?.label, icon)
         assertEquals(newDocument?.icon?.tint, tint)
+    }
+
+    @Test
+    fun `it shouold be possible to save the lock state`() = runTest {
+        val now = Clock.System.now()
+        val documentId = "asdasdasdgf"
+        val icon = "newIcon"
+        val tint = 123
+
+        val userId = "disconnected_user"
+        val document = Document(
+            id = documentId,
+            createdAt = now,
+            lastUpdatedAt = now,
+            userId = userId,
+            parentId = "",
+            icon = MenuItem.Icon(icon, tint),
+            isLocked = true
+        )
+
+        documentRepository.saveDocument(document)
+
+        val newDocument = documentRepository.loadDocumentById(documentId)
+        assertTrue { newDocument!!.isLocked }
     }
 }

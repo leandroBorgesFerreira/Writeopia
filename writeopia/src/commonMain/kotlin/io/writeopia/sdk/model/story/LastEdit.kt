@@ -29,4 +29,9 @@ sealed class LastEdit {
     data class LineEdition(val position: Int, val storyStep: StoryStep) : LastEdit()
 
     data class InfoEdition(val position: Int, val storyStep: StoryStep) : LastEdit()
+
+    /**
+     * Metadata was edited
+     */
+    data object Metadata : LastEdit()
 }

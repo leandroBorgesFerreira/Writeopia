@@ -21,8 +21,6 @@ class DocumentSqlDao(
     private val storyStepQueries: StoryStepEntityQueries?,
 ) : DocumentSearch {
 
-
-
     override suspend fun search(query: String): List<Document> = documentQueries?.query(query)
         ?.executeAsList()
         ?.map { entity ->
@@ -34,7 +32,8 @@ class DocumentSqlDao(
                 userId = entity.user_id,
                 favorite = entity.favorite == 1L,
                 parentId = entity.parent_document_id,
-                icon = entity.icon?.let { MenuItem.Icon(it, entity.icon_tint?.toInt()) }
+                icon = entity.icon?.let { MenuItem.Icon(it, entity.icon_tint?.toInt()) },
+                isLocked = entity.is_locked == 1L
             )
         }
         ?: emptyList()
@@ -50,7 +49,8 @@ class DocumentSqlDao(
                 userId = entity.user_id,
                 favorite = entity.favorite == 1L,
                 parentId = entity.parent_document_id,
-                icon = entity.icon?.let { MenuItem.Icon(it, entity.icon_tint?.toInt()) }
+                icon = entity.icon?.let { MenuItem.Icon(it, entity.icon_tint?.toInt()) },
+                isLocked = entity.is_locked == 1L
             )
         }
         ?: emptyList()
@@ -74,7 +74,8 @@ class DocumentSqlDao(
             favorite = document.favorite.toLong(),
             parent_document_id = document.parentId,
             icon = document.icon?.label,
-            icon_tint = document.icon?.tint?.toLong()
+            icon_tint = document.icon?.tint?.toLong(),
+            is_locked = document.isLocked.toLong()
         )
     }
 
@@ -124,6 +125,7 @@ class DocumentSqlDao(
                             entity.icon_tint?.toInt()
                         )
                     },
+                    isLocked = entity.is_locked == 1L
                 )
             }
 
@@ -175,6 +177,7 @@ class DocumentSqlDao(
                                 document.icon_tint?.toInt()
                             )
                         },
+                        isLocked = document.is_locked == 1L
                     )
                 }
             } ?: emptyList()
@@ -227,6 +230,7 @@ class DocumentSqlDao(
                                 document.icon_tint?.toInt()
                             )
                         },
+                        isLocked = document.is_locked == 1L
                     )
                 }
             }
@@ -285,6 +289,7 @@ class DocumentSqlDao(
                                 document.icon_tint?.toInt()
                             )
                         },
+                        isLocked = document.is_locked == 1L
                     )
                 }
             }
@@ -343,6 +348,7 @@ class DocumentSqlDao(
                                 document.icon_tint?.toInt()
                             )
                         },
+                        isLocked = document.is_locked == 1L
                     )
                 }
             } ?: emptyList()
@@ -404,6 +410,7 @@ class DocumentSqlDao(
                                 document.icon_tint?.toInt()
                             )
                         },
+                        isLocked = document.is_locked == 1L
                     )
                 }
             }
@@ -456,6 +463,7 @@ class DocumentSqlDao(
                                 document.icon_tint?.toInt()
                             )
                         },
+                        isLocked = document.is_locked == 1L
                     )
                 }
             } ?: emptyList()

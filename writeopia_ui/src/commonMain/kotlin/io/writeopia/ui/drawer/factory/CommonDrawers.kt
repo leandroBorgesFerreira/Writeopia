@@ -45,7 +45,7 @@ object CommonDrawers {
         manager: WriteopiaStateManager,
         marginAtBottom: Dp,
         defaultBorder: Shape = MaterialTheme.shapes.medium,
-        editable: Boolean = false,
+        editable: Boolean = true,
         onHeaderClick: () -> Unit = {},
         dragIconWidth: Dp = DRAG_ICON_WIDTH.dp,
         lineBreakByContent: Boolean,
@@ -69,6 +69,7 @@ object CommonDrawers {
                     eventListener = eventListener,
                     lineBreakByContent = lineBreakByContent,
                     emptyErase = emptyErase,
+                    enabled = editable,
                     onSelectionLister = manager::toggleSelection,
                     textStyle = { defaultTextStyle(it, fontFamily) }
                 )
@@ -100,6 +101,7 @@ object CommonDrawers {
                     textStyle = { codeBlockStyle() },
                     lineBreakByContent = lineBreakByContent,
                     emptyErase = EmptyErase.CHANGE_TYPE,
+                    enabled = editable,
                     onSelectionLister = manager::toggleSelection,
                 )
             }
@@ -145,13 +147,14 @@ object CommonDrawers {
 
         val headerDrawer = headerDrawer(
             manager = manager,
+            enabled = editable,
             modifier = Modifier.clip(RoundedCornerShape(0.dp, 0.dp, 8.dp, 8.dp)),
             headerClick = onHeaderClick,
             onKeyEvent = eventListener,
             lineBreakByContent = lineBreakByContent,
             selectionState = manager.selectionState,
             drawConfig = drawConfig,
-            fontFamily = fontFamily
+            fontFamily = fontFamily,
         )
 
         return buildMap {
@@ -184,6 +187,7 @@ private fun RowScope.messageDrawer(
     modifier: Modifier = Modifier,
     textStyle: @Composable (StoryStep) -> TextStyle = { defaultTextStyle(it) },
     lineBreakByContent: Boolean,
+    enabled: Boolean,
     emptyErase: EmptyErase,
     eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean,
     onSelectionLister: (Int) -> Unit
@@ -197,6 +201,7 @@ private fun RowScope.messageDrawer(
             manager.onFocusChange(position, focus.isFocused)
         },
         lineBreakByContent = lineBreakByContent,
+        enabled = enabled,
         emptyErase = emptyErase,
         selectionState = manager.selectionState,
         onSelectionLister = onSelectionLister

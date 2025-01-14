@@ -3,6 +3,7 @@ package io.writeopia.editor.configuration.ui
 // import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,9 +17,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.writeopia.editor.features.editor.ui.desktop.edit.menu.FontOptions
+import io.writeopia.editor.features.editor.ui.desktop.edit.menu.LockButton
 import io.writeopia.model.Font
 import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +29,8 @@ import kotlinx.coroutines.flow.StateFlow
 // @Preview
 @Composable
 internal fun NoteGlobalActionsMenu(
+    isEditableState: StateFlow<Boolean>,
+    setEditable: () -> Unit,
     onShareJson: () -> Unit = {},
     onShareMd: () -> Unit = {},
     changeFontFamily: (Font) -> Unit,
@@ -36,12 +41,26 @@ internal fun NoteGlobalActionsMenu(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(horizontal = 16.dp)
+            .pointerInput(Unit) { detectTapGestures { } }
     ) {
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Title("Actions")
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        LockButton(
+            isEditableState,
+            setEditable,
+            selectedColor = WriteopiaTheme.colorScheme.highlight,
+            defaultColor = MaterialTheme.colorScheme.background
+        )
+
         Spacer(modifier = Modifier.height(16.dp))
 
         Title("Font")
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         FontOptions(
             changeFontFamily = changeFontFamily,
@@ -50,9 +69,11 @@ internal fun NoteGlobalActionsMenu(
             defaultColor = MaterialTheme.colorScheme.background
         )
 
+        Spacer(modifier = Modifier.height(16.dp))
+
         Title("Export")
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Row {
             ShareButton(

@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -94,10 +95,11 @@ internal fun NoteEditorScreen(
         topBar = {
             TopBar(
                 titleState = noteEditorViewModel.currentTitle,
+                editableState = noteEditorViewModel.isEditable,
                 navigationClick = {
                     noteEditorViewModel.handleBackAction(navigateBack = navigateBack)
                 },
-                shareDocument = noteEditorViewModel::onMoreOptionsClick
+                shareDocument = noteEditorViewModel::onMoreOptionsClick,
             )
         },
     ) { paddingValues ->
@@ -157,6 +159,8 @@ internal fun NoteEditorScreen(
                 )
             ) {
                 NoteGlobalActionsMenu(
+                    isEditableState = noteEditorViewModel.isEditable,
+                    setEditable = noteEditorViewModel::toggleEditable,
                     onShareJson = { noteEditorViewModel.shareDocumentInJson() },
                     onShareMd = { noteEditorViewModel.shareDocumentInMarkdown() },
                     changeFontFamily = noteEditorViewModel::changeFontFamily,
@@ -171,11 +175,13 @@ internal fun NoteEditorScreen(
 @Composable
 private fun TopBar(
     titleState: StateFlow<String>,
+    editableState: StateFlow<Boolean>,
     modifier: Modifier = Modifier,
     navigationClick: () -> Unit = {},
     shareDocument: () -> Unit
 ) {
     val title by titleState.collectAsState()
+    val isEditable by editableState.collectAsState()
 
     TopAppBar(
         modifier = modifier.height(44.dp),
@@ -194,6 +200,14 @@ private fun TopBar(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
+
+                if (!isEditable) {
+                    Icon(
+                        imageVector = Icons.Outlined.Lock,
+                        contentDescription = "Lock",
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
+                }
             }
         },
         navigationIcon = {
@@ -265,11 +279,9 @@ private fun BottomScreen(
         targetState = edit,
         label = "bottomSheetAnimation",
         transitionSpec = {
-            (
-                slideInVertically(
-                    animationSpec = spring(dampingRatio = 0.65F),
-                    initialOffsetY = { fullHeight -> fullHeight }
-                )
+            slideInVertically(
+                animationSpec = spring(dampingRatio = 0.65F),
+                initialOffsetY = { fullHeight -> fullHeight }
             ) togetherWith slideOutVertically(
                 animationSpec = tween(durationMillis = 130),
                 targetOffsetY = { fullHeight -> fullHeight }

@@ -67,7 +67,8 @@ fun Document.toApi(): DocumentApi =
         createdAt = createdAt.toEpochMilliseconds(),
         lastUpdatedAt = lastUpdatedAt.toEpochMilliseconds(),
         userId = userId,
-        parentId = parentId
+        parentId = parentId,
+        isLocked = isLocked
     )
 
 fun DocumentApi.toModel(): Document =
@@ -78,5 +79,6 @@ fun DocumentApi.toModel(): Document =
         createdAt = Instant.fromEpochMilliseconds(createdAt),
         lastUpdatedAt = Instant.fromEpochMilliseconds(lastUpdatedAt),
         userId = userId,
-        parentId = parentId
+        parentId = parentId,
+        isLocked = isLocked
     )

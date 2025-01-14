@@ -52,6 +52,8 @@ import kotlinx.coroutines.flow.StateFlow
 fun SideEditorOptions(
     modifier: Modifier = Modifier,
     fontStyleSelected: () -> StateFlow<Font>,
+    isEditableState: StateFlow<Boolean>,
+    setEditable: () -> Unit,
     checkItemClick: () -> Unit,
     listItemClick: () -> Unit,
     codeBlockClick: () -> Unit,
@@ -92,7 +94,12 @@ fun SideEditorOptions(
                     OptionsType.NONE -> {}
 
                     OptionsType.PAGE_STYLE -> {
-                        PageStyleOptions(changeFontFamily, fontStyleSelected())
+                        PageStyleOptions(
+                            changeFontFamily,
+                            isEditableState,
+                            setEditable,
+                            fontStyleSelected()
+                        )
                     }
 
                     OptionsType.TEXT_OPTIONS -> {
@@ -323,8 +330,10 @@ private fun Modifier.horizontalOptionsRow() =
         )
 
 @Composable
-public fun PageStyleOptions(
+fun PageStyleOptions(
     changeFontFamily: (Font) -> Unit,
+    isEditableState: StateFlow<Boolean>,
+    setEditable: () -> Unit,
     selectedState: StateFlow<Font>,
     modifier: Modifier = Modifier
 ) {
@@ -337,6 +346,21 @@ public fun PageStyleOptions(
             .width(250.dp)
             .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp)
     ) {
+        val isEditable by isEditableState.collectAsState()
+
+        val lockButtonColor = if (isEditable) {
+            MaterialTheme.colorScheme.surfaceVariant
+        } else {
+            WriteopiaTheme.colorScheme.highlight
+        }
+
+        Title("Actions")
+
+        Spacer(modifier = Modifier.height(6.dp))
+
+        LockButton(isEditableState, setEditable)
+        Spacer(modifier = Modifier.height(8.dp))
+
         Title("Font")
         Spacer(modifier = Modifier.height(4.dp))
 

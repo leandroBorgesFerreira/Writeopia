@@ -47,7 +47,8 @@ class WriteopiaManager(
             title = title,
             createdAt = now,
             lastUpdatedAt = now,
-            parentId = parentFolder
+            parentId = parentFolder,
+            isLocked = false,
         )
 
         val state = StoryState(

@@ -34,6 +34,7 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
             lastUpdatedAt = now,
             userId = "userId",
             parentId = "root",
+            isLocked = false
         )
 
         documentRepository.saveDocument(document)
@@ -54,6 +55,7 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
             lastUpdatedAt = now,
             userId = "userId",
             parentId = "root",
+            isLocked = false
         )
 
         documentRepository.saveDocument(document)
@@ -73,7 +75,8 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
             createdAt = now,
             lastUpdatedAt = now,
             userId = "userId",
-            parentId = "root"
+            parentId = "root",
+            isLocked = false
         )
 
         documentRepository.saveDocument(document)
@@ -93,7 +96,8 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
             createdAt = now,
             lastUpdatedAt = now,
             userId = "userId",
-            parentId = "root"
+            parentId = "root",
+            isLocked = false
         )
 
         documentRepository.saveDocument(document)
@@ -114,7 +118,8 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
             createdAt = now,
             lastUpdatedAt = now,
             userId = "userId",
-            parentId = "root"
+            parentId = "root",
+            isLocked = false
         )
 
         documentRepository.saveDocument(document)
@@ -135,7 +140,8 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
             lastUpdatedAt = now,
             userId = "userIdasd",
             favorite = false,
-            parentId = "parentId"
+            parentId = "parentId",
+            isLocked = false
         )
 
         documentRepository.saveDocument(document)
@@ -160,7 +166,8 @@ class DocumentRepositoryTests(private val documentRepository: DocumentRepository
             createdAt = Clock.System.now(),
             lastUpdatedAt = Clock.System.now(),
             userId = "userId",
-            parentId = "parentId"
+            parentId = "parentId",
+            isLocked = false
         )
 
         val loadedDocument = documentRepository.run {

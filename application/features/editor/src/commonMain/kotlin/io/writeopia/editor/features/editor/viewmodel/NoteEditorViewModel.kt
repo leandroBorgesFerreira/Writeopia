@@ -32,6 +32,8 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
 
     val fontFamily: StateFlow<Font>
 
+    fun toggleEditable()
+
     fun deleteSelection()
 
     fun handleBackAction(navigateBack: () -> Unit)
