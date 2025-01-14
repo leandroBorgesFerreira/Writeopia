@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.writeopia.editor.features.editor.ui.desktop.edit.menu.FontOptions
+import io.writeopia.editor.features.editor.ui.desktop.edit.menu.LockButton
 import io.writeopia.model.Font
 import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +27,8 @@ import kotlinx.coroutines.flow.StateFlow
 // @Preview
 @Composable
 internal fun NoteGlobalActionsMenu(
+    isEditableState: StateFlow<Boolean>,
+    setEditable: () -> Unit,
     onShareJson: () -> Unit = {},
     onShareMd: () -> Unit = {},
     changeFontFamily: (Font) -> Unit,
@@ -39,9 +42,21 @@ internal fun NoteGlobalActionsMenu(
     ) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        Title("Font")
+        Title("Actions")
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        LockButton(
+            isEditableState, setEditable,
+            selectedColor = WriteopiaTheme.colorScheme.highlight,
+            defaultColor = MaterialTheme.colorScheme.background
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        Title("Font")
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         FontOptions(
             changeFontFamily = changeFontFamily,
@@ -50,9 +65,11 @@ internal fun NoteGlobalActionsMenu(
             defaultColor = MaterialTheme.colorScheme.background
         )
 
+        Spacer(modifier = Modifier.height(16.dp))
+
         Title("Export")
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Row {
             ShareButton(

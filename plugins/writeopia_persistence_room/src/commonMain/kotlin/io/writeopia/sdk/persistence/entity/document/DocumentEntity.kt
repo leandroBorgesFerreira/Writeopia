@@ -16,11 +16,21 @@ data class DocumentEntity(
     @ColumnInfo(FAVORITE) val favorite: Boolean,
     @ColumnInfo(PARENT_ID) val parentId: String,
     @ColumnInfo(ICON) val icon: String? = null,
+    @ColumnInfo(IS_LOCKED) val isLocked: Boolean,
 ) {
     companion object {
         fun createById(id: String, userId: String, parentId: String): DocumentEntity {
             val now = Clock.System.now().toEpochMilliseconds()
-            return DocumentEntity(id, "", now, now, userId, favorite = false, parentId = parentId)
+            return DocumentEntity(
+                id,
+                "",
+                now,
+                now,
+                userId,
+                favorite = false,
+                parentId = parentId,
+                isLocked = false
+            )
         }
     }
 }

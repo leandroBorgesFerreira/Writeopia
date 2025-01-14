@@ -21,12 +21,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -38,7 +34,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontFamily
@@ -353,43 +348,18 @@ fun PageStyleOptions(
     ) {
         val isEditable by isEditableState.collectAsState()
 
-        Title("Actions")
-        Spacer(modifier = Modifier.height(4.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.let { modifierLet ->
-                if (!isEditable) {
-                    modifierLet.background(
-                        WriteopiaTheme.colorScheme.highlight,
-                        MaterialTheme.shapes.medium
-                    )
-                } else {
-                    modifierLet.border(
-                        2.dp,
-                        WriteopiaTheme.colorScheme.highlight,
-                        MaterialTheme.shapes.medium
-                    )
-                }.clickable {
-                    setEditable()
-                }.padding(horizontal = 10.dp, vertical = 6.dp)
-            }
-        ) {
-            Text(
-                "Lock",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.width(4.dp))
-
-            Icon(
-                imageVector = if (isEditable) Icons.Outlined.Lock else Icons.Outlined.LocationOn,
-                contentDescription = "Lock",
-                tint = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.size(12.dp)
-            )
+        val lockButtonColor = if (isEditable) {
+            MaterialTheme.colorScheme.surfaceVariant
+        } else {
+            WriteopiaTheme.colorScheme.highlight
         }
+
+        Title("Actions")
+
+        Spacer(modifier = Modifier.height(6.dp))
+
+        LockButton(isEditableState, setEditable)
+        Spacer(modifier = Modifier.height(8.dp))
 
         Title("Font")
         Spacer(modifier = Modifier.height(4.dp))

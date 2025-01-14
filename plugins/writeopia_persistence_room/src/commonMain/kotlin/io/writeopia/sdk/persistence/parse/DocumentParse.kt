@@ -13,7 +13,8 @@ fun DocumentEntity.toModel(content: Map<Int, StoryStep> = emptyMap()) = Document
     lastUpdatedAt = Instant.fromEpochMilliseconds(lastUpdatedAt),
     userId = userId,
     favorite = favorite,
-    parentId = parentId
+    parentId = parentId,
+    isLocked = isLocked
 )
 
 fun Document.toEntity() = DocumentEntity(
@@ -23,5 +24,6 @@ fun Document.toEntity() = DocumentEntity(
     lastUpdatedAt = lastUpdatedAt.toEpochMilliseconds(),
     userId = userId,
     favorite = favorite,
-    parentId = parentId
+    parentId = parentId,
+    isLocked = isLocked
 )

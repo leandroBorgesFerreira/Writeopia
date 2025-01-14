@@ -49,7 +49,8 @@ class OnUpdateDocumentTracker(
                             lastUpdatedAt = Clock.System.now(),
                             userId = userId,
                             parentId = documentInfo.parentId,
-                            icon = documentInfo.icon
+                            icon = documentInfo.icon,
+                            isLocked = documentInfo.isLocked
                         )
                     )
                 }
@@ -72,7 +73,8 @@ class OnUpdateDocumentTracker(
                         lastUpdatedAt = Clock.System.now(),
                         userId = userId,
                         parentId = documentInfo.parentId,
-                        icon = documentInfo.icon
+                        icon = documentInfo.icon,
+                        isLocked = documentInfo.isLocked
                     )
 
                     documentUpdate.saveDocument(document)
@@ -94,7 +96,8 @@ class OnUpdateDocumentTracker(
                             lastUpdatedAt = Clock.System.now(),
                             userId = userId,
                             parentId = documentInfo.parentId,
-                            icon = documentInfo.icon
+                            icon = documentInfo.icon,
+                            isLocked = documentInfo.isLocked
                         )
                     )
 

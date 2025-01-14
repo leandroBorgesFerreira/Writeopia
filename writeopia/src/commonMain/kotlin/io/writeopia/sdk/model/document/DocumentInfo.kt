@@ -14,6 +14,7 @@ data class DocumentInfo(
     val title: String = "",
     val createdAt: Instant,
     val lastUpdatedAt: Instant,
+    val isLocked: Boolean,
     val parentId: String = "root",
     val icon: MenuItem.Icon? = null,
 ) {
@@ -22,7 +23,8 @@ data class DocumentInfo(
             val now = Clock.System.now()
             return DocumentInfo(
                 createdAt = now,
-                lastUpdatedAt = now
+                lastUpdatedAt = now,
+                isLocked = false
             )
         }
     }
@@ -34,5 +36,6 @@ fun Document.info(): DocumentInfo = DocumentInfo(
     createdAt = this.createdAt,
     lastUpdatedAt = this.lastUpdatedAt,
     parentId = this.parentId,
-    icon = this.icon
+    icon = this.icon,
+    isLocked = this.isLocked
 )

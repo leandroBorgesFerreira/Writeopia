@@ -140,6 +140,7 @@ fun headerDrawer(
     lineBreakByContent: Boolean,
     selectionState: StateFlow<Boolean>,
     drawConfig: DrawConfig,
+    enabled: Boolean = true,
     fontFamily: FontFamily? = null
 ): StoryStepDrawer =
     HeaderDrawer(
@@ -147,6 +148,7 @@ fun headerDrawer(
         textDrawer = {
             TextDrawer(
                 modifier = Modifier.padding(start = drawConfig.textDrawerStartPadding.dp),
+                enabled = enabled,
                 onTextEdit = manager::handleTextInput,
                 onKeyEvent = onKeyEvent,
                 lineBreakByContent = lineBreakByContent,

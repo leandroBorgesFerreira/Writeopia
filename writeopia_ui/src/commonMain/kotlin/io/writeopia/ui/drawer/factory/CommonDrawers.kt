@@ -147,13 +147,14 @@ object CommonDrawers {
 
         val headerDrawer = headerDrawer(
             manager = manager,
+            enabled = editable,
             modifier = Modifier.clip(RoundedCornerShape(0.dp, 0.dp, 8.dp, 8.dp)),
             headerClick = onHeaderClick,
             onKeyEvent = eventListener,
             lineBreakByContent = lineBreakByContent,
             selectionState = manager.selectionState,
             drawConfig = drawConfig,
-            fontFamily = fontFamily
+            fontFamily = fontFamily,
         )
 
         return buildMap {

@@ -190,6 +190,8 @@ internal fun NoteEditorScreen(
                 )
             ) {
                 NoteGlobalActionsMenu(
+                    isEditableState = noteEditorViewModel.isEditable,
+                    setEditable = noteEditorViewModel::toggleEditable,
                     onShareJson = { noteEditorViewModel.shareDocumentInJson() },
                     onShareMd = { noteEditorViewModel.shareDocumentInMarkdown() },
                     changeFontFamily = noteEditorViewModel::changeFontFamily,

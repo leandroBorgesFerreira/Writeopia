@@ -5,6 +5,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.FormatColorReset
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Notifications
@@ -147,6 +148,8 @@ object WrIcons {
     val visibilityOn = Eye
 
     val visibilityOff = EyeClosed
+
+    val lock = Icons.Outlined.Lock
 
     val allIcons: Map<String, ImageVector> =
         mapOf(

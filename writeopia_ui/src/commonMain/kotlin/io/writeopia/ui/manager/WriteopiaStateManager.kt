@@ -148,7 +148,8 @@ class WriteopiaStateManager(
                 userId = localUserId ?: userId.invoke().also { id ->
                     localUserId = id
                 },
-                parentId = info.parentId
+                parentId = info.parentId,
+                isLocked = info.isLocked
             )
         }.stateIn(coroutineScope, SharingStarted.Lazily, null)
 
@@ -242,6 +243,7 @@ class WriteopiaStateManager(
      * @param document [Document]
      */
     fun loadDocument(document: Document) {
+        println("loadDocument")
         if (isInitialized()) return
 
         _initialized = true
@@ -250,7 +252,7 @@ class WriteopiaStateManager(
         _currentStory.value =
             StoryState(stepsNormalizer(stories.toEditState()), LastEdit.Nothing, null)
         val normalized = stepsNormalizer(stories.toEditState())
-
+        
         _currentStory.value = StoryState(normalized, LastEdit.Nothing)
         _documentInfo.value = document.info()
     }
@@ -715,6 +717,12 @@ class WriteopiaStateManager(
     fun moveToPrevious(cursor: Int, positions: Int = 1) {
         val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
         nextFocusOrCreate(max(focusPosition - positions, 0), cursor)
+    }
+
+    fun toggleLockDocument() {
+        val info = _documentInfo.value
+
+        _documentInfo.value = info.copy(isLocked = !info.isLocked)
     }
 
     /**
