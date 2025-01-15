@@ -27,7 +27,7 @@ object StepsModifier {
 
             val spaceDraw = DrawStory(
                 storyStep = spaceStory.copy(tags = newTags),
-                position = index
+                position = index - 1
             )
 
             acc + spaceDraw + drawStory
