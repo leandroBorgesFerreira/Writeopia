@@ -2,6 +2,7 @@ package io.writeopia.sdk.manager
 
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.sdk.utils.extensions.associateWithPosition
 import io.writeopia.sdk.utils.extensions.toEditState
 import io.writeopia.sdk.utils.iterables.addElementInPosition
 
@@ -43,36 +44,53 @@ class MovementHandler {
     }
 
     fun move(stories: Map<Int, StoryStep>, move: Action.Move): Map<Int, StoryStep> {
-        val mutable = stories.toMutableMap()
+//        val mutable = stories.toMutableMap()
+//
+//        val movedStories = mutable[move.positionFrom]?.let { moveStory ->
+//            if (move.storyStep.parentId == null) {
+//                mutable.remove(move.positionFrom)
+//            } else {
+//                val fromGroup = mutable[move.positionFrom]
+//                val newList = fromGroup?.steps?.filter { storyUnit ->
+//                    storyUnit.localId != move.storyStep.localId
+//                }
+//
+//                if (newList != null) {
+//                    mutable[move.positionFrom] = fromGroup.copy(steps = newList)
+//                }
+//            }
+//
+//            mutable.addElementInPosition(moveStory.copy(parentId = null), move.positionTo)
+//        } ?: stories
+//
+//        return movedStories
 
-        val movedStories = mutable[move.positionFrom]?.let { moveStory ->
-            if (move.storyStep.parentId == null) {
-                mutable.remove(move.positionFrom)
-            } else {
-                val fromGroup = mutable[move.positionFrom]
-                val newList = fromGroup?.steps?.filter { storyUnit ->
-                    storyUnit.localId != move.storyStep.localId
-                }
+        if (move.positionFrom == move.positionTo) return stories
 
-                if (newList != null) {
-                    mutable[move.positionFrom] = fromGroup.copy(steps = newList)
-                }
-            }
+        if (move.positionFrom == move.positionTo + 1) return stories
 
-            mutable.addElementInPosition(moveStory.copy(parentId = null), move.positionTo)
-        } ?: stories
-
-        return movedStories
+        return moveStories(stories, move.positionFrom.let(::setOf), move.positionTo)
     }
 
     fun move(stories: Map<Int, StoryStep>, move: Action.BulkMove): Map<Int, StoryStep> {
+        return moveStories(stories, move.positionFrom, move.positionTo)
+    }
+
+    private fun moveStories(stories: Map<Int, StoryStep>, from: Set<Int>, to: Int): Map<Int, StoryStep> {
         val mutable = stories.toMutableMap()
+        val storiesToMove = from.mapNotNull { position -> mutable[position] }
+        val moveAfter = mutable[to + 1]?.id ?: mutable
 
-        move.positionFrom.forEach(mutable::remove)
+        from.forEach(mutable::remove)
 
-        return move.storyStep.fold(mutable.toMap()) { map, moveStory ->
-            map.addElementInPosition(moveStory.copy(parentId = null), move.positionTo)
-        }
+        val storiesCollection = mutable.values
+
+        val firstPart = storiesCollection.takeWhile { story -> story.id != moveAfter }
+        val lastPart = storiesCollection.drop(firstPart.size)
+
+        val resultAsList = firstPart + storiesToMove + lastPart
+
+        return resultAsList.associateWithPosition()
     }
 }
 
