@@ -132,9 +132,9 @@ compose.desktop {
 
                 notarization {
                     val providers = project.providers
-                    appleID.set(providers.environmentVariable("NOTARIZATION_APPLE_ID"))
+                    appleID.set(providers.environmentVariable("APPLE_ID_NOTARIZATION"))
                     password.set(providers.environmentVariable("NOTARIZATION_PASSWORD"))
-                    teamID.set(providers.environmentVariable("NOTARIZATION_TEAM_ID"))
+                    teamID.set(providers.environmentVariable("APPSTORE_TEAM_ID"))
                 }
             }
         }
@@ -160,8 +160,8 @@ android {
         applicationId = "io.writeopia"
         minSdk = 24
         targetSdk = 35
-        versionCode = 13
-        versionName = "0.2.2"
+        versionCode = 14
+        versionName = "0.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
