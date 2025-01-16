@@ -152,6 +152,7 @@ class NoteEditorKmpViewModel(
     }
 
     override fun onHeaderClick() {
+        if (!isEditable.value) return
         _editHeader.value = true
     }
 
@@ -183,6 +184,8 @@ class NoteEditorKmpViewModel(
     }
 
     override fun onHeaderColorSelection(color: Int?) {
+        if (!isEditable.value) return
+
         onHeaderEditionCancel()
 
         writeopiaManager.currentStory.value.stories[0]?.let { storyStep ->
@@ -199,18 +202,22 @@ class NoteEditorKmpViewModel(
     }
 
     override fun onAddCheckListClick() {
+        if (!isEditable.value) return
         writeopiaManager.onCheckItemClicked()
     }
 
     override fun onAddListItemClick() {
+        if (!isEditable.value) return
         writeopiaManager.onListItemClicked()
     }
 
     override fun onAddCodeBlockClick() {
+        if (!isEditable.value) return
         writeopiaManager.onCodeBlockClicked()
     }
 
     override fun onAddHighLightBlockClick() {
+        if (!isEditable.value) return
         writeopiaManager.onHighLightBlockClicked()
     }
 

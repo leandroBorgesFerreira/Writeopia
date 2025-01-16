@@ -29,6 +29,7 @@ fun unOrderedListItemDrawer(
     isDesktop: Boolean,
     manager: WriteopiaStateManager,
     modifier: Modifier = Modifier,
+    enabled: Boolean,
     dragIconWidth: Dp = 16.dp,
     checkBoxPadding: PaddingValues = PaddingValues(0.dp),
     config: DrawConfig,
@@ -45,6 +46,7 @@ fun unOrderedListItemDrawer(
     onDragStop = manager::onDragStop,
     moveRequest = manager::moveRequest,
     dragIconWidth = dragIconWidth,
+    enabled = enabled,
     messageDrawer = messageDrawer,
 )
 
@@ -54,6 +56,7 @@ fun unOrderedListItemDrawer(
     customBackgroundColor: Color = Color.Transparent,
     clickable: Boolean = true,
     onSelected: (Boolean, Int) -> Unit = { _, _ -> },
+    enabled: Boolean,
     dragIconWidth: Dp = 16.dp,
     checkBoxPadding: PaddingValues = PaddingValues(0.dp),
     config: DrawConfig,
@@ -85,6 +88,7 @@ fun unOrderedListItemDrawer(
         startContent,
         null,
         isDesktop,
+        enabled,
         messageDrawer
     )
 
@@ -102,6 +106,7 @@ private fun UnOrderedListItemPreview() {
         onDragHover = {},
         onDragStart = {},
         onDragStop = {},
+        enabled = true,
         config = DrawConfig(),
         messageDrawer = {
             TextDrawer(

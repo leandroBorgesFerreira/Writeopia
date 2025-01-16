@@ -41,6 +41,7 @@ fun checkItemDrawer(
     moveRequest: (Action.Move) -> Unit,
     checkBoxPadding: PaddingValues = PaddingValues(0.dp),
     isDesktop: Boolean,
+    enabled: Boolean,
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)? = { step, drawInfo ->
         CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
 //            Spacer(modifier = Modifier.width(8.dp))
@@ -75,6 +76,7 @@ fun checkItemDrawer(
         startContent,
         null,
         isDesktop,
+        enabled,
         messageDrawer
     )
 
@@ -85,6 +87,7 @@ fun checkItemDrawer(
     config: DrawConfig,
     checkBoxPadding: PaddingValues = PaddingValues(0.dp),
     isDesktop: Boolean,
+    enabled: Boolean,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer = checkItemDrawer(
     modifier = modifier,
@@ -98,6 +101,7 @@ fun checkItemDrawer(
     onDragStart = manager::onDragStart,
     onDragStop = manager::onDragStop,
     moveRequest = manager::moveRequest,
+    enabled = enabled,
     isDesktop = isDesktop,
     messageDrawer = {
         messageDrawer()
@@ -115,6 +119,7 @@ fun CheckItemDrawerStepPreview() {
         moveRequest = {},
         config = DrawConfig(),
         isDesktop = true,
+        enabled = true,
         messageDrawer = {
             TextDrawer(
                 selectionState = MutableStateFlow(false),
