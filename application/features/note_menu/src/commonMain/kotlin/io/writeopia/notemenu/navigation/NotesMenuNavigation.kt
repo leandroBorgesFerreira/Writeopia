@@ -46,6 +46,7 @@ fun NavGraphBuilder.notesMenuNavigation(
             },
         ),
     ) { backStackEntry ->
+        println("Navigated to notesMenuNavigation")
         val navigationType = backStackEntry.arguments?.getString(NAVIGATION_TYPE)
         val navigationPath = backStackEntry.arguments?.getString(NAVIGATION_PATH)
         val notesNavigation = if (navigationType != null && navigationPath != null) {
@@ -60,6 +61,7 @@ fun NavGraphBuilder.notesMenuNavigation(
         val chooseNoteViewModel: ChooseNoteViewModel =
             notesMenuInjection.provideChooseNoteViewModel(notesNavigation = notesNavigation)
 
+        println("Creating NotesMenuScreen")
         NotesMenuScreen(
             chooseNoteViewModel = chooseNoteViewModel,
             navigationController = navigationController,
