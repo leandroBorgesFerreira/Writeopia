@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "io.writeopia.appresourcers"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24

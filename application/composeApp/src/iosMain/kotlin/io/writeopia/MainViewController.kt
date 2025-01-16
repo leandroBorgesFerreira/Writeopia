@@ -14,9 +14,11 @@ import io.writeopia.editor.di.EditorKmpInjector
 import io.writeopia.features.search.di.KmpSearchInjection
 import io.writeopia.mobile.AppMobile
 import io.writeopia.navigation.MobileNavigationViewModel
+import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.NotesMenuKmpInjection
 import io.writeopia.notemenu.di.UiConfigurationInjector
+import io.writeopia.notemenu.navigation.navigateToNotes
 import io.writeopia.notes.desktop.components.startDestination
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sqldelight.database.DatabaseCreation
@@ -74,8 +76,9 @@ fun MainViewController() = ComposeUIViewController {
 
             val navigationViewModel = viewModel { MobileNavigationViewModel() }
 
+            val navController = rememberNavController()
+
             AppMobile(
-                startDestination = startDestination(),
                 navController = rememberNavController(),
                 searchInjector = searchInjection,
                 uiConfigViewModel = uiConfigurationViewModel,
@@ -83,7 +86,11 @@ fun MainViewController() = ComposeUIViewController {
                 editorInjector = editorInjector,
                 accountMenuInjector = accountMenuInjector,
                 navigationViewModel = navigationViewModel,
-            ) {}
+            ) {
+                authNavigation(navController, authInjection) {
+                    navController.navigateToNotes(NotesNavigation.Root)
+                }
+            }
         }
 
         DatabaseCreation.Loading -> {

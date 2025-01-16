@@ -51,7 +51,7 @@ kotlin {
 
 android {
     namespace = "io.writeopia.sdk.persistence.bridge"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24

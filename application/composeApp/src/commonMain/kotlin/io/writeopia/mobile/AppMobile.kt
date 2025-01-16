@@ -8,6 +8,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -101,11 +102,11 @@ fun AppMobile(
         ) { padding ->
             Box(modifier = Modifier.padding(padding)) {
                 Navigation(
+                    startDestination = startDestination,
                     notesMenuInjection = notesMenuInjection,
                     navController = navController,
                     editorInjector = editorInjector,
                     accountMenuInjector = accountMenuInjector,
-                    startDestination = startDestination,
                     selectColorTheme = uiConfigViewModel::changeColorTheme,
                     searchInjection = searchInjector,
                     isUndoKeyEvent = { false },

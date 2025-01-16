@@ -83,7 +83,6 @@ ktor-server-core = { module = "io.ktor:ktor-server-core-jvm" }
 ktor-server-websocket = { module = "io.ktor:ktor-server-websockets-jvm" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm" }
 ktor-server-tests = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 #material3-desktop = { module = "org.jetbrains.compose.material3:material3-desktop", version.ref = "material3" }
 sql-postgres-socket-factory = { module = "com.google.cloud.sql:postgres-socket-factory", version.ref = "postgresSocketFactory" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
