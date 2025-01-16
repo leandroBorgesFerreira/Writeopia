@@ -20,7 +20,7 @@ class AuthMenuViewModel(
     val isConnected = _isConnected.asStateFlow()
 
     fun checkLoggedIn() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Default) {
             _isConnected.value = ResultData.Loading()
             _isConnected.value =
                 authManager.isLoggedIn().map { isConnected ->

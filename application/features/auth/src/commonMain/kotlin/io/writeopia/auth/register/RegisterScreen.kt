@@ -1,6 +1,5 @@
 package io.writeopia.auth.register
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -20,24 +19,22 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.writeopia.appresourcers.R
 import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.icons.WrIcons
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun RegisterScreen(
@@ -56,11 +53,10 @@ fun RegisterScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        when (val register = registerState.collectAsStateWithLifecycle().value) {
+        when (val register = registerState.collectAsState().value) {
             is ResultData.Complete -> {
                 if (register.data) {
                     LaunchedEffect(key1 = "navigation") {
-                        Log.d("RegisterScreen", "onRegisterSuccess()")
                         onRegisterSuccess()
                     }
                 } else {
@@ -105,9 +101,9 @@ private fun BoxScope.RegisterContent(
     passwordChanged: (String) -> Unit,
     onRegisterRequest: () -> Unit,
 ) {
-    val name by nameState.collectAsStateWithLifecycle()
-    val email by emailState.collectAsStateWithLifecycle()
-    val password by passwordState.collectAsStateWithLifecycle()
+    val name by nameState.collectAsState()
+    val email by emailState.collectAsState()
+    val password by passwordState.collectAsState()
     var showPassword by remember { mutableStateOf(false) }
 
     Column(
@@ -122,7 +118,7 @@ private fun BoxScope.RegisterContent(
             onValueChange = nameChanged,
             singleLine = true,
             placeholder = {
-                Text(text = stringResource(id = R.string.name))
+                Text(text = "Name")
             }
         )
 
@@ -134,7 +130,7 @@ private fun BoxScope.RegisterContent(
             onValueChange = emailChanged,
             singleLine = true,
             placeholder = {
-                Text(text = stringResource(id = R.string.email))
+                Text(text = "Email")
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         )
@@ -147,7 +143,7 @@ private fun BoxScope.RegisterContent(
             onValueChange = passwordChanged,
             singleLine = true,
             placeholder = {
-                Text(text = stringResource(id = R.string.password))
+                Text(text = "Password")
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             visualTransformation = if (showPassword) {
@@ -185,7 +181,7 @@ private fun BoxScope.RegisterContent(
             onClick = onRegisterRequest
         ) {
             Text(
-                text = stringResource(id = R.string.register),
+                text = "Register",
                 color = MaterialTheme.colorScheme.onPrimary
             )
         }

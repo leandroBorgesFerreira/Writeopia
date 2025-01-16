@@ -110,7 +110,7 @@ kotlin {
 
 android {
     namespace = "io.writeopia.note_menu"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24

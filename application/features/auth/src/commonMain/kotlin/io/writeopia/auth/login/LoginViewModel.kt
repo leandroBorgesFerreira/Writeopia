@@ -1,6 +1,5 @@
-package io.writeopia.auth.register
+package io.writeopia.auth.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.writeopia.auth.core.manager.AuthManager
@@ -12,13 +11,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 // The NavigationActivity won't leak because it is the single activity of the whole project
-internal class RegisterViewModel(
+internal class LoginViewModel(
     private val introNotesUseCase: IntroNotesUseCase,
     private val authManager: AuthManager
 ) : ViewModel() {
-
-    private val _name = MutableStateFlow("")
-    val name = _name.asStateFlow()
 
     private val _email = MutableStateFlow("")
     val email = _email.asStateFlow()
@@ -26,35 +22,35 @@ internal class RegisterViewModel(
     private val _password = MutableStateFlow("")
     val password = _password.asStateFlow()
 
-    private val _register = MutableStateFlow<ResultData<Boolean>>(ResultData.Idle())
-    val register = _register.asStateFlow()
+    private val _loginState: MutableStateFlow<ResultData<Boolean>> =
+        MutableStateFlow(ResultData.Idle())
+    val loginState = _loginState.asStateFlow()
 
-    fun nameChanged(name: String) {
-        _name.value = name
+    fun emailChanged(name: String) {
+        _email.value = name
     }
 
-    fun emailChanged(email: String) {
-        _email.value = email
+    fun passwordChanged(name: String) {
+        _password.value = name
     }
 
-    fun passwordChanged(password: String) {
-        _password.value = password
-    }
-
-    fun onRegister() {
-        _register.value = ResultData.Loading()
+    fun onLoginRequest() {
+        _loginState.value = ResultData.Loading()
 
         viewModelScope.launch {
-            val result = authManager.signUp(_email.value, _password.value, _name.value)
+            val result = authManager.signIn(_email.value, _password.value)
+
             if (result.toBoolean()) {
                 try {
                     introNotesUseCase.addIntroNotes(authManager.getUser().id)
                 } catch (e: Exception) {
-                    Log.d("RegisterViewModel", "Could not add intro notes. Error: ${e.message}")
+//                    Log.d("LoginViewModel", "Could not add intro notes. Error: ${e.message}")
                 }
+            } else if (result is Error) {
+//                Log.d("LoginViewModel", "error when singing in: ${result.message}")
             }
 
-            _register.value = result
+            _loginState.value = result
         }
     }
 }

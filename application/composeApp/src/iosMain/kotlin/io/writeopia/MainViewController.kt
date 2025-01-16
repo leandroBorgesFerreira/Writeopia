@@ -10,20 +10,24 @@ import androidx.navigation.compose.rememberNavController
 import io.writeopia.account.di.AccountMenuKmpInjector
 import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
+import io.writeopia.auth.di.AuthInjection
+import io.writeopia.auth.navigation.authNavigation
 import io.writeopia.editor.di.EditorKmpInjector
 import io.writeopia.features.search.di.KmpSearchInjection
 import io.writeopia.mobile.AppMobile
 import io.writeopia.navigation.MobileNavigationViewModel
+import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.NotesMenuKmpInjection
 import io.writeopia.notemenu.di.UiConfigurationInjector
-import io.writeopia.notes.desktop.components.startDestination
+import io.writeopia.notemenu.navigation.navigateToNotes
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 
+@Suppress("FunctionName")
 fun MainViewController() = ComposeUIViewController {
     val coroutine = rememberCoroutineScope()
 
@@ -70,20 +74,29 @@ fun MainViewController() = ComposeUIViewController {
                 uiConfigurationInjector.provideUiConfigurationRepository()
             )
 
+            val authInjection = AuthInjection(
+                authCoreInjection,
+                connectionInjection,
+                sqlDelightDaoInjector
+            )
             val accountMenuInjector = AccountMenuKmpInjector(authCoreInjection)
-
             val navigationViewModel = viewModel { MobileNavigationViewModel() }
 
+            val navController = rememberNavController()
+
             AppMobile(
-                startDestination = startDestination(),
-                navController = rememberNavController(),
+                navController = navController,
                 searchInjector = searchInjection,
                 uiConfigViewModel = uiConfigurationViewModel,
                 notesMenuInjection = notesMenuInjection,
                 editorInjector = editorInjector,
                 accountMenuInjector = accountMenuInjector,
                 navigationViewModel = navigationViewModel,
-            ) {}
+            ) {
+                authNavigation(navController, authInjection) {
+                    navController.navigateToNotes(NotesNavigation.Root)
+                }
+            }
         }
 
         DatabaseCreation.Loading -> {

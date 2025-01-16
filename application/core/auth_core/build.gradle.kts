@@ -56,7 +56,7 @@ kotlin {
 
 android {
     namespace = "io.writeopia.auth.core"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24

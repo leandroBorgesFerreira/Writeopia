@@ -101,11 +101,11 @@ fun AppMobile(
         ) { padding ->
             Box(modifier = Modifier.padding(padding)) {
                 Navigation(
+                    startDestination = startDestination,
                     notesMenuInjection = notesMenuInjection,
                     navController = navController,
                     editorInjector = editorInjector,
                     accountMenuInjector = accountMenuInjector,
-                    startDestination = startDestination,
                     selectColorTheme = uiConfigViewModel::changeColorTheme,
                     searchInjection = searchInjector,
                     isUndoKeyEvent = { false },
