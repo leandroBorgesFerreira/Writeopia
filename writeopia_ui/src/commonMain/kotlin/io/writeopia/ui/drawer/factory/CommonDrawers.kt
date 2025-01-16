@@ -82,6 +82,7 @@ object CommonDrawers {
             config = drawConfig,
             onDragHover = manager::onDragHover,
             onSelected = manager::onSelected,
+            enabled = editable,
             isDesktop = isDesktop,
             messageDrawer = {
                 messageDrawer(
@@ -112,6 +113,7 @@ object CommonDrawers {
             dragIconWidth = dragIconWidth,
             isDesktop = isDesktop,
             config = drawConfig,
+            enabled = editable,
             endContent = headerEndContent
         ) {
             innerMessageDrawer(commonTextModifier, EmptyErase.DELETE)
@@ -123,6 +125,7 @@ object CommonDrawers {
             modifier = Modifier,
             dragIconWidth = dragIconWidth,
             config = drawConfig,
+            enabled = editable,
             checkBoxPadding = PaddingValues(
                 start = drawConfig.checkBoxStartPadding.dp,
                 end = drawConfig.checkBoxEndPadding.dp,
@@ -135,6 +138,7 @@ object CommonDrawers {
             unOrderedListItemDrawer(
                 manager = manager,
                 isDesktop = isDesktop,
+                enabled = editable,
                 dragIconWidth = dragIconWidth,
                 config = drawConfig,
                 checkBoxPadding = PaddingValues(

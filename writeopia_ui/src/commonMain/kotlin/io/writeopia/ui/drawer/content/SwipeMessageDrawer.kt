@@ -33,6 +33,7 @@ fun swipeTextDrawer(
     moveRequest: (Action.Move) -> Unit = {},
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
     isDesktop: Boolean,
+    enabled: Boolean,
     endContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
 ): StoryStepDrawer =
     DesktopTextItemDrawer(
@@ -49,6 +50,7 @@ fun swipeTextDrawer(
         null,
         endContent,
         isDesktop,
+        enabled,
         messageDrawer
     )
 
@@ -58,6 +60,7 @@ fun swipeTextDrawer(
     dragIconWidth: Dp = 16.dp,
     config: DrawConfig,
     isDesktop: Boolean,
+    enabled: Boolean,
     endContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
 ): StoryStepDrawer {
@@ -73,6 +76,7 @@ fun swipeTextDrawer(
         customBackgroundColor = Color.Transparent,
         endContent = endContent,
         isDesktop = isDesktop,
+        enabled = enabled,
         messageDrawer = {
             messageDrawer()
         }
@@ -86,6 +90,7 @@ private fun SwipeMessageDrawerPreview() {
         onDragHover = {},
         isDesktop = true,
         config = DrawConfig(),
+        enabled = true,
         messageDrawer = {
             TextDrawer(selectionState = MutableStateFlow(false), onSelectionLister = {})
         },
