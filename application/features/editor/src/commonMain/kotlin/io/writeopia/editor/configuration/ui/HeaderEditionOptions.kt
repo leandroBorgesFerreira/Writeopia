@@ -51,11 +51,11 @@ fun HeaderEditionOptions(
         itemsIndexed(colors) { i, color ->
             Box(
                 modifier = Modifier
+                    .clip(CircleShape)
                     .clickable {
                         onColorSelection(if (i == 0) null else color)
                     }
                     .border(BorderStroke(1.dp, Color.LightGray), shape = CircleShape)
-                    .clip(CircleShape)
                     .size(50.dp)
                     .background(Color(color))
             ) {
