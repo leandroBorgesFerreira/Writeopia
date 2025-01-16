@@ -92,8 +92,13 @@ kotlin {
 
                 implementation(libs.androidx.lifecycle.runtime.compose)
 
+                implementation(libs.material)
                 implementation(libs.androidx.material3)
                 implementation(project.dependencies.platform(libs.androidx.compose.bom))
+
+                implementation(libs.androidx.ktx)
+                implementation(libs.appCompat)
+                implementation("androidx.activity:activity-compose")
 
                 implementation(project(":application:core:resources"))
                 implementation(project(":application:features:auth"))
