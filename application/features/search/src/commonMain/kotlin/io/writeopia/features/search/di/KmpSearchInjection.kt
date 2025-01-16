@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.features.search.repository.SearchRepository
 import io.writeopia.features.search.ui.SearchKmpViewModel
-import io.writeopia.features.search.ui.SearchViewModel
 import io.writeopia.models.search.FolderSearch
 import io.writeopia.sdk.persistence.core.DocumentSearch
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao

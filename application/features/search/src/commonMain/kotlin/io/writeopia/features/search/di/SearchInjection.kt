@@ -7,5 +7,4 @@ interface SearchInjection {
 
     @Composable
     fun provideViewModel(): SearchViewModel
-
 }
