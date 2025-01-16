@@ -21,4 +21,11 @@ actual fun NotesMenuScreen(
     editFolder: (MenuItemUi.FolderUi) -> Unit,
     modifier: Modifier
 ) {
+    MobileChooseNoteScreen(
+        chooseNoteViewModel = chooseNoteViewModel,
+        navigateToNote = onNoteClick,
+        newNote = onNewNoteClick,
+        navigateToAccount = onAccountClick,
+        modifier = modifier,
+    )
 }

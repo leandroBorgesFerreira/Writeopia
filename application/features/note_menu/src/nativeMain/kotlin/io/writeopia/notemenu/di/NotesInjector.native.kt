@@ -8,7 +8,7 @@ import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.dao.ConfigurationSqlDelightDao
 import io.writeopia.sqldelight.dao.FolderSqlDelightDao
 
-actual class NotesInjector(private val writeopiaDb: WriteopiaDb) {
+actual class NotesInjector(private val writeopiaDb: WriteopiaDb?) {
 
     private var configurationRepository: ConfigurationRepository? = null
     private var configurationSqlDelightDao: ConfigurationSqlDelightDao? = null
