@@ -70,10 +70,10 @@ fun NavGraphBuilder.editorNavigation(
             navigateBack = navigateBack,
             playPresentation = {
                 notesDetailsViewModel.writeopiaManager
-                    .currentDocument
+                    .documentInfo
                     .value
-                    ?.id
-                    ?.let { documentId -> navigateToPresentation(documentId) }
+                    .id
+                    .let(navigateToPresentation)
             },
             modifier = Modifier,
         )
