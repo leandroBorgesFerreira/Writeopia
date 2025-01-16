@@ -107,6 +107,7 @@ kotlin {
 
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+            implementation(project(":application:features:auth"))
         }
     }
 }

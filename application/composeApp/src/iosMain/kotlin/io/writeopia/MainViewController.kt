@@ -10,6 +10,8 @@ import androidx.navigation.compose.rememberNavController
 import io.writeopia.account.di.AccountMenuKmpInjector
 import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
+import io.writeopia.auth.di.AuthInjection
+import io.writeopia.auth.navigation.authNavigation
 import io.writeopia.editor.di.EditorKmpInjector
 import io.writeopia.features.search.di.KmpSearchInjection
 import io.writeopia.mobile.AppMobile
@@ -72,14 +74,18 @@ fun MainViewController() = ComposeUIViewController {
                 uiConfigurationInjector.provideUiConfigurationRepository()
             )
 
+            val authInjection = AuthInjection(
+                authCoreInjection,
+                connectionInjection,
+                sqlDelightDaoInjector
+            )
             val accountMenuInjector = AccountMenuKmpInjector(authCoreInjection)
-
             val navigationViewModel = viewModel { MobileNavigationViewModel() }
 
             val navController = rememberNavController()
 
             AppMobile(
-                navController = rememberNavController(),
+                navController = navController,
                 searchInjector = searchInjection,
                 uiConfigViewModel = uiConfigurationViewModel,
                 notesMenuInjection = notesMenuInjection,
