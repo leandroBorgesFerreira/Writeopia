@@ -43,6 +43,10 @@ class GlobalShellKmpViewModel(
     ),
 ) : GlobalShellViewModel, ViewModel(), FolderController by folderStateController {
 
+    init {
+        folderStateController.initCoroutine(viewModelScope)
+    }
+
     private var localUserId: String? = null
     private var sideMenuWidthState = MutableStateFlow<Float?>(null)
 

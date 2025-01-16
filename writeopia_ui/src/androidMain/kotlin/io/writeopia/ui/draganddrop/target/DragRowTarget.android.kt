@@ -11,6 +11,7 @@ import io.writeopia.sdk.model.draganddrop.DropInfo
 actual fun DragRowTarget(
     modifier: Modifier,
     dataToDrop: DropInfo,
+    onClick: () -> Unit,
     showIcon: Boolean,
     position: Int,
     emptySpaceClick: () -> Unit,

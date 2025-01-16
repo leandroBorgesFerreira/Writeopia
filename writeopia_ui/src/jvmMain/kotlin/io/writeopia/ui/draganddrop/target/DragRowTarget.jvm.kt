@@ -45,6 +45,7 @@ import io.writeopia.sdk.model.draganddrop.DropInfo
 actual fun DragRowTarget(
     modifier: Modifier,
     dataToDrop: DropInfo,
+    onClick: () -> Unit,
     showIcon: Boolean,
     position: Int,
     emptySpaceClick: () -> Unit,
@@ -90,6 +91,7 @@ actual fun DragRowTarget(
                         .pointerHoverIcon(PointerIcon.Hand)
                         .onPointerEvent(PointerEventType.Enter) { active = true }
                         .onPointerEvent(PointerEventType.Exit) { active = false }
+                        .clickable(onClick = onClick)
                         .pointerInput(Unit) {
                             detectDragGestures(onDragStart = { offset ->
                                 onDragStart()

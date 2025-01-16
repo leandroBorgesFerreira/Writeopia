@@ -119,6 +119,9 @@ class DesktopTextItemDrawer(
                     isHoldDraggable = drawInfo.selectMode,
                     emptySpaceClick = {
                         focusRequester.requestFocus()
+                    },
+                    onClick = {
+                        onSelected(!drawInfo.selectMode, drawInfo.position)
                     }
                 ) {
                     val interactionSourceText = remember { MutableInteractionSource() }

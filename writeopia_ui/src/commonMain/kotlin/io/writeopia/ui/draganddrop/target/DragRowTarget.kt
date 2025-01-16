@@ -13,6 +13,7 @@ import io.writeopia.sdk.model.draganddrop.DropInfo
 expect fun DragRowTarget(
     modifier: Modifier = Modifier,
     dataToDrop: DropInfo,
+    onClick: () -> Unit = {},
     showIcon: Boolean = true,
     position: Int,
     emptySpaceClick: () -> Unit,
