@@ -50,7 +50,6 @@ kotlin {
                 implementation(compose.material3)
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.compose.navigation)
-
             }
         }
 
@@ -69,7 +68,6 @@ kotlin {
         }
     }
 }
-
 
 android {
     namespace = "io.writeopia.auth"

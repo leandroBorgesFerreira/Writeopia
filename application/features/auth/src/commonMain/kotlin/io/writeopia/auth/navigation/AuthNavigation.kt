@@ -12,7 +12,6 @@ import io.writeopia.auth.menu.AuthMenuViewModel
 import io.writeopia.auth.register.RegisterScreen
 import io.writeopia.common.utils.Destinations
 
-
 fun NavGraphBuilder.authNavigation(
     navController: NavController,
     authInjection: AuthInjection,

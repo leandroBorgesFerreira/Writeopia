@@ -122,8 +122,7 @@ private fun BoxScope.LoginContent(
             modifier = Modifier.fillMaxWidth(),
             value = email,
             onValueChange = emailChanged,
-            placeholder =
-            {
+            placeholder = {
                 Text(text = "Email")
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),

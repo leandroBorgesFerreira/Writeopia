@@ -21,13 +21,13 @@ import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.NotesMenuKmpInjection
 import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notemenu.navigation.navigateToNotes
-import io.writeopia.notes.desktop.components.startDestination
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 
+@Suppress("FunctionName")
 fun MainViewController() = ComposeUIViewController {
     val coroutine = rememberCoroutineScope()
 
