@@ -87,10 +87,14 @@ class SqlDelightDocumentRepository(
 
     override suspend fun saveDocument(document: Document) {
         documentSqlDao.insertDocumentWithContent(document)
+
+        refreshDocuments()
     }
 
     override suspend fun saveDocumentMetadata(document: Document) {
         documentSqlDao.insertDocument(document)
+
+        refreshDocuments()
     }
 
     override suspend fun saveStoryStep(storyStep: StoryStep, position: Int, documentId: String) {
