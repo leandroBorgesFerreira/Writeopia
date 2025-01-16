@@ -1,8 +1,6 @@
 package io.writeopia.notemenu.ui.screen.menu
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import io.writeopia.model.ColorThemeOption

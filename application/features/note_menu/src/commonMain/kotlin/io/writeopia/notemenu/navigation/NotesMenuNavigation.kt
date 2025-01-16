@@ -59,7 +59,7 @@ fun NavGraphBuilder.notesMenuNavigation(
 
         val chooseNoteViewModel: ChooseNoteViewModel =
             notesMenuInjection.provideChooseNoteViewModel(notesNavigation = notesNavigation)
-        
+
         NotesMenuScreen(
             chooseNoteViewModel = chooseNoteViewModel,
             navigationController = navigationController,
