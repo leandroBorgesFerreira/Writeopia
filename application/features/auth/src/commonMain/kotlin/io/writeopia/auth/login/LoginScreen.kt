@@ -19,24 +19,22 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.writeopia.appresourcers.R
 import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.icons.WrIcons
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun LoginScreenBinding(loginViewModel: LoginViewModel, onLoginSuccess: () -> Unit) {
@@ -61,7 +59,7 @@ private fun LoginScreen(
     onLoginRequest: () -> Unit,
     onLoginSuccess: () -> Unit,
 ) {
-    val login = loginState.collectAsStateWithLifecycle().value
+    val login = loginState.collectAsState().value
 
     Box(
         modifier = Modifier
@@ -110,8 +108,8 @@ private fun BoxScope.LoginContent(
     passwordChanged: (String) -> Unit,
     onLoginRequest: () -> Unit,
 ) {
-    val email by emailState.collectAsStateWithLifecycle()
-    val password by passwordState.collectAsStateWithLifecycle()
+    val email by emailState.collectAsState()
+    val password by passwordState.collectAsState()
     var showPassword by remember { mutableStateOf(false) }
 
     Column(
@@ -124,8 +122,9 @@ private fun BoxScope.LoginContent(
             modifier = Modifier.fillMaxWidth(),
             value = email,
             onValueChange = emailChanged,
-            placeholder = {
-                Text(text = stringResource(id = R.string.email))
+            placeholder =
+            {
+                Text(text = "Email")
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         )
@@ -137,7 +136,7 @@ private fun BoxScope.LoginContent(
             value = password,
             onValueChange = passwordChanged,
             placeholder = {
-                Text(text = stringResource(id = R.string.password))
+                Text(text = "Password")
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             visualTransformation = if (showPassword) {
@@ -152,9 +151,7 @@ private fun BoxScope.LoginContent(
                             showPassword = !showPassword
                         },
                         imageVector = WrIcons.visibilityOff,
-                        contentDescription = stringResource(
-                            R.string.content_description_visibility_off
-                        )
+                        contentDescription = "Eye closed"
                     )
                 } else {
                     Icon(
@@ -162,9 +159,7 @@ private fun BoxScope.LoginContent(
                             showPassword = !showPassword
                         },
                         imageVector = WrIcons.visibilityOn,
-                        contentDescription = stringResource(
-                            R.string.content_description_visibility_on
-                        )
+                        contentDescription = "Eye open"
                     )
                 }
             }
@@ -179,7 +174,7 @@ private fun BoxScope.LoginContent(
             onClick = onLoginRequest
         ) {
             Text(
-                text = stringResource(id = R.string.enter),
+                text = "Enter",
                 color = MaterialTheme.colorScheme.onPrimary
             )
         }

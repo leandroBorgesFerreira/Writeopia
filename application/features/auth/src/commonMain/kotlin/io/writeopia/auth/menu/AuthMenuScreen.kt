@@ -16,17 +16,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.writeopia.appresourcers.R
 import io.writeopia.common.utils.ResultData
 import kotlinx.coroutines.flow.StateFlow
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun AuthMenuScreen(
@@ -36,7 +33,7 @@ fun AuthMenuScreen(
     navigateToRegister: () -> Unit,
     navigateToApp: () -> Unit
 ) {
-    when (val isConnected = isConnectedState.collectAsStateWithLifecycle().value) {
+    when (val isConnected = isConnectedState.collectAsState().value) {
         is ResultData.Complete -> {
             if (isConnected.data) {
                 LaunchedEffect("navigateUp") {
@@ -82,18 +79,18 @@ private fun AuthMenuContentScreen(
     navigateToApp: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        Image(
-            modifier = Modifier.fillMaxWidth(),
-            painter = painterResource(id = R.drawable.top_background_auth),
-            contentDescription = "",
-            contentScale = ContentScale.FillWidth,
-        )
-
-        Image(
-            modifier = Modifier.align(Alignment.BottomEnd),
-            painter = painterResource(id = R.drawable.bottom_end_corner_auth_background),
-            contentDescription = "",
-        )
+//        Image(
+//            modifier = Modifier.fillMaxWidth(),
+//            painter = painterResource(id = R.drawable.top_background_auth),
+//            contentDescription = "",
+//            contentScale = ContentScale.FillWidth,
+//        )
+//
+//        Image(
+//            modifier = Modifier.align(Alignment.BottomEnd),
+//            painter = painterResource(id = R.drawable.bottom_end_corner_auth_background),
+//            contentDescription = "",
+//        )
 
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -101,14 +98,14 @@ private fun AuthMenuContentScreen(
         ) {
             Spacer(modifier = Modifier.height(50.dp))
 
-            Image(
-                modifier = Modifier
-                    .height(270.dp)
-                    .padding(vertical = 25.dp),
-                painter = painterResource(id = R.drawable.ic_auth_menu_logo),
-                contentDescription = "",
-                contentScale = ContentScale.FillHeight,
-            )
+//            Image(
+//                modifier = Modifier
+//                    .height(270.dp)
+//                    .padding(vertical = 25.dp),
+//                painter = painterResource(id = R.drawable.ic_auth_menu_logo),
+//                contentDescription = "",
+//                contentScale = ContentScale.FillHeight,
+//            )
 
             Spacer(modifier = Modifier.weight(1F))
 
@@ -120,7 +117,7 @@ private fun AuthMenuContentScreen(
                 onClick = navigateToLogin
             ) {
                 Text(
-                    text = stringResource(id = R.string.sign_in),
+                    text = "Sign in",
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
@@ -135,7 +132,7 @@ private fun AuthMenuContentScreen(
                 onClick = navigateToRegister
             ) {
                 Text(
-                    text = stringResource(id = R.string.sign_up_with_email),
+                    text = "Sign up with email",
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
@@ -153,7 +150,7 @@ private fun AuthMenuContentScreen(
                 }
             ) {
                 Text(
-                    text = stringResource(id = R.string.enter_without_register),
+                    text = "Enter without register",
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
