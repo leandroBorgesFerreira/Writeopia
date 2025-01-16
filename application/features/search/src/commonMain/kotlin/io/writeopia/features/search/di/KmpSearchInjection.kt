@@ -29,9 +29,4 @@ class KmpSearchInjection(private val writeopiaDb: WriteopiaDb? = null) : SearchI
     override fun provideViewModel(): SearchKmpViewModel = viewModel {
         SearchKmpViewModel(searchRepository = provideRepository())
     }
-
-    @Composable
-    override fun provideViewModelMobile(): SearchViewModel {
-        throw IllegalStateException("This injection should not be used")
-    }
 }

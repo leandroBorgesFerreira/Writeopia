@@ -42,10 +42,10 @@ fun MainViewController() = ComposeUIViewController {
             val database = databaseState.writeopiaDb
 
             val authCoreInjection = remember { KmpAuthCoreInjection() }
-            val uiConfigurationInjector = remember { UiConfigurationInjector(null) }
-            val sqlDelightDaoInjector = remember { SqlDelightDaoInjector(null) }
-            val searchInjection = remember { KmpSearchInjection(null) }
-            val notesInjector = remember { NotesInjector(null) }
+            val uiConfigurationInjector = remember { UiConfigurationInjector(database) }
+            val sqlDelightDaoInjector = remember { SqlDelightDaoInjector(database) }
+            val searchInjection = remember { KmpSearchInjection(database) }
+            val notesInjector = remember { NotesInjector(database) }
 
             val uiConfigurationViewModel = uiConfigurationInjector
                 .provideUiConfigurationViewModel()
