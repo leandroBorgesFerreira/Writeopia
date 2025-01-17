@@ -15,7 +15,7 @@ class MobileSearchInjection(
 ) : SearchInjection {
 
     @Composable
-    override fun provideViewModelMobile(): SearchViewModel =
+    override fun provideViewModel(): SearchViewModel =
         viewModel {
             SearchKmpViewModel(
                 searchInjection.provideRepository(
@@ -24,9 +24,4 @@ class MobileSearchInjection(
                 )
             )
         }
-
-    @Composable
-    override fun provideViewModel(): SearchViewModel {
-        TODO("Not yet implemented")
-    }
 }

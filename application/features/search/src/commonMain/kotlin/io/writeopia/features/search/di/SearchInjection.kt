@@ -7,7 +7,4 @@ interface SearchInjection {
 
     @Composable
     fun provideViewModel(): SearchViewModel
-
-    @Composable
-    fun provideViewModelMobile(): SearchViewModel
 }
