@@ -1,4 +1,4 @@
-package io.writeopia.notemenu.ui.screen.file
+package io.writeopia.common.utils.file
 
 import androidx.compose.ui.awt.ComposeWindow
 import java.awt.FileDialog

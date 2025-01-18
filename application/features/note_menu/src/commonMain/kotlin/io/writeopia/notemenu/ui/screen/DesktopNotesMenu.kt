@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import io.writeopia.common.utils.file.fileChooserSave
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.ui.screen.actions.DesktopNoteActionsMenu
@@ -30,7 +31,6 @@ import io.writeopia.notemenu.ui.screen.configuration.molecules.NotesSelectionMen
 import io.writeopia.notemenu.ui.screen.configuration.molecules.WorkspaceConfigurationDialog
 import io.writeopia.notemenu.ui.screen.documents.NotesCards
 import io.writeopia.notemenu.ui.screen.file.fileChooserLoad
-import io.writeopia.notemenu.ui.screen.file.fileChooserSave
 import io.writeopia.notemenu.viewmodel.ChooseNoteViewModel
 import io.writeopia.notemenu.viewmodel.ConfigState
 import io.writeopia.notemenu.viewmodel.getPath

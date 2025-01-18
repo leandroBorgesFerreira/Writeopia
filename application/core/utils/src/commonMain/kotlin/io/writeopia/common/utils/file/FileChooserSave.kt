@@ -1,3 +1,4 @@
-package io.writeopia.notemenu.ui.screen.file
+package io.writeopia.common.utils.file
 
 expect fun fileChooserSave(title: String = "Choose file"): String?
+

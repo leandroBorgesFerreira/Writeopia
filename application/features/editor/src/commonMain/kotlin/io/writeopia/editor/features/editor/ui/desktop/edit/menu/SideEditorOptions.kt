@@ -43,6 +43,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.collections.inBatches
+import io.writeopia.common.utils.file.fileChooserLoad
+import io.writeopia.common.utils.file.fileChooserSave
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.model.Font
 import io.writeopia.theme.WriteopiaTheme
@@ -481,11 +483,13 @@ private fun TextOptions(
                 "Code" to {}
             )
         )
+        Spacer(modifier = Modifier.height(8.dp))
 
         Title("Content")
         Spacer(modifier = Modifier.height(4.dp))
         IconAndText("Image", WrIcons.image) {
-//            fileChooserSave("")?.let(pathChange)
+            fileChooserLoad("")
+//                ?.let(pathChange)
         }
 
     }
