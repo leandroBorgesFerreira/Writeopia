@@ -79,6 +79,8 @@ interface ChooseNoteViewModel : FolderController {
     fun pathSelected(path: String)
 
     fun confirmWorkplacePath()
+
+    fun toggleSelection(id: String)
 }
 
 sealed interface UserState<T> {

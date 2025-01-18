@@ -18,5 +18,6 @@ expect fun DragCardTarget(
     dragIconWidth: Dp = 16.dp,
     iconTintColor: Color = Color.LightGray,
     iconTintOnHover: Color = MaterialTheme.colorScheme.onBackground,
+    onIconClick: () -> Unit = {},
     content: @Composable BoxScope.() -> Unit
 )

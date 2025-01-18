@@ -16,6 +16,7 @@ actual fun DragCardTarget(
     dragIconWidth: Dp,
     iconTintColor: Color,
     iconTintOnHover: Color,
+    onIconClick: () -> Unit,
     content: @Composable BoxScope.() -> Unit
 ) {
     DragCardTargetMobile(

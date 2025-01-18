@@ -80,6 +80,7 @@ fun NotesCards(
     folderClick: (String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
     changeIcon: (String, String, Int, IconChange) -> Unit,
+    onSelection: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (documents) {
@@ -104,6 +105,7 @@ fun NotesCards(
                                 folderClick = folderClick,
                                 moveRequest = moveRequest,
                                 changeIcon = changeIcon,
+                                onDragIconClick = onSelection,
                                 modifier = listModifier,
                             )
                         }
@@ -117,6 +119,7 @@ fun NotesCards(
                                 folderClick = folderClick,
                                 moveRequest = moveRequest,
                                 changeIcon = changeIcon,
+                                onDragIconClick = onSelection,
                                 modifier = listModifier,
                             )
                         }
@@ -129,6 +132,7 @@ fun NotesCards(
                                 folderClick = folderClick,
                                 moveRequest = moveRequest,
                                 changeIcon = changeIcon,
+                                onDragIconClick = onSelection,
                                 modifier = listModifier,
                             )
                         }
@@ -170,6 +174,7 @@ private fun LazyStaggeredGridNotes(
     folderClick: (String) -> Unit,
     changeIcon: (String, String, Int, IconChange) -> Unit,
     contentPadding: PaddingValues = PaddingValues(12.dp),
+    onDragIconClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val spacing = 6.dp
@@ -195,6 +200,7 @@ private fun LazyStaggeredGridNotes(
                             selectionListener,
                             previewDrawers(),
                             position = i,
+                            { onDragIconClick(menuItem.documentId) },
                             modifier = itemModifier,
                         )
                     }
@@ -209,6 +215,7 @@ private fun LazyStaggeredGridNotes(
                             changeIcon = { id, icon, tint ->
                                 changeIcon(id, icon, tint, IconChange.FOLDER)
                             },
+                            onDragIconClick = { onDragIconClick(menuItem.documentId) },
                             modifier = itemModifier
                         )
                     }
@@ -229,6 +236,7 @@ private fun LazyGridNotes(
     selectionListener: (String, Boolean) -> Unit,
     changeIcon: (String, String, Int, IconChange) -> Unit,
     contentPadding: PaddingValues = PaddingValues(12.dp),
+    onDragIconClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val spacing = Arrangement.spacedBy(6.dp)
@@ -252,6 +260,7 @@ private fun LazyGridNotes(
                             selectionListener,
                             previewDrawers(),
                             position = i,
+                            { onDragIconClick(menuItem.documentId) },
                             modifier = Modifier.animateItemPlacement()
                         )
                     }
@@ -265,7 +274,8 @@ private fun LazyGridNotes(
                             changeIcon = { id, icon, tint ->
                                 changeIcon(id, icon, tint, IconChange.FOLDER)
                             },
-                            position = i
+                            position = i,
+                            onDragIconClick = { onDragIconClick(menuItem.documentId) },
                         )
                     }
                 }
@@ -284,6 +294,7 @@ private fun LazyColumnNotes(
     moveRequest: (MenuItemUi, String) -> Unit,
     changeIcon: (String, String, Int, IconChange) -> Unit,
     contentPadding: PaddingValues = PaddingValues(12.dp),
+    onDragIconClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -303,6 +314,7 @@ private fun LazyColumnNotes(
                             selectionListener,
                             previewDrawers(),
                             position = i,
+                            onDragIconClick = { onDragIconClick(menuItem.documentId) },
                             modifier = Modifier.animateItemPlacement()
                         )
                     }
@@ -316,7 +328,8 @@ private fun LazyColumnNotes(
                             changeIcon = { id, icon, tint ->
                                 changeIcon(id, icon, tint, IconChange.FOLDER)
                             },
-                            position = i
+                            position = i,
+                            onDragIconClick = { onDragIconClick(menuItem.documentId) },
                         )
                     }
                 }
@@ -333,6 +346,7 @@ private fun FolderItem(
     moveRequest: (MenuItemUi, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
     changeIcon: (String, String, Int) -> Unit,
+    onDragIconClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(shadowModifier()) {
@@ -374,7 +388,8 @@ private fun FolderItem(
                     modifier = modifier.clip(MaterialTheme.shapes.large),
                     position = position,
                     dataToDrop = DropInfo(folderUi, position),
-                    iconTintOnHover = MaterialTheme.colorScheme.onBackground
+                    iconTintOnHover = MaterialTheme.colorScheme.onBackground,
+                    onIconClick = onDragIconClick,
                 ) {
                     Column(
                         modifier = Modifier
@@ -449,6 +464,7 @@ private fun DocumentItem(
     selectionListener: (String, Boolean) -> Unit,
     drawers: Map<Int, StoryStepDrawer>,
     position: Int,
+    onDragIconClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val titleFallback = "untitled"
@@ -486,7 +502,8 @@ private fun DocumentItem(
             DragCardTarget(
                 position = position,
                 dataToDrop = DropInfo(documentUi, position),
-                iconTintOnHover = MaterialTheme.colorScheme.onBackground
+                iconTintOnHover = MaterialTheme.colorScheme.onBackground,
+                onIconClick = onDragIconClick
             ) {
                 Column(
                     modifier = Modifier.background(
@@ -561,6 +578,7 @@ fun DocumentItemPreview() {
         selectionListener = { _, _ -> },
         drawers = previewDrawers(),
         position = 0,
+        onDragIconClick = {},
         modifier = Modifier.padding(10.dp)
     )
 }
@@ -590,6 +608,7 @@ fun DocumentItemSelectedPreview() {
         selectionListener = { _, _ -> },
         drawers = previewDrawers(),
         position = 0,
+        onDragIconClick = {},
         modifier = Modifier.padding(10.dp)
     )
 }
