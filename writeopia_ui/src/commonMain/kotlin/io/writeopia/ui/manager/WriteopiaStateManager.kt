@@ -526,7 +526,7 @@ class WriteopiaStateManager(
             ?: (stories.size - 1)
 
         val newSelected = buildSet {
-            for (i in position .. lastPosition) {
+            for (i in position..lastPosition) {
                 add(i)
             }
         }
@@ -761,6 +761,21 @@ class WriteopiaStateManager(
         }
     }
 
+    fun addImage(imagePath: String) {
+        currentPosition()?.let { position ->
+            val story = getStory(position)
+
+            if (story != null) {
+                val stateChange = Action.StoryStateChange(
+                    story.copy(type = StoryTypes.IMAGE.type, path = imagePath),
+                    position
+                )
+
+                changeStoryStateAndTrackIt(stateChange)
+            }
+        }
+    }
+
     private fun toggleTagForStories(
         onEdit: Set<Int>,
         tag: TagInfo,
@@ -826,7 +841,7 @@ class WriteopiaStateManager(
 
     private fun changeStoryStateAndTrackIt(
         stateChange: Action.StoryStateChange,
-        backstackAction: BackstackAction?
+        backstackAction: BackstackAction? = null
     ) {
         if (lastStateChange == stateChange) return
         lastStateChange = stateChange
@@ -884,6 +899,10 @@ class WriteopiaStateManager(
     private fun getStory(position: Int): StoryStep? = _currentStory.value.stories[position]
 
     private fun getStories() = _currentStory.value.stories
+
+    private fun currentPosition() = _currentStory.value.focus
+
+    private fun getCurrentStory(): StoryStep? = currentPosition()?.let(::getStory)
 
     companion object {
         fun create(

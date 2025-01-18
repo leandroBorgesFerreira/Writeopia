@@ -5,9 +5,9 @@ import java.awt.FileDialog
 
 actual fun fileChooserLoad(title: String): String? {
     val dialog = FileDialog(ComposeWindow(), title, FileDialog.LOAD).apply {
-        isMultipleMode = true
+        isMultipleMode = false
         isVisible = true
     }
-
-    return dialog.directory?.takeIf { it.isNotEmpty() }
+    
+    return (dialog.directory + dialog.file).takeIf { it.isNotEmpty() }
 }

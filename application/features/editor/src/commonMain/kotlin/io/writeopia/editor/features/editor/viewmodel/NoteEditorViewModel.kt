@@ -67,6 +67,8 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
     fun clearSelections()
 
     fun changeFontFamily(font: Font)
+
+    fun addImage(imagePath: String)
 }
 
 data class ShareDocument(val content: String, val title: String, val type: String)

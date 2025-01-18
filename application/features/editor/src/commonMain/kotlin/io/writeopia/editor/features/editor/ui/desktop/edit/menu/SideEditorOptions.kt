@@ -44,7 +44,6 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.collections.inBatches
 import io.writeopia.common.utils.file.fileChooserLoad
-import io.writeopia.common.utils.file.fileChooserSave
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.model.Font
 import io.writeopia.theme.WriteopiaTheme
@@ -63,6 +62,7 @@ fun SideEditorOptions(
     highLightBlockClick: () -> Unit,
     onPresentationClick: () -> Unit,
     changeFontFamily: (Font) -> Unit,
+    addImage: (String) -> Unit,
 ) {
     var menuType by remember {
         mutableStateOf(OptionsType.NONE)
@@ -110,7 +110,8 @@ fun SideEditorOptions(
                             checkItemClick,
                             listItemClick,
                             codeBlockClick,
-                            highLightBlockClick
+                            highLightBlockClick,
+                            addImage
                         )
                     }
                 }
@@ -451,6 +452,7 @@ private fun TextOptions(
     listItemClick: () -> Unit,
     codeBlockClick: () -> Unit,
     highLightBlockClick: () -> Unit,
+    addImage: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -488,8 +490,7 @@ private fun TextOptions(
         Title("Content")
         Spacer(modifier = Modifier.height(4.dp))
         IconAndText("Image", WrIcons.image) {
-            fileChooserLoad("")
-//                ?.let(pathChange)
+            fileChooserLoad("")?.let(addImage)
         }
 
     }

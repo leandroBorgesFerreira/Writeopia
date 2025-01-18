@@ -81,7 +81,8 @@ fun DesktopNoteEditorScreen(
             codeBlockClick = noteEditorViewModel::onAddCodeBlockClick,
             highLightBlockClick = noteEditorViewModel::onAddHighLightBlockClick,
             onPresentationClick = onPresentationClick,
-            changeFontFamily = noteEditorViewModel::changeFontFamily
+            changeFontFamily = noteEditorViewModel::changeFontFamily,
+            addImage = noteEditorViewModel::addImage
         )
 
         if (!isEditable) {

@@ -2,10 +2,13 @@ package io.writeopia.ui.drawer.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +34,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.draganddrop.target.DragTarget
 import io.writeopia.ui.draganddrop.target.DropTarget
 import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.icons.WrSdkIcons
 import io.writeopia.ui.model.DrawInfo
 
 /**
@@ -38,7 +42,8 @@ import io.writeopia.ui.model.DrawInfo
  */
 class ImageDrawer(
     private val containerModifier: (Boolean) -> Modifier? = { null },
-    private val mergeRequest: (Action.Merge) -> Unit = { }
+    private val mergeRequest: (Action.Merge) -> Unit = { },
+    private val onDelete: (Action.DeleteStory) -> Unit
 ) : StoryStepDrawer {
 
     @Composable
@@ -75,7 +80,10 @@ class ImageDrawer(
 
                     AsyncImage(
                         model = ImageRequest.Builder(LocalPlatformContext.current)
-                            .data(step.path ?: step.url)
+                            .data(
+//                                "https://picsum.photos/200/300"
+                                step.path ?: step.url
+                            )
                             .build(),
                         contentScale = ContentScale.Crop,
                         contentDescription = "",
@@ -96,6 +104,23 @@ class ImageDrawer(
                     )
                 }
             }
+
+            Icon(
+                modifier = Modifier.clickable {
+                    onDelete(
+                        Action.DeleteStory(
+                            step,
+                            drawInfo.position
+                        )
+                    )
+                }
+                    .clip(CircleShape)
+                    .align(Alignment.TopEnd)
+                    .padding(10.dp),
+                imageVector = WrSdkIcons.close,
+                contentDescription = "Trash",
+                tint = MaterialTheme.colorScheme.onBackground
+            )
         }
     }
 }
