@@ -80,10 +80,7 @@ class ImageDrawer(
 
                     AsyncImage(
                         model = ImageRequest.Builder(LocalPlatformContext.current)
-                            .data(
-//                                "https://picsum.photos/200/300"
-                                step.path ?: step.url
-                            )
+                            .data(step.path ?: step.url)
                             .build(),
                         contentScale = ContentScale.Crop,
                         contentDescription = "",

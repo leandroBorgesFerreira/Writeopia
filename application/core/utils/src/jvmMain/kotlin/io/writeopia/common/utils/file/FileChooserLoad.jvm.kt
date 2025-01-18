@@ -8,6 +8,6 @@ actual fun fileChooserLoad(title: String): String? {
         isMultipleMode = false
         isVisible = true
     }
-    
+
     return (dialog.directory + dialog.file).takeIf { it.isNotEmpty() }
 }
