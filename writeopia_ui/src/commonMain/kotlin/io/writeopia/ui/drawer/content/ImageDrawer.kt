@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
+import coil3.compose.SubcomposeAsyncImage
 import coil3.request.ImageRequest
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draganddrop.DropInfo
@@ -78,13 +80,19 @@ class ImageDrawer(
                     dataToDrop = DropInfo(step, drawInfo.position)
                 ) {
 
-                    AsyncImage(
+                    SubcomposeAsyncImage(
                         model = ImageRequest.Builder(LocalPlatformContext.current)
-                            .data(step.path ?: step.url)
+                            .data(
+                                "https://picsum.photos/200/300"
+//                                step.path ?: step.url
+                            )
                             .build(),
                         contentScale = ContentScale.Crop,
                         contentDescription = "",
-                        modifier = Modifier.clip(shape = RoundedCornerShape(size = 12.dp))
+                        modifier = Modifier.clip(shape = RoundedCornerShape(size = 12.dp)),
+                        loading = {
+                            CircularProgressIndicator()
+                        }
                     )
                 }
                 step.text?.let { text ->
