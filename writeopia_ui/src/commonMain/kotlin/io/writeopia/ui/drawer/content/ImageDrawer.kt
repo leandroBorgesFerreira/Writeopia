@@ -103,17 +103,20 @@ class ImageDrawer(
             }
 
             Icon(
-                modifier = Modifier.clickable {
-                    onDelete(
-                        Action.DeleteStory(
-                            step,
-                            drawInfo.position
+                modifier = Modifier
+                    .padding(4.dp)
+                    .clip(CircleShape)
+                    .clickable {
+                        onDelete(
+                            Action.DeleteStory(
+                                step,
+                                drawInfo.position
+                            )
                         )
-                    )
-                }
+                    }
                     .clip(CircleShape)
                     .align(Alignment.TopEnd)
-                    .padding(10.dp),
+                    .padding(6.dp),
                 imageVector = WrSdkIcons.close,
                 contentDescription = "Trash",
                 tint = MaterialTheme.colorScheme.onBackground
