@@ -492,7 +492,6 @@ private fun TextOptions(
         IconAndText("Image", WrIcons.image) {
             fileChooserLoad("")?.let(addImage)
         }
-
     }
 }
 
