@@ -34,6 +34,7 @@ import io.writeopia.common.utils.icons.all.Files
 import io.writeopia.common.utils.icons.all.FolderOpen
 import io.writeopia.common.utils.icons.all.FolderSync
 import io.writeopia.common.utils.icons.all.House
+import io.writeopia.common.utils.icons.all.Image
 import io.writeopia.common.utils.icons.all.Italic
 import io.writeopia.common.utils.icons.all.LayoutGrid
 import io.writeopia.common.utils.icons.all.LayoutPanelLeft
@@ -151,6 +152,8 @@ object WrIcons {
 
     val lock = Icons.Outlined.Lock
 
+    val image = Image
+
     val allIcons: Map<String, ImageVector> =
         mapOf(
             "settings" to settings,
@@ -200,7 +203,8 @@ object WrIcons {
             "circularArrowLeft" to circularArrowLeft,
             "circularArrowRight" to circularArrowRight,
             "visibilityOn" to visibilityOn,
-            "visibilityOff" to visibilityOff
+            "visibilityOff" to visibilityOff,
+            "image" to image,
         )
 
     fun fromName(name: String): ImageVector? = allIcons[name]
