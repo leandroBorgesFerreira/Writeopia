@@ -88,6 +88,10 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
+
+                implementation(libs.coil.compose)
+                implementation(libs.coil.ktor3)
+                implementation(libs.coil.video)
             }
         }
 

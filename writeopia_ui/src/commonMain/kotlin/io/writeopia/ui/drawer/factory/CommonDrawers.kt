@@ -22,10 +22,13 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.content.AddButtonDrawer
+import io.writeopia.ui.drawer.content.ImageDrawer
 import io.writeopia.ui.drawer.content.LastEmptySpace
+import io.writeopia.ui.drawer.content.RowGroupDrawer
 import io.writeopia.ui.drawer.content.SpaceDrawer
 import io.writeopia.ui.drawer.content.TextDrawer
 import io.writeopia.ui.drawer.content.checkItemDrawer
+import io.writeopia.ui.drawer.content.defaultImageShape
 import io.writeopia.ui.drawer.content.headerDrawer
 import io.writeopia.ui.drawer.content.swipeTextDrawer
 import io.writeopia.ui.drawer.content.unOrderedListItemDrawer
@@ -161,6 +164,16 @@ object CommonDrawers {
             fontFamily = fontFamily,
         )
 
+        val imageDrawer = ImageDrawer(
+            containerModifier = Modifier::defaultImageShape,
+            mergeRequest = manager::mergeRequest
+        )
+
+        val imageDrawerInGroup = ImageDrawer(
+            containerModifier = Modifier::defaultImageShape,
+            mergeRequest = manager::mergeRequest
+        )
+
         return buildMap {
             put(StoryTypes.TEXT.type.number, swipeTextDrawer)
             put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
@@ -181,6 +194,8 @@ object CommonDrawers {
             put(StoryTypes.UNORDERED_LIST_ITEM.type.number, unOrderedListItemDrawer)
             put(StoryTypes.TITLE.type.number, headerDrawer)
             put(StoryTypes.CODE_BLOCK.type.number, codeBlockDrawer)
+            put(StoryTypes.IMAGE.type.number, imageDrawer)
+            put(StoryTypes.GROUP_IMAGE.type.number, RowGroupDrawer(imageDrawerInGroup))
         }
     }
 }

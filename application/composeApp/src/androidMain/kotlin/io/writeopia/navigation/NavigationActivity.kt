@@ -35,6 +35,7 @@ import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 import io.writeopia.persistence.room.injection.RoomRepositoryInjection
 import io.writeopia.sdk.network.injector.ConnectionInjector
+import io.writeopia.ui.image.ImageLoadConfig
 
 class NavigationActivity : AppCompatActivity() {
 
@@ -47,6 +48,8 @@ class NavigationActivity : AppCompatActivity() {
             } else {
                 Destinations.AUTH_MENU_INNER_NAVIGATION.id
             }
+
+            ImageLoadConfig.configImageLoad()
 
             NavigationGraph(application = application, startDestination = startDestination)
         }
