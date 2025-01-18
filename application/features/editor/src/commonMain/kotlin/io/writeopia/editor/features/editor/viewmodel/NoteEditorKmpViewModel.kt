@@ -264,6 +264,10 @@ class NoteEditorKmpViewModel(
         }
     }
 
+    override fun addImage(imagePath: String) {
+        writeopiaManager.addImage(imagePath)
+    }
+
     private fun documentToJson(document: Document, json: Json = writeopiaJson): String {
         val request = document.toApi().wrapInRequest()
         return json.encodeToString(request)

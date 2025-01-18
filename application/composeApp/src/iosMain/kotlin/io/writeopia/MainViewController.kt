@@ -26,9 +26,12 @@ import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
+import io.writeopia.ui.image.ImageLoadConfig
 
 @Suppress("FunctionName")
 fun MainViewController() = ComposeUIViewController {
+    ImageLoadConfig.configImageLoad()
+
     val coroutine = rememberCoroutineScope()
 
     val databaseStateFlow = DatabaseFactory.createDatabaseAsState(

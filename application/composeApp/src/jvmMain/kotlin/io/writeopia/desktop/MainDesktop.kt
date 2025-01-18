@@ -25,6 +25,7 @@ import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
+import io.writeopia.ui.image.ImageLoadConfig
 import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -44,6 +45,8 @@ fun main() = application {
 
 @Composable
 private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitApplication) {
+    ImageLoadConfig.configImageLoad()
+
     val coroutineScope = rememberCoroutineScope()
 
     val homeDirectory: String = System.getProperty("user.home")

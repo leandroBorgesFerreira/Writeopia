@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -42,6 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.collections.inBatches
+import io.writeopia.common.utils.file.fileChooserLoad
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.model.Font
 import io.writeopia.theme.WriteopiaTheme
@@ -60,6 +62,7 @@ fun SideEditorOptions(
     highLightBlockClick: () -> Unit,
     onPresentationClick: () -> Unit,
     changeFontFamily: (Font) -> Unit,
+    addImage: (String) -> Unit,
 ) {
     var menuType by remember {
         mutableStateOf(OptionsType.NONE)
@@ -107,7 +110,8 @@ fun SideEditorOptions(
                             checkItemClick,
                             listItemClick,
                             codeBlockClick,
-                            highLightBlockClick
+                            highLightBlockClick,
+                            addImage
                         )
                     }
                 }
@@ -246,6 +250,39 @@ private fun TextChanges() {
                 .clickable { }
                 .padding(horizontal = 8.dp, vertical = 8.dp),
             tint = MaterialTheme.colorScheme.onBackground
+        )
+    }
+}
+
+@Composable
+private fun IconAndText(text: String, iconImage: ImageVector, click: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .padding(start = 2.dp, end = 2.dp, bottom = 3.dp)
+            .clip(MaterialTheme.shapes.medium)
+            .clickable(onClick = click)
+            .background(
+                MaterialTheme.colorScheme.surfaceVariant,
+                MaterialTheme.shapes.medium
+            )
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = Modifier.size(18.dp),
+            imageVector = iconImage,
+            contentDescription = "Image",
+            tint = MaterialTheme.colorScheme.onBackground,
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Text(
+            text = text,
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -415,6 +452,7 @@ private fun TextOptions(
     listItemClick: () -> Unit,
     codeBlockClick: () -> Unit,
     highLightBlockClick: () -> Unit,
+    addImage: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -447,6 +485,13 @@ private fun TextOptions(
                 "Code" to {}
             )
         )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Title("Content")
+        Spacer(modifier = Modifier.height(4.dp))
+        IconAndText("Image", WrIcons.image) {
+            fileChooserLoad("")?.let(addImage)
+        }
     }
 }
 

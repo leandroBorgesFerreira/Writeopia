@@ -2,7 +2,6 @@ package io.writeopia.ui.drawer.factory
 
 import android.view.KeyEvent
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,9 +19,6 @@ import io.writeopia.sdk.drawer.content.VideoDrawer
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.Tag
 import io.writeopia.ui.drawer.StoryStepDrawer
-import io.writeopia.ui.drawer.content.ImageDrawer
-import io.writeopia.ui.drawer.content.RowGroupDrawer
-import io.writeopia.ui.drawer.content.defaultImageShape
 import io.writeopia.ui.icons.WrSdkIcons
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.DrawConfig
@@ -41,16 +37,6 @@ object DefaultDrawersAndroid : DrawersFactory {
         selectedBorderColor: Color,
         fontFamily: FontFamily?,
     ): Map<Int, StoryStepDrawer> {
-        val imageDrawer = ImageDrawer(
-            containerModifier = Modifier::defaultImageShape,
-            mergeRequest = manager::mergeRequest
-        )
-
-        val imageDrawerInGroup = ImageDrawer(
-            containerModifier = Modifier::defaultImageShape,
-            mergeRequest = manager::mergeRequest
-        )
-
         val commonDrawers = CommonDrawers.create(
             manager,
             marginAtBottom = 500.dp,
@@ -104,8 +90,6 @@ object DefaultDrawersAndroid : DrawersFactory {
 
         return mapOf(
             StoryTypes.VIDEO.type.number to VideoDrawer(),
-            StoryTypes.IMAGE.type.number to imageDrawer,
-            StoryTypes.GROUP_IMAGE.type.number to RowGroupDrawer(imageDrawerInGroup)
         ) + commonDrawers
     }
 

@@ -2,6 +2,7 @@ package io.writeopia.ui.draganddrop.target
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -45,6 +46,7 @@ actual fun DragCardTarget(
     dragIconWidth: Dp,
     iconTintColor: Color,
     iconTintOnHover: Color,
+    onIconClick: () -> Unit,
     content: @Composable BoxScope.() -> Unit
 ) {
     var currentPosition by remember { mutableStateOf(Offset.Zero) }
@@ -82,6 +84,7 @@ actual fun DragCardTarget(
                         .padding(6.dp)
                         .size(20.dp)
                         .width(dragIconWidth)
+                        .clickable(onClick = onIconClick)
                         .pointerHoverIcon(PointerIcon.Hand)
                         .onPointerEvent(PointerEventType.Enter) { active = true }
                         .onPointerEvent(PointerEventType.Exit) { active = false }

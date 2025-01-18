@@ -231,6 +231,7 @@ private fun Content(
         folderClick = {},
         changeIcon = { _, _, _, _ -> },
         moveRequest = { _, _ -> },
+        onSelection = {},
         modifier = Modifier
             .padding(paddingValues)
             .fillMaxSize()
