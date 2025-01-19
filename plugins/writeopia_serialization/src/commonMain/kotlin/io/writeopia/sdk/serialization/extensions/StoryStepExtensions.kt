@@ -21,6 +21,7 @@ fun StoryStep.toApi(position: Int): StoryStepApi =
         text = this.text,
         checked = this.checked,
         steps = this.steps.map { storyStep -> storyStep.toApi(position) },
+        tags = this.tags.mapTo(mutableSetOf()) { it.toApi() },
         decoration = this.decoration.toApi(),
         position = position
     )
@@ -35,6 +36,7 @@ fun StoryStepApi.toModel(): StoryStep =
         path = path,
         text = text,
         checked = checked,
+        tags = this.tags.mapTo(mutableSetOf()) { it.toModel() },
         steps = steps.map { it.toModel() },
         decoration = decoration.toModel(),
     )
