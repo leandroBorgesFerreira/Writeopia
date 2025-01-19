@@ -51,6 +51,8 @@ actual fun DragCardTarget(
     iconTintColor: Color,
     iconTintOnHover: Color,
     onIconClick: () -> Unit,
+    onDragStart: () -> Unit,
+    onDragStop: () -> Unit,
     content: @Composable BoxScope.() -> Unit
 ) {
     var currentPosition by remember { mutableStateOf(Offset.Zero) }
@@ -95,6 +97,7 @@ actual fun DragCardTarget(
                         .onPointerEvent(PointerEventType.Exit) { active = false }
                         .pointerInput(Unit) {
                             detectDragGestures(onDragStart = { offset ->
+                                onDragStart()
                                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
 
                                 currentState.dataToDrop = dataToDrop
@@ -111,6 +114,7 @@ actual fun DragCardTarget(
                                 change.consume()
                                 currentState.dragOffset += Offset(dragAmount.x, dragAmount.y)
                             }, onDragEnd = {
+                                onDragStop()
                                 currentState.isDragging = false
                                 currentState.dragOffset = Offset.Zero
                             }, onDragCancel = {

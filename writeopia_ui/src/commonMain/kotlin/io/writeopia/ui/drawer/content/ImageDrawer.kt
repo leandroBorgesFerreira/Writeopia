@@ -49,8 +49,10 @@ import io.writeopia.ui.model.DrawInfo
  */
 class ImageDrawer(
     private val config: DrawConfig,
-    private val onSelected: (Boolean, Int) -> Unit,
     private val containerModifier: (Boolean) -> Modifier? = { null },
+    private val onDragStart: () -> Unit,
+    private val onDragStop: () -> Unit,
+    private val onSelected: (Boolean, Int) -> Unit,
     private val mergeRequest: (Action.Merge) -> Unit = { },
     private val onDelete: (Action.DeleteStory) -> Unit
 ) : StoryStepDrawer {
@@ -90,6 +92,8 @@ class ImageDrawer(
                     position = drawInfo.position,
                     dataToDrop = dropInfo,
                     iconTintOnHover = MaterialTheme.colorScheme.onBackground,
+                    onDragStart = onDragStart,
+                    onDragStop = onDragStop,
                     onIconClick = {
                         onSelected(!drawInfo.selectMode, drawInfo.position)
                     },
@@ -111,10 +115,7 @@ class ImageDrawer(
 
                             SubcomposeAsyncImage(
                                 model = ImageRequest.Builder(LocalPlatformContext.current)
-                                    .data(
-                                        "https://picsum.photos/200/300"
-//                                step.path ?: step.url
-                                    )
+                                    .data(step.url ?: step.path)
                                     .build(),
                                 contentScale = ContentScale.Crop,
                                 contentDescription = "",

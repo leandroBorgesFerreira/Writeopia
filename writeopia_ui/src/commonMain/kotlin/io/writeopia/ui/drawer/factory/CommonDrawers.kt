@@ -169,7 +169,9 @@ object CommonDrawers {
             onSelected = manager::onSelected,
             containerModifier = Modifier::defaultImageShape,
             mergeRequest = manager::mergeRequest,
-            onDelete = manager::onDelete
+            onDelete = manager::onDelete,
+            onDragStart = manager::onDragStart,
+            onDragStop = manager::onDragStop
         )
 
         val imageDrawerInGroup = ImageDrawer(
@@ -177,7 +179,9 @@ object CommonDrawers {
             onSelected = manager::onSelected,
             containerModifier = Modifier::defaultImageShape,
             mergeRequest = manager::mergeRequest,
-            onDelete = manager::onDelete
+            onDelete = manager::onDelete,
+            onDragStart = manager::onDragStart,
+            onDragStop = manager::onDragStop
         )
 
         return buildMap {
