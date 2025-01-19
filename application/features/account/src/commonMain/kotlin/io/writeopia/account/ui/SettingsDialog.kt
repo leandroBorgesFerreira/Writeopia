@@ -54,6 +54,7 @@ fun SettingsDialog(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 SettingsScreen(
+                    true,
                     selectedThemePosition,
                     workplacePathState,
                     selectColorTheme,
@@ -66,6 +67,7 @@ fun SettingsDialog(
 
 @Composable
 fun ColumnScope.SettingsScreen(
+    showPath: Boolean = true,
     selectedThemePosition: StateFlow<Int>,
     workplacePathState: StateFlow<String>,
     selectColorTheme: (ColorThemeOption) -> Unit,
@@ -89,29 +91,30 @@ fun ColumnScope.SettingsScreen(
 
     Spacer(modifier = Modifier.height(20.dp))
 
-    Text("Local folder", style = titleStyle, color = titleColor)
+    if (showPath) {
+        Text("Local folder", style = titleStyle, color = titleColor)
 
-    Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
-    val textShape = MaterialTheme.shapes.medium
-
-    Text(
-        workplacePath,
-        style = MaterialTheme.typography.bodySmall,
-        color = titleColor,
-        fontWeight = FontWeight.Bold,
-        modifier = Modifier.border(
-            1.dp,
-            MaterialTheme.colorScheme.onSurfaceVariant,
-            textShape
+        val textShape = MaterialTheme.shapes.medium
+        Text(
+            workplacePath,
+            style = MaterialTheme.typography.bodySmall,
+            color = titleColor,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.border(
+                1.dp,
+                MaterialTheme.colorScheme.onSurfaceVariant,
+                textShape
+            )
+                .clip(shape = textShape)
+                .clickable {
+                    showEditPathDialog = true
+                }
+                .padding(12.dp)
+                .fillMaxWidth()
         )
-            .clip(shape = textShape)
-            .clickable {
-                showEditPathDialog = true
-            }
-            .padding(12.dp)
-            .fillMaxWidth()
-    )
+    }
 
     if (showEditPathDialog) {
         WorkspaceConfigurationDialog(

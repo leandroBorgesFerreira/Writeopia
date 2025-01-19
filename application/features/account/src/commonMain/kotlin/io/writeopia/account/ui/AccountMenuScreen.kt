@@ -35,6 +35,7 @@ fun AccountMenuScreen(
 ) {
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         SettingsScreen(
+            showPath = false,
             selectedThemePosition = MutableStateFlow(0),
             selectColorTheme = selectColorTheme,
             workplacePathState = MutableStateFlow(""),
