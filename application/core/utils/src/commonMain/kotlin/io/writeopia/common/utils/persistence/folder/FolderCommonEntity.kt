@@ -1,4 +1,4 @@
-package io.writeopia.common.utils.persistence
+package io.writeopia.common.utils.persistence.folder
 
 data class FolderCommonEntity(
     val id: String,

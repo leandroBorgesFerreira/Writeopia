@@ -4,9 +4,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.writeopia.auth.core.manager.AuthManager
+import io.writeopia.common.utils.DISCONNECTED_USER_ID
 import io.writeopia.common.utils.IconChange
 import io.writeopia.common.utils.collections.reverseTraverse
 import io.writeopia.common.utils.collections.toNodeTree
+import io.writeopia.common.utils.persistence.configuration.WorkspaceConfigRepository
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.model.UiConfiguration
 import io.writeopia.models.Folder
@@ -41,6 +43,7 @@ class GlobalShellKmpViewModel(
         notesUseCase,
         authManager
     ),
+    private val workspaceConfigRepository: WorkspaceConfigRepository
 ) : GlobalShellViewModel, ViewModel(), FolderController by folderStateController {
 
     init {
@@ -57,6 +60,9 @@ class GlobalShellKmpViewModel(
 
     private val _showSearch = MutableStateFlow(false)
     override val showSearchDialog: StateFlow<Boolean> = _showSearch.asStateFlow()
+
+    private val _workspaceLocalPath = MutableStateFlow("")
+    override val workspaceLocalPath: StateFlow<String> = _workspaceLocalPath.asStateFlow()
 
     override val highlightItem: StateFlow<String?> by lazy {
         notesNavigationUseCase.navigationState
@@ -147,6 +153,13 @@ class GlobalShellKmpViewModel(
         }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
     }
 
+    override fun init() {
+        viewModelScope.launch {
+            _workspaceLocalPath.value =
+                workspaceConfigRepository.loadWorkspacePath(DISCONNECTED_USER_ID) ?: ""
+        }
+    }
+
     override fun expandFolder(id: String) {
         val expanded = _expandedFolders.value
         if (expanded.contains(id)) {
@@ -214,6 +227,14 @@ class GlobalShellKmpViewModel(
                     document.copy(icon = MenuItem.Icon(icon, tint))
                 }
             }
+        }
+    }
+
+    override fun changeWorkspaceLocalPath(path: String) {
+        viewModelScope.launch(Dispatchers.Default) {
+            workspaceConfigRepository.saveWorkspacePath(path, DISCONNECTED_USER_ID)
+            _workspaceLocalPath.value =
+                workspaceConfigRepository.loadWorkspacePath(DISCONNECTED_USER_ID) ?: ""
         }
     }
 

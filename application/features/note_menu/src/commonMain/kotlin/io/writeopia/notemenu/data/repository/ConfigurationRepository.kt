@@ -1,10 +1,11 @@
 package io.writeopia.notemenu.data.repository
 
+import io.writeopia.common.utils.persistence.configuration.WorkspaceConfigRepository
 import io.writeopia.notemenu.data.model.NotesArrangement
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import kotlinx.coroutines.flow.Flow
 
-interface ConfigurationRepository {
+interface ConfigurationRepository : WorkspaceConfigRepository {
 
     suspend fun saveDocumentArrangementPref(arrangement: NotesArrangement, userId: String)
 
@@ -18,7 +19,7 @@ interface ConfigurationRepository {
 
     suspend fun listenOrderPreference(userId: String): Flow<String>
 
-    suspend fun saveWorkspacePath(path: String, userId: String)
+    override suspend fun saveWorkspacePath(path: String, userId: String)
 
-    suspend fun loadWorkspacePath(userId: String): String?
+    override suspend fun loadWorkspacePath(userId: String): String?
 }

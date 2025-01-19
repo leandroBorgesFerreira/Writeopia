@@ -23,6 +23,10 @@ interface GlobalShellViewModel : FolderController {
 
     val showSearchDialog: StateFlow<Boolean>
 
+    val workspaceLocalPath: StateFlow<String>
+
+    fun init()
+
     fun expandFolder(id: String)
 
     fun toggleSideMenu()
@@ -38,4 +42,6 @@ interface GlobalShellViewModel : FolderController {
     fun showSearch()
 
     fun hideSearch()
+
+    fun changeWorkspaceLocalPath(path: String)
 }

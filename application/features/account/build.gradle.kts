@@ -33,6 +33,7 @@ kotlin {
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:theme"))
+                implementation(project(":application:core:common_ui"))
 
                 implementation(libs.kotlinx.datetime)
 

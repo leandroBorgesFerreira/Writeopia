@@ -28,7 +28,7 @@ import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.ui.screen.actions.DesktopNoteActionsMenu
 import io.writeopia.notemenu.ui.screen.configuration.molecules.NotesConfigurationMenu
 import io.writeopia.notemenu.ui.screen.configuration.molecules.NotesSelectionMenu
-import io.writeopia.notemenu.ui.screen.configuration.molecules.WorkspaceConfigurationDialog
+import io.writeopia.commonui.workplace.WorkspaceConfigurationDialog
 import io.writeopia.notemenu.ui.screen.documents.NotesCards
 import io.writeopia.notemenu.ui.screen.file.fileChooserLoad
 import io.writeopia.notemenu.viewmodel.ChooseNoteViewModel
@@ -64,7 +64,6 @@ fun DesktopNotesMenu(
                     showExtraOptions = chooseNoteViewModel.editState,
                     showExtraOptionsRequest = chooseNoteViewModel::showEditMenu,
                     hideExtraOptionsRequest = chooseNoteViewModel::cancelEditMenu,
-                    configureDirectory = chooseNoteViewModel::configureDirectory,
                     exportAsMarkdownClick = {
                         fileChooserSave("")?.let(chooseNoteViewModel::directoryFilesAsMarkdown)
                     },
