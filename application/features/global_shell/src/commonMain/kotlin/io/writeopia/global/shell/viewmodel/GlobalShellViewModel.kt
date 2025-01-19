@@ -1,6 +1,5 @@
 package io.writeopia.global.shell.viewmodel
 
-import androidx.compose.runtime.State
 import io.writeopia.models.Folder
 import io.writeopia.notemenu.ui.dto.MenuItemUi
 import io.writeopia.notemenu.viewmodel.FolderController
