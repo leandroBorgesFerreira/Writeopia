@@ -105,10 +105,8 @@ actual fun DragRowTarget(
                                         modifier = Modifier.size(maxSize)
                                             .clip(MaterialTheme.shapes.medium)
                                             .background(
-                                                MaterialTheme.colorScheme
-                                                    .surfaceVariant
-                                                    .copy(alpha = 0.6F)
-                                            )
+                                                MaterialTheme.colorScheme.surfaceVariant
+                                            ).alpha(0.6F)
                                     ) {
                                         content()
                                     }
