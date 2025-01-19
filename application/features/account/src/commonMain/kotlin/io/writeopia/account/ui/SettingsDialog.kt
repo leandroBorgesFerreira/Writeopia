@@ -89,7 +89,7 @@ fun ColumnScope.SettingsScreen(
 
     Spacer(modifier = Modifier.height(20.dp))
 
-    Text("Workplace path", style = titleStyle, color = titleColor)
+    Text("Save folder", style = titleStyle, color = titleColor)
 
     Spacer(modifier = Modifier.height(8.dp))
 
