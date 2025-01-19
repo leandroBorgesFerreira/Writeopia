@@ -165,12 +165,16 @@ object CommonDrawers {
         )
 
         val imageDrawer = ImageDrawer(
+            config = drawConfig,
+            onSelected = manager::onSelected,
             containerModifier = Modifier::defaultImageShape,
             mergeRequest = manager::mergeRequest,
             onDelete = manager::onDelete
         )
 
         val imageDrawerInGroup = ImageDrawer(
+            config = drawConfig,
+            onSelected = manager::onSelected,
             containerModifier = Modifier::defaultImageShape,
             mergeRequest = manager::mergeRequest,
             onDelete = manager::onDelete

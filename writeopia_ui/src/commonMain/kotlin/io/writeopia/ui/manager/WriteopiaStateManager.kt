@@ -504,6 +504,8 @@ class WriteopiaStateManager(
      * perform bulk actions, like bulk edition and bulk deletion.
      */
     fun onSelected(isSelected: Boolean, position: Int) {
+        println("onSelected. isSelected: $isSelected")
+
         coroutineScope.launch(dispatcher) {
             if (_currentStory.value.stories[position] != null) {
                 if (isSelected) {
