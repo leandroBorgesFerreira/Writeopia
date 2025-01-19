@@ -26,13 +26,16 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(project(":application:core:theme"))
+                implementation(project(":application:core:utils"))
+
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
-                implementation(project(":application:core:theme"))
-                implementation(project(":application:core:utils"))
+                implementation(compose.components.uiToolingPreview)
+
             }
         }
     }

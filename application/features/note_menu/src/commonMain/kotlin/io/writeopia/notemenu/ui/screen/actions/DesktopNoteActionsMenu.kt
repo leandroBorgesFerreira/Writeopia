@@ -30,7 +30,6 @@ fun DesktopNoteActionsMenu(
     showExtraOptions: StateFlow<Boolean>,
     showExtraOptionsRequest: () -> Unit,
     hideExtraOptionsRequest: () -> Unit,
-    configureDirectory: () -> Unit,
     exportAsMarkdownClick: () -> Unit,
     importClick: () -> Unit,
     syncInProgressState: StateFlow<SyncState>,
@@ -66,7 +65,6 @@ fun DesktopNoteActionsMenu(
             showExtraOptions,
             showExtraOptionsRequest,
             hideExtraOptionsRequest,
-            configureDirectory,
             exportAsMarkdownClick,
             importClick
         )
@@ -78,7 +76,6 @@ private fun MoreOptions(
     showExtraOptions: StateFlow<Boolean>,
     showExtraOptionsRequest: () -> Unit,
     hideExtraOptionsRequest: () -> Unit,
-    configureDirectory: () -> Unit,
     exportAsMarkdownClick: () -> Unit,
     importClick: () -> Unit,
 ) {
@@ -94,23 +91,6 @@ private fun MoreOptions(
 
         DropdownMenu(expanded = showExtra, onDismissRequest = hideExtraOptionsRequest) {
             val iconTintColor = MaterialTheme.colorScheme.onPrimary
-
-            DropdownMenuItem(
-                leadingIcon = {
-                    Icon(
-                        imageVector = WrIcons.folder,
-                        contentDescription = "Configure directory",
-                        tint = iconTintColor
-                    )
-                },
-                onClick = configureDirectory,
-                text = {
-                    Text(
-                        "Configure directory",
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
-            )
 
             DropdownMenuItem(
                 leadingIcon = {
@@ -166,7 +146,6 @@ private fun DesktopNoteActionsMenuPreview() {
         showExtraOptions = MutableStateFlow(true),
         showExtraOptionsRequest = {},
         hideExtraOptionsRequest = {},
-        configureDirectory = {},
         exportAsMarkdownClick = {},
         importClick = {},
         syncInProgressState = MutableStateFlow(SyncState.Idle),

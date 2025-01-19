@@ -1,6 +1,6 @@
 package io.writeopia.common.utils.persistence.daos
 
-import io.writeopia.common.utils.persistence.NotesConfigurationCommonEntity
+import io.writeopia.common.utils.persistence.configuration.NotesConfigurationCommonEntity
 import kotlinx.coroutines.flow.Flow
 
 interface NotesConfigurationCommonDao {

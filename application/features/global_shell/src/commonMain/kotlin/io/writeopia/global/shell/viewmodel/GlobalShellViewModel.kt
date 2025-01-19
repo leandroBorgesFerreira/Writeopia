@@ -1,5 +1,6 @@
 package io.writeopia.global.shell.viewmodel
 
+import androidx.compose.runtime.State
 import io.writeopia.models.Folder
 import io.writeopia.notemenu.ui.dto.MenuItemUi
 import io.writeopia.notemenu.viewmodel.FolderController
@@ -23,6 +24,10 @@ interface GlobalShellViewModel : FolderController {
 
     val showSearchDialog: StateFlow<Boolean>
 
+    val workspaceLocalPath: StateFlow<String>
+
+    fun init()
+
     fun expandFolder(id: String)
 
     fun toggleSideMenu()
@@ -38,4 +43,6 @@ interface GlobalShellViewModel : FolderController {
     fun showSearch()
 
     fun hideSearch()
+
+    fun changeWorkspaceLocalPath(path: String)
 }

@@ -127,6 +127,10 @@ fun DesktopApp(
     val navigationController: NavHostController = rememberNavController()
     val searchViewModel = searchInjection.provideViewModel()
 
+    LaunchedEffect("initGlobalShellViewModel") {
+        globalShellViewModel.init()
+    }
+
     coroutineScope.launch {
         navigationController.currentBackStackEntryFlow.collect { navEntry ->
             val navigationType = navEntry.arguments?.getString(NAVIGATION_TYPE)
@@ -219,9 +223,11 @@ fun DesktopApp(
 
                         if (showSettingsState) {
                             SettingsDialog(
+                                workplacePathState = globalShellViewModel.workspaceLocalPath,
                                 selectedThemePosition = MutableStateFlow(2),
                                 onDismissRequest = globalShellViewModel::hideSettings,
-                                selectColorTheme = selectColorTheme
+                                selectColorTheme = selectColorTheme,
+                                selectWorkplacePath = globalShellViewModel::changeWorkspaceLocalPath
                             )
                         }
 

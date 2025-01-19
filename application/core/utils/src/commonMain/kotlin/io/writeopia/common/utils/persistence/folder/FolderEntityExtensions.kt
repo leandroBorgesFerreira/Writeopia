@@ -1,4 +1,4 @@
-package io.writeopia.common.utils.persistence
+package io.writeopia.common.utils.persistence.folder
 
 import io.writeopia.models.Folder
 

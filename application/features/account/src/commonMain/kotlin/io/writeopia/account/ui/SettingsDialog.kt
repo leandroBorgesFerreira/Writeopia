@@ -1,5 +1,7 @@
 package io.writeopia.account.ui
 
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -17,21 +19,30 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import io.writeopia.common.utils.icons.WrIcons
+import io.writeopia.commonui.workplace.WorkspaceConfigurationDialog
 import io.writeopia.model.ColorThemeOption
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun SettingsDialog(
+    workplacePathState: StateFlow<String>,
     selectedThemePosition: StateFlow<Int>,
     onDismissRequest: () -> Unit,
     selectColorTheme: (ColorThemeOption) -> Unit,
+    selectWorkplacePath: (String) -> Unit,
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
@@ -42,7 +53,12 @@ fun SettingsDialog(
             shape = RoundedCornerShape(16.dp),
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                SettingsScreen(selectedThemePosition, selectColorTheme)
+                SettingsScreen(
+                    selectedThemePosition,
+                    workplacePathState,
+                    selectColorTheme,
+                    selectWorkplacePath
+                )
             }
         }
     }
@@ -51,10 +67,16 @@ fun SettingsDialog(
 @Composable
 fun ColumnScope.SettingsScreen(
     selectedThemePosition: StateFlow<Int>,
+    workplacePathState: StateFlow<String>,
     selectColorTheme: (ColorThemeOption) -> Unit,
+    selectWorkplacePath: (String) -> Unit,
 ) {
     val titleStyle = MaterialTheme.typography.titleLarge
     val titleColor = MaterialTheme.colorScheme.onBackground
+    val workplacePath by workplacePathState.collectAsState()
+    var showEditPathDialog by remember {
+        mutableStateOf(false)
+    }
 
     Text("Color Theme", style = titleStyle, color = titleColor)
 
@@ -65,9 +87,48 @@ fun ColumnScope.SettingsScreen(
         selectColorTheme = selectColorTheme
     )
 
+    Spacer(modifier = Modifier.height(20.dp))
+
+    Text("Workplace path", style = titleStyle, color = titleColor)
+
+    Spacer(modifier = Modifier.height(8.dp))
+
+    val textShape = MaterialTheme.shapes.medium
+
+    Text(
+        workplacePath,
+        style = MaterialTheme.typography.bodySmall,
+        color = titleColor,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier.border(
+            1.dp,
+            MaterialTheme.colorScheme.onSurfaceVariant,
+            textShape
+        )
+            .clip(shape = textShape)
+            .clickable {
+                showEditPathDialog = true
+            }
+            .padding(12.dp)
+            .fillMaxWidth()
+    )
+
+    if (showEditPathDialog) {
+        WorkspaceConfigurationDialog(
+            currentPath = workplacePath,
+            pathChange = selectWorkplacePath,
+            onDismissRequest = {
+                showEditPathDialog = false
+            },
+            onConfirmation = {
+                showEditPathDialog = false
+            },
+        )
+    }
+
     Spacer(modifier = Modifier.weight(1F))
 
-    Text("Release version: 2024-06-14", style = MaterialTheme.typography.bodySmall)
+    Text("Release version: 0.3.0", style = MaterialTheme.typography.bodySmall)
 }
 
 @Composable

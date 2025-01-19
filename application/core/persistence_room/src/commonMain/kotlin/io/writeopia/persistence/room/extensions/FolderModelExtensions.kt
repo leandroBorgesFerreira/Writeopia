@@ -1,6 +1,6 @@
 package io.writeopia.persistence.room.extensions
 
-import io.writeopia.common.utils.persistence.FolderCommonEntity
+import io.writeopia.common.utils.persistence.folder.FolderCommonEntity
 import io.writeopia.persistence.room.data.entities.FolderEntity
 
 fun FolderEntity.toCommonEntity(): FolderCommonEntity {

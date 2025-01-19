@@ -1,8 +1,8 @@
 package io.writeopia.persistence.room.data.daos
 
 import io.writeopia.common.utils.persistence.daos.FolderCommonDao
-import io.writeopia.common.utils.persistence.toModel
-import io.writeopia.common.utils.persistence.toRoomEntity
+import io.writeopia.common.utils.persistence.folder.toModel
+import io.writeopia.common.utils.persistence.folder.toRoomEntity
 import io.writeopia.models.Folder
 import io.writeopia.persistence.room.extensions.toEntity
 import io.writeopia.persistence.room.extensions.toCommonEntity

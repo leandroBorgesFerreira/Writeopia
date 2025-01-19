@@ -1,6 +1,6 @@
 package io.writeopia.persistence.room.data.daos
 
-import io.writeopia.common.utils.persistence.NotesConfigurationCommonEntity
+import io.writeopia.common.utils.persistence.configuration.NotesConfigurationCommonEntity
 import io.writeopia.common.utils.persistence.daos.NotesConfigurationCommonDao
 import io.writeopia.persistence.room.extensions.toEntity
 import io.writeopia.persistence.room.extensions.toCommonEntity

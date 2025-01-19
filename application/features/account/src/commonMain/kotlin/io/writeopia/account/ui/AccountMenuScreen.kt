@@ -36,7 +36,9 @@ fun AccountMenuScreen(
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         SettingsScreen(
             selectedThemePosition = MutableStateFlow(0),
-            selectColorTheme = selectColorTheme
+            selectColorTheme = selectColorTheme,
+            workplacePathState = MutableStateFlow(""),
+            selectWorkplacePath = {}
         )
 
         Spacer(modifier = Modifier.height(12.dp))
