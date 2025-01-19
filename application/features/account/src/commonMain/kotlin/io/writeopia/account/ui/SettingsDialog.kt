@@ -80,7 +80,7 @@ fun ColumnScope.SettingsScreen(
 
     Text("Color Theme", style = titleStyle, color = titleColor)
 
-    Spacer(modifier = Modifier.height(20.dp))
+    Spacer(modifier = Modifier.height(8.dp))
 
     ColorThemeOptions(
         selectedThemePosition = selectedThemePosition,
@@ -89,7 +89,7 @@ fun ColumnScope.SettingsScreen(
 
     Spacer(modifier = Modifier.height(20.dp))
 
-    Text("Save folder", style = titleStyle, color = titleColor)
+    Text("Local folder", style = titleStyle, color = titleColor)
 
     Spacer(modifier = Modifier.height(8.dp))
 
