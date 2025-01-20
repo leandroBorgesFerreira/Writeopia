@@ -34,16 +34,21 @@ data class SpanInfo(val start: Int, val end: Int, val span: Span) {
     }
 
     private fun isInside(smaller: SpanInfo, bigger: SpanInfo): Boolean {
-        return smaller.start > bigger.start && smaller.start < bigger.end
-            && smaller.end > bigger.start && smaller.end < bigger.end
+        return smaller.start > bigger.start && smaller.start < bigger.end &&
+            smaller.end > bigger.start && smaller.end < bigger.end
     }
 }
 
 enum class Interception {
-    INSIDE, INTERSECT, OUTSIDE, CONTAINING
+    INSIDE,
+    INTERSECT,
+    OUTSIDE,
+    CONTAINING
 }
 
 enum class Span {
-    BOLD, ITALIC, UNDERLINE, HIGHLIGHT
+    BOLD,
+    ITALIC,
+    UNDERLINE,
+    HIGHLIGHT
 }
-

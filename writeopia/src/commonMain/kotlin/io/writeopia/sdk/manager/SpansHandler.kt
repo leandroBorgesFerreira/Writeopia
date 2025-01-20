@@ -35,7 +35,4 @@ object SpansHandler {
             }
         }
     }
-
-
-
 }
