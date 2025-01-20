@@ -66,6 +66,7 @@ import io.writeopia.editor.features.editor.viewmodel.ShareDocument
 import io.writeopia.editor.input.InputScreen
 import io.writeopia.editor.model.EditState
 import io.writeopia.sdk.models.id.GenerateId
+import io.writeopia.sdk.models.span.Span
 import io.writeopia.ui.components.EditionScreen
 import io.writeopia.ui.drawer.factory.DefaultDrawersAndroid
 import kotlinx.coroutines.flow.StateFlow
@@ -156,6 +157,7 @@ internal fun NoteEditorScreen(
                     noteEditorViewModel::redo,
                     noteEditorViewModel.canUndo,
                     noteEditorViewModel.canRedo,
+                    noteEditorViewModel::onAddSpanClick,
                     noteEditorViewModel::deleteSelection,
                     noteEditorViewModel::clearSelections,
                     noteEditorViewModel::onAddCheckListClick,
@@ -310,6 +312,7 @@ private fun BottomScreen(
     reDo: () -> Unit = {},
     canUndo: StateFlow<Boolean>,
     canRedo: StateFlow<Boolean>,
+    onSpanSelected: (Span) -> Unit = {},
     deleteSelection: () -> Unit = {},
     onClose: () -> Unit = {},
     onCheckItem: () -> Unit = {},
@@ -350,6 +353,7 @@ private fun BottomScreen(
             EditState.SELECTED_TEXT -> {
                 EditionScreen(
                     modifier = containerModifier,
+                    onSpanClick = onSpanSelected,
                     onDelete = deleteSelection,
                     onClose = onClose,
                     checkboxClick = onCheckItem,
