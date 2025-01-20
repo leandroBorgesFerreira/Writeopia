@@ -2,12 +2,14 @@ package io.writeopia.sdk.manager
 
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.document.DocumentInfo
+import io.writeopia.sdk.models.span.SpanInfo
 import io.writeopia.sdk.model.story.LastEdit
 import io.writeopia.sdk.model.story.Selection
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.command.CommandInfo
 import io.writeopia.sdk.models.command.TypeInfo
 import io.writeopia.sdk.models.id.GenerateId
+import io.writeopia.sdk.models.span.Span
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
@@ -26,6 +28,7 @@ class WriteopiaManager(
         stepsNormalizer = stepsNormalizer
     ),
     private val focusHandler: FocusHandler = FocusHandler(),
+    private val spanHandler: SpansHandler = SpansHandler
 ) {
 
     fun newStory(
@@ -213,4 +216,34 @@ class WriteopiaManager(
 
     fun expandItem(storyState: StoryState, position: Int) =
         contentHandler.expandItem(storyState.stories, position)
+
+    fun addSpanToStories(storyState: StoryState, positions: Set<Int>, span: Span): StoryState {
+        val newMap = positions.mapNotNull {
+            storyState.stories[it]?.let { story ->
+                val spanInfo = SpanInfo(0, story.text?.length ?: 0, span)
+                val spans = story.spans
+                it to story.copy(
+                    spans = spanHandler.addSpan(spans, spanInfo),
+                    localId = GenerateId.generate()
+                )
+            }
+        }.toMap()
+
+        val newStories = storyState.stories + newMap
+
+        return storyState.copy(stories = newStories)
+    }
+
+    fun addSpan(storyState: StoryState, position: Int, spanInfo: SpanInfo): StoryState =
+        storyState.stories[position]?.let { story ->
+            val spans = story.spans
+            val newStory = story.copy(
+                localId = GenerateId.generate(),
+                spans = spanHandler.addSpan(spans, spanInfo)
+            )
+
+            val newStories = storyState.stories + (position to newStory)
+
+            storyState.copy(stories = newStories)
+        } ?: storyState
 }

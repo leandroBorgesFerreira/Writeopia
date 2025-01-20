@@ -75,6 +75,7 @@ fun DesktopNoteEditorScreen(
                 .align(Alignment.TopEnd),
             fontStyleSelected = { noteEditorViewModel.fontFamily },
             isEditableState = noteEditorViewModel.isEditable,
+            boldClick = noteEditorViewModel::onAddSpanClick,
             setEditable = noteEditorViewModel::toggleEditable,
             checkItemClick = noteEditorViewModel::onAddCheckListClick,
             listItemClick = noteEditorViewModel::onAddListItemClick,
