@@ -2,6 +2,7 @@ package io.writeopia.editor.features.editor.viewmodel
 
 import io.writeopia.editor.model.EditState
 import io.writeopia.model.Font
+import io.writeopia.sdk.models.span.Span
 import io.writeopia.ui.backstack.BackstackHandler
 import io.writeopia.ui.backstack.BackstackInform
 import io.writeopia.ui.manager.WriteopiaStateManager
@@ -55,6 +56,8 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
     fun shareDocumentInMarkdown()
 
     fun onViewModelCleared()
+
+    fun onAddSpanClick(span: Span)
 
     fun onAddCheckListClick()
 

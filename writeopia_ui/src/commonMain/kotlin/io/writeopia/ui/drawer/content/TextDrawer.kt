@@ -24,8 +24,12 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -33,6 +37,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.factory.EndOfText
+import io.writeopia.ui.extensions.toSpanStyle
 import io.writeopia.ui.extensions.toTextRange
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.ui.model.EmptyErase
@@ -71,7 +76,17 @@ class TextDrawer(
         focusRequester: FocusRequester?,
         decorationBox: @Composable (innerTextField: @Composable () -> Unit) -> Unit
     ) {
-        val text = step.text ?: ""
+        val text = buildAnnotatedString {
+            append(step.text)
+
+            step.spans.forEach { spanInfo ->
+                addStyle(
+                    spanInfo.span.toSpanStyle(),
+                    spanInfo.start,
+                    spanInfo.end
+                )
+            }
+        }
 
         val inputText = drawInfo.selection?.toTextRange()?.let { range ->
             TextFieldValue(text, selection = range)
@@ -165,7 +180,7 @@ class TextDrawer(
                     )
                 }
 
-                if (text.isEmpty() && start == 0 && end == 0) {
+                if (start == 0 && end == 0) {
                     coroutineScope.launch {
                         // Delay to avoid jumping to previous line when erasing text
                         delay(70)

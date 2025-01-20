@@ -3,9 +3,11 @@ package io.writeopia.ui.manager
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.models.span.Span
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.repository.StoriesRepository
+import io.writeopia.ui.model.TextInput
 import io.writeopia.ui.utils.MapStoryData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -1064,5 +1066,77 @@ class WriteopiaStateManagerTest {
 
         assertEquals(lastContentStory!!.type, StoryTypes.TEXT.type)
         assertEquals(currentStory.size - 2, storyManager.currentStory.value.focus)
+    }
+
+    @Test
+    fun itShouldBePossibleToAddBoldToStoriesBySelectingThem() = runTest {
+        val now = Clock.System.now()
+
+        val storyManager =
+            WriteopiaStateManager.create(
+                writeopiaManager = WriteopiaManager(),
+                dispatcher = UnconfinedTestDispatcher(testScheduler),
+                userId = { "" }
+            )
+        storyManager.loadDocument(
+            Document(
+                content = messagesRepo.history(),
+                userId = "",
+                createdAt = now,
+                lastUpdatedAt = now,
+                parentId = "root"
+            )
+        )
+
+        repeat(3) { index ->
+            storyManager.onSelected(true, index)
+        }
+
+        storyManager.toggleSpan(Span.BOLD)
+
+        val stories = storyManager.currentStory.value.stories
+
+        repeat(3) { i ->
+            assertEquals(stories[i]!!.spans.first().span, Span.BOLD)
+        }
+    }
+
+    @Test
+    fun itShouldBePossibleToAddBoldToText() = runTest {
+        val now = Clock.System.now()
+
+        val storyManager =
+            WriteopiaStateManager.create(
+                writeopiaManager = WriteopiaManager(),
+                dispatcher = UnconfinedTestDispatcher(testScheduler),
+                userId = { "" }
+            )
+        storyManager.loadDocument(
+            Document(
+                content = messagesRepo.history(),
+                userId = "",
+                createdAt = now,
+                lastUpdatedAt = now,
+                parentId = "root"
+            )
+        )
+
+        val text = "this will be BOLD"
+
+        storyManager.handleTextInput(
+            TextInput(
+                "this will be BOLD",
+                start = 11,
+                end = text.lastIndex
+            ),
+            position = 0,
+            lineBreakByContent = false
+        )
+
+        storyManager.toggleSpan(Span.BOLD)
+
+        val stories = storyManager.currentStory.value.stories
+
+        assertEquals(stories[0]!!.spans.first().span, Span.BOLD)
     }
 }

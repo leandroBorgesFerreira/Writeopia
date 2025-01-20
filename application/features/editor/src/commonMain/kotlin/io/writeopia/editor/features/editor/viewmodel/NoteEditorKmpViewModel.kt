@@ -13,6 +13,7 @@ import io.writeopia.sdk.filter.DocumentFilterObject
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.models.span.Span
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
@@ -250,6 +251,12 @@ class NoteEditorKmpViewModel(
             .filterNotNull()
             .map { it.font }
             .stateIn(viewModelScope, SharingStarted.Lazily, Font.SYSTEM)
+    }
+
+    override fun onAddSpanClick(span: Span) {
+        viewModelScope.launch(Dispatchers.Default) {
+            writeopiaManager.toggleSpan(span)
+        }
     }
 
     override fun toggleEditable() {

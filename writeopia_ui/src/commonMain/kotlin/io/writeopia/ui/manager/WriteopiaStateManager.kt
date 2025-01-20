@@ -17,6 +17,8 @@ import io.writeopia.sdk.models.command.CommandTrigger
 import io.writeopia.sdk.models.command.TypeInfo
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.id.GenerateId
+import io.writeopia.sdk.models.span.Span
+import io.writeopia.sdk.models.span.SpanInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.Tag
@@ -504,8 +506,6 @@ class WriteopiaStateManager(
      * perform bulk actions, like bulk edition and bulk deletion.
      */
     fun onSelected(isSelected: Boolean, position: Int) {
-        println("onSelected. isSelected: $isSelected")
-
         coroutineScope.launch(dispatcher) {
             if (_currentStory.value.stories[position] != null) {
                 if (isSelected) {
@@ -763,6 +763,23 @@ class WriteopiaStateManager(
         }
     }
 
+    fun toggleSpan(span: Span) {
+        val onEdit = _positionsOnEdit.value
+
+        if (onEdit.isNotEmpty()) {
+            _currentStory.value =
+                writeopiaManager.addSpanToStories(_currentStory.value, onEdit, span)
+        } else {
+            val selection = currentStory.value.selection
+
+            _currentStory.value = writeopiaManager.addSpan(
+                _currentStory.value,
+                selection.position,
+                SpanInfo(selection.start, selection.end, span)
+            )
+        }
+    }
+
     fun addImage(imagePath: String) {
         currentPosition()?.let { position ->
             val story = getStory(position)
@@ -783,7 +800,6 @@ class WriteopiaStateManager(
         tag: TagInfo,
         currentStories: Map<Int, StoryStep> = currentStory.value.stories
     ) {
-
         onEdit.forEach { position ->
             val story = currentStories[position]
             if (story != null) {

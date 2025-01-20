@@ -20,3 +20,9 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -dontwarn java.sql.JDBCType
+
+# Please add these rules to your existing keep rules in order to suppress warnings.
+# This is generated automatically by the Android Gradle plugin.
+-dontwarn java.awt.FileDialog
+-dontwarn java.awt.Frame
+-dontwarn java.awt.GraphicsConfiguration

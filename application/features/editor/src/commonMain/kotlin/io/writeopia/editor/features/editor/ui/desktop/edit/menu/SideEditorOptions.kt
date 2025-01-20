@@ -46,6 +46,7 @@ import io.writeopia.common.utils.collections.inBatches
 import io.writeopia.common.utils.file.fileChooserLoad
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.model.Font
+import io.writeopia.sdk.models.span.Span
 import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.icons.WrSdkIcons
 import kotlinx.coroutines.flow.StateFlow
@@ -55,6 +56,7 @@ fun SideEditorOptions(
     modifier: Modifier = Modifier,
     fontStyleSelected: () -> StateFlow<Font>,
     isEditableState: StateFlow<Boolean>,
+    boldClick: (Span) -> Unit,
     setEditable: () -> Unit,
     checkItemClick: () -> Unit,
     listItemClick: () -> Unit,
@@ -107,6 +109,7 @@ fun SideEditorOptions(
 
                     OptionsType.TEXT_OPTIONS -> {
                         TextOptions(
+                            boldClick,
                             checkItemClick,
                             listItemClick,
                             codeBlockClick,
@@ -215,7 +218,7 @@ private fun Title(text: String) {
 }
 
 @Composable
-private fun TextChanges() {
+private fun TextChanges(spanClick: (Span) -> Unit) {
     Row(
         modifier = Modifier.horizontalOptionsRow(),
         verticalAlignment = Alignment.CenterVertically
@@ -226,7 +229,7 @@ private fun TextChanges() {
             modifier = Modifier.weight(1F)
                 .clip(RoundedCornerShape(topStart = 6.dp, bottomStart = 6.dp))
                 .size(32.dp)
-                .clickable { }
+                .clickable { spanClick(Span.BOLD) }
                 .padding(horizontal = 8.dp, vertical = 8.dp),
             tint = MaterialTheme.colorScheme.onBackground
         )
@@ -236,7 +239,7 @@ private fun TextChanges() {
             contentDescription = "Italic",
             modifier = Modifier.weight(1F)
                 .size(32.dp)
-                .clickable { }
+                .clickable { spanClick(Span.ITALIC) }
                 .padding(horizontal = 8.dp, vertical = 8.dp),
             tint = MaterialTheme.colorScheme.onBackground
         )
@@ -247,7 +250,7 @@ private fun TextChanges() {
             modifier = Modifier.weight(1F)
                 .clip(RoundedCornerShape(topEnd = 6.dp, bottomEnd = 6.dp))
                 .size(32.dp)
-                .clickable { }
+                .clickable { spanClick(Span.UNDERLINE) }
                 .padding(horizontal = 8.dp, vertical = 8.dp),
             tint = MaterialTheme.colorScheme.onBackground
         )
@@ -448,6 +451,7 @@ internal fun FontOptions(
 
 @Composable
 private fun TextOptions(
+    spanClick: (Span) -> Unit,
     checkItemClick: () -> Unit,
     listItemClick: () -> Unit,
     codeBlockClick: () -> Unit,
@@ -466,7 +470,7 @@ private fun TextOptions(
     ) {
         Title("Text")
         Spacer(modifier = Modifier.height(4.dp))
-        TextChanges()
+        TextChanges(spanClick)
         Spacer(modifier = Modifier.height(8.dp))
 
         Title("Insert")

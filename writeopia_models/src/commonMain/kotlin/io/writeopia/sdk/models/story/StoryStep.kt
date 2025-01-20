@@ -1,6 +1,7 @@
 package io.writeopia.sdk.models.story
 
 import io.writeopia.sdk.models.id.GenerateId
+import io.writeopia.sdk.models.span.SpanInfo
 
 /**
  * The model defining the information that can be draw in the screen. This is the most basic
@@ -33,6 +34,7 @@ data class StoryStep(
     val checked: Boolean? = false,
     val steps: List<StoryStep> = emptyList(),
     val tags: Set<TagInfo> = emptySet(),
+    val spans: Set<SpanInfo> = emptySet(),
     val decoration: Decoration = Decoration()
 ) {
 
