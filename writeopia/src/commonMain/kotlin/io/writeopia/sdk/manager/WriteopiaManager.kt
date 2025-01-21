@@ -232,7 +232,8 @@ class WriteopiaManager(
         val newStories = storyState.stories + newMap
 
         return storyState.copy(
-            stories = newStories, lastEdit = LastEdit.Whole
+            stories = newStories,
+            lastEdit = LastEdit.Whole
         )
     }
 

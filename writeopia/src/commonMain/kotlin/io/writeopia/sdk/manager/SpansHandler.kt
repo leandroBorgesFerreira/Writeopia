@@ -2,7 +2,6 @@ package io.writeopia.sdk.manager
 
 import io.writeopia.sdk.models.span.Interception
 import io.writeopia.sdk.models.span.SpanInfo
-import kotlin.math.max
 import kotlin.math.min
 
 object SpansHandler {
