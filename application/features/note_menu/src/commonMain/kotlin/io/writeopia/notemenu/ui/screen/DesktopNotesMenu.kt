@@ -22,7 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import io.writeopia.common.utils.file.fileChooserSave
+import io.writeopia.common.utils.file.directoryChooserSave
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.ui.screen.actions.DesktopNoteActionsMenu
@@ -65,7 +65,7 @@ fun DesktopNotesMenu(
                     showExtraOptionsRequest = chooseNoteViewModel::showEditMenu,
                     hideExtraOptionsRequest = chooseNoteViewModel::cancelEditMenu,
                     exportAsMarkdownClick = {
-                        fileChooserSave("")?.let(chooseNoteViewModel::directoryFilesAsMarkdown)
+                        directoryChooserSave("")?.let(chooseNoteViewModel::directoryFilesAsMarkdown)
                     },
                     importClick = {
                         chooseNoteViewModel.loadFiles(fileChooserLoad(""))

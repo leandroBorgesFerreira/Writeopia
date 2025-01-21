@@ -46,6 +46,7 @@ kotlin {
                 implementation(project(":application:core:common_ui"))
                 implementation(project(":application:core:persistence_bridge"))
                 implementation(project(":application:core:theme"))
+                implementation(project(":application:core:utils"))
 
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.datetime)

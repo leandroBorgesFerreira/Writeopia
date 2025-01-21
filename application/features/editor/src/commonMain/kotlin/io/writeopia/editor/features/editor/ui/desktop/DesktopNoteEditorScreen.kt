@@ -83,7 +83,9 @@ fun DesktopNoteEditorScreen(
             highLightBlockClick = noteEditorViewModel::onAddHighLightBlockClick,
             onPresentationClick = onPresentationClick,
             changeFontFamily = noteEditorViewModel::changeFontFamily,
-            addImage = noteEditorViewModel::addImage
+            addImage = noteEditorViewModel::addImage,
+            exportMarkdown = noteEditorViewModel::exportMarkdown,
+            exportJson = noteEditorViewModel::exportJson,
         )
 
         if (!isEditable) {

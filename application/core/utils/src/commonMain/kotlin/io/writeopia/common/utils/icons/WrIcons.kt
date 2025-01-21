@@ -52,6 +52,7 @@ import io.writeopia.common.utils.icons.all.Sun
 import io.writeopia.common.utils.icons.all.Underline
 import io.writeopia.common.utils.icons.all.Undo2
 import io.writeopia.common.utils.icons.all.X
+import io.writeopia.common.utils.icons.all.Zap
 
 object WrIcons {
     val settings: ImageVector = Bolt
@@ -154,6 +155,8 @@ object WrIcons {
 
     val image = Image
 
+    val zap = Zap
+
     val allIcons: Map<String, ImageVector> =
         mapOf(
             "settings" to settings,
@@ -205,6 +208,7 @@ object WrIcons {
             "visibilityOn" to visibilityOn,
             "visibilityOff" to visibilityOff,
             "image" to image,
+            "zap" to zap,
         )
 
     fun fromName(name: String): ImageVector? = allIcons[name]
