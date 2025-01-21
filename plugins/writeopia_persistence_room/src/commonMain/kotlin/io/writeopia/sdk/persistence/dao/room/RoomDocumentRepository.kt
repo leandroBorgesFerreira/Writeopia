@@ -137,6 +137,7 @@ class RoomDocumentRepository(
     }
 
     override suspend fun saveStoryStep(storyStep: StoryStep, position: Int, documentId: String) {
+        println("saving story steps: ${storyStep.spans.joinToString { it.toText() }}")
         storyUnitEntityDao?.insertStoryUnits(storyStep.toEntity(position, documentId))
     }
 

@@ -21,11 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.icons.WrIcons
+import io.writeopia.sdk.models.span.Span
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 internal fun InputScreen(
     modifier: Modifier = Modifier,
+    onAddSpan: (Span) -> Unit,
     onBackPress: () -> Unit = {},
     onForwardPress: () -> Unit = {},
     canUndoState: StateFlow<Boolean>,
@@ -45,19 +47,17 @@ internal fun InputScreen(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            Row(modifier = Modifier.align(Alignment.Center)) {
+            Row(modifier = Modifier.align(Alignment.Center).padding(horizontal = 12.dp)) {
                 Icon(
                     modifier = Modifier
                         .padding(10.dp)
-                        .clickable(onClick = {
-                            if (canUndo) {
-                                onBackPress()
-                            }
-                        }),
-                    imageVector = WrIcons.undo,
-                    contentDescription = "",
+                        .clickable {
+                            onAddSpan(Span.BOLD)
+                        },
+                    imageVector = WrIcons.bold,
+                    contentDescription = "Bold",
 //                    stringResource(R.string.undo),
-                    tint = if (canUndo) buttonColor else disabledColor
+                    tint = buttonColor
                 )
 
                 Spacer(modifier = Modifier.width(15.dp))
@@ -65,11 +65,55 @@ internal fun InputScreen(
                 Icon(
                     modifier = Modifier
                         .padding(10.dp)
-                        .clickable(onClick = {
+                        .clickable {
+                            onAddSpan(Span.ITALIC)
+                        },
+                    imageVector = WrIcons.italic,
+                    contentDescription = "Italic",
+//                    stringResource(R.string.undo),
+                    tint = buttonColor
+                )
+
+                Spacer(modifier = Modifier.width(15.dp))
+
+                Icon(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .clickable {
+                            onAddSpan(Span.UNDERLINE)
+                        },
+                    imageVector = WrIcons.underline,
+                    contentDescription = "Underline",
+//                    stringResource(R.string.undo),
+                    tint = buttonColor
+                )
+
+                Spacer(modifier = Modifier.weight(1F))
+
+                Icon(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .clickable {
+                            if (canUndo) {
+                                onBackPress()
+                            }
+                        },
+                    imageVector = WrIcons.undo,
+                    contentDescription = "",
+//                    stringResource(R.string.undo),
+                    tint = if (canUndo) buttonColor else disabledColor
+                )
+
+                Spacer(modifier = Modifier.width(10.dp))
+
+                Icon(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .clickable {
                             if (canRedo) {
                                 onForwardPress()
                             }
-                        }),
+                        },
                     imageVector = WrIcons.redo,
                     contentDescription = "",
 //                    stringResource(R.string.redo),

@@ -3,6 +3,7 @@ package io.writeopia.sdk.persistence.sqldelight.dao
 import app.cash.sqldelight.async.coroutines.awaitAsList
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
+import io.writeopia.sdk.models.span.SpanInfo
 import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
@@ -95,7 +96,8 @@ class DocumentSqlDao(
                 is_group = isGroup.toLong(),
                 has_inner_steps = steps.isNotEmpty().toLong(),
                 background_color = decoration.backgroundColor?.toLong(),
-                tags = tags.joinToString(separator = ",") { it.tag.label }
+                tags = tags.joinToString(separator = ",") { it.tag.label },
+                spans = spans.joinToString(separator = ",") { it.toText() }
             )
         }
     }
@@ -156,6 +158,12 @@ class DocumentSqlDao(
                                 ?.filter { it.isNotEmpty() }
                                 ?.mapNotNull(TagInfo.Companion::fromString)
                                 ?.toSet()
+                                ?: emptySet(),
+                            spans =  innerContent.spans
+                                ?.split(",")
+                                ?.filter { it.isNotEmpty() }
+                                ?.map(SpanInfo::fromString)
+                                ?.toSet()
                                 ?: emptySet()
                         )
 
@@ -208,6 +216,12 @@ class DocumentSqlDao(
                                 ?.split(",")
                                 ?.filter { it.isNotEmpty() }
                                 ?.mapNotNull(TagInfo.Companion::fromString)
+                                ?.toSet()
+                                ?: emptySet(),
+                            spans =  innerContent.spans
+                                ?.split(",")
+                                ?.filter { it.isNotEmpty() }
+                                ?.map(SpanInfo::fromString)
                                 ?.toSet()
                                 ?: emptySet()
                         )
@@ -268,6 +282,12 @@ class DocumentSqlDao(
                                 ?.filter { it.isNotEmpty() }
                                 ?.mapNotNull(TagInfo.Companion::fromString)
                                 ?.toSet()
+                                ?: emptySet(),
+                            spans =  innerContent.spans
+                                ?.split(",")
+                                ?.filter { it.isNotEmpty() }
+                                ?.map(SpanInfo::fromString)
+                                ?.toSet()
                                 ?: emptySet()
                         )
 
@@ -326,6 +346,12 @@ class DocumentSqlDao(
                                 ?.split(",")
                                 ?.filter { it.isNotEmpty() }
                                 ?.mapNotNull(TagInfo.Companion::fromString)
+                                ?.toSet()
+                                ?: emptySet(),
+                            spans =  innerContent.spans
+                                ?.split(",")
+                                ?.filter { it.isNotEmpty() }
+                                ?.map(SpanInfo::fromString)
                                 ?.toSet()
                                 ?: emptySet()
                         )
@@ -389,6 +415,12 @@ class DocumentSqlDao(
                                 ?.filter { it.isNotEmpty() }
                                 ?.mapNotNull(TagInfo.Companion::fromString)
                                 ?.toSet()
+                                ?: emptySet(),
+                            spans =  innerContent.spans
+                                ?.split(",")
+                                ?.filter { it.isNotEmpty() }
+                                ?.map(SpanInfo::fromString)
+                                ?.toSet()
                                 ?: emptySet()
                         )
 
@@ -442,6 +474,11 @@ class DocumentSqlDao(
                                 .split(",")
                                 .filter { it.isNotEmpty() }
                                 .mapNotNull(TagInfo.Companion::fromString)
+                                .toSet(),
+                            spans =  innerContent.spans
+                                .split(",")
+                                .filter { it.isNotEmpty() }
+                                .map(SpanInfo::fromString)
                                 .toSet()
                         )
 

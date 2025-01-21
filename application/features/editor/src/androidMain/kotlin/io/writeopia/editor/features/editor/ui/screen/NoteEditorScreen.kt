@@ -343,6 +343,7 @@ private fun BottomScreen(
             EditState.TEXT -> {
                 InputScreen(
                     modifier = containerModifier,
+                    onAddSpan = onSpanSelected,
                     onBackPress = unDo,
                     onForwardPress = reDo,
                     canUndoState = canUndo,

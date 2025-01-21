@@ -231,7 +231,9 @@ class WriteopiaManager(
 
         val newStories = storyState.stories + newMap
 
-        return storyState.copy(stories = newStories)
+        return storyState.copy(
+            stories = newStories, lastEdit = LastEdit.Whole
+        )
     }
 
     fun addSpan(storyState: StoryState, position: Int, spanInfo: SpanInfo): StoryState =
@@ -244,6 +246,11 @@ class WriteopiaManager(
 
             val newStories = storyState.stories + (position to newStory)
 
-            storyState.copy(stories = newStories)
+            storyState.copy(
+                stories = newStories,
+                lastEdit = LastEdit.LineEdition(
+                    position = position, storyStep = newStory
+                )
+            )
         } ?: storyState
 }
