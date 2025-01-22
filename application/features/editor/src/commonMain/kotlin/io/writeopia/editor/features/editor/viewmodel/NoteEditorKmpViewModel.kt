@@ -7,7 +7,9 @@ import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.editor.model.EditState
 import io.writeopia.model.Font
 import io.writeopia.repository.UiConfigurationRepository
+import io.writeopia.sdk.export.DocumentToJson
 import io.writeopia.sdk.export.DocumentToMarkdown
+import io.writeopia.sdk.export.DocumentWriter
 import io.writeopia.sdk.filter.DocumentFilter
 import io.writeopia.sdk.filter.DocumentFilterObject
 import io.writeopia.sdk.model.action.Action
@@ -40,7 +42,9 @@ class NoteEditorKmpViewModel(
     private val documentFilter: DocumentFilter = DocumentFilterObject,
     private val sharedEditionManager: SharedEditionManager,
     private val parentFolderId: String,
-    private val uiConfigurationRepository: UiConfigurationRepository
+    private val uiConfigurationRepository: UiConfigurationRepository,
+    private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
+    private val documentToJson: DocumentToJson = DocumentToJson(),
 ) : NoteEditorViewModel,
     ViewModel(),
     BackstackInform by writeopiaManager,
@@ -273,6 +277,27 @@ class NoteEditorKmpViewModel(
 
     override fun addImage(imagePath: String) {
         writeopiaManager.addImage(imagePath)
+    }
+
+    override fun exportMarkdown(path: String) {
+        viewModelScope.launch(Dispatchers.Default) {
+            writeDocument(path, documentToMarkdown)
+        }
+    }
+
+    override fun exportJson(path: String) {
+        println("exportJson")
+        viewModelScope.launch(Dispatchers.Default) {
+            writeDocument(path, documentToJson)
+        }
+    }
+
+    private fun writeDocument(path: String, writer: DocumentWriter) {
+        writer.writeDocuments(
+            documents = listOf(writeopiaManager.getDocument()),
+            path = path,
+            writeConfigFile = false
+        )
     }
 
     private fun documentToJson(document: Document, json: Json = writeopiaJson): String {

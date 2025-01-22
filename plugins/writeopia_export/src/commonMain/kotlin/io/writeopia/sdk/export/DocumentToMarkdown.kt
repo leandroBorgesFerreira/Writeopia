@@ -28,6 +28,10 @@ object DocumentToMarkdown : DocumentWriter {
         }
     }
 
+    override fun writeDocument(document: Document, path: String, writeConfigFile: Boolean) {
+        TODO("Not yet implemented")
+    }
+
     fun parse(
         document: Map<Int, StoryStep>,
         parseStep: (StoryStep) -> Pair<ContentAdd, String?> = ::parseStep,

@@ -72,6 +72,10 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
     fun changeFontFamily(font: Font)
 
     fun addImage(imagePath: String)
+
+    fun exportMarkdown(path: String)
+
+    fun exportJson(path: String)
 }
 
 data class ShareDocument(val content: String, val title: String, val type: String)

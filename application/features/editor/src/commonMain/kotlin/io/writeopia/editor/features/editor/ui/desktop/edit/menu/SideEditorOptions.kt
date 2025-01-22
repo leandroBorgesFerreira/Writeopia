@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.collections.inBatches
 import io.writeopia.common.utils.file.fileChooserLoad
+import io.writeopia.common.utils.file.fileChooserSave
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.model.Font
 import io.writeopia.sdk.models.span.Span
@@ -65,6 +66,8 @@ fun SideEditorOptions(
     onPresentationClick: () -> Unit,
     changeFontFamily: (Font) -> Unit,
     addImage: (String) -> Unit,
+    exportJson: (String) -> Unit,
+    exportMarkdown: (String) -> Unit,
 ) {
     var menuType by remember {
         mutableStateOf(OptionsType.NONE)
@@ -115,6 +118,13 @@ fun SideEditorOptions(
                             codeBlockClick,
                             highLightBlockClick,
                             addImage
+                        )
+                    }
+
+                    OptionsType.ACTIONS -> {
+                        Actions(
+                            exportJson,
+                            exportMarkdown
                         )
                     }
                 }
@@ -188,6 +198,26 @@ fun SideEditorOptions(
                     .size(40.dp)
                     .padding(9.dp),
                 tint = tint(OptionsType.TEXT_OPTIONS)
+            )
+
+            Spacer(modifier = Modifier.height(spacing))
+
+            Icon(
+                imageVector = WrIcons.zap,
+                contentDescription = "Zap",
+                modifier = Modifier
+                    .padding(horizontal = spacing)
+                    .clip(MaterialTheme.shapes.medium)
+                    .clickable {
+                        menuType = if (menuType != OptionsType.ACTIONS) {
+                            OptionsType.ACTIONS
+                        } else {
+                            OptionsType.NONE
+                        }
+                    }
+                    .size(40.dp)
+                    .padding(9.dp),
+                tint = MaterialTheme.colorScheme.onBackground
             )
 
             Spacer(modifier = Modifier.height(spacing))
@@ -283,7 +313,7 @@ private fun IconAndText(text: String, iconImage: ImageVector, click: () -> Unit)
         Text(
             text = text,
             color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.bodySmall,
+            style = buttonsTextStyle(),
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
@@ -310,7 +340,7 @@ private fun DecorationCommands(commands: Iterable<Pair<String, () -> Unit>>) {
                                 .padding(horizontal = 8.dp, vertical = 8.dp),
                             text = command,
                             color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.bodySmall,
+                            style = buttonsTextStyle(),
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
@@ -443,6 +473,7 @@ internal fun FontOptions(
                             }
                             .padding(4.dp),
                         color = MaterialTheme.colorScheme.onBackground,
+                        style = buttonsTextStyle()
                     )
                 }
             }
@@ -499,8 +530,77 @@ private fun TextOptions(
     }
 }
 
+@Composable
+private fun Actions(
+    exportJson: (String) -> Unit,
+    exportMarkdown: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.border(
+            1.dp,
+            MaterialTheme.colorScheme.surfaceVariant,
+            MaterialTheme.shapes.medium
+        ).background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.medium)
+            .width(250.dp)
+            .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp)
+    ) {
+        Title("Export")
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Row {
+            Text(
+                "Json",
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(2.dp)
+                    .background(
+                        MaterialTheme.colorScheme.surfaceVariant,
+                        MaterialTheme.shapes.medium
+                    ).weight(1F)
+                    .clip(MaterialTheme.shapes.medium)
+                    .clickable {
+                        fileChooserSave()?.let {
+                            println("fileChooserSave: $it")
+                            exportJson(it)
+                        }
+                    }
+                    .padding(4.dp),
+                color = MaterialTheme.colorScheme.onBackground,
+                style = buttonsTextStyle()
+            )
+
+//            Text(
+//                "Markdown",
+//                textAlign = TextAlign.Center,
+//                modifier = Modifier
+//                    .padding(2.dp)
+//                    .background(
+//                        MaterialTheme.colorScheme.surfaceVariant,
+//                        MaterialTheme.shapes.medium
+//                    ).weight(1F)
+//                    .clip(MaterialTheme.shapes.medium)
+//                    .clickable {
+//                        fileChooserSave()?.let(exportMarkdown)
+//                    }
+//                    .padding(4.dp),
+//                color = MaterialTheme.colorScheme.onBackground,
+//                style = buttonsTextStyle()
+//            )
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+    }
+}
+
 private enum class OptionsType {
     NONE,
     PAGE_STYLE,
-    TEXT_OPTIONS
+    TEXT_OPTIONS,
+    ACTIONS
 }
+
+@Composable
+private fun buttonsTextStyle() =
+    MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold)
