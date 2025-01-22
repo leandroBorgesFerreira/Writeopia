@@ -17,10 +17,25 @@ class DocumentToJson(private val json: Json = writeopiaJson) : DocumentWriter {
         path: String,
         writeConfigFile: Boolean
     ) {
+        write(documents, path, writeConfigFile, usePath = false)
+    }
+
+    override fun writeDocument(document: Document, path: String, writeConfigFile: Boolean) {
+        write(listOf(document), path, writeConfigFile, usePath = true)
+    }
+
+    private fun write(
+        documents: List<Document>,
+        path: String,
+        writeConfigFile: Boolean,
+        usePath: Boolean
+    ) {
         if (documents.isEmpty()) return
 
         documents.forEach { document ->
-            KmpFileWriter(name(document, path, ".json")).useKmp { writer ->
+            KmpFileWriter(
+                if (usePath) name(document, path, ".json") else path
+            ).useKmp { writer ->
                 writer.writeObject(document.toApi(), json)
             }
         }

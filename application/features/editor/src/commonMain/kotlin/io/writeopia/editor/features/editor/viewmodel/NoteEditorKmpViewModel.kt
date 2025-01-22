@@ -281,28 +281,23 @@ class NoteEditorKmpViewModel(
 
     override fun exportMarkdown(path: String) {
         viewModelScope.launch(Dispatchers.Default) {
-            writeDocument(path, documentToJson)
+            writeDocument(path, documentToMarkdown)
         }
     }
 
     override fun exportJson(path: String) {
         println("exportJson")
         viewModelScope.launch(Dispatchers.Default) {
-            writeDocument(path, documentToMarkdown)
+            writeDocument(path, documentToJson)
         }
     }
 
     private fun writeDocument(path: String, writer: DocumentWriter) {
-        println("writeDocument: ${writeopiaManager.documentInfo.value.title}")
-        println("writeDocument: ${writeopiaManager.currentStory.value.stories[0]?.text}")
-        writeopiaManager.currentDocument.value?.let { document ->
-            println("Writing documents")
-            writer.writeDocuments(
-                documents = listOf(document),
-                path = path,
-                writeConfigFile = false
-            )
-        }
+        writer.writeDocuments(
+            documents = listOf(writeopiaManager.getDocument()),
+            path = path,
+            writeConfigFile = false
+        )
     }
 
     private fun documentToJson(document: Document, json: Json = writeopiaJson): String {

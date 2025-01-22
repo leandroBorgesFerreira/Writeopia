@@ -135,24 +135,7 @@ class WriteopiaStateManager(
 
     val currentDocument: StateFlow<Document?> =
         combine(_documentInfo, _currentStory) { info, state ->
-            val titleFromContent = state.stories.values.firstOrNull { storyStep ->
-                // Todo: Change the type of change to allow different types. The client code should decide what is a title
-                // It is also interesting to inv
-                storyStep.type == StoryTypes.TITLE.type
-            }?.text
-
-            Document(
-                id = info.id,
-                title = titleFromContent ?: info.title,
-                content = state.stories,
-                createdAt = info.createdAt,
-                lastUpdatedAt = info.lastUpdatedAt,
-                userId = localUserId ?: userId.invoke().also { id ->
-                    localUserId = id
-                },
-                parentId = info.parentId,
-                isLocked = info.isLocked
-            )
+            parseDocument(info, state)
         }.stateIn(coroutineScope, SharingStarted.Lazily, null)
 
     private val _documentEditionState: Flow<Pair<StoryState, DocumentInfo>> =
@@ -201,6 +184,9 @@ class WriteopiaStateManager(
             documentTracker.saveOnStoryChanges(_documentEditionState, getUserId())
         }
     }
+
+    fun getDocument(): Document =
+        parseDocument(_documentInfo.value, _currentStory.value)
 
     fun liveSync(sharedEditionManager: SharedEditionManager) {
         coroutineScope.launch(dispatcher) {
@@ -728,6 +714,57 @@ class WriteopiaStateManager(
 
     }
 
+    fun toggleSpan(span: Span) {
+        val onEdit = _positionsOnEdit.value
+
+        if (onEdit.isNotEmpty()) {
+            _currentStory.value =
+                writeopiaManager.addSpanToStories(_currentStory.value, onEdit, span)
+        } else {
+            val selection = currentStory.value.selection
+
+            _currentStory.value = writeopiaManager.addSpan(
+                _currentStory.value,
+                selection.position,
+                SpanInfo(selection.start, selection.end, span)
+            )
+        }
+    }
+
+    fun addImage(imagePath: String) {
+        currentPosition()?.let { position ->
+            val story = getStory(position)
+
+            if (story != null) {
+                val stateChange = Action.StoryStateChange(
+                    story.copy(type = StoryTypes.IMAGE.type, path = imagePath),
+                    position
+                )
+
+                changeStoryStateAndTrackIt(stateChange)
+            }
+        }
+    }
+
+    private fun parseDocument(info: DocumentInfo, state: StoryState): Document {
+        val titleFromContent = state.stories.values.firstOrNull { storyStep ->
+            // Todo: Change the type of change to allow different types. The client code should decide what is a title
+            // It is also interesting to inv
+            storyStep.type == StoryTypes.TITLE.type
+        }?.text
+
+        return Document(
+            id = info.id,
+            title = titleFromContent ?: info.title,
+            content = state.stories,
+            createdAt = info.createdAt,
+            lastUpdatedAt = info.lastUpdatedAt,
+            userId = localUserId ?: "disconnected_user",
+            parentId = info.parentId,
+            isLocked = info.isLocked
+        )
+    }
+
     /**
      * Moves the focus to the next available [StoryStep] if it can't find a step to focus, it
      * creates a new [StoryStep] at the end of the document.
@@ -759,38 +796,6 @@ class WriteopiaStateManager(
                         position = position,
                     )
                 )
-            }
-        }
-    }
-
-    fun toggleSpan(span: Span) {
-        val onEdit = _positionsOnEdit.value
-
-        if (onEdit.isNotEmpty()) {
-            _currentStory.value =
-                writeopiaManager.addSpanToStories(_currentStory.value, onEdit, span)
-        } else {
-            val selection = currentStory.value.selection
-
-            _currentStory.value = writeopiaManager.addSpan(
-                _currentStory.value,
-                selection.position,
-                SpanInfo(selection.start, selection.end, span)
-            )
-        }
-    }
-
-    fun addImage(imagePath: String) {
-        currentPosition()?.let { position ->
-            val story = getStory(position)
-
-            if (story != null) {
-                val stateChange = Action.StoryStateChange(
-                    story.copy(type = StoryTypes.IMAGE.type, path = imagePath),
-                    position
-                )
-
-                changeStoryStateAndTrackIt(stateChange)
             }
         }
     }

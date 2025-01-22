@@ -44,7 +44,6 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.collections.inBatches
 import io.writeopia.common.utils.file.fileChooserLoad
-import io.writeopia.common.utils.file.directoryChooserSave
 import io.writeopia.common.utils.file.fileChooserSave
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.model.Font
@@ -546,7 +545,7 @@ private fun Actions(
             .width(250.dp)
             .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp)
     ) {
-        Title("Actions")
+        Title("Export")
 
         Spacer(modifier = Modifier.height(4.dp))
 
@@ -572,23 +571,23 @@ private fun Actions(
                 style = buttonsTextStyle()
             )
 
-            Text(
-                "Markdown",
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(2.dp)
-                    .background(
-                        MaterialTheme.colorScheme.surfaceVariant,
-                        MaterialTheme.shapes.medium
-                    ).weight(1F)
-                    .clip(MaterialTheme.shapes.medium)
-                    .clickable {
-                        fileChooserSave()?.let(exportMarkdown)
-                    }
-                    .padding(4.dp),
-                color = MaterialTheme.colorScheme.onBackground,
-                style = buttonsTextStyle()
-            )
+//            Text(
+//                "Markdown",
+//                textAlign = TextAlign.Center,
+//                modifier = Modifier
+//                    .padding(2.dp)
+//                    .background(
+//                        MaterialTheme.colorScheme.surfaceVariant,
+//                        MaterialTheme.shapes.medium
+//                    ).weight(1F)
+//                    .clip(MaterialTheme.shapes.medium)
+//                    .clickable {
+//                        fileChooserSave()?.let(exportMarkdown)
+//                    }
+//                    .padding(4.dp),
+//                color = MaterialTheme.colorScheme.onBackground,
+//                style = buttonsTextStyle()
+//            )
         }
 
         Spacer(modifier = Modifier.height(12.dp))
