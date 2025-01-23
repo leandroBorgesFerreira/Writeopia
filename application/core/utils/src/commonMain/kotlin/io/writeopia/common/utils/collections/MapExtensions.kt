@@ -16,7 +16,11 @@ fun <T : Node> Map<String, List<T>>.toNodeTree(
     filterPredicate: (T) -> Boolean = { true }
 ): Node = createNodeTree(this, node, filterPredicate = filterPredicate)
 
-inline fun <reified T : Traversable, U> List<T>.reverseTraverse(
+/**
+ * Traverses an traversable iterable, filters the nodes and map the items of the traversal
+ * with mapFunc
+ */
+inline fun <reified T : Traversable, U> Iterable<T>.traverse(
     initialId: String,
     targetId: String = "root",
     noinline filterPredicate: ((T) -> Boolean)? = null,
