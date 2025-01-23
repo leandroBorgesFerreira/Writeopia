@@ -36,7 +36,6 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 
 internal class ChooseNoteKmpViewModel(
     private val notesUseCase: NotesUseCase,
