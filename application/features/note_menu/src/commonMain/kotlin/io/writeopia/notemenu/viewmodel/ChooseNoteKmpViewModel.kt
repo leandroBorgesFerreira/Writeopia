@@ -20,6 +20,7 @@ import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.export.DocumentWriter
 import io.writeopia.sdk.import.json.WriteopiaJsonParser
 import io.writeopia.sdk.models.document.MenuItem
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +35,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 
 internal class ChooseNoteKmpViewModel(
     private val notesUseCase: NotesUseCase,
@@ -301,6 +303,8 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun loadFiles(filePaths: List<String>) {
+        val now = Clock.System.now()
+
         viewModelScope.launch(Dispatchers.Default) {
             writeopiaJsonParser.readDocuments(filePaths)
                 .onCompletion { exception ->
@@ -308,6 +312,16 @@ internal class ChooseNoteKmpViewModel(
 //                        refreshNotes()
                         cancelEditMenu()
                     }
+                }
+                .map { document ->
+                    document.copy(
+                        parentId = notesNavigation.id,
+                        id = GenerateId.generate(),
+                        lastUpdatedAt = now,
+                        createdAt = now,
+                        userId = getUserId(),
+                        favorite = false
+                    )
                 }
                 .collect(notesUseCase::saveDocument)
         }
