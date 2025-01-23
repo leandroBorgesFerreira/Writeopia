@@ -6,11 +6,30 @@ interface Node {
 
     fun addNotes(nodes: List<Node>)
 
+    /**
+     * Get the next notes. Only the next notes, not the whole graph
+     */
     fun getNodes(): List<Node>
 
+    /**
+     * Get all notes as list. Expands all nodes.
+     */
     fun toList(): List<Node> =
         listOf(this) + this.getNodes().flatMap { internalNodes -> internalNodes.toList() }
+
+    companion object {
+        fun <T : Node> anyNode(node: T, predicate: (T) -> Boolean): Boolean {
+            val match = predicate(node)
+
+            return match || node.getNodes()
+                .map { it as T }
+                .any { innerNode -> anyNode(innerNode, predicate) }
+        }
+    }
 }
+
+fun <T : Node> T.anyNode(predicate: (T) -> Boolean): Boolean =
+    Node.anyNode(this, predicate)
 
 /**
  * Creates a node tree of Node<T>. The head of the tree should be provided.

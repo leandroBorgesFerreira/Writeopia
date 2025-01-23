@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.common.utils.DISCONNECTED_USER_ID
 import io.writeopia.common.utils.IconChange
-import io.writeopia.common.utils.collections.reverseTraverse
+import io.writeopia.common.utils.collections.traverse
 import io.writeopia.common.utils.collections.toNodeTree
 import io.writeopia.common.utils.persistence.configuration.WorkspaceConfigRepository
 import io.writeopia.model.ColorThemeOption
@@ -145,7 +145,7 @@ class GlobalShellKmpViewModel(
             notesNavigationUseCase.navigationState
         ) { perFolder, navigation ->
             val menuItems = perFolder.values.flatten().map { it.toUiCard() }
-            listOf("Home") + menuItems.reverseTraverse(
+            listOf("Home") + menuItems.traverse(
                 navigation.id,
                 filterPredicate = { item -> item is MenuItemUi.FolderUi },
                 mapFunc = { item -> item.title }
