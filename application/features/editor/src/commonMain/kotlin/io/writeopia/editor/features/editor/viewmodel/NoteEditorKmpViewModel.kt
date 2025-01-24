@@ -8,7 +8,6 @@ import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.common.utils.toList
 import io.writeopia.commonui.dtos.MenuItemUi
 import io.writeopia.commonui.extensions.toFolderUi
-import io.writeopia.commonui.extensions.toUiCard
 import io.writeopia.core.folders.repository.FolderRepository
 import io.writeopia.editor.model.EditState
 import io.writeopia.model.Font
@@ -36,7 +35,15 @@ import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.DrawState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
@@ -79,6 +86,8 @@ class NoteEditorKmpViewModel(
 
     private val _shouldGoToNextScreen = MutableStateFlow(false)
     override val shouldGoToNextScreen = _shouldGoToNextScreen.asStateFlow()
+
+    private val _expandedFolders = MutableStateFlow(setOf<String>())
 
     override val isEditState: StateFlow<EditState> by lazy {
         writeopiaManager.onEditPositions.map { set ->
@@ -145,28 +154,28 @@ class NoteEditorKmpViewModel(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override val listenForFolders: StateFlow<List<MenuItemUi.FolderUi>> =
-        MutableStateFlow("root").flatMapLatest {
-            folderRepository.listenForFoldersByParentId(it)
-        }.map { map ->
-            val folderUiMap = map.mapValues { (_, item) ->
-                item.map {
-                    it.toFolderUi(
-//                        expanded = expanded.contains(it.id),
-                        expanded = false,
-                    )
-                }
-            }
-
-            folderUiMap
-                .toNodeTree(
-                    MenuItemUi.FolderUi.root(),
-                    filterPredicate = { menuItemUi ->
-                        false
-//                        expanded.contains(menuItemUi.documentId)
+        MutableStateFlow("root")
+            .flatMapLatest {
+                combine(
+                    _expandedFolders,
+                    folderRepository.listenForFoldersByParentId("root")
+                ) { expanded, map ->
+                    val folderUiMap = map.mapValues { (_, item) ->
+                        item.map {
+                            it.toFolderUi(expanded = expanded.contains(it.id))
+                        }
                     }
-                )
-                .toList()
-        }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
+                    folderUiMap
+                        .toNodeTree(
+                            MenuItemUi.FolderUi.root(),
+                            filterPredicate = { menuItemUi ->
+                                menuItemUi.expanded
+                            }
+                        )
+                        .toList()
+                }
+            }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
 
     override fun deleteSelection() {
@@ -325,8 +334,18 @@ class NoteEditorKmpViewModel(
     }
 
     override fun expandFolder(folderId: String) {
-        viewModelScope.launch(Dispatchers.Default) {
-            folderRepository.listenForFoldersByParentId(folderId)
+        println("expandFolder. folderId: $folderId")
+
+        val expanded = _expandedFolders.value
+        if (expanded.contains(folderId)) {
+            viewModelScope.launch(Dispatchers.Default) {
+                _expandedFolders.value = expanded - folderId
+            }
+        } else {
+            viewModelScope.launch {
+                folderRepository.listenForFoldersByParentId(folderId)
+                _expandedFolders.value = expanded + folderId
+            }
         }
     }
 

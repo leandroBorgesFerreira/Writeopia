@@ -115,7 +115,7 @@ fun DesktopNoteEditorScreen(
                     showFolderSelection = false
                     noteEditorViewModel.moveToFolder(folderId)
                 },
-                expandFolder = { _ -> },
+                expandFolder = noteEditorViewModel::expandFolder,
                 onDismissRequest = {
                     showFolderSelection = false
                 }
