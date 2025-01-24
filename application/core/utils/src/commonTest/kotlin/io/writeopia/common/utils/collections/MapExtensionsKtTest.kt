@@ -1,6 +1,7 @@
 package io.writeopia.common.utils.collections
 
 import io.writeopia.common.utils.Node
+import io.writeopia.common.utils.toList
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
