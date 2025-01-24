@@ -49,8 +49,8 @@ import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.common.utils.icons.WrIcons.folder
 import io.writeopia.commonui.IconsPicker
+import io.writeopia.commonui.dtos.MenuItemUi
 import io.writeopia.notemenu.data.model.NotesArrangement
-import io.writeopia.notemenu.ui.dto.MenuItemUi
 import io.writeopia.notemenu.ui.dto.NotesUi
 import io.writeopia.notemenu.utils.minimalNoteCardWidth
 import io.writeopia.sdk.model.draganddrop.DropInfo

@@ -1,4 +1,4 @@
-package io.writeopia.notemenu.ui.dto
+package io.writeopia.commonui.dtos
 
 import io.writeopia.common.utils.Node
 import io.writeopia.models.Folder

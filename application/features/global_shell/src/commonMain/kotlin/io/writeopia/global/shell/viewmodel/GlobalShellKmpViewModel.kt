@@ -9,6 +9,7 @@ import io.writeopia.common.utils.IconChange
 import io.writeopia.common.utils.collections.traverse
 import io.writeopia.common.utils.collections.toNodeTree
 import io.writeopia.common.utils.persistence.configuration.WorkspaceConfigRepository
+import io.writeopia.commonui.dtos.MenuItemUi
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.model.UiConfiguration
 import io.writeopia.models.Folder
@@ -16,7 +17,6 @@ import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.usecase.NotesNavigationUseCase
 import io.writeopia.notemenu.data.usecase.NotesUseCase
 import io.writeopia.notemenu.extensions.toUiCard
-import io.writeopia.notemenu.ui.dto.MenuItemUi
 import io.writeopia.notemenu.viewmodel.FolderController
 import io.writeopia.notemenu.viewmodel.FolderStateController
 import io.writeopia.repository.UiConfigurationRepository
