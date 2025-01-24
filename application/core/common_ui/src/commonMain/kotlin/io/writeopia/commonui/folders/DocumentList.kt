@@ -48,8 +48,8 @@ import io.writeopia.ui.icons.WrSdkIcons
 fun DocumentList(
     menuItems: List<MenuItemUi>,
     editFolder: (MenuItemUi.FolderUi) -> Unit,
-    navigateToFolder: (String) -> Unit,
-    navigateToEditDocument: (String, String) -> Unit,
+    selectedFolder: (String) -> Unit,
+    selectedDocument: (String, String) -> Unit,
     moveRequest: (MenuItemUi, String) -> Unit,
     expandFolder: (String) -> Unit,
     changeIcon: (String, String, Int, IconChange) -> Unit,
@@ -66,7 +66,7 @@ fun DocumentList(
                     DocumentItem(
                         item,
                         position = i,
-                        navigateToEditDocument,
+                        selectedDocument,
                         changeIcon = { id, icon, tint ->
                             changeIcon(id, icon, tint, IconChange.DOCUMENT)
                         },
@@ -79,7 +79,7 @@ fun DocumentList(
                         item,
                         position = i,
                         editFolder,
-                        navigateToFolder,
+                        selectedFolder,
                         moveRequest,
                         expandFolder = expandFolder,
                         changeIcon = { id, icon, tint ->

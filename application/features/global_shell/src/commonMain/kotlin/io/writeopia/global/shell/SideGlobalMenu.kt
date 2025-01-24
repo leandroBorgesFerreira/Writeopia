@@ -134,8 +134,8 @@ fun SideGlobalMenu(
                     DocumentList(
                         menuItems = menuItems,
                         editFolder = editFolder,
-                        navigateToFolder = navigateToFolder,
-                        navigateToEditDocument = navigateToEditDocument,
+                        selectedFolder = navigateToFolder,
+                        selectedDocument = navigateToEditDocument,
                         moveRequest = moveRequest,
                         expandFolder = expandFolder,
                         changeIcon = changeIcon
