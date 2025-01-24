@@ -51,6 +51,16 @@ fun MoveToButton(clickListener: () -> Unit) {
 }
 
 @Composable
+fun MoveToHomeButton(clickListener: () -> Unit) {
+    CommonButton(
+        icon = WrIcons.move,
+        iconDescription = "Move icon",
+        text = "Move Home",
+        clickListener = clickListener
+    )
+}
+
+@Composable
 private fun CommonButton(
     icon: ImageVector,
     iconDescription: String,

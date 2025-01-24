@@ -92,6 +92,7 @@ fun DesktopNoteEditorScreen(
             addImage = noteEditorViewModel::addImage,
             exportMarkdown = noteEditorViewModel::exportMarkdown,
             exportJson = noteEditorViewModel::exportJson,
+            moveToRoot = noteEditorViewModel::moveToRootFolder,
             moveToClick = {
                 showFolderSelection = true
             }

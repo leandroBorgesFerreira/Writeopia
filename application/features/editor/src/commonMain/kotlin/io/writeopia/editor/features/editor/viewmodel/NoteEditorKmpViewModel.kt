@@ -353,6 +353,12 @@ class NoteEditorKmpViewModel(
         }
     }
 
+    override fun moveToRootFolder() {
+        viewModelScope.launch(Dispatchers.Default) {
+            documentRepository.moveToFolder(documentId = documentId.value, parentId = "root")
+        }
+    }
+
     private fun writeDocument(path: String, writer: DocumentWriter) {
         writer.writeDocuments(
             documents = listOf(writeopiaManager.getDocument()),

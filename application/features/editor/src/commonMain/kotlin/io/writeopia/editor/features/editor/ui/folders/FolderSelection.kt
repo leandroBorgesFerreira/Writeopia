@@ -40,7 +40,7 @@ fun FolderSelectionDialog(
     menuItemsState: StateFlow<List<MenuItemUi.FolderUi>>,
     selectedFolder: (String) -> Unit,
     expandFolder: (String) -> Unit,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         FolderSelection(menuItemsState, selectedFolder, expandFolder)
