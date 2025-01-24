@@ -1,8 +1,7 @@
-package io.writeopia.notemenu.data.repository
+package io.writeopia.core.folders.repository
 
-import io.writeopia.core.folders.FolderRepository
+import io.writeopia.core.folders.extensions.toEntity
 import io.writeopia.models.Folder
-import io.writeopia.notemenu.extensions.toEntity
 import io.writeopia.sqldelight.dao.FolderSqlDelightDao
 import io.writeopia.sqldelight.extensions.toModel
 import kotlinx.coroutines.flow.Flow
