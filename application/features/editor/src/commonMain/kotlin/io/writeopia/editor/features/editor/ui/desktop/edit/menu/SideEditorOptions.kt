@@ -68,6 +68,7 @@ fun SideEditorOptions(
     addImage: (String) -> Unit,
     exportJson: (String) -> Unit,
     exportMarkdown: (String) -> Unit,
+    moveToClick: () -> Unit,
 ) {
     var menuType by remember {
         mutableStateOf(OptionsType.NONE)
@@ -106,7 +107,8 @@ fun SideEditorOptions(
                             changeFontFamily,
                             isEditableState,
                             setEditable,
-                            fontStyleSelected()
+                            fontStyleSelected(),
+                            moveToClick
                         )
                     }
 
@@ -405,6 +407,7 @@ fun PageStyleOptions(
     isEditableState: StateFlow<Boolean>,
     setEditable: () -> Unit,
     selectedState: StateFlow<Font>,
+    moveButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -426,7 +429,7 @@ fun PageStyleOptions(
         Spacer(modifier = Modifier.height(6.dp))
         LockButton(isEditableState, setEditable)
         Spacer(modifier = Modifier.height(4.dp))
-        MoveToButton {}
+        MoveToButton(moveButtonClick)
     }
 }
 

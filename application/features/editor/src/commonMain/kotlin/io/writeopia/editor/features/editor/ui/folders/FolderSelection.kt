@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,18 +25,34 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.commonui.dtos.MenuItemUi
 import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.icons.WrSdkIcons
+import kotlinx.coroutines.flow.StateFlow
+
+@Composable
+fun FolderSelectionDialog(
+    menuItemsState: StateFlow<List<MenuItemUi.FolderUi>>,
+    selectedFolder: (String) -> Unit,
+    expandFolder: (String) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    Dialog(onDismissRequest = onDismissRequest) {
+        FolderSelection(menuItemsState, selectedFolder, expandFolder)
+    }
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FolderSelection(
-    menuItems: List<MenuItemUi.FolderUi>,
+    menuItemsState: StateFlow<List<MenuItemUi.FolderUi>>,
     selectedFolder: (String) -> Unit,
     expandFolder: (String) -> Unit,
 ) {
+    val menuItems by menuItemsState.collectAsState()
+
     LazyColumn(Modifier.fillMaxWidth()) {
         itemsIndexed(
             menuItems,

@@ -97,8 +97,6 @@ class NotesUseCase private constructor(
 
             folders.merge(documents).mapValues { (_, menuItems) ->
                 menuItems.sortedWithOrderBy(order)
-            }.also {
-                it.values.flatten().joinToString { "title: ${it.title}, icon: ${it.icon}" }
             }
         }
 

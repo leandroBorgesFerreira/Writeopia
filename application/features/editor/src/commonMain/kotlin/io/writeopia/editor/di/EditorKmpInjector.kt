@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.auth.core.manager.AuthManager
+import io.writeopia.core.folders.di.FolderInjector
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorKmpViewModel
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.editor.features.presentation.viewmodel.PresentationKmpViewModel
@@ -27,7 +28,8 @@ class EditorKmpInjector private constructor(
     private val connectionInjection: ConnectionInjector,
     private val selectionState: StateFlow<Boolean>,
     private val keyboardEventFlow: Flow<KeyboardEvent>,
-    private val uiConfigurationRepository: UiConfigurationRepository
+    private val uiConfigurationRepository: UiConfigurationRepository,
+    private val folderInjector: FolderInjector
 ) : TextEditorInjector {
 
     private fun provideDocumentRepository(): DocumentRepository =
@@ -57,7 +59,8 @@ class EditorKmpInjector private constructor(
             documentRepository,
             sharedEditionManager = sharedEditionManager,
             parentFolderId = parentFolder,
-            uiConfigurationRepository = uiConfigurationRepository
+            uiConfigurationRepository = uiConfigurationRepository,
+            folderRepository = folderInjector.provideFoldersRepository()
         )
 
     @Composable
@@ -76,14 +79,16 @@ class EditorKmpInjector private constructor(
             authCoreInjection: AuthCoreInjection,
             daosInjection: RepositoryInjector,
             connectionInjector: ConnectionInjector,
-            uiConfigurationRepository: UiConfigurationRepository
+            uiConfigurationRepository: UiConfigurationRepository,
+            folderInjector: FolderInjector
         ) = EditorKmpInjector(
             authCoreInjection,
             daosInjection,
             connectionInjector,
             MutableStateFlow(false),
             MutableStateFlow(KeyboardEvent.IDLE),
-            uiConfigurationRepository
+            uiConfigurationRepository,
+            folderInjector = folderInjector
         )
 
         fun desktop(
@@ -92,14 +97,16 @@ class EditorKmpInjector private constructor(
             connectionInjection: ConnectionInjector,
             selectionState: StateFlow<Boolean>,
             keyboardEventFlow: Flow<KeyboardEvent>,
-            uiConfigurationRepository: UiConfigurationRepository
+            uiConfigurationRepository: UiConfigurationRepository,
+            folderInjector: FolderInjector
         ) = EditorKmpInjector(
             authCoreInjection,
             repositoryInjection,
             connectionInjection,
             selectionState,
             keyboardEventFlow,
-            uiConfigurationRepository
+            uiConfigurationRepository,
+            folderInjector = folderInjector
         )
     }
 }

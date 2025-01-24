@@ -3,7 +3,13 @@ package io.writeopia.editor.features.editor.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.writeopia.auth.core.utils.USER_OFFLINE
+import io.writeopia.common.utils.collections.toNodeTree
 import io.writeopia.common.utils.icons.WrIcons
+import io.writeopia.common.utils.toList
+import io.writeopia.commonui.dtos.MenuItemUi
+import io.writeopia.commonui.extensions.toFolderUi
+import io.writeopia.commonui.extensions.toUiCard
+import io.writeopia.core.folders.repository.FolderRepository
 import io.writeopia.editor.model.EditState
 import io.writeopia.model.Font
 import io.writeopia.repository.UiConfigurationRepository
@@ -45,6 +51,7 @@ class NoteEditorKmpViewModel(
     private val uiConfigurationRepository: UiConfigurationRepository,
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
     private val documentToJson: DocumentToJson = DocumentToJson(),
+    private val folderRepository: FolderRepository
 ) : NoteEditorViewModel,
     ViewModel(),
     BackstackInform by writeopiaManager,
@@ -135,6 +142,32 @@ class NoteEditorKmpViewModel(
 
     private val _documentToShareInfo = MutableStateFlow<ShareDocument?>(null)
     override val documentToShareInfo: StateFlow<ShareDocument?> = _documentToShareInfo.asStateFlow()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override val listenForFolders: StateFlow<List<MenuItemUi.FolderUi>> =
+        MutableStateFlow("root").flatMapLatest {
+            folderRepository.listenForFoldersByParentId(it)
+        }.map { map ->
+            val folderUiMap = map.mapValues { (_, item) ->
+                item.map {
+                    it.toFolderUi(
+//                        expanded = expanded.contains(it.id),
+                        expanded = false,
+                    )
+                }
+            }
+
+            folderUiMap
+                .toNodeTree(
+                    MenuItemUi.FolderUi.root(),
+                    filterPredicate = { menuItemUi ->
+                        false
+//                        expanded.contains(menuItemUi.documentId)
+                    }
+                )
+                .toList()
+        }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
 
     override fun deleteSelection() {
         writeopiaManager.deleteSelection()
@@ -286,10 +319,17 @@ class NoteEditorKmpViewModel(
     }
 
     override fun exportJson(path: String) {
-        println("exportJson")
         viewModelScope.launch(Dispatchers.Default) {
             writeDocument(path, documentToJson)
         }
+    }
+
+    override fun expandFolder(folderId: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun moveToFolder(folderId: String) {
+        TODO("Not yet implemented")
     }
 
     private fun writeDocument(path: String, writer: DocumentWriter) {

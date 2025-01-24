@@ -1,5 +1,6 @@
 package io.writeopia.editor.features.editor.ui.desktop
 
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -14,13 +15,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.unit.dp
 import io.writeopia.editor.features.editor.ui.desktop.edit.menu.SideEditorOptions
+import io.writeopia.editor.features.editor.ui.folders.FolderSelectionDialog
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.ui.drawer.factory.DrawersFactory
 
@@ -35,6 +39,9 @@ fun DesktopNoteEditorScreen(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isEditable by noteEditorViewModel.isEditable.collectAsState()
+    var showFolderSelection by remember {
+        mutableStateOf(false)
+    }
 
     Box(
         modifier = Modifier.clickable(
@@ -86,6 +93,9 @@ fun DesktopNoteEditorScreen(
             addImage = noteEditorViewModel::addImage,
             exportMarkdown = noteEditorViewModel::exportMarkdown,
             exportJson = noteEditorViewModel::exportJson,
+            moveToClick = {
+                showFolderSelection = true
+            }
         )
 
         if (!isEditable) {
@@ -95,6 +105,17 @@ fun DesktopNoteEditorScreen(
                 tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.align(Alignment.TopStart).padding(8.dp)
                     .size(16.dp)
+            )
+        }
+
+        if (showFolderSelection) {
+            FolderSelectionDialog(
+                noteEditorViewModel.listenForFolders,
+                selectedFolder = { _ -> },
+                expandFolder = { _ -> },
+                onDismissRequest = {
+                    showFolderSelection = false
+                }
             )
         }
     }

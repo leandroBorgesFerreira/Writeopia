@@ -1,5 +1,6 @@
 package io.writeopia.editor.features.editor.viewmodel
 
+import io.writeopia.commonui.dtos.MenuItemUi
 import io.writeopia.editor.model.EditState
 import io.writeopia.model.Font
 import io.writeopia.sdk.models.span.Span
@@ -32,6 +33,8 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
     val documentToShareInfo: StateFlow<ShareDocument?>
 
     val fontFamily: StateFlow<Font>
+
+    val listenForFolders: StateFlow<List<MenuItemUi.FolderUi>>
 
     fun toggleEditable()
 
@@ -76,6 +79,10 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
     fun exportMarkdown(path: String)
 
     fun exportJson(path: String)
+
+    fun expandFolder(folderId: String)
+
+    fun moveToFolder(folderId: String)
 }
 
 data class ShareDocument(val content: String, val title: String, val type: String)
