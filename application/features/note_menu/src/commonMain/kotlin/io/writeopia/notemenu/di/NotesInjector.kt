@@ -4,7 +4,7 @@ import io.writeopia.core.folders.di.FolderInjector
 import io.writeopia.core.folders.repository.FolderRepository
 import io.writeopia.notemenu.data.repository.ConfigurationRepository
 
-expect class NotesInjector: FolderInjector {
+expect class NotesInjector : FolderInjector {
 
     fun provideNotesConfigurationRepository(): ConfigurationRepository
 

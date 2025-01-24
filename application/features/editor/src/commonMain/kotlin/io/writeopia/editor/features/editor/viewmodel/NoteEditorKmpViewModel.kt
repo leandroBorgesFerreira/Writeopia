@@ -177,7 +177,6 @@ class NoteEditorKmpViewModel(
                 }
             }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-
     override fun deleteSelection() {
         writeopiaManager.deleteSelection()
     }
