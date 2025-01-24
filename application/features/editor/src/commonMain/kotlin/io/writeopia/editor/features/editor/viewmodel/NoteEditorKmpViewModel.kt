@@ -174,6 +174,7 @@ class NoteEditorKmpViewModel(
                             }
                         )
                         .toList()
+                        .filter { it.id != "root" }
                 }
             }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
@@ -333,8 +334,6 @@ class NoteEditorKmpViewModel(
     }
 
     override fun expandFolder(folderId: String) {
-        println("expandFolder. folderId: $folderId")
-
         val expanded = _expandedFolders.value
         if (expanded.contains(folderId)) {
             viewModelScope.launch(Dispatchers.Default) {

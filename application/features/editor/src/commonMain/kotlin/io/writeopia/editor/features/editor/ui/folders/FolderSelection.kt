@@ -3,6 +3,7 @@ package io.writeopia.editor.features.editor.ui.folders
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -54,22 +56,37 @@ fun FolderSelection(
 ) {
     val menuItems by menuItemsState.collectAsState()
 
-    LazyColumn(
-        Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.surfaceVariant).height(400.dp)
+    Column(
+        Modifier.fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surfaceVariant, MaterialTheme.shapes.large)
+            .height(400.dp)
+            .padding(horizontal = 24.dp, vertical = 18.dp)
     ) {
-        itemsIndexed(
-            menuItems,
-            key = { _, item -> item.id }
-        ) { i, item ->
-            val itemModifier = Modifier.animateItemPlacement()
+        Text(
+            "Choose folder",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
 
-            FolderItem(
-                item,
-                selectedFolder,
-                expandFolder = expandFolder,
-                modifier = itemModifier
-            )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        LazyColumn {
+            itemsIndexed(
+                menuItems,
+                key = { _, item -> item.id }
+            ) { i, item ->
+                val itemModifier = Modifier.animateItemPlacement()
+
+                FolderItem(
+                    item,
+                    selectedFolder,
+                    expandFolder = expandFolder,
+                    modifier = itemModifier
+                )
+            }
         }
+
     }
 }
 
@@ -89,7 +106,8 @@ private fun FolderItem(
             .clip(MaterialTheme.shapes.medium)
             .clickable { selectedFolder(folder.id) }
             .background(bgColor)
-            .padding(start = 4.dp),
+            .padding(bottom = 6.dp, top = 6.dp, start = 2.dp, end = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Spacer(modifier = Modifier.width(4.dp + 12.dp * depth))
 
