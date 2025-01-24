@@ -43,6 +43,7 @@ kotlin {
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:models"))
                 implementation(project(":application:core:common_ui"))
+                implementation(project(":application:core:folders"))
 
                 implementation(project(":application:features:note_menu"))
 

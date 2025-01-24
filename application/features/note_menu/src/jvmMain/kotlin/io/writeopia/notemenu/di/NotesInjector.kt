@@ -1,8 +1,8 @@
 package io.writeopia.notemenu.di
 
+import io.writeopia.core.folders.FolderRepository
 import io.writeopia.notemenu.data.repository.ConfigurationRepository
 import io.writeopia.notemenu.data.repository.ConfigurationSqlDelightRepository
-import io.writeopia.notemenu.data.repository.FolderRepository
 import io.writeopia.notemenu.data.repository.FolderRepositorySqlDelight
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.dao.ConfigurationSqlDelightDao

@@ -1,6 +1,7 @@
 package io.writeopia.notemenu.data.repository
 
 import io.writeopia.common.utils.persistence.daos.FolderCommonDao
+import io.writeopia.core.folders.FolderRepository
 import io.writeopia.models.Folder
 import io.writeopia.models.search.FolderSearch
 import kotlinx.coroutines.flow.Flow
