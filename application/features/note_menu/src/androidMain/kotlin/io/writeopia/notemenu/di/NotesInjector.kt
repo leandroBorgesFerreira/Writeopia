@@ -2,11 +2,12 @@ package io.writeopia.notemenu.di
 
 import io.writeopia.notemenu.data.repository.ConfigurationRepository
 import io.writeopia.notemenu.data.repository.ConfigurationRoomRepository
-import io.writeopia.notemenu.data.repository.FolderRepository
-import io.writeopia.notemenu.data.repository.RoomFolderRepository
 import io.writeopia.common.utils.persistence.di.AppDaosInjection
+import io.writeopia.core.folders.di.FolderInjector
+import io.writeopia.core.folders.repository.FolderRepository
+import io.writeopia.core.folders.repository.RoomFolderRepository
 
-actual class NotesInjector(private val appRoomDaosInjection: AppDaosInjection) {
+actual class NotesInjector(private val appRoomDaosInjection: AppDaosInjection) : FolderInjector {
 
     private var configurationRepository: ConfigurationRepository? = null
 
@@ -17,6 +18,6 @@ actual class NotesInjector(private val appRoomDaosInjection: AppDaosInjection) {
             }
         }
 
-    actual fun provideFoldersRepository(): FolderRepository =
+    actual override fun provideFoldersRepository(): FolderRepository =
         RoomFolderRepository(appRoomDaosInjection.provideFolderDao())
 }

@@ -11,12 +11,6 @@ interface Node {
      */
     fun getNodes(): List<Node>
 
-    /**
-     * Get all notes as list. Expands all nodes.
-     */
-    fun toList(): List<Node> =
-        listOf(this) + this.getNodes().flatMap { internalNodes -> internalNodes.toList() }
-
     companion object {
         fun <T : Node> anyNode(node: T, predicate: (T) -> Boolean): Boolean {
             val match = predicate(node)
@@ -25,11 +19,19 @@ interface Node {
                 .map { it as T }
                 .any { innerNode -> anyNode(innerNode, predicate) }
         }
+
+        fun <T : Node> toList(node: T): List<T> =
+            listOf(node) + node.getNodes().map { it as T }.flatMap(::toList)
     }
 }
 
 fun <T : Node> T.anyNode(predicate: (T) -> Boolean): Boolean =
     Node.anyNode(this, predicate)
+
+/**
+ * Get all notes as list. Expands all nodes.
+ */
+fun <T : Node> T.toList(): List<T> = Node.toList(this)
 
 /**
  * Creates a node tree of Node<T>. The head of the tree should be provided.

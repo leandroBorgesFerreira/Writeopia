@@ -47,6 +47,8 @@ kotlin {
                 implementation(project(":application:core:persistence_bridge"))
                 implementation(project(":application:core:theme"))
                 implementation(project(":application:core:utils"))
+                implementation(project(":application:core:folders"))
+                implementation(project(":application:core:models"))
 
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.datetime)

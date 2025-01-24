@@ -28,6 +28,10 @@ kotlin {
             dependencies {
                 implementation(project(":application:core:theme"))
                 implementation(project(":application:core:utils"))
+                implementation(project(":application:core:models"))
+                implementation(project(":writeopia_models"))
+                implementation(project(":writeopia"))
+                implementation(project(":writeopia_ui"))
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)
@@ -35,7 +39,6 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
-
             }
         }
     }

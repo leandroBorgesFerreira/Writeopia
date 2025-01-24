@@ -52,8 +52,8 @@ internal fun NoteGlobalActionsMenu(
         LockButton(
             isEditableState,
             setEditable,
-            selectedColor = WriteopiaTheme.colorScheme.highlight,
-            defaultColor = MaterialTheme.colorScheme.background
+//            selectedColor = WriteopiaTheme.colorScheme.highlight,
+//            defaultColor = MaterialTheme.colorScheme.background
         )
 
         Spacer(modifier = Modifier.height(16.dp))

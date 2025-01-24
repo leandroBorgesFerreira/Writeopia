@@ -3,7 +3,12 @@ package io.writeopia.editor.features.editor.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.writeopia.auth.core.utils.USER_OFFLINE
+import io.writeopia.common.utils.collections.toNodeTree
 import io.writeopia.common.utils.icons.WrIcons
+import io.writeopia.common.utils.toList
+import io.writeopia.commonui.dtos.MenuItemUi
+import io.writeopia.commonui.extensions.toFolderUi
+import io.writeopia.core.folders.repository.FolderRepository
 import io.writeopia.editor.model.EditState
 import io.writeopia.model.Font
 import io.writeopia.repository.UiConfigurationRepository
@@ -30,7 +35,15 @@ import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.DrawState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
@@ -45,6 +58,7 @@ class NoteEditorKmpViewModel(
     private val uiConfigurationRepository: UiConfigurationRepository,
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
     private val documentToJson: DocumentToJson = DocumentToJson(),
+    private val folderRepository: FolderRepository,
 ) : NoteEditorViewModel,
     ViewModel(),
     BackstackInform by writeopiaManager,
@@ -72,6 +86,8 @@ class NoteEditorKmpViewModel(
 
     private val _shouldGoToNextScreen = MutableStateFlow(false)
     override val shouldGoToNextScreen = _shouldGoToNextScreen.asStateFlow()
+
+    private val _expandedFolders = MutableStateFlow(setOf<String>())
 
     override val isEditState: StateFlow<EditState> by lazy {
         writeopiaManager.onEditPositions.map { set ->
@@ -135,6 +151,32 @@ class NoteEditorKmpViewModel(
 
     private val _documentToShareInfo = MutableStateFlow<ShareDocument?>(null)
     override val documentToShareInfo: StateFlow<ShareDocument?> = _documentToShareInfo.asStateFlow()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override val listenForFolders: StateFlow<List<MenuItemUi.FolderUi>> =
+        MutableStateFlow("root")
+            .flatMapLatest {
+                combine(
+                    _expandedFolders,
+                    folderRepository.listenForFoldersByParentId("root")
+                ) { expanded, map ->
+                    val folderUiMap = map.mapValues { (_, item) ->
+                        item.map {
+                            it.toFolderUi(expanded = expanded.contains(it.id))
+                        }
+                    }
+
+                    folderUiMap
+                        .toNodeTree(
+                            MenuItemUi.FolderUi.root(),
+                            filterPredicate = { menuItemUi ->
+                                menuItemUi.expanded
+                            }
+                        )
+                        .toList()
+                        .filter { it.id != "root" }
+                }
+            }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     override fun deleteSelection() {
         writeopiaManager.deleteSelection()
@@ -286,9 +328,34 @@ class NoteEditorKmpViewModel(
     }
 
     override fun exportJson(path: String) {
-        println("exportJson")
         viewModelScope.launch(Dispatchers.Default) {
             writeDocument(path, documentToJson)
+        }
+    }
+
+    override fun expandFolder(folderId: String) {
+        val expanded = _expandedFolders.value
+        if (expanded.contains(folderId)) {
+            viewModelScope.launch(Dispatchers.Default) {
+                _expandedFolders.value = expanded - folderId
+            }
+        } else {
+            viewModelScope.launch {
+                folderRepository.listenForFoldersByParentId(folderId)
+                _expandedFolders.value = expanded + folderId
+            }
+        }
+    }
+
+    override fun moveToFolder(folderId: String) {
+        viewModelScope.launch(Dispatchers.Default) {
+            documentRepository.moveToFolder(documentId = documentId.value, parentId = folderId)
+        }
+    }
+
+    override fun moveToRootFolder() {
+        viewModelScope.launch(Dispatchers.Default) {
+            documentRepository.moveToFolder(documentId = documentId.value, parentId = "root")
         }
     }
 

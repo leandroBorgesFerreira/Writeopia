@@ -95,7 +95,8 @@ fun DesktopApp(
             connectionInjection = connectionInjection,
             selectionState = selectionState,
             keyboardEventFlow = keyboardEventFlow,
-            uiConfigurationInjector.provideUiConfigurationRepository()
+            uiConfigurationInjector.provideUiConfigurationRepository(),
+            folderInjector = notesInjector
         )
     }
     val accountInjector = remember { AccountMenuKmpInjector(authCoreInjection) }

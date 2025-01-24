@@ -17,21 +17,60 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.theme.WriteopiaTheme
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun LockButton(
     isEditableState: StateFlow<Boolean>,
     setEditable: () -> Unit,
-    defaultColor: Color = MaterialTheme.colorScheme.surfaceVariant,
-    selectedColor: Color = WriteopiaTheme.colorScheme.highlight
 ) {
-    val isEditable by isEditableState.collectAsState()
+    CommonButton(
+        icon = WrIcons.lock,
+        iconDescription = "Lock",
+        text = "Lock document",
+        isEnabledState = isEditableState,
+        clickListener = setEditable
+    )
+}
+
+@Composable
+fun MoveToButton(clickListener: () -> Unit) {
+    CommonButton(
+        icon = WrIcons.move,
+        iconDescription = "Move icon",
+        text = "Move to...",
+        clickListener = clickListener
+    )
+}
+
+@Composable
+fun MoveToHomeButton(clickListener: () -> Unit) {
+    CommonButton(
+        icon = WrIcons.move,
+        iconDescription = "Move icon",
+        text = "Move Home",
+        clickListener = clickListener
+    )
+}
+
+@Composable
+private fun CommonButton(
+    icon: ImageVector,
+    iconDescription: String,
+    text: String,
+    defaultColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    selectedColor: Color = WriteopiaTheme.colorScheme.highlight,
+    isEnabledState: StateFlow<Boolean> = MutableStateFlow(true),
+    clickListener: () -> Unit,
+) {
+    val isEditable by isEnabledState.collectAsState()
     val lockButtonColor = if (isEditable) defaultColor else selectedColor
 
     val shape = MaterialTheme.shapes.medium
@@ -41,12 +80,12 @@ fun LockButton(
         modifier = Modifier
             .background(lockButtonColor, shape)
             .clip(shape)
-            .clickable { setEditable() }
+            .clickable(onClick = clickListener)
             .padding(horizontal = 10.dp, vertical = 6.dp)
     ) {
         Icon(
-            imageVector = WrIcons.lock,
-            contentDescription = "Lock",
+            imageVector = icon,
+            contentDescription = iconDescription,
             tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.size(14.dp)
         )
@@ -54,7 +93,7 @@ fun LockButton(
         Spacer(modifier = Modifier.width(4.dp))
 
         Text(
-            "Lock",
+            text,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,

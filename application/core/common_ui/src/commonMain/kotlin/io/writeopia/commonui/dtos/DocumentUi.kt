@@ -1,4 +1,4 @@
-package io.writeopia.notemenu.ui.dto
+package io.writeopia.commonui.dtos
 
 import io.writeopia.common.utils.Node
 import io.writeopia.models.Folder
@@ -41,14 +41,14 @@ sealed interface MenuItemUi : Node, Traversable {
     data class FolderUi(
         override val documentId: String,
         override val title: String,
-        override val selected: Boolean,
-        override val isFavorite: Boolean,
-        val itemsCount: Long,
-        override val parentId: String,
-        val expanded: Boolean,
+        override val selected: Boolean = false,
+        override val isFavorite: Boolean = false,
+        val itemsCount: Long = 0,
+        override val parentId: String = "root",
+        val expanded: Boolean = false,
         override var depth: Int = 0,
         val insideContent: MutableList<MenuItemUi> = mutableListOf(),
-        override val highlighted: Boolean,
+        override val highlighted: Boolean = false,
         override val icon: MenuItem.Icon? = null
     ) : MenuItemUi, Traversable {
 

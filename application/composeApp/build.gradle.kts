@@ -40,6 +40,7 @@ kotlin {
                 implementation(project(":application:core:theme"))
                 implementation(project(":application:core:utils"))
                 implementation(project(":application:core:navigation"))
+                implementation(project(":application:core:folders"))
 
                 implementation(project(":plugins:writeopia_persistence_core"))
                 implementation(project(":plugins:writeopia_serialization"))

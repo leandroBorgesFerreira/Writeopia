@@ -41,6 +41,8 @@ kotlin {
                 implementation(project(":application:core:theme"))
                 implementation(project(":application:core:navigation"))
                 implementation(project(":application:core:models"))
+                implementation(project(":application:core:folders"))
+                implementation(project(":application:core:common_ui"))
                 implementation(project(":application:features:editor"))
                 implementation(project(":application:features:note_menu"))
                 implementation(project(":application:features:global_shell"))

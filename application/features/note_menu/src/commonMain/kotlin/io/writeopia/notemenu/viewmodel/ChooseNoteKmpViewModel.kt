@@ -13,7 +13,7 @@ import io.writeopia.notemenu.data.model.NotesArrangement
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.repository.ConfigurationRepository
 import io.writeopia.notemenu.data.usecase.NotesUseCase
-import io.writeopia.notemenu.extensions.toUiCard
+import io.writeopia.commonui.extensions.toUiCard
 import io.writeopia.notemenu.ui.dto.NotesUi
 import io.writeopia.sdk.export.DocumentToJson
 import io.writeopia.sdk.export.DocumentToMarkdown

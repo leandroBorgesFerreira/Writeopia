@@ -1,4 +1,4 @@
-package io.writeopia.notemenu.data.repository
+package io.writeopia.core.folders.repository
 
 import io.writeopia.common.utils.persistence.daos.FolderCommonDao
 import io.writeopia.models.Folder

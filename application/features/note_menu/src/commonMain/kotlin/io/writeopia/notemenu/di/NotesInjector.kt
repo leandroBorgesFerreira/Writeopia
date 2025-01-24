@@ -1,11 +1,12 @@
 package io.writeopia.notemenu.di
 
+import io.writeopia.core.folders.di.FolderInjector
+import io.writeopia.core.folders.repository.FolderRepository
 import io.writeopia.notemenu.data.repository.ConfigurationRepository
-import io.writeopia.notemenu.data.repository.FolderRepository
 
-expect class NotesInjector {
+expect class NotesInjector : FolderInjector {
 
     fun provideNotesConfigurationRepository(): ConfigurationRepository
 
-    fun provideFoldersRepository(): FolderRepository
+    override fun provideFoldersRepository(): FolderRepository
 }

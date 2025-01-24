@@ -68,6 +68,8 @@ fun SideEditorOptions(
     addImage: (String) -> Unit,
     exportJson: (String) -> Unit,
     exportMarkdown: (String) -> Unit,
+    moveToRoot: () -> Unit,
+    moveToClick: () -> Unit,
 ) {
     var menuType by remember {
         mutableStateOf(OptionsType.NONE)
@@ -106,7 +108,9 @@ fun SideEditorOptions(
                             changeFontFamily,
                             isEditableState,
                             setEditable,
-                            fontStyleSelected()
+                            fontStyleSelected(),
+                            moveToClick,
+                            moveToRoot
                         )
                     }
 
@@ -405,6 +409,8 @@ fun PageStyleOptions(
     isEditableState: StateFlow<Boolean>,
     setEditable: () -> Unit,
     selectedState: StateFlow<Font>,
+    moveButtonClick: () -> Unit,
+    moveToRoot: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -416,25 +422,19 @@ fun PageStyleOptions(
             .width(250.dp)
             .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp)
     ) {
-        val isEditable by isEditableState.collectAsState()
-
-        val lockButtonColor = if (isEditable) {
-            MaterialTheme.colorScheme.surfaceVariant
-        } else {
-            WriteopiaTheme.colorScheme.highlight
-        }
-
-        Title("Actions")
-
-        Spacer(modifier = Modifier.height(6.dp))
-
-        LockButton(isEditableState, setEditable)
-        Spacer(modifier = Modifier.height(8.dp))
-
         Title("Font")
         Spacer(modifier = Modifier.height(4.dp))
-
         FontOptions(changeFontFamily, selectedState)
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Title("Actions")
+        Spacer(modifier = Modifier.height(6.dp))
+        LockButton(isEditableState, setEditable)
+        Spacer(modifier = Modifier.height(4.dp))
+        MoveToButton(moveButtonClick)
+        Spacer(modifier = Modifier.height(4.dp))
+        MoveToHomeButton(moveToRoot)
     }
 }
 

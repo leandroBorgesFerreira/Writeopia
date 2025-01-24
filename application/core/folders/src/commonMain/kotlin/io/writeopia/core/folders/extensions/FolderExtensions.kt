@@ -1,4 +1,4 @@
-package io.writeopia.notemenu.extensions
+package io.writeopia.core.folders.extensions
 
 import io.writeopia.app.sql.FolderEntity
 import io.writeopia.common.utils.extensions.toLong
