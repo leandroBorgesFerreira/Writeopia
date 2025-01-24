@@ -22,6 +22,8 @@ import io.writeopia.common.utils.icons.all.ChevronRight
 import io.writeopia.common.utils.icons.all.CircleArrowLeft
 import io.writeopia.common.utils.icons.all.CircleArrowRight
 import io.writeopia.common.utils.icons.all.CirclePlus
+import io.writeopia.common.utils.icons.all.ClipboardCopy
+import io.writeopia.common.utils.icons.all.ClipboardPaste
 import io.writeopia.common.utils.icons.all.ClockArrowDown
 import io.writeopia.common.utils.icons.all.Contrast
 import io.writeopia.common.utils.icons.all.Crosshair
@@ -157,6 +159,8 @@ object WrIcons {
 
     val zap = Zap
 
+    val move = ClipboardCopy
+
     val allIcons: Map<String, ImageVector> =
         mapOf(
             "settings" to settings,
@@ -209,6 +213,7 @@ object WrIcons {
             "visibilityOff" to visibilityOff,
             "image" to image,
             "zap" to zap,
+            "move" to move,
         )
 
     fun fromName(name: String): ImageVector? = allIcons[name]

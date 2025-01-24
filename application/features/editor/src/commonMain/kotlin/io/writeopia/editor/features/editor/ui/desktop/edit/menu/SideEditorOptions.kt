@@ -416,25 +416,17 @@ fun PageStyleOptions(
             .width(250.dp)
             .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp)
     ) {
-        val isEditable by isEditableState.collectAsState()
-
-        val lockButtonColor = if (isEditable) {
-            MaterialTheme.colorScheme.surfaceVariant
-        } else {
-            WriteopiaTheme.colorScheme.highlight
-        }
-
-        Title("Actions")
-
-        Spacer(modifier = Modifier.height(6.dp))
-
-        LockButton(isEditableState, setEditable)
-        Spacer(modifier = Modifier.height(8.dp))
-
         Title("Font")
         Spacer(modifier = Modifier.height(4.dp))
-
         FontOptions(changeFontFamily, selectedState)
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Title("Actions")
+        Spacer(modifier = Modifier.height(6.dp))
+        LockButton(isEditableState, setEditable)
+        Spacer(modifier = Modifier.height(4.dp))
+        MoveToButton {}
     }
 }
 
