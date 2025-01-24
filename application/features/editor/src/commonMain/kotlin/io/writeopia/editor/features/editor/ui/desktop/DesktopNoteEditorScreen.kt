@@ -111,7 +111,10 @@ fun DesktopNoteEditorScreen(
         if (showFolderSelection) {
             FolderSelectionDialog(
                 noteEditorViewModel.listenForFolders,
-                selectedFolder = { _ -> },
+                selectedFolder = { folderId ->
+                    showFolderSelection = false
+                    noteEditorViewModel.moveToFolder(folderId)
+                },
                 expandFolder = { _ -> },
                 onDismissRequest = {
                     showFolderSelection = false

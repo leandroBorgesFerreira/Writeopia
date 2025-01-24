@@ -51,7 +51,7 @@ class NoteEditorKmpViewModel(
     private val uiConfigurationRepository: UiConfigurationRepository,
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
     private val documentToJson: DocumentToJson = DocumentToJson(),
-    private val folderRepository: FolderRepository
+    private val folderRepository: FolderRepository,
 ) : NoteEditorViewModel,
     ViewModel(),
     BackstackInform by writeopiaManager,
@@ -325,11 +325,15 @@ class NoteEditorKmpViewModel(
     }
 
     override fun expandFolder(folderId: String) {
-        TODO("Not yet implemented")
+        viewModelScope.launch(Dispatchers.Default) {
+            folderRepository.listenForFoldersByParentId(folderId)
+        }
     }
 
     override fun moveToFolder(folderId: String) {
-        TODO("Not yet implemented")
+        viewModelScope.launch(Dispatchers.Default) {
+            documentRepository.moveToFolder(documentId = documentId.value, parentId = folderId)
+        }
     }
 
     private fun writeDocument(path: String, writer: DocumentWriter) {
