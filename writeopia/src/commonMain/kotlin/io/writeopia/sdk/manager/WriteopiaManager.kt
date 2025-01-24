@@ -219,15 +219,13 @@ class WriteopiaManager(
 
     fun addSpanToStories(storyState: StoryState, positions: Set<Int>, span: Span): StoryState {
         val newMap = positions.mapNotNull {
-            storyState.stories[it]?.let { story ->
-                val spanInfo = SpanInfo(0, story.text?.length ?: 0, span)
-                val spans = story.spans
-                it to story.copy(
-                    spans = spanHandler.addSpan(spans, spanInfo),
-                    localId = GenerateId.generate()
-                )
-            }
+            val story = storyState.stories[it]
+
+            if (story != null) it to story else null
         }.toMap()
+            .let {
+                spanHandler.toggleSpansForManyStories(it, span)
+            }
 
         val newStories = storyState.stories + newMap
 
@@ -239,7 +237,7 @@ class WriteopiaManager(
             val spans = story.spans
             val newStory = story.copy(
                 localId = GenerateId.generate(),
-                spans = spanHandler.addSpan(spans, spanInfo)
+                spans = spanHandler.toggleSpans(spans, spanInfo)
             )
 
             val newStories = storyState.stories + (position to newStory)

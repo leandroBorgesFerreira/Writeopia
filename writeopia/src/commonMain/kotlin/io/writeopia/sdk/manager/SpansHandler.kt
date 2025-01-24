@@ -1,12 +1,14 @@
 package io.writeopia.sdk.manager
 
 import io.writeopia.sdk.models.span.Interception
+import io.writeopia.sdk.models.span.Span
 import io.writeopia.sdk.models.span.SpanInfo
+import io.writeopia.sdk.models.story.StoryStep
 import kotlin.math.min
 
 object SpansHandler {
 
-    fun addSpan(spanSet: Set<SpanInfo>, newSpan: SpanInfo): Set<SpanInfo> {
+    fun toggleSpans(spanSet: Set<SpanInfo>, newSpan: SpanInfo): Set<SpanInfo> {
         return when {
             spanSet.contains(newSpan) -> spanSet - newSpan
 
@@ -26,6 +28,7 @@ object SpansHandler {
 
                         removed + SpanInfo(minStart, maxEnd, newSpan.span)
                     }
+
                     Interception.OUTSIDE -> spanSet + newSpan
                     Interception.CONTAINING -> {
                         val removed = (spanSet - currentSpan)
@@ -35,4 +38,25 @@ object SpansHandler {
             }
         }
     }
+
+    fun toggleSpansForManyStories(
+        storySteps: Map<Int, StoryStep>,
+        newSpan: Span
+    ): Map<Int, StoryStep> =
+        if (storySteps.all { (_, story) -> story.spans.any { it.span == newSpan } }) {
+            storySteps.mapValues { (_, story) ->
+                val removedSpans = story.spans.filterTo(mutableSetOf()) { it.span != newSpan }
+                story.copy(spans = removedSpans)
+            }
+        } else {
+            storySteps.mapValues { (_, story) ->
+                val text = story.text
+                if (text?.isNotEmpty() == true) {
+                    val newSpanInfo = SpanInfo(0, text.length, newSpan)
+                    story.copy(spans = story.spans + newSpanInfo)
+                } else {
+                    story
+                }
+            }
+        }
 }
