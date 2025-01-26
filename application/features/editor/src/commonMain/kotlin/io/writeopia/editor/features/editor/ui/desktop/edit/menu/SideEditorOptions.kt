@@ -71,6 +71,7 @@ fun SideEditorOptions(
     exportMarkdown: (String) -> Unit,
     moveToRoot: () -> Unit,
     moveToClick: () -> Unit,
+    askAiBySelection: () -> Unit,
 ) {
     var menuType by remember {
         mutableStateOf(OptionsType.NONE)
@@ -129,7 +130,8 @@ fun SideEditorOptions(
                     OptionsType.ACTIONS -> {
                         Actions(
                             exportJson,
-                            exportMarkdown
+                            exportMarkdown,
+                            askAiBySelection = askAiBySelection
                         )
                     }
                 }
@@ -554,6 +556,7 @@ private fun TextOptions(
 private fun Actions(
     exportJson: (String) -> Unit,
     exportMarkdown: (String) -> Unit,
+    askAiBySelection: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -572,10 +575,9 @@ private fun Actions(
         TextButton(
             modifier = Modifier.fillMaxWidth(),
             text = "Ask by selection",
-            paddingValues = smallButtonPadding()
-        ) {
-
-        }
+            paddingValues = smallButtonPadding(),
+            onClick = askAiBySelection
+        )
 
         TextButton(
             modifier = Modifier.fillMaxWidth(),

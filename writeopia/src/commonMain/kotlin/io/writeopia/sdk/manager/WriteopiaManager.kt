@@ -244,4 +244,13 @@ class WriteopiaManager(
 
             storyState.copy(stories = newStories)
         } ?: storyState
+
+    fun addAtPosition(storyState: StoryState, storyStep: StoryStep, position: Int): StoryState {
+        val newStory = contentHandler.addNewContent(storyState.stories, storyStep, position)
+
+        return storyState.copy(
+            stories = newStory,
+            lastEdit = LastEdit.LineEdition(position, storyStep)
+        )
+    }
 }

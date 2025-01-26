@@ -85,6 +85,8 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
     fun moveToFolder(folderId: String)
 
     fun moveToRootFolder()
+
+    fun askAiBySelection()
 }
 
 data class ShareDocument(val content: String, val title: String, val type: String)

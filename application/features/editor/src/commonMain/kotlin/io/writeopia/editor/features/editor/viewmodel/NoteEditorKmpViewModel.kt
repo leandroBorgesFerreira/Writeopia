@@ -21,6 +21,7 @@ import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.span.Span
+import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
@@ -356,6 +357,18 @@ class NoteEditorKmpViewModel(
     override fun moveToRootFolder() {
         viewModelScope.launch(Dispatchers.Default) {
             documentRepository.moveToFolder(documentId = documentId.value, parentId = "root")
+        }
+    }
+
+    override fun askAiBySelection() {
+        writeopiaManager.getSelectionInfo().firstOrNull()?.let { info ->
+            writeopiaManager.addAtPosition(
+                storyStep = StoryStep(
+                    type = StoryTypes.AI_ANSWER.type,
+                    text = "This was your question: ${info.text}"
+                ),
+                position = info.to + 1,
+            )
         }
     }
 
