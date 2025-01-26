@@ -1,5 +1,6 @@
 package io.writeopia.ui.drawer.content
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -34,6 +35,7 @@ fun swipeTextDrawer(
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
     isDesktop: Boolean,
     enabled: Boolean,
+    paddingValues: PaddingValues = PaddingValues(0.dp),
     endContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
 ): StoryStepDrawer =
     DesktopTextItemDrawer(
@@ -51,7 +53,8 @@ fun swipeTextDrawer(
         endContent,
         isDesktop,
         enabled,
-        messageDrawer
+        messageDrawer,
+        paddingValues = paddingValues
     )
 
 fun swipeTextDrawer(
@@ -61,6 +64,8 @@ fun swipeTextDrawer(
     config: DrawConfig,
     isDesktop: Boolean,
     enabled: Boolean,
+    paddingValues: PaddingValues = PaddingValues(0.dp),
+    customBackgroundColor: Color = Color.Transparent,
     endContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
 ): StoryStepDrawer {
@@ -73,13 +78,14 @@ fun swipeTextDrawer(
         onDragStart = manager::onDragStart,
         onDragStop = manager::onDragStop,
         moveRequest = manager::moveRequest,
-        customBackgroundColor = Color.Transparent,
+        customBackgroundColor = customBackgroundColor,
         endContent = endContent,
         isDesktop = isDesktop,
         enabled = enabled,
         messageDrawer = {
             messageDrawer()
-        }
+        },
+        paddingValues = paddingValues
     )
 }
 

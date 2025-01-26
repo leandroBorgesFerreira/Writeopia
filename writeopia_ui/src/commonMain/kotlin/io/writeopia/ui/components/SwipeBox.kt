@@ -10,7 +10,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,6 +49,7 @@ import kotlin.math.roundToInt
 fun SwipeBox(
     modifier: Modifier = Modifier,
     isOnEditState: Boolean,
+    paddingValues: PaddingValues = PaddingValues(0.dp),
     defaultColor: Color = MaterialTheme.colorScheme.background,
     activeColor: Color,
     activeBorderColor: Color = MaterialTheme.colorScheme.primary,
@@ -104,6 +107,7 @@ fun SwipeBox(
                 color = colorBorderAnimated,
                 shape = cornersShape
             )
+            .padding(paddingValues)
             .pointerInput(Unit) {
                 detectHorizontalDragGestures(
                     onDragStart = { _ -> dragging = true },

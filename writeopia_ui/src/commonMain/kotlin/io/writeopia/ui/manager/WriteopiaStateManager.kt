@@ -942,7 +942,7 @@ class WriteopiaStateManager(
             //TODO: Fix this to accept multiple clusters of selection!
             val from = selected.min()
             val to = selected.max()
-            val join = selectedStories().joinToString(separator = "\n ")
+            val join = selectedStories().mapNotNull { it.text }.joinToString(separator = "\n ")
 
             listOf(SelectionInfo(from, to, join))
         } else {

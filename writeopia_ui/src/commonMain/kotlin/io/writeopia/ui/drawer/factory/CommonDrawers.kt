@@ -122,6 +122,18 @@ object CommonDrawers {
             innerMessageDrawer(commonTextModifier, EmptyErase.DELETE)
         }
 
+        val aiAnswerDrawer = swipeTextDrawer(
+            manager = manager,
+            customBackgroundColor = MaterialTheme.colorScheme.surfaceVariant,
+            dragIconWidth = dragIconWidth,
+            isDesktop = isDesktop,
+            config = drawConfig,
+            enabled = true,
+            paddingValues = PaddingValues(vertical = 16.dp)
+        ) {
+            innerMessageDrawer(commonTextModifier, EmptyErase.CHANGE_TYPE)
+        }
+
         val checkItemDrawer = checkItemDrawer(
             manager = manager,
             isDesktop = isDesktop,
@@ -206,6 +218,7 @@ object CommonDrawers {
             put(StoryTypes.CODE_BLOCK.type.number, codeBlockDrawer)
             put(StoryTypes.IMAGE.type.number, imageDrawer)
             put(StoryTypes.GROUP_IMAGE.type.number, RowGroupDrawer(imageDrawerInGroup))
+            put(StoryTypes.AI_ANSWER.type.number, aiAnswerDrawer)
         }
     }
 }
