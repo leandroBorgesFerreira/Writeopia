@@ -99,7 +99,7 @@ kotlin {
 
                 implementation(libs.androidx.ktx)
                 implementation(libs.appCompat)
-                implementation("androidx.activity:activity-compose")
+                implementation(libs.activity.compose)
 
                 implementation(project(":application:core:resources"))
                 implementation(project(":application:features:auth"))
