@@ -373,19 +373,19 @@ class NoteEditorKmpViewModel(
                     storyStep = StoryStep(type = StoryTypes.LOADING.type, ephemeral = true),
                     position = position,
 
-                )
-
-                val reply = ollamaRepository.generateReply("llama3.2", info.text)
-
-                writeopiaManager.changeStoryState(
-                    Action.StoryStateChange(
-                        storyStep = StoryStep(
-                            type = StoryTypes.AI_ANSWER.type,
-                            text = reply
-                        ),
-                        position = position,
                     )
-                )
+
+                ollamaRepository.streamReply("llama3.2", info.text).collect { text ->
+                    writeopiaManager.changeStoryState(
+                        Action.StoryStateChange(
+                            storyStep = StoryStep(
+                                type = StoryTypes.AI_ANSWER.type,
+                                text = text
+                            ),
+                            position = position,
+                        )
+                    )
+                }
             }
         }
 

@@ -14,10 +14,13 @@ import kotlinx.serialization.modules.SerializersModule
 
 class AppConnectionInjection(
     private val json: Json = Json {
-        serializersModule = SerializersModule {}
+        serializersModule = SerializersModule {
+            ignoreUnknownKeys = true
+        }
     },
     private val apiLogger: Logger = Logger.Companion.DEFAULT
 ) {
+    fun provideJson() = json
 
     fun provideHttpClient(): HttpClient = ApiInjectorDefaults.httpClient(json, apiLogger)
 }

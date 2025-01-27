@@ -28,8 +28,6 @@ class OnUpdateDocumentTracker(
                 is LastEdit.LineEdition -> {
                     if (lastEdit.storyStep.ephemeral) return@collectLatest
 
-                    println("documentUpdate.saveStoryStep")
-
                     documentUpdate.saveStoryStep(
                         storyStep = lastEdit.storyStep.copy(
                             localId = GenerateId.generate()

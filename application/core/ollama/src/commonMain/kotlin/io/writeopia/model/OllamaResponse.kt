@@ -8,15 +8,15 @@ import kotlinx.serialization.Serializable
 class OllamaResponse(
     val model: String,
     @Serializable(with = InstantIso8601Serializer::class)
-    val created_at: Instant,
+    val created_at: Instant? = null,
     val response: String,
-    val done: Boolean,
-    val done_reason: String,
-    val context: List<Int>,
-    val total_duration: Long,
-    val load_duration: Long,
-    val prompt_eval_count: Int,
-    val prompt_eval_duration: Long,
-    val eval_count: Int,
-    val eval_duration: Long
+    val done: Boolean? = null,
+    val done_reason: String? = null,
+    val context: List<Int>? = null,
+    val total_duration: Long? = null,
+    val load_duration: Long? = null,
+    val prompt_eval_count: Int? = null,
+    val prompt_eval_duration: Long? = null,
+    val eval_count: Int? = null,
+    val eval_duration: Long? = null
 )
