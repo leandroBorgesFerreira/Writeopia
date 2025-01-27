@@ -1,6 +1,8 @@
 package io.writeopia.app.endpoints
 
 object EndPoints {
+    fun ollamaGenerate() = "generate"
+
     fun introNotes() = "document/intro"
 
     fun userNotes() = "document/user/{id}"

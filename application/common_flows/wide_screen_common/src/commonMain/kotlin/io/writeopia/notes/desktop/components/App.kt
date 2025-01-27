@@ -29,6 +29,8 @@ import io.writeopia.account.ui.SettingsDialog
 import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
 import io.writeopia.common.utils.Destinations
+import io.writeopia.di.AppConnectionInjection
+import io.writeopia.di.OllamaInjection
 import io.writeopia.editor.di.EditorKmpInjector
 import io.writeopia.features.search.di.KmpSearchInjection
 import io.writeopia.features.search.ui.SearchDialog
@@ -88,6 +90,7 @@ fun DesktopApp(
                 disableWebsocket = disableWebsocket
             )
         }
+    val appConnectionInjection = AppConnectionInjection()
     val editorInjector = remember {
         EditorKmpInjector.desktop(
             authCoreInjection = authCoreInjection,
@@ -96,7 +99,8 @@ fun DesktopApp(
             selectionState = selectionState,
             keyboardEventFlow = keyboardEventFlow,
             uiConfigurationInjector.provideUiConfigurationRepository(),
-            folderInjector = notesInjector
+            folderInjector = notesInjector,
+            ollamaInjection = OllamaInjection(appConnectionInjection)
         )
     }
     val accountInjector = remember { AccountMenuKmpInjector(authCoreInjection) }

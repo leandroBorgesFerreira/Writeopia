@@ -2,6 +2,7 @@ package io.writeopia.editor.features.editor.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.writeopia.OllamaRepository
 import io.writeopia.auth.core.utils.USER_OFFLINE
 import io.writeopia.common.utils.collections.toNodeTree
 import io.writeopia.common.utils.icons.WrIcons
@@ -36,7 +37,6 @@ import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.DrawState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -61,6 +61,7 @@ class NoteEditorKmpViewModel(
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
     private val documentToJson: DocumentToJson = DocumentToJson(),
     private val folderRepository: FolderRepository,
+    private val ollamaRepository: OllamaRepository? = null,
 ) : NoteEditorViewModel,
     ViewModel(),
     BackstackInform by writeopiaManager,
@@ -362,6 +363,8 @@ class NoteEditorKmpViewModel(
     }
 
     override fun askAiBySelection() {
+        if (ollamaRepository == null) return
+
         viewModelScope.launch(Dispatchers.Default) {
             writeopiaManager.getSelectionInfo().firstOrNull()?.let { info ->
                 val position = info.to + 1
@@ -372,13 +375,13 @@ class NoteEditorKmpViewModel(
 
                 )
 
-                delay(1000)
+                val reply = ollamaRepository.generateReply("llama3.2", info.text)
 
                 writeopiaManager.changeStoryState(
                     Action.StoryStateChange(
                         storyStep = StoryStep(
                             type = StoryTypes.AI_ANSWER.type,
-                            text = "This was your question: ${info.text}"
+                            text = reply
                         ),
                         position = position,
                     )

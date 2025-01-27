@@ -40,7 +40,7 @@ class ConnectionInjector(
     }
 }
 
-internal object ApiInjectorDefaults {
+object ApiInjectorDefaults {
     fun httpClient(
         json: Json = writeopiaJson,
         bearerTokenHandler: BearerTokenHandler,
