@@ -1,6 +1,7 @@
 package io.writeopia
 
 import io.writeopia.api.OllamaApi
+import io.writeopia.requests.ModelsResponse
 import kotlinx.coroutines.flow.Flow
 
 class OllamaRepository(private val ollamaApi: OllamaApi) {
@@ -9,6 +10,8 @@ class OllamaRepository(private val ollamaApi: OllamaApi) {
         return ollamaApi.generateReply(model, prompt).response
     }
 
-    suspend fun streamReply(model: String, prompt: String): Flow<String> =
+    fun streamReply(model: String, prompt: String): Flow<String> =
         ollamaApi.streamReply(model, prompt)
+
+    fun getModels(): Flow<ModelsResponse> = ollamaApi.getModels()
 }

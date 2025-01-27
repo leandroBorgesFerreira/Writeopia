@@ -3,6 +3,7 @@ package io.writeopia.global.shell.viewmodel
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.writeopia.OllamaRepository
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.common.utils.DISCONNECTED_USER_ID
 import io.writeopia.common.utils.IconChange
@@ -24,6 +25,7 @@ import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.models.document.MenuItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -44,7 +46,8 @@ class GlobalShellKmpViewModel(
         notesUseCase,
         authManager
     ),
-    private val workspaceConfigRepository: WorkspaceConfigRepository
+    private val workspaceConfigRepository: WorkspaceConfigRepository,
+    private val ollamaRepository: OllamaRepository,
 ) : GlobalShellViewModel, ViewModel(), FolderController by folderStateController {
 
     init {
@@ -238,6 +241,13 @@ class GlobalShellKmpViewModel(
                 workspaceConfigRepository.loadWorkspacePath(DISCONNECTED_USER_ID) ?: ""
         }
     }
+
+    override fun getModels(): Flow<List<String>> =
+        ollamaRepository.getModels().map { modelResponse ->
+            modelResponse.models.map { model ->
+                model.model
+            }
+        }
 
     private suspend fun getUserId(): String =
         localUserId ?: authManager.getUser().id.also { id ->

@@ -90,7 +90,8 @@ fun DesktopApp(
                 disableWebsocket = disableWebsocket
             )
         }
-    val appConnectionInjection = AppConnectionInjection()
+    val appConnectionInjection = remember { AppConnectionInjection() }
+    val ollamaInjection = remember { OllamaInjection(appConnectionInjection) }
     val editorInjector = remember {
         EditorKmpInjector.desktop(
             authCoreInjection = authCoreInjection,
@@ -100,7 +101,7 @@ fun DesktopApp(
             keyboardEventFlow = keyboardEventFlow,
             uiConfigurationInjector.provideUiConfigurationRepository(),
             folderInjector = notesInjector,
-            ollamaInjection = OllamaInjection(appConnectionInjection)
+            ollamaInjection = ollamaInjection
         )
     }
     val accountInjector = remember { AccountMenuKmpInjector(authCoreInjection) }
@@ -120,7 +121,8 @@ fun DesktopApp(
             authCoreInjection,
             repositoryInjection,
             uiConfigurationInjector,
-            selectionState
+            selectionState,
+            ollamaInjection = ollamaInjection
         )
     }
 
@@ -230,9 +232,14 @@ fun DesktopApp(
                             SettingsDialog(
                                 workplacePathState = globalShellViewModel.workspaceLocalPath,
                                 selectedThemePosition = MutableStateFlow(2),
+                                ollamaUrlState = MutableStateFlow(""),
+                                ollamaAvailableModels = globalShellViewModel.getModels(),
+                                ollamaSelectedModel = MutableStateFlow(""),
                                 onDismissRequest = globalShellViewModel::hideSettings,
                                 selectColorTheme = selectColorTheme,
-                                selectWorkplacePath = globalShellViewModel::changeWorkspaceLocalPath
+                                selectWorkplacePath = globalShellViewModel::changeWorkspaceLocalPath,
+                                ollamaUrlChange = { },
+                                ollamaModelChange = { }
                             )
                         }
 

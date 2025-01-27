@@ -2,22 +2,22 @@ package io.writeopia.api
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.preparePost
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
-import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.readUTF8Line
 import io.writeopia.app.endpoints.EndPoints
-import io.writeopia.model.OllamaResponse
+import io.writeopia.requests.Model
+import io.writeopia.requests.ModelsResponse
 import io.writeopia.requests.OllamaGenerateRequest
+import io.writeopia.responses.OllamaResponse
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.isActive
 import kotlinx.serialization.json.Json
@@ -64,5 +64,20 @@ class OllamaApi(
                 }
             }
         }
+
+    fun getModels(): Flow<ModelsResponse> {
+        return flow {
+            val request = client.get("$baseUrl/${EndPoints.ollamaModels()}") {
+                contentType(ContentType.Application.Json)
+            }
+
+            try {
+                emit(request.body())
+            } catch (e: Exception) {
+                println("Error: ${e.message}")
+                emit(ModelsResponse(emptyList()))
+            }
+        }
+    }
 }
 

@@ -45,6 +45,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -369,26 +370,26 @@ class NoteEditorKmpViewModel(
             writeopiaManager.getSelectionInfo().firstOrNull()?.let { info ->
                 val position = info.to + 1
 
-                writeopiaManager.addAtPosition(
-                    storyStep = StoryStep(type = StoryTypes.LOADING.type, ephemeral = true),
-                    position = position,
-
-                    )
-
-                ollamaRepository.streamReply("llama3.2", info.text).collect { text ->
-                    writeopiaManager.changeStoryState(
-                        Action.StoryStateChange(
-                            storyStep = StoryStep(
-                                type = StoryTypes.AI_ANSWER.type,
-                                text = text
-                            ),
-                            position = position,
+                ollamaRepository.streamReply("llama3.2", info.text)
+                    .onStart {
+                        writeopiaManager.addAtPosition(
+                            storyStep = StoryStep(type = StoryTypes.LOADING.type, ephemeral = true),
+                            position = position
                         )
-                    )
-                }
+                    }
+                    .collect { text ->
+                        writeopiaManager.changeStoryState(
+                            Action.StoryStateChange(
+                                storyStep = StoryStep(
+                                    type = StoryTypes.AI_ANSWER.type,
+                                    text = text
+                                ),
+                                position = position,
+                            )
+                        )
+                    }
             }
         }
-
     }
 
     private fun writeDocument(path: String, writer: DocumentWriter) {

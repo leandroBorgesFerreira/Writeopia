@@ -1,4 +1,4 @@
-package io.writeopia.model
+package io.writeopia.responses
 
 import kotlinx.datetime.Instant
 import kotlinx.datetime.serializers.InstantIso8601Serializer

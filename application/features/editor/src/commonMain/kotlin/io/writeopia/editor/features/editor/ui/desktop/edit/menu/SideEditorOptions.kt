@@ -245,7 +245,6 @@ fun SideEditorOptions(
     }
 }
 
-
 @Composable
 fun PageStyleOptions(
     changeFontFamily: (Font) -> Unit,
@@ -280,7 +279,6 @@ fun PageStyleOptions(
         MoveToHomeButton(moveToRoot)
     }
 }
-
 
 @Composable
 private fun Title(text: String) {
@@ -583,9 +581,7 @@ private fun Actions(
             modifier = Modifier.fillMaxWidth(),
             text = "AI box",
             paddingValues = smallButtonPadding()
-        ) {
-
-        }
+        ) { }
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -627,7 +623,6 @@ private fun Actions(
     }
 }
 
-
 @Composable
 private fun buttonsTextStyle() =
     MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold)
@@ -641,4 +636,3 @@ private enum class OptionsType {
     TEXT_OPTIONS,
     ACTIONS
 }
-
