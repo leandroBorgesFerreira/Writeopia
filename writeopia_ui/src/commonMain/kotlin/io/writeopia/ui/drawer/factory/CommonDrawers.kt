@@ -24,6 +24,7 @@ import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.content.AddButtonDrawer
 import io.writeopia.ui.drawer.content.ImageDrawer
 import io.writeopia.ui.drawer.content.LastEmptySpace
+import io.writeopia.ui.drawer.content.LoadingDrawer
 import io.writeopia.ui.drawer.content.RowGroupDrawer
 import io.writeopia.ui.drawer.content.SpaceDrawer
 import io.writeopia.ui.drawer.content.TextDrawer
@@ -196,6 +197,8 @@ object CommonDrawers {
             onDragStop = manager::onDragStop
         )
 
+        val loadingDrawer = LoadingDrawer()
+
         return buildMap {
             put(StoryTypes.TEXT.type.number, swipeTextDrawer)
             put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
@@ -219,6 +222,7 @@ object CommonDrawers {
             put(StoryTypes.IMAGE.type.number, imageDrawer)
             put(StoryTypes.GROUP_IMAGE.type.number, RowGroupDrawer(imageDrawerInGroup))
             put(StoryTypes.AI_ANSWER.type.number, aiAnswerDrawer)
+            put(StoryTypes.LOADING.type.number, loadingDrawer)
         }
     }
 }

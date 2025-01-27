@@ -36,6 +36,7 @@ import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.DrawState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -361,15 +362,30 @@ class NoteEditorKmpViewModel(
     }
 
     override fun askAiBySelection() {
-        writeopiaManager.getSelectionInfo().firstOrNull()?.let { info ->
-            writeopiaManager.addAtPosition(
-                storyStep = StoryStep(
-                    type = StoryTypes.AI_ANSWER.type,
-                    text = "This was your question: ${info.text}"
-                ),
-                position = info.to + 1,
-            )
+        viewModelScope.launch(Dispatchers.Default) {
+            writeopiaManager.getSelectionInfo().firstOrNull()?.let { info ->
+                val position = info.to + 1
+
+                writeopiaManager.addAtPosition(
+                    storyStep = StoryStep(type = StoryTypes.LOADING.type, ephemeral = true),
+                    position = position,
+
+                )
+
+                delay(1000)
+
+                writeopiaManager.changeStoryState(
+                    Action.StoryStateChange(
+                        storyStep = StoryStep(
+                            type = StoryTypes.AI_ANSWER.type,
+                            text = "This was your question: ${info.text}"
+                        ),
+                        position = position,
+                    )
+                )
+            }
         }
+
     }
 
     private fun writeDocument(path: String, writer: DocumentWriter) {

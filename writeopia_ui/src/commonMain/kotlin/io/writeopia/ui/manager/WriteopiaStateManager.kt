@@ -299,12 +299,16 @@ class WriteopiaStateManager(
      *
      * @param stateChange [Action.StoryStateChange]
      */
-    fun changeStoryState(stateChange: Action.StoryStateChange) {
-        val backstackAction = _currentStory.value.stories[stateChange.position]?.let { oldStory ->
-            BackstackAction.StoryStateChange(
-                storyStep = oldStory,
-                position = stateChange.position
-            )
+    fun changeStoryState(stateChange: Action.StoryStateChange, trackIt: Boolean = true) {
+        val backstackAction = if (trackIt) {
+            _currentStory.value.stories[stateChange.position]?.let { oldStory ->
+                BackstackAction.StoryStateChange(
+                    storyStep = oldStory,
+                    position = stateChange.position
+                )
+            }
+        } else {
+            null
         }
 
         changeStoryStateAndTrackIt(stateChange, backstackAction)
@@ -768,13 +772,11 @@ class WriteopiaStateManager(
     }
 
     fun addAtPosition(storyStep: StoryStep, position: Int) {
-        coroutineScope.launch(Dispatchers.Default) {
-            _currentStory.value = writeopiaManager.addAtPosition(
-                _currentStory.value,
-                storyStep,
-                position
-            )
-        }
+        _currentStory.value = writeopiaManager.addAtPosition(
+            _currentStory.value,
+            storyStep,
+            position
+        )
     }
 
     /**
