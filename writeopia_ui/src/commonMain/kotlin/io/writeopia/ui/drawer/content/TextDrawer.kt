@@ -77,7 +77,7 @@ class TextDrawer(
         decorationBox: @Composable (innerTextField: @Composable () -> Unit) -> Unit
     ) {
         val text = buildAnnotatedString {
-            append(step.text)
+            append(step.text ?: "")
 
             step.spans.forEach { spanInfo ->
                 addStyle(
