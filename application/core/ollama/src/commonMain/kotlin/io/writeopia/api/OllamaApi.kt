@@ -13,7 +13,6 @@ import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.readUTF8Line
 import io.writeopia.app.endpoints.EndPoints
 import io.writeopia.common.utils.ResultData
-import io.writeopia.requests.Model
 import io.writeopia.requests.ModelsResponse
 import io.writeopia.requests.OllamaGenerateRequest
 import io.writeopia.responses.OllamaResponse
@@ -89,4 +88,3 @@ class OllamaApi(
         }
     }
 }
-

@@ -17,10 +17,10 @@ data class Model(
 
 @Serializable
 data class Details(
-    val parentModel: String? = null, // nullable field for parent_model
-    val format: String? = null, // must be "gguf" according to the JSON data
-    val family: String? = null, // list of family names
-    val families: List<String>? = listOf(), // list of family names
+    val parentModel: String? = null,
+    val format: String? = null,
+    val family: String? = null,
+    val families: List<String>? = listOf(),
     val parameterSize: String? = null,
     val quantizationLevel: String? = null
 )

@@ -2,7 +2,6 @@ package io.writeopia.di
 
 import io.writeopia.OllamaRepository
 import io.writeopia.api.OllamaApi
-import kotlinx.serialization.json.Json
 
 class OllamaInjection(
     private val appConnectionInjection: AppConnectionInjection,
