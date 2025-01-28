@@ -21,4 +21,4 @@ dagCommand {
     printModulesInfo = true
 }
 
-extra["sdkVersion"] = "0.6.0"
+extra["sdkVersion"] = "0.7.0"
