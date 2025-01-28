@@ -74,16 +74,18 @@ class OllamaApi(
             }
         }
 
-    fun getModels(): Flow<ModelsResponse> {
+    fun getModels(): Flow<ResultData<ModelsResponse>> {
         return flow {
             try {
+                emit(ResultData.Loading())
+
                 val request = client.get("$baseUrl/${EndPoints.ollamaModels()}") {
                     contentType(ContentType.Application.Json)
                 }
 
-                emit(request.body())
+                emit(ResultData.Complete(request.body()))
             } catch (e: Exception) {
-                emit(ModelsResponse(emptyList()))
+                emit(ResultData.Error(e))
             }
         }
     }

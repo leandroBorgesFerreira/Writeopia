@@ -1,5 +1,6 @@
 package io.writeopia.global.shell.viewmodel
 
+import io.writeopia.common.utils.ResultData
 import io.writeopia.commonui.dtos.MenuItemUi
 import io.writeopia.models.Folder
 import io.writeopia.notemenu.viewmodel.FolderController
@@ -46,5 +47,5 @@ interface GlobalShellViewModel : FolderController {
 
     fun changeWorkspaceLocalPath(path: String)
 
-    fun getModels(): Flow<List<String>>
+    fun getModels(): Flow<ResultData<List<String>>>
 }

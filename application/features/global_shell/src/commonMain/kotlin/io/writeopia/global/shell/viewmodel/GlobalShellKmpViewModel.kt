@@ -6,9 +6,11 @@ import androidx.lifecycle.viewModelScope
 import io.writeopia.OllamaRepository
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.common.utils.DISCONNECTED_USER_ID
+import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.icons.IconChange
 import io.writeopia.common.utils.collections.traverse
 import io.writeopia.common.utils.collections.toNodeTree
+import io.writeopia.common.utils.map
 import io.writeopia.common.utils.persistence.configuration.WorkspaceConfigRepository
 import io.writeopia.common.utils.toList
 import io.writeopia.commonui.dtos.MenuItemUi
@@ -242,10 +244,13 @@ class GlobalShellKmpViewModel(
         }
     }
 
-    override fun getModels(): Flow<List<String>> =
-        ollamaRepository.getModels().map { modelResponse ->
-            modelResponse.models.map { model ->
-                model.model
+    override fun getModels(): Flow<ResultData<List<String>>> =
+        ollamaRepository.getModels().map { result ->
+            result.map { modelResponse ->
+                modelResponse.models
+                    .map { it.model }
+                    .takeIf { it.isNotEmpty() }
+                    ?: listOf("No models found")
             }
         }
 

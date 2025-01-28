@@ -16,7 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.commonui.workplace.WorkspaceConfigurationDialog
 import io.writeopia.model.ColorThemeOption
@@ -44,7 +45,7 @@ fun SettingsDialog(
     workplacePathState: StateFlow<String>,
     selectedThemePosition: StateFlow<Int>,
     ollamaUrlState: StateFlow<String>,
-    ollamaAvailableModels: Flow<List<String>>,
+    ollamaAvailableModels: Flow<ResultData<List<String>>>,
     ollamaSelectedModel: StateFlow<String>,
     onDismissRequest: () -> Unit,
     selectColorTheme: (ColorThemeOption) -> Unit,
@@ -81,7 +82,7 @@ fun ColumnScope.SettingsScreen(
     showOllamaConfig: Boolean,
     selectedThemePosition: StateFlow<Int>,
     workplacePathState: StateFlow<String>,
-    ollamaAvailableModels: Flow<List<String>>,
+    ollamaAvailableModels: Flow<ResultData<List<String>>>,
     selectColorTheme: (ColorThemeOption) -> Unit,
     selectWorkplacePath: (String) -> Unit,
 ) {
@@ -143,23 +144,41 @@ fun ColumnScope.SettingsScreen(
 
     Spacer(modifier = Modifier.height(20.dp))
 
-    val models by ollamaAvailableModels.collectAsState(emptyList())
+    val modelsResult = ollamaAvailableModels.collectAsState(ResultData.Idle()).value
 
     if (showOllamaConfig) {
         Text("Ollama", style = titleStyle, color = titleColor)
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        models.forEach { model ->
-            Text(
-                modifier = Modifier.fillMaxWidth()
-                    .clip(MaterialTheme.shapes.medium)
-                    .clickable { }
-                    .padding(8.dp),
-                text = model,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onBackground,
-            )
+        when (modelsResult) {
+            is ResultData.Complete -> {
+                modelsResult.data.forEach { model ->
+                    Text(
+                        modifier = Modifier.fillMaxWidth()
+                            .clip(MaterialTheme.shapes.medium)
+                            .clickable { }
+                            .padding(8.dp),
+                        text = model,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onBackground,
+                    )
+                }
+            }
+            is ResultData.Error -> {
+                Text(
+                    modifier = Modifier.fillMaxWidth()
+                        .clip(MaterialTheme.shapes.medium)
+                        .padding(8.dp),
+                    text = "Error when requesting models",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+            }
+            is ResultData.Idle -> {}
+            is ResultData.Loading -> {
+                CircularProgressIndicator()
+            }
         }
     }
 

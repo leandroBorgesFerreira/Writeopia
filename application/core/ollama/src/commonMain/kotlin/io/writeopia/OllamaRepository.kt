@@ -14,5 +14,5 @@ class OllamaRepository(private val ollamaApi: OllamaApi) {
     fun streamReply(model: String, prompt: String): Flow<ResultData<String>> =
         ollamaApi.streamReply(model, prompt)
 
-    fun getModels(): Flow<ModelsResponse> = ollamaApi.getModels()
+    fun getModels(): Flow<ResultData<ModelsResponse>> = ollamaApi.getModels()
 }
