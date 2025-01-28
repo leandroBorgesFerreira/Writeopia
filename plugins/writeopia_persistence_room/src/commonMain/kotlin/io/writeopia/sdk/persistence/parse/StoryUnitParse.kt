@@ -1,5 +1,6 @@
 package io.writeopia.sdk.persistence.parse
 
+import io.writeopia.sdk.models.span.SpanInfo
 import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
@@ -41,6 +42,11 @@ fun StoryStepEntity.toModel(
             .split(",")
             .filter { it.isNotEmpty() }
             .mapNotNull(TagInfo.Companion::fromString)
+            .toSet(),
+        spans = spans
+            .split(",")
+            .filter { it.isNotEmpty() }
+            .map(SpanInfo::fromString)
             .toSet()
     )
 
@@ -59,5 +65,6 @@ fun StoryStep.toEntity(position: Int, documentId: String): StoryStepEntity =
         isGroup = false,
         hasInnerSteps = this.steps.isNotEmpty(),
         backgroundColor = this.decoration.backgroundColor,
-        tags = this.tags.joinToString(separator = ",") { it.tag.label }
+        tags = this.tags.joinToString(separator = ",") { it.tag.label },
+        spans = this.spans.joinToString(separator = ",") { it.toText() }
     )

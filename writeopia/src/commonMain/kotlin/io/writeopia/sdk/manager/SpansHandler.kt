@@ -20,7 +20,24 @@ object SpansHandler {
                 val intersection: Interception = currentSpan.intersection(newSpan)
 
                 return when (intersection) {
-                    Interception.INSIDE -> spanSet
+                    Interception.INSIDE -> {
+                        val removed = (spanSet - currentSpan)
+
+                        val splitSpans = setOf(
+                            SpanInfo(
+                                currentSpan.start,
+                                newSpan.start,
+                                currentSpan.span
+                            ),
+                            SpanInfo(
+                                newSpan.end,
+                                currentSpan.end,
+                                currentSpan.span
+                            ),
+                        ).filter { it.size() > 0 }
+
+                        removed + splitSpans
+                    }
                     Interception.INTERSECT -> {
                         val removed = (spanSet - currentSpan)
                         val minStart = min(currentSpan.start, newSpan.start)
