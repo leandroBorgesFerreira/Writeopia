@@ -22,6 +22,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.content.AddButtonDrawer
+import io.writeopia.ui.drawer.content.AiAnswerDrawer
 import io.writeopia.ui.drawer.content.ImageDrawer
 import io.writeopia.ui.drawer.content.LastEmptySpace
 import io.writeopia.ui.drawer.content.LoadingDrawer
@@ -123,17 +124,18 @@ object CommonDrawers {
             innerMessageDrawer(commonTextModifier, EmptyErase.DELETE)
         }
 
-        val aiAnswerDrawer = swipeTextDrawer(
-            manager = manager,
+        val aiAnswerDrawer = AiAnswerDrawer(
             customBackgroundColor = MaterialTheme.colorScheme.surfaceVariant,
             dragIconWidth = dragIconWidth,
-            isDesktop = isDesktop,
             config = drawConfig,
             enabled = true,
-            paddingValues = PaddingValues(vertical = 16.dp)
-        ) {
-            innerMessageDrawer(commonTextModifier, EmptyErase.CHANGE_TYPE)
-        }
+            paddingValues = PaddingValues(vertical = 16.dp),
+            onSelected = manager::onSelected,
+            onDragHover = manager::onDragHover,
+            onDragStart = manager::onDragStart,
+            onDragStop = manager::onDragStop,
+            moveRequest = manager::moveRequest,
+        )
 
         val checkItemDrawer = checkItemDrawer(
             manager = manager,
