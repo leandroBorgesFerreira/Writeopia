@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import io.writeopia.OllamaRepository
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.common.utils.DISCONNECTED_USER_ID
-import io.writeopia.common.utils.IconChange
+import io.writeopia.common.utils.icons.IconChange
 import io.writeopia.common.utils.collections.traverse
 import io.writeopia.common.utils.collections.toNodeTree
 import io.writeopia.common.utils.persistence.configuration.WorkspaceConfigRepository

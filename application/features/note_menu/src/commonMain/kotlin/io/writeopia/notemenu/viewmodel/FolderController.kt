@@ -1,6 +1,6 @@
 package io.writeopia.notemenu.viewmodel
 
-import io.writeopia.common.utils.IconChange
+import io.writeopia.common.utils.icons.IconChange
 import io.writeopia.commonui.dtos.MenuItemUi
 import io.writeopia.models.Folder
 
