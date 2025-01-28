@@ -39,14 +39,6 @@ jobs:
           java-version: '21'
       - name: Main test
         run: ./gradlew jvmTest
-      - name: Upload macos app
-        uses: actions/upload-artifact@v4
-        with:
-          name: writeopia-desktop-mac-app
-          path: ./application/desktopApp/build/compose/binaries/main/app/
-          if-no-files-found: error
-          retention-days: 10
-          overwrite: true
   web_build_and_publish:
     name: Web - Build and Publish
     runs-on: ubuntu-22.04
