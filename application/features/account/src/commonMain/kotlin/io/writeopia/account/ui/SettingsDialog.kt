@@ -16,10 +16,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -148,7 +148,19 @@ fun ColumnScope.SettingsScreen(
     if (showOllamaConfig) {
         Text("Ollama", style = titleStyle, color = titleColor)
 
-        TextField(value = models.joinToString(), onValueChange = {})
+        Spacer(modifier = Modifier.height(8.dp))
+
+        models.forEach { model ->
+            Text(
+                modifier = Modifier.fillMaxWidth()
+                    .clip(MaterialTheme.shapes.medium)
+                    .clickable { }
+                    .padding(8.dp),
+                text = model,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onBackground,
+            )
+        }
     }
 
     Spacer(modifier = Modifier.weight(1F))
