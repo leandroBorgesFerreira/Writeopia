@@ -79,8 +79,7 @@ class AiAnswerDrawer(
             }
 
             SwipeBox(
-                modifier = modifier
-                    .hoverable(interactionSource),
+                modifier = modifier.hoverable(interactionSource),
                 defaultColor = customBackgroundColor,
                 activeColor = config.selectedColor(),
                 activeBorderColor = config.selectedBorderColor(),

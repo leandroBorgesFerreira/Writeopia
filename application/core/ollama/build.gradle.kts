@@ -30,6 +30,7 @@ kotlin {
                 implementation(libs.ktor.client.core)
                 implementation(project(":common:endpoints"))
                 implementation(project(":application:core:connection"))
+                implementation(project(":application:core:utils"))
                 implementation(libs.kotlinx.serialization.json)
             }
         }

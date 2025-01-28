@@ -129,7 +129,7 @@ object CommonDrawers {
             dragIconWidth = dragIconWidth,
             config = drawConfig,
             enabled = true,
-            paddingValues = PaddingValues(vertical = 16.dp),
+            paddingValues = PaddingValues(start = 4.dp, top = 16.dp, bottom = 16.dp),
             onSelected = manager::onSelected,
             onDragHover = manager::onDragHover,
             onDragStart = manager::onDragStart,

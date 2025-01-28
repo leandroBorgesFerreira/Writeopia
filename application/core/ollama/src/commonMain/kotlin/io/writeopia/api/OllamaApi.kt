@@ -12,6 +12,7 @@ import io.ktor.http.contentType
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.readUTF8Line
 import io.writeopia.app.endpoints.EndPoints
+import io.writeopia.common.utils.ResultData
 import io.writeopia.requests.Model
 import io.writeopia.requests.ModelsResponse
 import io.writeopia.requests.OllamaGenerateRequest
@@ -43,25 +44,34 @@ class OllamaApi(
     fun streamReply(
         model: String,
         prompt: String,
-    ): Flow<String> =
+    ): Flow<ResultData<String>> =
         flow {
-            client.preparePost {
-                url("$baseUrl/${EndPoints.ollamaGenerate()}")
-                contentType(ContentType.Application.Json)
-                setBody(OllamaGenerateRequest(model, prompt, true))
-            }.execute { response ->
-                val stringBuilder = StringBuilder()
-                val channel = response.body<ByteReadChannel>()
+            try {
+                client.preparePost {
+                    url("$baseUrl/${EndPoints.ollamaGenerate()}")
+                    contentType(ContentType.Application.Json)
+                    setBody(OllamaGenerateRequest(model, prompt, true))
+                }.execute { response ->
+                    try {
+                        val stringBuilder = StringBuilder()
+                        val channel = response.body<ByteReadChannel>()
 
-                while (currentCoroutineContext().isActive && !channel.isClosedForRead) {
-                    val line = channel.readUTF8Line()?.takeUnless { it.isEmpty() } ?: continue
+                        while (currentCoroutineContext().isActive && !channel.isClosedForRead) {
+                            val line =
+                                channel.readUTF8Line()?.takeUnless { it.isEmpty() } ?: continue
 
-                    val value: OllamaResponse = json.decodeFromString(line)
+                            val value: OllamaResponse = json.decodeFromString(line)
 
-                    stringBuilder.append(" ${value.response}")
+                            stringBuilder.append(" ${value.response}")
 
-                    emit(stringBuilder.toString())
+                            emit(ResultData.Complete(stringBuilder.toString()))
+                        }
+                    } catch (e: Exception) {
+                        emit(ResultData.Error(e))
+                    }
                 }
+            } catch (e: Exception) {
+                emit(ResultData.Error(e))
             }
         }
 

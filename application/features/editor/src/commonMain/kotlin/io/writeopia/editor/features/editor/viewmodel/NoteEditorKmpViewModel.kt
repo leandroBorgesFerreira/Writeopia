@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.writeopia.OllamaRepository
 import io.writeopia.auth.core.utils.USER_OFFLINE
+import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.collections.toNodeTree
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.common.utils.toList
@@ -377,7 +378,13 @@ class NoteEditorKmpViewModel(
                             position = position
                         )
                     }
-                    .collect { text ->
+                    .collect { result ->
+                        val text = when (result) {
+                            is ResultData.Complete -> result.data
+                            is ResultData.Error -> "An error happened, please try again."
+                            is ResultData.Loading, is ResultData.Idle -> ""
+                        }
+
                         writeopiaManager.changeStoryState(
                             Action.StoryStateChange(
                                 storyStep = StoryStep(

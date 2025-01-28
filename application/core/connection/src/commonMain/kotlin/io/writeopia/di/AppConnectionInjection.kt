@@ -31,8 +31,8 @@ object ApiInjectorDefaults {
         apiLogger: Logger,
     ) = HttpClient {
         install(HttpTimeout) {
-            requestTimeoutMillis = 15000
-            socketTimeoutMillis = 15000
+            requestTimeoutMillis = 30000
+            socketTimeoutMillis = 30000
         }
 
         install(ContentNegotiation) {
