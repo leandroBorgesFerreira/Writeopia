@@ -37,10 +37,6 @@ jobs:
         with:
           distribution: adopt
           java-version: '21'
-      - name: Build development package
-        run: ./gradlew packageDmg
-        env:
-          SIGN_IDENTITY: ${{ secrets.SIGN_IDENTITY }}
       - name: Main test
         run: ./gradlew jvmTest
       - name: Upload macos app
