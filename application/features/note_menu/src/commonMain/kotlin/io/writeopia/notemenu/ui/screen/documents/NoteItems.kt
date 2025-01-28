@@ -44,7 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.writeopia.common.utils.IconChange
+import io.writeopia.common.utils.icons.IconChange
 import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.common.utils.icons.WrIcons.folder

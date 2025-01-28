@@ -1,9 +1,11 @@
 package io.writeopia.global.shell.viewmodel
 
+import io.writeopia.common.utils.ResultData
 import io.writeopia.commonui.dtos.MenuItemUi
 import io.writeopia.models.Folder
 import io.writeopia.notemenu.viewmodel.FolderController
 import io.writeopia.sdk.models.document.MenuItem
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 interface GlobalShellViewModel : FolderController {
@@ -44,4 +46,6 @@ interface GlobalShellViewModel : FolderController {
     fun hideSearch()
 
     fun changeWorkspaceLocalPath(path: String)
+
+    fun getModels(): Flow<ResultData<List<String>>>
 }

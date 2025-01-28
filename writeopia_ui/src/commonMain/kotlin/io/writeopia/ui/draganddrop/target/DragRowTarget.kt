@@ -16,7 +16,7 @@ expect fun DragRowTarget(
     onClick: () -> Unit = {},
     showIcon: Boolean = true,
     position: Int,
-    emptySpaceClick: () -> Unit,
+    emptySpaceClick: () -> Unit = {},
     dragIconWidth: Dp = 16.dp,
     iconTintOnHover: Color = MaterialTheme.colorScheme.onBackground,
     iconTint: Color = Color.Gray,

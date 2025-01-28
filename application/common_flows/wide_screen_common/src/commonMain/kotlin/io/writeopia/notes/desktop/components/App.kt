@@ -29,6 +29,8 @@ import io.writeopia.account.ui.SettingsDialog
 import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
 import io.writeopia.common.utils.Destinations
+import io.writeopia.di.AppConnectionInjection
+import io.writeopia.di.OllamaInjection
 import io.writeopia.editor.di.EditorKmpInjector
 import io.writeopia.features.search.di.KmpSearchInjection
 import io.writeopia.features.search.ui.SearchDialog
@@ -88,6 +90,8 @@ fun DesktopApp(
                 disableWebsocket = disableWebsocket
             )
         }
+    val appConnectionInjection = remember { AppConnectionInjection() }
+    val ollamaInjection = remember { OllamaInjection(appConnectionInjection) }
     val editorInjector = remember {
         EditorKmpInjector.desktop(
             authCoreInjection = authCoreInjection,
@@ -96,7 +100,8 @@ fun DesktopApp(
             selectionState = selectionState,
             keyboardEventFlow = keyboardEventFlow,
             uiConfigurationInjector.provideUiConfigurationRepository(),
-            folderInjector = notesInjector
+            folderInjector = notesInjector,
+            ollamaInjection = ollamaInjection
         )
     }
     val accountInjector = remember { AccountMenuKmpInjector(authCoreInjection) }
@@ -116,7 +121,8 @@ fun DesktopApp(
             authCoreInjection,
             repositoryInjection,
             uiConfigurationInjector,
-            selectionState
+            selectionState,
+            ollamaInjection = ollamaInjection
         )
     }
 
@@ -226,9 +232,14 @@ fun DesktopApp(
                             SettingsDialog(
                                 workplacePathState = globalShellViewModel.workspaceLocalPath,
                                 selectedThemePosition = MutableStateFlow(2),
+                                ollamaUrlState = MutableStateFlow(""),
+                                ollamaAvailableModels = globalShellViewModel.getModels(),
+                                ollamaSelectedModel = MutableStateFlow(""),
                                 onDismissRequest = globalShellViewModel::hideSettings,
                                 selectColorTheme = selectColorTheme,
-                                selectWorkplacePath = globalShellViewModel::changeWorkspaceLocalPath
+                                selectWorkplacePath = globalShellViewModel::changeWorkspaceLocalPath,
+                                ollamaUrlChange = { },
+                                ollamaModelChange = { }
                             )
                         }
 

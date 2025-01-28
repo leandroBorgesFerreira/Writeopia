@@ -12,9 +12,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,18 +33,25 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.commonui.workplace.WorkspaceConfigurationDialog
 import io.writeopia.model.ColorThemeOption
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun SettingsDialog(
     workplacePathState: StateFlow<String>,
     selectedThemePosition: StateFlow<Int>,
+    ollamaUrlState: StateFlow<String>,
+    ollamaAvailableModels: Flow<ResultData<List<String>>>,
+    ollamaSelectedModel: StateFlow<String>,
     onDismissRequest: () -> Unit,
     selectColorTheme: (ColorThemeOption) -> Unit,
     selectWorkplacePath: (String) -> Unit,
+    ollamaUrlChange: (String) -> Unit,
+    ollamaModelChange: (String) -> Unit,
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
@@ -54,11 +63,13 @@ fun SettingsDialog(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 SettingsScreen(
-                    true,
-                    selectedThemePosition,
-                    workplacePathState,
-                    selectColorTheme,
-                    selectWorkplacePath
+                    showPath = true,
+                    showOllamaConfig = true,
+                    selectedThemePosition = selectedThemePosition,
+                    ollamaAvailableModels = ollamaAvailableModels,
+                    workplacePathState = workplacePathState,
+                    selectColorTheme = selectColorTheme,
+                    selectWorkplacePath = selectWorkplacePath
                 )
             }
         }
@@ -68,8 +79,10 @@ fun SettingsDialog(
 @Composable
 fun ColumnScope.SettingsScreen(
     showPath: Boolean = true,
+    showOllamaConfig: Boolean,
     selectedThemePosition: StateFlow<Int>,
     workplacePathState: StateFlow<String>,
+    ollamaAvailableModels: Flow<ResultData<List<String>>>,
     selectColorTheme: (ColorThemeOption) -> Unit,
     selectWorkplacePath: (String) -> Unit,
 ) {
@@ -92,7 +105,7 @@ fun ColumnScope.SettingsScreen(
     Spacer(modifier = Modifier.height(20.dp))
 
     if (showPath) {
-        Text("Local folder", style = titleStyle, color = titleColor)
+        Text("Local Folder", style = titleStyle, color = titleColor)
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -129,6 +142,46 @@ fun ColumnScope.SettingsScreen(
         )
     }
 
+    Spacer(modifier = Modifier.height(20.dp))
+
+    val modelsResult = ollamaAvailableModels.collectAsState(ResultData.Idle()).value
+
+    if (showOllamaConfig) {
+        Text("Ollama", style = titleStyle, color = titleColor)
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        when (modelsResult) {
+            is ResultData.Complete -> {
+                modelsResult.data.forEach { model ->
+                    Text(
+                        modifier = Modifier.fillMaxWidth()
+                            .clip(MaterialTheme.shapes.medium)
+                            .clickable { }
+                            .padding(8.dp),
+                        text = model,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onBackground,
+                    )
+                }
+            }
+            is ResultData.Error -> {
+                Text(
+                    modifier = Modifier.fillMaxWidth()
+                        .clip(MaterialTheme.shapes.medium)
+                        .padding(8.dp),
+                    text = "Error when requesting models",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+            }
+            is ResultData.Idle -> {}
+            is ResultData.Loading -> {
+                CircularProgressIndicator()
+            }
+        }
+    }
+
     Spacer(modifier = Modifier.weight(1F))
 
     Text("Release version: 0.3.0", style = MaterialTheme.typography.bodySmall)
@@ -141,7 +194,7 @@ private fun ColorThemeOptions(
 ) {
     val spaceWidth = 10.dp
 
-    Row(modifier = Modifier.fillMaxWidth().height(90.dp)) {
+    Row(modifier = Modifier.fillMaxWidth().height(70.dp)) {
         Option(
             text = "Light",
             imageVector = WrIcons.colorModeLight,
@@ -245,7 +298,7 @@ private fun RowScope.Option(
     contextDescription: String,
     selectColorTheme: (ColorThemeOption) -> Unit
 ) {
-    val typography = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+    val typography = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold)
     val color = MaterialTheme.colorScheme.onPrimary
 
     Box(
@@ -261,13 +314,14 @@ private fun RowScope.Option(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
+                modifier = Modifier.size(24.dp),
                 imageVector = imageVector,
                 contentDescription = contextDescription,
                 //            stringResource(R.string.note_list),
                 tint = MaterialTheme.colorScheme.onPrimary
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
             Text(text, style = typography, color = color)
         }

@@ -28,7 +28,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.writeopia.common.utils.ColorUtils
+import io.writeopia.common.utils.colors.ColorUtils
 import io.writeopia.common.utils.icons.WrIcons
 
 @Composable

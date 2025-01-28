@@ -22,8 +22,10 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.content.AddButtonDrawer
+import io.writeopia.ui.drawer.content.AiAnswerDrawer
 import io.writeopia.ui.drawer.content.ImageDrawer
 import io.writeopia.ui.drawer.content.LastEmptySpace
+import io.writeopia.ui.drawer.content.LoadingDrawer
 import io.writeopia.ui.drawer.content.RowGroupDrawer
 import io.writeopia.ui.drawer.content.SpaceDrawer
 import io.writeopia.ui.drawer.content.TextDrawer
@@ -122,6 +124,19 @@ object CommonDrawers {
             innerMessageDrawer(commonTextModifier, EmptyErase.DELETE)
         }
 
+        val aiAnswerDrawer = AiAnswerDrawer(
+            customBackgroundColor = MaterialTheme.colorScheme.surfaceVariant,
+            dragIconWidth = dragIconWidth,
+            config = drawConfig,
+            enabled = true,
+            paddingValues = PaddingValues(start = 4.dp, top = 16.dp, bottom = 16.dp),
+            onSelected = manager::onSelected,
+            onDragHover = manager::onDragHover,
+            onDragStart = manager::onDragStart,
+            onDragStop = manager::onDragStop,
+            moveRequest = manager::moveRequest,
+        )
+
         val checkItemDrawer = checkItemDrawer(
             manager = manager,
             isDesktop = isDesktop,
@@ -184,6 +199,8 @@ object CommonDrawers {
             onDragStop = manager::onDragStop
         )
 
+        val loadingDrawer = LoadingDrawer()
+
         return buildMap {
             put(StoryTypes.TEXT.type.number, swipeTextDrawer)
             put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
@@ -206,6 +223,8 @@ object CommonDrawers {
             put(StoryTypes.CODE_BLOCK.type.number, codeBlockDrawer)
             put(StoryTypes.IMAGE.type.number, imageDrawer)
             put(StoryTypes.GROUP_IMAGE.type.number, RowGroupDrawer(imageDrawerInGroup))
+            put(StoryTypes.AI_ANSWER.type.number, aiAnswerDrawer)
+            put(StoryTypes.LOADING.type.number, loadingDrawer)
         }
     }
 }

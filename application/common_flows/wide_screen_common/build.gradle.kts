@@ -43,6 +43,8 @@ kotlin {
                 implementation(project(":application:core:models"))
                 implementation(project(":application:core:folders"))
                 implementation(project(":application:core:common_ui"))
+                implementation(project(":application:core:ollama"))
+                implementation(project(":application:core:connection"))
                 implementation(project(":application:features:editor"))
                 implementation(project(":application:features:note_menu"))
                 implementation(project(":application:features:global_shell"))
@@ -51,6 +53,7 @@ kotlin {
 
                 implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.client.core)
+                implementation(libs.ktor.serialization.json)
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)

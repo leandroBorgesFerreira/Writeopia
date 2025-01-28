@@ -36,10 +36,12 @@ fun AccountMenuScreen(
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         SettingsScreen(
             showPath = false,
+            showOllamaConfig = false,
             selectedThemePosition = MutableStateFlow(0),
             selectColorTheme = selectColorTheme,
             workplacePathState = MutableStateFlow(""),
-            selectWorkplacePath = {}
+            selectWorkplacePath = {},
+            ollamaAvailableModels = MutableStateFlow(ResultData.Idle())
         )
 
         Spacer(modifier = Modifier.height(12.dp))

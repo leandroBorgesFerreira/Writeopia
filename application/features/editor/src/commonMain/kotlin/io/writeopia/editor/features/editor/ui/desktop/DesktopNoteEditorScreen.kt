@@ -95,7 +95,8 @@ fun DesktopNoteEditorScreen(
             moveToRoot = noteEditorViewModel::moveToRootFolder,
             moveToClick = {
                 showFolderSelection = true
-            }
+            },
+            askAiBySelection = noteEditorViewModel::askAiBySelection
         )
 
         if (!isEditable) {

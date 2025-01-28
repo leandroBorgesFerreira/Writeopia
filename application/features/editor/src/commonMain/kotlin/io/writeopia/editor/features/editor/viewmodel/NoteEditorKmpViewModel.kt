@@ -2,7 +2,9 @@ package io.writeopia.editor.features.editor.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.writeopia.OllamaRepository
 import io.writeopia.auth.core.utils.USER_OFFLINE
+import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.collections.toNodeTree
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.common.utils.toList
@@ -21,6 +23,7 @@ import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.span.Span
+import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
@@ -43,6 +46,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -59,6 +63,7 @@ class NoteEditorKmpViewModel(
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
     private val documentToJson: DocumentToJson = DocumentToJson(),
     private val folderRepository: FolderRepository,
+    private val ollamaRepository: OllamaRepository? = null,
 ) : NoteEditorViewModel,
     ViewModel(),
     BackstackInform by writeopiaManager,
@@ -356,6 +361,41 @@ class NoteEditorKmpViewModel(
     override fun moveToRootFolder() {
         viewModelScope.launch(Dispatchers.Default) {
             documentRepository.moveToFolder(documentId = documentId.value, parentId = "root")
+        }
+    }
+
+    override fun askAiBySelection() {
+        if (ollamaRepository == null) return
+
+        viewModelScope.launch(Dispatchers.Default) {
+            writeopiaManager.getSelectionInfo().firstOrNull()?.let { info ->
+                val position = info.to + 1
+
+                ollamaRepository.streamReply("llama3.2", info.text)
+                    .onStart {
+                        writeopiaManager.addAtPosition(
+                            storyStep = StoryStep(type = StoryTypes.LOADING.type, ephemeral = true),
+                            position = position
+                        )
+                    }
+                    .collect { result ->
+                        val text = when (result) {
+                            is ResultData.Complete -> result.data
+                            is ResultData.Error -> "An error happened, please try again."
+                            is ResultData.Loading, is ResultData.Idle -> ""
+                        }
+
+                        writeopiaManager.changeStoryState(
+                            Action.StoryStateChange(
+                                storyStep = StoryStep(
+                                    type = StoryTypes.AI_ANSWER.type,
+                                    text = text
+                                ),
+                                position = position,
+                            )
+                        )
+                    }
+            }
         }
     }
 

@@ -34,10 +34,12 @@ import io.writeopia.ui.edition.TextCommandHandler
 import io.writeopia.ui.keyboard.KeyboardEvent
 import io.writeopia.ui.model.DrawState
 import io.writeopia.ui.model.DrawStory
+import io.writeopia.ui.model.SelectionInfo
 import io.writeopia.ui.model.TextInput
 import io.writeopia.ui.modifiers.StepsModifier
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -297,12 +299,16 @@ class WriteopiaStateManager(
      *
      * @param stateChange [Action.StoryStateChange]
      */
-    fun changeStoryState(stateChange: Action.StoryStateChange) {
-        val backstackAction = _currentStory.value.stories[stateChange.position]?.let { oldStory ->
-            BackstackAction.StoryStateChange(
-                storyStep = oldStory,
-                position = stateChange.position
-            )
+    fun changeStoryState(stateChange: Action.StoryStateChange, trackIt: Boolean = true) {
+        val backstackAction = if (trackIt) {
+            _currentStory.value.stories[stateChange.position]?.let { oldStory ->
+                BackstackAction.StoryStateChange(
+                    storyStep = oldStory,
+                    position = stateChange.position
+                )
+            }
+        } else {
+            null
         }
 
         changeStoryStateAndTrackIt(stateChange, backstackAction)
@@ -765,6 +771,14 @@ class WriteopiaStateManager(
         )
     }
 
+    fun addAtPosition(storyStep: StoryStep, position: Int) {
+        _currentStory.value = writeopiaManager.addAtPosition(
+            _currentStory.value,
+            storyStep,
+            position
+        )
+    }
+
     /**
      * Moves the focus to the next available [StoryStep] if it can't find a step to focus, it
      * creates a new [StoryStep] at the end of the document.
@@ -917,6 +931,25 @@ class WriteopiaStateManager(
      */
     fun cancelSelection() {
         _positionsOnEdit.value = emptySet()
+    }
+
+    /**
+     * Return a list of consecutive selections, with start and end position and the merged text
+     * that is selected
+     */
+    fun getSelectionInfo(): List<SelectionInfo> {
+        val selected = _positionsOnEdit.value
+
+        return if (selected.isNotEmpty()) {
+            //TODO: Fix this to accept multiple clusters of selection!
+            val from = selected.min()
+            val to = selected.max()
+            val join = selectedStories().mapNotNull { it.text }.joinToString(separator = "\n ")
+
+            listOf(SelectionInfo(from, to, join))
+        } else {
+            emptyList()
+        }
     }
 
     private fun getStory(position: Int): StoryStep? = _currentStory.value.stories[position]

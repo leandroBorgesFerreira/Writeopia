@@ -26,6 +26,8 @@ class OnUpdateDocumentTracker(
         documentEditionFlow.collectLatest { (storyState, documentInfo) ->
             when (val lastEdit = storyState.lastEdit) {
                 is LastEdit.LineEdition -> {
+                    if (lastEdit.storyStep.ephemeral) return@collectLatest
+
                     documentUpdate.saveStoryStep(
                         storyStep = lastEdit.storyStep.copy(
                             localId = GenerateId.generate()
@@ -35,11 +37,12 @@ class OnUpdateDocumentTracker(
                     )
 
                     val stories = storyState.stories
-                    val titleFromContent = stories.values.firstOrNull { storyStep ->
-                        // Todo: Change the type of change to allow different types. The client code should decide what is a title
-                        // It is also interesting to inv
-                        storyStep.type == StoryTypes.TITLE.type
-                    }?.text
+                    val titleFromContent = stories.values
+                        .firstOrNull { storyStep ->
+                            // Todo: Change the type of change to allow different types. The client code should decide what is a title
+                            // It is also interesting to inv
+                            storyStep.type == StoryTypes.TITLE.type
+                        }?.text
 
                     documentUpdate.saveDocumentMetadata(
                         Document(
@@ -58,17 +61,18 @@ class OnUpdateDocumentTracker(
                 LastEdit.Nothing -> {}
 
                 LastEdit.Whole -> {
-                    val stories = storyState.stories
-                    val titleFromContent = stories.values.firstOrNull { storyStep ->
-                        // Todo: Change the type of change to allow different types. The client code should decide what is a title
-                        // It is also interesting to inv
-                        storyStep.type == StoryTypes.TITLE.type
-                    }?.text
+                    val stories = storyState.stories.filter { (_, story) -> !story.ephemeral }
+                    val titleFromContent = stories.values
+                        .firstOrNull { storyStep ->
+                            // Todo: Change the type of change to allow different types. The client code should decide what is a title
+                            // It is also interesting to inv
+                            storyStep.type == StoryTypes.TITLE.type
+                        }?.text
 
                     val document = Document(
                         id = documentInfo.id,
                         title = titleFromContent ?: documentInfo.title,
-                        content = documentFilter.removeTypesFromDocument(storyState.stories),
+                        content = documentFilter.removeTypesFromDocument(stories),
                         createdAt = documentInfo.createdAt,
                         lastUpdatedAt = Clock.System.now(),
                         userId = userId,
@@ -101,11 +105,13 @@ class OnUpdateDocumentTracker(
                         )
                     )
 
-                    documentUpdate.saveStoryStep(
-                        storyStep = lastEdit.storyStep,
-                        position = lastEdit.position,
-                        documentId = documentInfo.id
-                    )
+                    if (!lastEdit.storyStep.ephemeral) {
+                        documentUpdate.saveStoryStep(
+                            storyStep = lastEdit.storyStep,
+                            position = lastEdit.position,
+                            documentId = documentInfo.id
+                        )
+                    }
                 }
 
                 LastEdit.Metadata -> {

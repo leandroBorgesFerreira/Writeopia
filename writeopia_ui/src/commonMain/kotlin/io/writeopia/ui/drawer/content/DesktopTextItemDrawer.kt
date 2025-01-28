@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -48,6 +49,7 @@ class DesktopTextItemDrawer(
     private val enabled: Boolean,
     private val messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
     private val tagDecoration: TagDecoration = DefaultTagDecoration,
+    private val paddingValues: PaddingValues = PaddingValues(0.dp),
 ) : StoryStepDrawer {
 
     @Composable
@@ -96,7 +98,8 @@ class DesktopTextItemDrawer(
                 isOnEditState = drawInfo.selectMode,
                 swipeListener = { isSelected ->
                     onSelected(isSelected, drawInfo.position)
-                }
+                },
+                paddingValues = paddingValues
             ) {
                 DragRowTarget(
                     modifier = Modifier

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.core.folders.repository.FolderRepository
+import io.writeopia.di.OllamaInjection
 import io.writeopia.global.shell.viewmodel.GlobalShellKmpViewModel
 import io.writeopia.global.shell.viewmodel.GlobalShellViewModel
 import io.writeopia.notemenu.data.repository.ConfigurationRepository
@@ -21,7 +22,8 @@ class SideMenuKmpInjector(
     private val authCoreInjection: AuthCoreInjection,
     private val repositoryInjection: RepositoryInjector,
     private val uiConfigurationInjector: UiConfigurationInjector,
-    private val selectionState: StateFlow<Boolean>
+    private val selectionState: StateFlow<Boolean>,
+    private val ollamaInjection: OllamaInjection
 ) : SideMenuInjector {
     private fun provideDocumentRepository(): DocumentRepository =
         repositoryInjection.provideDocumentRepository()
@@ -43,7 +45,8 @@ class SideMenuKmpInjector(
                 uiConfigurationRepo = uiConfigurationInjector.provideUiConfigurationRepository(),
                 authManager = authCoreInjection.provideAccountManager(),
                 notesNavigationUseCase = NotesNavigationUseCase.singleton(),
-                workspaceConfigRepository = notesInjector.provideNotesConfigurationRepository()
+                workspaceConfigRepository = notesInjector.provideNotesConfigurationRepository(),
+                ollamaRepository = ollamaInjection.provideRepository()
             )
         }
 }

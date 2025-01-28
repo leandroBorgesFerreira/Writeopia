@@ -13,6 +13,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -70,6 +71,7 @@ fun SideEditorOptions(
     exportMarkdown: (String) -> Unit,
     moveToRoot: () -> Unit,
     moveToClick: () -> Unit,
+    askAiBySelection: () -> Unit,
 ) {
     var menuType by remember {
         mutableStateOf(OptionsType.NONE)
@@ -128,7 +130,8 @@ fun SideEditorOptions(
                     OptionsType.ACTIONS -> {
                         Actions(
                             exportJson,
-                            exportMarkdown
+                            exportMarkdown,
+                            askAiBySelection = askAiBySelection
                         )
                     }
                 }
@@ -212,6 +215,7 @@ fun SideEditorOptions(
                 modifier = Modifier
                     .padding(horizontal = spacing)
                     .clip(MaterialTheme.shapes.medium)
+                    .background(background(OptionsType.ACTIONS))
                     .clickable {
                         menuType = if (menuType != OptionsType.ACTIONS) {
                             OptionsType.ACTIONS
@@ -221,7 +225,7 @@ fun SideEditorOptions(
                     }
                     .size(40.dp)
                     .padding(9.dp),
-                tint = MaterialTheme.colorScheme.onBackground
+                tint = tint(OptionsType.ACTIONS)
             )
 
             Spacer(modifier = Modifier.height(spacing))
@@ -238,6 +242,41 @@ fun SideEditorOptions(
                 tint = MaterialTheme.colorScheme.onBackground
             )
         }
+    }
+}
+
+@Composable
+fun PageStyleOptions(
+    changeFontFamily: (Font) -> Unit,
+    isEditableState: StateFlow<Boolean>,
+    setEditable: () -> Unit,
+    selectedState: StateFlow<Font>,
+    moveButtonClick: () -> Unit,
+    moveToRoot: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.border(
+            1.dp,
+            MaterialTheme.colorScheme.surfaceVariant,
+            MaterialTheme.shapes.medium
+        ).background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.medium)
+            .width(250.dp)
+            .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp)
+    ) {
+        Title("Font")
+        Spacer(modifier = Modifier.height(4.dp))
+        FontOptions(changeFontFamily, selectedState)
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Title("Actions")
+        Spacer(modifier = Modifier.height(6.dp))
+        LockButton(isEditableState, setEditable)
+        Spacer(modifier = Modifier.height(4.dp))
+        MoveToButton(moveButtonClick)
+        Spacer(modifier = Modifier.height(4.dp))
+        MoveToHomeButton(moveToRoot)
     }
 }
 
@@ -331,27 +370,43 @@ private fun DecorationCommands(commands: Iterable<Pair<String, () -> Unit>>) {
             .forEach { line ->
                 Row {
                     line.forEach { (command, listener) ->
-                        Text(
-                            modifier = Modifier
-                                .weight(1F)
-                                .padding(start = 2.dp, end = 2.dp, bottom = 3.dp)
-                                .clip(MaterialTheme.shapes.medium)
-                                .clickable(onClick = listener)
-                                .background(
-                                    MaterialTheme.colorScheme.surfaceVariant,
-                                    MaterialTheme.shapes.medium
-                                )
-                                .padding(horizontal = 8.dp, vertical = 8.dp),
+                        TextButton(
+                            modifier = Modifier.weight(1F),
                             text = command,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = buttonsTextStyle(),
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
+                            onClick = listener
                         )
                     }
                 }
             }
     }
+}
+
+@Composable
+private fun TextButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    paddingValues: PaddingValues = PaddingValues(
+        horizontal = 8.dp,
+        vertical = 8.dp
+    ),
+    onClick: () -> Unit,
+) {
+    Text(
+        modifier = modifier
+            .padding(start = 2.dp, end = 2.dp, bottom = 3.dp)
+            .clip(MaterialTheme.shapes.medium)
+            .clickable(onClick = onClick)
+            .background(
+                MaterialTheme.colorScheme.surfaceVariant,
+                MaterialTheme.shapes.medium
+            )
+            .padding(paddingValues),
+        text = text,
+        color = MaterialTheme.colorScheme.onBackground,
+        style = buttonsTextStyle(),
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center
+    )
 }
 
 @Composable
@@ -402,41 +457,6 @@ private fun Modifier.horizontalOptionsRow() =
             MaterialTheme.colorScheme.surfaceVariant,
             MaterialTheme.shapes.medium
         )
-
-@Composable
-fun PageStyleOptions(
-    changeFontFamily: (Font) -> Unit,
-    isEditableState: StateFlow<Boolean>,
-    setEditable: () -> Unit,
-    selectedState: StateFlow<Font>,
-    moveButtonClick: () -> Unit,
-    moveToRoot: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier.border(
-            1.dp,
-            MaterialTheme.colorScheme.surfaceVariant,
-            MaterialTheme.shapes.medium
-        ).background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.medium)
-            .width(250.dp)
-            .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp)
-    ) {
-        Title("Font")
-        Spacer(modifier = Modifier.height(4.dp))
-        FontOptions(changeFontFamily, selectedState)
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Title("Actions")
-        Spacer(modifier = Modifier.height(6.dp))
-        LockButton(isEditableState, setEditable)
-        Spacer(modifier = Modifier.height(4.dp))
-        MoveToButton(moveButtonClick)
-        Spacer(modifier = Modifier.height(4.dp))
-        MoveToHomeButton(moveToRoot)
-    }
-}
 
 @Composable
 internal fun FontOptions(
@@ -534,6 +554,7 @@ private fun TextOptions(
 private fun Actions(
     exportJson: (String) -> Unit,
     exportMarkdown: (String) -> Unit,
+    askAiBySelection: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -545,31 +566,39 @@ private fun Actions(
             .width(250.dp)
             .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp)
     ) {
+        Title("Ask IA")
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        TextButton(
+            modifier = Modifier.fillMaxWidth(),
+            text = "Ask by selection",
+            paddingValues = smallButtonPadding(),
+            onClick = askAiBySelection
+        )
+
+        TextButton(
+            modifier = Modifier.fillMaxWidth(),
+            text = "AI box",
+            paddingValues = smallButtonPadding()
+        ) { }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
         Title("Export")
 
         Spacer(modifier = Modifier.height(4.dp))
 
         Row {
-            Text(
-                "Json",
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(2.dp)
-                    .background(
-                        MaterialTheme.colorScheme.surfaceVariant,
-                        MaterialTheme.shapes.medium
-                    ).weight(1F)
-                    .clip(MaterialTheme.shapes.medium)
-                    .clickable {
-                        fileChooserSave()?.let {
-                            println("fileChooserSave: $it")
-                            exportJson(it)
-                        }
-                    }
-                    .padding(4.dp),
-                color = MaterialTheme.colorScheme.onBackground,
-                style = buttonsTextStyle()
-            )
+            TextButton(
+                modifier = Modifier.weight(1F),
+                text = "Json",
+                paddingValues = smallButtonPadding()
+            ) {
+                fileChooserSave()?.let {
+                    exportJson(it)
+                }
+            }
 
 //            Text(
 //                "Markdown",
@@ -594,13 +623,16 @@ private fun Actions(
     }
 }
 
+@Composable
+private fun buttonsTextStyle() =
+    MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold)
+
+@Composable
+private fun smallButtonPadding() = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+
 private enum class OptionsType {
     NONE,
     PAGE_STYLE,
     TEXT_OPTIONS,
     ACTIONS
 }
-
-@Composable
-private fun buttonsTextStyle() =
-    MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold)

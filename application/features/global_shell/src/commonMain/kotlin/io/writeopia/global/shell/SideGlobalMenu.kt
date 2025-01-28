@@ -30,7 +30,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.writeopia.common.utils.IconChange
+import io.writeopia.common.utils.icons.IconChange
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.commonui.dtos.MenuItemUi
 import io.writeopia.commonui.folders.DocumentList
