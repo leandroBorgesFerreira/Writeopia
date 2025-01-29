@@ -16,6 +16,7 @@ import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.previousTextStory
 import io.writeopia.sdk.utils.extensions.toEditState
 import io.writeopia.sdk.utils.iterables.addElementInPosition
+import io.writeopia.sdk.utils.iterables.addElementsInPosition
 import io.writeopia.sdk.utils.iterables.mergeSortedMaps
 import io.writeopia.sdk.utils.iterables.normalizePositions
 
@@ -137,46 +138,37 @@ class ContentHandler(
     fun onLineBreak(
         currentStory: Map<Int, StoryStep>,
         lineBreakInfo: Action.LineBreak
-    ): Pair<Pair<Int, StoryStep>, StoryState>? {
+    ): Pair<Int, StoryState> {
         val storyStep = lineBreakInfo.storyStep
-
+        val position = lineBreakInfo.position
         val carryOverTags = storyStep.tags.filterTo(mutableSetOf()) { it.tag.mustCarryOver() }
+        val mutable = currentStory.toMutableMap()
+        val split = storyStep.text?.split("\n")
 
-        return storyStep.text?.split("\n", limit = 2)?.let { list ->
-            val firstText = list.elementAtOrNull(0) ?: ""
-            val secondText = list.elementAtOrNull(1) ?: ""
-            val secondMessage = StoryStep(
+        if (split != null) {
+            mutable.remove(position)
+        }
+
+        val newMutable = split?.map { text ->
+            val story = StoryStep(
                 localId = GenerateId.generate(),
                 type = lineBreakMap(storyStep.type),
-                text = secondText,
+                text = text,
                 tags = carryOverTags
             )
 
-            val addPosition = lineBreakInfo.position + 1
-
-            // Todo: Cover this in unit tests!
-            if (currentStory[addPosition]?.type == StoryTypes.SPACE.type) {
-                throw IllegalStateException(
-                    "it should not be possible to add content in the place of a space"
-                )
-            }
-
-            val mutable = currentStory.toMutableMap().apply {
-                this[lineBreakInfo.position] = storyStep.copy(text = firstText)
-            }
-
-            val newStory = addNewContent(
-                mutable,
-                secondMessage,
-                addPosition
-            )
-
-            (addPosition to secondMessage) to StoryState(
-                stories = newStory,
-                lastEdit = LastEdit.Whole,
-                focus = addPosition
-            )
+            story
+        }?.let { stories ->
+            mutable.addElementsInPosition(stories, position)
         }
+
+        val insertElementLastPosition = position + (split?.lastIndex ?: 0)
+
+        return insertElementLastPosition to StoryState(
+            stories = newMutable ?: mutable,
+            lastEdit = LastEdit.Whole,
+            focus = insertElementLastPosition
+        )
     }
 
     fun deleteStory(deleteInfo: Action.DeleteStory, history: Map<Int, StoryStep>): StoryState? {
@@ -295,6 +287,9 @@ class ContentHandler(
         )
     }
 
+    /**
+     * This method expands a section of the document like a subtitle.
+     */
     fun expandItem(
         storyMap: Map<Int, StoryStep>,
         position: Int

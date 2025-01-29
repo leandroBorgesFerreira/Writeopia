@@ -31,5 +31,18 @@ fun <T> Map<Int, T>.addElementInPosition(
     return mutable.associateWithPosition()
 }
 
+fun <T> Map<Int, T>.addElementsInPosition(
+    elements: Iterable<T>,
+    position: Int
+): Map<Int, T> {
+    val mutable = this.values.toMutableList()
+
+    elements.reversed().forEach { element ->
+        mutable.add(min(position, mutable.lastIndex + 1), element)
+    }
+
+    return mutable.associateWithPosition()
+}
+
 fun <T> Map<Int, T>.normalizePositions(): Map<Int, T> =
     values.toMutableList().associateWithPosition()
