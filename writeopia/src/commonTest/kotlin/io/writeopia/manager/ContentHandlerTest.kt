@@ -54,9 +54,29 @@ class ContentHandlerTest {
         val (_, newState) = contentHandler.onLineBreak(
             mapOf(0 to storyStep),
             Action.LineBreak(storyStep, 0)
-        )!!
+        )
 
         assertEquals("line1", newState.stories[0]!!.text)
+        assertEquals("line2", newState.stories[1]!!.text)
+    }
+
+    @Test
+    fun `when a line break happens, the text should be divided correctly for multiple line`() {
+        val contentHandler = ContentHandler(stepsNormalizer = normalizer())
+        val storyStep = StoryStep(
+            type = StoryTypes.TEXT.type,
+            text = "line1\nline2\nline3\nline4"
+        )
+
+        val (_, newState) = contentHandler.onLineBreak(
+            mapOf(0 to storyStep),
+            Action.LineBreak(storyStep, 0)
+        )
+
+        assertEquals("line1", newState.stories[0]!!.text)
+        assertEquals("line2", newState.stories[1]!!.text)
+        assertEquals("line3", newState.stories[2]!!.text)
+        assertEquals("line4", newState.stories[3]!!.text)
     }
 
     @Test

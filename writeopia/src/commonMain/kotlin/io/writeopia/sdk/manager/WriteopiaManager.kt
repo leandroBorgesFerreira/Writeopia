@@ -179,7 +179,7 @@ class WriteopiaManager(
     fun onLineBreak(
         lineBreak: Action.LineBreak,
         storyState: StoryState
-    ): Pair<Pair<Int, StoryStep>, StoryState>? =
+    ): Pair<Int, StoryState> =
         contentHandler.onLineBreak(storyState.stories, lineBreak)
 
     /**
@@ -214,7 +214,7 @@ class WriteopiaManager(
     fun collapseItem(storyState: StoryState, position: Int) =
         contentHandler.collapseItem(storyState.stories, position)
 
-    fun expandItem(storyState: StoryState, position: Int) =
+    fun expandItem(storyState: StoryState, position: Int): StoryState =
         contentHandler.expandItem(storyState.stories, position)
 
     fun addSpanToStories(storyState: StoryState, positions: Set<Int>, span: Span): StoryState {

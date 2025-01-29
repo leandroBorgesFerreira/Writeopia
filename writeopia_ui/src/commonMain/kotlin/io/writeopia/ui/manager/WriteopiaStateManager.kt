@@ -458,8 +458,9 @@ class WriteopiaStateManager(
         }
 
         lastLineBreak = LineBreakCommand(
-            lineBreak.storyStep.text ?: "",
-            lineBreak.position, Clock.System.now()
+            text = lineBreak.storyStep.text ?: "",
+            position = lineBreak.position,
+            time = Clock.System.now()
         )
 
         if (isOnSelection) {
@@ -470,18 +471,17 @@ class WriteopiaStateManager(
             val state = _currentStory.value
             val story = getStory(position = lineBreak.position)
 
-            val expanded = if (story?.tags?.any { it.tag.isTitle() } == true) {
+            val expanded: StoryState = if (story?.tags?.any { it.tag.isTitle() } == true) {
                 writeopiaManager.expandItem(state, lineBreak.position)
             } else {
                 state
             }
 
-            writeopiaManager.onLineBreak(lineBreak, expanded)?.let { (info, newState) ->
-                val (newPosition, newStory) = info
+            writeopiaManager.onLineBreak(lineBreak, expanded).let { (newPosition, newState) ->
                 // Todo: Fix this when the inner position are completed
-                backStackManager.addAction(BackstackAction.Add(newStory, newPosition))
+        //                backStackManager.addAction(BackstackAction.Add(newStory, newPosition))
                 _currentStory.value = newState.copy(selection = Selection.start())
-                _scrollToPosition.value = info.first
+                _scrollToPosition.value = newPosition
             }
         }
     }
