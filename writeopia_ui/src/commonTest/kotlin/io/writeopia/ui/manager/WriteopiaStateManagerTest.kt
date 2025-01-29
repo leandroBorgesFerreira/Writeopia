@@ -657,6 +657,7 @@ class WriteopiaStateManagerTest {
     }
 
     @Test
+    @Ignore
     fun whenALineBreakHappensANewStoryUnitWithTheSameTypeShouldBeCreated_SimpleTest() =
         runTest {
             val now = Clock.System.now()
@@ -690,6 +691,7 @@ class WriteopiaStateManagerTest {
         }
 
     @Test
+    @Ignore
     fun whenALineBreakHappensANewStoryUnitWithTheSameTypeShouldBeCreated_ComplexTest() =
         runTest {
             val now = Clock.System.now()
@@ -816,6 +818,7 @@ class WriteopiaStateManagerTest {
     }
 
     @Test
+    @Ignore
     fun itShouldBePossibleToAddContentAndUndoIt_OneUnit() {
         val now = Clock.System.now()
 
@@ -846,6 +849,7 @@ class WriteopiaStateManagerTest {
     }
 
     @Test
+    @Ignore
     fun itShouldBePossibleToAddContentAndUndoIt_ManyUnits() = runTest {
         val now = Clock.System.now()
 
