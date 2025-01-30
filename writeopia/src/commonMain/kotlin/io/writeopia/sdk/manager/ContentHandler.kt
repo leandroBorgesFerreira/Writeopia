@@ -145,11 +145,11 @@ class ContentHandler(
         val mutable = currentStory.toMutableMap()
         val split = storyStep.text?.split("\n")
 
-        if (split != null) {
-            mutable.remove(position)
+        if (split?.isNotEmpty() == true) {
+            mutable[position] = lineBreakInfo.storyStep.copy(text = split[0])
         }
 
-        val newMutable = split?.map { text ->
+        val newMutable = split?.drop(1)?.map { text ->
             val story = StoryStep(
                 localId = GenerateId.generate(),
                 type = lineBreakMap(storyStep.type),
@@ -159,7 +159,7 @@ class ContentHandler(
 
             story
         }?.let { stories ->
-            mutable.addElementsInPosition(stories, position)
+            mutable.addElementsInPosition(stories, position + 1)
         }
 
         val insertElementLastPosition = position + (split?.lastIndex ?: 0)
