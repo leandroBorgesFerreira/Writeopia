@@ -27,7 +27,6 @@ import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.models.document.MenuItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -54,6 +53,10 @@ class GlobalShellKmpViewModel(
 
     init {
         folderStateController.initCoroutine(viewModelScope)
+
+        viewModelScope.launch(Dispatchers.Default) {
+            ollamaRepository.refreshConfiguration("disconnected_user")
+        }
     }
 
     private var localUserId: String? = null
@@ -70,11 +73,33 @@ class GlobalShellKmpViewModel(
     private val _workspaceLocalPath = MutableStateFlow("")
     override val workspaceLocalPath: StateFlow<String> = _workspaceLocalPath.asStateFlow()
 
+    override val ollamaUrl: StateFlow<String> =
+        ollamaRepository.listenForConfiguration("disconnected_user")
+            .map { config -> config?.url ?: ""}
+            .stateIn(viewModelScope, SharingStarted.Lazily, "")
+
+    override val ollamaSelectedModelState = ollamaRepository
+        .listenForConfiguration("disconnected_user")
+        .map { config -> config?.selectedModel ?: ""}
+        .stateIn(viewModelScope, SharingStarted.Lazily, "")
+
     override val highlightItem: StateFlow<String?> by lazy {
         notesNavigationUseCase.navigationState
             .map { navigation -> navigation.id }
             .stateIn(viewModelScope, SharingStarted.Lazily, NotesNavigation.Root.id)
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override val modelsForUrl: StateFlow<ResultData<List<String>>> = ollamaUrl.flatMapLatest { url ->
+        ollamaRepository.getModels(url)
+    }.map { result ->
+        result.map { modelResponse ->
+            modelResponse.models
+                .map { it.model }
+                .takeIf { it.isNotEmpty() }
+                ?: listOf("No models found")
+        }
+    }.stateIn(viewModelScope, SharingStarted.Lazily, ResultData.Idle())
 
     override val editFolderState: StateFlow<Folder?> by lazy {
         combine(
@@ -244,15 +269,17 @@ class GlobalShellKmpViewModel(
         }
     }
 
-    override fun getModels(): Flow<ResultData<List<String>>> =
-        ollamaRepository.getModels().map { result ->
-            result.map { modelResponse ->
-                modelResponse.models
-                    .map { it.model }
-                    .takeIf { it.isNotEmpty() }
-                    ?: listOf("No models found")
-            }
+    override fun changeOllamaUrl(url: String) {
+        viewModelScope.launch(Dispatchers.Default) {
+            ollamaRepository.saveOllamaUrl("disconnected_user", url)
         }
+    }
+
+    override fun selectOllamaModel(model: String) {
+        viewModelScope.launch(Dispatchers.Default) {
+            ollamaRepository.saveOllamaSelectedModel("disconnected_user", model)
+        }
+    }
 
     private suspend fun getUserId(): String =
         localUserId ?: authManager.getUser().id.also { id ->

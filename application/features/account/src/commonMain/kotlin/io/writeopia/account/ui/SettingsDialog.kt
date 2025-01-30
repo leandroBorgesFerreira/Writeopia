@@ -1,5 +1,6 @@
 package io.writeopia.account.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -29,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -37,8 +40,11 @@ import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.commonui.workplace.WorkspaceConfigurationDialog
 import io.writeopia.model.ColorThemeOption
+import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+
+private const val SPACE_AFTER_TITLE = 12
 
 @Composable
 fun SettingsDialog(
@@ -57,19 +63,23 @@ fun SettingsDialog(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(fraction = 0.7F)
-                .padding(horizontal = 40.dp, vertical = 20.dp),
+                .fillMaxHeight(fraction = 0.7F),
+//                .padding(horizontal = 40.dp, vertical = 20.dp),
             shape = RoundedCornerShape(16.dp),
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(24.dp)) {
                 SettingsScreen(
                     showPath = true,
                     showOllamaConfig = true,
                     selectedThemePosition = selectedThemePosition,
                     ollamaAvailableModels = ollamaAvailableModels,
+                    ollamaSelectedModel = ollamaSelectedModel,
                     workplacePathState = workplacePathState,
                     selectColorTheme = selectColorTheme,
-                    selectWorkplacePath = selectWorkplacePath
+                    selectWorkplacePath = selectWorkplacePath,
+                    ollamaUrlState = ollamaUrlState,
+                    ollamaUrlChange = ollamaUrlChange,
+                    ollamaModelChange = ollamaModelChange,
                 )
             }
         }
@@ -82,9 +92,13 @@ fun ColumnScope.SettingsScreen(
     showOllamaConfig: Boolean,
     selectedThemePosition: StateFlow<Int>,
     workplacePathState: StateFlow<String>,
+    ollamaUrlState: StateFlow<String>,
     ollamaAvailableModels: Flow<ResultData<List<String>>>,
+    ollamaSelectedModel: StateFlow<String>,
     selectColorTheme: (ColorThemeOption) -> Unit,
     selectWorkplacePath: (String) -> Unit,
+    ollamaUrlChange: (String) -> Unit,
+    ollamaModelChange: (String) -> Unit,
 ) {
     val titleStyle = MaterialTheme.typography.titleLarge
     val titleColor = MaterialTheme.colorScheme.onBackground
@@ -95,7 +109,7 @@ fun ColumnScope.SettingsScreen(
 
     Text("Color Theme", style = titleStyle, color = titleColor)
 
-    Spacer(modifier = Modifier.height(8.dp))
+    Spacer(modifier = Modifier.height(SPACE_AFTER_TITLE.dp))
 
     ColorThemeOptions(
         selectedThemePosition = selectedThemePosition,
@@ -107,12 +121,13 @@ fun ColumnScope.SettingsScreen(
     if (showPath) {
         Text("Local Folder", style = titleStyle, color = titleColor)
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(SPACE_AFTER_TITLE.dp))
 
         val textShape = MaterialTheme.shapes.medium
+
         Text(
             workplacePath,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
             color = titleColor,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.border(
@@ -124,7 +139,7 @@ fun ColumnScope.SettingsScreen(
                 .clickable {
                     showEditPathDialog = true
                 }
-                .padding(12.dp)
+                .padding(8.dp)
                 .fillMaxWidth()
         )
     }
@@ -145,26 +160,60 @@ fun ColumnScope.SettingsScreen(
     Spacer(modifier = Modifier.height(20.dp))
 
     val modelsResult = ollamaAvailableModels.collectAsState(ResultData.Idle()).value
+    val ollamaSelected by ollamaSelectedModel.collectAsState()
 
     if (showOllamaConfig) {
         Text("Ollama", style = titleStyle, color = titleColor)
+
+        Spacer(modifier = Modifier.height(SPACE_AFTER_TITLE.dp))
+
+        val ollamaUrl by ollamaUrlState.collectAsState()
+
+        BasicTextField(
+            modifier = Modifier.border(
+                1.dp,
+                MaterialTheme.colorScheme.onSurfaceVariant,
+                MaterialTheme.shapes.medium
+            ).padding(10.dp)
+                .fillMaxWidth(),
+            value = ollamaUrl,
+            onValueChange = ollamaUrlChange,
+            textStyle = MaterialTheme.typography.bodyMedium.copy(
+                color = MaterialTheme.colorScheme.onBackground
+            ),
+            cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground)
+        )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         when (modelsResult) {
             is ResultData.Complete -> {
-                modelsResult.data.forEach { model ->
+                modelsResult.data.forEachIndexed { i, model ->
                     Text(
                         modifier = Modifier.fillMaxWidth()
                             .clip(MaterialTheme.shapes.medium)
-                            .clickable { }
+                            .clickable {
+                                ollamaModelChange(model)
+                            }
+                            .let { modifierLet ->
+                                if (model == ollamaSelected) {
+                                    modifierLet.background(WriteopiaTheme.colorScheme.highlight)
+                                } else {
+                                    modifierLet
+                                }
+                            }
                             .padding(8.dp),
                         text = model,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onBackground,
                     )
+
+                    if (i != modelsResult.data.lastIndex) {
+                        Spacer(modifier = Modifier.height(2.dp))
+                    }
                 }
             }
+
             is ResultData.Error -> {
                 Text(
                     modifier = Modifier.fillMaxWidth()
@@ -175,6 +224,7 @@ fun ColumnScope.SettingsScreen(
                     color = MaterialTheme.colorScheme.onBackground,
                 )
             }
+
             is ResultData.Idle -> {}
             is ResultData.Loading -> {
                 CircularProgressIndicator()
@@ -184,7 +234,7 @@ fun ColumnScope.SettingsScreen(
 
     Spacer(modifier = Modifier.weight(1F))
 
-    Text("Release version: 0.3.0", style = MaterialTheme.typography.bodySmall)
+    Text("Release version: alpha12", style = MaterialTheme.typography.bodySmall)
 }
 
 @Composable

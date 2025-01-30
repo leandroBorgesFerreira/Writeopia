@@ -26,13 +26,19 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(project(":common:endpoints"))
+
+                implementation(project(":application:core:connection"))
+                implementation(project(":application:core:utils"))
+                implementation(project(":application:core:persistence_sqldelight"))
+
+                implementation(project(":plugins:writeopia_persistence_sqldelight"))
+
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.ktor.client.core)
-                implementation(project(":common:endpoints"))
-                implementation(project(":application:core:connection"))
-                implementation(project(":application:core:utils"))
                 implementation(libs.kotlinx.serialization.json)
+
             }
         }
     }
