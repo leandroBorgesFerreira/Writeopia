@@ -1,0 +1,16 @@
+CREATE TABLE ollamaEntity (
+  id TEXT PRIMARY KEY,
+  url TEXT NOT NULL,
+  selected_model TEXT
+);
+
+query:
+SELECT *
+FROM ollamaEntity
+WHERE ollamaEntity.id = ?;
+
+insert:
+INSERT INTO ollamaEntity(id, url, selected_model)
+VALUES (?, ?, ?)
+ON CONFLICT(id) DO
+UPDATE SET id=excluded.id, url=excluded.url, selected_model=excluded.selected_model;

@@ -41,7 +41,11 @@ fun AccountMenuScreen(
             selectColorTheme = selectColorTheme,
             workplacePathState = MutableStateFlow(""),
             selectWorkplacePath = {},
-            ollamaAvailableModels = MutableStateFlow(ResultData.Idle())
+            ollamaAvailableModels = MutableStateFlow(ResultData.Idle()),
+            ollamaUrlState = MutableStateFlow(""),
+            ollamaSelectedModel = MutableStateFlow(""),
+            ollamaUrlChange = {},
+            ollamaModelChange = {},
         )
 
         Spacer(modifier = Modifier.height(12.dp))

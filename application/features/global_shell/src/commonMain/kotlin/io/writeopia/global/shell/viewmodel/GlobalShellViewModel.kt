@@ -5,7 +5,6 @@ import io.writeopia.commonui.dtos.MenuItemUi
 import io.writeopia.models.Folder
 import io.writeopia.notemenu.viewmodel.FolderController
 import io.writeopia.sdk.models.document.MenuItem
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 interface GlobalShellViewModel : FolderController {
@@ -27,6 +26,12 @@ interface GlobalShellViewModel : FolderController {
 
     val workspaceLocalPath: StateFlow<String>
 
+    val ollamaSelectedModelState: StateFlow<String>
+
+    val ollamaUrl: StateFlow<String>
+
+    val modelsForUrl: StateFlow<ResultData<List<String>>>
+
     fun init()
 
     fun expandFolder(id: String)
@@ -47,5 +52,7 @@ interface GlobalShellViewModel : FolderController {
 
     fun changeWorkspaceLocalPath(path: String)
 
-    fun getModels(): Flow<ResultData<List<String>>>
+    fun changeOllamaUrl(url: String)
+
+    fun selectOllamaModel(model: String)
 }

@@ -27,15 +27,15 @@ import kotlinx.serialization.json.Json
  */
 class OllamaApi(
     private val client: HttpClient,
-    private val baseUrl: String = "http://localhost:11434/api",
     private val json: Json
 ) {
 
     suspend fun generateReply(
         model: String,
         prompt: String,
+        url: String
     ): OllamaResponse =
-        client.post("$baseUrl/${EndPoints.ollamaGenerate()}") {
+        client.post("$url/api/${EndPoints.ollamaGenerate()}") {
             contentType(ContentType.Application.Json)
             setBody(OllamaGenerateRequest(model, prompt, false))
         }.body<OllamaResponse>()
@@ -43,11 +43,12 @@ class OllamaApi(
     fun streamReply(
         model: String,
         prompt: String,
+        url: String
     ): Flow<ResultData<String>> =
         flow {
             try {
                 client.preparePost {
-                    url("$baseUrl/${EndPoints.ollamaGenerate()}")
+                    url("$url/api/${EndPoints.ollamaGenerate()}")
                     contentType(ContentType.Application.Json)
                     setBody(OllamaGenerateRequest(model, prompt, true))
                 }.execute { response ->
@@ -74,12 +75,12 @@ class OllamaApi(
             }
         }
 
-    fun getModels(): Flow<ResultData<ModelsResponse>> {
+    fun getModels(url: String): Flow<ResultData<ModelsResponse>> {
         return flow {
             try {
                 emit(ResultData.Loading())
 
-                val request = client.get("$baseUrl/${EndPoints.ollamaModels()}") {
+                val request = client.get("${url.trim()}/${EndPoints.ollamaModels()}") {
                     contentType(ContentType.Application.Json)
                 }
 

@@ -91,7 +91,8 @@ fun DesktopApp(
             )
         }
     val appConnectionInjection = remember { AppConnectionInjection() }
-    val ollamaInjection = remember { OllamaInjection(appConnectionInjection) }
+    val ollamaInjection =
+        remember { OllamaInjection(appConnectionInjection, writeopiaDb = writeopiaDb) }
     val editorInjector = remember {
         EditorKmpInjector.desktop(
             authCoreInjection = authCoreInjection,
@@ -232,14 +233,14 @@ fun DesktopApp(
                             SettingsDialog(
                                 workplacePathState = globalShellViewModel.workspaceLocalPath,
                                 selectedThemePosition = MutableStateFlow(2),
-                                ollamaUrlState = MutableStateFlow(""),
-                                ollamaAvailableModels = globalShellViewModel.getModels(),
-                                ollamaSelectedModel = MutableStateFlow(""),
+                                ollamaUrlState = globalShellViewModel.ollamaUrl,
+                                ollamaAvailableModels = globalShellViewModel.modelsForUrl,
+                                ollamaSelectedModel = globalShellViewModel.ollamaSelectedModelState,
                                 onDismissRequest = globalShellViewModel::hideSettings,
                                 selectColorTheme = selectColorTheme,
                                 selectWorkplacePath = globalShellViewModel::changeWorkspaceLocalPath,
-                                ollamaUrlChange = { },
-                                ollamaModelChange = { }
+                                ollamaUrlChange = globalShellViewModel::changeOllamaUrl,
+                                ollamaModelChange = globalShellViewModel::selectOllamaModel
                             )
                         }
 

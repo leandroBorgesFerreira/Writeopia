@@ -371,30 +371,47 @@ class NoteEditorKmpViewModel(
             writeopiaManager.getSelectionInfo().firstOrNull()?.let { info ->
                 val position = info.to + 1
 
-                ollamaRepository.streamReply("llama3.2", info.text)
-                    .onStart {
-                        writeopiaManager.addAtPosition(
-                            storyStep = StoryStep(type = StoryTypes.LOADING.type, ephemeral = true),
-                            position = position
-                        )
-                    }
-                    .collect { result ->
-                        val text = when (result) {
-                            is ResultData.Complete -> result.data
-                            is ResultData.Error -> "An error happened, please try again."
-                            is ResultData.Loading, is ResultData.Idle -> ""
-                        }
+                val url = ollamaRepository.getConfiguredOllamaUrl()
 
-                        writeopiaManager.changeStoryState(
-                            Action.StoryStateChange(
-                                storyStep = StoryStep(
-                                    type = StoryTypes.AI_ANSWER.type,
-                                    text = text
-                                ),
-                                position = position,
-                            )
+                if (url == null) {
+                    writeopiaManager.changeStoryState(
+                        Action.StoryStateChange(
+                            storyStep = StoryStep(
+                                type = StoryTypes.AI_ANSWER.type,
+                                text = "Ollama is not configured or not running."
+                            ),
+                            position = position,
                         )
-                    }
+                    )
+                } else {
+                    ollamaRepository.streamReply("llama3.2", info.text, url)
+                        .onStart {
+                            writeopiaManager.addAtPosition(
+                                storyStep = StoryStep(
+                                    type = StoryTypes.LOADING.type,
+                                    ephemeral = true
+                                ),
+                                position = position
+                            )
+                        }
+                        .collect { result ->
+                            val text = when (result) {
+                                is ResultData.Complete -> result.data
+                                is ResultData.Error -> "An error happened, please try again."
+                                is ResultData.Loading, is ResultData.Idle -> ""
+                            }
+
+                            writeopiaManager.changeStoryState(
+                                Action.StoryStateChange(
+                                    storyStep = StoryStep(
+                                        type = StoryTypes.AI_ANSWER.type,
+                                        text = text
+                                    ),
+                                    position = position,
+                                )
+                            )
+                        }
+                }
             }
         }
     }
