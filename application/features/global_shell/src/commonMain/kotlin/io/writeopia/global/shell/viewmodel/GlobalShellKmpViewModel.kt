@@ -75,12 +75,12 @@ class GlobalShellKmpViewModel(
 
     override val ollamaUrl: StateFlow<String> =
         ollamaRepository.listenForConfiguration("disconnected_user")
-            .map { config -> config?.url ?: ""}
+            .map { config -> config?.url ?: "" }
             .stateIn(viewModelScope, SharingStarted.Lazily, "")
 
     override val ollamaSelectedModelState = ollamaRepository
         .listenForConfiguration("disconnected_user")
-        .map { config -> config?.selectedModel ?: ""}
+        .map { config -> config?.selectedModel ?: "" }
         .stateIn(viewModelScope, SharingStarted.Lazily, "")
 
     override val highlightItem: StateFlow<String?> by lazy {
@@ -90,16 +90,17 @@ class GlobalShellKmpViewModel(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override val modelsForUrl: StateFlow<ResultData<List<String>>> = ollamaUrl.flatMapLatest { url ->
-        ollamaRepository.getModels(url)
-    }.map { result ->
-        result.map { modelResponse ->
-            modelResponse.models
-                .map { it.model }
-                .takeIf { it.isNotEmpty() }
-                ?: listOf("No models found")
-        }
-    }.stateIn(viewModelScope, SharingStarted.Lazily, ResultData.Idle())
+    override val modelsForUrl: StateFlow<ResultData<List<String>>> =
+        ollamaUrl.flatMapLatest { url ->
+            ollamaRepository.getModels(url)
+        }.map { result ->
+            result.map { modelResponse ->
+                modelResponse.models
+                    .map { it.model }
+                    .takeIf { it.isNotEmpty() }
+                    ?: listOf("No models found")
+            }
+        }.stateIn(viewModelScope, SharingStarted.Lazily, ResultData.Idle())
 
     override val editFolderState: StateFlow<Folder?> by lazy {
         combine(

@@ -46,5 +46,4 @@ class OllamaRepository(
 
     suspend fun getConfiguredOllamaUrl(id: String = "disconnected_user"): String? =
         ollamaDao?.getConfiguration()?.url
-
 }
