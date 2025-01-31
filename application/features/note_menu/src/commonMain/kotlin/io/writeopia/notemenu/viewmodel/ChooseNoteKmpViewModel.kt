@@ -23,8 +23,10 @@ import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
+import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -50,11 +52,23 @@ internal class ChooseNoteKmpViewModel(
     private val previewParser: PreviewParser = PreviewParser(),
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
     private val documentToJson: DocumentToJson = DocumentToJson(),
-    private val writeopiaJsonParser: WriteopiaJsonParser = WriteopiaJsonParser()
+    private val writeopiaJsonParser: WriteopiaJsonParser = WriteopiaJsonParser(),
+    private val keyboardEventFlow: Flow<KeyboardEvent>
 ) : ChooseNoteViewModel, ViewModel(), FolderController by folderController {
 
     init {
         folderController.initCoroutine(viewModelScope)
+
+        viewModelScope.launch(Dispatchers.Default) {
+            keyboardEventFlow.collect { event ->
+                when (event) {
+                    KeyboardEvent.DELETE -> {
+                        deleteSelectedNotes()
+                    }
+                    KeyboardEvent.IDLE -> {}
+                }
+            }
+        }
     }
 
     private val _selectedNotes = MutableStateFlow(setOf<String>())
@@ -390,7 +404,8 @@ internal class ChooseNoteKmpViewModel(
 
         documentToJson.writeDocuments(
             documents = currentNotes,
-            path = path
+            path = path,
+            usePath = true
         )
 
         writeopiaJsonParser.readAllWorkSpace(path)
@@ -412,7 +427,8 @@ internal class ChooseNoteKmpViewModel(
 
         documentToJson.writeDocuments(
             documents = currentNotes,
-            path = path
+            path = path,
+            usePath = true
         )
 
         _syncInProgress.value = SyncState.Idle
@@ -421,7 +437,7 @@ internal class ChooseNoteKmpViewModel(
     private fun directoryFilesAs(path: String, documentWriter: DocumentWriter) {
         viewModelScope.launch(Dispatchers.Default) {
             val data = notesUseCase.loadDocumentsForUser(getUserId())
-            documentWriter.writeDocuments(data, path)
+            documentWriter.writeDocuments(data, path, usePath = true)
         }
     }
 

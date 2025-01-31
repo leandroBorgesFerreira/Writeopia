@@ -3,7 +3,12 @@ package io.writeopia.sdk.export
 import io.writeopia.sdk.models.document.Document
 
 interface DocumentWriter {
-    fun writeDocuments(documents: List<Document>, path: String, writeConfigFile: Boolean = true)
+    fun writeDocuments(
+        documents: List<Document>,
+        path: String,
+        writeConfigFile: Boolean = true,
+        usePath: Boolean
+    )
 
     fun writeDocument(document: Document, path: String, writeConfigFile: Boolean = true)
 
