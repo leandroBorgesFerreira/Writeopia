@@ -420,7 +420,8 @@ class NoteEditorKmpViewModel(
         writer.writeDocuments(
             documents = listOf(writeopiaManager.getDocument()),
             path = path,
-            writeConfigFile = false
+            writeConfigFile = false,
+            usePath = false
         )
     }
 

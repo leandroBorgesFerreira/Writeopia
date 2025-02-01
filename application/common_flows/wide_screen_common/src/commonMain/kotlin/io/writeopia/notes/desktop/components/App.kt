@@ -113,6 +113,7 @@ fun DesktopApp(
             authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,
             selectionState = selectionState,
+            keyboardEventFlow = keyboardEventFlow
         )
     }
 

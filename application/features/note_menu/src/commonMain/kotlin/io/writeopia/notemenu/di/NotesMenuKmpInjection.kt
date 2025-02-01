@@ -12,6 +12,8 @@ import io.writeopia.notemenu.viewmodel.ChooseNoteViewModel
 import io.writeopia.notemenu.viewmodel.FolderStateController
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.persistence.core.repository.DocumentRepository
+import io.writeopia.ui.keyboard.KeyboardEvent
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -19,7 +21,8 @@ class NotesMenuKmpInjection private constructor(
     private val notesInjector: NotesInjector,
     private val authCoreInjection: AuthCoreInjection,
     private val repositoryInjection: RepositoryInjector,
-    private val selectionState: StateFlow<Boolean>
+    private val selectionState: StateFlow<Boolean>,
+    private val keyboardEventFlow: Flow<KeyboardEvent>
 ) : NotesMenuInjection {
 
     private fun provideDocumentRepository(): DocumentRepository =
@@ -52,7 +55,8 @@ class NotesMenuKmpInjection private constructor(
             authManager = authCoreInjection.provideAccountManager(),
             selectionState = selectionState,
             notesNavigation = notesNavigation,
-            folderController = provideFolderStateController()
+            folderController = provideFolderStateController(),
+            keyboardEventFlow = keyboardEventFlow
         )
 
     @Composable
@@ -72,19 +76,22 @@ class NotesMenuKmpInjection private constructor(
             notesInjector = notesInjector,
             authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,
-            selectionState = MutableStateFlow(false)
+            selectionState = MutableStateFlow(false),
+            keyboardEventFlow = MutableStateFlow(KeyboardEvent.IDLE)
         )
 
         fun desktop(
             notesInjector: NotesInjector,
             authCoreInjection: AuthCoreInjection,
             repositoryInjection: RepositoryInjector,
-            selectionState: StateFlow<Boolean>
+            selectionState: StateFlow<Boolean>,
+            keyboardEventFlow: Flow<KeyboardEvent>
         ) = NotesMenuKmpInjection(
             notesInjector = notesInjector,
             authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,
-            selectionState = selectionState
+            selectionState = selectionState,
+            keyboardEventFlow = keyboardEventFlow,
         )
     }
 }

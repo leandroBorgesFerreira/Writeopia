@@ -17,7 +17,12 @@ object DocumentToMarkdown : DocumentWriter {
 
     // In the future it may be necessary to add a parse to an OutputStream
 
-    override fun writeDocuments(documents: List<Document>, path: String, addHashTable: Boolean) {
+    override fun writeDocuments(
+        documents: List<Document>,
+        path: String,
+        addHashTable: Boolean,
+        usePath: Boolean
+    ) {
         documents.forEach { document ->
             KmpFileWriter(name(document, path, ".md")).useKmp { writer ->
                 writeToWriter(
