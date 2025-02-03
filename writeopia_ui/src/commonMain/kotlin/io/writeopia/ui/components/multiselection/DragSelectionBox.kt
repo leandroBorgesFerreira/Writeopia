@@ -77,8 +77,8 @@ fun DragSelectionBox(modifier: Modifier = Modifier, context: @Composable BoxScop
                 )
 
                 Box(
-                    modifier = Modifier.offset(x = x.dp, y = y.dp)
-                        .size(width = width.dp, height = height.dp)
+                    modifier = Modifier.offset(x = x.dp / 2, y = y.dp / 2)
+                        .size(width = width.dp / 2, height = height.dp / 2)
                         .border(width = 1.dp, color = dragBoxColor, shape = shape)
                         .background(
                             color = dragBoxColor.copy(alpha = 0.2F),
