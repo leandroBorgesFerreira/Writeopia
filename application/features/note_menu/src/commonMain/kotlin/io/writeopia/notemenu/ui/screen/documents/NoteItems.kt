@@ -66,6 +66,7 @@ import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.components.SwipeBox
+import io.writeopia.ui.components.multiselection.SelectableByDrag
 import io.writeopia.ui.draganddrop.target.DragCardTarget
 import io.writeopia.ui.draganddrop.target.DropTarget
 import io.writeopia.ui.drawer.StoryStepDrawer
@@ -563,13 +564,19 @@ private fun DocumentItem(
     }
 
     sharedTransitionScope.run {
-        Box(
+        SelectableByDrag(
             shadowModifier().sharedBounds(
                 rememberSharedContentState(key = "noteInit${documentUi.documentId}"),
                 animatedVisibilityScope = animatedVisibilityScope,
                 resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds
             )
-        ) {
+        ) { isInsideDrag ->
+            if (isInsideDrag != null) {
+                LaunchedEffect(isInsideDrag) {
+                    selectionListener(documentUi.documentId, isInsideDrag)
+                }
+            }
+
             SwipeBox(
                 modifier = modifier
                     .fillMaxWidth()
