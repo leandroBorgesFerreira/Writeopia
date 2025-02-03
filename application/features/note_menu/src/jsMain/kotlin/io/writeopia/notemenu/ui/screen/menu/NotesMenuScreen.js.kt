@@ -1,6 +1,7 @@
 package io.writeopia.notemenu.ui.screen.menu
 
 import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,6 +12,7 @@ import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.ui.screen.DesktopNotesMenu
 import io.writeopia.notemenu.viewmodel.ChooseNoteViewModel
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 actual fun NotesMenuScreen(
     chooseNoteViewModel: ChooseNoteViewModel,
@@ -28,6 +30,8 @@ actual fun NotesMenuScreen(
 ) {
     DesktopNotesMenu(
         chooseNoteViewModel = chooseNoteViewModel,
+        sharedTransitionScope = sharedTransitionScope,
+        animatedVisibilityScope = animatedVisibilityScope,
         onNewNoteClick = onNewNoteClick,
         onNoteClick = onNoteClick,
         navigateToNotes = navigateToFolders,
