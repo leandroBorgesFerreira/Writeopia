@@ -1,5 +1,7 @@
 package io.writeopia.navigation
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.navigation.NavGraphBuilder
@@ -23,6 +25,7 @@ import io.writeopia.navigation.presentation.navigateToPresentation
 import io.writeopia.notemenu.di.NotesMenuInjection
 import io.writeopia.notemenu.navigation.notesMenuNavigation
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun Navigation(
     startDestination: String = Destinations.AUTH_MENU_INNER_NAVIGATION.id,
@@ -35,42 +38,46 @@ fun Navigation(
     selectColorTheme: (ColorThemeOption) -> Unit,
     builder: NavGraphBuilder.() -> Unit
 ) {
-    NavHost(navController = navController, startDestination = startDestination) {
-        notesMenuNavigation(
-            notesMenuInjection = notesMenuInjection,
-            navigationController = navController,
-            selectColorTheme = selectColorTheme,
-            navigateToNote = navController::navigateToNote,
-            navigateToAccount = navController::navigateToAccount,
-            navigateToNewNote = navController::navigateToNewNote,
-            navigateToFolders = navController::navigateToFolder
-        )
-
-        editorNavigation(
-            navigateBack = {
-                navController.navigateUp()
-            },
-            editorInjector = editorInjector,
-            isUndoKeyEvent = isUndoKeyEvent,
-            navigateToPresentation = navController::navigateToPresentation
-        )
-
-        accountMenuNavigation(
-            accountMenuInjector = accountMenuInjector,
-            navigateToAuthMenu = { },
-            selectColorTheme = selectColorTheme
-        )
-
-        if (searchInjection != null) {
-            searchNavigation(
-                searchInjection,
-                navController::navigateToNote,
-                navController::navigateToFolder
+    SharedTransitionLayout {
+        NavHost(navController = navController, startDestination = startDestination) {
+            notesMenuNavigation(
+                notesMenuInjection = notesMenuInjection,
+                navigationController = navController,
+                sharedTransitionScope = this@SharedTransitionLayout,
+                selectColorTheme = selectColorTheme,
+                navigateToNote = navController::navigateToNote,
+                navigateToAccount = navController::navigateToAccount,
+                navigateToNewNote = navController::navigateToNewNote,
+                navigateToFolders = navController::navigateToFolder
             )
+
+            editorNavigation(
+                navigateBack = {
+                    navController.navigateUp()
+                },
+                editorInjector = editorInjector,
+                isUndoKeyEvent = isUndoKeyEvent,
+                navigateToPresentation = navController::navigateToPresentation,
+                sharedTransitionScope = this@SharedTransitionLayout
+            )
+
+            accountMenuNavigation(
+                accountMenuInjector = accountMenuInjector,
+                navigateToAuthMenu = { },
+                selectColorTheme = selectColorTheme
+            )
+
+            if (searchInjection != null) {
+                searchNavigation(
+                    searchInjection,
+                    navController::navigateToNote,
+                    navController::navigateToFolder
+                )
+            }
+
+            notificationsNavigation()
+
+            builder()
         }
-
-        notificationsNavigation()
-
-        builder()
     }
 }

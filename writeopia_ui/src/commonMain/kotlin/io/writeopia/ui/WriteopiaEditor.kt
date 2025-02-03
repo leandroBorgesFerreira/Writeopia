@@ -9,10 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.story.Selection
-import io.writeopia.ui.model.DrawInfo
-import io.writeopia.ui.model.DrawState
 import io.writeopia.ui.draganddrop.target.DraggableScreen
 import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.model.DrawInfo
+import io.writeopia.ui.model.DrawState
 import io.writeopia.ui.model.DrawStory
 
 @Composable
@@ -30,7 +30,9 @@ fun WriteopiaEditor(
             draw.storyStep.tags.any { it.tag.isHidden() }
         }
 
-    DraggableScreen(modifier = modifier) {
+    DraggableScreen(
+        modifier = modifier
+    ) {
         LazyColumn(
             modifier = modifier,
             contentPadding = contentPadding,

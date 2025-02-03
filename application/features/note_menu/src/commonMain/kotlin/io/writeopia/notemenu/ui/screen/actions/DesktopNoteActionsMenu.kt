@@ -90,7 +90,7 @@ private fun MoreOptions(
         val showExtra by showExtraOptions.collectAsState()
 
         DropdownMenu(expanded = showExtra, onDismissRequest = hideExtraOptionsRequest) {
-            val iconTintColor = MaterialTheme.colorScheme.onPrimary
+            val iconTintColor = MaterialTheme.colorScheme.onBackground
 
             DropdownMenuItem(
                 leadingIcon = {
@@ -102,7 +102,7 @@ private fun MoreOptions(
                 },
                 onClick = exportAsMarkdownClick,
                 text = {
-                    Text("Export as Markdown", color = MaterialTheme.colorScheme.onPrimary)
+                    Text("Export as Markdown", color = MaterialTheme.colorScheme.onBackground)
                 }
             )
 
@@ -116,7 +116,7 @@ private fun MoreOptions(
                 },
                 onClick = importClick,
                 text = {
-                    Text("Import file", color = MaterialTheme.colorScheme.onPrimary)
+                    Text("Import file", color = MaterialTheme.colorScheme.onBackground)
                 }
             )
         }

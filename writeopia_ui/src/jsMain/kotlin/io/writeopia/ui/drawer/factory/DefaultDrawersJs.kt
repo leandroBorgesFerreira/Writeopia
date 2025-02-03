@@ -1,6 +1,5 @@
 package io.writeopia.ui.drawer.factory
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -33,7 +32,7 @@ private const val SMALL_START_PADDING = 4
 
 object DefaultDrawersJs : DrawersFactory {
 
-    @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun create(
         manager: WriteopiaStateManager,

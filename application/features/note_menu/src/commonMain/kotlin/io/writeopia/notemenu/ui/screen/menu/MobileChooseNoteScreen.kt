@@ -1,5 +1,8 @@
 package io.writeopia.notemenu.ui.screen.menu
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -42,9 +45,12 @@ import io.writeopia.ui.draganddrop.target.DraggableScreen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun MobileChooseNoteScreen(
     chooseNoteViewModel: ChooseNoteViewModel,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     navigateToNote: (String, String) -> Unit,
     newNote: () -> Unit,
     navigateToAccount: () -> Unit,
@@ -74,9 +80,13 @@ internal fun MobileChooseNoteScreen(
             DraggableScreen {
                 Content(
                     chooseNoteViewModel = chooseNoteViewModel,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedVisibilityScope = animatedVisibilityScope,
                     loadNote = navigateToNote,
                     selectionListener = chooseNoteViewModel::onDocumentSelected,
                     paddingValues = paddingValues,
+
+                    newNote = newNote
                 )
             }
         }
@@ -217,21 +227,28 @@ private fun FloatingActionButton(newNoteClick: () -> Unit) {
     )
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun Content(
     chooseNoteViewModel: ChooseNoteViewModel,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     loadNote: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
+    newNote: () -> Unit,
     paddingValues: PaddingValues,
 ) {
     NotesCards(
         documents = chooseNoteViewModel.documentsState.collectAsState().value,
+        animatedVisibilityScope = animatedVisibilityScope,
+        sharedTransitionScope = sharedTransitionScope,
         loadNote = loadNote,
         selectionListener = selectionListener,
         folderClick = {},
         changeIcon = { _, _, _, _ -> },
         moveRequest = { _, _ -> },
         onSelection = {},
+        newNote = newNote,
         modifier = Modifier
             .padding(paddingValues)
             .fillMaxSize()

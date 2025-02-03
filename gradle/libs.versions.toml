@@ -1,12 +1,13 @@
 [versions]
 accompanist = "0.36.0"
+animation = "1.7.7"
 coilVersion = "3.0.4"
-composeBom = "2024.12.01"
+composeBom = "2025.01.01"
 composeShimmer = "1.0.5"
 espressoCore = "3.6.1"
 firebaseAdmin = "9.2.0"
 junit = "1.2.1"
-kotlinxCoroutines = "1.9.0"
+kotlinxCoroutines = "1.10.1"
 kotlinxCoroutinesSwing = "1.10.1"
 kotlinxDatetime = "0.6.0"
 kotlinxSerializationJson = "1.7.3"
@@ -18,27 +19,26 @@ material = "1.12.0"
 postgresSocketFactory = "1.15.1"
 room = "2.7.0-alpha12"
 compose = "2.8.7"
-navigation-compose = "2.8.5"
 agp = "8.8.0"
 kotlin = "2.1.0"
-composeTest = "1.7.6"
+composeTest = "1.7.7"
 webWorkerDriver = "2.0.0"
 writeopia = "0.4.1"
 mockk = "1.13.8"
 sqldelight = "2.0.2"
 ksp = "2.1.0-1.0.29"
-compose-multiplatform = "1.6.11"
+compose-multiplatform = "1.8.0-alpha02"
 dag-command = "1.11.0"
 dokka = "1.9.20"
 nexus-publish = "2.0.0"
 spring-boot = "3.1.5"
 spring-dependencyManagement = "1.1.3"
-firebase = "33.7.0"
+firebase = "33.8.0"
 google-services = "4.4.2"
 logback-classic = "1.5.0"
 hikaricp = "5.1.0"
 postgresql = "42.6.0"
-compose-navigation = "2.7.0-alpha07"
+compose-navigation = "2.8.0-alpha12"
 publish = "0.30.0"
 lifecycleViewmodelCompose = "2.8.4"
 
@@ -46,6 +46,7 @@ lifecycleViewmodelCompose = "2.8.4"
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 activity-compose = { module = "androidx.activity:activity-compose" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose" }
+androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
 androidx-compose-test = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "composeTest" }
@@ -94,7 +95,6 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "compose" }
 runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "compose" }
-navigation-compose-android = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 sqldelight-jvm = { group = "app.cash.sqldelight", name = "sqlite-driver", version.ref = "sqldelight" }
 sqldelight-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
@@ -112,7 +112,7 @@ application = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 nativeCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
-kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization",  version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
@@ -125,6 +125,6 @@ spring-kotlin = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotl
 spring-dependencyManagement = { id = "io.spring.dependency-management", version.ref = "spring-dependencyManagement" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 ktor-framework = { id = "io.ktor.plugin", version.ref = "ktor" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint"}
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 compose-multiplatform-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 sonatype-publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }

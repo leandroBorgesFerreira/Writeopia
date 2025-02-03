@@ -13,11 +13,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.notemenu.ui.screen.configuration.modifier.icon
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
+import io.writeopia.theme.WrieopiaTheme
+import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -45,13 +48,13 @@ internal fun SortOptions(
             offset = DpOffset((-30).dp, (-6).dp)
         ) {
             val sortOption by sortOptionState.collectAsState()
-            val iconTintColor = MaterialTheme.colorScheme.onPrimary
+            val iconTintColor = MaterialTheme.colorScheme.onBackground
 
             val background = @Composable { orderBy: OrderBy ->
                 if (orderBy == sortOption) {
-                    MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.25F)
+                    WriteopiaTheme.colorScheme.highlight
                 } else {
-                    MaterialTheme.colorScheme.primary
+                    Color.Unspecified
                 }
             }
 
@@ -68,7 +71,7 @@ internal fun SortOptions(
                     selectSortOption(OrderBy.NAME)
                 },
                 text = {
-                    Text("Sort by name", color = MaterialTheme.colorScheme.onPrimary)
+                    Text("Sort by name", color = MaterialTheme.colorScheme.onBackground)
                 }
             )
 
@@ -85,7 +88,7 @@ internal fun SortOptions(
                     selectSortOption(OrderBy.CREATE)
                 },
                 text = {
-                    Text("Sort by creation", color = MaterialTheme.colorScheme.onPrimary)
+                    Text("Sort by creation", color = MaterialTheme.colorScheme.onBackground)
                 }
             )
 
@@ -104,7 +107,7 @@ internal fun SortOptions(
                 text = {
                     Text(
                         "Sort by last update",
-                        color = MaterialTheme.colorScheme.onPrimary
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
             )

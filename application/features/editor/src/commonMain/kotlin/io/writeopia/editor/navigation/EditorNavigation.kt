@@ -1,8 +1,16 @@
 package io.writeopia.editor.navigation
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.background
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -13,80 +21,101 @@ import io.writeopia.editor.di.TextEditorInjector
 import io.writeopia.editor.features.editor.ui.screen.TextEditorScreen
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.editor.features.presentation.ui.PresentationScreen
+import io.writeopia.theme.WriteopiaTheme
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.editorNavigation(
     navigateBack: () -> Unit = {},
+    sharedTransitionScope: SharedTransitionScope,
     editorInjector: TextEditorInjector,
     isUndoKeyEvent: (KeyEvent) -> Boolean,
     navigateToPresentation: (String) -> Unit
 ) {
-    composable(
-        route = "${Destinations.EDITOR.id}/{noteId}/{noteTitle}",
-        arguments = listOf(navArgument("noteId") { type = NavType.StringType }),
-        enterTransition = {
-            slideInHorizontally(
-                initialOffsetX = { intSize -> intSize }
-            )
-        },
-        exitTransition = {
-            slideOutHorizontally(
-                targetOffsetX = { intSize -> intSize }
-            )
-        }
-    ) { backStackEntry ->
-        val noteId = backStackEntry.arguments?.getString("noteId")
-        val noteTitle = backStackEntry.arguments?.getString("noteTitle")
-        val parentFolderId = backStackEntry.arguments?.getString("parentFolderId")
+    sharedTransitionScope.run {
+        composable(
+            route = "${Destinations.EDITOR.id}/{noteId}/{noteTitle}",
+            arguments = listOf(navArgument("noteId") { type = NavType.StringType }),
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { intSize -> intSize }
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { intSize -> intSize }
+                )
+            }
+        ) { backStackEntry ->
+            val noteId = backStackEntry.arguments?.getString("noteId")
+            val noteTitle = backStackEntry.arguments?.getString("noteTitle")
+            val parentFolderId = backStackEntry.arguments?.getString("parentFolderId")
 
-        if (noteId != null && noteTitle != null) {
-            val noteDetailsViewModel =
+            if (noteId != null && noteTitle != null) {
+                val noteDetailsViewModel =
+                    editorInjector.provideNoteDetailsViewModel(parentFolderId ?: "root")
+
+                TextEditorScreen(
+                    noteId.takeIf { it != "null" },
+                    noteTitle.takeIf { it != "null" },
+                    noteDetailsViewModel,
+                    isUndoKeyEvent = isUndoKeyEvent,
+                    playPresentation = {
+                        navigateToPresentation(noteId)
+                    },
+                    navigateBack = navigateBack,
+                    modifier = sharedModifier(this, noteId)
+                )
+            } else {
+                throw IllegalArgumentException("The arguments for this route are wrong!")
+            }
+        }
+
+        composable(route = "${Destinations.EDITOR.id}/{parentFolderId}") { backStackEntry ->
+            val parentFolderId = backStackEntry.arguments?.getString("parentFolderId")
+            val notesDetailsViewModel: NoteEditorViewModel =
                 editorInjector.provideNoteDetailsViewModel(parentFolderId ?: "root")
 
             TextEditorScreen(
-                noteId.takeIf { it != "null" },
-                noteTitle.takeIf { it != "null" },
-                noteDetailsViewModel,
+                documentId = null,
+                title = null,
+                noteEditorViewModel = notesDetailsViewModel,
                 isUndoKeyEvent = isUndoKeyEvent,
-                playPresentation = {
-                    navigateToPresentation(noteId)
-                },
                 navigateBack = navigateBack,
+                playPresentation = {
+                    notesDetailsViewModel.writeopiaManager
+                        .documentInfo
+                        .value
+                        .id
+                        .let(navigateToPresentation)
+                },
+                modifier = sharedModifier(this),
             )
-        } else {
-            throw IllegalArgumentException("The arguments for this route are wrong!")
-        }
-    }
-
-    composable(route = "${Destinations.EDITOR.id}/{parentFolderId}") { backStackEntry ->
-        val parentFolderId = backStackEntry.arguments?.getString("parentFolderId")
-        val notesDetailsViewModel: NoteEditorViewModel =
-            editorInjector.provideNoteDetailsViewModel(parentFolderId ?: "root")
-
-        TextEditorScreen(
-            documentId = null,
-            title = null,
-            noteEditorViewModel = notesDetailsViewModel,
-            isUndoKeyEvent = isUndoKeyEvent,
-            navigateBack = navigateBack,
-            playPresentation = {
-                notesDetailsViewModel.writeopiaManager
-                    .documentInfo
-                    .value
-                    .id
-                    .let(navigateToPresentation)
-            },
-            modifier = Modifier,
-        )
-    }
-
-    composable(route = "${Destinations.PRESENTATION.id}/{documentId}") { backStackEntry ->
-        val documentId = backStackEntry.arguments?.getString("documentId")
-        val viewModel = editorInjector.providePresentationViewModel()
-
-        if (documentId != null) {
-            viewModel.loadDocument(documentId)
         }
 
-        PresentationScreen(viewModel)
+        composable(route = "${Destinations.PRESENTATION.id}/{documentId}") { backStackEntry ->
+            val documentId = backStackEntry.arguments?.getString("documentId")
+            val viewModel = editorInjector.providePresentationViewModel()
+
+            if (documentId != null) {
+                viewModel.loadDocument(documentId)
+            }
+
+            PresentationScreen(viewModel)
+        }
     }
 }
+
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Composable
+private fun SharedTransitionScope.sharedModifier(
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    documentId: String? = null
+) =
+    Modifier
+        .sharedBounds(
+            rememberSharedContentState(key = "noteInit${documentId ?: ""}"),
+            animatedVisibilityScope = animatedVisibilityScope,
+            resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds
+        )
+        .background(WriteopiaTheme.colorScheme.cardBg, MaterialTheme.shapes.large)
+        .clip(MaterialTheme.shapes.large)

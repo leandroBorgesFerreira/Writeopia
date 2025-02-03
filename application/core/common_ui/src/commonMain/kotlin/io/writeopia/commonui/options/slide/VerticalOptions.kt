@@ -1,6 +1,5 @@
 package io.writeopia.commonui.options.slide
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.Flow
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun VerticalOptions(
     selectedState: Flow<Int>,
@@ -63,7 +61,7 @@ fun VerticalOptions(
                     Box(
                         modifier = Modifier
                             .width(width)
-                            .animateItemPlacement()
+                            .animateItem()
                             .background(
                                 color = WriteopiaTheme.colorScheme.optionsSelector,
                                 shape = selectorShape
@@ -77,7 +75,7 @@ fun VerticalOptions(
                             .clickable {
                                 options[i].first.invoke()
                             }
-                            .animateItemPlacement()
+                            .animateItem()
                     )
                 }
             }

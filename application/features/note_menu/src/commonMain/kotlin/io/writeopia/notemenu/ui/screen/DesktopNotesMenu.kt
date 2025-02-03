@@ -1,5 +1,8 @@
 package io.writeopia.notemenu.ui.screen
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,9 +39,12 @@ import io.writeopia.notemenu.viewmodel.ConfigState
 import io.writeopia.notemenu.viewmodel.getPath
 import io.writeopia.notemenu.viewmodel.toNumberDesktop
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun DesktopNotesMenu(
     chooseNoteViewModel: ChooseNoteViewModel,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     onNewNoteClick: () -> Unit,
     onNoteClick: (String, String) -> Unit,
     navigateToNotes: (NotesNavigation) -> Unit,
@@ -98,9 +104,12 @@ fun DesktopNotesMenu(
                     moveRequest = { item, parentId ->
                         chooseNoteViewModel.moveToFolder(item, parentId)
                     },
-                    modifier = Modifier.weight(1F).fillMaxHeight(),
+                    modifier = Modifier.weight(1F).fillMaxHeight().padding(end = 10.dp),
                     changeIcon = chooseNoteViewModel::changeIcons,
-                    onSelection = chooseNoteViewModel::toggleSelection
+                    onSelection = chooseNoteViewModel::toggleSelection,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    newNote = onNewNoteClick
                 )
 
                 Spacer(modifier = Modifier.width(20.dp))

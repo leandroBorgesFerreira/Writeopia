@@ -58,6 +58,7 @@ import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.theme.WrieopiaTheme
 import io.writeopia.theme.WriteopiaTheme
+import io.writeopia.ui.components.multiselection.DragSelectionBox
 import io.writeopia.ui.draganddrop.target.DraggableScreen
 import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.CoroutineScope
@@ -155,154 +156,156 @@ fun DesktopApp(
 
     WrieopiaTheme(darkTheme = colorTheme.isDarkTheme()) {
         val globalBackground = WriteopiaTheme.colorScheme.globalBackground
-        DraggableScreen {
-            Row(Modifier.background(globalBackground)) {
-                val sideMenuWidth by globalShellViewModel.showSideMenuState.collectAsState()
+        DragSelectionBox {
+            DraggableScreen {
+                Row(Modifier.background(globalBackground)) {
+                    val sideMenuWidth by globalShellViewModel.showSideMenuState.collectAsState()
 
-                SideGlobalMenu(
-                    modifier = Modifier.fillMaxHeight(),
-                    foldersState = globalShellViewModel.sideMenuItems,
-                    width = sideMenuWidth.dp,
-                    homeClick = {
-                        val navType = navigationController.currentBackStackEntry
-                            ?.arguments
-                            ?.getString(NAVIGATION_TYPE)
-                            ?.let(NotesNavigationType::fromType)
+                    SideGlobalMenu(
+                        modifier = Modifier.fillMaxHeight(),
+                        foldersState = globalShellViewModel.sideMenuItems,
+                        width = sideMenuWidth.dp,
+                        homeClick = {
+                            val navType = navigationController.currentBackStackEntry
+                                ?.arguments
+                                ?.getString(NAVIGATION_TYPE)
+                                ?.let(NotesNavigationType::fromType)
 
-                        if (navType != NotesNavigationType.ROOT) {
-                            navigationController.navigateToNotes(NotesNavigation.Root)
-                        }
-                    },
-                    favoritesClick = {
-                        val navType = navigationController.currentBackStackEntry
-                            ?.arguments
-                            ?.getString(NAVIGATION_TYPE)
-                            ?.let(NotesNavigationType::fromType)
+                            if (navType != NotesNavigationType.ROOT) {
+                                navigationController.navigateToNotes(NotesNavigation.Root)
+                            }
+                        },
+                        favoritesClick = {
+                            val navType = navigationController.currentBackStackEntry
+                                ?.arguments
+                                ?.getString(NAVIGATION_TYPE)
+                                ?.let(NotesNavigationType::fromType)
 
-                        if (navType != NotesNavigationType.FAVORITES) {
-                            navigationController.navigateToNotes(NotesNavigation.Favorites)
-                        }
-                    },
-                    settingsClick = globalShellViewModel::showSettings,
-                    addFolder = globalShellViewModel::addFolder,
-                    editFolder = globalShellViewModel::editFolder,
-                    navigateToFolder = { id ->
-                        val navigation = NotesNavigation.Folder(id)
-                        navigationController.navigateToNotes(navigation)
-                    },
-                    navigateToEditDocument = navigationController::navigateToNote,
-                    moveRequest = globalShellViewModel::moveToFolder,
-                    expandFolder = globalShellViewModel::expandFolder,
-                    searchClick = globalShellViewModel::showSearch,
-                    highlightContent = {},
-                    changeIcon = globalShellViewModel::changeIcons
-                )
+                            if (navType != NotesNavigationType.FAVORITES) {
+                                navigationController.navigateToNotes(NotesNavigation.Favorites)
+                            }
+                        },
+                        settingsClick = globalShellViewModel::showSettings,
+                        addFolder = globalShellViewModel::addFolder,
+                        editFolder = globalShellViewModel::editFolder,
+                        navigateToFolder = { id ->
+                            val navigation = NotesNavigation.Folder(id)
+                            navigationController.navigateToNotes(navigation)
+                        },
+                        navigateToEditDocument = navigationController::navigateToNote,
+                        moveRequest = globalShellViewModel::moveToFolder,
+                        expandFolder = globalShellViewModel::expandFolder,
+                        searchClick = globalShellViewModel::showSearch,
+                        highlightContent = {},
+                        changeIcon = globalShellViewModel::changeIcons
+                    )
 
-                Column {
-                    GlobalHeader(navigationController, globalShellViewModel.folderPath)
+                    Column {
+                        GlobalHeader(navigationController, globalShellViewModel.folderPath)
 
-                    Box(
-                        modifier = Modifier
-                            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
-                            .clip(MaterialTheme.shapes.large)
-                            .background(MaterialTheme.colorScheme.background)
-                    ) {
-                        Navigation(
-                            startDestination = startDestination,
-                            notesMenuInjection = notesMenuInjection,
-                            accountMenuInjector = accountInjector,
-                            editorInjector = editorInjector,
-                            isUndoKeyEvent = isUndoKeyEvent,
-                            selectColorTheme = selectColorTheme,
-                            navController = navigationController
-                        ) {}
-
-                        val folderEdit = globalShellViewModel.editFolderState.collectAsState().value
-
-                        if (folderEdit != null) {
-                            EditFileScreen(
-                                folderEdit = folderEdit,
-                                onDismissRequest = globalShellViewModel::stopEditingFolder,
-                                deleteFolder = globalShellViewModel::deleteFolder,
-                                editFolder = globalShellViewModel::updateFolder
-                            )
-                        }
-
-                        val showSettingsState by globalShellViewModel.showSettingsState.collectAsState()
-
-                        if (showSettingsState) {
-                            SettingsDialog(
-                                workplacePathState = globalShellViewModel.workspaceLocalPath,
-                                selectedThemePosition = MutableStateFlow(2),
-                                ollamaUrlState = globalShellViewModel.ollamaUrl,
-                                ollamaAvailableModels = globalShellViewModel.modelsForUrl,
-                                ollamaSelectedModel = globalShellViewModel.ollamaSelectedModelState,
-                                onDismissRequest = globalShellViewModel::hideSettings,
+                        Box(
+                            modifier = Modifier
+                                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                                .clip(MaterialTheme.shapes.large)
+                                .background(MaterialTheme.colorScheme.background)
+                        ) {
+                            Navigation(
+                                startDestination = startDestination,
+                                notesMenuInjection = notesMenuInjection,
+                                accountMenuInjector = accountInjector,
+                                editorInjector = editorInjector,
+                                isUndoKeyEvent = isUndoKeyEvent,
                                 selectColorTheme = selectColorTheme,
-                                selectWorkplacePath = globalShellViewModel::changeWorkspaceLocalPath,
-                                ollamaUrlChange = globalShellViewModel::changeOllamaUrl,
-                                ollamaModelChange = globalShellViewModel::selectOllamaModel
-                            )
-                        }
+                                navController = navigationController
+                            ) {}
 
-                        val showSearchState by globalShellViewModel.showSearchDialog.collectAsState()
+                            val folderEdit = globalShellViewModel.editFolderState.collectAsState().value
 
-                        if (showSearchState) {
-                            LaunchedEffect(true) {
-                                searchViewModel.init()
+                            if (folderEdit != null) {
+                                EditFileScreen(
+                                    folderEdit = folderEdit,
+                                    onDismissRequest = globalShellViewModel::stopEditingFolder,
+                                    deleteFolder = globalShellViewModel::deleteFolder,
+                                    editFolder = globalShellViewModel::updateFolder
+                                )
                             }
 
-                            SearchDialog(
-                                searchState = searchViewModel.searchState,
-                                searchResults = searchViewModel.queryResults,
-                                onSearchType = searchViewModel::onSearchType,
-                                onDismissRequest = globalShellViewModel::hideSearch,
-                                documentClick = navigationController::navigateToNote,
-                                onFolderClick = navigationController::navigateToFolder
-                            )
-                        }
+                            val showSettingsState by globalShellViewModel.showSettingsState.collectAsState()
 
-                        Box(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .width(10.dp)
-                                .align(alignment = Alignment.CenterStart)
-                                .draggable(
-                                    orientation = Orientation.Horizontal,
-                                    state = rememberDraggableState { delta ->
-                                        globalShellViewModel.moveSideMenu(sideMenuWidth + delta / 1.8F)
-                                    },
-                                    onDragStopped = {
-                                        globalShellViewModel.saveMenuWidth()
-                                    },
+                            if (showSettingsState) {
+                                SettingsDialog(
+                                    workplacePathState = globalShellViewModel.workspaceLocalPath,
+                                    selectedThemePosition = MutableStateFlow(2),
+                                    ollamaUrlState = globalShellViewModel.ollamaUrl,
+                                    ollamaAvailableModels = globalShellViewModel.modelsForUrl,
+                                    ollamaSelectedModel = globalShellViewModel.ollamaSelectedModelState,
+                                    onDismissRequest = globalShellViewModel::hideSettings,
+                                    selectColorTheme = selectColorTheme,
+                                    selectWorkplacePath = globalShellViewModel::changeWorkspaceLocalPath,
+                                    ollamaUrlChange = globalShellViewModel::changeOllamaUrl,
+                                    ollamaModelChange = globalShellViewModel::selectOllamaModel
                                 )
-                                .pointerHoverIcon(PointerIcon.Crosshair),
-                        )
+                            }
 
-                        Box(
-                            modifier = Modifier
-                                .height(60.dp)
-                                .width(16.dp)
-                                .align(alignment = Alignment.CenterStart)
-                                .clip(RoundedCornerShape(100))
-                                .clickable(onClick = globalShellViewModel::toggleSideMenu)
-                                .padding(vertical = 6.dp)
-                                .draggable(
-                                    orientation = Orientation.Horizontal,
-                                    state = rememberDraggableState { delta ->
-                                        globalShellViewModel.moveSideMenu(sideMenuWidth + delta / 2F)
-                                    },
-                                    onDragStopped = {
-                                        globalShellViewModel.saveMenuWidth()
-                                    },
+                            val showSearchState by globalShellViewModel.showSearchDialog.collectAsState()
+
+                            if (showSearchState) {
+                                LaunchedEffect(true) {
+                                    searchViewModel.init()
+                                }
+
+                                SearchDialog(
+                                    searchState = searchViewModel.searchState,
+                                    searchResults = searchViewModel.queryResults,
+                                    onSearchType = searchViewModel::onSearchType,
+                                    onDismissRequest = globalShellViewModel::hideSearch,
+                                    documentClick = navigationController::navigateToNote,
+                                    onFolderClick = navigationController::navigateToFolder
                                 )
-                                .pointerHoverIcon(PointerIcon.Crosshair),
-                        ) {
-                            RoundedVerticalDivider(
-                                modifier = Modifier.height(60.dp).align(Alignment.Center),
-                                thickness = 4.dp,
-                                color = MaterialTheme.colorScheme.surfaceVariant
+                            }
+
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .width(10.dp)
+                                    .align(alignment = Alignment.CenterStart)
+                                    .draggable(
+                                        orientation = Orientation.Horizontal,
+                                        state = rememberDraggableState { delta ->
+                                            globalShellViewModel.moveSideMenu(sideMenuWidth + delta)
+                                        },
+                                        onDragStopped = {
+                                            globalShellViewModel.saveMenuWidth()
+                                        },
+                                    )
+                                    .pointerHoverIcon(PointerIcon.Crosshair),
                             )
+
+                            Box(
+                                modifier = Modifier
+                                    .height(60.dp)
+                                    .width(16.dp)
+                                    .align(alignment = Alignment.CenterStart)
+                                    .clip(RoundedCornerShape(100))
+                                    .clickable(onClick = globalShellViewModel::toggleSideMenu)
+                                    .padding(vertical = 6.dp)
+                                    .draggable(
+                                        orientation = Orientation.Horizontal,
+                                        state = rememberDraggableState { delta ->
+                                            globalShellViewModel.moveSideMenu(sideMenuWidth + delta)
+                                        },
+                                        onDragStopped = {
+                                            globalShellViewModel.saveMenuWidth()
+                                        },
+                                    )
+                                    .pointerHoverIcon(PointerIcon.Crosshair),
+                            ) {
+                                RoundedVerticalDivider(
+                                    modifier = Modifier.height(60.dp).align(Alignment.Center),
+                                    thickness = 4.dp,
+                                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4F)
+                                )
+                            }
                         }
                     }
                 }
