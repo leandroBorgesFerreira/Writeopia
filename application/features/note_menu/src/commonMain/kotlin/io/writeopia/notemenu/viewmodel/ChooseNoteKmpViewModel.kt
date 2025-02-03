@@ -200,7 +200,6 @@ internal class ChooseNoteKmpViewModel(
     }
 
     override fun toggleSelection(id: String) {
-        println("toggleSelection")
         if (_selectedNotes.value.contains(id)) {
             _selectedNotes.value -= id
         } else {

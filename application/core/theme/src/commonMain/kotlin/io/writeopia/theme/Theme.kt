@@ -82,7 +82,7 @@ fun WrieopiaTheme(
     val tintLight = if (darkTheme) Color(0xFFDFDFDF) else Color(0xFF444444)
     val highlight = if (darkTheme) Color(0xFF616161) else Color(0xFFE0E0E0)
     val lightBackground = if (darkTheme) Color(0xFF222222) else Color(0xFFF1F1F1)
-    val cardBackground = if (darkTheme) colors.surfaceVariant else colors.background
+    val cardBackground = if (darkTheme) colors.surfaceContainer else colors.surfaceContainer
     val cardShadow = if (darkTheme) colors.background else Color.Gray
     val cardPlaceHolderBackground = if (darkTheme) colors.background else colors.surfaceVariant
     val searchBackground = if (darkTheme) colors.surfaceVariant else colors.background

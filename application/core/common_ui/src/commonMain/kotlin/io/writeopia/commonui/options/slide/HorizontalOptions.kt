@@ -1,6 +1,5 @@
 package io.writeopia.commonui.options.slide
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.Flow
 import kotlin.random.Random
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalOptions(
     selectedState: Flow<Int>,
@@ -64,7 +62,7 @@ fun HorizontalOptions(
                     Box(
                         modifier = Modifier.fillMaxWidth()
                             .height(height)
-                            .animateItemPlacement()
+                            .animateItem()
                             .background(
                                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.25F),
                                 shape = clipShare
@@ -78,7 +76,7 @@ fun HorizontalOptions(
                             .clickable {
                                 options[i].first.invoke()
                             }
-                            .animateItemPlacement()
+                            .animateItem()
                     )
                 }
             }

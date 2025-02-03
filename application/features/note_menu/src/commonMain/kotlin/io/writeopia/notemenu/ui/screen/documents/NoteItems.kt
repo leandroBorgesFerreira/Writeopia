@@ -1,7 +1,9 @@
 package io.writeopia.notemenu.ui.screen.documents
 
 // import io.writeopia.appresourcers.R
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -40,12 +43,18 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.writeopia.common.utils.icons.IconChange
+import androidx.compose.ui.unit.sp
 import io.writeopia.common.utils.ResultData
+import io.writeopia.common.utils.icons.IconChange
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.common.utils.icons.WrIcons.folder
 import io.writeopia.commonui.IconsPicker
@@ -54,7 +63,6 @@ import io.writeopia.notemenu.data.model.NotesArrangement
 import io.writeopia.notemenu.ui.dto.NotesUi
 import io.writeopia.notemenu.utils.minimalNoteCardWidth
 import io.writeopia.sdk.model.draganddrop.DropInfo
-import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.components.SwipeBox
@@ -71,9 +79,12 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 const val DOCUMENT_ITEM_TEST_TAG = "DocumentItem_"
 const val ADD_NOTE_TEST_TAG = "addNote"
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun NotesCards(
     documents: ResultData<NotesUi>,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     minimalNoteWidth: Dp = minimalNoteCardWidth(),
     loadNote: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
@@ -81,16 +92,70 @@ fun NotesCards(
     moveRequest: (MenuItemUi, String) -> Unit,
     changeIcon: (String, String, Int, IconChange) -> Unit,
     onSelection: (String) -> Unit,
+    newNote: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (documents) {
         is ResultData.Complete -> {
-            Column(modifier = modifier) {
-                val notesUi: NotesUi = documents.data
+            sharedTransitionScope.run {
+                Column(modifier = modifier) {
+                    val isEmpty = documents.data.documentUiList.isEmpty()
 
-                if (notesUi.documentUiList.isEmpty()) {
-                    NoNotesScreen()
-                } else {
+                    Box(
+                        Modifier
+                            .sharedBounds(
+                                rememberSharedContentState(key = "noteInit"),
+                                animatedVisibilityScope = animatedVisibilityScope,
+                                resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds
+                            )
+                            .fillMaxWidth()
+                            .let { modifierLet ->
+                                if (isEmpty) {
+                                    modifierLet.fillMaxHeight().padding(bottom = 30.dp)
+                                } else {
+                                    modifierLet.height(230.dp)
+                                }
+                            }
+                            .padding(top = 10.dp, start = 16.dp, end = 16.dp)
+                            .background(
+                                WriteopiaTheme.colorScheme.cardBg,
+                                MaterialTheme.shapes.large
+                            )
+                            .clip(MaterialTheme.shapes.large)
+                            .clickable(onClick = newNote)
+                    ) {
+                        val text = buildAnnotatedString {
+                            append("Tap here to ")
+                            pushStyle(
+                                SpanStyle(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontStyle = FontStyle.Italic,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
+
+                            append("write")
+
+                            pop()
+
+                            append(" the next big thing")
+                        }
+
+                        Text(
+                            text = text,
+                            modifier = Modifier.align(Alignment.Center)
+                                .padding(16.dp)
+                                .fillMaxWidth(),
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = MaterialTheme.typography.titleLarge,
+                            fontFamily = FontFamily.Monospace,
+                            letterSpacing = 1.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+
+                    val notesUi: NotesUi = documents.data
+
                     val documentsUiList = notesUi.documentUiList
 
                     val listModifier = Modifier
@@ -99,6 +164,8 @@ fun NotesCards(
                         NotesArrangement.STAGGERED_GRID -> {
                             LazyStaggeredGridNotes(
                                 documentsUiList,
+                                animatedVisibilityScope = animatedVisibilityScope,
+                                sharedTransitionScope = sharedTransitionScope,
                                 minimalNoteWidth = minimalNoteWidth,
                                 selectionListener = selectionListener,
                                 onDocumentClick = loadNote,
@@ -113,6 +180,8 @@ fun NotesCards(
                         NotesArrangement.GRID -> {
                             LazyGridNotes(
                                 documentsUiList,
+                                animatedVisibilityScope = animatedVisibilityScope,
+                                sharedTransitionScope = sharedTransitionScope,
                                 minimalNoteWidth = minimalNoteWidth,
                                 selectionListener = selectionListener,
                                 onDocumentClick = loadNote,
@@ -127,6 +196,8 @@ fun NotesCards(
                         NotesArrangement.LIST -> {
                             LazyColumnNotes(
                                 documentsUiList,
+                                animatedVisibilityScope = animatedVisibilityScope,
+                                sharedTransitionScope = sharedTransitionScope,
                                 selectionListener = selectionListener,
                                 onDocumentClick = loadNote,
                                 folderClick = folderClick,
@@ -163,10 +234,12 @@ fun NotesCards(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun LazyStaggeredGridNotes(
     documents: List<MenuItemUi>,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     minimalNoteWidth: Dp,
     onDocumentClick: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
@@ -190,12 +263,14 @@ private fun LazyStaggeredGridNotes(
                 documents,
                 key = { _, menuItem -> menuItem.hashCode() }
             ) { i, menuItem ->
-                val itemModifier = Modifier.animateItemPlacement()
+                val itemModifier = Modifier.animateItem()
 
                 when (menuItem) {
                     is MenuItemUi.DocumentUi -> {
                         DocumentItem(
                             menuItem,
+                            sharedTransitionScope = sharedTransitionScope,
+                            animatedVisibilityScope = animatedVisibilityScope,
                             onDocumentClick,
                             selectionListener,
                             previewDrawers(),
@@ -225,10 +300,12 @@ private fun LazyStaggeredGridNotes(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun LazyGridNotes(
     documents: List<MenuItemUi>,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     minimalNoteWidth: Dp,
     onDocumentClick: (String, String) -> Unit,
     folderClick: (String) -> Unit,
@@ -256,12 +333,14 @@ private fun LazyGridNotes(
                     is MenuItemUi.DocumentUi -> {
                         DocumentItem(
                             menuItem,
+                            sharedTransitionScope = sharedTransitionScope,
+                            animatedVisibilityScope = animatedVisibilityScope,
                             onDocumentClick,
                             selectionListener,
                             previewDrawers(),
                             position = i,
                             { onDragIconClick(menuItem.documentId) },
-                            modifier = Modifier.animateItemPlacement()
+                            modifier = Modifier.animateItem()
                         )
                     }
 
@@ -284,10 +363,12 @@ private fun LazyGridNotes(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun LazyColumnNotes(
     documents: List<MenuItemUi>,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     onDocumentClick: (String, String) -> Unit,
     folderClick: (String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
@@ -310,12 +391,14 @@ private fun LazyColumnNotes(
                     is MenuItemUi.DocumentUi -> {
                         DocumentItem(
                             menuItem,
+                            sharedTransitionScope = sharedTransitionScope,
+                            animatedVisibilityScope = animatedVisibilityScope,
                             onDocumentClick,
                             selectionListener,
                             previewDrawers(),
                             position = i,
                             onDragIconClick = { onDragIconClick(menuItem.documentId) },
-                            modifier = Modifier.animateItemPlacement()
+                            modifier = Modifier.animateItem()
                         )
                     }
 
@@ -457,9 +540,12 @@ private fun FolderItem(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun DocumentItem(
     documentUi: MenuItemUi.DocumentUi,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     documentClick: (String, String) -> Unit,
     selectionListener: (String, Boolean) -> Unit,
     drawers: Map<Int, StoryStepDrawer>,
@@ -476,141 +562,89 @@ private fun DocumentItem(
         WriteopiaTheme.colorScheme.cardBg
     }
 
-    Box(shadowModifier()) {
-        SwipeBox(
-            modifier = modifier
-                .fillMaxWidth()
-                .clip(MaterialTheme.shapes.large)
-                .background(WriteopiaTheme.colorScheme.cardPlaceHolderBackground)
-                .clickable {
-                    documentClick(
-                        documentUi.documentId,
-                        documentUi.title.takeIf { it.isNotEmpty() } ?: titleFallback
-                    )
-                }
-                .semantics {
-                    testTag = "$DOCUMENT_ITEM_TEST_TAG${documentUi.title}"
-                },
-            isOnEditState = documentUi.selected,
-            swipeListener = { state ->
-                selectionListener(documentUi.documentId, state)
-            },
-            cornersShape = MaterialTheme.shapes.large,
-            defaultColor = WriteopiaTheme.colorScheme.cardBg,
-            activeColor = backgroundColor
+    sharedTransitionScope.run {
+        Box(
+            shadowModifier().sharedBounds(
+                rememberSharedContentState(key = "noteInit${documentUi.documentId}"),
+                animatedVisibilityScope = animatedVisibilityScope,
+                resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds
+            )
         ) {
-            DragCardTarget(
-                position = position,
-                dataToDrop = DropInfo(documentUi, position),
-                iconTintOnHover = MaterialTheme.colorScheme.onBackground,
-                onIconClick = onDragIconClick
-            ) {
-                Column(
-                    modifier = Modifier.background(
-                        color = backgroundColor,
-                        shape = MaterialTheme.shapes.large
-                    ).clip(MaterialTheme.shapes.large)
-                ) {
-                    documentUi.preview.forEachIndexed { i, storyStep ->
-                        val extraData = mutableMapOf<String, Any>()
-
-                        if (storyStep.type == StoryTypes.TITLE.type) {
-                            documentUi.icon?.label?.let(WrIcons::fromName)?.let {
-                                extraData["imageVector"] = it
-                            }
-
-                            documentUi.icon?.tint?.let {
-                                extraData["imageVectorTint"] = it
-                            }
-                        }
-
-                        documentUi.icon
-
-                        drawers[storyStep.type.number]?.Step(
-                            step = storyStep,
-                            drawInfo = DrawInfo(
-                                editable = false,
-                                position = i,
-                                selectMode = documentUi.selected,
-                                extraData = extraData
-                            ),
+            SwipeBox(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .clip(MaterialTheme.shapes.large)
+                    .background(WriteopiaTheme.colorScheme.cardPlaceHolderBackground)
+                    .clickable {
+                        documentClick(
+                            documentUi.documentId,
+                            documentUi.title.takeIf { it.isNotEmpty() } ?: titleFallback
                         )
                     }
+                    .semantics {
+                        testTag = "$DOCUMENT_ITEM_TEST_TAG${documentUi.title}"
+                    },
+                isOnEditState = documentUi.selected,
+                swipeListener = { state ->
+                    selectionListener(documentUi.documentId, state)
+                },
+                cornersShape = MaterialTheme.shapes.large,
+                defaultColor = WriteopiaTheme.colorScheme.cardBg,
+                activeColor = backgroundColor
+            ) {
+                DragCardTarget(
+                    position = position,
+                    dataToDrop = DropInfo(documentUi, position),
+                    iconTintOnHover = MaterialTheme.colorScheme.onBackground,
+                    onIconClick = onDragIconClick
+                ) {
+                    Column(
+                        modifier = Modifier.background(
+                            color = backgroundColor,
+                            shape = MaterialTheme.shapes.large
+                        ).clip(MaterialTheme.shapes.large)
+                    ) {
+                        documentUi.preview.forEachIndexed { i, storyStep ->
+                            val extraData = mutableMapOf<String, Any>()
 
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
+                            if (storyStep.type == StoryTypes.TITLE.type) {
+                                documentUi.icon?.label?.let(WrIcons::fromName)?.let {
+                                    extraData["imageVector"] = it
+                                }
 
-                if (documentUi.isFavorite) {
-                    Icon(
-                        modifier = Modifier.align(Alignment.TopEnd).size(40.dp).padding(12.dp),
-                        imageVector = WrIcons.favorites,
-                        contentDescription = "Favorite",
-                        tint = MaterialTheme.colorScheme.onBackground
-                    )
+                                documentUi.icon?.tint?.let {
+                                    extraData["imageVectorTint"] = it
+                                }
+                            }
+
+                            documentUi.icon
+
+                            drawers[storyStep.type.number]?.Step(
+                                step = storyStep,
+                                drawInfo = DrawInfo(
+                                    editable = false,
+                                    position = i,
+                                    selectMode = documentUi.selected,
+                                    extraData = extraData
+                                ),
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+
+                    if (documentUi.isFavorite) {
+                        Icon(
+                            modifier = Modifier.align(Alignment.TopEnd).size(40.dp).padding(12.dp),
+                            imageVector = WrIcons.favorites,
+                            contentDescription = "Favorite",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
                 }
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun DocumentItemPreview() {
-    val menuItem = MenuItemUi.DocumentUi(
-        documentId = "documentId",
-        title = "title",
-        lastEdit = "lastEdit",
-        preview = listOf(
-            StoryStep(type = StoryTypes.TITLE.type, text = "Title"),
-            StoryStep(type = StoryTypes.TEXT.type, text = "some text"),
-            StoryStep(type = StoryTypes.CHECK_ITEM.type, text = "some text"),
-            StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type, text = "some text")
-        ),
-        selected = false,
-        isFavorite = true,
-        parentId = "",
-        highlighted = false,
-    )
-
-    DocumentItem(
-        documentUi = menuItem,
-        documentClick = { _, _ -> },
-        selectionListener = { _, _ -> },
-        drawers = previewDrawers(),
-        position = 0,
-        onDragIconClick = {},
-        modifier = Modifier.padding(10.dp)
-    )
-}
-
-@Preview
-@Composable
-fun DocumentItemSelectedPreview() {
-    val menuItem = MenuItemUi.DocumentUi(
-        documentId = "documentId",
-        title = "title",
-        lastEdit = "lastEdit",
-        preview = listOf(
-            StoryStep(type = StoryTypes.TITLE.type, text = "Title"),
-            StoryStep(type = StoryTypes.TEXT.type, text = "some text"),
-            StoryStep(type = StoryTypes.CHECK_ITEM.type, text = "some text"),
-            StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type, text = "some text")
-        ),
-        selected = true,
-        isFavorite = true,
-        parentId = "",
-        highlighted = false,
-    )
-
-    DocumentItem(
-        documentUi = menuItem,
-        documentClick = { _, _ -> },
-        selectionListener = { _, _ -> },
-        drawers = previewDrawers(),
-        position = 0,
-        onDragIconClick = {},
-        modifier = Modifier.padding(10.dp)
-    )
 }
 
 @Preview

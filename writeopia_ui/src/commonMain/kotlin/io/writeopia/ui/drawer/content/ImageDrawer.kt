@@ -6,7 +6,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +39,7 @@ import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.components.SwipeBox
+import io.writeopia.ui.components.multiselection.SelectableByDrag
 import io.writeopia.ui.draganddrop.target.DragCardTarget
 import io.writeopia.ui.draganddrop.target.DragTarget
 import io.writeopia.ui.draganddrop.target.DropTarget
@@ -62,7 +66,16 @@ class ImageDrawer(
         val dropInfo = remember { DropInfo(step, drawInfo.position) }
         val interactionSource = remember { MutableInteractionSource() }
 
-        DropTarget(modifier = Modifier.padding(horizontal = 6.dp)) { inBound, data ->
+        SelectableByDrag { isInsideDrag ->
+            if (isInsideDrag != null) {
+                LaunchedEffect(isInsideDrag) {
+                    onSelected(isInsideDrag, drawInfo.position)
+                }
+            }
+
+            DropTarget(
+                modifier = Modifier.padding(horizontal = 6.dp).height(300.dp)
+            ) { inBound, data ->
 //            if (inBound && data != null) {
 //                mergeRequest(
 //                    Action.Merge(
@@ -74,91 +87,93 @@ class ImageDrawer(
 //                )
 //            }
 
-            val imageModifier = containerModifier(inBound) ?: Modifier.defaultImageShape(inBound)
-            val focusRequester = remember { FocusRequester() }
+                val imageModifier =
+                    containerModifier(inBound) ?: Modifier.defaultImageShape(inBound)
+                val focusRequester = remember { FocusRequester() }
 
-            SwipeBox(
-                modifier = Modifier.hoverable(interactionSource),
-                defaultColor = MaterialTheme.colorScheme.surfaceVariant,
-                activeColor = config.selectedColor(),
-                activeBorderColor = config.selectedBorderColor(),
-                isOnEditState = drawInfo.selectMode,
-                swipeListener = { isSelected ->
-                    onSelected(isSelected, drawInfo.position)
-                }
-            ) {
-                DragCardTarget(
-                    modifier = Modifier.clip(MaterialTheme.shapes.large),
-                    position = drawInfo.position,
-                    dataToDrop = dropInfo,
-                    iconTintOnHover = MaterialTheme.colorScheme.onBackground,
-                    onDragStart = onDragStart,
-                    onDragStop = onDragStop,
-                    onIconClick = {
-                        onSelected(!drawInfo.selectMode, drawInfo.position)
-                    },
-                ) {
-                    Column(
-                        modifier = imageModifier
-                            .focusRequester(focusRequester)
-                            .onGloballyPositioned {
-                                if (drawInfo.hasFocus()) {
-                                    focusRequester.requestFocus()
-                                }
-                            },
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        DragTarget(
-                            modifier = imageModifier,
-                            dataToDrop = DropInfo(step, drawInfo.position)
-                        ) {
-
-                            SubcomposeAsyncImage(
-                                model = ImageRequest.Builder(LocalPlatformContext.current)
-                                    .data(step.url ?: step.path)
-                                    .build(),
-                                contentScale = ContentScale.Crop,
-                                contentDescription = "",
-                                modifier = Modifier.clip(shape = RoundedCornerShape(size = 12.dp)),
-                                loading = {
-                                    CircularProgressIndicator()
-                                }
-                            )
-                        }
-                        step.text?.let { text ->
-                            Text(
-                                text = text,
-                                modifier = Modifier
-                                    .padding(6.dp)
-                                    .fillMaxWidth(),
-                                style = TextStyle(
-                                    color = MaterialTheme.colorScheme.onBackground,
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight.Bold
-                                ),
-                            )
-                        }
+                SwipeBox(
+                    modifier = Modifier.hoverable(interactionSource),
+                    defaultColor = MaterialTheme.colorScheme.surfaceVariant,
+                    activeColor = config.selectedColor(),
+                    activeBorderColor = config.selectedBorderColor(),
+                    isOnEditState = drawInfo.selectMode,
+                    swipeListener = { isSelected ->
+                        onSelected(isSelected, drawInfo.position)
                     }
+                ) {
+                    DragCardTarget(
+                        modifier = Modifier.clip(MaterialTheme.shapes.large),
+                        position = drawInfo.position,
+                        dataToDrop = dropInfo,
+                        iconTintOnHover = MaterialTheme.colorScheme.onBackground,
+                        onDragStart = onDragStart,
+                        onDragStop = onDragStop,
+                        onIconClick = {
+                            onSelected(!drawInfo.selectMode, drawInfo.position)
+                        },
+                    ) {
+                        Column(
+                            modifier = imageModifier
+                                .focusRequester(focusRequester)
+                                .onGloballyPositioned {
+                                    if (drawInfo.hasFocus()) {
+                                        focusRequester.requestFocus()
+                                    }
+                                },
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            DragTarget(
+                                modifier = imageModifier,
+                                dataToDrop = DropInfo(step, drawInfo.position)
+                            ) {
 
-                    Icon(
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .clip(CircleShape)
-                            .clickable {
-                                onDelete(
-                                    Action.DeleteStory(
-                                        step,
-                                        drawInfo.position
-                                    )
+                                SubcomposeAsyncImage(
+                                    model = ImageRequest.Builder(LocalPlatformContext.current)
+                                        .data(step.url ?: step.path)
+                                        .build(),
+                                    contentScale = ContentScale.Crop,
+                                    contentDescription = "",
+                                    modifier = Modifier.clip(shape = RoundedCornerShape(size = 12.dp)),
+                                    loading = {
+                                        CircularProgressIndicator()
+                                    }
                                 )
                             }
-                            .clip(CircleShape)
-                            .align(Alignment.TopEnd)
-                            .padding(6.dp),
-                        imageVector = WrSdkIcons.close,
-                        contentDescription = "Trash",
-                        tint = MaterialTheme.colorScheme.onBackground
-                    )
+                            step.text?.let { text ->
+                                Text(
+                                    text = text,
+                                    modifier = Modifier
+                                        .padding(6.dp)
+                                        .fillMaxWidth(),
+                                    style = TextStyle(
+                                        color = MaterialTheme.colorScheme.onBackground,
+                                        textAlign = TextAlign.Center,
+                                        fontWeight = FontWeight.Bold
+                                    ),
+                                )
+                            }
+                        }
+
+                        Icon(
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .clip(CircleShape)
+                                .clickable {
+                                    onDelete(
+                                        Action.DeleteStory(
+                                            step,
+                                            drawInfo.position
+                                        )
+                                    )
+                                }
+                                .clip(CircleShape)
+                                .align(Alignment.TopEnd)
+                                .padding(6.dp),
+                            imageVector = WrSdkIcons.close,
+                            contentDescription = "Trash",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
                 }
             }
         }
@@ -167,5 +182,5 @@ class ImageDrawer(
 
 fun Modifier.defaultImageShape(inBound: Boolean) =
     clip(shape = RoundedCornerShape(size = 12.dp))
-        .background(if (inBound) Color.LightGray else Color.DarkGray)
+//        .background(if (inBound) Color.LightGray else Color.DarkGray)
         .border(width = 1.dp, if (inBound) Color.LightGray else Color.DarkGray)

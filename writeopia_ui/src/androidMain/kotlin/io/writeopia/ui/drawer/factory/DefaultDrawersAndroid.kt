@@ -1,7 +1,6 @@
 package io.writeopia.ui.drawer.factory
 
 import android.view.KeyEvent
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -25,7 +24,6 @@ import io.writeopia.ui.model.DrawConfig
 
 object DefaultDrawersAndroid : DrawersFactory {
 
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun create(
         manager: WriteopiaStateManager,

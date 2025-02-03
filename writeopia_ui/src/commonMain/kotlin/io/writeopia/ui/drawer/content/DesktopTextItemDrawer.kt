@@ -19,6 +19,7 @@ import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.components.SwipeBox
+import io.writeopia.ui.components.multiselection.SelectableByDrag
 import io.writeopia.ui.draganddrop.target.DragRowTarget
 import io.writeopia.ui.draganddrop.target.DropTargetHorizontalDivision
 import io.writeopia.ui.draganddrop.target.InBounds
@@ -66,47 +67,32 @@ class DesktopTextItemDrawer(
             ?.let { 4 to 16 }
             ?: (0 to 0)
 
-        DropTargetHorizontalDivision(
-            modifier = Modifier.padding(bottom = paddingBottom.dp, top = paddingTop.dp)
-        ) { inBound, data ->
-            when (inBound) {
-                InBounds.OUTSIDE -> {}
-                InBounds.INSIDE_UP -> {
-                    val position = drawInfo.position - 1
-                    handleDrag(position, data)
-                }
-
-                InBounds.INSIDE_DOWN -> {
-                    val position = drawInfo.position
-                    handleDrag(position, data)
+        SelectableByDrag { isInsideDrag ->
+            if (isInsideDrag != null) {
+                LaunchedEffect(isInsideDrag) {
+                    onSelected(isInsideDrag, drawInfo.position)
                 }
             }
 
-            SwipeBox(
-                modifier = modifier
-                    .hoverable(interactionSource)
-                    .apply {
-                        if (clickable) {
-                            clickable {
-                                focusRequester.requestFocus()
-                            }
-                        }
-                    },
-                defaultColor = customBackgroundColor,
-                activeColor = config.selectedColor(),
-                activeBorderColor = config.selectedBorderColor(),
-                isOnEditState = drawInfo.selectMode,
-                swipeListener = { isSelected ->
-                    onSelected(isSelected, drawInfo.position)
-                },
-                paddingValues = paddingValues
-            ) {
-                DragRowTarget(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .let { modifierLet ->
-                            tagDecoration.decorate(modifierLet, step.tags, config)
-                        }
+            DropTargetHorizontalDivision(
+                modifier = Modifier.padding(bottom = paddingBottom.dp, top = paddingTop.dp)
+            ) { inBound, data ->
+                when (inBound) {
+                    InBounds.OUTSIDE -> {}
+                    InBounds.INSIDE_UP -> {
+                        val position = drawInfo.position - 1
+                        handleDrag(position, data)
+                    }
+
+                    InBounds.INSIDE_DOWN -> {
+                        val position = drawInfo.position
+                        handleDrag(position, data)
+                    }
+                }
+
+                SwipeBox(
+                    modifier = modifier
+                        .hoverable(interactionSource)
                         .apply {
                             if (clickable) {
                                 clickable {
@@ -114,38 +100,61 @@ class DesktopTextItemDrawer(
                                 }
                             }
                         },
-                    dataToDrop = dropInfo,
-                    showIcon = showDragIcon || isHovered && enabled,
-                    position = drawInfo.position,
-                    dragIconWidth = dragIconWidth,
-                    onDragStart = onDragStart,
-                    onDragStop = onDragStop,
-                    isHoldDraggable = drawInfo.selectMode,
-                    emptySpaceClick = {
-                        focusRequester.requestFocus()
+                    defaultColor = customBackgroundColor,
+                    activeColor = config.selectedColor(),
+                    activeBorderColor = config.selectedBorderColor(),
+                    isOnEditState = drawInfo.selectMode,
+                    swipeListener = { isSelected ->
+                        onSelected(isSelected, drawInfo.position)
                     },
-                    onClick = {
-                        onSelected(!drawInfo.selectMode, drawInfo.position)
-                    }
+                    paddingValues = paddingValues
                 ) {
-                    val interactionSourceText = remember { MutableInteractionSource() }
-                    startContent?.invoke(step, drawInfo)
-
-                    messageDrawer().apply {
-                        onFocusChanged = { _, focusState ->
-                            if (!isDesktop) {
-                                showDragIcon = focusState.hasFocus
+                    DragRowTarget(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .let { modifierLet ->
+                                tagDecoration.decorate(modifierLet, step.tags, config)
                             }
+                            .apply {
+                                if (clickable) {
+                                    clickable {
+                                        focusRequester.requestFocus()
+                                    }
+                                }
+                            },
+                        dataToDrop = dropInfo,
+                        showIcon = showDragIcon || isHovered && enabled,
+                        position = drawInfo.position,
+                        dragIconWidth = dragIconWidth,
+                        onDragStart = onDragStart,
+                        onDragStop = onDragStop,
+                        isHoldDraggable = drawInfo.selectMode,
+                        emptySpaceClick = {
+                            focusRequester.requestFocus()
+                        },
+                        onClick = {
+                            onSelected(!drawInfo.selectMode, drawInfo.position)
                         }
-                    }.Text(
-                        step = step,
-                        drawInfo = drawInfo,
-                        interactionSource = interactionSourceText,
-                        focusRequester = focusRequester,
-                        decorationBox = @Composable { innerTextField -> innerTextField() },
-                    )
+                    ) {
+                        val interactionSourceText = remember { MutableInteractionSource() }
+                        startContent?.invoke(step, drawInfo)
 
-                    endContent?.invoke(step, drawInfo, isHovered)
+                        messageDrawer().apply {
+                            onFocusChanged = { _, focusState ->
+                                if (!isDesktop) {
+                                    showDragIcon = focusState.hasFocus
+                                }
+                            }
+                        }.Text(
+                            step = step,
+                            drawInfo = drawInfo,
+                            interactionSource = interactionSourceText,
+                            focusRequester = focusRequester,
+                            decorationBox = @Composable { innerTextField -> innerTextField() },
+                        )
+
+                        endContent?.invoke(step, drawInfo, isHovered)
+                    }
                 }
             }
         }

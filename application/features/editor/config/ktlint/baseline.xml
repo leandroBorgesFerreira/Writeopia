@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <baseline version="1.0">
+    <file name="build/generated/compose/resourceGenerator/kotlin/androidMainResourceCollectors/writeopia/application/features/editor/generated/resources/ActualResourceCollectors.kt">
+        <error line="17" column="1" source="standard:indent" />
+        <error line="18" column="1" source="standard:indent" />
+        <error line="21" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="24" column="1" source="standard:indent" />
+        <error line="25" column="1" source="standard:indent" />
+        <error line="28" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="31" column="1" source="standard:indent" />
+        <error line="32" column="1" source="standard:indent" />
+        <error line="35" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="38" column="1" source="standard:indent" />
+        <error line="39" column="1" source="standard:indent" />
+        <error line="42" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="45" column="1" source="standard:indent" />
+        <error line="46" column="1" source="standard:indent" />
+        <error line="49" column="1" source="standard:no-consecutive-blank-lines" />
+    </file>
     <file name="build/generated/compose/resourceGenerator/kotlin/commonResClass/writeopia/application/features/editor/generated/resources/Res.kt">
         <error line="2" column="1" source="standard:indent" />
         <error line="3" column="1" source="standard:indent" />
@@ -45,5 +62,98 @@
         <error line="48" column="17" source="standard:class-naming" />
         <error line="50" column="1" source="standard:indent" />
         <error line="50" column="17" source="standard:class-naming" />
+    </file>
+    <file name="build/generated/compose/resourceGenerator/kotlin/iosArm64MainResourceCollectors/writeopia/application/features/editor/generated/resources/ActualResourceCollectors.kt">
+        <error line="17" column="1" source="standard:indent" />
+        <error line="18" column="1" source="standard:indent" />
+        <error line="21" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="24" column="1" source="standard:indent" />
+        <error line="25" column="1" source="standard:indent" />
+        <error line="28" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="31" column="1" source="standard:indent" />
+        <error line="32" column="1" source="standard:indent" />
+        <error line="35" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="38" column="1" source="standard:indent" />
+        <error line="39" column="1" source="standard:indent" />
+        <error line="42" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="45" column="1" source="standard:indent" />
+        <error line="46" column="1" source="standard:indent" />
+        <error line="49" column="1" source="standard:no-consecutive-blank-lines" />
+    </file>
+    <file name="build/generated/compose/resourceGenerator/kotlin/iosSimulatorArm64MainResourceCollectors/writeopia/application/features/editor/generated/resources/ActualResourceCollectors.kt">
+        <error line="17" column="1" source="standard:indent" />
+        <error line="18" column="1" source="standard:indent" />
+        <error line="21" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="24" column="1" source="standard:indent" />
+        <error line="25" column="1" source="standard:indent" />
+        <error line="28" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="31" column="1" source="standard:indent" />
+        <error line="32" column="1" source="standard:indent" />
+        <error line="35" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="38" column="1" source="standard:indent" />
+        <error line="39" column="1" source="standard:indent" />
+        <error line="42" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="45" column="1" source="standard:indent" />
+        <error line="46" column="1" source="standard:indent" />
+        <error line="49" column="1" source="standard:no-consecutive-blank-lines" />
+    </file>
+    <file name="build/generated/compose/resourceGenerator/kotlin/iosX64MainResourceCollectors/writeopia/application/features/editor/generated/resources/ActualResourceCollectors.kt">
+        <error line="17" column="1" source="standard:indent" />
+        <error line="18" column="1" source="standard:indent" />
+        <error line="21" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="24" column="1" source="standard:indent" />
+        <error line="25" column="1" source="standard:indent" />
+        <error line="28" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="31" column="1" source="standard:indent" />
+        <error line="32" column="1" source="standard:indent" />
+        <error line="35" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="38" column="1" source="standard:indent" />
+        <error line="39" column="1" source="standard:indent" />
+        <error line="42" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="45" column="1" source="standard:indent" />
+        <error line="46" column="1" source="standard:indent" />
+        <error line="49" column="1" source="standard:no-consecutive-blank-lines" />
+    </file>
+    <file name="build/generated/compose/resourceGenerator/kotlin/jsMainResourceCollectors/writeopia/application/features/editor/generated/resources/ActualResourceCollectors.kt">
+        <error line="17" column="1" source="standard:indent" />
+        <error line="18" column="1" source="standard:indent" />
+        <error line="21" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="24" column="1" source="standard:indent" />
+        <error line="25" column="1" source="standard:indent" />
+        <error line="28" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="31" column="1" source="standard:indent" />
+        <error line="32" column="1" source="standard:indent" />
+        <error line="35" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="38" column="1" source="standard:indent" />
+        <error line="39" column="1" source="standard:indent" />
+        <error line="42" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="45" column="1" source="standard:indent" />
+        <error line="46" column="1" source="standard:indent" />
+        <error line="49" column="1" source="standard:no-consecutive-blank-lines" />
+    </file>
+    <file name="build/generated/compose/resourceGenerator/kotlin/jvmMainResourceCollectors/writeopia/application/features/editor/generated/resources/ActualResourceCollectors.kt">
+        <error line="17" column="1" source="standard:indent" />
+        <error line="18" column="1" source="standard:indent" />
+        <error line="21" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="24" column="1" source="standard:indent" />
+        <error line="25" column="1" source="standard:indent" />
+        <error line="28" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="31" column="1" source="standard:indent" />
+        <error line="32" column="1" source="standard:indent" />
+        <error line="35" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="38" column="1" source="standard:indent" />
+        <error line="39" column="1" source="standard:indent" />
+        <error line="42" column="1" source="standard:no-consecutive-blank-lines" />
+        <error line="45" column="1" source="standard:indent" />
+        <error line="46" column="1" source="standard:indent" />
+        <error line="49" column="1" source="standard:no-consecutive-blank-lines" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/editor/features/editor/ui/desktop/DesktopNoteEditorScreen.kt">
+        <error line="3" column="1" source="standard:no-unused-imports" />
+        <error line="22" column="1" source="standard:no-unused-imports" />
+        <error line="29" column="1" source="standard:no-unused-imports" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/editor/navigation/EditorNavigation.kt">
+        <error line="13" column="1" source="standard:no-unused-imports" />
     </file>
 </baseline>

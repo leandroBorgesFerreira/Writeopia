@@ -1,6 +1,5 @@
 package io.writeopia.commonui.folders
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.hoverable
@@ -43,7 +42,6 @@ import io.writeopia.ui.draganddrop.target.DragRowTarget
 import io.writeopia.ui.draganddrop.target.DropTarget
 import io.writeopia.ui.icons.WrSdkIcons
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DocumentList(
     menuItems: List<MenuItemUi>,
@@ -59,7 +57,7 @@ fun DocumentList(
             menuItems,
             key = { _, item -> item.id }
         ) { i, item ->
-            val itemModifier = Modifier.animateItemPlacement()
+            val itemModifier = Modifier.animateItem()
 
             when (item) {
                 is MenuItemUi.DocumentUi -> {

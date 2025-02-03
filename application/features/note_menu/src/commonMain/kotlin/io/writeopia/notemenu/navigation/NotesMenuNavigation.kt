@@ -1,5 +1,8 @@
 package io.writeopia.notemenu.navigation
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
@@ -24,9 +27,11 @@ object NoteMenuDestiny {
     fun noteMenu() = "${Destinations.CHOOSE_NOTE.id}/{$NAVIGATION_TYPE}/{$NAVIGATION_PATH}"
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.notesMenuNavigation(
     notesMenuInjection: NotesMenuInjection,
     navigationController: NavController,
+    sharedTransitionScope: SharedTransitionScope,
     selectColorTheme: (ColorThemeOption) -> Unit,
     navigateToNote: (String, String) -> Unit,
     navigateToNewNote: () -> Unit,
@@ -63,6 +68,8 @@ fun NavGraphBuilder.notesMenuNavigation(
         NotesMenuScreen(
             chooseNoteViewModel = chooseNoteViewModel,
             navigationController = navigationController,
+            animatedVisibilityScope = this@composable,
+            sharedTransitionScope = sharedTransitionScope,
             onNewNoteClick = navigateToNewNote,
             onNoteClick = navigateToNote,
             onAccountClick = navigateToAccount,

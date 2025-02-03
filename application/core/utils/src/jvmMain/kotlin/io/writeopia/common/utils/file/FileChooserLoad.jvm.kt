@@ -9,5 +9,5 @@ actual fun fileChooserLoad(title: String): String? {
         isVisible = true
     }
 
-    return (dialog.directory + dialog.file).takeIf { it.isNotEmpty() }
+    return (dialog.directory + dialog.file).takeIf { it.isNotEmpty() && it != "nullnull" }
 }

@@ -1,6 +1,5 @@
 package io.writeopia.editor.features.editor.ui.folders
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -47,7 +46,6 @@ fun FolderSelectionDialog(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FolderSelection(
     menuItemsState: StateFlow<List<MenuItemUi.FolderUi>>,
@@ -76,7 +74,7 @@ fun FolderSelection(
                 menuItems,
                 key = { _, item -> item.id }
             ) { i, item ->
-                val itemModifier = Modifier.animateItemPlacement()
+                val itemModifier = Modifier.animateItem()
 
                 FolderItem(
                     item,
