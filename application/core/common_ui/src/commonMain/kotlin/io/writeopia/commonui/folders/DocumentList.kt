@@ -102,7 +102,7 @@ private fun FolderItem(
     changeIcon: (String, String, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val depth = folder.depth
+    val depth = folder.depth - 1
     val dropInfo = DropInfo(folder, position)
 
     DropTarget { inBound, data ->
@@ -160,7 +160,7 @@ private fun FolderItem(
                     .padding(6.dp)
             )
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(2.dp))
 
             var showIconsOptions by remember {
                 mutableStateOf(false)
@@ -229,7 +229,7 @@ private fun DocumentItem(
     changeIcon: (String, String, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val depth = document.depth
+    val depth = document.depth - 1
     val dropInfo = DropInfo(document, position)
 
     val interactionSource = remember { MutableInteractionSource() }
@@ -265,6 +265,8 @@ private fun DocumentItem(
         }
 
         val tint = document.icon?.tint?.let(::Color) ?: WriteopiaTheme.colorScheme.textLight
+
+        Spacer(modifier = Modifier.width(6.dp))
 
         Icon(
             imageVector = document.icon?.label?.let(WrIcons::fromName) ?: WrIcons.file,
