@@ -39,7 +39,6 @@ import io.writeopia.ui.model.TextInput
 import io.writeopia.ui.modifiers.StepsModifier
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -89,7 +88,12 @@ class WriteopiaStateManager(
                             }
                         }
 
-                        KeyboardEvent.IDLE -> {}
+                        KeyboardEvent.SELECT_ALL -> {
+                            selectAll()
+                        }
+
+                        KeyboardEvent.IDLE -> {
+                        }
                     }
                 }
         }
@@ -479,7 +483,7 @@ class WriteopiaStateManager(
 
             writeopiaManager.onLineBreak(lineBreak, expanded).let { (newPosition, newState) ->
                 // Todo: Fix this when the inner position are completed
-        //                backStackManager.addAction(BackstackAction.Add(newStory, newPosition))
+                //                backStackManager.addAction(BackstackAction.Add(newStory, newPosition))
                 _currentStory.value = newState.copy(selection = Selection.start())
                 _scrollToPosition.value = newPosition
             }
@@ -959,6 +963,10 @@ class WriteopiaStateManager(
     private fun currentPosition() = _currentStory.value.focus
 
     private fun getCurrentStory(): StoryStep? = currentPosition()?.let(::getStory)
+
+    private fun selectAll() {
+        _positionsOnEdit.value = getStories().keys
+    }
 
     companion object {
         fun create(

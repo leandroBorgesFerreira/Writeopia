@@ -95,6 +95,11 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                     false
                 }
 
+                isSelectAllEvent(keyEvent) -> {
+                    sendEvent(KeyboardEvent.SELECT_ALL)
+                    false
+                }
+
                 else -> false
             }
         }
@@ -157,3 +162,8 @@ private fun isSelectionKeyEventStop(keyEvent: AndroidKeyEvent) =
 private fun isDeleteEvent(keyEvent: AndroidKeyEvent) =
     keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_DELETE ||
         keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE
+
+private fun isSelectAllEvent(keyEvent: AndroidKeyEvent) =
+    keyEvent.isMetaPressed &&
+    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_A &&
+        keyEvent.type == KeyEventType.KeyUp
