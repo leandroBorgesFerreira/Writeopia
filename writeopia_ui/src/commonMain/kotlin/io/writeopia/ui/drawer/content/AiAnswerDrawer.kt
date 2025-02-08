@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,6 +24,7 @@ import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.components.SwipeBox
+import io.writeopia.ui.components.multiselection.SelectableByDrag
 import io.writeopia.ui.draganddrop.target.DragRowTarget
 import io.writeopia.ui.draganddrop.target.DropTargetHorizontalDivision
 import io.writeopia.ui.draganddrop.target.InBounds
@@ -62,60 +64,68 @@ class AiAnswerDrawer(
             ?.let { 4 to 16 }
             ?: (0 to 0)
 
-        DropTargetHorizontalDivision(
-            modifier = Modifier.padding(bottom = paddingBottom.dp, top = paddingTop.dp)
-        ) { inBound, data ->
-            when (inBound) {
-                InBounds.OUTSIDE -> {}
-                InBounds.INSIDE_UP -> {
-                    val position = drawInfo.position - 1
-                    handleDrag(position, data)
-                }
-
-                InBounds.INSIDE_DOWN -> {
-                    val position = drawInfo.position
-                    handleDrag(position, data)
+        SelectableByDrag { isInsideDrag ->
+            if (isInsideDrag != null) {
+                LaunchedEffect(isInsideDrag) {
+                    onSelected(isInsideDrag, drawInfo.position)
                 }
             }
 
-            SwipeBox(
-                modifier = modifier.hoverable(interactionSource),
-                defaultColor = customBackgroundColor,
-                activeColor = config.selectedColor(),
-                activeBorderColor = config.selectedBorderColor(),
-                isOnEditState = drawInfo.selectMode,
-                swipeListener = { isSelected ->
-                    onSelected(isSelected, drawInfo.position)
-                },
-                paddingValues = paddingValues
-            ) {
-                DragRowTarget(
-                    modifier = Modifier.fillMaxWidth(),
-                    dataToDrop = dropInfo,
-                    showIcon = showDragIcon || isHovered && enabled,
-                    position = drawInfo.position,
-                    dragIconWidth = dragIconWidth,
-                    onDragStart = onDragStart,
-                    onDragStop = onDragStop,
-                    isHoldDraggable = drawInfo.selectMode,
-                    emptySpaceClick = {},
-                    onClick = {
-                        onSelected(!drawInfo.selectMode, drawInfo.position)
+            DropTargetHorizontalDivision(
+                modifier = Modifier.padding(bottom = paddingBottom.dp, top = paddingTop.dp)
+            ) { inBound, data ->
+                when (inBound) {
+                    InBounds.OUTSIDE -> {}
+                    InBounds.INSIDE_UP -> {
+                        val position = drawInfo.position - 1
+                        handleDrag(position, data)
                     }
-                ) {
-                    Text(
-                        modifier = Modifier.padding(
-                            horizontal = config.iaAnswerHorizontalPadding.dp,
-                            vertical = config.iaAnswerHorizontalPadding.dp
-                        ),
-                        text = step.text ?: "", style = TextStyle(
-                            color = MaterialTheme.colorScheme.onBackground,
-                            fontSize = 16.sp,
-//                            fontFamily = fontFamily
-                        )
-                    )
 
-                    endContent?.invoke(step, drawInfo, isHovered)
+                    InBounds.INSIDE_DOWN -> {
+                        val position = drawInfo.position
+                        handleDrag(position, data)
+                    }
+                }
+
+                SwipeBox(
+                    modifier = modifier.hoverable(interactionSource),
+                    defaultColor = customBackgroundColor,
+                    activeColor = config.selectedColor(),
+                    activeBorderColor = config.selectedBorderColor(),
+                    isOnEditState = drawInfo.selectMode,
+                    swipeListener = { isSelected ->
+                        onSelected(isSelected, drawInfo.position)
+                    },
+                    paddingValues = paddingValues
+                ) {
+                    DragRowTarget(
+                        modifier = Modifier.fillMaxWidth(),
+                        dataToDrop = dropInfo,
+                        showIcon = showDragIcon || isHovered && enabled,
+                        position = drawInfo.position,
+                        dragIconWidth = dragIconWidth,
+                        onDragStart = onDragStart,
+                        onDragStop = onDragStop,
+                        isHoldDraggable = drawInfo.selectMode,
+                        emptySpaceClick = {},
+                        onClick = {
+                            onSelected(!drawInfo.selectMode, drawInfo.position)
+                        }
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(
+                                horizontal = config.iaAnswerHorizontalPadding.dp,
+                                vertical = config.iaAnswerHorizontalPadding.dp
+                            ),
+                            text = step.text ?: "", style = TextStyle(
+                                color = MaterialTheme.colorScheme.onBackground,
+                                fontSize = 16.sp,
+//                            fontFamily = fontFamily
+                            )
+                        )
+
+                        endContent?.invoke(step, drawInfo, isHovered)
+                    }
                 }
             }
         }
