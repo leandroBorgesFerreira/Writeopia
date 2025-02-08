@@ -55,4 +55,6 @@ interface GlobalShellViewModel : FolderController {
     fun changeOllamaUrl(url: String)
 
     fun selectOllamaModel(model: String)
+
+    fun retryModels()
 }

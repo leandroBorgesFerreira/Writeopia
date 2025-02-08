@@ -37,6 +37,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class GlobalShellKmpViewModel(
     private val notesUseCase: NotesUseCase,
@@ -73,6 +74,8 @@ class GlobalShellKmpViewModel(
     private val _workspaceLocalPath = MutableStateFlow("")
     override val workspaceLocalPath: StateFlow<String> = _workspaceLocalPath.asStateFlow()
 
+    private val _retryModels = MutableStateFlow(0)
+
     override val ollamaUrl: StateFlow<String> =
         ollamaRepository.listenForConfiguration("disconnected_user")
             .map { config -> config?.url ?: "" }
@@ -91,7 +94,9 @@ class GlobalShellKmpViewModel(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override val modelsForUrl: StateFlow<ResultData<List<String>>> =
-        ollamaUrl.flatMapLatest { url ->
+        combine(ollamaUrl, _retryModels) { url, _ ->
+            url
+        }.flatMapLatest { url ->
             ollamaRepository.getModels(url)
         }.map { result ->
             result.map { modelResponse ->
@@ -280,6 +285,10 @@ class GlobalShellKmpViewModel(
         viewModelScope.launch(Dispatchers.Default) {
             ollamaRepository.saveOllamaSelectedModel("disconnected_user", model)
         }
+    }
+
+    override fun retryModels() {
+        _retryModels.value = Random.nextInt()
     }
 
     private suspend fun getUserId(): String =

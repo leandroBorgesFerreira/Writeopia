@@ -243,7 +243,8 @@ fun DesktopApp(
                                     selectColorTheme = selectColorTheme,
                                     selectWorkplacePath = globalShellViewModel::changeWorkspaceLocalPath,
                                     ollamaUrlChange = globalShellViewModel::changeOllamaUrl,
-                                    ollamaModelChange = globalShellViewModel::selectOllamaModel
+                                    ollamaModelChange = globalShellViewModel::selectOllamaModel,
+                                    ollamaModelsRetry = globalShellViewModel::retryModels
                                 )
                             }
 

@@ -21,6 +21,8 @@ class OllamaRepository(
 
     fun getModels(url: String): Flow<ResultData<ModelsResponse>> = ollamaApi.getModels(url)
 
+    
+
     suspend fun saveOllamaUrl(id: String, url: String) {
         ollamaDao?.updateConfiguration(id) {
             this.copy(url = url)

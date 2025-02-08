@@ -46,6 +46,7 @@ fun AccountMenuScreen(
             ollamaSelectedModel = MutableStateFlow(""),
             ollamaUrlChange = {},
             ollamaModelChange = {},
+            ollamaModelsRetry = {}
         )
 
         Spacer(modifier = Modifier.height(12.dp))

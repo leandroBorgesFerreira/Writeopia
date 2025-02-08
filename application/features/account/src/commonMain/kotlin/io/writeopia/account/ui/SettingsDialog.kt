@@ -58,6 +58,7 @@ fun SettingsDialog(
     selectWorkplacePath: (String) -> Unit,
     ollamaUrlChange: (String) -> Unit,
     ollamaModelChange: (String) -> Unit,
+    ollamaModelsRetry: () -> Unit,
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
@@ -80,6 +81,7 @@ fun SettingsDialog(
                     ollamaUrlState = ollamaUrlState,
                     ollamaUrlChange = ollamaUrlChange,
                     ollamaModelChange = ollamaModelChange,
+                    ollamaModelsRetry = ollamaModelsRetry,
                 )
             }
         }
@@ -99,6 +101,7 @@ fun ColumnScope.SettingsScreen(
     selectWorkplacePath: (String) -> Unit,
     ollamaUrlChange: (String) -> Unit,
     ollamaModelChange: (String) -> Unit,
+    ollamaModelsRetry: () -> Unit,
 ) {
     val titleStyle = MaterialTheme.typography.titleLarge
     val titleColor = MaterialTheme.colorScheme.onBackground
@@ -215,14 +218,30 @@ fun ColumnScope.SettingsScreen(
             }
 
             is ResultData.Error -> {
-                Text(
-                    modifier = Modifier.fillMaxWidth()
-                        .clip(MaterialTheme.shapes.medium)
-                        .padding(8.dp),
-                    text = "Error when requesting models",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onBackground,
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        modifier = Modifier
+                            .clip(MaterialTheme.shapes.medium)
+                            .padding(8.dp),
+                        text = "Error when requesting models. Did you start Ollama?",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onBackground,
+                    )
+
+                    Text(
+                        modifier = Modifier
+                            .clip(MaterialTheme.shapes.medium)
+                            .clickable(onClick = ollamaModelsRetry)
+                            .background(
+                                WriteopiaTheme.colorScheme.highlight,
+                                MaterialTheme.shapes.medium
+                            )
+                            .padding(4.dp),
+                        text = "Retry",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onBackground,
+                    )
+                }
             }
 
             is ResultData.Idle -> {}
