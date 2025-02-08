@@ -165,5 +165,5 @@ private fun isDeleteEvent(keyEvent: AndroidKeyEvent) =
 
 private fun isSelectAllEvent(keyEvent: AndroidKeyEvent) =
     keyEvent.isMetaPressed &&
-    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_A &&
+        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_A &&
         keyEvent.type == KeyEventType.KeyUp
