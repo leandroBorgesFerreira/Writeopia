@@ -39,6 +39,7 @@ import java.io.File
 
 private const val APP_DIRECTORY = ".writeopia"
 private const val DB_VERSION = 1
+private const val BASE_URL = "http://127.0.0.1"
 
 fun main() = application {
     DesktopApp()
@@ -195,6 +196,7 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                             isUndoKeyEvent = KeyboardCommands::isUndoKeyboardEvent,
                             colorThemeOption = colorTheme,
                             selectColorTheme = uiConfigurationViewModel::changeColorTheme,
+                            baseUrl = BASE_URL,
                             writeopiaDb = database,
                             toggleMaxScreen = topDoubleBarClick
                         )

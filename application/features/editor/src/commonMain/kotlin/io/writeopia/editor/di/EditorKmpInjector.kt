@@ -14,7 +14,7 @@ import io.writeopia.editor.features.presentation.viewmodel.PresentationViewModel
 import io.writeopia.models.configuration.ConfigurationInjector
 import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.manager.WriteopiaManager
-import io.writeopia.sdk.network.injector.ConnectionInjector
+import io.writeopia.sdk.network.injector.WriteopiaConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.repository.DocumentRepository
 import io.writeopia.sdk.sharededition.SharedEditionManager
@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.StateFlow
 class EditorKmpInjector private constructor(
     private val authCoreInjection: AuthCoreInjection,
     private val repositoryInjection: RepositoryInjector,
-    private val connectionInjection: ConnectionInjector,
+    private val connectionInjection: WriteopiaConnectionInjector,
     private val selectionState: StateFlow<Boolean>,
     private val keyboardEventFlow: Flow<KeyboardEvent>,
     private val uiConfigurationRepository: UiConfigurationRepository,
@@ -92,14 +92,14 @@ class EditorKmpInjector private constructor(
         fun mobile(
             authCoreInjection: AuthCoreInjection,
             daosInjection: RepositoryInjector,
-            connectionInjector: ConnectionInjector,
+            writeopiaConnectionInjector: WriteopiaConnectionInjector,
             uiConfigurationRepository: UiConfigurationRepository,
             folderInjector: FolderInjector,
             configurationInjector: ConfigurationInjector,
         ) = EditorKmpInjector(
             authCoreInjection,
             daosInjection,
-            connectionInjector,
+            writeopiaConnectionInjector,
             MutableStateFlow(false),
             MutableStateFlow(KeyboardEvent.IDLE),
             uiConfigurationRepository,
@@ -110,7 +110,7 @@ class EditorKmpInjector private constructor(
         fun desktop(
             authCoreInjection: AuthCoreInjection,
             repositoryInjection: RepositoryInjector,
-            connectionInjection: ConnectionInjector,
+            connectionInjection: WriteopiaConnectionInjector,
             selectionState: StateFlow<Boolean>,
             keyboardEventFlow: Flow<KeyboardEvent>,
             uiConfigurationRepository: UiConfigurationRepository,

@@ -378,7 +378,7 @@ internal class ChooseNoteKmpViewModel(
                         favorite = false
                     )
                 }
-                .collect(notesUseCase::saveDocument)
+                .collect(notesUseCase::saveDocumentDb)
         }
     }
 
@@ -492,7 +492,7 @@ internal class ChooseNoteKmpViewModel(
                 delay(150)
                 _syncInProgress.value = SyncState.Idle
             }
-            .collect(notesUseCase::saveDocument)
+            .collect(notesUseCase::saveDocumentDb)
     }
 
     private suspend fun writeWorkspaceLocally(path: String) {

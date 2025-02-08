@@ -34,7 +34,7 @@ import io.writeopia.persistence.room.DatabaseConfigAndroid
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 import io.writeopia.persistence.room.injection.RoomRepositoryInjection
-import io.writeopia.sdk.network.injector.ConnectionInjector
+import io.writeopia.sdk.network.injector.WriteopiaConnectionInjector
 import io.writeopia.ui.image.ImageLoadConfig
 
 class NavigationActivity : AppCompatActivity() {
@@ -77,18 +77,18 @@ fun NavigationGraph(
 
     val appDaosInjection = AppRoomDaosInjection(database)
     val notesInjector = NotesInjector(appDaosInjection)
-    val connectionInjector = ConnectionInjector(
+    val writeopiaConnectionInjector = WriteopiaConnectionInjector(
         apiLogger = AndroidLogger,
         bearerTokenHandler = FirebaseTokenHandler,
         baseUrl = BuildConfig.BASE_URL
     )
     val uiConfigViewModel = uiConfigInjection.provideUiConfigurationViewModel()
     val repositoryInjection = RoomRepositoryInjection(database)
-    val authInjection = AuthInjection(authCoreInjection, connectionInjector, repositoryInjection)
+    val authInjection = AuthInjection(authCoreInjection, writeopiaConnectionInjector, repositoryInjection)
     val editorInjector = EditorKmpInjector.mobile(
         authCoreInjection,
         repositoryInjection,
-        connectionInjector,
+        writeopiaConnectionInjector,
         uiConfigInjection.provideUiConfigurationRepository(),
         folderInjector = notesInjector,
         configurationInjector = notesInjector

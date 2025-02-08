@@ -21,7 +21,7 @@ import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.NotesMenuKmpInjection
 import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notemenu.navigation.navigateToNotes
-import io.writeopia.sdk.network.injector.ConnectionInjector
+import io.writeopia.sdk.network.injector.WriteopiaConnectionInjector
 import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
@@ -63,7 +63,7 @@ fun MainViewController() = ComposeUIViewController {
 
             val connectionInjection =
                 remember {
-                    ConnectionInjector(
+                    WriteopiaConnectionInjector(
                         bearerTokenHandler = MockTokenHandler,
                         baseUrl = "https://writeopia.io/api",
                         disableWebsocket = true
