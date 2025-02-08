@@ -1,6 +1,7 @@
 package io.writeopia.global.shell.viewmodel
 
 import io.writeopia.common.utils.ResultData
+import io.writeopia.common.utils.download.DownloadState
 import io.writeopia.commonui.dtos.MenuItemUi
 import io.writeopia.models.Folder
 import io.writeopia.notemenu.viewmodel.FolderController
@@ -32,6 +33,8 @@ interface GlobalShellViewModel : FolderController {
 
     val modelsForUrl: StateFlow<ResultData<List<String>>>
 
+    val downloadModelState: StateFlow<ResultData<DownloadState>>
+
     fun init()
 
     fun expandFolder(id: String)
@@ -55,4 +58,10 @@ interface GlobalShellViewModel : FolderController {
     fun changeOllamaUrl(url: String)
 
     fun selectOllamaModel(model: String)
+
+    fun retryModels()
+
+    fun modelToDownload(model: String)
+
+    fun deleteModel(model: String)
 }

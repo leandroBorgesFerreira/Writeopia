@@ -96,6 +96,10 @@ private fun LoginScreen(
             is ResultData.Loading -> {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
+
+            is ResultData.InProgress -> {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
         }
     }
 }

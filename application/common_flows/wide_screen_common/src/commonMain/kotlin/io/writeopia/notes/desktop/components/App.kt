@@ -239,11 +239,15 @@ fun DesktopApp(
                                     ollamaUrlState = globalShellViewModel.ollamaUrl,
                                     ollamaAvailableModels = globalShellViewModel.modelsForUrl,
                                     ollamaSelectedModel = globalShellViewModel.ollamaSelectedModelState,
+                                    downloadModelState = globalShellViewModel.downloadModelState,
                                     onDismissRequest = globalShellViewModel::hideSettings,
                                     selectColorTheme = selectColorTheme,
                                     selectWorkplacePath = globalShellViewModel::changeWorkspaceLocalPath,
                                     ollamaUrlChange = globalShellViewModel::changeOllamaUrl,
-                                    ollamaModelChange = globalShellViewModel::selectOllamaModel
+                                    ollamaModelChange = globalShellViewModel::selectOllamaModel,
+                                    ollamaModelsRetry = globalShellViewModel::retryModels,
+                                    downloadModel = globalShellViewModel::modelToDownload,
+                                    deleteModel = globalShellViewModel::deleteModel
                                 )
                             }
 

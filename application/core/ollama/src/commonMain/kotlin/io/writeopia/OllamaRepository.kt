@@ -4,6 +4,7 @@ import io.writeopia.api.OllamaApi
 import io.writeopia.common.utils.ResultData
 import io.writeopia.persistence.OllamaDao
 import io.writeopia.requests.ModelsResponse
+import io.writeopia.responses.DownloadModelResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -46,4 +47,10 @@ class OllamaRepository(
 
     suspend fun getConfiguredOllamaUrl(id: String = "disconnected_user"): String? =
         ollamaDao?.getConfiguration()?.url
+
+    suspend fun deleteModel(model: String, url: String): ResultData<Boolean> =
+        ollamaApi.removeModel(model, url)
+
+    fun downloadModel(model: String, url: String): Flow<ResultData<DownloadModelResponse>> =
+        ollamaApi.downloadModel(model, url)
 }

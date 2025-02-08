@@ -56,7 +56,7 @@ fun AuthMenuScreen(
             )
         }
 
-        is ResultData.Idle, is ResultData.Loading -> {
+        is ResultData.Idle, is ResultData.Loading, is ResultData.InProgress -> {
             LoadingScreen()
         }
     }

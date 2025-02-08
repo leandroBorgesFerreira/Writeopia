@@ -371,7 +371,7 @@ class NoteEditorKmpViewModel(
             writeopiaManager.getSelectionInfo().firstOrNull()?.let { info ->
                 val position = info.to + 1
 
-                val url = ollamaRepository.getConfiguredOllamaUrl()
+                val url = ollamaRepository.getConfiguredOllamaUrl()?.trim()
 
                 if (url == null) {
                     writeopiaManager.changeStoryState(
@@ -397,8 +397,10 @@ class NoteEditorKmpViewModel(
                         .collect { result ->
                             val text = when (result) {
                                 is ResultData.Complete -> result.data
-                                is ResultData.Error -> "An error happened, please try again."
-                                is ResultData.Loading, is ResultData.Idle -> ""
+                                is ResultData.Error -> "An error happened, please try again. Message: ${result.exception.message}"
+                                is ResultData.Loading,
+                                is ResultData.Idle,
+                                is ResultData.InProgress -> ""
                             }
 
                             writeopiaManager.changeStoryState(

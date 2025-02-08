@@ -84,7 +84,7 @@ fun RegisterScreen(
                 )
             }
 
-            is ResultData.Loading -> {
+            is ResultData.Loading, is ResultData.InProgress -> {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }
