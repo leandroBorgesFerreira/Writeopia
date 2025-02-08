@@ -209,7 +209,11 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        Text("Available Models", style = MaterialTheme.typography.bodyMedium, color = titleColor)
+        Text(
+            "Available Models",
+            style = MaterialTheme.typography.bodyMedium,
+            color = titleColor
+        )
 
         Spacer(modifier = Modifier.height(SPACE_AFTER_SUB_TITLE.dp))
 
@@ -217,7 +221,8 @@ fun SettingsScreen(
             is ResultData.Complete -> {
                 modelsResult.data.forEachIndexed { i, model ->
 
-                    Row(verticalAlignment = Alignment.CenterVertically,
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.clip(MaterialTheme.shapes.medium)
                             .clickable {
                                 ollamaModelChange(model)
@@ -229,7 +234,8 @@ fun SettingsScreen(
                                     modifierLet
                                 }
                             }
-                            .padding(8.dp)) {
+                            .padding(8.dp)
+                    ) {
                         Text(
                             modifier = Modifier.weight(1F),
                             text = model,
