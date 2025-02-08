@@ -7,6 +7,8 @@ sealed interface ResultData<T> {
 
     data class Complete<T>(val data: T) : ResultData<T>
 
+    data class InProgress<T>(val data: T) : ResultData<T>
+
     data class Error<T>(val exception: Exception) : ResultData<T>
 }
 
@@ -16,6 +18,7 @@ fun <T, R> ResultData<T>.map(fn: (T) -> R): ResultData<R> =
         is ResultData.Error -> ResultData.Error(this.exception)
         is ResultData.Idle -> ResultData.Idle()
         is ResultData.Loading -> ResultData.Loading()
+        is ResultData.InProgress -> ResultData.InProgress(fn(this.data))
     }
 
 fun ResultData<Boolean>.toBoolean(): Boolean =

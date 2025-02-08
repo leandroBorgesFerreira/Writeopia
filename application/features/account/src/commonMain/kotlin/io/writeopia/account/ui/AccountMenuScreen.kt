@@ -44,9 +44,11 @@ fun AccountMenuScreen(
             ollamaAvailableModels = MutableStateFlow(ResultData.Idle()),
             ollamaUrlState = MutableStateFlow(""),
             ollamaSelectedModel = MutableStateFlow(""),
+            downloadModelState = MutableStateFlow(ResultData.Idle()),
             ollamaUrlChange = {},
             ollamaModelChange = {},
-            ollamaModelsRetry = {}
+            ollamaModelsRetry = {},
+            downloadModel = {}
         )
 
         Spacer(modifier = Modifier.height(12.dp))

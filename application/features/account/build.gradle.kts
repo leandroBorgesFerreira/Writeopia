@@ -34,6 +34,7 @@ kotlin {
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:theme"))
                 implementation(project(":application:core:common_ui"))
+                implementation(project(":application:core:ollama"))
 
                 implementation(libs.kotlinx.datetime)
 

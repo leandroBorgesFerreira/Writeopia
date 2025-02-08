@@ -227,7 +227,7 @@ fun NotesCards(
             }
         }
 
-        is ResultData.Loading, is ResultData.Idle -> {
+        is ResultData.Loading, is ResultData.Idle, is ResultData.InProgress -> {
             Box(modifier = modifier.fillMaxSize()) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }

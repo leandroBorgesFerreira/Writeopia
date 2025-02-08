@@ -398,7 +398,9 @@ class NoteEditorKmpViewModel(
                             val text = when (result) {
                                 is ResultData.Complete -> result.data
                                 is ResultData.Error -> "An error happened, please try again."
-                                is ResultData.Loading, is ResultData.Idle -> ""
+                                is ResultData.Loading,
+                                is ResultData.Idle,
+                                is ResultData.InProgress -> ""
                             }
 
                             writeopiaManager.changeStoryState(

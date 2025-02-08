@@ -13,13 +13,16 @@ import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.readUTF8Line
 import io.writeopia.app.endpoints.EndPoints
 import io.writeopia.common.utils.ResultData
+import io.writeopia.requests.DownloadModelRequest
 import io.writeopia.requests.ModelsResponse
 import io.writeopia.requests.OllamaGenerateRequest
+import io.writeopia.responses.DownloadModelResponse
 import io.writeopia.responses.OllamaResponse
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.isActive
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 /**
@@ -39,6 +42,44 @@ class OllamaApi(
             contentType(ContentType.Application.Json)
             setBody(OllamaGenerateRequest(model, prompt, false))
         }.body<OllamaResponse>()
+
+    fun downloadModel(
+        model: String,
+        url: String,
+    ): Flow<ResultData<DownloadModelResponse>> = flow {
+        try {
+            client.preparePost {
+                url("$url/api/pull")
+                contentType(ContentType.Application.Json)
+                setBody(DownloadModelRequest(model))
+            }.execute { response ->
+                try {
+                    val channel = response.body<ByteReadChannel>()
+
+                    while (currentCoroutineContext().isActive && !channel.isClosedForRead) {
+                        val line = channel.readUTF8Line()
+                            ?.takeUnless { it.isEmpty() }
+                            ?: continue
+
+                        val parsed: DownloadModelResponse =
+                            json.decodeFromString<DownloadModelResponse>(line)
+                                .copy(modelName = model)
+
+                        emit(ResultData.InProgress(parsed))
+
+                        if (parsed.status == "success") {
+                            emit(ResultData.Complete(parsed))
+                            break
+                        }
+                    }
+                } catch (e: Exception) {
+                    emit(ResultData.Error(e))
+                }
+            }
+        } catch (e: Exception) {
+            emit(ResultData.Error(e))
+        }
+    }
 
     fun streamReply(
         model: String,

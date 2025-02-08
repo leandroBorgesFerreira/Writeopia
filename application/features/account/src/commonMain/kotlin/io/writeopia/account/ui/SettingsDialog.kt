@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -15,8 +14,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -37,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import io.writeopia.common.utils.ResultData
+import io.writeopia.common.utils.download.DownloadState
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.commonui.workplace.WorkspaceConfigurationDialog
 import io.writeopia.model.ColorThemeOption
@@ -45,6 +48,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 private const val SPACE_AFTER_TITLE = 12
+private const val SPACE_AFTER_SUB_TITLE = 6
 
 @Composable
 fun SettingsDialog(
@@ -53,12 +57,14 @@ fun SettingsDialog(
     ollamaUrlState: StateFlow<String>,
     ollamaAvailableModels: Flow<ResultData<List<String>>>,
     ollamaSelectedModel: StateFlow<String>,
+    downloadModelState: StateFlow<ResultData<DownloadState>>,
     onDismissRequest: () -> Unit,
     selectColorTheme: (ColorThemeOption) -> Unit,
     selectWorkplacePath: (String) -> Unit,
     ollamaUrlChange: (String) -> Unit,
     ollamaModelChange: (String) -> Unit,
     ollamaModelsRetry: () -> Unit,
+    downloadModel: (String) -> Unit,
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
@@ -68,20 +74,24 @@ fun SettingsDialog(
 //                .padding(horizontal = 40.dp, vertical = 20.dp),
             shape = RoundedCornerShape(16.dp),
         ) {
-            Column(modifier = Modifier.padding(24.dp)) {
+            Column(
+                modifier = Modifier.padding(24.dp).verticalScroll(rememberScrollState())
+            ) {
                 SettingsScreen(
                     showPath = true,
                     showOllamaConfig = true,
                     selectedThemePosition = selectedThemePosition,
+                    workplacePathState = workplacePathState,
+                    ollamaUrlState = ollamaUrlState,
                     ollamaAvailableModels = ollamaAvailableModels,
                     ollamaSelectedModel = ollamaSelectedModel,
-                    workplacePathState = workplacePathState,
+                    downloadModelState = downloadModelState,
                     selectColorTheme = selectColorTheme,
                     selectWorkplacePath = selectWorkplacePath,
-                    ollamaUrlState = ollamaUrlState,
                     ollamaUrlChange = ollamaUrlChange,
                     ollamaModelChange = ollamaModelChange,
                     ollamaModelsRetry = ollamaModelsRetry,
+                    downloadModel = downloadModel,
                 )
             }
         }
@@ -89,7 +99,7 @@ fun SettingsDialog(
 }
 
 @Composable
-fun ColumnScope.SettingsScreen(
+fun SettingsScreen(
     showPath: Boolean = true,
     showOllamaConfig: Boolean,
     selectedThemePosition: StateFlow<Int>,
@@ -97,11 +107,13 @@ fun ColumnScope.SettingsScreen(
     ollamaUrlState: StateFlow<String>,
     ollamaAvailableModels: Flow<ResultData<List<String>>>,
     ollamaSelectedModel: StateFlow<String>,
+    downloadModelState: StateFlow<ResultData<DownloadState>>,
     selectColorTheme: (ColorThemeOption) -> Unit,
     selectWorkplacePath: (String) -> Unit,
     ollamaUrlChange: (String) -> Unit,
     ollamaModelChange: (String) -> Unit,
     ollamaModelsRetry: () -> Unit,
+    downloadModel: (String) -> Unit
 ) {
     val titleStyle = MaterialTheme.typography.titleLarge
     val titleColor = MaterialTheme.colorScheme.onBackground
@@ -170,6 +182,10 @@ fun ColumnScope.SettingsScreen(
 
         Spacer(modifier = Modifier.height(SPACE_AFTER_TITLE.dp))
 
+        Text("Url", style = MaterialTheme.typography.bodyMedium, color = titleColor)
+
+        Spacer(modifier = Modifier.height(SPACE_AFTER_SUB_TITLE.dp))
+
         val ollamaUrl by ollamaUrlState.collectAsState()
 
         BasicTextField(
@@ -187,7 +203,11 @@ fun ColumnScope.SettingsScreen(
             cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground)
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(14.dp))
+
+        Text("Available Models", style = MaterialTheme.typography.bodyMedium, color = titleColor)
+
+        Spacer(modifier = Modifier.height(SPACE_AFTER_SUB_TITLE.dp))
 
         when (modelsResult) {
             is ResultData.Complete -> {
@@ -245,13 +265,114 @@ fun ColumnScope.SettingsScreen(
             }
 
             is ResultData.Idle -> {}
+            is ResultData.Loading, is ResultData.InProgress -> {
+                CircularProgressIndicator()
+            }
+        }
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        Text("Download Model", style = MaterialTheme.typography.bodyMedium, color = titleColor)
+
+        Spacer(modifier = Modifier.height(SPACE_AFTER_SUB_TITLE.dp))
+
+        var modelToDownload by remember {
+            mutableStateOf("")
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = "Suggestions:", style = MaterialTheme.typography.bodySmall)
+
+            Spacer(modifier = Modifier.width(6.dp))
+
+            listOf("deepseek-r1:7b", "llama3.2").forEach { model ->
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 1.dp)
+                        .clip(MaterialTheme.shapes.medium)
+                        .clickable {
+                            modelToDownload = model
+                        }
+                        .padding(8.dp),
+                    text = model,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(6.dp))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            BasicTextField(
+                modifier = Modifier.border(
+                    1.dp,
+                    MaterialTheme.colorScheme.onSurfaceVariant,
+                    MaterialTheme.shapes.medium
+                )
+                    .padding(10.dp)
+                    .weight(1F),
+                value = modelToDownload,
+                onValueChange = { value ->
+                    modelToDownload = value
+                },
+                textStyle = MaterialTheme.typography.bodyMedium.copy(
+                    color = MaterialTheme.colorScheme.onBackground
+                ),
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground)
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Icon(
+                modifier = Modifier.size(34.dp)
+                    .clip(CircleShape)
+                    .clickable {
+                        downloadModel(modelToDownload)
+                    }.padding(6.dp),
+                imageVector = WrIcons.download,
+                contentDescription = "Download model",
+                //            stringResource(R.string.note_list),
+                tint = MaterialTheme.colorScheme.onBackground
+            )
+        }
+
+        when (val downloadState = downloadModelState.collectAsState().value) {
+            is ResultData.Complete -> {}
+            is ResultData.Error -> {
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    "Error when downloading model: ${downloadState.exception.message}",
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            is ResultData.Idle -> {}
+            is ResultData.InProgress -> {
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    val download = downloadState.data
+                    Text(
+                        download.title,
+                        modifier = Modifier.weight(1F),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Text(
+                        download.info,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
+
             is ResultData.Loading -> {
                 CircularProgressIndicator()
             }
         }
     }
 
-    Spacer(modifier = Modifier.weight(1F))
+    Spacer(modifier = Modifier.height(30.dp))
 
     Text("Release version: alpha12", style = MaterialTheme.typography.bodySmall)
 }

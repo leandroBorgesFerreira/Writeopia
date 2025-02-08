@@ -10,6 +10,8 @@ import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.icons.IconChange
 import io.writeopia.common.utils.collections.traverse
 import io.writeopia.common.utils.collections.toNodeTree
+import io.writeopia.common.utils.download.DownloadParser
+import io.writeopia.common.utils.download.DownloadState
 import io.writeopia.common.utils.map
 import io.writeopia.common.utils.persistence.configuration.WorkspaceConfigRepository
 import io.writeopia.common.utils.toList
@@ -24,6 +26,7 @@ import io.writeopia.commonui.extensions.toUiCard
 import io.writeopia.notemenu.viewmodel.FolderController
 import io.writeopia.notemenu.viewmodel.FolderStateController
 import io.writeopia.repository.UiConfigurationRepository
+import io.writeopia.responses.DownloadModelResponse
 import io.writeopia.sdk.models.document.MenuItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,10 +34,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlin.random.Random
@@ -75,6 +80,32 @@ class GlobalShellKmpViewModel(
     override val workspaceLocalPath: StateFlow<String> = _workspaceLocalPath.asStateFlow()
 
     private val _retryModels = MutableStateFlow(0)
+
+    private val _downloadModelState =
+        MutableStateFlow<ResultData<DownloadModelResponse>>(ResultData.Idle())
+
+    override val downloadModelState: StateFlow<ResultData<DownloadState>> =
+        _downloadModelState.map { resultData ->
+            resultData.map { response ->
+                val completed = DownloadParser.toHumanReadableAmount(response.completed)
+                val total = DownloadParser.toHumanReadableAmount(response.total)
+
+                val info = buildString {
+                    completed.takeIf { it.isNotEmpty() }?.let {
+                        append(it)
+                    }
+
+                    total.takeIf { it.isNotEmpty() }?.let {
+                        append("/$it")
+                    }
+                }
+
+                DownloadState(
+                    title = response.modelName ?: "",
+                    info = info
+                )
+            }
+        }.stateIn(viewModelScope, SharingStarted.Lazily, ResultData.Idle())
 
     override val ollamaUrl: StateFlow<String> =
         ollamaRepository.listenForConfiguration("disconnected_user")
@@ -289,6 +320,22 @@ class GlobalShellKmpViewModel(
 
     override fun retryModels() {
         _retryModels.value = Random.nextInt()
+    }
+
+    override fun modelToDownload(model: String) {
+        viewModelScope.launch(Dispatchers.Default) {
+            val url = ollamaRepository.getConfiguredOllamaUrl()?.trim()
+
+            if (url != null) {
+                ollamaRepository.downloadModel(model, url)
+                    .onCompletion {
+                        retryModels()
+                    }
+                    .collectLatest { result ->
+                        _downloadModelState.value = result
+                    }
+            }
+        }
     }
 
     private suspend fun getUserId(): String =
