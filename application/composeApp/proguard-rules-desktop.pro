@@ -10,6 +10,10 @@
 -keep class kotlinx.datetime.** { *; }
 -keep class okio.** { *; }
 -keep class coil3.PlatformContext { *; }
+-keep @kotlinx.serialization.Serializable class * { *; }
+-keepclassmembers public class **$$serializer {
+    private ** descriptor;
+}
 
 -dontwarn org.slf4j.**
 -dontwarn android.**
