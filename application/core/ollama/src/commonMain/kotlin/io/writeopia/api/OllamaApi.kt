@@ -2,17 +2,21 @@ package io.writeopia.api
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.preparePost
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import io.ktor.http.isSuccess
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.readUTF8Line
 import io.writeopia.app.endpoints.EndPoints
 import io.writeopia.common.utils.ResultData
+import io.writeopia.requests.DeleteModelRequest
 import io.writeopia.requests.DownloadModelRequest
 import io.writeopia.requests.ModelsResponse
 import io.writeopia.requests.OllamaGenerateRequest
@@ -81,6 +85,25 @@ class OllamaApi(
         }
     }
 
+    suspend fun removeModel(
+        model: String,
+        url: String
+    ): ResultData<Boolean> {
+        try {
+            val isSuccess = client.delete("$url/api/delete") {
+                contentType(ContentType.Application.Json)
+                setBody(DeleteModelRequest(model.trim()))
+            }
+                .status
+                .isSuccess()
+
+
+            return ResultData.Complete(isSuccess)
+        } catch (e: Exception) {
+            return ResultData.Error(e)
+        }
+    }
+
     fun streamReply(
         model: String,
         prompt: String,
@@ -103,7 +126,7 @@ class OllamaApi(
 
                             val value: OllamaResponse = json.decodeFromString(line)
 
-                            stringBuilder.append(" ${value.response}")
+                            stringBuilder.append(value.response)
 
                             emit(ResultData.Complete(stringBuilder.toString()))
                         }

@@ -338,6 +338,18 @@ class GlobalShellKmpViewModel(
         }
     }
 
+    override fun deleteModel(model: String) {
+        viewModelScope.launch(Dispatchers.Default) {
+            val url = ollamaRepository.getConfiguredOllamaUrl()?.trim()
+
+            if (url != null) {
+                ollamaRepository.deleteModel(model, url)
+
+                retryModels()
+            }
+        }
+    }
+
     private suspend fun getUserId(): String =
         localUserId ?: authManager.getUser().id.also { id ->
             localUserId = id

@@ -48,7 +48,8 @@ fun AccountMenuScreen(
             ollamaUrlChange = {},
             ollamaModelChange = {},
             ollamaModelsRetry = {},
-            downloadModel = {}
+            downloadModel = {},
+            deleteModel = {}
         )
 
         Spacer(modifier = Modifier.height(12.dp))

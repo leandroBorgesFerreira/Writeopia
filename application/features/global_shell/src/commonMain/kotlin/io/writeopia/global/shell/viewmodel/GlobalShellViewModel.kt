@@ -62,4 +62,6 @@ interface GlobalShellViewModel : FolderController {
     fun retryModels()
 
     fun modelToDownload(model: String)
+
+    fun deleteModel(model: String)
 }

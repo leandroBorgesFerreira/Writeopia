@@ -33,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
@@ -65,6 +66,7 @@ fun SettingsDialog(
     ollamaModelChange: (String) -> Unit,
     ollamaModelsRetry: () -> Unit,
     downloadModel: (String) -> Unit,
+    deleteModel: (String) -> Unit,
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
@@ -92,6 +94,7 @@ fun SettingsDialog(
                     ollamaModelChange = ollamaModelChange,
                     ollamaModelsRetry = ollamaModelsRetry,
                     downloadModel = downloadModel,
+                    deleteModel = deleteModel,
                 )
             }
         }
@@ -113,7 +116,8 @@ fun SettingsScreen(
     ollamaUrlChange: (String) -> Unit,
     ollamaModelChange: (String) -> Unit,
     ollamaModelsRetry: () -> Unit,
-    downloadModel: (String) -> Unit
+    downloadModel: (String) -> Unit,
+    deleteModel: (String) -> Unit,
 ) {
     val titleStyle = MaterialTheme.typography.titleLarge
     val titleColor = MaterialTheme.colorScheme.onBackground
@@ -142,7 +146,7 @@ fun SettingsScreen(
 
         Text(
             workplacePath,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodySmall,
             color = titleColor,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.border(
@@ -197,7 +201,7 @@ fun SettingsScreen(
                 .fillMaxWidth(),
             value = ollamaUrl,
             onValueChange = ollamaUrlChange,
-            textStyle = MaterialTheme.typography.bodyMedium.copy(
+            textStyle = MaterialTheme.typography.bodySmall.copy(
                 color = MaterialTheme.colorScheme.onBackground
             ),
             cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground)
@@ -212,9 +216,9 @@ fun SettingsScreen(
         when (modelsResult) {
             is ResultData.Complete -> {
                 modelsResult.data.forEachIndexed { i, model ->
-                    Text(
-                        modifier = Modifier.fillMaxWidth()
-                            .clip(MaterialTheme.shapes.medium)
+
+                    Row(verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.clip(MaterialTheme.shapes.medium)
                             .clickable {
                                 ollamaModelChange(model)
                             }
@@ -225,11 +229,30 @@ fun SettingsScreen(
                                     modifierLet
                                 }
                             }
-                            .padding(8.dp),
-                        text = model,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onBackground,
-                    )
+                            .padding(8.dp)) {
+                        Text(
+                            modifier = Modifier.weight(1F),
+                            text = model,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onBackground,
+                        )
+
+                        if (!model.startsWith("No models")) {
+                            Spacer(modifier = Modifier.width(6.dp))
+
+                            Icon(
+                                modifier = Modifier.clip(CircleShape)
+                                    .clickable {
+                                        deleteModel(model)
+                                    }
+                                    .padding(4.dp)
+                                    .size(20.dp),
+                                imageVector = WrIcons.delete,
+                                contentDescription = "Trash can",
+                                tint = Color.Red
+                            )
+                        }
+                    }
 
                     if (i != modelsResult.data.lastIndex) {
                         Spacer(modifier = Modifier.height(2.dp))
@@ -316,7 +339,7 @@ fun SettingsScreen(
                 onValueChange = { value ->
                     modelToDownload = value
                 },
-                textStyle = MaterialTheme.typography.bodyMedium.copy(
+                textStyle = MaterialTheme.typography.bodySmall.copy(
                     color = MaterialTheme.colorScheme.onBackground
                 ),
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground)
