@@ -25,7 +25,11 @@
 This is the source code for Writeopia, an text edition App and SDK. 
 
 # Application
-Writeopia is a project develop with Kotlin Multiplatform, most of the code is shared between all the apps. This is a project to save all your documents in one place providing you the freedom to choose where to store it. You can save your whole workspace with a button click and save it in git repository (like Github) or a storage system like Dropbox or Google Drive. A backend end is also understand develop so you can self host it and have full controll how you share your documentations with work teams and friends. 
+Writeopia is a project develop with Kotlin Multiplatform, most of the code is shared between all the apps. 
+
+This is a project to save all your documents in one place providing you the freedom to choose where to store it. You can save your whole workspace with a button click and save it in git repository (like Github) or a storage system like Dropbox or Google Drive. 
+
+A backend end is also under development so you can self host it and have full controll how you share your documentations with work teams and friends. 
 
 ## Documentation
 You can check the documentation of the project in the [application documentation](https://docs.writeopia.io/docs/application/overview).
