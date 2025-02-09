@@ -372,7 +372,7 @@ fun SettingsScreen(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    "Error when downloading model: ${downloadState.exception.message}",
+                    "Error when downloading model. ${downloadState.exception.message}",
                     style = MaterialTheme.typography.bodySmall
                 )
             }

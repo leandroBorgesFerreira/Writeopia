@@ -330,6 +330,8 @@ class GlobalShellKmpViewModel(
     }
 
     override fun modelToDownload(model: String) {
+        if (model.isEmpty()) return
+
         viewModelScope.launch(Dispatchers.Default) {
             val url = ollamaRepository.getConfiguredOllamaUrl()?.trim()
 
