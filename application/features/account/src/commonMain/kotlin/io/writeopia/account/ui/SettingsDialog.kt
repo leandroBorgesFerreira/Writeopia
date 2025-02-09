@@ -403,7 +403,7 @@ fun SettingsScreen(
 
     Spacer(modifier = Modifier.height(30.dp))
 
-    Text("Release version: alpha12", style = MaterialTheme.typography.bodySmall)
+    Text("Release version: alpha18", style = MaterialTheme.typography.bodySmall)
 }
 
 @Composable
