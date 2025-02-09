@@ -92,8 +92,19 @@ class WriteopiaStateManager(
                             selectAll()
                         }
 
-                        KeyboardEvent.IDLE -> {
+                        KeyboardEvent.BOLD -> {
+                            toggleSpan(Span.BOLD)
                         }
+
+                        KeyboardEvent.ITALIC -> {
+                            toggleSpan(Span.ITALIC)
+                        }
+
+                        KeyboardEvent.UNDERLINE -> {
+                            toggleSpan(Span.UNDERLINE)
+                        }
+
+                        KeyboardEvent.IDLE -> {}
                     }
                 }
         }
