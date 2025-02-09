@@ -6,8 +6,10 @@ import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -112,16 +114,19 @@ class AiAnswerDrawer(
                             onSelected(!drawInfo.selectMode, drawInfo.position)
                         }
                     ) {
-                        Text(
+                        BasicTextField(
                             modifier = Modifier.padding(
                                 horizontal = config.iaAnswerHorizontalPadding.dp,
                                 vertical = config.iaAnswerHorizontalPadding.dp
                             ),
-                            text = step.text ?: "", style = TextStyle(
+                            value = step.text ?: "",
+                            onValueChange = {},
+                            textStyle = TextStyle(
                                 color = MaterialTheme.colorScheme.onBackground,
                                 fontSize = 16.sp,
 //                            fontFamily = fontFamily
-                            )
+                            ),
+                            readOnly = true
                         )
 
                         endContent?.invoke(step, drawInfo, isHovered)
