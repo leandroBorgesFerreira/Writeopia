@@ -58,7 +58,6 @@ class AiAnswerDrawer(
         val dropInfo = DropInfo(step, drawInfo.position)
         val interactionSource = remember { MutableInteractionSource() }
         val isHovered by interactionSource.collectIsHoveredAsState()
-        var showDragIcon by remember { mutableStateOf(false) }
 
         val (paddingBottom, paddingTop) = step.tags
             .any { it.tag.isTitle() }
@@ -103,7 +102,7 @@ class AiAnswerDrawer(
                     DragRowTarget(
                         modifier = Modifier.fillMaxWidth(),
                         dataToDrop = dropInfo,
-                        showIcon = showDragIcon || isHovered && enabled,
+                        showIcon = isHovered && enabled,
                         position = drawInfo.position,
                         dragIconWidth = dragIconWidth,
                         onDragStart = onDragStart,

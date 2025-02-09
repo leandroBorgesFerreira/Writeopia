@@ -1,5 +1,5 @@
 package io.writeopia.ui.keyboard
 
 enum class KeyboardEvent {
-    DELETE, IDLE
+    DELETE, SELECT_ALL, IDLE
 }
