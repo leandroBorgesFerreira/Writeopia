@@ -384,7 +384,10 @@ class NoteEditorKmpViewModel(
                         )
                     )
                 } else {
-                    ollamaRepository.streamReply("llama3.2", info.text, url)
+                    val model = ollamaRepository.getOllamaSelectedModel("disconnected_user")
+                        ?: return@launch
+
+                    ollamaRepository.streamReply(model, info.text, url)
                         .onStart {
                             writeopiaManager.addAtPosition(
                                 storyStep = StoryStep(

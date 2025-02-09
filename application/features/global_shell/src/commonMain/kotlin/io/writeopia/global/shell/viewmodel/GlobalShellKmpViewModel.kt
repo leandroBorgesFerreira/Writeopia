@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlin.random.Random
@@ -109,7 +110,7 @@ class GlobalShellKmpViewModel(
 
     override val ollamaUrl: StateFlow<String> =
         ollamaRepository.listenForConfiguration("disconnected_user")
-            .map { config -> config?.url ?: "" }
+            .map { config -> config?.url ?: "http://localhost:11434" }
             .stateIn(viewModelScope, SharingStarted.Lazily, "")
 
     override val ollamaSelectedModelState = ollamaRepository
@@ -131,10 +132,16 @@ class GlobalShellKmpViewModel(
             ollamaRepository.getModels(url)
         }.map { result ->
             result.map { modelResponse ->
-                modelResponse.models
+                val models = modelResponse.models
                     .map { it.model }
                     .takeIf { it.isNotEmpty() }
                     ?: listOf("No models found")
+
+                models
+            }
+        }.onEach { modelsResult ->
+            if (modelsResult is ResultData.Complete && modelsResult.data.size == 1) {
+                selectOllamaModel(modelsResult.data.first())
             }
         }.stateIn(viewModelScope, SharingStarted.Lazily, ResultData.Idle())
 
