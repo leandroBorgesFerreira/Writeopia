@@ -36,7 +36,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withLink
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import io.writeopia.common.utils.ResultData
@@ -267,12 +272,21 @@ fun SettingsScreen(
             }
 
             is ResultData.Error -> {
+                val errorText = buildAnnotatedString {
+                    append("Error when requesting models. Did you start Ollama? \n")
+                    withLink(LinkAnnotation.Url("https://ollama.com")) {
+                        withStyle(style = SpanStyle(color = WriteopiaTheme.colorScheme.linkColor)) {
+                            append("https://ollama.com")
+                        }
+                    }
+                }
+
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         modifier = Modifier
                             .clip(MaterialTheme.shapes.medium)
                             .padding(8.dp),
-                        text = "Error when requesting models. Did you start Ollama?",
+                        text = errorText,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onBackground,
                     )
