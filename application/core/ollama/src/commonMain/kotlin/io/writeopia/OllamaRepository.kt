@@ -38,6 +38,9 @@ class OllamaRepository(
         refreshConfiguration(id)
     }
 
+    suspend fun getOllamaSelectedModel(userId: String): String? =
+        ollamaDao?.getConfiguration(userId)?.selectedModel
+
     fun listenForConfiguration(id: String) =
         ollamaDao?.listenForConfiguration(id) ?: MutableStateFlow(null)
 

@@ -67,6 +67,11 @@ class OllamaApi(
                             json.decodeFromString<DownloadModelResponse>(line)
                                 .copy(modelName = model)
 
+                        if (parsed.error?.isNotEmpty() == true) {
+                            emit(ResultData.Error(RuntimeException("Error - ${parsed.error}")))
+                            break
+                        }
+
                         emit(ResultData.InProgress(parsed))
 
                         if (parsed.status == "success") {
