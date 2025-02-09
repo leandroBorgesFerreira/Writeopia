@@ -34,8 +34,8 @@ A backend is also under development so you can self host it and have full contro
 ## Documentation
 You can check the documentation of the project in the [application documentation](https://docs.writeopia.io/docs/application/overview).
 
-## Sample 
-The sample app of the project is a great way to get a simple demo. You can have an experience like this those: [https://sample.writeopia.io](https://sample.writeopia.io) 
+## App download
+You can go to https://writeopia.io and download the MacOS app under the download section. we would love your feedback about the app!
 
 ## Development
 You can check how to [work locally](https://docs.writeopia.io/docs/local-dev/getting-started) if you would like to contribute with fixes, improvements or try Writeopia from source code. 
