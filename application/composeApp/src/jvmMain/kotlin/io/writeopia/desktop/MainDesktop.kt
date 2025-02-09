@@ -100,6 +100,21 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                     false
                 }
 
+                isBoldEvent(keyEvent) -> {
+                    sendEvent(KeyboardEvent.BOLD)
+                    false
+                }
+
+                isItalicEvent(keyEvent) -> {
+                    sendEvent(KeyboardEvent.ITALIC)
+                    false
+                }
+
+                isUnderlineEvent(keyEvent) -> {
+                    sendEvent(KeyboardEvent.UNDERLINE)
+                    false
+                }
+
                 else -> false
             }
         }
@@ -166,4 +181,19 @@ private fun isDeleteEvent(keyEvent: AndroidKeyEvent) =
 private fun isSelectAllEvent(keyEvent: AndroidKeyEvent) =
     keyEvent.isMetaPressed &&
         keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_A &&
+        keyEvent.type == KeyEventType.KeyUp
+
+private fun isBoldEvent(keyEvent: AndroidKeyEvent) =
+    keyEvent.isMetaPressed &&
+        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_B &&
+        keyEvent.type == KeyEventType.KeyUp
+
+private fun isItalicEvent(keyEvent: AndroidKeyEvent) =
+    keyEvent.isMetaPressed &&
+        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_I &&
+        keyEvent.type == KeyEventType.KeyUp
+
+private fun isUnderlineEvent(keyEvent: AndroidKeyEvent) =
+    keyEvent.isMetaPressed &&
+        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_U &&
         keyEvent.type == KeyEventType.KeyUp

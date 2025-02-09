@@ -65,9 +65,8 @@ internal class ChooseNoteKmpViewModel(
                     KeyboardEvent.DELETE -> {
                         deleteSelectedNotes()
                     }
-                    KeyboardEvent.IDLE -> {}
 
-                    KeyboardEvent.SELECT_ALL -> { }
+                    else -> {}
                 }
             }
         }
