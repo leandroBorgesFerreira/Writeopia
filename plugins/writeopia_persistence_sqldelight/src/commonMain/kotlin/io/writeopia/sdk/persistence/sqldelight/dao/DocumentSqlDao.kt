@@ -62,7 +62,7 @@ class DocumentSqlDao(
         document.content.values.forEachIndexed { i, storyStep ->
             insertStoryStep(storyStep, i.toLong(), document.id)
         }
-        
+
         insertDocument(document)
     }
 

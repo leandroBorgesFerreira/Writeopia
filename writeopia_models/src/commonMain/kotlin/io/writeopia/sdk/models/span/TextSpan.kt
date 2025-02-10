@@ -77,7 +77,7 @@ enum class Span(val label: String) {
 
     companion object {
         fun textFromString(label: String): Span = entries.find { option ->
-            option.label == label
+            option.label.equals(label, ignoreCase = true)
         } ?: throw IllegalArgumentException("This is span can't be found: $label")
     }
 }
