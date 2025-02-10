@@ -107,6 +107,10 @@ class WriteopiaStateManager(
                             toggleSpan(Span.UNDERLINE)
                         }
 
+                        KeyboardEvent.LINK -> {
+                            addLinkToDocument()
+                        }
+
                         KeyboardEvent.IDLE -> {}
                     }
                 }
