@@ -8,7 +8,7 @@ import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.TagInfo
-import io.writeopia.sdk.persistence.core.DocumentSearch
+import io.writeopia.sdk.search.DocumentSearch
 import io.writeopia.sdk.persistence.core.extensions.sortWithOrderBy
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.persistence.sqldelight.toLong

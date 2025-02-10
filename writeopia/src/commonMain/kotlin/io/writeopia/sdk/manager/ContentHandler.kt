@@ -130,6 +130,21 @@ class ContentHandler(
         position: Int
     ): Map<Int, StoryStep> = currentStory.addElementInPosition(newStoryUnit, position)
 
+    /**
+     * Adds a link to a new document inside a document
+     */
+    fun addPage(
+        currentStory: Map<Int, StoryStep>,
+        position: Int,
+        documentId: String
+    ): Map<Int, StoryStep> {
+        val mutable = currentStory.toMutableMap()
+        mutable[position] =
+            StoryStep(type = StoryTypes.DOCUMENT_LINK.type, documentLink = documentId)
+
+        return mutable
+    }
+
     fun addNewContentBulk(
         currentStory: Map<Int, StoryStep>,
         newStory: Map<Int, StoryStep>,

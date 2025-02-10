@@ -12,7 +12,7 @@ import io.writeopia.auth.register.RegisterViewModel
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.network.notes.NotesApi
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
-import io.writeopia.sdk.persistence.core.repository.DocumentRepository
+import io.writeopia.sdk.repository.DocumentRepository
 
 class AuthInjection(
     private val authCoreInjection: AuthCoreInjection,

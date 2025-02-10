@@ -261,4 +261,8 @@ class WriteopiaManager(
             lastEdit = LastEdit.LineEdition(position, storyStep)
         )
     }
+
+    fun addDocumentLink(storyState: StoryState, parentFolder: String, position: Int) {
+        newStory(title = "", parentFolder = parentFolder)
+    }
 }

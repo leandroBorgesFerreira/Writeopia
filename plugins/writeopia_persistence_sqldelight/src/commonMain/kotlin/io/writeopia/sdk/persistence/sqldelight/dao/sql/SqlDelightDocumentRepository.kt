@@ -4,8 +4,8 @@ import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.model.document.info
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.persistence.core.DocumentSearch
-import io.writeopia.sdk.persistence.core.repository.DocumentRepository
+import io.writeopia.sdk.search.DocumentSearch
+import io.writeopia.sdk.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import kotlinx.coroutines.flow.Flow

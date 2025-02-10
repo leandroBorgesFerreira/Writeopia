@@ -96,7 +96,8 @@ fun DesktopNoteEditorScreen(
             moveToClick = {
                 showFolderSelection = true
             },
-            askAiBySelection = noteEditorViewModel::askAiBySelection
+            askAiBySelection = noteEditorViewModel::askAiBySelection,
+            addPage = noteEditorViewModel::addPage
         )
 
         if (!isEditable) {

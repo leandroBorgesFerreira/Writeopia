@@ -1,7 +1,7 @@
 package io.writeopia.sqldelight.di
 
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
-import io.writeopia.sdk.persistence.core.repository.DocumentRepository
+import io.writeopia.sdk.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.repository.InMemoryDocumentRepository
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import io.writeopia.sdk.persistence.sqldelight.dao.sql.SqlDelightDocumentRepository
@@ -28,7 +28,6 @@ class SqlDelightDaoInjector(
                 documentSqlDao
             }
         }
-
 
     override fun provideDocumentRepository(): DocumentRepository =
         sqlDelightDocumentRepository ?: kotlin.run {

@@ -36,7 +36,8 @@ data class StoryStep(
     val tags: Set<TagInfo> = emptySet(),
     val spans: Set<SpanInfo> = emptySet(),
     val decoration: Decoration = Decoration(),
-    val ephemeral: Boolean = false
+    val ephemeral: Boolean = false,
+    val documentLink: String? = null
 ) {
 
     val key: Int = localId.hashCode()
