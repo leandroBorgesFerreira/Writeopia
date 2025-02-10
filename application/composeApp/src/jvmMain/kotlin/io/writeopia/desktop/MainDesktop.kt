@@ -115,6 +115,11 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                     false
                 }
 
+                isLinkEvent(keyEvent) -> {
+                    sendEvent(KeyboardEvent.LINK)
+                    false
+                }
+
                 else -> false
             }
         }
@@ -196,4 +201,9 @@ private fun isItalicEvent(keyEvent: AndroidKeyEvent) =
 private fun isUnderlineEvent(keyEvent: AndroidKeyEvent) =
     keyEvent.isMetaPressed &&
         keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_U &&
+        keyEvent.type == KeyEventType.KeyUp
+
+private fun isLinkEvent(keyEvent: AndroidKeyEvent) =
+    keyEvent.isMetaPressed &&
+        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_L &&
         keyEvent.type == KeyEventType.KeyUp
