@@ -24,6 +24,7 @@ actual fun TextEditorScreen(
         drawersFactory = DefaultDrawersJs,
         isUndoKeyEvent = isUndoKeyEvent,
         onPresentationClick = playPresentation,
+        onDocumentLinkClick = onDocumentLinkClick,
         modifier = modifier
     )
 }
