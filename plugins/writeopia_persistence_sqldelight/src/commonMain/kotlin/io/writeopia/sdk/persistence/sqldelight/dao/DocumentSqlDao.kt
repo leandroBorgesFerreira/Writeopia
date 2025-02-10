@@ -58,13 +58,11 @@ class DocumentSqlDao(
         ?: emptyList()
 
     suspend fun insertDocumentWithContent(document: Document) {
-        println("insertDocumentWithContent. deleteByDocumentId")
         storyStepQueries?.deleteByDocumentId(document.id)
         document.content.values.forEachIndexed { i, storyStep ->
             insertStoryStep(storyStep, i.toLong(), document.id)
         }
-
-        println("inserting documents.")
+        
         insertDocument(document)
     }
 
