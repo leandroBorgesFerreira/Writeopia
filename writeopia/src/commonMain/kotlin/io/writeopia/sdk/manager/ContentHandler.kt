@@ -7,6 +7,7 @@ import io.writeopia.sdk.models.command.CommandInfo
 import io.writeopia.sdk.models.command.CommandTrigger
 import io.writeopia.sdk.models.command.TypeInfo
 import io.writeopia.sdk.models.id.GenerateId
+import io.writeopia.sdk.models.link.DocumentLink
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryType
 import io.writeopia.sdk.models.story.StoryTypes
@@ -136,11 +137,15 @@ class ContentHandler(
     fun addPage(
         currentStory: Map<Int, StoryStep>,
         position: Int,
-        documentId: String
+        documentId: String,
+        text: String
     ): Map<Int, StoryStep> {
         val mutable = currentStory.toMutableMap()
         mutable[position] =
-            StoryStep(type = StoryTypes.DOCUMENT_LINK.type, documentLink = documentId)
+            StoryStep(
+                type = StoryTypes.DOCUMENT_LINK.type,
+                documentLink = DocumentLink(documentId, text),
+            )
 
         return mutable
     }

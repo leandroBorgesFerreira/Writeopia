@@ -1,6 +1,7 @@
 package io.writeopia.sdk.models.story
 
 import io.writeopia.sdk.models.id.GenerateId
+import io.writeopia.sdk.models.link.DocumentLink
 import io.writeopia.sdk.models.span.SpanInfo
 
 /**
@@ -37,7 +38,7 @@ data class StoryStep(
     val spans: Set<SpanInfo> = emptySet(),
     val decoration: Decoration = Decoration(),
     val ephemeral: Boolean = false,
-    val documentLink: String? = null
+    val documentLink: DocumentLink? = null
 ) {
 
     val key: Int = localId.hashCode()
@@ -46,3 +47,4 @@ data class StoryStep(
 
     fun copyNewLocalId(localId: String = GenerateId.generate()): StoryStep = copy(localId = localId)
 }
+

@@ -47,7 +47,8 @@ class EditorKmpInjector private constructor(
         dispatcher = Dispatchers.Default,
         writeopiaManager = writeopiaManager,
         selectionState = selectionState,
-        keyboardEventFlow = keyboardEventFlow
+        keyboardEventFlow = keyboardEventFlow,
+        documentRepository = repositoryInjection.provideDocumentRepository()
     )
 
     fun provideNoteEditorViewModel(

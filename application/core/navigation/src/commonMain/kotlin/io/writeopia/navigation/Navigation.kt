@@ -58,7 +58,10 @@ fun Navigation(
                 editorInjector = editorInjector,
                 isUndoKeyEvent = isUndoKeyEvent,
                 navigateToPresentation = navController::navigateToPresentation,
-                sharedTransitionScope = this@SharedTransitionLayout
+                sharedTransitionScope = this@SharedTransitionLayout,
+                navigateToNote = {  id ->
+                    navController.navigateToNote(id, title = "")
+                },
             )
 
             accountMenuNavigation(

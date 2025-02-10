@@ -26,7 +26,8 @@ internal fun TextEditor(
     noteEditorViewModel: NoteEditorViewModel,
     drawersFactory: DrawersFactory,
     modifier: Modifier = Modifier,
-    keyFn: (Int, DrawStory) -> Int = { index, drawStory -> drawStory.desktopKey + index }
+    keyFn: (Int, DrawStory) -> Int = { index, drawStory -> drawStory.desktopKey + index },
+    onDocumentLinkClick: (String) -> Unit,
 ) {
     val listState: LazyListState = rememberLazyListState()
 
@@ -70,7 +71,8 @@ internal fun TextEditor(
             groupsBackgroundColor = Color.Transparent,
             selectedColor = WriteopiaTheme.colorScheme.selectedBg,
             selectedBorderColor = MaterialTheme.colorScheme.primary,
-            fontFamily = fontFamily
+            fontFamily = fontFamily,
+            onDocumentLinkClick = onDocumentLinkClick
         ),
         storyState = storyState,
     )

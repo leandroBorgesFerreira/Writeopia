@@ -13,6 +13,7 @@ actual fun TextEditorScreen(
     isUndoKeyEvent: (KeyEvent) -> Boolean,
     navigateBack: () -> Unit,
     playPresentation: () -> Unit,
+    onDocumentLinkClick: (String) -> Unit,
     modifier: Modifier
 ) {
     NoteEditorScreen(
@@ -20,6 +21,7 @@ actual fun TextEditorScreen(
         title = title,
         noteEditorViewModel = noteEditorViewModel,
         navigateBack = navigateBack,
+        onDocumentLinkClick = onDocumentLinkClick,
         modifier = modifier
     )
 }

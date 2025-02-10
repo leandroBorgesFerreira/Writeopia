@@ -212,7 +212,7 @@ class NoteEditorKmpViewModel(
             return
         }
 
-        writeopiaManager.newStory(documentId, title, parentFolder = parentFolderId)
+        writeopiaManager.newDocument(documentId, title, parentFolder = parentFolderId)
         writeopiaManager.saveOnStoryChanges(OnUpdateDocumentTracker(documentRepository))
         writeopiaManager.liveSync(sharedEditionManager)
     }
@@ -421,7 +421,9 @@ class NoteEditorKmpViewModel(
     }
 
     override fun addPage() {
-
+        viewModelScope.launch(Dispatchers.Default) {
+            writeopiaManager.addLinkToDocument()
+        }
     }
 
     private fun writeDocument(path: String, writer: DocumentWriter) {

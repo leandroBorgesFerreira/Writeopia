@@ -39,3 +39,15 @@ fun Document.info(): DocumentInfo = DocumentInfo(
     icon = this.icon,
     isLocked = this.isLocked
 )
+
+fun DocumentInfo.document(userId: String): Document = Document(
+    id = this.id,
+    title = this.title,
+    createdAt = this.createdAt,
+    lastUpdatedAt = this.lastUpdatedAt,
+    parentId = this.parentId,
+    icon = this.icon,
+    isLocked = this.isLocked,
+    userId = userId
+)
+

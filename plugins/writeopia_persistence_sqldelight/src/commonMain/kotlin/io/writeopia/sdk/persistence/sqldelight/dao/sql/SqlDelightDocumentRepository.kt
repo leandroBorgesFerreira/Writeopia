@@ -87,7 +87,6 @@ class SqlDelightDocumentRepository(
 
     override suspend fun saveDocument(document: Document) {
         documentSqlDao.insertDocumentWithContent(document)
-
         refreshDocuments()
     }
 

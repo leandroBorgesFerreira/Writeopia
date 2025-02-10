@@ -80,6 +80,7 @@ internal fun NoteEditorScreen(
     title: String?,
     noteEditorViewModel: NoteEditorViewModel,
     navigateBack: () -> Unit,
+    onDocumentLinkClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val systemUiController = rememberSystemUiController()
@@ -148,7 +149,8 @@ internal fun NoteEditorScreen(
                     Modifier
                         .weight(1F)
                         .padding(horizontal = 6.dp),
-                    keyFn = { index, drawStory -> drawStory.mobileKey + index }
+                    keyFn = { index, drawStory -> drawStory.mobileKey + index },
+                    onDocumentLinkClick = onDocumentLinkClick
                 )
 
                 BottomScreen(

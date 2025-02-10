@@ -47,7 +47,7 @@ class WriteopiaStateManagerTest {
             userId = { "" }
         )
 
-        manager.newStory()
+        manager.newDocument()
 
         val currentStory = manager.currentStory.value.stories
         val expected = mapOf(
