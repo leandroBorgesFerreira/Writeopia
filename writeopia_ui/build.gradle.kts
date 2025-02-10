@@ -91,6 +91,8 @@ kotlin {
 
                 implementation(libs.coil.compose)
                 implementation(libs.coil.ktor3)
+
+
             }
         }
 

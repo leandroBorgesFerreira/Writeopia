@@ -43,6 +43,7 @@ object DefaultDrawersJs : DrawersFactory {
         selectedColor: Color,
         selectedBorderColor: Color,
         fontFamily: FontFamily?,
+        onDocumentLinkClick: (String) -> Unit,
     ): Map<Int, StoryStepDrawer> =
         CommonDrawers.create(
             manager,
@@ -91,6 +92,7 @@ object DefaultDrawersJs : DrawersFactory {
                         tint = tintColor
                     )
                 }
-            }
+            },
+            onDocumentLinkClick = onDocumentLinkClick
         )
 }

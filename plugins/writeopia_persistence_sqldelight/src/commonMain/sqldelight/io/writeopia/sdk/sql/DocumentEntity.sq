@@ -21,6 +21,11 @@ FROM documentEntity
 ORDER BY last_updated_at
 LIMIT 10;
 
+selectTitleByDocumentId:
+SELECT title
+FROM documentEntity
+WHERE id = ?;
+
 query:
 SELECT *
 FROM documentEntity
@@ -77,7 +82,7 @@ ORDER BY position;
 selectWithContentByParentId:
 SELECT *
 FROM documentEntity
-JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
+LEFT JOIN storyStepEntity ON documentEntity.id=storyStepEntity.document_id
 WHERE documentEntity.parent_document_id = ?
 ORDER BY position;
 

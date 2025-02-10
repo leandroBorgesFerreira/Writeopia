@@ -72,6 +72,7 @@ fun SideEditorOptions(
     moveToRoot: () -> Unit,
     moveToClick: () -> Unit,
     askAiBySelection: () -> Unit,
+    addPage: () -> Unit,
 ) {
     var menuType by remember {
         mutableStateOf(OptionsType.NONE)
@@ -123,7 +124,8 @@ fun SideEditorOptions(
                             listItemClick,
                             codeBlockClick,
                             highLightBlockClick,
-                            addImage
+                            addImage,
+                            addPage
                         )
                     }
 
@@ -508,6 +510,7 @@ private fun TextOptions(
     codeBlockClick: () -> Unit,
     highLightBlockClick: () -> Unit,
     addImage: (String) -> Unit,
+    addPage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -547,6 +550,12 @@ private fun TextOptions(
         IconAndText("Image", WrIcons.image) {
             fileChooserLoad("")?.let(addImage)
         }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Title("Links")
+        Spacer(modifier = Modifier.height(4.dp))
+        IconAndText("Page", WrIcons.file, addPage)
     }
 }
 

@@ -31,7 +31,7 @@ class WriteopiaManager(
     private val spanHandler: SpansHandler = SpansHandler
 ) {
 
-    fun newStory(
+    fun newDocument(
         documentId: String = GenerateId.generate(),
         title: String = "",
         parentFolder: String = "root"
@@ -259,6 +259,26 @@ class WriteopiaManager(
         return storyState.copy(
             stories = newStory,
             lastEdit = LastEdit.LineEdition(position, storyStep)
+        )
+    }
+
+    fun addDocumentLink(
+        storyState: StoryState,
+        position: Int,
+        documentId: String,
+        text: String
+    ): StoryState {
+        val newStories =
+            contentHandler.addPage(
+                storyState.stories,
+                position = position,
+                documentId = documentId,
+                text = text
+            )
+
+        return storyState.copy(
+            stories = newStories,
+            lastEdit = LastEdit.LineEdition(position, newStories[position]!!)
         )
     }
 }

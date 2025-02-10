@@ -1,7 +1,7 @@
 package io.writeopia.auth.intronotes
 
 import io.writeopia.sdk.network.notes.NotesApi
-import io.writeopia.sdk.persistence.core.repository.DocumentRepository
+import io.writeopia.sdk.repository.DocumentRepository
 
 internal class IntroNotesUseCase(
     private val documentRepository: DocumentRepository,

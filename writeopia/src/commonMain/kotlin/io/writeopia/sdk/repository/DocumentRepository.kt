@@ -1,10 +1,10 @@
-package io.writeopia.sdk.persistence.core.repository
+package io.writeopia.sdk.repository
 
 import io.writeopia.sdk.manager.DocumentUpdate
 import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
-import io.writeopia.sdk.persistence.core.DocumentSearch
+import io.writeopia.sdk.search.DocumentSearch
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Instant
 

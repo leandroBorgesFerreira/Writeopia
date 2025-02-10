@@ -38,7 +38,8 @@ object DefaultDrawersDesktop : DrawersFactory {
         onHeaderClick: () -> Unit,
         selectedColor: Color,
         selectedBorderColor: Color,
-        fontFamily: FontFamily?
+        fontFamily: FontFamily?,
+        onDocumentLinkClick: (String) -> Unit,
     ): Map<Int, StoryStepDrawer> =
         CommonDrawers.create(
             manager,
@@ -57,6 +58,7 @@ object DefaultDrawersDesktop : DrawersFactory {
                 manager = manager,
             ),
             fontFamily = fontFamily,
+            onDocumentLinkClick = onDocumentLinkClick,
             headerEndContent = { storyStep, drawInfo, isHovered ->
                 val isTitle = storyStep.tags.any { it.tag.isTitle() }
                 val isCollapsed by lazy { storyStep.tags.any { it.tag == Tag.COLLAPSED } }

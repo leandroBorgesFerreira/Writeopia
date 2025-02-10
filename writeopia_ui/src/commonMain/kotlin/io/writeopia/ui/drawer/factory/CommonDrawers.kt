@@ -17,12 +17,14 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.writeopia.sdk.models.link.DocumentLink
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.content.AddButtonDrawer
 import io.writeopia.ui.drawer.content.AiAnswerDrawer
+import io.writeopia.ui.drawer.content.DocumentLinkDrawer
 import io.writeopia.ui.drawer.content.ImageDrawer
 import io.writeopia.ui.drawer.content.LastEmptySpace
 import io.writeopia.ui.drawer.content.LoadingDrawer
@@ -59,6 +61,7 @@ object CommonDrawers {
         isDesktop: Boolean,
         fontFamily: FontFamily? = null,
         headerEndContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
+        onDocumentLinkClick: (String) -> Unit,
     ): Map<Int, StoryStepDrawer> {
         val commonTextModifier = Modifier.padding(
             start = drawConfig.codeBlockStartPadding.dp,
@@ -135,6 +138,19 @@ object CommonDrawers {
             onDragStart = manager::onDragStart,
             onDragStop = manager::onDragStop,
             moveRequest = manager::moveRequest,
+        )
+
+        val documentLinkDrawer = DocumentLinkDrawer(
+            dragIconWidth = dragIconWidth,
+            config = drawConfig,
+            enabled = true,
+            paddingValues = PaddingValues(start = 4.dp, top = 0.dp, bottom = 0.dp),
+            onSelected = manager::onSelected,
+            onDragHover = manager::onDragHover,
+            onDragStart = manager::onDragStart,
+            onDragStop = manager::onDragStop,
+            moveRequest = manager::moveRequest,
+            onClick = onDocumentLinkClick
         )
 
         val checkItemDrawer = checkItemDrawer(
@@ -225,6 +241,7 @@ object CommonDrawers {
             put(StoryTypes.GROUP_IMAGE.type.number, RowGroupDrawer(imageDrawerInGroup))
             put(StoryTypes.AI_ANSWER.type.number, aiAnswerDrawer)
             put(StoryTypes.LOADING.type.number, loadingDrawer)
+            put(StoryTypes.DOCUMENT_LINK.type.number, documentLinkDrawer)
         }
     }
 }

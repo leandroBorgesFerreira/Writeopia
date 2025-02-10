@@ -13,7 +13,7 @@ import io.writeopia.notemenu.data.usecase.NotesUseCase
 import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
-import io.writeopia.sdk.persistence.core.repository.DocumentRepository
+import io.writeopia.sdk.repository.DocumentRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 

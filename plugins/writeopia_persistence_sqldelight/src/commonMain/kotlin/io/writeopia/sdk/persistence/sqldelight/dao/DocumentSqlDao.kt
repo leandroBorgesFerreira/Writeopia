@@ -3,12 +3,13 @@ package io.writeopia.sdk.persistence.sqldelight.dao
 import app.cash.sqldelight.async.coroutines.awaitAsList
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
+import io.writeopia.sdk.models.link.DocumentLink
 import io.writeopia.sdk.models.span.SpanInfo
 import io.writeopia.sdk.models.story.Decoration
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.TagInfo
-import io.writeopia.sdk.persistence.core.DocumentSearch
+import io.writeopia.sdk.search.DocumentSearch
 import io.writeopia.sdk.persistence.core.extensions.sortWithOrderBy
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.persistence.sqldelight.toLong
@@ -57,11 +58,13 @@ class DocumentSqlDao(
         ?: emptyList()
 
     suspend fun insertDocumentWithContent(document: Document) {
+        println("insertDocumentWithContent. deleteByDocumentId")
         storyStepQueries?.deleteByDocumentId(document.id)
         document.content.values.forEachIndexed { i, storyStep ->
             insertStoryStep(storyStep, i.toLong(), document.id)
         }
 
+        println("inserting documents.")
         insertDocument(document)
     }
 
@@ -97,7 +100,8 @@ class DocumentSqlDao(
                 has_inner_steps = steps.isNotEmpty().toLong(),
                 background_color = decoration.backgroundColor?.toLong(),
                 tags = tags.joinToString(separator = ",") { it.tag.label },
-                spans = spans.joinToString(separator = ",") { it.toText() }
+                spans = spans.joinToString(separator = ",") { it.toText() },
+                link_to_document = documentLink?.id
             )
         }
     }
@@ -159,12 +163,18 @@ class DocumentSqlDao(
                                 ?.mapNotNull(TagInfo.Companion::fromString)
                                 ?.toSet()
                                 ?: emptySet(),
-                            spans =  innerContent.spans
+                            spans = innerContent.spans
                                 ?.split(",")
                                 ?.filter { it.isNotEmpty() }
                                 ?.map(SpanInfo::fromString)
                                 ?.toSet()
-                                ?: emptySet()
+                                ?: emptySet(),
+                            documentLink = innerContent.link_to_document?.let { documentId ->
+                                val title = documentQueries.selectTitleByDocumentId(documentId)
+                                    .executeAsOneOrNull()
+
+                                DocumentLink(documentId, title)
+                            }
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -218,12 +228,18 @@ class DocumentSqlDao(
                                 ?.mapNotNull(TagInfo.Companion::fromString)
                                 ?.toSet()
                                 ?: emptySet(),
-                            spans =  innerContent.spans
+                            spans = innerContent.spans
                                 ?.split(",")
                                 ?.filter { it.isNotEmpty() }
                                 ?.map(SpanInfo::fromString)
                                 ?.toSet()
-                                ?: emptySet()
+                                ?: emptySet(),
+                            documentLink = innerContent.link_to_document?.let { documentId ->
+                                val title = documentQueries.selectTitleByDocumentId(documentId)
+                                    .executeAsOneOrNull()
+
+                                DocumentLink(documentId, title)
+                            }
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -283,12 +299,18 @@ class DocumentSqlDao(
                                 ?.mapNotNull(TagInfo.Companion::fromString)
                                 ?.toSet()
                                 ?: emptySet(),
-                            spans =  innerContent.spans
+                            spans = innerContent.spans
                                 ?.split(",")
                                 ?.filter { it.isNotEmpty() }
                                 ?.map(SpanInfo::fromString)
                                 ?.toSet()
-                                ?: emptySet()
+                                ?: emptySet(),
+                            documentLink = innerContent.link_to_document?.let { documentId ->
+                                val title = documentQueries.selectTitleByDocumentId(documentId)
+                                    .executeAsOneOrNull()
+
+                                DocumentLink(documentId, title)
+                            }
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -348,12 +370,18 @@ class DocumentSqlDao(
                                 ?.mapNotNull(TagInfo.Companion::fromString)
                                 ?.toSet()
                                 ?: emptySet(),
-                            spans =  innerContent.spans
+                            spans = innerContent.spans
                                 ?.split(",")
                                 ?.filter { it.isNotEmpty() }
                                 ?.map(SpanInfo::fromString)
                                 ?.toSet()
-                                ?: emptySet()
+                                ?: emptySet(),
+                            documentLink = innerContent.link_to_document?.let { documentId ->
+                                val title = documentQueries.selectTitleByDocumentId(documentId)
+                                    .executeAsOneOrNull()
+
+                                DocumentLink(documentId, title)
+                            }
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -416,12 +444,18 @@ class DocumentSqlDao(
                                 ?.mapNotNull(TagInfo.Companion::fromString)
                                 ?.toSet()
                                 ?: emptySet(),
-                            spans =  innerContent.spans
+                            spans = innerContent.spans
                                 ?.split(",")
                                 ?.filter { it.isNotEmpty() }
                                 ?.map(SpanInfo::fromString)
                                 ?.toSet()
-                                ?: emptySet()
+                                ?: emptySet(),
+                            documentLink = innerContent.link_to_document?.let { documentId ->
+                                val title = documentQueries.selectTitleByDocumentId(documentId)
+                                    .executeAsOneOrNull()
+
+                                DocumentLink(documentId, title)
+                            }
                         )
 
                         innerContent.position!!.toInt() to storyStep
@@ -455,12 +489,12 @@ class DocumentSqlDao(
             ?.mapNotNull { (documentId, content) ->
                 content.firstOrNull()?.let { document ->
                     val innerContent = content.filter { innerContent ->
-                        innerContent.id_.isNotEmpty()
+                        innerContent.id_?.isNotEmpty() == true
                     }.associate { innerContent ->
                         val storyStep = StoryStep(
-                            id = innerContent.id_,
-                            localId = innerContent.local_id,
-                            type = StoryTypes.fromNumber(innerContent.type.toInt()).type,
+                            id = innerContent.id_!!,
+                            localId = innerContent.local_id!!,
+                            type = StoryTypes.fromNumber(innerContent.type!!.toInt()).type,
                             parentId = innerContent.parent_id,
                             url = innerContent.url,
                             path = innerContent.path,
@@ -470,19 +504,25 @@ class DocumentSqlDao(
                             decoration = Decoration(
                                 backgroundColor = innerContent.background_color?.toInt(),
                             ),
-                            tags = innerContent.tags
+                            tags = innerContent.tags!!
                                 .split(",")
                                 .filter { it.isNotEmpty() }
                                 .mapNotNull(TagInfo.Companion::fromString)
                                 .toSet(),
-                            spans =  innerContent.spans
-                                .split(",")
+                            spans = innerContent.spans
+                                !!.split(",")
                                 .filter { it.isNotEmpty() }
                                 .map(SpanInfo::fromString)
-                                .toSet()
+                                .toSet(),
+                            documentLink = innerContent.link_to_document?.let { documentId ->
+                                val title = documentQueries.selectTitleByDocumentId(documentId)
+                                    .executeAsOneOrNull()
+
+                                DocumentLink(documentId, title)
+                            }
                         )
 
-                        innerContent.position.toInt() to storyStep
+                        innerContent.position!!.toInt() to storyStep
                     }
 
                     Document(

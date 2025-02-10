@@ -52,10 +52,12 @@ enum class StoryTypes(val type: StoryType) {
     ON_DRAG_SPACE(StoryType("on_drag_space", 17)),
     AI_ANSWER(StoryType("ai_answer", 18)),
     LOADING(StoryType("loading", 19)),
+    DOCUMENT_LINK(StoryType("document_link", 20)),
     ;
 
     companion object {
-        fun fromName(stringValue: String): StoryTypes = entries.first { it.type.name == stringValue }
+        fun fromName(stringValue: String): StoryTypes =
+            entries.first { it.type.name == stringValue }
 
         fun fromNumber(number: Int): StoryTypes = entries.first { it.type.number == number }
     }

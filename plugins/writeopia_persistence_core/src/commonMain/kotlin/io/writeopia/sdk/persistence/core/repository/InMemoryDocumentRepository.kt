@@ -3,6 +3,7 @@ package io.writeopia.sdk.persistence.core.repository
 import io.writeopia.sdk.model.document.DocumentInfo
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.sdk.repository.DocumentRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map

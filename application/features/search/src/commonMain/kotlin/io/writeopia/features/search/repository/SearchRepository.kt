@@ -3,7 +3,7 @@ package io.writeopia.features.search.repository
 import io.writeopia.models.Folder
 import io.writeopia.models.search.FolderSearch
 import io.writeopia.sdk.models.document.MenuItem
-import io.writeopia.sdk.persistence.core.DocumentSearch
+import io.writeopia.sdk.search.DocumentSearch
 
 class SearchRepository(
     private val folderSearch: FolderSearch,

@@ -10,7 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -29,6 +28,7 @@ fun NavGraphBuilder.editorNavigation(
     sharedTransitionScope: SharedTransitionScope,
     editorInjector: TextEditorInjector,
     isUndoKeyEvent: (KeyEvent) -> Boolean,
+    navigateToNote: (String) -> Unit,
     navigateToPresentation: (String) -> Unit
 ) {
     sharedTransitionScope.run {
@@ -63,6 +63,7 @@ fun NavGraphBuilder.editorNavigation(
                         navigateToPresentation(noteId)
                     },
                     navigateBack = navigateBack,
+                    onDocumentLinkClick = navigateToNote,
                     modifier = sharedModifier(this, noteId)
                 )
             } else {
@@ -88,6 +89,7 @@ fun NavGraphBuilder.editorNavigation(
                         .id
                         .let(navigateToPresentation)
                 },
+                onDocumentLinkClick = navigateToNote,
                 modifier = sharedModifier(this),
             )
         }

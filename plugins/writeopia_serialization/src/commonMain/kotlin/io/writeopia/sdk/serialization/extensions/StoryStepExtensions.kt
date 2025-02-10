@@ -23,7 +23,8 @@ fun StoryStep.toApi(position: Int): StoryStepApi =
         steps = this.steps.map { storyStep -> storyStep.toApi(position) },
         tags = this.tags.mapTo(mutableSetOf()) { it.toApi() },
         decoration = this.decoration.toApi(),
-        position = position
+        position = position,
+        documentLink = this.documentLink?.toApi()
     )
 
 fun StoryStepApi.toModel(): StoryStep =
@@ -39,6 +40,7 @@ fun StoryStepApi.toModel(): StoryStep =
         tags = this.tags.mapTo(mutableSetOf()) { it.toModel() },
         steps = steps.map { it.toModel() },
         decoration = decoration.toModel(),
+        documentLink = this.documentLink?.toModel()
     )
 
 fun StoryType.toApi(): StoryTypeApi =

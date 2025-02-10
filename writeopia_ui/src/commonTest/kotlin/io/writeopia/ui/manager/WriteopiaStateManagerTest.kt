@@ -47,7 +47,7 @@ class WriteopiaStateManagerTest {
             userId = { "" }
         )
 
-        manager.newStory()
+        manager.newDocument()
 
         val currentStory = manager.currentStory.value.stories
         val expected = mapOf(
@@ -665,7 +665,7 @@ class WriteopiaStateManagerTest {
             val storyManager = WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" }
+                userId = { "" },
             )
             storyManager.loadDocument(
                 Document(

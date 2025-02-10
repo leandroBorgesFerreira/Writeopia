@@ -32,6 +32,7 @@ fun AppTextEditor(
     viewModel: NoteEditorViewModel,
     drawersFactory: DrawersFactory,
     loadNoteId: String? = null,
+    onDocumentLinkClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val listState: LazyListState = rememberLazyListState()
@@ -50,7 +51,7 @@ fun AppTextEditor(
     }
 
     Box(modifier) {
-        TextEditor(viewModel, drawersFactory)
+        TextEditor(viewModel, drawersFactory, onDocumentLinkClick = onDocumentLinkClick)
 
         val isEditionHeader by viewModel.editHeader.collectAsState()
 

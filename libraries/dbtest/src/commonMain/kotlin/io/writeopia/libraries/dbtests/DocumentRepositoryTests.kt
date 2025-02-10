@@ -6,7 +6,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.Tag
 import io.writeopia.sdk.models.story.TagInfo
-import io.writeopia.sdk.persistence.core.repository.DocumentRepository
+import io.writeopia.sdk.repository.DocumentRepository
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.test.assertEquals

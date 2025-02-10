@@ -13,5 +13,6 @@ expect fun TextEditorScreen(
     isUndoKeyEvent: (KeyEvent) -> Boolean,
     navigateBack: () -> Unit,
     playPresentation: () -> Unit,
+    onDocumentLinkClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 )

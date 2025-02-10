@@ -1,24 +1,21 @@
 package io.writeopia.ui.drawer.content
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,11 +32,10 @@ import io.writeopia.ui.model.DrawConfig
 import io.writeopia.ui.model.DrawInfo
 
 /**
- * Drawer for AI answers.
+ * Drawer for a links to other documents.
  */
-class AiAnswerDrawer(
+class DocumentLinkDrawer(
     private val modifier: Modifier = Modifier,
-    private val customBackgroundColor: Color,
     private val onSelected: (Boolean, Int) -> Unit,
     private val dragIconWidth: Dp,
     private val config: DrawConfig,
@@ -50,6 +46,7 @@ class AiAnswerDrawer(
     private val endContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
     private val enabled: Boolean,
     private val paddingValues: PaddingValues = PaddingValues(0.dp),
+    private val onClick: (String) -> Unit
 ) : StoryStepDrawer {
 
     @Composable
@@ -58,11 +55,6 @@ class AiAnswerDrawer(
         val interactionSource = remember { MutableInteractionSource() }
         val isHovered by interactionSource.collectIsHoveredAsState()
 
-        val (paddingBottom, paddingTop) = step.tags
-            .any { it.tag.isTitle() }
-            .takeIf { it }
-            ?.let { 4 to 16 }
-            ?: (0 to 0)
 
         SelectableByDrag { isInsideDrag ->
             if (isInsideDrag != null) {
@@ -71,9 +63,7 @@ class AiAnswerDrawer(
                 }
             }
 
-            DropTargetHorizontalDivision(
-                modifier = Modifier.padding(bottom = paddingBottom.dp, top = paddingTop.dp)
-            ) { inBound, data ->
+            DropTargetHorizontalDivision { inBound, data ->
                 when (inBound) {
                     InBounds.OUTSIDE -> {}
                     InBounds.INSIDE_UP -> {
@@ -89,7 +79,6 @@ class AiAnswerDrawer(
 
                 SwipeBox(
                     modifier = modifier.hoverable(interactionSource),
-                    defaultColor = customBackgroundColor,
                     activeColor = config.selectedColor(),
                     activeBorderColor = config.selectedBorderColor(),
                     isOnEditState = drawInfo.selectMode,
@@ -112,19 +101,20 @@ class AiAnswerDrawer(
                             onSelected(!drawInfo.selectMode, drawInfo.position)
                         }
                     ) {
-                        BasicTextField(
+                        Text(
                             modifier = Modifier.padding(
                                 horizontal = config.iaAnswerHorizontalPadding.dp,
                                 vertical = config.iaAnswerHorizontalPadding.dp
-                            ),
-                            value = step.text ?: "",
-                            onValueChange = {},
-                            textStyle = TextStyle(
+                            ).clickable {
+                                step.documentLink?.id?.let(onClick)
+                            },
+                            text = step.documentLink?.title ?: "New Document",
+                            style = TextStyle(
                                 color = MaterialTheme.colorScheme.onBackground,
                                 fontSize = 16.sp,
+                                textDecoration = TextDecoration.Underline
 //                            fontFamily = fontFamily
                             ),
-                            readOnly = true
                         )
 
                         endContent?.invoke(step, drawInfo, isHovered)

@@ -25,7 +25,7 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.span.Span
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.persistence.core.repository.DocumentRepository
+import io.writeopia.sdk.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
 import io.writeopia.sdk.serialization.extensions.toApi
 import io.writeopia.sdk.serialization.json.writeopiaJson
@@ -50,7 +50,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class NoteEditorKmpViewModel(
@@ -213,7 +212,7 @@ class NoteEditorKmpViewModel(
             return
         }
 
-        writeopiaManager.newStory(documentId, title, parentFolder = parentFolderId)
+        writeopiaManager.newDocument(documentId, title, parentFolder = parentFolderId)
         writeopiaManager.saveOnStoryChanges(OnUpdateDocumentTracker(documentRepository))
         writeopiaManager.liveSync(sharedEditionManager)
     }
@@ -418,6 +417,12 @@ class NoteEditorKmpViewModel(
                         }
                 }
             }
+        }
+    }
+
+    override fun addPage() {
+        viewModelScope.launch(Dispatchers.Default) {
+            writeopiaManager.addLinkToDocument()
         }
     }
 

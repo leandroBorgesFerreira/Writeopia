@@ -15,6 +15,7 @@ actual fun TextEditorScreen(
     isUndoKeyEvent: (KeyEvent) -> Boolean,
     navigateBack: () -> Unit,
     playPresentation: () -> Unit,
+    onDocumentLinkClick: (String) -> Unit,
     modifier: Modifier,
 ) {
     DesktopNoteEditorScreen(
@@ -23,6 +24,7 @@ actual fun TextEditorScreen(
         drawersFactory = DefaultDrawersJs,
         isUndoKeyEvent = isUndoKeyEvent,
         onPresentationClick = playPresentation,
+        onDocumentLinkClick = onDocumentLinkClick,
         modifier = modifier
     )
 }

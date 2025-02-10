@@ -14,7 +14,7 @@ import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
-import io.writeopia.sdk.persistence.core.repository.DocumentRepository
+import io.writeopia.sdk.repository.DocumentRepository
 import io.writeopia.sdk.sharededition.SharedEditionManager
 import io.writeopia.ui.keyboard.KeyboardEvent
 import io.writeopia.ui.manager.WriteopiaStateManager
@@ -47,7 +47,8 @@ class EditorKmpInjector private constructor(
         dispatcher = Dispatchers.Default,
         writeopiaManager = writeopiaManager,
         selectionState = selectionState,
-        keyboardEventFlow = keyboardEventFlow
+        keyboardEventFlow = keyboardEventFlow,
+        documentRepository = repositoryInjection.provideDocumentRepository()
     )
 
     fun provideNoteEditorViewModel(

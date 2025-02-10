@@ -19,5 +19,6 @@ interface DrawersFactory {
         selectedColor: Color,
         selectedBorderColor: Color,
         fontFamily: FontFamily?,
+        onDocumentLinkClick: (String) -> Unit,
     ): Map<Int, StoryStepDrawer>
 }

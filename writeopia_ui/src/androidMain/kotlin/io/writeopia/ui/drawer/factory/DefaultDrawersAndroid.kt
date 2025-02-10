@@ -34,6 +34,7 @@ object DefaultDrawersAndroid : DrawersFactory {
         selectedColor: Color,
         selectedBorderColor: Color,
         fontFamily: FontFamily?,
+        onDocumentLinkClick: (String) -> Unit,
     ): Map<Int, StoryStepDrawer> {
         val commonDrawers = CommonDrawers.create(
             manager,
@@ -83,7 +84,8 @@ object DefaultDrawersAndroid : DrawersFactory {
                         tint = iconTintOnHover
                     )
                 }
-            }
+            },
+            onDocumentLinkClick = onDocumentLinkClick,
         )
 
         return mapOf(

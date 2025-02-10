@@ -13,6 +13,8 @@ data class StoryStepApi(
     val checked: Boolean? = false,
     val steps: List<StoryStepApi> = emptyList(),
     val tags: Set<TagInfoApi> = emptySet(),
+//    val spans: Set<SpanInfo>
     val decoration: DecorationApi = DecorationApi(),
     val position: Int,
+    val documentLink: DocumentLinkApi? = null
 )

@@ -10,7 +10,7 @@ import io.writeopia.notemenu.data.repository.ConfigurationRoomRepository
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
-import io.writeopia.sdk.persistence.core.repository.DocumentRepository
+import io.writeopia.sdk.repository.DocumentRepository
 import io.writeopia.sdk.persistence.dao.room.RoomDocumentRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest

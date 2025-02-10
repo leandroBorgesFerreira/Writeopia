@@ -5,17 +5,14 @@ import io.writeopia.api.utils.example
 import io.writeopia.database.connection.SqlDelightJdbcConnection
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.models.story.TagInfo
-import io.writeopia.sdk.persistence.core.repository.DocumentRepository
+import io.writeopia.sdk.repository.DocumentRepository
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import io.writeopia.sdk.persistence.sqldelight.dao.sql.SqlDelightDocumentRepository
 import io.writeopia.sdk.serialization.data.DocumentApi
 import io.writeopia.sdk.serialization.extensions.toApi
 import io.writeopia.sdk.serialization.extensions.toModel
-import io.writeopia.sdk.serialization.json.writeopiaJson
 import io.writeopia.sdk.sql.WriteopiaDb
 import kotlinx.datetime.Clock
-import kotlinx.serialization.encodeToString
 
 class WriteopiaEditorApi(
     private val documentRepository: DocumentRepository,

@@ -1,4 +1,4 @@
-package io.writeopia.sdk.persistence.core
+package io.writeopia.sdk.search
 
 import io.writeopia.sdk.models.document.Document
 

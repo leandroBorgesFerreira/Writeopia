@@ -8,6 +8,7 @@ import io.writeopia.sdk.manager.fixMove
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.action.BackstackAction
 import io.writeopia.sdk.model.document.DocumentInfo
+import io.writeopia.sdk.model.document.document
 import io.writeopia.sdk.model.document.info
 import io.writeopia.sdk.model.story.LastEdit
 import io.writeopia.sdk.model.story.Selection
@@ -24,6 +25,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.Tag
 import io.writeopia.sdk.models.story.TagInfo
 import io.writeopia.sdk.normalization.builder.StepsMapNormalizationBuilder
+import io.writeopia.sdk.repository.DocumentRepository
 import io.writeopia.sdk.sharededition.SharedEditionManager
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
 import io.writeopia.sdk.utils.extensions.toEditState
@@ -73,6 +75,7 @@ class WriteopiaStateManager(
     private val writeopiaManager: WriteopiaManager,
     val selectionState: StateFlow<Boolean>,
     private val keyboardEventFlow: Flow<KeyboardEvent>,
+    private val documentRepository: DocumentRepository? = null,
     private val drawStateModify: (List<DrawStory>, Int) -> (List<DrawStory>) = StepsModifier::modify
 ) : BackstackHandler, BackstackInform by backStackManager {
 
@@ -222,7 +225,7 @@ class WriteopiaStateManager(
      * @param documentId the id of the document that will be created
      * @param title the title of the document
      */
-    fun newStory(
+    fun newDocument(
         documentId: String = GenerateId.generate(),
         title: String = "",
         parentFolder: String = "root",
@@ -231,7 +234,7 @@ class WriteopiaStateManager(
         if (isInitialized() && !forceRestart) return
 
         _initialized = true
-        val (documentInfo, storyState) = writeopiaManager.newStory(
+        val (documentInfo, storyState) = writeopiaManager.newDocument(
             documentId,
             title,
             parentFolder = parentFolder
@@ -967,6 +970,32 @@ class WriteopiaStateManager(
         }
     }
 
+    suspend fun addLinkToDocument() {
+        if (documentRepository == null) return
+
+        val lastSelection = _positionsOnEdit.value.max()
+
+        val text = getStories()[lastSelection]?.text?.let {
+            it.take(max(it.length, 30))
+        } ?: ""
+
+        val (documentInfo, state) = writeopiaManager.newDocument(
+            parentFolder = getDocument().parentId
+        )
+        val newDocument =
+            documentInfo.document(userId()).copy(content = state.stories, title = text)
+
+        documentRepository.saveDocument(newDocument)
+        documentRepository.refreshDocuments()
+
+        _currentStory.value = writeopiaManager.addDocumentLink(
+            storyState = _currentStory.value,
+            position = lastSelection,
+            documentId = newDocument.id,
+            text = text
+        )
+    }
+
     private fun getStory(position: Int): StoryStep? = _currentStory.value.stories[position]
 
     private fun getStories() = _currentStory.value.stories
@@ -983,6 +1012,7 @@ class WriteopiaStateManager(
         fun create(
             writeopiaManager: WriteopiaManager,
             dispatcher: CoroutineDispatcher,
+            documentRepository: DocumentRepository? = null,
             selectionState: StateFlow<Boolean> = MutableStateFlow(false),
             keyboardEventFlow: Flow<KeyboardEvent?> = MutableStateFlow(null),
             stepsNormalizer: UnitsNormalizationMap =
@@ -1008,6 +1038,7 @@ class WriteopiaStateManager(
             writeopiaManager,
             selectionState,
             keyboardEventFlow.filterNotNull(),
+            documentRepository,
             StepsModifier::modify
         )
     }

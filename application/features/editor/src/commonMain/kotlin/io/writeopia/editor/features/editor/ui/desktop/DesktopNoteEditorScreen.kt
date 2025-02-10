@@ -34,6 +34,7 @@ fun DesktopNoteEditorScreen(
     drawersFactory: DrawersFactory,
     isUndoKeyEvent: (KeyEvent) -> Boolean,
     onPresentationClick: () -> Unit,
+    onDocumentLinkClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -61,6 +62,7 @@ fun DesktopNoteEditorScreen(
                         noteEditorViewModel,
                         drawersFactory = drawersFactory,
                         loadNoteId = documentId,
+                        onDocumentLinkClick = onDocumentLinkClick,
                         modifier = Modifier
                             .onPreviewKeyEvent { keyEvent ->
                                 if (isUndoKeyEvent(keyEvent)) {
@@ -96,7 +98,8 @@ fun DesktopNoteEditorScreen(
             moveToClick = {
                 showFolderSelection = true
             },
-            askAiBySelection = noteEditorViewModel::askAiBySelection
+            askAiBySelection = noteEditorViewModel::askAiBySelection,
+            addPage = noteEditorViewModel::addPage
         )
 
         if (!isEditable) {
