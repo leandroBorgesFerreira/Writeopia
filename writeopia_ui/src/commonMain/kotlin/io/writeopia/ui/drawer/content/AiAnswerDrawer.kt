@@ -35,8 +35,7 @@ import io.writeopia.ui.model.DrawConfig
 import io.writeopia.ui.model.DrawInfo
 
 /**
- * Drawer for a complex message with swipe action, drag and drop logic and a start content to add functionality
- * like a checkbox or a different Composable.
+ * Drawer for AI answers.
  */
 class AiAnswerDrawer(
     private val modifier: Modifier = Modifier,

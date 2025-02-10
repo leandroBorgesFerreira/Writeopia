@@ -32,8 +32,7 @@ import io.writeopia.ui.model.DrawConfig
 import io.writeopia.ui.model.DrawInfo
 
 /**
- * Drawer for a complex message with swipe action, drag and drop logic and a start content to add functionality
- * like a checkbox or a different Composable.
+ * Drawer for a links to other documents.
  */
 class DocumentLinkDrawer(
     private val modifier: Modifier = Modifier,
