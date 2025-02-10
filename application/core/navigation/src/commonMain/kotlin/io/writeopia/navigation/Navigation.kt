@@ -59,7 +59,7 @@ fun Navigation(
                 isUndoKeyEvent = isUndoKeyEvent,
                 navigateToPresentation = navController::navigateToPresentation,
                 sharedTransitionScope = this@SharedTransitionLayout,
-                navigateToNote = {  id ->
+                navigateToNote = { id ->
                     navController.navigateToNote(id, title = "")
                 },
             )

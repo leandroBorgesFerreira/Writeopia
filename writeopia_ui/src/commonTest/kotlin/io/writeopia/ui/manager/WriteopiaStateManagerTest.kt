@@ -665,7 +665,7 @@ class WriteopiaStateManagerTest {
             val storyManager = WriteopiaStateManager.create(
                 writeopiaManager = WriteopiaManager(),
                 dispatcher = UnconfinedTestDispatcher(testScheduler),
-                userId = { "" }
+                userId = { "" },
             )
             storyManager.loadDocument(
                 Document(

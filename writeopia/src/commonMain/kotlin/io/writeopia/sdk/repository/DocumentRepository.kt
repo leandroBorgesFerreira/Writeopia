@@ -80,6 +80,4 @@ interface DocumentRepository : DocumentUpdate, DocumentSearch {
     suspend fun moveToFolder(documentId: String, parentId: String)
 
     suspend fun refreshDocuments()
-
-
 }

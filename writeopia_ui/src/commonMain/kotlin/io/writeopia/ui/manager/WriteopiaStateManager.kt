@@ -75,7 +75,7 @@ class WriteopiaStateManager(
     private val writeopiaManager: WriteopiaManager,
     val selectionState: StateFlow<Boolean>,
     private val keyboardEventFlow: Flow<KeyboardEvent>,
-    private val documentRepository: DocumentRepository,
+    private val documentRepository: DocumentRepository? = null,
     private val drawStateModify: (List<DrawStory>, Int) -> (List<DrawStory>) = StepsModifier::modify
 ) : BackstackHandler, BackstackInform by backStackManager {
 
@@ -971,6 +971,8 @@ class WriteopiaStateManager(
     }
 
     suspend fun addLinkToDocument() {
+        if (documentRepository == null) return
+
         val lastSelection = _positionsOnEdit.value.max()
 
         val text = getStories()[lastSelection]?.text?.let {
@@ -1010,7 +1012,7 @@ class WriteopiaStateManager(
         fun create(
             writeopiaManager: WriteopiaManager,
             dispatcher: CoroutineDispatcher,
-            documentRepository: DocumentRepository,
+            documentRepository: DocumentRepository? = null,
             selectionState: StateFlow<Boolean> = MutableStateFlow(false),
             keyboardEventFlow: Flow<KeyboardEvent?> = MutableStateFlow(null),
             stepsNormalizer: UnitsNormalizationMap =

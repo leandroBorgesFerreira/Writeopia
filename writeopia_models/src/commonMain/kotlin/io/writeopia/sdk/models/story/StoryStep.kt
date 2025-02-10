@@ -47,4 +47,3 @@ data class StoryStep(
 
     fun copyNewLocalId(localId: String = GenerateId.generate()): StoryStep = copy(localId = localId)
 }
-

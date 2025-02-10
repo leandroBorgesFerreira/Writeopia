@@ -50,4 +50,3 @@ fun DocumentInfo.document(userId: String): Document = Document(
     isLocked = this.isLocked,
     userId = userId
 )
-
