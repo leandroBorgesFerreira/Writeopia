@@ -31,6 +31,8 @@ interface ChooseNoteViewModel : FolderController {
 
     val syncInProgress: StateFlow<SyncState>
 
+    val titlesToDelete: StateFlow<List<String>>
+
     //    fun requestDocuments(force: Boolean)
     fun handleMenuItemTap(id: String): Boolean
 
@@ -81,6 +83,8 @@ interface ChooseNoteViewModel : FolderController {
     fun confirmWorkplacePath()
 
     fun toggleSelection(id: String)
+
+    fun requestPermissionToDeleteSelection()
 }
 
 sealed interface UserState<T> {

@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.awtEventOrNull
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isMetaPressed
+import androidx.compose.ui.input.key.isShiftPressed
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ApplicationScope
@@ -120,6 +121,11 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                     false
                 }
 
+                isLocalSaveEvent(keyEvent) -> {
+                    sendEvent(KeyboardEvent.LOCAL_SAVE)
+                    false
+                }
+
                 else -> false
             }
         }
@@ -206,4 +212,10 @@ private fun isUnderlineEvent(keyEvent: AndroidKeyEvent) =
 private fun isLinkEvent(keyEvent: AndroidKeyEvent) =
     keyEvent.isMetaPressed &&
         keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_L &&
+        keyEvent.type == KeyEventType.KeyUp
+
+private fun isLocalSaveEvent(keyEvent: AndroidKeyEvent) =
+    keyEvent.isMetaPressed &&
+        keyEvent.isShiftPressed &&
+        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_S &&
         keyEvent.type == KeyEventType.KeyUp

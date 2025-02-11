@@ -1,4 +1,4 @@
-package io.writeopia.common.utils.persistence.configuration
+package io.writeopia.models.configuration
 
 interface WorkspaceConfigRepository {
 

@@ -111,7 +111,7 @@ class WriteopiaStateManager(
                             addLinkToDocument()
                         }
 
-                        KeyboardEvent.IDLE -> {}
+                        KeyboardEvent.IDLE, KeyboardEvent.LOCAL_SAVE -> {}
                     }
                 }
         }
@@ -986,8 +986,17 @@ class WriteopiaStateManager(
         val (documentInfo, state) = writeopiaManager.newDocument(
             parentFolder = getDocument().parentId
         )
+
+        val stories = state.stories.mapValues { (_, story) ->
+            if (story.type == StoryTypes.TITLE.type) {
+                story.copy(text = text)
+            } else {
+                story
+            }
+        }
+
         val newDocument =
-            documentInfo.document(userId()).copy(content = state.stories, title = text)
+            documentInfo.document(userId()).copy(content = stories, title = text)
 
         documentRepository.saveDocument(newDocument)
         documentRepository.refreshDocuments()

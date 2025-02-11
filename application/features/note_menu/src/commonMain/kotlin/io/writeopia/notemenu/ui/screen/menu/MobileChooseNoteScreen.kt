@@ -96,7 +96,7 @@ internal fun MobileChooseNoteScreen(
                 .align(Alignment.BottomCenter)
                 .padding(8.dp),
             visibilityState = hasSelectedNotes,
-            onDelete = chooseNoteViewModel::deleteSelectedNotes,
+            onDelete = chooseNoteViewModel::requestPermissionToDeleteSelection,
             onCopy = chooseNoteViewModel::copySelectedNotes,
             onFavorite = chooseNoteViewModel::favoriteSelectedNotes,
             onClose = chooseNoteViewModel::unSelectNotes,

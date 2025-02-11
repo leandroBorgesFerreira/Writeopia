@@ -56,24 +56,22 @@ fun DesktopNoteEditorScreen(
                 .background(MaterialTheme.colorScheme.background)
                 .padding(end = 56.dp),
             content = {
-                Box {
-                    AppTextEditor(
-                        noteEditorViewModel.writeopiaManager,
-                        noteEditorViewModel,
-                        drawersFactory = drawersFactory,
-                        loadNoteId = documentId,
-                        onDocumentLinkClick = onDocumentLinkClick,
-                        modifier = Modifier
-                            .onPreviewKeyEvent { keyEvent ->
-                                if (isUndoKeyEvent(keyEvent)) {
-                                    noteEditorViewModel.undo()
-                                    true
-                                } else {
-                                    false
-                                }
-                            }.padding(start = 30.dp, end = 30.dp)
-                    )
-                }
+                AppTextEditor(
+                    noteEditorViewModel.writeopiaManager,
+                    noteEditorViewModel,
+                    drawersFactory = drawersFactory,
+                    loadNoteId = documentId,
+                    onDocumentLinkClick = onDocumentLinkClick,
+                    modifier = Modifier
+                        .onPreviewKeyEvent { keyEvent ->
+                            if (isUndoKeyEvent(keyEvent)) {
+                                noteEditorViewModel.undo()
+                                true
+                            } else {
+                                false
+                            }
+                        }.padding(start = 30.dp, end = 30.dp)
+                )
             }
         )
 

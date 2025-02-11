@@ -63,7 +63,8 @@ internal class ChooseNoteKmpViewModel(
             keyboardEventFlow.collect { event ->
                 when (event) {
                     KeyboardEvent.DELETE -> {
-                        deleteSelectedNotes()
+                        _askToDelete.value = true
+//                        deleteSelectedNotes()
                     }
 
                     else -> {}
@@ -139,6 +140,27 @@ internal class ChooseNoteKmpViewModel(
 
     private val _showSortMenuState = MutableStateFlow(false)
     override val showSortMenuState: StateFlow<Boolean> = _showSortMenuState.asStateFlow()
+
+    private val _askToDelete = MutableStateFlow(false)
+
+    override val titlesToDelete: StateFlow<List<String>> =
+        combine(
+            _askToDelete,
+            _selectedNotes,
+            menuItemsState
+        ) { shouldAsk, selectedIds, itemsState ->
+            if (shouldAsk && itemsState is ResultData.Complete) {
+                val menuItem = itemsState.data
+
+                menuItem.filter { item ->
+                    selectedIds.contains(item.id)
+                }.map { item ->
+                    item.title
+                }
+            } else {
+                emptyList()
+            }
+        }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     override val documentsState: StateFlow<ResultData<NotesUi>> by lazy {
         combine(
@@ -379,6 +401,10 @@ internal class ChooseNoteKmpViewModel(
 
     override fun onWriteLocallySelected() {
         handleStorage(::writeWorkspace, SyncRequest.WRITE)
+    }
+
+    override fun requestPermissionToDeleteSelection() {
+        _askToDelete.value = true
     }
 
     private fun handleStorage(workspaceFunc: suspend (String) -> Unit, syncRequest: SyncRequest) {

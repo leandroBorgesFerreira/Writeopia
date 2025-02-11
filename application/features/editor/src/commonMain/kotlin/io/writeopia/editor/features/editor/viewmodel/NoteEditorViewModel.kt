@@ -36,6 +36,8 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
 
     val listenForFolders: StateFlow<List<MenuItemUi.FolderUi>>
 
+    val loadingState: StateFlow<Boolean>
+
     fun toggleEditable()
 
     fun deleteSelection()
@@ -89,6 +91,8 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
     fun askAiBySelection()
 
     fun addPage()
+
+
 }
 
 data class ShareDocument(val content: String, val title: String, val type: String)

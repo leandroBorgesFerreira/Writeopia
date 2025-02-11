@@ -161,7 +161,7 @@ fun DesktopNotesMenu(
         NotesSelectionMenu(
             modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 40.dp).width(400.dp),
             visibilityState = hasSelectedNotes,
-            onDelete = chooseNoteViewModel::deleteSelectedNotes,
+            onDelete = chooseNoteViewModel::requestPermissionToDeleteSelection,
             onCopy = chooseNoteViewModel::copySelectedNotes,
             onFavorite = chooseNoteViewModel::favoriteSelectedNotes,
             onClose = chooseNoteViewModel::unSelectNotes,
