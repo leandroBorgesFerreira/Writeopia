@@ -47,6 +47,7 @@ object SpansHandler {
                     }
 
                     Interception.OUTSIDE -> spanSet + newSpan
+
                     Interception.CONTAINING -> {
                         val removed = (spanSet - currentSpan)
                         removed + newSpan

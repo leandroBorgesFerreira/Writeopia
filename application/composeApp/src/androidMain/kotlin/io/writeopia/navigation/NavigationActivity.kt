@@ -90,7 +90,8 @@ fun NavigationGraph(
         repositoryInjection,
         connectionInjector,
         uiConfigInjection.provideUiConfigurationRepository(),
-        folderInjector = notesInjector
+        folderInjector = notesInjector,
+        configurationInjector = notesInjector
     )
     val accountMenuInjector = AccountMenuKmpInjector(authCoreInjection)
     val notesMenuInjection = NotesMenuKmpInjection.mobile(

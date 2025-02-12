@@ -56,24 +56,22 @@ fun DesktopNoteEditorScreen(
                 .background(MaterialTheme.colorScheme.background)
                 .padding(end = 56.dp),
             content = {
-                Box {
-                    AppTextEditor(
-                        noteEditorViewModel.writeopiaManager,
-                        noteEditorViewModel,
-                        drawersFactory = drawersFactory,
-                        loadNoteId = documentId,
-                        onDocumentLinkClick = onDocumentLinkClick,
-                        modifier = Modifier
-                            .onPreviewKeyEvent { keyEvent ->
-                                if (isUndoKeyEvent(keyEvent)) {
-                                    noteEditorViewModel.undo()
-                                    true
-                                } else {
-                                    false
-                                }
-                            }.padding(start = 30.dp, end = 30.dp)
-                    )
-                }
+                AppTextEditor(
+                    noteEditorViewModel.writeopiaManager,
+                    noteEditorViewModel,
+                    drawersFactory = drawersFactory,
+                    loadNoteId = documentId,
+                    onDocumentLinkClick = onDocumentLinkClick,
+                    modifier = Modifier
+                        .onPreviewKeyEvent { keyEvent ->
+                            if (isUndoKeyEvent(keyEvent)) {
+                                noteEditorViewModel.undo()
+                                true
+                            } else {
+                                false
+                            }
+                        }.padding(start = 30.dp, end = 30.dp)
+                )
             }
         )
 
@@ -88,7 +86,7 @@ fun DesktopNoteEditorScreen(
             checkItemClick = noteEditorViewModel::onAddCheckListClick,
             listItemClick = noteEditorViewModel::onAddListItemClick,
             codeBlockClick = noteEditorViewModel::onAddCodeBlockClick,
-            highLightBlockClick = noteEditorViewModel::onAddHighLightBlockClick,
+            highLightBlockClick = noteEditorViewModel::toggleHighLightBlock,
             onPresentationClick = onPresentationClick,
             changeFontFamily = noteEditorViewModel::changeFontFamily,
             addImage = noteEditorViewModel::addImage,

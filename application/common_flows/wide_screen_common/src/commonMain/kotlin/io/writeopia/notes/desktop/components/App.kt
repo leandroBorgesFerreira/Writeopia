@@ -103,7 +103,8 @@ fun DesktopApp(
             keyboardEventFlow = keyboardEventFlow,
             uiConfigurationInjector.provideUiConfigurationRepository(),
             folderInjector = notesInjector,
-            ollamaInjection = ollamaInjection
+            ollamaInjection = ollamaInjection,
+            configurationInjector = notesInjector
         )
     }
     val accountInjector = remember { AccountMenuKmpInjector(authCoreInjection) }

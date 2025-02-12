@@ -26,6 +26,7 @@ import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -63,7 +64,7 @@ internal class ChooseNoteKmpViewModel(
             keyboardEventFlow.collect { event ->
                 when (event) {
                     KeyboardEvent.DELETE -> {
-                        deleteSelectedNotes()
+                        requestPermissionToDeleteSelection()
                     }
 
                     else -> {}
@@ -139,6 +140,27 @@ internal class ChooseNoteKmpViewModel(
 
     private val _showSortMenuState = MutableStateFlow(false)
     override val showSortMenuState: StateFlow<Boolean> = _showSortMenuState.asStateFlow()
+
+    private val _askToDelete = MutableStateFlow(false)
+
+    override val titlesToDelete: StateFlow<List<String>> =
+        combine(
+            _askToDelete,
+            _selectedNotes,
+            menuItemsState
+        ) { shouldAsk, selectedIds, itemsState ->
+            if (shouldAsk && itemsState is ResultData.Complete) {
+                val menuItem = itemsState.data
+
+                menuItem.filter { item ->
+                    selectedIds.contains(item.id)
+                }.map { item ->
+                    item.title
+                }
+            } else {
+                emptyList()
+            }
+        }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     override val documentsState: StateFlow<ResultData<NotesUi>> by lazy {
         combine(
@@ -266,6 +288,7 @@ internal class ChooseNoteKmpViewModel(
         viewModelScope.launch(Dispatchers.Default) {
             notesUseCase.deleteNotes(selected)
             clearSelection()
+            _askToDelete.value = false
         }
     }
 
@@ -381,6 +404,14 @@ internal class ChooseNoteKmpViewModel(
         handleStorage(::writeWorkspace, SyncRequest.WRITE)
     }
 
+    override fun requestPermissionToDeleteSelection() {
+        _askToDelete.value = true
+    }
+
+    override fun cancelDeletion() {
+        _askToDelete.value = false
+    }
+
     private fun handleStorage(workspaceFunc: suspend (String) -> Unit, syncRequest: SyncRequest) {
         viewModelScope.launch(Dispatchers.Default) {
             val userId = getUserId()
@@ -410,6 +441,7 @@ internal class ChooseNoteKmpViewModel(
 
         writeopiaJsonParser.readAllWorkSpace(path)
             .onCompletion {
+                delay(150)
                 _syncInProgress.value = SyncState.Idle
             }
             .collect(notesUseCase::saveDocument)
@@ -431,6 +463,7 @@ internal class ChooseNoteKmpViewModel(
             usePath = true
         )
 
+        delay(150)
         _syncInProgress.value = SyncState.Idle
     }
 

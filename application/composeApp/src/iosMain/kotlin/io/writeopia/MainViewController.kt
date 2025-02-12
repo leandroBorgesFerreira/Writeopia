@@ -75,7 +75,8 @@ fun MainViewController() = ComposeUIViewController {
                 sqlDelightDaoInjector,
                 connectionInjection,
                 uiConfigurationInjector.provideUiConfigurationRepository(),
-                folderInjector = notesInjector
+                folderInjector = notesInjector,
+                configurationInjector = notesInjector,
             )
 
             val authInjection = AuthInjection(

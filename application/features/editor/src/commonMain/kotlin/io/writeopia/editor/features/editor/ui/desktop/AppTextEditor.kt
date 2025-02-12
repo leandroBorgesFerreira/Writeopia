@@ -5,14 +5,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -56,7 +59,7 @@ fun AppTextEditor(
         val isEditionHeader by viewModel.editHeader.collectAsState()
 
         if (isEditionHeader) {
-            Dialog(onDismissRequest = viewModel::onHeaderEditionCancel,) {
+            Dialog(onDismissRequest = viewModel::onHeaderEditionCancel) {
                 Card(modifier = Modifier.padding(30.dp), shape = MaterialTheme.shapes.large) {
                     Spacer(modifier = Modifier.height(20.dp))
 
@@ -68,6 +71,15 @@ fun AppTextEditor(
                     Spacer(modifier = Modifier.height(40.dp))
                 }
             }
+        }
+
+        val loading by viewModel.loadingState.collectAsState()
+
+        if (loading) {
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.TopCenter).padding(12.dp).size(20.dp),
+                strokeWidth = 2.dp
+            )
         }
     }
 }

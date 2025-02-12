@@ -13,12 +13,11 @@ import io.writeopia.commonui.extensions.toFolderUi
 import io.writeopia.core.folders.repository.FolderRepository
 import io.writeopia.editor.model.EditState
 import io.writeopia.model.Font
+import io.writeopia.models.configuration.WorkspaceConfigRepository
 import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.export.DocumentToJson
 import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.export.DocumentWriter
-import io.writeopia.sdk.filter.DocumentFilter
-import io.writeopia.sdk.filter.DocumentFilterObject
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.document.Document
@@ -34,10 +33,13 @@ import io.writeopia.sdk.sharededition.SharedEditionManager
 import io.writeopia.sdk.utils.extensions.noContent
 import io.writeopia.ui.backstack.BackstackHandler
 import io.writeopia.ui.backstack.BackstackInform
+import io.writeopia.ui.keyboard.KeyboardEvent
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.DrawState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -46,6 +48,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -55,7 +58,6 @@ import kotlinx.serialization.json.Json
 class NoteEditorKmpViewModel(
     override val writeopiaManager: WriteopiaStateManager,
     private val documentRepository: DocumentRepository,
-    private val documentFilter: DocumentFilter = DocumentFilterObject,
     private val sharedEditionManager: SharedEditionManager,
     private val parentFolderId: String,
     private val uiConfigurationRepository: UiConfigurationRepository,
@@ -63,10 +65,28 @@ class NoteEditorKmpViewModel(
     private val documentToJson: DocumentToJson = DocumentToJson(),
     private val folderRepository: FolderRepository,
     private val ollamaRepository: OllamaRepository? = null,
+    private val workspaceConfigRepository: WorkspaceConfigRepository,
+    private val keyboardEventFlow: Flow<KeyboardEvent>,
 ) : NoteEditorViewModel,
     ViewModel(),
     BackstackInform by writeopiaManager,
     BackstackHandler by writeopiaManager {
+
+    init {
+        viewModelScope.launch(Dispatchers.Default) {
+            keyboardEventFlow
+                .onEach { delay(60) }
+                .collect { event ->
+                    when (event) {
+                        KeyboardEvent.LOCAL_SAVE -> {
+                            saveDocumentInWorkSpace()
+                        }
+
+                        else -> {}
+                    }
+                }
+        }
+    }
 
     /**
      * This property defines if the document should be edited (you can write in it, for example)
@@ -105,6 +125,9 @@ class NoteEditorKmpViewModel(
 
     private val story: StateFlow<StoryState> = writeopiaManager.currentStory
     override val scrollToPosition = writeopiaManager.scrollToPosition
+
+    private val _loadingState = MutableStateFlow(false)
+    override val loadingState: StateFlow<Boolean> = _loadingState.asStateFlow()
 
     private val documentId: StateFlow<String> by lazy {
         writeopiaManager.documentInfo
@@ -267,9 +290,9 @@ class NoteEditorKmpViewModel(
         writeopiaManager.onCodeBlockClicked()
     }
 
-    override fun onAddHighLightBlockClick() {
+    override fun toggleHighLightBlock() {
         if (!isEditable.value) return
-        writeopiaManager.onHighLightBlockClicked()
+        writeopiaManager.toggleHighLightBlock()
     }
 
     override fun onHeaderEditionCancel() {
@@ -426,6 +449,28 @@ class NoteEditorKmpViewModel(
         }
     }
 
+    private fun saveDocumentInWorkSpace() {
+        viewModelScope.launch(Dispatchers.Default) {
+            _loadingState.value = true
+
+            val document = writeopiaManager.getDocument()
+            val path = workspaceConfigRepository.loadWorkspacePath("disconnected_user")
+
+            // Todo: When path is null, the user should be asked to configure it.
+            if (path != null) {
+                documentToJson.writeDocument(
+                    document = document,
+                    path = path,
+                    writeConfigFile = true,
+                )
+            }
+
+            // Some delay so users can see a loading state
+            delay(150)
+            _loadingState.value = false
+        }
+    }
+
     private fun writeDocument(path: String, writer: DocumentWriter) {
         writer.writeDocuments(
             documents = listOf(writeopiaManager.getDocument()),
@@ -444,15 +489,14 @@ class NoteEditorKmpViewModel(
         DocumentToMarkdown.parse(document.content)
 
     private fun shareDocument(infoParse: (Document) -> String, type: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             val document: Document = writeopiaManager.currentDocument
                 .stateIn(this)
                 .value ?: return@launch
 
             val documentTitle = document.title.replace(" ", "_")
-            val filteredContent = documentFilter.removeTypesFromDocument(document.content)
 
-            val newContent = document.copy(content = filteredContent)
+            val newContent = document.copy(content = document.content)
             val stringDocument = infoParse(newContent)
 
             _documentToShareInfo.emit(ShareDocument(stringDocument, documentTitle, type))

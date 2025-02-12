@@ -111,7 +111,11 @@ class WriteopiaStateManager(
                             addLinkToDocument()
                         }
 
-                        KeyboardEvent.IDLE -> {}
+                        KeyboardEvent.BOX -> {
+                            toggleHighLightBlock()
+                        }
+
+                        KeyboardEvent.IDLE, KeyboardEvent.LOCAL_SAVE -> {}
                     }
                 }
         }
@@ -362,7 +366,7 @@ class WriteopiaStateManager(
         }
     }
 
-    fun onHighLightBlockClicked() {
+    fun toggleHighLightBlock() {
         val onEdit = _positionsOnEdit.value
 
         if (onEdit.isNotEmpty()) {
@@ -751,10 +755,16 @@ class WriteopiaStateManager(
         } else {
             val selection = currentStory.value.selection
 
+            val (start, end) = if (selection.start > selection.end) {
+                selection.end to selection.start
+            } else {
+                selection.start to selection.end
+            }
+
             _currentStory.value = writeopiaManager.addSpan(
                 _currentStory.value,
                 selection.position,
-                SpanInfo(selection.start, selection.end, span)
+                SpanInfo(start, end, span)
             )
         }
     }
@@ -986,8 +996,17 @@ class WriteopiaStateManager(
         val (documentInfo, state) = writeopiaManager.newDocument(
             parentFolder = getDocument().parentId
         )
+
+        val stories = state.stories.mapValues { (_, story) ->
+            if (story.type == StoryTypes.TITLE.type) {
+                story.copy(text = text)
+            } else {
+                story
+            }
+        }
+
         val newDocument =
-            documentInfo.document(userId()).copy(content = state.stories, title = text)
+            documentInfo.document(userId()).copy(content = stories, title = text)
 
         documentRepository.saveDocument(newDocument)
         documentRepository.refreshDocuments()

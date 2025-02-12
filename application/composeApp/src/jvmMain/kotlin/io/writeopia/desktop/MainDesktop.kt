@@ -9,10 +9,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.awt.awtEventOrNull
-import androidx.compose.ui.input.key.KeyEventType
-import androidx.compose.ui.input.key.isMetaPressed
-import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.Window
@@ -32,9 +28,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
-import java.awt.event.KeyEvent
 import java.io.File
-import androidx.compose.ui.input.key.KeyEvent as AndroidKeyEvent
 
 private const val APP_DIRECTORY = ".writeopia"
 private const val DB_VERSION = 15
@@ -100,6 +94,11 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                     false
                 }
 
+                isBoxEvent(keyEvent) -> {
+                    sendEvent(KeyboardEvent.BOX)
+                    false
+                }
+
                 isBoldEvent(keyEvent) -> {
                     sendEvent(KeyboardEvent.BOLD)
                     false
@@ -117,6 +116,11 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
 
                 isLinkEvent(keyEvent) -> {
                     sendEvent(KeyboardEvent.LINK)
+                    false
+                }
+
+                isLocalSaveEvent(keyEvent) -> {
+                    sendEvent(KeyboardEvent.LOCAL_SAVE)
                     false
                 }
 
@@ -165,45 +169,3 @@ private fun ScreenLoading() {
         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
     }
 }
-
-private fun isUndoKeyboardEvent(keyEvent: AndroidKeyEvent) =
-    keyEvent.isMetaPressed &&
-        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_Z &&
-        keyEvent.type == KeyEventType.KeyDown
-
-private fun isSelectionKeyEventStart(keyEvent: AndroidKeyEvent) =
-    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_ALT &&
-        keyEvent.type == KeyEventType.KeyDown
-
-private fun isSelectionKeyEventStop(keyEvent: AndroidKeyEvent) =
-    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_ALT &&
-        keyEvent.type == KeyEventType.KeyUp
-
-private fun isDeleteEvent(keyEvent: AndroidKeyEvent) =
-    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_DELETE ||
-        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE
-
-private fun isSelectAllEvent(keyEvent: AndroidKeyEvent) =
-    keyEvent.isMetaPressed &&
-        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_A &&
-        keyEvent.type == KeyEventType.KeyUp
-
-private fun isBoldEvent(keyEvent: AndroidKeyEvent) =
-    keyEvent.isMetaPressed &&
-        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_B &&
-        keyEvent.type == KeyEventType.KeyUp
-
-private fun isItalicEvent(keyEvent: AndroidKeyEvent) =
-    keyEvent.isMetaPressed &&
-        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_I &&
-        keyEvent.type == KeyEventType.KeyUp
-
-private fun isUnderlineEvent(keyEvent: AndroidKeyEvent) =
-    keyEvent.isMetaPressed &&
-        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_U &&
-        keyEvent.type == KeyEventType.KeyUp
-
-private fun isLinkEvent(keyEvent: AndroidKeyEvent) =
-    keyEvent.isMetaPressed &&
-        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_L &&
-        keyEvent.type == KeyEventType.KeyUp
