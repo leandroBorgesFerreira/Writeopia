@@ -91,8 +91,6 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
     fun askAiBySelection()
 
     fun addPage()
-
-
 }
 
 data class ShareDocument(val content: String, val title: String, val type: String)

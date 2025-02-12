@@ -7,7 +7,6 @@ import androidx.compose.ui.input.key.isMetaPressed
 import androidx.compose.ui.input.key.isShiftPressed
 import androidx.compose.ui.input.key.type
 
-
 internal fun isUndoKeyboardEvent(keyEvent: KeyEvent) =
     keyEvent.isMetaPressed &&
         keyEvent.awtEventOrNull?.keyCode == java.awt.event.KeyEvent.VK_Z &&

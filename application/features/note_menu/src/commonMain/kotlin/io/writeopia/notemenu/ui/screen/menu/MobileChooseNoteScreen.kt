@@ -86,7 +86,6 @@ internal fun MobileChooseNoteScreen(
                     loadNote = navigateToNote,
                     selectionListener = chooseNoteViewModel::onDocumentSelected,
                     paddingValues = paddingValues,
-
                     newNote = newNote
                 )
             }

@@ -456,7 +456,7 @@ class NoteEditorKmpViewModel(
             val document = writeopiaManager.getDocument()
             val path = workspaceConfigRepository.loadWorkspacePath("disconnected_user")
 
-            //Todo: When path is null, the user should be asked to configure it.
+            // Todo: When path is null, the user should be asked to configure it.
             if (path != null) {
                 documentToJson.writeDocument(
                     document = document,

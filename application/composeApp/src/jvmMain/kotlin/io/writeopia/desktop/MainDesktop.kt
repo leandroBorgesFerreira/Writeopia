@@ -9,11 +9,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.awt.awtEventOrNull
-import androidx.compose.ui.input.key.KeyEventType
-import androidx.compose.ui.input.key.isMetaPressed
-import androidx.compose.ui.input.key.isShiftPressed
-import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.Window
@@ -33,9 +28,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
-import java.awt.event.KeyEvent
 import java.io.File
-import androidx.compose.ui.input.key.KeyEvent as AndroidKeyEvent
 
 private const val APP_DIRECTORY = ".writeopia"
 private const val DB_VERSION = 15

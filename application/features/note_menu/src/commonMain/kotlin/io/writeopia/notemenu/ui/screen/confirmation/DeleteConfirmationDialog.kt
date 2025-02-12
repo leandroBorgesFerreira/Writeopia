@@ -52,10 +52,6 @@ fun DeleteConfirmationDialog(
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.clip(MaterialTheme.shapes.medium)
                             .clickable(onClick = onCancel)
-//                            .background(
-//                                MaterialTheme.colorScheme.surfaceVariant,
-//                                MaterialTheme.shapes.medium
-//                            )
                             .padding(6.dp)
                     )
 
@@ -68,10 +64,6 @@ fun DeleteConfirmationDialog(
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.clip(MaterialTheme.shapes.medium)
                             .clickable(onClick = onConfirmation)
-//                            .background(
-//                                MaterialTheme.colorScheme.surfaceVariant,
-//                                MaterialTheme.shapes.medium
-//                            )
                             .padding(6.dp)
                     )
                 }
