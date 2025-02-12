@@ -32,6 +32,7 @@ import io.writeopia.notemenu.ui.screen.actions.DesktopNoteActionsMenu
 import io.writeopia.notemenu.ui.screen.configuration.molecules.NotesConfigurationMenu
 import io.writeopia.notemenu.ui.screen.configuration.molecules.NotesSelectionMenu
 import io.writeopia.commonui.workplace.WorkspaceConfigurationDialog
+import io.writeopia.notemenu.ui.screen.confirmation.DeleteConfirmationDialog
 import io.writeopia.notemenu.ui.screen.documents.NotesCards
 import io.writeopia.notemenu.ui.screen.file.fileChooserLoad
 import io.writeopia.notemenu.viewmodel.ChooseNoteViewModel
@@ -169,5 +170,14 @@ fun DesktopNotesMenu(
             exitAnimationOffset = 2.3F,
             enterAnimationSpec = spring(dampingRatio = 0.6F)
         )
+
+        val titlesToDelete by chooseNoteViewModel.titlesToDelete.collectAsState()
+
+        if (titlesToDelete.isNotEmpty()) {
+            DeleteConfirmationDialog(
+                onConfirmation = chooseNoteViewModel::deleteSelectedNotes,
+                onCancel = chooseNoteViewModel::cancelDeletion,
+            )
+        }
     }
 }

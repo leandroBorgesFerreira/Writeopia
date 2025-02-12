@@ -86,7 +86,7 @@ fun DesktopNoteEditorScreen(
             checkItemClick = noteEditorViewModel::onAddCheckListClick,
             listItemClick = noteEditorViewModel::onAddListItemClick,
             codeBlockClick = noteEditorViewModel::onAddCodeBlockClick,
-            highLightBlockClick = noteEditorViewModel::onAddHighLightBlockClick,
+            highLightBlockClick = noteEditorViewModel::toggleHighLightBlock,
             onPresentationClick = onPresentationClick,
             changeFontFamily = noteEditorViewModel::changeFontFamily,
             addImage = noteEditorViewModel::addImage,

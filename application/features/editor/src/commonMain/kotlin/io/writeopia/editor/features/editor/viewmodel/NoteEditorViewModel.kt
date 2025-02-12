@@ -70,7 +70,7 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
 
     fun onAddCodeBlockClick()
 
-    fun onAddHighLightBlockClick()
+    fun toggleHighLightBlock()
 
     fun clearSelections()
 

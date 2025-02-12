@@ -26,6 +26,7 @@ import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -63,8 +64,7 @@ internal class ChooseNoteKmpViewModel(
             keyboardEventFlow.collect { event ->
                 when (event) {
                     KeyboardEvent.DELETE -> {
-                        _askToDelete.value = true
-//                        deleteSelectedNotes()
+                        requestPermissionToDeleteSelection()
                     }
 
                     else -> {}
@@ -288,6 +288,7 @@ internal class ChooseNoteKmpViewModel(
         viewModelScope.launch(Dispatchers.Default) {
             notesUseCase.deleteNotes(selected)
             clearSelection()
+            _askToDelete.value = false
         }
     }
 
@@ -407,6 +408,10 @@ internal class ChooseNoteKmpViewModel(
         _askToDelete.value = true
     }
 
+    override fun cancelDeletion() {
+        _askToDelete.value = false
+    }
+
     private fun handleStorage(workspaceFunc: suspend (String) -> Unit, syncRequest: SyncRequest) {
         viewModelScope.launch(Dispatchers.Default) {
             val userId = getUserId()
@@ -436,6 +441,7 @@ internal class ChooseNoteKmpViewModel(
 
         writeopiaJsonParser.readAllWorkSpace(path)
             .onCompletion {
+                delay(150)
                 _syncInProgress.value = SyncState.Idle
             }
             .collect(notesUseCase::saveDocument)
@@ -457,6 +463,7 @@ internal class ChooseNoteKmpViewModel(
             usePath = true
         )
 
+        delay(150)
         _syncInProgress.value = SyncState.Idle
     }
 

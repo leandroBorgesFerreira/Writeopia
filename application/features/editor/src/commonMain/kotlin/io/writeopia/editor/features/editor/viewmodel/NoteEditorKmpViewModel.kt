@@ -18,8 +18,6 @@ import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.export.DocumentToJson
 import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.export.DocumentWriter
-import io.writeopia.sdk.filter.DocumentFilter
-import io.writeopia.sdk.filter.DocumentFilterObject
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.document.Document
@@ -292,9 +290,9 @@ class NoteEditorKmpViewModel(
         writeopiaManager.onCodeBlockClicked()
     }
 
-    override fun onAddHighLightBlockClick() {
+    override fun toggleHighLightBlock() {
         if (!isEditable.value) return
-        writeopiaManager.onHighLightBlockClicked()
+        writeopiaManager.toggleHighLightBlock()
     }
 
     override fun onHeaderEditionCancel() {

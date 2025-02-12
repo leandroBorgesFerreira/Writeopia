@@ -85,6 +85,8 @@ interface ChooseNoteViewModel : FolderController {
     fun toggleSelection(id: String)
 
     fun requestPermissionToDeleteSelection()
+
+    fun cancelDeletion()
 }
 
 sealed interface UserState<T> {

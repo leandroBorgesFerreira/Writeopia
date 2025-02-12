@@ -101,6 +101,11 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                     false
                 }
 
+                isBoxEvent(keyEvent) -> {
+                    sendEvent(KeyboardEvent.BOX)
+                    false
+                }
+
                 isBoldEvent(keyEvent) -> {
                     sendEvent(KeyboardEvent.BOLD)
                     false
@@ -171,51 +176,3 @@ private fun ScreenLoading() {
         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
     }
 }
-
-private fun isUndoKeyboardEvent(keyEvent: AndroidKeyEvent) =
-    keyEvent.isMetaPressed &&
-        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_Z &&
-        keyEvent.type == KeyEventType.KeyDown
-
-private fun isSelectionKeyEventStart(keyEvent: AndroidKeyEvent) =
-    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_ALT &&
-        keyEvent.type == KeyEventType.KeyDown
-
-private fun isSelectionKeyEventStop(keyEvent: AndroidKeyEvent) =
-    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_ALT &&
-        keyEvent.type == KeyEventType.KeyUp
-
-private fun isDeleteEvent(keyEvent: AndroidKeyEvent) =
-    keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_DELETE ||
-        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_BACK_SPACE
-
-private fun isSelectAllEvent(keyEvent: AndroidKeyEvent) =
-    keyEvent.isMetaPressed &&
-        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_A &&
-        keyEvent.type == KeyEventType.KeyUp
-
-private fun isBoldEvent(keyEvent: AndroidKeyEvent) =
-    keyEvent.isMetaPressed &&
-        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_B &&
-        keyEvent.type == KeyEventType.KeyUp
-
-private fun isItalicEvent(keyEvent: AndroidKeyEvent) =
-    keyEvent.isMetaPressed &&
-        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_I &&
-        keyEvent.type == KeyEventType.KeyUp
-
-private fun isUnderlineEvent(keyEvent: AndroidKeyEvent) =
-    keyEvent.isMetaPressed &&
-        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_U &&
-        keyEvent.type == KeyEventType.KeyUp
-
-private fun isLinkEvent(keyEvent: AndroidKeyEvent) =
-    keyEvent.isMetaPressed &&
-        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_L &&
-        keyEvent.type == KeyEventType.KeyUp
-
-private fun isLocalSaveEvent(keyEvent: AndroidKeyEvent) =
-    keyEvent.isMetaPressed &&
-        keyEvent.isShiftPressed &&
-        keyEvent.awtEventOrNull?.keyCode == KeyEvent.VK_S &&
-        keyEvent.type == KeyEventType.KeyUp
