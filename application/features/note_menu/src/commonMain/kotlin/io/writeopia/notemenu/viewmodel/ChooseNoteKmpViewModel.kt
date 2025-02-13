@@ -54,7 +54,7 @@ internal class ChooseNoteKmpViewModel(
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
     private val documentToJson: DocumentToJson = DocumentToJson(),
     private val writeopiaJsonParser: WriteopiaJsonParser = WriteopiaJsonParser(),
-    private val keyboardEventFlow: Flow<KeyboardEvent>
+    private val keyboardEventFlow: Flow<KeyboardEvent>,
 ) : ChooseNoteViewModel, ViewModel(), FolderController by folderController {
 
     init {

@@ -26,6 +26,8 @@ object CommandFactory {
 
     fun codeBlock() = Command(7, "``` ", WhereToFind.START)
 
+    fun divider() = Command(7, "---", WhereToFind.START)
+
     fun defaultCommands(): Set<Command> =
         setOf(checkItem(), unOrderedList(), h1(), h2(), h3(), h4(), codeBlock())
 }

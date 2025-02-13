@@ -11,12 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import io.writeopia.common.utils.Destinations
 import io.writeopia.editor.di.TextEditorInjector
+import io.writeopia.editor.features.editor.copy.CopyManager
 import io.writeopia.editor.features.editor.ui.screen.TextEditorScreen
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.editor.features.presentation.ui.PresentationScreen
@@ -52,7 +54,10 @@ fun NavGraphBuilder.editorNavigation(
 
             if (noteId != null && noteTitle != null) {
                 val noteDetailsViewModel =
-                    editorInjector.provideNoteDetailsViewModel(parentFolderId ?: "root")
+                    editorInjector.provideNoteDetailsViewModel(
+                        parentFolderId ?: "root",
+                        copyManager = CopyManager(LocalClipboardManager.current)
+                    )
 
                 TextEditorScreen(
                     noteId.takeIf { it != "null" },
@@ -74,7 +79,10 @@ fun NavGraphBuilder.editorNavigation(
         composable(route = "${Destinations.EDITOR.id}/{parentFolderId}") { backStackEntry ->
             val parentFolderId = backStackEntry.arguments?.getString("parentFolderId")
             val notesDetailsViewModel: NoteEditorViewModel =
-                editorInjector.provideNoteDetailsViewModel(parentFolderId ?: "root")
+                editorInjector.provideNoteDetailsViewModel(
+                    parentFolderId ?: "root",
+                    copyManager = CopyManager(LocalClipboardManager.current)
+                )
 
             TextEditorScreen(
                 documentId = null,

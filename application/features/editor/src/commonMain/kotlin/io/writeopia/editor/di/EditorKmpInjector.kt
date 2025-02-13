@@ -6,6 +6,7 @@ import io.writeopia.auth.core.di.AuthCoreInjection
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.core.folders.di.FolderInjector
 import io.writeopia.di.OllamaInjection
+import io.writeopia.editor.features.editor.copy.CopyManager
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorKmpViewModel
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.editor.features.presentation.viewmodel.PresentationKmpViewModel
@@ -58,6 +59,7 @@ class EditorKmpInjector private constructor(
         writeopiaManager: WriteopiaStateManager = provideWriteopiaStateManager(),
         sharedEditionManager: SharedEditionManager = connectionInjection.liveEditionManager(),
         parentFolder: String,
+        copyManager: CopyManager,
     ): NoteEditorKmpViewModel =
         NoteEditorKmpViewModel(
             writeopiaManager,
@@ -68,7 +70,8 @@ class EditorKmpInjector private constructor(
             folderRepository = folderInjector.provideFoldersRepository(),
             ollamaRepository = ollamaInjection?.provideRepository(),
             keyboardEventFlow = keyboardEventFlow,
-            workspaceConfigRepository = configurationInjector.provideWorkspaceConfigRepository()
+            copyManager = copyManager,
+            workspaceConfigRepository = configurationInjector.provideWorkspaceConfigRepository(),
         )
 
     @Composable
@@ -77,9 +80,12 @@ class EditorKmpInjector private constructor(
     }
 
     @Composable
-    override fun provideNoteDetailsViewModel(parentFolder: String): NoteEditorViewModel =
+    override fun provideNoteDetailsViewModel(
+        parentFolder: String,
+        copyManager: CopyManager
+    ): NoteEditorViewModel =
         viewModel {
-            provideNoteEditorViewModel(parentFolder = parentFolder)
+            provideNoteEditorViewModel(parentFolder = parentFolder, copyManager = copyManager)
         }
 
     companion object {

@@ -60,3 +60,8 @@ internal fun isBoxEvent(keyEvent: KeyEvent) =
         keyEvent.isShiftPressed &&
         keyEvent.awtEventOrNull?.keyCode == java.awt.event.KeyEvent.VK_B &&
         keyEvent.type == KeyEventType.KeyUp
+
+internal fun isCopyEvent(keyEvent: KeyEvent) =
+    keyEvent.isMetaPressed &&
+        keyEvent.awtEventOrNull?.keyCode == java.awt.event.KeyEvent.VK_C &&
+        keyEvent.type == KeyEventType.KeyUp

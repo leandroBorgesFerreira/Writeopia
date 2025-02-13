@@ -45,6 +45,7 @@ data class WriteopiaColors(
     val cardPlaceHolderBackground: Color,
     val searchBackground: Color,
     val linkColor: Color,
+    val dividerColor: Color,
 )
 
 val LocalWriteopiaColors = staticCompositionLocalOf {
@@ -62,6 +63,7 @@ val LocalWriteopiaColors = staticCompositionLocalOf {
         cardPlaceHolderBackground = Color.Unspecified,
         searchBackground = Color.Unspecified,
         linkColor = Color.Unspecified,
+        dividerColor = Color.Unspecified,
     )
 }
 
@@ -89,6 +91,7 @@ fun WrieopiaTheme(
     val cardPlaceHolderBackground = if (darkTheme) colors.background else colors.surfaceVariant
     val searchBackground = if (darkTheme) colors.surfaceVariant else colors.background
     val linkColor = if (darkTheme) Color(0xFF42A5F5) else Color.Blue
+    val dividerColor = if (darkTheme) Color(0xFF333333) else Color(0xFFDFDFDF)
 
     val writeopiaColors = WriteopiaColors(
         globalBackground = globalBackground,
@@ -104,6 +107,7 @@ fun WrieopiaTheme(
         cardPlaceHolderBackground = cardPlaceHolderBackground,
         searchBackground = searchBackground,
         linkColor = linkColor,
+        dividerColor = dividerColor,
     )
 
     CompositionLocalProvider(LocalWriteopiaColors provides writeopiaColors) {

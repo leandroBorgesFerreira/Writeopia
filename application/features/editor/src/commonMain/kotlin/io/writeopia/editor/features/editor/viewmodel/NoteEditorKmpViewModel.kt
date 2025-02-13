@@ -1,6 +1,6 @@
 package io.writeopia.editor.features.editor.viewmodel
 
-import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.writeopia.OllamaRepository
@@ -12,6 +12,7 @@ import io.writeopia.common.utils.toList
 import io.writeopia.commonui.dtos.MenuItemUi
 import io.writeopia.commonui.extensions.toFolderUi
 import io.writeopia.core.folders.repository.FolderRepository
+import io.writeopia.editor.features.editor.copy.CopyManager
 import io.writeopia.editor.model.EditState
 import io.writeopia.model.Font
 import io.writeopia.models.configuration.WorkspaceConfigRepository
@@ -25,8 +26,8 @@ import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.span.Span
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
-import io.writeopia.sdk.repository.DocumentRepository
 import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
+import io.writeopia.sdk.repository.DocumentRepository
 import io.writeopia.sdk.serialization.extensions.toApi
 import io.writeopia.sdk.serialization.json.writeopiaJson
 import io.writeopia.sdk.serialization.request.wrapInRequest
@@ -37,6 +38,7 @@ import io.writeopia.ui.backstack.BackstackInform
 import io.writeopia.ui.keyboard.KeyboardEvent
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.DrawState
+import io.writeopia.ui.utils.Spans
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -68,6 +70,7 @@ class NoteEditorKmpViewModel(
     private val ollamaRepository: OllamaRepository? = null,
     private val workspaceConfigRepository: WorkspaceConfigRepository,
     private val keyboardEventFlow: Flow<KeyboardEvent>,
+    private val copyManager: CopyManager,
 ) : NoteEditorViewModel,
     ViewModel(),
     BackstackInform by writeopiaManager,
@@ -81,6 +84,10 @@ class NoteEditorKmpViewModel(
                     when (event) {
                         KeyboardEvent.LOCAL_SAVE -> {
                             saveDocumentInWorkSpace()
+                        }
+
+                        KeyboardEvent.COPY -> {
+                            copySelection()
                         }
 
                         else -> {}
@@ -451,7 +458,21 @@ class NoteEditorKmpViewModel(
     }
 
     override fun copySelection() {
+        if (!writeopiaManager.isOnSelection) return
 
+        val lineBreak = buildAnnotatedString { append("\n") }
+
+        val annotatedString = writeopiaManager.getSelectedStories()
+            .filter { storyStep -> storyStep.text != null }
+            .map { storyStep ->
+                val text = storyStep.text ?: ""
+
+                Spans.createStringWithSpans(text, storyStep.spans)
+            }.reduce { acc, annotatedString ->
+                acc + lineBreak + annotatedString
+            }
+
+        copyManager.copy(annotatedString)
     }
 
     private fun saveDocumentInWorkSpace() {

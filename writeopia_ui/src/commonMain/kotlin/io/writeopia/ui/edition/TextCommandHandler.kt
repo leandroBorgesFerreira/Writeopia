@@ -141,6 +141,19 @@ class TextCommandHandler(private val commandsMap: Map<Command, (StoryStep, Int) 
                                 CommandTrigger.WRITTEN
                             )
                         )
+                    },
+                    CommandFactory.divider() to { _, position ->
+                        manager.changeStoryType(
+                            position,
+                            TypeInfo(
+                                StoryTypes.DIVIDER.type,
+                                Decoration()
+                            ),
+                            CommandInfo(
+                                CommandFactory.divider(),
+                                CommandTrigger.WRITTEN
+                            )
+                        )
                     }
                 )
             )

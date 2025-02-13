@@ -13,9 +13,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
+import io.writeopia.editor.configuration.ui.DrawConfigFactory
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.model.Font
-import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.WriteopiaEditor
 import io.writeopia.ui.drawer.factory.DrawersFactory
 import io.writeopia.ui.model.DrawStory
@@ -69,8 +69,7 @@ internal fun TextEditor(
             onHeaderClick = noteEditorViewModel::onHeaderClick,
             editable = isEditable,
             groupsBackgroundColor = Color.Transparent,
-            selectedColor = WriteopiaTheme.colorScheme.selectedBg,
-            selectedBorderColor = MaterialTheme.colorScheme.primary,
+            drawConfig = DrawConfigFactory.getDrawConfig(),
             fontFamily = fontFamily,
             onDocumentLinkClick = onDocumentLinkClick
         ),
