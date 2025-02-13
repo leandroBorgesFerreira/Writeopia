@@ -42,6 +42,7 @@ import io.writeopia.ui.extensions.toTextRange
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.model.TextInput
+import io.writeopia.ui.utils.Spans
 import io.writeopia.ui.utils.defaultTextStyle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -76,17 +77,8 @@ class TextDrawer(
         focusRequester: FocusRequester?,
         decorationBox: @Composable (innerTextField: @Composable () -> Unit) -> Unit
     ) {
-        val text = buildAnnotatedString {
-            append(step.text.takeIf { it?.isNotEmpty() == true } ?: "")
 
-            step.spans.forEach { spanInfo ->
-                addStyle(
-                    spanInfo.span.toSpanStyle(),
-                    spanInfo.start,
-                    spanInfo.end
-                )
-            }
-        }
+        val text = Spans.createStringWithSpans(step.text, step.spans)
 
         val inputText = drawInfo.selection?.toTextRange()?.let { range ->
             TextFieldValue(text, selection = range)

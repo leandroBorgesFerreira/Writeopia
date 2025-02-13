@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontFamily
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.manager.WriteopiaStateManager
+import io.writeopia.ui.model.DrawConfig
 
 interface DrawersFactory {
 
@@ -16,8 +17,7 @@ interface DrawersFactory {
         editable: Boolean,
         groupsBackgroundColor: Color,
         onHeaderClick: () -> Unit,
-        selectedColor: Color,
-        selectedBorderColor: Color,
+        drawConfig: DrawConfig,
         fontFamily: FontFamily?,
         onDocumentLinkClick: (String) -> Unit,
     ): Map<Int, StoryStepDrawer>

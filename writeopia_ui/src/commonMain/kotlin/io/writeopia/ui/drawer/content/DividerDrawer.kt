@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -37,9 +38,8 @@ import io.writeopia.ui.model.DrawInfo
 /**
  * Drawer for AI answers.
  */
-class AiAnswerDrawer(
+class DividerDrawer(
     private val modifier: Modifier = Modifier,
-    private val customBackgroundColor: Color,
     private val onSelected: (Boolean, Int) -> Unit,
     private val dragIconWidth: Dp,
     private val config: DrawConfig,
@@ -48,6 +48,7 @@ class AiAnswerDrawer(
     private val onDragStop: () -> Unit,
     private val moveRequest: (Action.Move) -> Unit,
     private val enabled: Boolean,
+    private val color: Color,
     private val paddingValues: PaddingValues = PaddingValues(0.dp),
 ) : StoryStepDrawer {
 
@@ -88,7 +89,6 @@ class AiAnswerDrawer(
 
                 SwipeBox(
                     modifier = modifier.hoverable(interactionSource),
-                    defaultColor = customBackgroundColor,
                     activeColor = config.selectedColor(),
                     activeBorderColor = config.selectedBorderColor(),
                     isOnEditState = drawInfo.selectMode,
@@ -111,19 +111,10 @@ class AiAnswerDrawer(
                             onSelected(!drawInfo.selectMode, drawInfo.position)
                         }
                     ) {
-                        BasicTextField(
-                            modifier = Modifier.padding(
-                                horizontal = config.iaAnswerHorizontalPadding.dp,
-                                vertical = config.iaAnswerHorizontalPadding.dp
-                            ),
-                            value = step.text ?: "",
-                            onValueChange = {},
-                            textStyle = TextStyle(
-                                color = MaterialTheme.colorScheme.onBackground,
-                                fontSize = 16.sp,
-//                            fontFamily = fontFamily
-                            ),
-                            readOnly = true
+                        HorizontalDivider(
+                            color = color,
+                            thickness = 2.dp,
+                            modifier = Modifier.padding(vertical = 8.dp)
                         )
                     }
                 }

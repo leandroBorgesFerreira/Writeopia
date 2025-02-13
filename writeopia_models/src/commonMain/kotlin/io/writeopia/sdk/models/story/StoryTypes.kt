@@ -53,6 +53,7 @@ enum class StoryTypes(val type: StoryType) {
     AI_ANSWER(StoryType("ai_answer", 18)),
     LOADING(StoryType("loading", 19)),
     DOCUMENT_LINK(StoryType("document_link", 20)),
+    DIVIDER(StoryType("divider", 21)),
     ;
 
     companion object {

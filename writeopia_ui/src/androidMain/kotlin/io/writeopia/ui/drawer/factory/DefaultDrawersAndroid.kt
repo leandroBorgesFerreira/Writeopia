@@ -31,8 +31,7 @@ object DefaultDrawersAndroid : DrawersFactory {
         editable: Boolean,
         groupsBackgroundColor: Color,
         onHeaderClick: () -> Unit,
-        selectedColor: Color,
-        selectedBorderColor: Color,
+        drawConfig: DrawConfig,
         fontFamily: FontFamily?,
         onDocumentLinkClick: (String) -> Unit,
     ): Map<Int, StoryStepDrawer> {
@@ -43,18 +42,8 @@ object DefaultDrawersAndroid : DrawersFactory {
             editable,
             onHeaderClick,
             lineBreakByContent = true,
-            drawConfig = DrawConfig(
-                textDrawerStartPadding = 2,
-                textVerticalPadding = 4,
-                codeBlockStartPadding = 0,
-                checkBoxStartPadding = 0,
-                checkBoxEndPadding = 0,
-                checkBoxItemVerticalPadding = 0,
-                listItemStartPadding = 8,
-                selectedColor = { selectedColor },
-                selectedBorderColor = { selectedBorderColor }
-            ),
             isDesktop = false,
+            drawConfig = drawConfig,
             eventListener = KeyEventListenerFactory.android(
                 manager,
                 isEmptyErase = DefaultDrawersAndroid::emptyErase

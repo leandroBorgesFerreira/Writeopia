@@ -115,7 +115,7 @@ class WriteopiaStateManager(
                             toggleHighLightBlock()
                         }
 
-                        KeyboardEvent.IDLE, KeyboardEvent.LOCAL_SAVE -> {}
+                        KeyboardEvent.IDLE, KeyboardEvent.LOCAL_SAVE, KeyboardEvent.COPY -> {}
                     }
                 }
         }
@@ -200,7 +200,7 @@ class WriteopiaStateManager(
             localUserId = id
         }
 
-    private val isOnSelection: Boolean
+    val isOnSelection: Boolean
         get() = _positionsOnEdit.value.isNotEmpty()
 
     /**
@@ -1017,6 +1017,13 @@ class WriteopiaStateManager(
             documentId = newDocument.id,
             text = text
         )
+    }
+
+    fun getSelectedStories(): List<StoryStep> {
+        val stories = getStories()
+        return _positionsOnEdit.value.mapNotNull { position ->
+            stories[position]
+        }
     }
 
     private fun getStory(position: Int): StoryStep? = _currentStory.value.stories[position]

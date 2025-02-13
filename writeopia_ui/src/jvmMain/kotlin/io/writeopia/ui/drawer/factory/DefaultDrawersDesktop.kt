@@ -36,8 +36,7 @@ object DefaultDrawersDesktop : DrawersFactory {
         editable: Boolean,
         groupsBackgroundColor: Color,
         onHeaderClick: () -> Unit,
-        selectedColor: Color,
-        selectedBorderColor: Color,
+        drawConfig: DrawConfig,
         fontFamily: FontFamily?,
         onDocumentLinkClick: (String) -> Unit,
     ): Map<Int, StoryStepDrawer> =
@@ -50,10 +49,7 @@ object DefaultDrawersDesktop : DrawersFactory {
             dragIconWidth = 16.dp,
             lineBreakByContent = true,
             isDesktop = true,
-            drawConfig = DrawConfig(
-                selectedColor = { selectedColor },
-                selectedBorderColor = { selectedBorderColor }
-            ),
+            drawConfig = drawConfig,
             eventListener = KeyEventListenerFactory.desktop(
                 manager = manager,
             ),

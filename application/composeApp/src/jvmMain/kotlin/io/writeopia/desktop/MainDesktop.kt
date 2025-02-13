@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import io.writeopia.notemenu.di.NotesInjector
@@ -62,10 +63,16 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
         }
     }
 
+    val windowState = rememberWindowState(
+        width = 1100.dp,
+        height = 800.dp,
+        position = WindowPosition(Alignment.Center)
+    )
+
     Window(
         onCloseRequest = onCloseRequest,
         title = "Writeopia",
-        state = rememberWindowState(width = 1100.dp, height = 800.dp),
+        state = windowState,
         onPreviewKeyEvent = { keyEvent ->
             if (isSelectionKeyEventStart(keyEvent)) {
                 selectionState.value = true
@@ -121,6 +128,11 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
 
                 isLocalSaveEvent(keyEvent) -> {
                     sendEvent(KeyboardEvent.LOCAL_SAVE)
+                    false
+                }
+
+                isCopyEvent(keyEvent) -> {
+                    sendEvent(KeyboardEvent.COPY)
                     false
                 }
 

@@ -17,13 +17,13 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.writeopia.sdk.models.link.DocumentLink
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.content.AddButtonDrawer
 import io.writeopia.ui.drawer.content.AiAnswerDrawer
+import io.writeopia.ui.drawer.content.DividerDrawer
 import io.writeopia.ui.drawer.content.DocumentLinkDrawer
 import io.writeopia.ui.drawer.content.ImageDrawer
 import io.writeopia.ui.drawer.content.LastEmptySpace
@@ -56,7 +56,7 @@ object CommonDrawers {
         onHeaderClick: () -> Unit = {},
         dragIconWidth: Dp = DRAG_ICON_WIDTH.dp,
         lineBreakByContent: Boolean,
-        drawConfig: DrawConfig = DrawConfig(),
+        drawConfig: DrawConfig,
         eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean,
         isDesktop: Boolean,
         fontFamily: FontFamily? = null,
@@ -138,6 +138,19 @@ object CommonDrawers {
             onDragStart = manager::onDragStart,
             onDragStop = manager::onDragStop,
             moveRequest = manager::moveRequest,
+        )
+
+        val dividerDrawer = DividerDrawer(
+            dragIconWidth = dragIconWidth,
+            config = drawConfig,
+            enabled = true,
+            paddingValues = PaddingValues(0.dp),
+            onSelected = manager::onSelected,
+            onDragHover = manager::onDragHover,
+            onDragStart = manager::onDragStart,
+            onDragStop = manager::onDragStop,
+            moveRequest = manager::moveRequest,
+            color = drawConfig.dividerColor()
         )
 
         val documentLinkDrawer = DocumentLinkDrawer(
@@ -242,6 +255,7 @@ object CommonDrawers {
             put(StoryTypes.AI_ANSWER.type.number, aiAnswerDrawer)
             put(StoryTypes.LOADING.type.number, loadingDrawer)
             put(StoryTypes.DOCUMENT_LINK.type.number, documentLinkDrawer)
+            put(StoryTypes.DIVIDER.type.number, dividerDrawer)
         }
     }
 }
