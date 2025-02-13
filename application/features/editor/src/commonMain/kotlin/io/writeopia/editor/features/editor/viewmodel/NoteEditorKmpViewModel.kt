@@ -1,5 +1,6 @@
 package io.writeopia.editor.features.editor.viewmodel
 
+import androidx.compose.ui.platform.ClipboardManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.writeopia.OllamaRepository
@@ -447,6 +448,10 @@ class NoteEditorKmpViewModel(
         viewModelScope.launch(Dispatchers.Default) {
             writeopiaManager.addLinkToDocument()
         }
+    }
+
+    override fun copySelection() {
+
     }
 
     private fun saveDocumentInWorkSpace() {
