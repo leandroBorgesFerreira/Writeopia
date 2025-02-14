@@ -90,6 +90,10 @@ class NoteEditorKmpViewModel(
                             copySelection()
                         }
 
+                        KeyboardEvent.AI_QUESTION -> {
+                            askAiBySelection()
+                        }
+
                         else -> {}
                     }
                 }

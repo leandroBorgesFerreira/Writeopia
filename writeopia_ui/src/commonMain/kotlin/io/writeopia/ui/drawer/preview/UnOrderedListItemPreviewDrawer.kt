@@ -15,14 +15,15 @@ import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.utils.previewTextStyle
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 class UnOrderedListItemPreviewDrawer(
     private val modifier: Modifier = Modifier.padding(vertical = 5.dp, horizontal = 16.dp),
     private val textModifier: Modifier = Modifier,
     private val startText: String = "-",
-    private val textStyle: @Composable () -> TextStyle = {
-        LocalTextStyle.current
+    private val textStyle: @Composable (StoryStep) -> TextStyle = {
+        previewTextStyle(it)
     },
     private val maxLines: Int = 1
 ) : StoryStepDrawer {
@@ -34,7 +35,7 @@ class UnOrderedListItemPreviewDrawer(
             Text(
                 modifier = Modifier,
                 text = startText,
-                style = textStyle(),
+                style = textStyle(step),
                 color = textColor
             )
 

@@ -8,6 +8,7 @@ import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -80,6 +81,7 @@ fun DesktopApp(
     coroutineScope: CoroutineScope,
     isUndoKeyEvent: (KeyEvent) -> Boolean,
     selectColorTheme: (ColorThemeOption) -> Unit,
+    toggleMaxScreen: () -> Unit,
     startDestination: String = startDestination(),
 ) {
     val authCoreInjection = remember { KmpAuthCoreInjection() }
@@ -107,6 +109,7 @@ fun DesktopApp(
             configurationInjector = notesInjector
         )
     }
+
     val accountInjector = remember { AccountMenuKmpInjector(authCoreInjection) }
 
     val notesMenuInjection = remember {
@@ -198,11 +201,16 @@ fun DesktopApp(
                         expandFolder = globalShellViewModel::expandFolder,
                         searchClick = globalShellViewModel::showSearch,
                         highlightContent = {},
-                        changeIcon = globalShellViewModel::changeIcons
+                        changeIcon = globalShellViewModel::changeIcons,
+                        toggleMaxScreen = toggleMaxScreen
                     )
 
                     Column {
-                        GlobalHeader(navigationController, globalShellViewModel.folderPath)
+                        GlobalHeader(
+                            navigationController,
+                            globalShellViewModel.folderPath,
+                            toggleMaxScreen
+                        )
 
                         Box(
                             modifier = Modifier
@@ -220,7 +228,8 @@ fun DesktopApp(
                                 navController = navigationController
                             ) {}
 
-                            val folderEdit = globalShellViewModel.editFolderState.collectAsState().value
+                            val folderEdit =
+                                globalShellViewModel.editFolderState.collectAsState().value
 
                             if (folderEdit != null) {
                                 EditFileScreen(
