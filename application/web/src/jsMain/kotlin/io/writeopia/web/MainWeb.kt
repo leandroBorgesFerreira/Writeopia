@@ -49,7 +49,8 @@ fun CreateAppInMemory(repositoryInjection: SqlDelightDaoInjector) {
         colorThemeOption = colorTheme,
         selectColorTheme = uiConfigurationViewModel::changeColorTheme,
         coroutineScope = coroutineScope,
-        keyboardEventFlow = MutableStateFlow(KeyboardEvent.IDLE)
+        keyboardEventFlow = MutableStateFlow(KeyboardEvent.IDLE),
+        toggleMaxScreen = {}
     )
 }
 

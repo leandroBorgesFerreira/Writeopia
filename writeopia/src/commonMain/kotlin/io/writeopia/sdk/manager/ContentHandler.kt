@@ -52,6 +52,9 @@ class ContentHandler(
         }
     }
 
+    /**
+     * Removes tags from a StoryStep at a certain position
+     */
     fun removeTags(currentStory: Map<Int, StoryStep>, position: Int): StoryState {
         val newMap = currentStory.toMutableMap()
         val storyStep = newMap[position]
@@ -191,6 +194,9 @@ class ContentHandler(
         )
     }
 
+    /**
+     * Deletes one story steps.
+     */
     fun deleteStory(deleteInfo: Action.DeleteStory, history: Map<Int, StoryStep>): StoryState? {
         val step = deleteInfo.storyStep
         val parentId = step.parentId
@@ -270,7 +276,7 @@ class ContentHandler(
     fun previousTextStory(
         storyMap: Map<Int, StoryStep>,
         position: Int
-    ) = storyMap.previousTextStory(position, isTextStory)
+    ): Pair<StoryStep, Int>? = storyMap.previousTextStory(position, isTextStory)
 
     fun collapseItem(
         storyMap: Map<Int, StoryStep>,

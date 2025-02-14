@@ -115,7 +115,7 @@ class WriteopiaStateManager(
                             toggleHighLightBlock()
                         }
 
-                        KeyboardEvent.IDLE, KeyboardEvent.LOCAL_SAVE, KeyboardEvent.COPY -> {}
+                        else -> {}
                     }
                 }
         }
@@ -735,7 +735,7 @@ class WriteopiaStateManager(
 
     fun moveToPrevious(cursor: Int, positions: Int = 1) {
         val focusPosition = currentFocus()?.let { (position, _) -> position } ?: 0
-        nextFocusOrCreate(max(focusPosition - positions, 0), cursor)
+        previousFocus(focusPosition, cursor)
     }
 
     fun toggleLockDocument() {
@@ -784,25 +784,10 @@ class WriteopiaStateManager(
         }
     }
 
-    private fun parseDocument(info: DocumentInfo, state: StoryState): Document {
-        val titleFromContent = state.stories.values.firstOrNull { storyStep ->
-            // Todo: Change the type of change to allow different types. The client code should decide what is a title
-            // It is also interesting to inv
-            storyStep.type == StoryTypes.TITLE.type
-        }?.text
-
-        return Document(
-            id = info.id,
-            title = titleFromContent ?: info.title,
-            content = state.stories,
-            createdAt = info.createdAt,
-            lastUpdatedAt = info.lastUpdatedAt,
-            userId = localUserId ?: "disconnected_user",
-            parentId = info.parentId,
-            isLocked = info.isLocked
-        )
-    }
-
+    /**
+     * Adds a story in a position. Useful to add stories that were not created by the end user, but
+     * by an API call or different event.
+     */
     fun addAtPosition(storyStep: StoryStep, position: Int) {
         _currentStory.value = writeopiaManager.addAtPosition(
             _currentStory.value,
@@ -811,16 +796,134 @@ class WriteopiaStateManager(
         )
     }
 
+    fun handleTextInput(
+        input: TextInput,
+        position: Int,
+        lineBreakByContent: Boolean,
+    ) {
+        val text = input.text
+        val step = _currentStory.value.stories[position] ?: return
+
+        if (lineBreakByContent && text.contains("\n")) {
+            val newStep = step.copy(text = text)
+            onLineBreak(Action.LineBreak(newStep, position))
+        } else {
+            val newText = text.replace("\n", "")
+            val newStep = step.copy(text = newText)
+            val handled = commandHandler.handleCommand(text, newStep, position)
+
+            if (!handled) {
+                changeStoryText(
+                    Action.StoryStateChange(
+                        newStep,
+                        position,
+                        selectionStart = input.start,
+                        selectionEnd = input.end,
+                    )
+                )
+            }
+        }
+    }
+
+    /**
+     * Cancels the current selection.
+     */
+    fun cancelSelection() {
+        _positionsOnEdit.value = emptySet()
+    }
+
+    /**
+     * Return a list of consecutive selections, with start and end position and the merged text
+     * that is selected
+     */
+    fun getSelectionInfo(): List<SelectionInfo> {
+        val selected = _positionsOnEdit.value
+
+        return if (selected.isNotEmpty()) {
+            //TODO: Fix this to accept multiple clusters of selection!
+            val from = selected.min()
+            val to = selected.max()
+            val join = selectedStories().mapNotNull { it.text }.joinToString(separator = "\n ")
+
+            listOf(SelectionInfo(from, to, join))
+        } else {
+            emptyList()
+        }
+    }
+
+    suspend fun addLinkToDocument() {
+        if (documentRepository == null) return
+
+        val lastSelection = _positionsOnEdit.value.max()
+
+        val text = getStories()[lastSelection]?.text?.let {
+            it.take(max(it.length, 30))
+        } ?: ""
+
+        val (documentInfo, state) = writeopiaManager.newDocument(
+            parentFolder = getDocument().parentId
+        )
+
+        val stories = state.stories.mapValues { (_, story) ->
+            if (story.type == StoryTypes.TITLE.type) {
+                story.copy(text = text)
+            } else {
+                story
+            }
+        }
+
+        val newDocument =
+            documentInfo.document(userId()).copy(content = stories, title = text)
+
+        documentRepository.saveDocument(newDocument)
+        documentRepository.refreshDocuments()
+
+        _currentStory.value = writeopiaManager.addDocumentLink(
+            storyState = _currentStory.value,
+            position = lastSelection,
+            documentId = newDocument.id,
+            text = text
+        )
+    }
+
+    fun getSelectedStories(): List<StoryStep> {
+        val stories = getStories()
+        return _positionsOnEdit.value
+            .sorted()
+            .mapNotNull { position ->
+                stories[position]
+            }
+    }
+
     /**
      * Moves the focus to the next available [StoryStep] if it can't find a step to focus, it
-     * creates a new [StoryStep] at the end of the document.
+     * creates a new [StoryStep] at the end of the document. The cursor is positioned in the same
+     * place that is was in the previous line.
      *
      * @param position Int
+     * @param cursor Int
      */
     private fun nextFocusOrCreate(position: Int, cursor: Int) {
         coroutineScope.launch(dispatcher) {
             _currentStory.value =
-                writeopiaManager.nextFocusOrCreate(position, cursor, _currentStory.value)
+                writeopiaManager.nextFocus(position, cursor, _currentStory.value)
+        }
+    }
+
+    /**
+     * Move the focus to the previous line that accepts text edition.
+     * The cursor is positioned in the same place that is was in the previous line.
+     */
+    private fun previousFocus(position: Int, cursor: Int) {
+        coroutineScope.launch(dispatcher) {
+            writeopiaManager.previousTextStory(getStories(), position)
+                ?.let { (_, newPosition) ->
+                    val storyState = _currentStory.value
+                    _currentStory.value = storyState.copy(
+                        focus = newPosition,
+                        selection = Selection.fromPosition(cursor, newPosition)
+                    )
+                }
         }
     }
 
@@ -927,105 +1030,6 @@ class WriteopiaStateManager(
         }
     }
 
-    fun handleTextInput(
-        input: TextInput,
-        position: Int,
-        lineBreakByContent: Boolean,
-    ) {
-        val text = input.text
-        val step = _currentStory.value.stories[position] ?: return
-
-        if (lineBreakByContent && text.contains("\n")) {
-            val newStep = step.copy(text = text)
-            onLineBreak(Action.LineBreak(newStep, position))
-        } else {
-            val newText = text.replace("\n", "")
-            val newStep = step.copy(text = newText)
-            val handled = commandHandler.handleCommand(text, newStep, position)
-
-            if (!handled) {
-                changeStoryText(
-                    Action.StoryStateChange(
-                        newStep,
-                        position,
-                        selectionStart = input.start,
-                        selectionEnd = input.end,
-                    )
-                )
-            }
-        }
-    }
-
-    private fun selectedStories(): List<StoryStep> = _positionsOnEdit.value.mapNotNull(::getStory)
-
-    /**
-     * Cancels the current selection.
-     */
-    fun cancelSelection() {
-        _positionsOnEdit.value = emptySet()
-    }
-
-    /**
-     * Return a list of consecutive selections, with start and end position and the merged text
-     * that is selected
-     */
-    fun getSelectionInfo(): List<SelectionInfo> {
-        val selected = _positionsOnEdit.value
-
-        return if (selected.isNotEmpty()) {
-            //TODO: Fix this to accept multiple clusters of selection!
-            val from = selected.min()
-            val to = selected.max()
-            val join = selectedStories().mapNotNull { it.text }.joinToString(separator = "\n ")
-
-            listOf(SelectionInfo(from, to, join))
-        } else {
-            emptyList()
-        }
-    }
-
-    suspend fun addLinkToDocument() {
-        if (documentRepository == null) return
-
-        val lastSelection = _positionsOnEdit.value.max()
-
-        val text = getStories()[lastSelection]?.text?.let {
-            it.take(max(it.length, 30))
-        } ?: ""
-
-        val (documentInfo, state) = writeopiaManager.newDocument(
-            parentFolder = getDocument().parentId
-        )
-
-        val stories = state.stories.mapValues { (_, story) ->
-            if (story.type == StoryTypes.TITLE.type) {
-                story.copy(text = text)
-            } else {
-                story
-            }
-        }
-
-        val newDocument =
-            documentInfo.document(userId()).copy(content = stories, title = text)
-
-        documentRepository.saveDocument(newDocument)
-        documentRepository.refreshDocuments()
-
-        _currentStory.value = writeopiaManager.addDocumentLink(
-            storyState = _currentStory.value,
-            position = lastSelection,
-            documentId = newDocument.id,
-            text = text
-        )
-    }
-
-    fun getSelectedStories(): List<StoryStep> {
-        val stories = getStories()
-        return _positionsOnEdit.value.mapNotNull { position ->
-            stories[position]
-        }
-    }
-
     private fun getStory(position: Int): StoryStep? = _currentStory.value.stories[position]
 
     private fun getStories() = _currentStory.value.stories
@@ -1037,6 +1041,27 @@ class WriteopiaStateManager(
     private fun selectAll() {
         _positionsOnEdit.value = getStories().keys
     }
+
+    private fun parseDocument(info: DocumentInfo, state: StoryState): Document {
+        val titleFromContent = state.stories.values.firstOrNull { storyStep ->
+            // Todo: Change the type of change to allow different types. The client code should decide what is a title
+            // It is also interesting to inv
+            storyStep.type == StoryTypes.TITLE.type
+        }?.text
+
+        return Document(
+            id = info.id,
+            title = titleFromContent ?: info.title,
+            content = state.stories,
+            createdAt = info.createdAt,
+            lastUpdatedAt = info.lastUpdatedAt,
+            userId = localUserId ?: "disconnected_user",
+            parentId = info.parentId,
+            isLocked = info.isLocked
+        )
+    }
+
+    private fun selectedStories(): List<StoryStep> = _positionsOnEdit.value.mapNotNull(::getStory)
 
     companion object {
         fun create(

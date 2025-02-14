@@ -70,17 +70,14 @@ class WriteopiaManager(
      * @param position Int
      * @param storyState [StoryState]
      */
-    fun nextFocusOrCreate(position: Int, cursor: Int, storyState: StoryState): StoryState {
+    fun nextFocus(position: Int, cursor: Int, storyState: StoryState): StoryState {
         val storyMap = storyState.stories
         val nextFocus = focusHandler.findNextFocus(position, storyMap)
 
         return if (nextFocus != null) {
-            val (nextPosition, storyStep) = nextFocus
-            val mutable = storyMap.toMutableMap()
-            mutable[nextPosition] = storyStep.copy(localId = GenerateId.generate())
+            val (nextPosition, _) = nextFocus
 
             storyState.copy(
-                stories = mutable,
                 focus = nextPosition,
                 selection = Selection.fromPosition(cursor, position)
             )
@@ -167,6 +164,9 @@ class WriteopiaManager(
             commandInfo
         )
 
+    /**
+     * Removes all tags from a story step
+     */
     fun removeTags(position: Int, storyState: StoryState): StoryState =
         contentHandler.removeTags(storyState.stories, position)
 
@@ -201,7 +201,7 @@ class WriteopiaManager(
     fun previousTextStory(
         storyMap: Map<Int, StoryStep>,
         position: Int,
-    ) = contentHandler.previousTextStory(storyMap, position)
+    ): Pair<StoryStep, Int>? = contentHandler.previousTextStory(storyMap, position)
 
     /**
      * Deletes the whole selection. All [StoryStep] in the selection will be deleted.
@@ -235,6 +235,9 @@ class WriteopiaManager(
         )
     }
 
+    /**
+     * Adds a Span like, Bold, Italic, Underline to a story.
+     */
     fun addSpan(storyState: StoryState, position: Int, spanInfo: SpanInfo): StoryState =
         storyState.stories[position]?.let { story ->
             val spans = story.spans
@@ -253,6 +256,10 @@ class WriteopiaManager(
             )
         } ?: storyState
 
+    /**
+     * Adds a story in a position. Useful to add stories that were not created by the end user, but
+     * by an API call or different event.
+     */
     fun addAtPosition(storyState: StoryState, storyStep: StoryStep, position: Int): StoryState {
         val newStory = contentHandler.addNewContent(storyState.stories, storyStep, position)
 
