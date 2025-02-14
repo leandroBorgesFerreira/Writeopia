@@ -19,6 +19,15 @@ fun defaultTextStyle(storyStep: StoryStep, fontFamily: FontFamily? = null) =
     )
 
 @Composable
+fun previewTextStyle(storyStep: StoryStep, fontFamily: FontFamily? = null) =
+    TextStyle(
+        textDecoration = if (storyStep.checked == true) TextDecoration.LineThrough else null,
+        color = MaterialTheme.colorScheme.onBackground,
+        fontSize = textSizeFromTagsInPreview(storyStep.tags.map { it.tag }),
+        fontFamily = fontFamily
+    )
+
+@Composable
 fun codeBlockStyle() =
     TextStyle(
         color = MaterialTheme.colorScheme.onBackground,
@@ -31,6 +40,11 @@ private fun textSizeFromTags(tags: Iterable<Tag>) =
         ?.let(::textSizeFromTag)
         ?: 16.sp
 
+private fun textSizeFromTagsInPreview(tags: Iterable<Tag>) =
+    tags.firstOrNull { tag -> tag.isTitle() }
+        ?.let(::textSizeFromTagInPreview)
+        ?: 12.sp
+
 private fun textSizeFromTag(tags: Tag) =
     when (tags) {
         Tag.H1 -> 32.sp
@@ -38,4 +52,13 @@ private fun textSizeFromTag(tags: Tag) =
         Tag.H3 -> 24.sp
         Tag.H4 -> 20.sp
         else -> 20.sp
+    }
+
+private fun textSizeFromTagInPreview(tags: Tag) =
+    when (tags) {
+        Tag.H1 -> 20.sp
+        Tag.H2 -> 18.sp
+        Tag.H3 -> 16.sp
+        Tag.H4 -> 14.sp
+        else -> 12.sp
     }

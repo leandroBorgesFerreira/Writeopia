@@ -14,12 +14,14 @@ import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.utils.defaultTextStyle
+import io.writeopia.ui.utils.previewTextStyle
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 class TextPreviewDrawer(
     private val modifier: Modifier = Modifier.padding(vertical = 5.dp, horizontal = 16.dp),
-    private val style: @Composable () -> TextStyle = {
-        MaterialTheme.typography.bodyMedium.copy(fontSize = 15.sp)
+    private val style: @Composable (StoryStep) -> TextStyle = {
+        previewTextStyle(it)
     },
     private val maxLines: Int = Int.MAX_VALUE,
     private val textColor: @Composable (DrawInfo) -> Color = {
@@ -32,7 +34,7 @@ class TextPreviewDrawer(
         Text(
             modifier = modifier,
             text = step.text ?: "",
-            style = style(),
+            style = style(step),
             color = textColor(drawInfo),
             maxLines = maxLines
         )

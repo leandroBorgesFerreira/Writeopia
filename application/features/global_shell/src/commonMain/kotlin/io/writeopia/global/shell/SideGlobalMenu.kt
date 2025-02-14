@@ -3,6 +3,8 @@ package io.writeopia.global.shell
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -59,6 +62,7 @@ fun SideGlobalMenu(
     moveRequest: (MenuItemUi, String) -> Unit,
     expandFolder: (String) -> Unit,
     changeIcon: (String, String, Int, IconChange) -> Unit,
+    toggleMaxScreen: () -> Unit,
 ) {
     val widthState by derivedStateOf { width }
 
@@ -76,7 +80,15 @@ fun SideGlobalMenu(
                 val menuItems by foldersState.collectAsState()
 
                 Column {
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(
+                        modifier = Modifier.height(48.dp).fillMaxWidth()
+                            .combinedClickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onDoubleClick = toggleMaxScreen,
+                                onClick = {}
+                            )
+                    )
 
                     settingsOptions(
                         iconVector = WrIcons.search,
@@ -250,6 +262,7 @@ fun SideGlobalMenuPreview() {
         navigateToEditDocument = { _, _ -> },
         moveRequest = { _, _ -> },
         expandFolder = {},
-        changeIcon = { _, _, _, _ -> }
+        changeIcon = { _, _, _, _ -> },
+        toggleMaxScreen = {}
     )
 }

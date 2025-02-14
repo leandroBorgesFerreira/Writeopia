@@ -25,6 +25,7 @@ import io.writeopia.common.utils.icons.all.CirclePlus
 import io.writeopia.common.utils.icons.all.ClipboardCopy
 import io.writeopia.common.utils.icons.all.ClockArrowDown
 import io.writeopia.common.utils.icons.all.CloudDownload
+import io.writeopia.common.utils.icons.all.Command
 import io.writeopia.common.utils.icons.all.Contrast
 import io.writeopia.common.utils.icons.all.Crosshair
 import io.writeopia.common.utils.icons.all.Eye
@@ -53,6 +54,7 @@ import io.writeopia.common.utils.icons.all.SquareCode
 import io.writeopia.common.utils.icons.all.Sun
 import io.writeopia.common.utils.icons.all.Underline
 import io.writeopia.common.utils.icons.all.Undo2
+import io.writeopia.common.utils.icons.all.WandSparkles
 import io.writeopia.common.utils.icons.all.X
 import io.writeopia.common.utils.icons.all.Zap
 
@@ -163,6 +165,10 @@ object WrIcons {
 
     val download = CloudDownload
 
+    val ai = WandSparkles
+
+    val command = Command
+
     val allIcons: Map<String, ImageVector> =
         mapOf(
             "settings" to settings,
@@ -216,7 +222,9 @@ object WrIcons {
             "image" to image,
             "zap" to zap,
             "move" to move,
-            "io/writeopia/common/utils/download" to download,
+            "download" to download,
+            "ai" to ai,
+            "command" to command,
         )
 
     fun fromName(name: String): ImageVector? = allIcons[name]

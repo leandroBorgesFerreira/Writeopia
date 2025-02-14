@@ -14,7 +14,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -80,6 +84,7 @@ fun DesktopApp(
     coroutineScope: CoroutineScope,
     isUndoKeyEvent: (KeyEvent) -> Boolean,
     selectColorTheme: (ColorThemeOption) -> Unit,
+    toggleMaxScreen: () -> Unit,
     startDestination: String = startDestination(),
 ) {
     val authCoreInjection = remember { KmpAuthCoreInjection() }
@@ -107,6 +112,7 @@ fun DesktopApp(
             configurationInjector = notesInjector
         )
     }
+
     val accountInjector = remember { AccountMenuKmpInjector(authCoreInjection) }
 
     val notesMenuInjection = remember {
@@ -198,11 +204,16 @@ fun DesktopApp(
                         expandFolder = globalShellViewModel::expandFolder,
                         searchClick = globalShellViewModel::showSearch,
                         highlightContent = {},
-                        changeIcon = globalShellViewModel::changeIcons
+                        changeIcon = globalShellViewModel::changeIcons,
+                        toggleMaxScreen = toggleMaxScreen
                     )
 
                     Column {
-                        GlobalHeader(navigationController, globalShellViewModel.folderPath)
+                        GlobalHeader(
+                            navigationController,
+                            globalShellViewModel.folderPath,
+                            toggleMaxScreen
+                        )
 
                         Box(
                             modifier = Modifier
@@ -220,7 +231,8 @@ fun DesktopApp(
                                 navController = navigationController
                             ) {}
 
-                            val folderEdit = globalShellViewModel.editFolderState.collectAsState().value
+                            val folderEdit =
+                                globalShellViewModel.editFolderState.collectAsState().value
 
                             if (folderEdit != null) {
                                 EditFileScreen(
