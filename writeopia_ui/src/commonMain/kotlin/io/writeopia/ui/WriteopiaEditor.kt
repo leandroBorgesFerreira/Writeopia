@@ -3,7 +3,7 @@ package io.writeopia.ui
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,25 +23,23 @@ fun WriteopiaEditor(
     listState: LazyListState = rememberLazyListState(),
     drawers: Map<Int, StoryStepDrawer>,
     storyState: DrawState,
-    keyFn: (Int, DrawStory) -> Int = { index, drawStory -> drawStory.desktopKey + index }
+    keyFn: (DrawStory) -> Int = { drawStory -> drawStory.desktopKey }
 ) {
     val content = storyState.stories
         .filterNot { draw ->
             draw.storyStep.tags.any { it.tag.isHidden() }
         }
 
-    DraggableScreen(
-        modifier = modifier
-    ) {
+    DraggableScreen(modifier = modifier) {
         LazyColumn(
             modifier = modifier,
             contentPadding = contentPadding,
             state = listState,
             content = {
-                itemsIndexed(
+                items(
                     content,
                     key = keyFn,
-                    itemContent = { _, drawStory ->
+                    itemContent = { drawStory ->
                         val size = storyState.stories.size
 
                         drawers[drawStory.storyStep.type.number]?.Step(

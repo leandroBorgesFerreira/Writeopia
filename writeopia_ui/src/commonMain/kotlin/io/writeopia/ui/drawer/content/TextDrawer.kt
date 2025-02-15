@@ -24,6 +24,7 @@ import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
@@ -70,12 +71,22 @@ class TextDrawer(
         focusRequester: FocusRequester?,
         decorationBox: @Composable (innerTextField: @Composable () -> Unit) -> Unit
     ) {
+//        var text by remember {
+//            mutableStateOf(Spans.createStringWithSpans(step.text, step.spans))
+//        }
+//
+//        var textRange by remember {
+//            mutableStateOf()
+//        }
 
-        val text = Spans.createStringWithSpans(step.text, step.spans)
-
-        val inputText = drawInfo.selection?.toTextRange(text.text)?.let { range ->
-            TextFieldValue(text, selection = range)
-        } ?: TextFieldValue(text)
+        var inputText by remember {
+            mutableStateOf(
+                TextFieldValue(
+                    Spans.createStringWithSpans(step.text, step.spans),
+                    selection = drawInfo.selection?.toTextRange(step.text ?: "") ?: TextRange.Zero
+                )
+            )
+        }
 
         var textLayoutResult by remember {
             mutableStateOf<TextLayoutResult?>(null)
@@ -94,6 +105,7 @@ class TextDrawer(
         val isInLastLine by remember {
             derivedStateOf {
                 val lineCount = textLayoutResult?.multiParagraph?.lineCount
+
                 when {
                     lineCount == 1 -> EndOfText.SINGLE_LINE
 
@@ -153,16 +165,17 @@ class TextDrawer(
                 textLayoutResult = it
             },
             onValueChange = { value ->
-                val text = value.text
+                inputText = value
+
                 val start = value.selection.start
                 val end = value.selection.end
 
                 val edit = {
-                    onTextEdit(
-                        TextInput(text, start, end),
-                        drawInfo.position,
-                        lineBreakByContent,
-                    )
+//                    onTextEdit(
+//                        TextInput(inputText.text, start, end),
+//                        drawInfo.position,
+//                        lineBreakByContent,
+//                    )
                 }
 
                 if (start == 0 && end == 0) {
