@@ -26,7 +26,7 @@ internal fun TextEditor(
     noteEditorViewModel: NoteEditorViewModel,
     drawersFactory: DrawersFactory,
     modifier: Modifier = Modifier,
-    keyFn: (Int, DrawStory) -> Int = { index, drawStory -> drawStory.desktopKey + index },
+    keyFn: (DrawStory) -> Int = { drawStory -> drawStory.desktopKey },
     onDocumentLinkClick: (String) -> Unit,
 ) {
     val listState: LazyListState = rememberLazyListState()

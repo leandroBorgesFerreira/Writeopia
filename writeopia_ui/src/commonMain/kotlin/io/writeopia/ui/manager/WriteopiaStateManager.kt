@@ -796,6 +796,7 @@ class WriteopiaStateManager(
         )
     }
 
+    //Here!
     fun handleTextInput(
         input: TextInput,
         position: Int,

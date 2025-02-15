@@ -165,17 +165,15 @@ class TextDrawer(
                 textLayoutResult = it
             },
             onValueChange = { value ->
-                inputText = value
-
                 val start = value.selection.start
                 val end = value.selection.end
 
                 val edit = {
-//                    onTextEdit(
-//                        TextInput(inputText.text, start, end),
-//                        drawInfo.position,
-//                        lineBreakByContent,
-//                    )
+                    onTextEdit(
+                        TextInput(value.text, start, end),
+                        drawInfo.position,
+                        lineBreakByContent,
+                    )
                 }
 
                 if (start == 0 && end == 0) {
@@ -187,6 +185,8 @@ class TextDrawer(
                 } else {
                     edit()
                 }
+
+                inputText = value.copy(value.text.replace("\n", ""))
             },
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences
