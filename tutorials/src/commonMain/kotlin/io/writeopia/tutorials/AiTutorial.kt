@@ -1,3 +1,7 @@
+package io.writeopia.tutorials
+
+internal fun aiTutorial() =
+"""
 {
     "id": "bkb3kwIrpf",
     "title": "Using AI",
@@ -170,3 +174,4 @@
     "parentId": "root",
     "isLocked": false
 }
+"""

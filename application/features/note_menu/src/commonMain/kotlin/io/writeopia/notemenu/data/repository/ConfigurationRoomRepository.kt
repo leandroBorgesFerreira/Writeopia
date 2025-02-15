@@ -24,7 +24,8 @@ internal class ConfigurationRoomRepository(
             NotesConfigurationCommonEntity(
                 userId = userId,
                 arrangementType = arrangement.type,
-                orderByType = getOrderPreference(userId)
+                orderByType = getOrderPreference(userId),
+                hasTutorials = true
             )
         configurationDao.saveConfiguration(configuration)
     }
@@ -34,7 +35,8 @@ internal class ConfigurationRoomRepository(
             NotesConfigurationCommonEntity(
                 userId = userId,
                 arrangementType = arrangementPref(userId),
-                orderByType = orderBy.type.toEntityField()
+                orderByType = orderBy.type.toEntityField(),
+                hasTutorials = true
             )
         configurationDao.saveConfiguration(configuration)
     }
@@ -65,4 +67,20 @@ internal class ConfigurationRoomRepository(
     }
 
     override suspend fun loadWorkspacePath(userId: String): String? = null
+
+    override suspend fun hasTutorialNotes(userId: String): Boolean =
+        configurationDao.getConfigurationByUserId(userId)?.hasTutorials ?: false
+
+    override suspend fun setTutorialNotes(hasTutorials: Boolean, userId: String) {
+        val configEntity = configurationDao.getConfigurationByUserId(userId)
+            ?.copy(hasTutorials = hasTutorials)
+            ?: NotesConfigurationCommonEntity(
+                userId = userId,
+                arrangementType = NotesArrangement.STAGGERED_GRID.type,
+                orderByType = OrderBy.UPDATE.type,
+                hasTutorials = hasTutorials
+            )
+
+        configurationDao.saveConfiguration(configEntity)
+    }
 }

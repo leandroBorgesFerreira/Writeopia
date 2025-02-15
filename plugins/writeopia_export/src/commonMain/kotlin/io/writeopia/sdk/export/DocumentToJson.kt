@@ -4,13 +4,13 @@ import io.writeopia.sdk.export.files.KmpFileWriter
 import io.writeopia.sdk.export.files.name
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.serialization.extensions.toApi
-import io.writeopia.sdk.serialization.json.writeopiaJson
+import io.writeopia.sdk.serialization.json.writeopiaJsonPretty
 import io.writeopia.sdk.serialization.storage.WorkspaceStorageConfig
 import io.writeopia.sdk.utils.files.useKmp
 import kotlinx.datetime.Clock
 import kotlinx.serialization.json.Json
 
-class DocumentToJson(private val json: Json = writeopiaJson) : DocumentWriter {
+class DocumentToJson(private val json: Json = writeopiaJsonPretty) : DocumentWriter {
 
     override fun writeDocuments(
         documents: List<Document>,

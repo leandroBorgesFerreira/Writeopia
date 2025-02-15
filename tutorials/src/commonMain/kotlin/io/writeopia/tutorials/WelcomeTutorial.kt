@@ -1,3 +1,7 @@
+package io.writeopia.tutorials
+
+internal fun welcomeTutorial() =
+"""
 {
     "id": "816lZJxpi9",
     "title": "Welcome!",
@@ -143,3 +147,4 @@
     "parentId": "root",
     "isLocked": false
 }
+"""

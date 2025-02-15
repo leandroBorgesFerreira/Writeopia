@@ -1,0 +1,15 @@
+package io.writeopia.tutorials
+
+object Tutorials {
+
+    fun allTutorialsDocuments(): Sequence<String> =
+        sequence {
+            yieldAll(
+                listOf(
+                    welcomeTutorial(),
+                    aiTutorial(),
+                    commandsTutorial()
+                ).reversed()
+            )
+        }
+}

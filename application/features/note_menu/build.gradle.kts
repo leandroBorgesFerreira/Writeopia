@@ -30,12 +30,15 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(project(":tutorials"))
+
                 implementation(project(":writeopia"))
                 implementation(project(":writeopia_ui"))
                 implementation(project(":writeopia_models"))
                 implementation(project(":plugins:writeopia_persistence_core"))
                 implementation(project(":plugins:writeopia_export"))
                 implementation(project(":plugins:writeopia_import_document"))
+                implementation(project(":plugins:writeopia_serialization"))
 
                 implementation(project(":application:core:utils"))
                 implementation(project(":application:core:models"))

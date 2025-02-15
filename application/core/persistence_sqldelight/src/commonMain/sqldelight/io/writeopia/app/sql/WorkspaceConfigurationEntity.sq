@@ -1,6 +1,7 @@
 CREATE TABLE workspaceConfiguration (
   path TEXT,
-  user_id TEXT PRIMARY KEY
+  user_id TEXT PRIMARY KEY,
+  has_tutorial_notes INTEGER
 );
 
 selectWorkspaceConfigurationByUserId:
@@ -9,7 +10,7 @@ FROM workspaceConfiguration
 WHERE workspaceConfiguration.user_id = ?;
 
 insert:
-INSERT INTO workspaceConfiguration(user_id, path)
-VALUES (?, ?)
+INSERT INTO workspaceConfiguration(user_id, path, has_tutorial_notes)
+VALUES (?, ?, ?)
 ON CONFLICT(user_id) DO
-UPDATE SET user_id=excluded.user_id, path=excluded.path;
+UPDATE SET user_id=excluded.user_id, path=excluded.path, has_tutorial_notes=excluded.has_tutorial_notes;

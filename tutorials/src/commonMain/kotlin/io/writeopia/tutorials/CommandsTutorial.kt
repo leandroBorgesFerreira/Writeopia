@@ -1,3 +1,7 @@
+package io.writeopia.tutorials
+
+internal fun commandsTutorial() =
+"""
 {
     "id": "DDE16YFyYN",
     "title": "Using Commands",
@@ -394,3 +398,4 @@
     "parentId": "root",
     "isLocked": false
 }
+"""

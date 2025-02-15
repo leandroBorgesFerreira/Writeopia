@@ -2,6 +2,8 @@ package io.writeopia.notemenu.data.repository
 
 import io.writeopia.app.sql.NotesConfiguration
 import io.writeopia.app.sql.WorkspaceConfiguration
+import io.writeopia.common.utils.extensions.toBoolean
+import io.writeopia.common.utils.extensions.toLong
 import io.writeopia.notemenu.data.model.NotesArrangement
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sqldelight.dao.ConfigurationSqlDelightDao
@@ -65,12 +67,30 @@ class ConfigurationSqlDelightRepository(
 
     override suspend fun saveWorkspacePath(path: String, userId: String) {
         configurationSqlDelightDao.saveWorkspaceConfiguration(
-            WorkspaceConfiguration(path = path, user_id = userId)
+            WorkspaceConfiguration(path = path, user_id = userId, has_tutorial_notes = 1L)
         )
     }
 
     override suspend fun loadWorkspacePath(userId: String): String? =
         configurationSqlDelightDao.getWorkspaceByUserId(userId)?.path
+
+    override suspend fun hasTutorialNotes(userId: String): Boolean =
+        configurationSqlDelightDao.getWorkspaceByUserId(userId)
+            ?.has_tutorial_notes
+            ?.toBoolean()
+            ?: false
+
+    override suspend fun setTutorialNotes(hasTutorials: Boolean, userId: String) {
+        val currentConfiguration = configurationSqlDelightDao.getWorkspaceByUserId(userId)
+
+        configurationSqlDelightDao.saveWorkspaceConfiguration(
+            WorkspaceConfiguration(
+                path = currentConfiguration?.path ?: "",
+                user_id = userId,
+                has_tutorial_notes = hasTutorials.toLong()
+            )
+        )
+    }
 
     private suspend fun refreshArrangementPref(userId: String) {
         _arrangementPref.value = arrangementPref(userId)
