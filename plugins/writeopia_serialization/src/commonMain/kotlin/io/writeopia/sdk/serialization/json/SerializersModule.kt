@@ -12,3 +12,8 @@ fun writeopiaSerializersModule(): SerializersModule = SerializersModule {
 val writeopiaJson: Json = Json {
     serializersModule = writeopiaSerializersModule()
 }
+
+val writeopiaJsonPretty: Json = Json {
+    serializersModule = writeopiaSerializersModule()
+    prettyPrint = true
+}

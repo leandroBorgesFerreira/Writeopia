@@ -23,7 +23,11 @@ class ConfigurationSqlDelightDao(database: WriteopiaDb?) {
 
     suspend fun saveWorkspaceConfiguration(workspaceConfiguration: WorkspaceConfiguration) {
         workspaceConfiguration.run {
-            workspaceConfigurationQueries?.insert(user_id = user_id, path = path)
+            workspaceConfigurationQueries?.insert(
+                user_id = user_id,
+                path = path,
+                has_tutorial_notes = has_tutorial_notes,
+            )
         }
     }
 

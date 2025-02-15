@@ -65,4 +65,12 @@ internal class ConfigurationRoomRepository(
     }
 
     override suspend fun loadWorkspacePath(userId: String): String? = null
+
+    override suspend fun hasTutorialNotes(userId: String): Boolean {
+        TODO()
+    }
+
+    override suspend fun setTutorialNotes(hasTutorials: Boolean, userId: String) {
+        TODO("Not yet implemented")
+    }
 }

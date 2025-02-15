@@ -22,4 +22,8 @@ interface ConfigurationRepository : WorkspaceConfigRepository {
     override suspend fun saveWorkspacePath(path: String, userId: String)
 
     override suspend fun loadWorkspacePath(userId: String): String?
+
+    suspend fun hasTutorialNotes(userId: String): Boolean
+
+    suspend fun setTutorialNotes(hasTutorials: Boolean, userId: String)
 }

@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 private const val APP_DIRECTORY = ".writeopia"
-private const val DB_VERSION = 15
+private const val DB_VERSION = 18
 
 fun main() = application {
     DesktopApp()
