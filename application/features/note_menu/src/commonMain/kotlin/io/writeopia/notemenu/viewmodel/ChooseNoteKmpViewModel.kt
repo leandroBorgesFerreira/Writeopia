@@ -8,12 +8,12 @@ import io.writeopia.common.utils.DISCONNECTED_USER_ID
 import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.map
 import io.writeopia.common.utils.toBoolean
+import io.writeopia.commonui.extensions.toUiCard
 import io.writeopia.models.Folder
 import io.writeopia.notemenu.data.model.NotesArrangement
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.repository.ConfigurationRepository
 import io.writeopia.notemenu.data.usecase.NotesUseCase
-import io.writeopia.commonui.extensions.toUiCard
 import io.writeopia.notemenu.ui.dto.NotesUi
 import io.writeopia.sdk.export.DocumentToJson
 import io.writeopia.sdk.export.DocumentToMarkdown
@@ -26,7 +26,6 @@ import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.sdk.serialization.data.DocumentApi
 import io.writeopia.sdk.serialization.extensions.toModel
 import io.writeopia.sdk.serialization.json.writeopiaJson
-import io.writeopia.sdk.serialization.json.writeopiaJsonPretty
 import io.writeopia.tutorials.Tutorials
 import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.Dispatchers
@@ -44,7 +43,6 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlinx.serialization.json.Json
 
 internal class ChooseNoteKmpViewModel(
