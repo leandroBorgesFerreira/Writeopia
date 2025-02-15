@@ -35,7 +35,8 @@ class WriteopiaEditorApi(
             lastUpdatedAt = now.toEpochMilliseconds(),
             userId = "null",
             parentId = "",
-            isLocked = false
+            isLocked = false,
+            icon = null
         ).let(::listOf)
     }
 
