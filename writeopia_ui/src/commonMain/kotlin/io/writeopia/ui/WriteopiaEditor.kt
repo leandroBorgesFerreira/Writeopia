@@ -1,5 +1,7 @@
 package io.writeopia.ui
 
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -42,17 +44,27 @@ fun WriteopiaEditor(
                     itemContent = { drawStory ->
                         val size = storyState.stories.size
 
-                        drawers[drawStory.storyStep.type.number]?.Step(
-                            step = drawStory.storyStep,
-                            drawInfo = DrawInfo(
-                                editable = editable,
-                                focus = storyState.focus,
-                                position = drawStory.position,
-                                extraData = drawStory.extraInfo + mapOf("listSize" to size),
-                                selectMode = drawStory.isSelected,
-                                selection = drawStory.cursor ?: Selection.start()
+                        val isOnDragSpace = drawStory.storyStep.localId == "onDragSpace"
+
+                        Box(
+                            modifier = Modifier.animateItem(
+                                placementSpec = tween(
+                                    durationMillis = if (isOnDragSpace) 50 else 100
+                                )
                             )
-                        )
+                        ) {
+                            drawers[drawStory.storyStep.type.number]?.Step(
+                                step = drawStory.storyStep,
+                                drawInfo = DrawInfo(
+                                    editable = editable,
+                                    focus = storyState.focus,
+                                    position = drawStory.position,
+                                    extraData = drawStory.extraInfo + mapOf("listSize" to size),
+                                    selectMode = drawStory.isSelected,
+                                    selection = drawStory.cursor ?: Selection.start()
+                                )
+                            )
+                        }
                     }
                 )
             }

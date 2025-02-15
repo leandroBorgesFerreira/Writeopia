@@ -474,6 +474,7 @@ class WriteopiaStateManager(
      */
     fun onLineBreak(lineBreak: Action.LineBreak) {
         val lastBreak = lastLineBreak
+
         if (lastBreak != null
             && lastBreak.text == lineBreak.storyStep.text
             && lastBreak.position == lineBreak.position
