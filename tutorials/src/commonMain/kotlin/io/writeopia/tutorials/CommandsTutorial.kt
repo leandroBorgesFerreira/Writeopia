@@ -393,9 +393,13 @@ internal fun commandsTutorial() =
             "position": 27
         }
     ],
-    "createdAt": 1739376267686,
-    "lastUpdatedAt": 1739546191508,
+    "createdAt": 1739622940549,
+    "lastUpdatedAt": 1739622940549,
     "parentId": "root",
-    "isLocked": false
+    "isLocked": false,
+    "icon": {
+        "label": "command",
+        "tint": -256
+    }
 }
 """

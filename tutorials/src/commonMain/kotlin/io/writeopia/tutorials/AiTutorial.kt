@@ -169,9 +169,13 @@ internal fun aiTutorial() =
             "position": 11
         }
     ],
-    "createdAt": 1739266505096,
-    "lastUpdatedAt": 1739551086359,
+    "createdAt": 1739622940581,
+    "lastUpdatedAt": 1739622940581,
     "parentId": "root",
-    "isLocked": false
+    "isLocked": false,
+    "icon": {
+        "label": "ai",
+        "tint": -7829368
+    }
 }
 """

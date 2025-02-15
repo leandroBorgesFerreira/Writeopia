@@ -142,9 +142,13 @@ internal fun welcomeTutorial() =
             "position": 10
         }
     ],
-    "createdAt": 1739266140149,
-    "lastUpdatedAt": 1739551119969,
+    "createdAt": 1739622940593,
+    "lastUpdatedAt": 1739622940593,
     "parentId": "root",
-    "isLocked": false
+    "isLocked": false,
+    "icon": {
+        "label": "home",
+        "tint": -65281
+    }
 }
 """
