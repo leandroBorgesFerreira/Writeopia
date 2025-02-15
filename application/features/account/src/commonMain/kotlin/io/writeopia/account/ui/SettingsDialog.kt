@@ -417,7 +417,7 @@ fun SettingsScreen(
 
     Spacer(modifier = Modifier.height(30.dp))
 
-    Text("Release version: alpha19", style = MaterialTheme.typography.bodySmall)
+    Text("Version: alpha20 - Amado, Jorge", style = MaterialTheme.typography.bodySmall)
 }
 
 @Composable
