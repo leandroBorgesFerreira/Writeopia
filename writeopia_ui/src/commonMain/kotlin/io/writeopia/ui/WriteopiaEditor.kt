@@ -50,7 +50,9 @@ fun WriteopiaEditor(
                             modifier = Modifier.animateItem(
                                 placementSpec = tween(
                                     durationMillis = if (isOnDragSpace) 50 else 100
-                                )
+                                ),
+                                fadeInSpec = null,
+                                fadeOutSpec = null
                             )
                         ) {
                             drawers[drawStory.storyStep.type.number]?.Step(
