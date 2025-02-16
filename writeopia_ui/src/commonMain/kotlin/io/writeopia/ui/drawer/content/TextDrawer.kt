@@ -71,14 +71,6 @@ class TextDrawer(
         focusRequester: FocusRequester?,
         decorationBox: @Composable (innerTextField: @Composable () -> Unit) -> Unit
     ) {
-//        var text by remember {
-//            mutableStateOf(Spans.createStringWithSpans(step.text, step.spans))
-//        }
-//
-//        var textRange by remember {
-//            mutableStateOf()
-//        }
-
         var inputText by remember {
             mutableStateOf(
                 TextFieldValue(
@@ -186,7 +178,12 @@ class TextDrawer(
                     edit()
                 }
 
-                inputText = value.copy(value.text.replace("\n", ""))
+                inputText = value.copy(
+                    Spans.createStringWithSpans(
+                        value.text.replace("\n", ""),
+                        step.spans
+                    )
+                )
             },
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences

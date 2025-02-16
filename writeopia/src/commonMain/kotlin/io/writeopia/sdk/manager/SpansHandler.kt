@@ -1,5 +1,6 @@
 package io.writeopia.sdk.manager
 
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.span.Interception
 import io.writeopia.sdk.models.span.Span
 import io.writeopia.sdk.models.span.SpanInfo
@@ -64,14 +65,14 @@ object SpansHandler {
         if (storySteps.all { (_, story) -> story.spans.any { it.span == newSpan } }) {
             storySteps.mapValues { (_, story) ->
                 val removedSpans = story.spans.filterTo(mutableSetOf()) { it.span != newSpan }
-                story.copy(spans = removedSpans)
+                story.copy(spans = removedSpans, localId = GenerateId.generate())
             }
         } else {
             storySteps.mapValues { (_, story) ->
                 val text = story.text
                 if (text?.isNotEmpty() == true) {
                     val newSpanInfo = SpanInfo(0, text.length, newSpan)
-                    story.copy(spans = story.spans + newSpanInfo)
+                    story.copy(spans = story.spans + newSpanInfo, localId = GenerateId.generate())
                 } else {
                     story
                 }
