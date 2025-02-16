@@ -919,11 +919,16 @@ class WriteopiaStateManager(
     private fun previousFocus(position: Int, cursor: Int) {
         coroutineScope.launch(dispatcher) {
             writeopiaManager.previousTextStory(getStories(), position)
-                ?.let { (_, newPosition) ->
+                ?.let { (step, newPosition) ->
                     val storyState = _currentStory.value
+                    val mutable = storyState.stories.toMutableMap()
+
+                    mutable[newPosition] = step
+
                     _currentStory.value = storyState.copy(
                         focus = newPosition,
-                        selection = Selection.fromPosition(cursor, newPosition)
+                        selection = Selection.fromPosition(cursor, newPosition),
+                        stories = mutable
                     )
                 }
         }
