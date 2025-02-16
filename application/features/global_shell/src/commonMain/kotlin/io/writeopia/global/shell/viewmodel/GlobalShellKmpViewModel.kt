@@ -110,7 +110,9 @@ class GlobalShellKmpViewModel(
 
     override val ollamaUrl: StateFlow<String> =
         ollamaRepository.listenForConfiguration("disconnected_user")
-            .map { config -> config?.url ?: "http://localhost:11434" }
+            .map { config ->
+                config?.url.takeIf { it?.isNotEmpty() == true } ?: "http://localhost:11434"
+            }
             .stateIn(viewModelScope, SharingStarted.Lazily, "")
 
     override val ollamaSelectedModelState = ollamaRepository
