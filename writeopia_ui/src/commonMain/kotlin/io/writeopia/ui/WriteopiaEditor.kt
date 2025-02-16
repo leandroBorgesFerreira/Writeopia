@@ -49,7 +49,7 @@ fun WriteopiaEditor(
                         Box(
                             modifier = Modifier.animateItem(
                                 placementSpec = tween(
-                                    durationMillis = if (isOnDragSpace) 50 else 100
+                                    durationMillis = if (isOnDragSpace) 80 else 100
                                 ),
                                 fadeInSpec = null,
                                 fadeOutSpec = null

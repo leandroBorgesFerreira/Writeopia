@@ -402,9 +402,10 @@ class NoteEditorKmpViewModel(
         if (ollamaRepository == null) return
 
         viewModelScope.launch(Dispatchers.Default) {
-            writeopiaManager.getSelectionInfo().firstOrNull()?.let { info ->
-                val position = info.to + 1
+            val text = writeopiaManager.getCurrentText()
+            val position = writeopiaManager.getNextPosition()
 
+            if (text != null && position != null) {
                 val url = ollamaRepository.getConfiguredOllamaUrl()?.trim()
 
                 if (url == null) {
@@ -421,7 +422,7 @@ class NoteEditorKmpViewModel(
                     val model = ollamaRepository.getOllamaSelectedModel("disconnected_user")
                         ?: return@launch
 
-                    ollamaRepository.streamReply(model, info.text, url)
+                    ollamaRepository.streamReply(model, text, url)
                         .onStart {
                             writeopiaManager.addAtPosition(
                                 storyStep = StoryStep(

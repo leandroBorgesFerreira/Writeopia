@@ -838,7 +838,7 @@ class WriteopiaStateManager(
      * Return a list of consecutive selections, with start and end position and the merged text
      * that is selected
      */
-    fun getSelectionInfo(): List<SelectionInfo> {
+    private fun getSelectionInfo(): List<SelectionInfo> {
         val selected = _positionsOnEdit.value
 
         return if (selected.isNotEmpty()) {
@@ -852,6 +852,13 @@ class WriteopiaStateManager(
             emptyList()
         }
     }
+
+    fun getNextPosition(): Int? =
+        if (isOnSelection) {
+            getSelectionInfo().firstOrNull()?.to?.plus(1)
+        } else {
+            currentStory.value.selection.position + 1
+        }
 
     suspend fun addLinkToDocument() {
         if (documentRepository == null) return
@@ -898,6 +905,16 @@ class WriteopiaStateManager(
     }
 
     /**
+     * This method returns the current text being selected. It can bet the result of a selection of
+     * multiple lines, a selection inside a line or just the text of the file that it being edited.
+     */
+    fun getCurrentText(): String? =
+        getSelectionInfo().takeIf { it.isNotEmpty() }
+            ?.first()
+            ?.text
+            ?: currentLineText()
+
+    /**
      * Moves the focus to the next available [StoryStep] if it can't find a step to focus, it
      * creates a new [StoryStep] at the end of the document. The cursor is positioned in the same
      * place that is was in the previous line.
@@ -909,6 +926,28 @@ class WriteopiaStateManager(
         coroutineScope.launch(dispatcher) {
             _currentStory.value =
                 writeopiaManager.nextFocus(position, cursor, _currentStory.value)
+        }
+    }
+
+    private fun currentLineText(): String? {
+        val selection = currentStory.value.selection
+        val (start, end) = selection.sortedPositions()
+
+        return when {
+            start == end -> getStory(selection.position)?.text
+
+            else -> {
+                println("selection: $selection")
+
+                val text = getStory(selection.position)?.text
+
+                text?.subSequence(
+                    start,
+                    min(text.length, end)
+                )
+                    ?.toString()
+                    ?: text
+            }
         }
     }
 
