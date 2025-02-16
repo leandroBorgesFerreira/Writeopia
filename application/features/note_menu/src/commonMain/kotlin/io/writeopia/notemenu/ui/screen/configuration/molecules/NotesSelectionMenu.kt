@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.commonui.SlideInBox
+import io.writeopia.ui.icons.WrSdkIcons
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -76,7 +77,7 @@ internal fun NotesSelectionMenu(
                         .clickable(onClick = onCopy)
                         .weight(1F)
                         .padding(vertical = 25.dp),
-                    imageVector = WrIcons.copy,
+                    imageVector = WrSdkIcons.copy,
                     contentDescription = "Copy note",
 //                    stringResource(R.string.copy_note),
                     tint = tintColor

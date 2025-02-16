@@ -1,4 +1,4 @@
-package io.writeopia.common.utils.icons.all
+package io.writeopia.ui.icons.all
 /*
 * Converted using https://composables.com/svgtocompose
 */
