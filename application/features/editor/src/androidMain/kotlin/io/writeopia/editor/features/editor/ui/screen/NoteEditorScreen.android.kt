@@ -149,7 +149,7 @@ internal fun NoteEditorScreen(
                     Modifier
                         .weight(1F)
                         .padding(horizontal = 6.dp),
-                    keyFn = { index, drawStory -> drawStory.mobileKey + index },
+                    keyFn = { drawStory -> drawStory.mobileKey },
                     onDocumentLinkClick = onDocumentLinkClick
                 )
 

@@ -68,6 +68,7 @@ internal fun NoteEditorScreen(
     title: String?,
     noteEditorViewModel: NoteEditorViewModel,
     navigateBack: () -> Unit,
+    onDocumentLinkClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val systemBarDefaultColor = MaterialTheme.colorScheme.primary
@@ -118,7 +119,8 @@ internal fun NoteEditorScreen(
                     noteEditorViewModel,
                     DefaultDrawersNative,
                     Modifier.weight(1F).padding(horizontal = 6.dp),
-                    keyFn = { index, drawStory -> drawStory.mobileKey + index }
+                    keyFn = { drawStory -> drawStory.mobileKey },
+                    onDocumentLinkClick = onDocumentLinkClick
                 )
 
                 BottomScreen(

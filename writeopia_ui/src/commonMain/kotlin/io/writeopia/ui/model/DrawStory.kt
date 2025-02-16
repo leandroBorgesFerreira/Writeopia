@@ -15,7 +15,7 @@ data class DrawStory(
     val extraInfo: Map<String, Any> = emptyMap()
 ) {
 
-    val desktopKey = storyStep.key + isSelected.let { if (it) 1 else 0 } + (cursor?.key() ?: 0)
+    val desktopKey = storyStep.key + isSelected.let { if (it) 1 else 0 }
 
     val mobileKey =  storyStep.key + isSelected.let { if (it) 1 else 0 }
 }

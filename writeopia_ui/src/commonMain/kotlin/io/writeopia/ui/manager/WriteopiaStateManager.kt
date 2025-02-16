@@ -474,6 +474,7 @@ class WriteopiaStateManager(
      */
     fun onLineBreak(lineBreak: Action.LineBreak) {
         val lastBreak = lastLineBreak
+
         if (lastBreak != null
             && lastBreak.text == lineBreak.storyStep.text
             && lastBreak.position == lineBreak.position
@@ -505,7 +506,7 @@ class WriteopiaStateManager(
 
             writeopiaManager.onLineBreak(lineBreak, expanded).let { (newPosition, newState) ->
                 // Todo: Fix this when the inner position are completed
-                //                backStackManager.addAction(BackstackAction.Add(newStory, newPosition))
+                //  backStackManager.addAction(BackstackAction.Add(newStory, newPosition))
                 _currentStory.value = newState.copy(selection = Selection.start())
                 _scrollToPosition.value = newPosition
             }
@@ -796,6 +797,7 @@ class WriteopiaStateManager(
         )
     }
 
+    //Here!
     fun handleTextInput(
         input: TextInput,
         position: Int,
@@ -917,11 +919,16 @@ class WriteopiaStateManager(
     private fun previousFocus(position: Int, cursor: Int) {
         coroutineScope.launch(dispatcher) {
             writeopiaManager.previousTextStory(getStories(), position)
-                ?.let { (_, newPosition) ->
+                ?.let { (step, newPosition) ->
                     val storyState = _currentStory.value
+                    val mutable = storyState.stories.toMutableMap()
+
+                    mutable[newPosition] = step
+
                     _currentStory.value = storyState.copy(
                         focus = newPosition,
-                        selection = Selection.fromPosition(cursor, newPosition)
+                        selection = Selection.fromPosition(cursor, newPosition),
+                        stories = mutable
                     )
                 }
         }

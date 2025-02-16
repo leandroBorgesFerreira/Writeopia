@@ -1,5 +1,6 @@
 package io.writeopia.sdk.manager
 
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 
@@ -22,7 +23,7 @@ class FocusHandler(
         for (i in position..storyList.lastIndex) {
             val storyStep = storyList[i]
             if (isMessageFn(storyStep.type.number)) {
-                return i to storyStep
+                return i to storyStep.copy(localId = GenerateId.generate())
             }
         }
 

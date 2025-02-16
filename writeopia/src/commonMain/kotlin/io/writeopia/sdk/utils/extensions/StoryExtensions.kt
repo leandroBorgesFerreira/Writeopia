@@ -1,5 +1,6 @@
 package io.writeopia.sdk.utils.extensions
 
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 
 fun Map<Int, StoryStep>.toEditState(): MutableMap<Int, List<StoryStep>> =
@@ -32,7 +33,7 @@ fun Map<Int, StoryStep>.previousTextStory(
         val storyStep = this[acc]
 
         if (storyStep?.let(isTextStory) == true) {
-            return storyStep to acc
+            return storyStep.copy(localId = GenerateId.generate()) to acc
         }
     }
 

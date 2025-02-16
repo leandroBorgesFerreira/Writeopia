@@ -1,5 +1,6 @@
 package io.writeopia.ui.modifiers
 
+import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.TagInfo
@@ -8,8 +9,8 @@ import io.writeopia.ui.model.DrawStory
 object StepsModifier {
 
     fun modify(stories: List<DrawStory>, dragPosition: Int): List<DrawStory> {
-        val space = StoryStep(type = StoryTypes.SPACE.type)
-        val onDragSpace = StoryStep(type = StoryTypes.ON_DRAG_SPACE.type)
+        val space = { StoryStep(type = StoryTypes.SPACE.type, localId = GenerateId.generate()) }
+        val onDragSpace = StoryStep(type = StoryTypes.ON_DRAG_SPACE.type, localId = "onDragSpace")
         val lastSpace = StoryStep(type = StoryTypes.LAST_SPACE.type)
 
         val parsed = stories.foldIndexed(emptyList<DrawStory>()) { index, acc, drawStory ->
@@ -23,7 +24,7 @@ object StepsModifier {
             val newTags = mergeTags(lastTags, currentTags)
 
             val spaceStory =
-                if (index - 1 == dragPosition) onDragSpace else space
+                if (index - 1 == dragPosition) onDragSpace else space()
 
             val spaceDraw = DrawStory(
                 storyStep = spaceStory.copy(tags = newTags),

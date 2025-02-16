@@ -11,7 +11,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.KeyEvent
-import androidx.compose.ui.input.key.isMetaPressed
+import androidx.compose.ui.input.key.isAltPressed
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.Window
@@ -69,7 +69,7 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
     }
 
     val handleKeyboardEvent: (KeyEvent) -> Boolean = { keyEvent ->
-        selectionState.value = keyEvent.isMetaPressed
+        selectionState.value = keyEvent.isAltPressed
 
         when {
             KeyboardCommands.isDeleteEvent(keyEvent) -> {
