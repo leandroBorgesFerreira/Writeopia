@@ -506,7 +506,7 @@ class WriteopiaStateManager(
 
             writeopiaManager.onLineBreak(lineBreak, expanded).let { (newPosition, newState) ->
                 // Todo: Fix this when the inner position are completed
-                //                backStackManager.addAction(BackstackAction.Add(newStory, newPosition))
+                //  backStackManager.addAction(BackstackAction.Add(newStory, newPosition))
                 _currentStory.value = newState.copy(selection = Selection.start())
                 _scrollToPosition.value = newPosition
             }

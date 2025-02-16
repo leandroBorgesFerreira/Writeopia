@@ -161,29 +161,29 @@ class TextDrawer(
                 val end = value.selection.end
 
                 val edit = {
-                    onTextEdit(
-                        TextInput(value.text, start, end),
-                        drawInfo.position,
-                        lineBreakByContent,
+                    inputText = value.copy(
+                        Spans.createStringWithSpans(
+                            value.text.replace("\n", ""),
+                            step.spans
+                        )
                     )
                 }
 
+                onTextEdit(
+                    TextInput(value.text, start, end),
+                    drawInfo.position,
+                    lineBreakByContent,
+                )
+
                 if (start == 0 && end == 0) {
                     coroutineScope.launch {
-                        // Delay to avoid jumping to previous line when erasing text
+                        // Delay to avoid jumping to previous line too soon when erasing text
                         delay(70)
                         edit()
                     }
                 } else {
                     edit()
                 }
-
-                inputText = value.copy(
-                    Spans.createStringWithSpans(
-                        value.text.replace("\n", ""),
-                        step.spans
-                    )
-                )
             },
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences

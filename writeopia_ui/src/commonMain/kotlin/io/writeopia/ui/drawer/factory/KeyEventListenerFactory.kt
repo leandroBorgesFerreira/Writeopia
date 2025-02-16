@@ -132,6 +132,7 @@ private fun isEmptyErase(
 ): Boolean = keyEvent.key == Key.Backspace
     && keyEvent.type == KeyEventType.KeyUp
     && input.selection.start == 0
+    && input.selection.end == 0
 
 private fun isMoveUpEventEnd(keyEvent: KeyEvent) =
     keyEvent.key == Key.DirectionUp
