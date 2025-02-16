@@ -33,7 +33,6 @@ import io.writeopia.common.utils.icons.all.EyeClosed
 import io.writeopia.common.utils.icons.all.FileDown
 import io.writeopia.common.utils.icons.all.FileMinus
 import io.writeopia.common.utils.icons.all.FileUp
-import io.writeopia.common.utils.icons.all.Files
 import io.writeopia.common.utils.icons.all.FolderOpen
 import io.writeopia.common.utils.icons.all.FolderSync
 import io.writeopia.common.utils.icons.all.House
@@ -117,8 +116,6 @@ object WrIcons {
 
     val layoutList: ImageVector = Rows3
 
-    val copy: ImageVector = Files
-
     val close: ImageVector = X
 
     val delete: ImageVector = Icons.Outlined.DeleteOutline
@@ -200,7 +197,6 @@ object WrIcons {
             "layoutStaggeredGrid" to layoutStaggeredGrid,
             "layoutGrid" to layoutGrid,
             "layoutList" to layoutList,
-            "copy" to copy,
             "close" to close,
             "delete" to delete,
             "transparent" to transparent,
