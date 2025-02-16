@@ -581,14 +581,14 @@ private fun Actions(
 
         TextButton(
             modifier = Modifier.fillMaxWidth(),
-            text = "Ask by selection",
+            text = "Ask AI",
             paddingValues = smallButtonPadding(),
             onClick = askAiBySelection
         )
 
         TextButton(
             modifier = Modifier.fillMaxWidth(),
-            text = "AI box",
+            text = "AI question box",
             paddingValues = smallButtonPadding()
         ) { }
 
