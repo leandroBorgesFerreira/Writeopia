@@ -73,6 +73,8 @@ fun SettingsDialog(
     downloadModel: (String) -> Unit,
     deleteModel: (String) -> Unit,
 ) {
+    val ollamaUrl by ollamaUrlState.collectAsState()
+
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
             modifier = Modifier
@@ -89,7 +91,7 @@ fun SettingsDialog(
                     showOllamaConfig = true,
                     selectedThemePosition = selectedThemePosition,
                     workplacePathState = workplacePathState,
-                    ollamaUrlState = ollamaUrlState,
+                    ollamaUrl = ollamaUrl,
                     ollamaAvailableModels = ollamaAvailableModels,
                     ollamaSelectedModel = ollamaSelectedModel,
                     downloadModelState = downloadModelState,
@@ -112,7 +114,7 @@ fun SettingsScreen(
     showOllamaConfig: Boolean,
     selectedThemePosition: StateFlow<Int>,
     workplacePathState: StateFlow<String>,
-    ollamaUrlState: StateFlow<String>,
+    ollamaUrl: String,
     ollamaAvailableModels: Flow<ResultData<List<String>>>,
     ollamaSelectedModel: StateFlow<String>,
     downloadModelState: StateFlow<ResultData<DownloadState>>,
@@ -194,8 +196,6 @@ fun SettingsScreen(
         Text("Url", style = MaterialTheme.typography.bodyMedium, color = titleColor)
 
         Spacer(modifier = Modifier.height(SPACE_AFTER_SUB_TITLE.dp))
-
-        val ollamaUrl by ollamaUrlState.collectAsState()
 
         BasicTextField(
             modifier = Modifier.border(

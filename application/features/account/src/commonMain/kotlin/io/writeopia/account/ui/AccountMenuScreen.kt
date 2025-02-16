@@ -42,7 +42,7 @@ fun AccountMenuScreen(
             workplacePathState = MutableStateFlow(""),
             selectWorkplacePath = {},
             ollamaAvailableModels = MutableStateFlow(ResultData.Idle()),
-            ollamaUrlState = MutableStateFlow(""),
+            ollamaUrl = "",
             ollamaSelectedModel = MutableStateFlow(""),
             downloadModelState = MutableStateFlow(ResultData.Idle()),
             ollamaUrlChange = {},
