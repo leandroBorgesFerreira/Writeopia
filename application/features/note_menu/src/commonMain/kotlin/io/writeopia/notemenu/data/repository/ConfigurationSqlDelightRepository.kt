@@ -67,16 +67,16 @@ class ConfigurationSqlDelightRepository(
 
     override suspend fun saveWorkspacePath(path: String, userId: String) {
         configurationSqlDelightDao.saveWorkspaceConfiguration(
-            WorkspaceConfiguration(path = path, user_id = userId, has_tutorial_notes = 1L)
+            WorkspaceConfiguration(path = path, user_id = userId, has_first_configuration = 1L)
         )
     }
 
     override suspend fun loadWorkspacePath(userId: String): String? =
         configurationSqlDelightDao.getWorkspaceByUserId(userId)?.path
 
-    override suspend fun hasTutorialNotes(userId: String): Boolean =
+    override suspend fun hasFirstConfiguration(userId: String): Boolean =
         configurationSqlDelightDao.getWorkspaceByUserId(userId)
-            ?.has_tutorial_notes
+            ?.has_first_configuration
             ?.toBoolean()
             ?: false
 
@@ -87,7 +87,7 @@ class ConfigurationSqlDelightRepository(
             WorkspaceConfiguration(
                 path = currentConfiguration?.path ?: "",
                 user_id = userId,
-                has_tutorial_notes = hasTutorials.toLong()
+                has_first_configuration = hasTutorials.toLong()
             )
         )
     }

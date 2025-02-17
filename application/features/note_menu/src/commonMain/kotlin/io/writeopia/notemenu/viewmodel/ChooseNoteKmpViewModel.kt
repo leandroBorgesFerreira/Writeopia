@@ -23,10 +23,6 @@ import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
-import io.writeopia.sdk.serialization.data.DocumentApi
-import io.writeopia.sdk.serialization.extensions.toModel
-import io.writeopia.sdk.serialization.json.writeopiaJson
-import io.writeopia.tutorials.Tutorials
 import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,7 +39,6 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
-import kotlinx.serialization.json.Json
 
 internal class ChooseNoteKmpViewModel(
     private val notesUseCase: NotesUseCase,
@@ -60,34 +55,12 @@ internal class ChooseNoteKmpViewModel(
     private val documentToJson: DocumentToJson = DocumentToJson(),
     private val writeopiaJsonParser: WriteopiaJsonParser = WriteopiaJsonParser(),
     private val keyboardEventFlow: Flow<KeyboardEvent>,
-    private val json: Json = writeopiaJson
 ) : ChooseNoteViewModel, ViewModel(), FolderController by folderController {
 
     init {
         folderController.initCoroutine(viewModelScope)
 
         viewModelScope.launch(Dispatchers.Default) {
-            val userId = getUserId()
-
-            if (!notesConfig.hasTutorialNotes(userId)) {
-                Tutorials.allTutorialsDocuments()
-                    .map { documentAsJson ->
-                        json.decodeFromString<DocumentApi>(documentAsJson).toModel()
-                    }
-                    .forEach { document ->
-                        val now = Clock.System.now()
-
-                        notesUseCase.saveDocument(
-                            document.copy(
-                                createdAt = now,
-                                lastUpdatedAt = now
-                            )
-                        )
-                    }
-
-                notesConfig.setTutorialNotes(true, userId)
-            }
-
             keyboardEventFlow.collect { event ->
                 when (event) {
                     KeyboardEvent.DELETE -> {

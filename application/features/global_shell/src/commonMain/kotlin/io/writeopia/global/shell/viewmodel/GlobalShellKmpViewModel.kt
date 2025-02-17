@@ -4,6 +4,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.writeopia.OllamaRepository
+import io.writeopia.api.OllamaApi
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.common.utils.DISCONNECTED_USER_ID
 import io.writeopia.common.utils.ResultData
@@ -23,11 +24,16 @@ import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.usecase.NotesNavigationUseCase
 import io.writeopia.notemenu.data.usecase.NotesUseCase
 import io.writeopia.commonui.extensions.toUiCard
+import io.writeopia.notemenu.data.repository.ConfigurationRepository
 import io.writeopia.notemenu.viewmodel.FolderController
 import io.writeopia.notemenu.viewmodel.FolderStateController
 import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.responses.DownloadModelResponse
 import io.writeopia.sdk.models.document.MenuItem
+import io.writeopia.sdk.serialization.data.DocumentApi
+import io.writeopia.sdk.serialization.extensions.toModel
+import io.writeopia.sdk.serialization.json.writeopiaJson
+import io.writeopia.tutorials.Tutorials
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,6 +49,8 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.serialization.json.Json
 import kotlin.random.Random
 
 class GlobalShellKmpViewModel(
@@ -56,13 +64,38 @@ class GlobalShellKmpViewModel(
     ),
     private val workspaceConfigRepository: WorkspaceConfigRepository,
     private val ollamaRepository: OllamaRepository,
+    private val configRepository: ConfigurationRepository,
+    private val json: Json = writeopiaJson
 ) : GlobalShellViewModel, ViewModel(), FolderController by folderStateController {
 
     init {
         folderStateController.initCoroutine(viewModelScope)
 
         viewModelScope.launch(Dispatchers.Default) {
-            ollamaRepository.refreshConfiguration("disconnected_user")
+            val userId = getUserId()
+
+            if (!configRepository.hasFirstConfiguration(userId)) {
+                Tutorials.allTutorialsDocuments()
+                    .map { documentAsJson ->
+                        json.decodeFromString<DocumentApi>(documentAsJson).toModel()
+                    }
+                    .forEach { document ->
+                        val now = Clock.System.now()
+
+                        notesUseCase.saveDocument(
+                            document.copy(
+                                createdAt = now,
+                                lastUpdatedAt = now
+                            )
+                        )
+                    }
+
+                ollamaRepository.saveOllamaUrl(userId, OllamaApi.defaultUrl())
+
+                configRepository.setTutorialNotes(true, userId)
+            }
+
+            ollamaRepository.refreshConfiguration(userId)
         }
     }
 
@@ -111,7 +144,7 @@ class GlobalShellKmpViewModel(
     override val ollamaUrl: StateFlow<String> =
         ollamaRepository.listenForConfiguration("disconnected_user")
             .map { config ->
-                config?.url.takeIf { it?.isNotEmpty() == true } ?: "http://localhost:11434"
+                config?.url.takeIf { it?.isNotEmpty() == true } ?: ""
             }
             .stateIn(viewModelScope, SharingStarted.Lazily, "")
 

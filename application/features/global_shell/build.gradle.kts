@@ -32,6 +32,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":writeopia"))
+                implementation(project(":tutorials"))
                 implementation(project(":writeopia_ui"))
                 implementation(project(":writeopia_models"))
                 implementation(project(":plugins:writeopia_persistence_core"))

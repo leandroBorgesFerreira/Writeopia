@@ -47,7 +47,7 @@ class InMemoryConfigurationRepository private constructor() : ConfigurationRepos
     override suspend fun listenOrderPreference(userId: String): Flow<String> =
         sortPrefsState.asStateFlow()
 
-    override suspend fun hasTutorialNotes(userId: String): Boolean {
+    override suspend fun hasFirstConfiguration(userId: String): Boolean {
         return false
     }
 

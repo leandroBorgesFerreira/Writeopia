@@ -19,7 +19,7 @@ class MenuUiTests {
             database.workspaceConfigurationEntityQueries.insert(
                 "disconnected_user",
                 "./",
-                has_tutorial_notes = 1L
+                has_first_configuration = 1L
             )
         }
 
