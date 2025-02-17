@@ -14,7 +14,7 @@
   />
 </p>
 
-<p align="center">Open source documentation app for the brave and true <p/>
+<p align="center">Write like nobody’s watching. Because they aren’t.<p/>
 
 <p align="center" width="100%">
   <img 
