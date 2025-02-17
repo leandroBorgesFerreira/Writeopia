@@ -89,7 +89,8 @@ class HeaderPreviewDrawer(
                     style = style ?: MaterialTheme.typography.titleLarge,
                     color = textColor,
                     maxLines = 3,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(end = 12.dp)
                 )
             }
         }
