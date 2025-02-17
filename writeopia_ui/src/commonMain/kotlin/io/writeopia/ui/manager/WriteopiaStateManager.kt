@@ -280,7 +280,7 @@ class WriteopiaStateManager(
      */
     fun mergeRequest(info: Action.Merge) {
         if (isOnSelection) {
-            cancelSelection()
+            clearSelection()
         }
 
         _currentStory.value = writeopiaManager.mergeRequest(info, _currentStory.value)
@@ -317,7 +317,7 @@ class WriteopiaStateManager(
             backStackManager.addAction(backStackAction)
         }
 
-        cancelSelection()
+        clearSelection()
     }
 
     /**
@@ -454,7 +454,7 @@ class WriteopiaStateManager(
      */
     fun changeStoryType(position: Int, typeInfo: TypeInfo, commandInfo: CommandInfo?) {
         if (isOnSelection) {
-            cancelSelection()
+            clearSelection()
         }
 
         _currentStory.value =
@@ -491,7 +491,7 @@ class WriteopiaStateManager(
         )
 
         if (isOnSelection) {
-            cancelSelection()
+            clearSelection()
         }
 
         coroutineScope.launch(dispatcher) {
@@ -610,7 +610,7 @@ class WriteopiaStateManager(
      */
     override fun undo() {
         coroutineScope.launch(dispatcher) {
-            cancelSelection()
+            clearSelection()
 
             _currentStory.value = backStackManager.previousState(currentStory.value)
         }
@@ -621,7 +621,7 @@ class WriteopiaStateManager(
      */
     override fun redo() {
         coroutineScope.launch(dispatcher) {
-            cancelSelection()
+            clearSelection()
             _currentStory.value = backStackManager.nextState(currentStory.value)
         }
     }
@@ -830,7 +830,7 @@ class WriteopiaStateManager(
     /**
      * Cancels the current selection.
      */
-    fun cancelSelection() {
+    fun clearSelection() {
         _positionsOnEdit.value = emptySet()
     }
 
