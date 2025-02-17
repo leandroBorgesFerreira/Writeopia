@@ -136,20 +136,8 @@ fun DesktopNoteEditorScreen(
                         color = MaterialTheme.colorScheme.surfaceVariant,
                         shape = CircleShape
                     )
-//                    .border(
-//                        color = MaterialTheme.colorScheme.onBackground,
-//                        shape = MaterialTheme.shapes.medium,
-//                        width = 1.dp
-//                    )
                     .padding(4.dp)
             ) {
-//                Text(
-//                    "Saving...",
-//                    style = MaterialTheme.typography.bodySmall,
-//                )
-//
-//                Spacer(modifier = Modifier.width(8.dp))
-
                 CircularProgressIndicator(
                     modifier = Modifier.size(20.dp),
                     strokeWidth = 2.dp
