@@ -156,7 +156,7 @@ class HeaderDrawer(
                         .clip(MaterialTheme.shapes.medium)
                         .clickable(onClick = headerClick)
                         .background(
-                            MaterialTheme.colorScheme.background,
+                            MaterialTheme.colorScheme.surfaceVariant,
                             MaterialTheme.shapes.medium
                         )
                         .padding(6.dp),
