@@ -19,11 +19,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
@@ -102,57 +104,8 @@ fun NotesCards(
                 Column(modifier = modifier) {
                     val isEmpty = documents.data.documentUiList.isEmpty()
 
-                    Box(
-                        Modifier
-                            .sharedBounds(
-                                rememberSharedContentState(key = "noteInit"),
-                                animatedVisibilityScope = animatedVisibilityScope,
-                                resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds
-                            )
-                            .fillMaxWidth()
-                            .let { modifierLet ->
-                                if (isEmpty) {
-                                    modifierLet.fillMaxHeight().padding(bottom = 30.dp)
-                                } else {
-                                    modifierLet.height(230.dp)
-                                }
-                            }
-                            .padding(top = 10.dp, start = 16.dp, end = 16.dp)
-                            .background(
-                                WriteopiaTheme.colorScheme.cardBg,
-                                MaterialTheme.shapes.large
-                            )
-                            .clip(MaterialTheme.shapes.large)
-                            .clickable(onClick = newNote)
-                    ) {
-                        val text = buildAnnotatedString {
-                            append("Tap here to ")
-                            pushStyle(
-                                SpanStyle(
-                                    color = MaterialTheme.colorScheme.primary,
-                                    fontStyle = FontStyle.Italic,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
-
-                            append("write")
-
-                            pop()
-
-                            append(" the next big thing")
-                        }
-
-                        Text(
-                            text = text,
-                            modifier = Modifier.align(Alignment.Center)
-                                .padding(16.dp)
-                                .fillMaxWidth(),
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.titleLarge,
-                            fontFamily = FontFamily.Monospace,
-                            letterSpacing = 1.sp,
-                            textAlign = TextAlign.Center
-                        )
+                    if (isEmpty) {
+                        TapToStartButton(isEmpty, animatedVisibilityScope, newNote)
                     }
 
                     val notesUi: NotesUi = documents.data
@@ -174,6 +127,7 @@ fun NotesCards(
                                 moveRequest = moveRequest,
                                 changeIcon = changeIcon,
                                 onDragIconClick = onSelection,
+                                newNote = newNote,
                                 modifier = listModifier,
                             )
                         }
@@ -190,6 +144,7 @@ fun NotesCards(
                                 moveRequest = moveRequest,
                                 changeIcon = changeIcon,
                                 onDragIconClick = onSelection,
+                                newNote = newNote,
                                 modifier = listModifier,
                             )
                         }
@@ -205,6 +160,7 @@ fun NotesCards(
                                 moveRequest = moveRequest,
                                 changeIcon = changeIcon,
                                 onDragIconClick = onSelection,
+                                newNote = newNote,
                                 modifier = listModifier,
                             )
                         }
@@ -249,6 +205,7 @@ private fun LazyStaggeredGridNotes(
     changeIcon: (String, String, Int, IconChange) -> Unit,
     contentPadding: PaddingValues = PaddingValues(12.dp),
     onDragIconClick: (String) -> Unit,
+    newNote: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val spacing = 6.dp
@@ -260,6 +217,17 @@ private fun LazyStaggeredGridNotes(
         verticalItemSpacing = spacing,
         contentPadding = contentPadding,
         content = {
+            item(span = StaggeredGridItemSpan.FullLine) {
+                sharedTransitionScope.run {
+                    TapToStartButton(
+                        isEmpty = false,
+                        animatedVisibilityScope = animatedVisibilityScope,
+                        newNote = newNote,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+
             itemsIndexed(
                 documents,
                 key = { _, menuItem -> menuItem.hashCode() }
@@ -315,6 +283,7 @@ private fun LazyGridNotes(
     changeIcon: (String, String, Int, IconChange) -> Unit,
     contentPadding: PaddingValues = PaddingValues(12.dp),
     onDragIconClick: (String) -> Unit,
+    newNote: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val spacing = Arrangement.spacedBy(6.dp)
@@ -326,6 +295,17 @@ private fun LazyGridNotes(
         verticalArrangement = spacing,
         contentPadding = contentPadding,
         content = {
+            item(span = { GridItemSpan(this.maxLineSpan) }) {
+                sharedTransitionScope.run {
+                    TapToStartButton(
+                        isEmpty = false,
+                        animatedVisibilityScope = animatedVisibilityScope,
+                        newNote = newNote,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+
             itemsIndexed(
                 documents,
                 key = { _, menuItem -> menuItem.hashCode() }
@@ -377,6 +357,7 @@ private fun LazyColumnNotes(
     changeIcon: (String, String, Int, IconChange) -> Unit,
     contentPadding: PaddingValues = PaddingValues(12.dp),
     onDragIconClick: (String) -> Unit,
+    newNote: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -384,6 +365,17 @@ private fun LazyColumnNotes(
         verticalArrangement = Arrangement.spacedBy(6.dp),
         contentPadding = contentPadding,
         content = {
+            item {
+                sharedTransitionScope.run {
+                    TapToStartButton(
+                        isEmpty = false,
+                        animatedVisibilityScope = animatedVisibilityScope,
+                        newNote = newNote,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+
             itemsIndexed(
                 documents,
                 key = { _, menuItem -> menuItem.hashCode() }
@@ -694,3 +686,65 @@ private fun shadowModifier(): Modifier =
             shape = MaterialTheme.shapes.large,
             spotColor = WriteopiaTheme.colorScheme.cardShadow
         )
+
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Composable
+private fun SharedTransitionScope.TapToStartButton(
+    isEmpty: Boolean,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    newNote: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier
+            .sharedBounds(
+                rememberSharedContentState(key = "noteInit"),
+                animatedVisibilityScope = animatedVisibilityScope,
+                resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds
+            )
+            .fillMaxWidth()
+            .let { modifierLet ->
+                if (isEmpty) {
+                    modifierLet.fillMaxHeight().padding(bottom = 30.dp)
+                } else {
+                    modifierLet.height(400.dp)
+                }
+            }
+            .padding(top = 10.dp, start = 6.dp, end = 6.dp)
+            .background(
+                WriteopiaTheme.colorScheme.cardBg,
+                MaterialTheme.shapes.large
+            )
+            .clip(MaterialTheme.shapes.large)
+            .clickable(onClick = newNote)
+    ) {
+        val text = buildAnnotatedString {
+            append("Tap here to ")
+            pushStyle(
+                SpanStyle(
+                    color = MaterialTheme.colorScheme.primary,
+                    fontStyle = FontStyle.Italic,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+
+            append("write")
+
+            pop()
+
+            append(" the next big thing")
+        }
+
+        Text(
+            text = text,
+            modifier = Modifier.align(Alignment.Center)
+                .padding(16.dp)
+                .fillMaxWidth(),
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.titleLarge,
+            fontFamily = FontFamily.Monospace,
+            letterSpacing = 1.sp,
+            textAlign = TextAlign.Center
+        )
+    }
+}
