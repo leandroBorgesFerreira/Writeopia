@@ -1085,7 +1085,7 @@ class WriteopiaStateManager(
     private fun getCurrentStory(): StoryStep? = currentPosition()?.let(::getStory)
 
     private fun selectAll() {
-        _positionsOnEdit.value = getStories().keys
+        _positionsOnEdit.value = getStories().keys - setOf(0)
     }
 
     private fun parseDocument(info: DocumentInfo, state: StoryState): Document {
