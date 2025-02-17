@@ -94,6 +94,10 @@ class NoteEditorKmpViewModel(
                             askAiBySelection()
                         }
 
+                        KeyboardEvent.CANCEL -> {
+                            writeopiaManager.clearSelection()
+                        }
+
                         else -> {}
                     }
                 }
@@ -328,7 +332,7 @@ class NoteEditorKmpViewModel(
     }
 
     override fun clearSelections() {
-        writeopiaManager.cancelSelection()
+        writeopiaManager.clearSelection()
     }
 
     override val fontFamily: StateFlow<Font> by lazy {

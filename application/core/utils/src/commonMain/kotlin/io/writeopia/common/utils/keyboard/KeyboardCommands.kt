@@ -73,4 +73,9 @@ object KeyboardCommands {
         keyEvent.isMetaPressed &&
             keyEvent.key.keyCode == Key.K.keyCode &&
             keyEvent.type == KeyEventType.KeyUp
+
+    fun isCancelEvent(keyEvent: KeyEvent) =
+        keyEvent.key.keyCode == Key.Escape.keyCode &&
+            keyEvent.type == KeyEventType.KeyUp
+
 }

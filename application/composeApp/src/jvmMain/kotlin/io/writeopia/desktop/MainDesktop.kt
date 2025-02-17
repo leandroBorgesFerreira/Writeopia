@@ -122,6 +122,11 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                 false
             }
 
+            KeyboardCommands.isCancelEvent(keyEvent) -> {
+                sendEvent(KeyboardEvent.CANCEL)
+                false
+            }
+
             else -> false
         }
     }

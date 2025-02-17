@@ -94,6 +94,10 @@ internal class ChooseNoteKmpViewModel(
                         requestPermissionToDeleteSelection()
                     }
 
+                    KeyboardEvent.CANCEL -> {
+                        clearSelection()
+                    }
+
                     else -> {}
                 }
             }

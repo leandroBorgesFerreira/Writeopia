@@ -1,8 +1,14 @@
 package io.writeopia.ui.drawer.content
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,9 +21,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -35,6 +43,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.factory.EndOfText
+import io.writeopia.ui.icons.WrSdkIcons
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.DrawConfig
 import io.writeopia.ui.model.DrawInfo
@@ -66,68 +75,97 @@ class HeaderDrawer(
         val backgroundColor = step.decoration.backgroundColor
         val focusRequester = remember { FocusRequester() }
 
-        Row(
-            modifier = modifier
-                .clickable(onClick = headerClick)
-                .let { modifierLet ->
-                    if (backgroundColor != null) {
-                        modifierLet
-                            .background(Color(backgroundColor))
-                            .padding(top = 130.dp)
-                    } else {
-                        modifierLet.padding(top = 30.dp)
+        val interactionSource = remember { MutableInteractionSource() }
+        val isHovered by interactionSource.collectIsHoveredAsState()
+
+        Box(modifier = Modifier.hoverable(interactionSource)) {
+            Row(
+                modifier = modifier
+                    .let { modifierLet ->
+                        if (backgroundColor != null) {
+                            modifierLet
+                                .background(Color(backgroundColor))
+                                .padding(top = 130.dp)
+                        } else {
+                            modifierLet.padding(top = 30.dp)
+                        }
                     }
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val interactionSource = remember { MutableInteractionSource() }
+
+                val extraData = drawInfo.extraData
+
+                if (extraData.containsKey("imageVector")) {
+                    val imageVector = extraData["imageVector"] as ImageVector
+
+                    val tint = if (extraData.containsKey("imageVectorTint")) {
+                        val tintColor = extraData["imageVectorTint"] as Int
+                        Color(tintColor)
+                    } else {
+                        MaterialTheme.colorScheme.onBackground
+                    }
+
+                    Spacer(modifier = Modifier.width(20.dp))
+
+                    Icon(
+                        imageVector = imageVector,
+                        "header icon",
+                        tint = tint,
+                        modifier = Modifier.size(42.dp)
+                    )
                 }
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val interactionSource = remember { MutableInteractionSource() }
 
-            val extraData = drawInfo.extraData
-
-            if (extraData.containsKey("imageVector")) {
-                val imageVector = extraData["imageVector"] as ImageVector
-
-                val tint = if (extraData.containsKey("imageVectorTint")) {
-                    val tintColor = extraData["imageVectorTint"] as Int
-                    Color(tintColor)
-                } else {
-                    MaterialTheme.colorScheme.onBackground
-                }
-
-                Spacer(modifier = Modifier.width(20.dp))
-
-                Icon(
-                    imageVector = imageVector,
-                    "header icon",
-                    tint = tint,
-                    modifier = Modifier.size(42.dp)
+                textDrawer().Text(
+                    step = step,
+                    drawInfo = drawInfo,
+                    interactionSource = interactionSource,
+                    focusRequester = focusRequester,
+                    decorationBox = @Composable { innerTextField ->
+                        TextFieldDefaults.DecorationBox(
+                            value = step.text ?: "",
+                            innerTextField = innerTextField,
+                            enabled = true,
+                            singleLine = false,
+                            visualTransformation = VisualTransformation.None,
+                            interactionSource = interactionSource,
+                            placeholder = {
+                                Text(
+                                    text = "Title",
+                                    style = placeHolderStyle(),
+                                )
+                            },
+                            colors = transparentTextInputColors(),
+                        )
+                    },
                 )
             }
 
-            textDrawer().Text(
-                step = step,
-                drawInfo = drawInfo,
-                interactionSource = interactionSource,
-                focusRequester = focusRequester,
-                decorationBox = @Composable { innerTextField ->
-                    TextFieldDefaults.DecorationBox(
-                        value = step.text ?: "",
-                        innerTextField = innerTextField,
-                        enabled = true,
-                        singleLine = false,
-                        visualTransformation = VisualTransformation.None,
-                        interactionSource = interactionSource,
-                        placeholder = {
-                            Text(
-                                text = "Title",
-                                style = placeHolderStyle(),
-                            )
-                        },
-                        colors = transparentTextInputColors(),
-                    )
-                },
-            )
+            AnimatedVisibility(
+                isHovered,
+                enter = fadeIn(),
+                exit = fadeOut(),
+                modifier = Modifier
+                    .padding(6.dp)
+                    .align(Alignment.TopEnd),
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(6.dp)
+                        .clip(MaterialTheme.shapes.medium)
+                        .clickable(onClick = headerClick)
+                        .background(
+                            MaterialTheme.colorScheme.background,
+                            MaterialTheme.shapes.medium
+                        )
+                        .padding(6.dp),
+                    text = "Edit header",
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
     }
 }
