@@ -72,14 +72,5 @@ fun AppTextEditor(
                 }
             }
         }
-
-        val loading by viewModel.loadingState.collectAsState()
-
-        if (loading) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.TopCenter).padding(12.dp).size(20.dp),
-                strokeWidth = 2.dp
-            )
-        }
     }
 }

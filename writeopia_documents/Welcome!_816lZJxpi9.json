@@ -52,7 +52,7 @@
                 "name": "message",
                 "number": 0
             },
-            "text": "You can start using Writeopia right away, but everything gets much better if you configure it so AI helps you with you next big (or small) idea and understand some of the functionalities of this editor. ",
+            "text": "You can start using Writeopia right away, but everything gets much better if you configure it so AI helps you with your next big (or small) idea and understand some of the functionalities of this editor. ",
             "position": 3
         },
         {
@@ -190,7 +190,7 @@
         }
     ],
     "createdAt": 1739622940593,
-    "lastUpdatedAt": 1739701310897,
+    "lastUpdatedAt": 1739783259799,
     "parentId": "root",
     "isLocked": false,
     "icon": null
