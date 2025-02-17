@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 private const val APP_DIRECTORY = ".writeopia"
-private const val DB_VERSION = 18
+private const val DB_VERSION = 20
 
 fun main() = application {
     DesktopApp()
@@ -54,7 +54,7 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
 
     val databaseStateFlow = DatabaseFactory.createDatabaseAsState(
         DriverFactory(),
-        url = "jdbc:sqlite:${appDirectory.path}:writeopia.db_$DB_VERSION",
+        url = "jdbc:sqlite:${appDirectory.path}:writeopiadb.db_$DB_VERSION",
         coroutineScope = coroutineScope
     )
 

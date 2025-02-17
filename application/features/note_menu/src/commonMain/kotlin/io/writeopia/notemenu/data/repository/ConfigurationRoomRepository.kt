@@ -68,7 +68,7 @@ internal class ConfigurationRoomRepository(
 
     override suspend fun loadWorkspacePath(userId: String): String? = null
 
-    override suspend fun hasTutorialNotes(userId: String): Boolean =
+    override suspend fun hasFirstConfiguration(userId: String): Boolean =
         configurationDao.getConfigurationByUserId(userId)?.hasTutorials ?: false
 
     override suspend fun setTutorialNotes(hasTutorials: Boolean, userId: String) {

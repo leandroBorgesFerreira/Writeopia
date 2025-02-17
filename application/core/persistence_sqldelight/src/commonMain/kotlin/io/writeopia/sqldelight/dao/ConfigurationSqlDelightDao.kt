@@ -26,7 +26,7 @@ class ConfigurationSqlDelightDao(database: WriteopiaDb?) {
             workspaceConfigurationQueries?.insert(
                 user_id = user_id,
                 path = path,
-                has_tutorial_notes = has_tutorial_notes,
+                has_first_configuration = has_first_configuration,
             )
         }
     }

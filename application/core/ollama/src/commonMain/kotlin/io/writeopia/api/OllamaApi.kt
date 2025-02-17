@@ -156,4 +156,8 @@ class OllamaApi(
             }
         }
     }
+
+    companion object {
+        fun defaultUrl() = "http://localhost:11434"
+    }
 }
