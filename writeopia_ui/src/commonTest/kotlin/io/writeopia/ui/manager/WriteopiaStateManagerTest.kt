@@ -1131,7 +1131,8 @@ class WriteopiaStateManagerTest {
             TextInput(
                 "this will be BOLD",
                 start = 5,
-                end = text.lastIndex
+                end = text.lastIndex,
+                spans = emptySet()
             ),
             position = 0,
             lineBreakByContent = false
@@ -1147,7 +1148,8 @@ class WriteopiaStateManagerTest {
             TextInput(
                 "this will be BOLD",
                 start = 5,
-                end = 9
+                end = 9,
+                spans = emptySet()
             ),
             position = 0,
             lineBreakByContent = false

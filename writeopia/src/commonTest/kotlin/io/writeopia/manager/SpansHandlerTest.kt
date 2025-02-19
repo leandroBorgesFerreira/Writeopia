@@ -97,4 +97,26 @@ class SpansHandlerTest {
 
         assertEquals(expected, newSpans)
     }
+
+    @Test
+    fun `it should be possible to crop a span from end`() {
+        val boldSpan = SpanInfo.create(start = 0, end = 10, Span.BOLD)
+        val boldSpan1 = SpanInfo.create(start = 5, end = 10, Span.BOLD)
+
+        val expected = setOf(boldSpan.copy(end = 5))
+        val newSpans = SpansHandler.toggleSpans(setOf(boldSpan), boldSpan1)
+
+        assertEquals(expected, newSpans)
+    }
+
+    @Test
+    fun `it should be possible to crop a span from start`() {
+        val boldSpan = SpanInfo.create(start = 0, end = 10, Span.BOLD)
+        val boldSpan1 = SpanInfo.create(start = 0, end = 5, Span.BOLD)
+
+        val expected = setOf(boldSpan.copy(start = 5))
+        val newSpans = SpansHandler.toggleSpans(setOf(boldSpan), boldSpan1)
+
+        assertEquals(expected, newSpans)
+    }
 }
