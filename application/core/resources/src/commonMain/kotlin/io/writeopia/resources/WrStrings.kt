@@ -40,6 +40,7 @@ import writeopia.application.core.resources.generated.resources.sort_by_name
 import writeopia.application.core.resources.generated.resources.sort_by_update
 import writeopia.application.core.resources.generated.resources.suggestions
 import writeopia.application.core.resources.generated.resources.system_theme
+import writeopia.application.core.resources.generated.resources.tap_to_start
 import writeopia.application.core.resources.generated.resources.text
 import writeopia.application.core.resources.generated.resources.url
 import writeopia.application.core.resources.generated.resources.version
@@ -165,4 +166,7 @@ object WrStrings {
 
     @Composable
     fun json() = stringResource(Res.string.json)
+
+    @Composable
+    fun tapToStart() = stringResource(Res.string.tap_to_start)
 }
