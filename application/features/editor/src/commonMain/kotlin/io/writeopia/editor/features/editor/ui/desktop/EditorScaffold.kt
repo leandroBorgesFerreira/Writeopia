@@ -27,8 +27,8 @@ fun BoxScope.EditorScaffold(
             modifier = Modifier
                 .align(Alignment.Center)
                 .let { modifierLet ->
-                    if (maxWidth > 900.dp) {
-                        modifierLet.width(1000.dp)
+                    if (maxWidth > 750.dp) {
+                        modifierLet.width(850.dp)
                     } else {
                         modifierLet.fillMaxWidth()
                     }

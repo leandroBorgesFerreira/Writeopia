@@ -4,7 +4,7 @@ import io.writeopia.sdk.models.span.Span
 import io.writeopia.sdk.models.span.SpanInfo
 import io.writeopia.sdk.serialization.data.SpanInfoApi
 
-fun SpanInfoApi.toModel() = SpanInfo(
+fun SpanInfoApi.toModel() = SpanInfo.create(
     start = this.start,
     end = this.end,
     span = Span.textFromString(this.span),

@@ -193,5 +193,8 @@
     "lastUpdatedAt": 1739783259799,
     "parentId": "root",
     "isLocked": false,
-    "icon": null
+    "icon": {
+        "label": "home",
+        "tint": -65281
+    }
 }
