@@ -3,6 +3,7 @@ package io.writeopia.resources
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.stringResource
 import writeopia.application.core.resources.generated.resources.Res
+import writeopia.application.core.resources.generated.resources.arrangement
 import writeopia.application.core.resources.generated.resources.ask_ai
 import writeopia.application.core.resources.generated.resources.available_models
 import writeopia.application.core.resources.generated.resources.box
@@ -22,12 +23,15 @@ import writeopia.application.core.resources.generated.resources.image
 import writeopia.application.core.resources.generated.resources.import_file
 import writeopia.application.core.resources.generated.resources.insert
 import writeopia.application.core.resources.generated.resources.json
+import writeopia.application.core.resources.generated.resources.last_created
+import writeopia.application.core.resources.generated.resources.last_updated
 import writeopia.application.core.resources.generated.resources.light_theme
 import writeopia.application.core.resources.generated.resources.links
 import writeopia.application.core.resources.generated.resources.local_folder
 import writeopia.application.core.resources.generated.resources.lock_document
 import writeopia.application.core.resources.generated.resources.move_to
 import writeopia.application.core.resources.generated.resources.move_to_home
+import writeopia.application.core.resources.generated.resources.name
 import writeopia.application.core.resources.generated.resources.no_models
 import writeopia.application.core.resources.generated.resources.ollama
 import writeopia.application.core.resources.generated.resources.page
@@ -38,6 +42,7 @@ import writeopia.application.core.resources.generated.resources.settings
 import writeopia.application.core.resources.generated.resources.sort_by_creation
 import writeopia.application.core.resources.generated.resources.sort_by_name
 import writeopia.application.core.resources.generated.resources.sort_by_update
+import writeopia.application.core.resources.generated.resources.sorting
 import writeopia.application.core.resources.generated.resources.suggestions
 import writeopia.application.core.resources.generated.resources.system_theme
 import writeopia.application.core.resources.generated.resources.tap_to_start
@@ -169,4 +174,19 @@ object WrStrings {
 
     @Composable
     fun tapToStart() = stringResource(Res.string.tap_to_start)
+
+    @Composable
+    fun arrangement() = stringResource(Res.string.arrangement)
+
+    @Composable
+    fun sorting() = stringResource(Res.string.sorting)
+
+    @Composable
+    fun lastUpdated() = stringResource(Res.string.last_updated)
+
+    @Composable
+    fun created() = stringResource(Res.string.last_created)
+
+    @Composable
+    fun name() = stringResource(Res.string.name)
 }

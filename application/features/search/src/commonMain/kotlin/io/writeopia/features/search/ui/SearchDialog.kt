@@ -185,7 +185,7 @@ fun SearchInput(search: String, onSearchType: (String) -> Unit, modifier: Modifi
     ) {
         Icon(
             imageVector = WrIcons.search,
-            contentDescription = "Search",
+            contentDescription = WrStrings.search(),
             tint = MaterialTheme.colorScheme.onBackground
         )
 
@@ -202,7 +202,7 @@ fun SearchInput(search: String, onSearchType: (String) -> Unit, modifier: Modifi
             )
 
             if (search.isEmpty()) {
-                Text("Search")
+                Text(WrStrings.search())
             }
         }
 
