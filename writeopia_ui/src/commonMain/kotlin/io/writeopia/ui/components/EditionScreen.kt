@@ -2,10 +2,12 @@ package io.writeopia.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -16,6 +18,7 @@ import androidx.compose.material.icons.outlined.FormatUnderlined
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
@@ -35,15 +38,20 @@ fun EditionScreen(
     onDelete: () -> Unit = {},
     onClose: () -> Unit = {},
 ) {
-    Row(modifier = modifier) {
+    val iconPadding = PaddingValues(vertical = 4.dp)
+    val clipShape = MaterialTheme.shapes.medium
+    val iconSize = 36.dp
+    val spaceWidth = 8.dp
+
+    Row(modifier = modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
         Icon(
             modifier = Modifier
+                .clip(clipShape)
                 .clickable {
                     onSpanClick(Span.BOLD)
                 }
-                .size(50.dp)
-                .padding(12.dp)
-                .clip(RoundedCornerShape(8.dp)),
+                .size(iconSize)
+                .padding(iconPadding),
             imageVector = Icons.Outlined.FormatBold,
             contentDescription = "BOLD",
 //            contentDescription = stringResource(R.string.delete),
@@ -52,62 +60,70 @@ fun EditionScreen(
 
         Icon(
             modifier = Modifier
+                .clip(clipShape)
                 .clickable {
                     onSpanClick(Span.ITALIC)
                 }
-                .size(50.dp)
-                .padding(12.dp)
-                .clip(RoundedCornerShape(8.dp)),
+                .size(iconSize)
+                .padding(iconPadding),
             imageVector = Icons.Outlined.FormatItalic,
             contentDescription = "ITALIC",
 //            contentDescription = stringResource(R.string.delete),
             tint = MaterialTheme.colorScheme.onPrimary
         )
 
+        Spacer(modifier = Modifier.width(spaceWidth))
+
         Icon(
             modifier = Modifier
+                .clip(clipShape)
                 .clickable {
                     onSpanClick(Span.UNDERLINE)
                 }
-                .size(50.dp)
-                .padding(12.dp)
-                .clip(RoundedCornerShape(8.dp)),
+                .size(iconSize)
+                .padding(iconPadding),
             imageVector = Icons.Outlined.FormatUnderlined,
             contentDescription = "UNDERLINE",
 //            contentDescription = stringResource(R.string.delete),
             tint = MaterialTheme.colorScheme.onPrimary
         )
 
+        Spacer(modifier = Modifier.width(spaceWidth))
+
         Icon(
             modifier = Modifier
+                .clip(clipShape)
                 .clickable(onClick = checkboxClick)
-                .size(50.dp)
-                .padding(12.dp)
-                .clip(RoundedCornerShape(8.dp)),
+                .size(iconSize)
+                .padding(iconPadding),
             imageVector = WrSdkIcons.checkbox,
             contentDescription = "Checkbox",
 //            contentDescription = stringResource(R.string.delete),
             tint = MaterialTheme.colorScheme.onPrimary
         )
 
+        Spacer(modifier = Modifier.width(spaceWidth))
+
         Icon(
             modifier = Modifier
+                .clip(clipShape)
                 .clickable(onClick = listItemClick)
-                .size(50.dp)
-                .padding(12.dp)
-                .clip(RoundedCornerShape(8.dp)),
+                .size(iconSize)
+                .padding(iconPadding),
             imageVector = WrSdkIcons.list,
             contentDescription = "List item",
 //            contentDescription = stringResource(R.string.delete),
             tint = MaterialTheme.colorScheme.onPrimary
         )
 
+        Spacer(modifier = Modifier.width(spaceWidth))
+
         Icon(
             modifier = Modifier
+                .clip(clipShape)
                 .clickable(onClick = onDelete)
-                .size(50.dp)
-                .padding(12.dp)
-                .clip(RoundedCornerShape(8.dp)),
+                .size(iconSize)
+                .padding(iconPadding),
             imageVector = Icons.Default.DeleteOutline,
             contentDescription = "Delete",
 //            contentDescription = stringResource(R.string.delete),
@@ -118,10 +134,10 @@ fun EditionScreen(
 
         Icon(
             modifier = Modifier
+                .clip(clipShape)
                 .clickable(onClick = onClose)
-                .size(50.dp)
-                .padding(12.dp)
-                .clip(RoundedCornerShape(8.dp)),
+                .size(iconSize)
+                .padding(iconPadding),
             imageVector = WrSdkIcons.close,
             contentDescription = "List item",
 //            contentDescription = stringResource(R.string.delete),

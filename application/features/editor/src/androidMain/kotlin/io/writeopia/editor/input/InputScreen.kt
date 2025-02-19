@@ -18,6 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.icons.WrIcons
@@ -47,13 +48,22 @@ internal fun InputScreen(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            Row(modifier = Modifier.align(Alignment.Center).padding(horizontal = 12.dp)) {
+            val clipShape = MaterialTheme.shapes.medium
+            val iconPadding = 4.dp
+
+            Row(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(horizontal = 12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Icon(
                     modifier = Modifier
-                        .padding(10.dp)
+                        .clip(clipShape)
                         .clickable {
                             onAddSpan(Span.BOLD)
-                        },
+                        }
+                        .padding(iconPadding),
                     imageVector = WrIcons.bold,
                     contentDescription = "Bold",
 //                    stringResource(R.string.undo),
@@ -64,10 +74,11 @@ internal fun InputScreen(
 
                 Icon(
                     modifier = Modifier
-                        .padding(10.dp)
+                        .clip(clipShape)
                         .clickable {
                             onAddSpan(Span.ITALIC)
-                        },
+                        }
+                        .padding(iconPadding),
                     imageVector = WrIcons.italic,
                     contentDescription = "Italic",
 //                    stringResource(R.string.undo),
@@ -78,10 +89,11 @@ internal fun InputScreen(
 
                 Icon(
                     modifier = Modifier
-                        .padding(10.dp)
+                        .clip(clipShape)
                         .clickable {
                             onAddSpan(Span.UNDERLINE)
-                        },
+                        }
+                        .padding(iconPadding),
                     imageVector = WrIcons.underline,
                     contentDescription = "Underline",
 //                    stringResource(R.string.undo),
@@ -92,12 +104,13 @@ internal fun InputScreen(
 
                 Icon(
                     modifier = Modifier
-                        .padding(10.dp)
+                        .clip(clipShape)
                         .clickable {
                             if (canUndo) {
                                 onBackPress()
                             }
-                        },
+                        }
+                        .padding(iconPadding),
                     imageVector = WrIcons.undo,
                     contentDescription = "",
 //                    stringResource(R.string.undo),
@@ -108,12 +121,13 @@ internal fun InputScreen(
 
                 Icon(
                     modifier = Modifier
-                        .padding(10.dp)
+                        .clip(clipShape)
                         .clickable {
                             if (canRedo) {
                                 onForwardPress()
                             }
-                        },
+                        }
+                        .padding(iconPadding),
                     imageVector = WrIcons.redo,
                     contentDescription = "",
 //                    stringResource(R.string.redo),
