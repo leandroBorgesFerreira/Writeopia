@@ -60,4 +60,10 @@
   <string name="sort_by_name">Ordenar por nome</string>
   <string name="sort_by_creation">Ordenar por data de criação</string>
   <string name="sort_by_update">Ordenar por data de atualização</string>
+  <string name="lock_document">Bloquear edição</string>
+  <string name="move_to">Move para...</string>
+  <string name="move_to_home">Move home</string>
+  <string name="text">Texto</string>
+  <string name="insert">Inserir</string>
+  <string name="box">Caixa</string>
 </resources>

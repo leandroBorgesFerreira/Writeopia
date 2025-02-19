@@ -48,6 +48,7 @@ import io.writeopia.common.utils.file.fileChooserLoad
 import io.writeopia.common.utils.file.fileChooserSave
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.model.Font
+import io.writeopia.resources.WrStrings
 import io.writeopia.sdk.models.span.Span
 import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.icons.WrSdkIcons
@@ -522,25 +523,25 @@ private fun TextOptions(
             .width(250.dp)
             .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp)
     ) {
-        Title("Text")
+        Title(WrStrings.text())
         Spacer(modifier = Modifier.height(4.dp))
         TextChanges(spanClick)
         Spacer(modifier = Modifier.height(8.dp))
 
-        Title("Insert")
+        Title(WrStrings.insert())
         Spacer(modifier = Modifier.height(4.dp))
         InsertCommand(checkItemClick, listItemClick, codeBlockClick)
         Spacer(modifier = Modifier.height(8.dp))
 
-        Title("Decoration")
+        Title(WrStrings.decoration())
         Spacer(modifier = Modifier.height(4.dp))
 
         DecorationCommands(
             commands = listOf(
-                "Box" to highLightBlockClick,
-                "Warning" to {},
-                "Tip" to {},
-                "Code" to {}
+                WrStrings.box() to highLightBlockClick,
+//                "Warning" to {},
+//                "Tip" to {},
+//                "Code" to {}
             )
         )
         Spacer(modifier = Modifier.height(8.dp))

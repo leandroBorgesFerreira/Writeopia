@@ -50,6 +50,7 @@ kotlin {
                 implementation(project(":application:core:folders"))
                 implementation(project(":application:core:models"))
                 implementation(project(":application:core:ollama"))
+                implementation(project(":application:core:resources"))
 
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.datetime)
@@ -57,8 +58,6 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
-                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-                implementation(compose.components.resources)
                 implementation(libs.compose.navigation)
             }
         }
