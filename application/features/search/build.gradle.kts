@@ -40,8 +40,9 @@ kotlin {
                 implementation(project(":application:core:theme"))
                 implementation(project(":application:core:models"))
                 implementation(project(":application:core:folders"))
-                implementation(project(":application:features:note_menu"))
                 implementation(project(":application:core:utils"))
+                implementation(project(":application:core:resources"))
+                implementation(project(":application:features:note_menu"))
                 implementation(project(":plugins:writeopia_persistence_core"))
                 implementation(project(":plugins:writeopia_persistence_sqldelight"))
 

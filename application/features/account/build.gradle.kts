@@ -35,6 +35,7 @@ kotlin {
                 implementation(project(":application:core:theme"))
                 implementation(project(":application:core:common_ui"))
                 implementation(project(":application:core:ollama"))
+                implementation(project(":application:core:resources"))
 
                 implementation(libs.kotlinx.datetime)
 
@@ -42,7 +43,6 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-                implementation(compose.components.resources)
                 implementation(libs.compose.navigation)
             }
         }

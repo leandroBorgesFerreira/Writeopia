@@ -49,6 +49,7 @@ import io.writeopia.common.utils.download.DownloadState
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.commonui.workplace.WorkspaceConfigurationDialog
 import io.writeopia.model.ColorThemeOption
+import io.writeopia.resources.WrStrings
 import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -133,7 +134,7 @@ fun SettingsScreen(
         mutableStateOf(false)
     }
 
-    Text("Color Theme", style = titleStyle, color = titleColor)
+    Text(WrStrings.colorTheme(), style = titleStyle, color = titleColor)
 
     Spacer(modifier = Modifier.height(SPACE_AFTER_TITLE.dp))
 
@@ -145,7 +146,7 @@ fun SettingsScreen(
     Spacer(modifier = Modifier.height(20.dp))
 
     if (showPath) {
-        Text("Local Folder", style = titleStyle, color = titleColor)
+        Text(WrStrings.localFolder(), style = titleStyle, color = titleColor)
 
         Spacer(modifier = Modifier.height(SPACE_AFTER_TITLE.dp))
 
@@ -189,11 +190,11 @@ fun SettingsScreen(
     val ollamaSelected by ollamaSelectedModel.collectAsState()
 
     if (showOllamaConfig) {
-        Text("Ollama", style = titleStyle, color = titleColor)
+        Text(WrStrings.ollama(), style = titleStyle, color = titleColor)
 
         Spacer(modifier = Modifier.height(SPACE_AFTER_TITLE.dp))
 
-        Text("Url", style = MaterialTheme.typography.bodyMedium, color = titleColor)
+        Text(WrStrings.url(), style = MaterialTheme.typography.bodyMedium, color = titleColor)
 
         Spacer(modifier = Modifier.height(SPACE_AFTER_SUB_TITLE.dp))
 
@@ -215,7 +216,7 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(14.dp))
 
         Text(
-            "Available Models",
+            WrStrings.availableModels(),
             style = MaterialTheme.typography.bodyMedium,
             color = titleColor
         )
@@ -273,7 +274,7 @@ fun SettingsScreen(
 
             is ResultData.Error -> {
                 val errorText = buildAnnotatedString {
-                    append("Error when requesting models. Did you start Ollama? \n")
+                    append(WrStrings.errorRequestingModels())
                     withLink(LinkAnnotation.Url("https://ollama.com")) {
                         withStyle(style = SpanStyle(color = WriteopiaTheme.colorScheme.linkColor)) {
                             append("https://ollama.com")
@@ -300,7 +301,7 @@ fun SettingsScreen(
                                 MaterialTheme.shapes.medium
                             )
                             .padding(4.dp),
-                        text = "Retry",
+                        text = WrStrings.retry(),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onBackground,
                     )
@@ -315,7 +316,11 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        Text("Download Model", style = MaterialTheme.typography.bodyMedium, color = titleColor)
+        Text(
+            WrStrings.downloadModels(),
+            style = MaterialTheme.typography.bodyMedium,
+            color = titleColor
+        )
 
         Spacer(modifier = Modifier.height(SPACE_AFTER_SUB_TITLE.dp))
 
@@ -324,7 +329,7 @@ fun SettingsScreen(
         }
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "Suggestions:", style = MaterialTheme.typography.bodySmall)
+            Text(text = WrStrings.suggestions(), style = MaterialTheme.typography.bodySmall)
 
             Spacer(modifier = Modifier.width(6.dp))
 
@@ -386,7 +391,7 @@ fun SettingsScreen(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    "Error when downloading model. ${downloadState.exception.message}",
+                    "${WrStrings.errorModelDownload()} ${downloadState.exception.message}",
                     style = MaterialTheme.typography.bodySmall
                 )
             }
@@ -417,7 +422,7 @@ fun SettingsScreen(
 
     Spacer(modifier = Modifier.height(30.dp))
 
-    Text("Version: alpha25 - Amado, Jorge", style = MaterialTheme.typography.bodySmall)
+    Text(WrStrings.version(), style = MaterialTheme.typography.bodySmall)
 }
 
 @Composable
@@ -429,9 +434,9 @@ private fun ColorThemeOptions(
 
     Row(modifier = Modifier.fillMaxWidth().height(70.dp)) {
         Option(
-            text = "Light",
+            text = WrStrings.lightTheme(),
             imageVector = WrIcons.colorModeLight,
-            contextDescription = "light",
+            contextDescription = WrStrings.lightTheme(),
             selectColorTheme = {
                 selectColorTheme(ColorThemeOption.LIGHT)
             }
@@ -440,9 +445,9 @@ private fun ColorThemeOptions(
         Spacer(modifier = Modifier.width(spaceWidth))
 
         Option(
-            text = "Dark",
+            text = WrStrings.darkTheme(),
             imageVector = WrIcons.colorModeDark,
-            contextDescription = "dark",
+            contextDescription = WrStrings.darkTheme(),
             selectColorTheme = {
                 selectColorTheme(ColorThemeOption.DARK)
             }
@@ -451,9 +456,9 @@ private fun ColorThemeOptions(
         Spacer(modifier = Modifier.width(spaceWidth))
 
         Option(
-            text = "System",
+            text = WrStrings.systemTheme(),
             imageVector = WrIcons.colorModeSystem,
-            contextDescription = "system",
+            contextDescription = WrStrings.systemTheme(),
             selectColorTheme = {
                 selectColorTheme(ColorThemeOption.SYSTEM)
             }

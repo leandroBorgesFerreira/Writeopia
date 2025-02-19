@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.notemenu.ui.screen.configuration.modifier.icon
 import io.writeopia.notemenu.viewmodel.SyncState
+import io.writeopia.resources.WrStrings
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -102,7 +103,7 @@ private fun MoreOptions(
                 },
                 onClick = exportAsMarkdownClick,
                 text = {
-                    Text("Export as Markdown", color = MaterialTheme.colorScheme.onBackground)
+                    Text(WrStrings.exportMarkdown(), color = MaterialTheme.colorScheme.onBackground)
                 }
             )
 
@@ -110,13 +111,13 @@ private fun MoreOptions(
                 leadingIcon = {
                     Icon(
                         imageVector = WrIcons.fileDownload,
-                        contentDescription = "Import file",
+                        contentDescription = WrStrings.importFile(),
                         tint = iconTintColor
                     )
                 },
                 onClick = importClick,
                 text = {
-                    Text("Import file", color = MaterialTheme.colorScheme.onBackground)
+                    Text(WrStrings.importFile(), color = MaterialTheme.colorScheme.onBackground)
                 }
             )
         }

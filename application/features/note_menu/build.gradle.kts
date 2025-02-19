@@ -47,6 +47,7 @@ kotlin {
                 implementation(project(":application:core:persistence_bridge"))
                 implementation(project(":application:core:theme"))
                 implementation(project(":application:core:folders"))
+                implementation(project(":application:core:resources"))
 
                 implementation(project(":application:features:account"))
 
@@ -55,8 +56,6 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
-                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-                implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.compose.navigation)

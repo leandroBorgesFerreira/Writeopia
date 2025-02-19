@@ -243,7 +243,9 @@ fun DesktopApp(
                                 )
                             }
 
-                            val showSettingsState by globalShellViewModel.showSettingsState.collectAsState()
+                            val showSettingsState by globalShellViewModel
+                                .showSettingsState
+                                .collectAsState()
 
                             if (showSettingsState) {
                                 SettingsDialog(
@@ -264,7 +266,9 @@ fun DesktopApp(
                                 )
                             }
 
-                            val showSearchState by globalShellViewModel.showSearchDialog.collectAsState()
+                            val showSearchState by globalShellViewModel
+                                .showSearchDialog
+                                .collectAsState()
 
                             if (showSearchState) {
                                 LaunchedEffect(true) {
