@@ -188,7 +188,7 @@ class TextDrawer(
                     lineBreakByContent,
                 )
 
-                if (start == 0 && end == 0) {
+                if (start == 0 || end == 0) {
                     coroutineScope.launch {
                         // Delay to avoid jumping to previous line too soon when erasing text
                         delay(70)
