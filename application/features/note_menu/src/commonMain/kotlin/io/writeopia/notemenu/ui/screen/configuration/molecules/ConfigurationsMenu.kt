@@ -221,7 +221,7 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit, sortingState: Sta
                 .background(background(OrderBy.NAME))
                 .clickable { sortingSelected(OrderBy.NAME) }
                 .sortingOptionModifier(),
-            text =  WrStrings.sortByName(),
+            text = WrStrings.sortByName(),
 //            stringResource(R.string.name),
             style = optionStyle,
         )
