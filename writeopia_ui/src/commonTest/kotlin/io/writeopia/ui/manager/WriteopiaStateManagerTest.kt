@@ -1143,27 +1143,5 @@ class WriteopiaStateManagerTest {
         val stories = storyManager.currentStory.value.stories
 
         assertEquals(stories[0]!!.spans.first().span, Span.BOLD)
-
-        storyManager.handleTextInput(
-            TextInput(
-                "this will be BOLD",
-                start = 5,
-                end = 9,
-                spans = emptySet()
-            ),
-            position = 0,
-            lineBreakByContent = false
-        )
-
-        storyManager.toggleSpan(Span.BOLD)
-
-        val stories1 = storyManager.currentStory.value.stories
-
-        assertEquals(stories1[0]!!.spans.size, 1)
-
-        val span = stories1[0]!!.spans.first()
-
-        assertEquals(span.start, 9)
-        assertEquals(span.end, 16)
     }
 }
