@@ -43,7 +43,6 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.drawer.factory.EndOfText
-import io.writeopia.ui.icons.WrSdkIcons
 import io.writeopia.ui.manager.WriteopiaStateManager
 import io.writeopia.ui.model.DrawConfig
 import io.writeopia.ui.model.DrawInfo
@@ -51,7 +50,10 @@ import io.writeopia.ui.model.EmptyErase
 import io.writeopia.ui.utils.transparentTextInputColors
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import writeopia.writeopia_ui.generated.resources.Res
+import writeopia.writeopia_ui.generated.resources.title
 
 /**
  * The header for the Document. It applies some stylish to the title of the document.
@@ -132,7 +134,7 @@ class HeaderDrawer(
                             interactionSource = interactionSource,
                             placeholder = {
                                 Text(
-                                    text = "Title",
+                                    text = stringResource(Res.string.title),
                                     style = placeHolderStyle(),
                                 )
                             },

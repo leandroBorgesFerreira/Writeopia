@@ -37,6 +37,7 @@ import io.writeopia.common.utils.icons.IconChange
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.commonui.dtos.MenuItemUi
 import io.writeopia.commonui.folders.DocumentList
+import io.writeopia.resources.WrStrings
 import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -92,34 +93,34 @@ fun SideGlobalMenu(
 
                     settingsOptions(
                         iconVector = WrIcons.search,
-                        contentDescription = "Search",
-                        text = "Search",
+                        contentDescription = WrStrings.search(),
+                        text = WrStrings.search(),
                         click = searchClick
                     )
 
                     settingsOptions(
                         iconVector = WrIcons.home,
-                        contentDescription = "Home",
-                        text = "Home",
+                        contentDescription = WrStrings.home(),
+                        text = WrStrings.home(),
                         click = homeClick
                     )
 
                     settingsOptions(
                         iconVector = WrIcons.favorites,
-                        contentDescription = "Favorites",
-                        text = "Favorites",
+                        contentDescription = WrStrings.favorites(),
+                        text = WrStrings.favorites(),
                         click = favoritesClick
                     )
 
                     settingsOptions(
                         iconVector = WrIcons.settings,
-                        contentDescription = "Settings",
-                        text = "Settings",
+                        contentDescription = WrStrings.settings(),
+                        text = WrStrings.settings(),
                         click = settingsClick,
                     )
 
                     title(
-                        text = "Folder",
+                        text = WrStrings.folder(),
                         trailingContent = {
                             Icon(
                                 imageVector = WrIcons.target,

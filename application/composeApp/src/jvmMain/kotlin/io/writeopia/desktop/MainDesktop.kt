@@ -138,8 +138,6 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
     )
 
     val topDoubleBarClick = {
-        println("topDoubleBarClick")
-
         if (windowState.placement == WindowPlacement.Floating) {
             windowState.placement = WindowPlacement.Maximized
         } else {

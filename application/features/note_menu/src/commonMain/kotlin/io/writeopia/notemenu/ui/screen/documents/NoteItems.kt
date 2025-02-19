@@ -64,6 +64,7 @@ import io.writeopia.commonui.dtos.MenuItemUi
 import io.writeopia.notemenu.data.model.NotesArrangement
 import io.writeopia.notemenu.ui.dto.NotesUi
 import io.writeopia.notemenu.utils.minimalNoteCardWidth
+import io.writeopia.resources.WrStrings
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.theme.WriteopiaTheme
@@ -718,22 +719,7 @@ private fun SharedTransitionScope.TapToStartButton(
             .clip(MaterialTheme.shapes.large)
             .clickable(onClick = newNote)
     ) {
-        val text = buildAnnotatedString {
-            append("Tap here to ")
-            pushStyle(
-                SpanStyle(
-                    color = MaterialTheme.colorScheme.primary,
-                    fontStyle = FontStyle.Italic,
-                    fontWeight = FontWeight.Bold
-                )
-            )
-
-            append("write")
-
-            pop()
-
-            append(" the next big thing")
-        }
+        val text = WrStrings.tapToStart()
 
         Text(
             text = text,

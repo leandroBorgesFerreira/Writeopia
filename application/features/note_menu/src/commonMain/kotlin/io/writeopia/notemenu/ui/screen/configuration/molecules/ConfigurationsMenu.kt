@@ -34,6 +34,7 @@ import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.commonui.SlideInBox
 import io.writeopia.commonui.options.slide.HorizontalOptions
 import io.writeopia.notemenu.ui.screen.configuration.modifier.orderConfigModifierHorizontal
+import io.writeopia.resources.WrStrings
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -156,12 +157,7 @@ private fun ArrangementSection(
     gridOptionClick: () -> Unit,
     listOptionClick: () -> Unit
 ) {
-    SectionText(
-        text = "Arrangement"
-//        stringResource(
-//            R.string.arrangement
-//        )
-    )
+    SectionText(text = WrStrings.arrangement())
 
     ArrangementOptions(
         selected = selected,
@@ -175,10 +171,7 @@ private fun ArrangementSection(
 private fun SortingSection(sortingSelected: (OrderBy) -> Unit, sortingState: StateFlow<OrderBy>) {
     val order by sortingState.collectAsState()
 
-    SectionText(
-        text = "Sorting"
-//    stringResource(R.string.sorting)
-    )
+    SectionText(text = WrStrings.sorting())
     val optionStyle = MaterialTheme.typography.bodyMedium.copy(
         color = MaterialTheme.colorScheme.onPrimary,
         fontWeight = FontWeight.Bold
@@ -204,7 +197,7 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit, sortingState: Sta
                 .background(background(OrderBy.UPDATE))
                 .clickable { sortingSelected(OrderBy.UPDATE) }
                 .sortingOptionModifier(),
-            text = "Last updated",
+            text = WrStrings.lastUpdated(),
 //            stringResource(R.string.last_updated)
             style = optionStyle,
         )
@@ -216,7 +209,7 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit, sortingState: Sta
                 .background(background(OrderBy.CREATE))
                 .clickable { sortingSelected(OrderBy.CREATE) }
                 .sortingOptionModifier(),
-            text = "Create",
+            text = WrStrings.created(),
 //            stringResource(R.string.last_created),
             style = optionStyle,
         )
@@ -228,7 +221,7 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit, sortingState: Sta
                 .background(background(OrderBy.NAME))
                 .clickable { sortingSelected(OrderBy.NAME) }
                 .sortingOptionModifier(),
-            text = "Name",
+            text = WrStrings.sortByName(),
 //            stringResource(R.string.name),
             style = optionStyle,
         )

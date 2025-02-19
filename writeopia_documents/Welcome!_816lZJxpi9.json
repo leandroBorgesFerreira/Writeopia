@@ -10,13 +10,6 @@
                 "number": 11
             },
             "text": "Welcome!",
-            "spans": [
-                {
-                    "start": 0,
-                    "end": 0,
-                    "span": "BOLD"
-                }
-            ],
             "decoration": {
                 "backgroundColor": -7829368
             },
@@ -190,7 +183,7 @@
         }
     ],
     "createdAt": 1739622940593,
-    "lastUpdatedAt": 1739783259799,
+    "lastUpdatedAt": 1739964086214,
     "parentId": "root",
     "isLocked": false,
     "icon": {

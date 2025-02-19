@@ -46,6 +46,7 @@ kotlin {
                 implementation(project(":application:core:common_ui"))
                 implementation(project(":application:core:folders"))
                 implementation(project(":application:core:ollama"))
+                implementation(project(":application:core:resources"))
 
                 implementation(project(":application:features:note_menu"))
 
@@ -55,8 +56,6 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
-                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-                implementation(compose.components.resources)
                 implementation(libs.compose.navigation)
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.lifecycle.viewmodel.compose)

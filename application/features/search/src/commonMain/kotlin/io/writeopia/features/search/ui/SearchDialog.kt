@@ -34,6 +34,7 @@ import androidx.compose.ui.window.DialogProperties
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.features.search.repository.SearchItem
 import io.writeopia.notemenu.data.model.NotesNavigation
+import io.writeopia.resources.WrStrings
 import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.StateFlow
 
@@ -98,7 +99,7 @@ fun SearchScreen(
 
         if (search.isEmpty()) {
             Text(
-                text = "Recent",
+                text = WrStrings.recent(),
                 color = WriteopiaTheme.colorScheme.textLighter,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(horizontal = 10.dp),
@@ -184,7 +185,7 @@ fun SearchInput(search: String, onSearchType: (String) -> Unit, modifier: Modifi
     ) {
         Icon(
             imageVector = WrIcons.search,
-            contentDescription = "Search",
+            contentDescription = WrStrings.search(),
             tint = MaterialTheme.colorScheme.onBackground
         )
 
@@ -201,7 +202,7 @@ fun SearchInput(search: String, onSearchType: (String) -> Unit, modifier: Modifi
             )
 
             if (search.isEmpty()) {
-                Text("Search")
+                Text(WrStrings.search())
             }
         }
 

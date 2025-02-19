@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.notemenu.ui.screen.configuration.modifier.icon
+import io.writeopia.resources.WrStrings
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.theme.WrieopiaTheme
 import io.writeopia.theme.WriteopiaTheme
@@ -63,7 +64,7 @@ internal fun SortOptions(
                 leadingIcon = {
                     Icon(
                         imageVector = WrIcons.sortByName,
-                        contentDescription = "Sort by name",
+                        contentDescription = WrStrings.sortByName(),
                         tint = iconTintColor
                     )
                 },
@@ -71,7 +72,7 @@ internal fun SortOptions(
                     selectSortOption(OrderBy.NAME)
                 },
                 text = {
-                    Text("Sort by name", color = MaterialTheme.colorScheme.onBackground)
+                    Text(WrStrings.sortByName(), color = MaterialTheme.colorScheme.onBackground)
                 }
             )
 
@@ -80,7 +81,7 @@ internal fun SortOptions(
                 leadingIcon = {
                     Icon(
                         imageVector = WrIcons.sortByCreated,
-                        contentDescription = "Sort by creation",
+                        contentDescription = WrStrings.sortByCreation(),
                         tint = iconTintColor
                     )
                 },
@@ -88,7 +89,7 @@ internal fun SortOptions(
                     selectSortOption(OrderBy.CREATE)
                 },
                 text = {
-                    Text("Sort by creation", color = MaterialTheme.colorScheme.onBackground)
+                    Text(WrStrings.sortByCreation(), color = MaterialTheme.colorScheme.onBackground)
                 }
             )
 
@@ -97,7 +98,7 @@ internal fun SortOptions(
                 leadingIcon = {
                     Icon(
                         imageVector = WrIcons.sortByUpdate,
-                        contentDescription = "Sort by last update",
+                        contentDescription = WrStrings.sortByUpdate(),
                         tint = iconTintColor
                     )
                 },
@@ -106,7 +107,7 @@ internal fun SortOptions(
                 },
                 text = {
                     Text(
-                        "Sort by last update",
+                        WrStrings.sortByUpdate(),
                         color = MaterialTheme.colorScheme.onBackground
                     )
                 }

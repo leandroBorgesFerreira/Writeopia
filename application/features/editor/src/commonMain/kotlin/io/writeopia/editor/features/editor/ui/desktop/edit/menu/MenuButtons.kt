@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.icons.WrIcons
+import io.writeopia.resources.WrStrings
 import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,8 +34,8 @@ fun LockButton(
 ) {
     CommonButton(
         icon = WrIcons.lock,
-        iconDescription = "Lock",
-        text = "Lock document",
+        iconDescription = WrStrings.lockDocument(),
+        text = WrStrings.lockDocument(),
         isEnabledState = isEditableState,
         clickListener = setEditable
     )
@@ -44,8 +45,8 @@ fun LockButton(
 fun MoveToButton(clickListener: () -> Unit) {
     CommonButton(
         icon = WrIcons.move,
-        iconDescription = "Move icon",
-        text = "Move to...",
+        iconDescription = WrStrings.moveTo(),
+        text = WrStrings.moveTo(),
         clickListener = clickListener
     )
 }
@@ -54,8 +55,8 @@ fun MoveToButton(clickListener: () -> Unit) {
 fun MoveToHomeButton(clickListener: () -> Unit) {
     CommonButton(
         icon = WrIcons.move,
-        iconDescription = "Move icon",
-        text = "Move Home",
+        iconDescription = WrStrings.moveToHome(),
+        text = WrStrings.moveToHome(),
         clickListener = clickListener
     )
 }
