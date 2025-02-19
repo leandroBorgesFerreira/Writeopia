@@ -1,58 +1,64 @@
 package io.writeopia.sdk.manager
 
 import io.writeopia.sdk.models.id.GenerateId
-import io.writeopia.sdk.models.span.Interception
+import io.writeopia.sdk.models.span.Intersection
 import io.writeopia.sdk.models.span.Span
 import io.writeopia.sdk.models.span.SpanInfo
 import io.writeopia.sdk.models.story.StoryStep
-import kotlin.math.min
 
 object SpansHandler {
 
     fun toggleSpans(spanSet: Set<SpanInfo>, newSpan: SpanInfo): Set<SpanInfo> {
         return when {
-            spanSet.contains(newSpan) -> spanSet - newSpan
+            spanSet.contains(newSpan) -> (spanSet - newSpan)
 
-            !spanSet.any { it.span == newSpan.span } -> spanSet + newSpan
+            !spanSet.any { it.span == newSpan.span } -> (spanSet + newSpan)
 
             else -> {
                 val currentSpan = spanSet.first { it.span == newSpan.span }
 
-                val intersection: Interception = currentSpan.intersection(newSpan)
+                val intersection: Intersection = currentSpan.intersection(newSpan)
 
                 return when (intersection) {
-                    Interception.INSIDE -> {
+                    Intersection.CONTAINING -> {
                         val removed = (spanSet - currentSpan)
 
+                        val currentStart = currentSpan.start
+                        val currentEnd = currentSpan.end
+
+                        val newStart = newSpan.start
+                        val newEnd = newSpan.end
+
                         val splitSpans = setOf(
-                            SpanInfo(
-                                currentSpan.start,
-                                newSpan.start,
+                            SpanInfo.create(
+                                currentStart,
+                                newStart,
                                 currentSpan.span
                             ),
-                            SpanInfo(
-                                newSpan.end,
-                                currentSpan.end,
+                            SpanInfo.create(
+                                newEnd,
+                                currentEnd,
                                 currentSpan.span
                             ),
                         ).filter { it.size() > 0 }
 
                         removed + splitSpans
                     }
-                    Interception.INTERSECT -> {
-                        val removed = (spanSet - currentSpan)
-                        val minStart = min(currentSpan.start, newSpan.start)
-                        val maxEnd = min(currentSpan.end, newSpan.end)
 
-                        removed + SpanInfo(minStart, maxEnd, newSpan.span)
+                    Intersection.INTERSECT -> {
+                        val removed = (spanSet - currentSpan)
+                        val expandedSpan = (currentSpan + newSpan)
+                        removed + expandedSpan
                     }
 
-                    Interception.OUTSIDE -> spanSet + newSpan
+                    Intersection.OUTSIDE -> spanSet + newSpan
 
-                    Interception.CONTAINING -> {
+                    Intersection.INSIDE -> {
                         val removed = (spanSet - currentSpan)
                         removed + newSpan
                     }
+
+                    Intersection.MATCH -> (spanSet - currentSpan)
                 }
             }
         }
@@ -71,7 +77,7 @@ object SpansHandler {
             storySteps.mapValues { (_, story) ->
                 val text = story.text
                 if (text?.isNotEmpty() == true) {
-                    val newSpanInfo = SpanInfo(0, text.length, newSpan)
+                    val newSpanInfo = SpanInfo.create(0, text.length, newSpan)
                     story.copy(spans = story.spans + newSpanInfo, localId = GenerateId.generate())
                 } else {
                     story

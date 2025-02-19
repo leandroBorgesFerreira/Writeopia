@@ -43,6 +43,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import kotlin.math.abs
 
 /**
  * Simple message drawer intended to be used as a component for more complex drawers.
@@ -71,11 +72,16 @@ class TextDrawer(
         focusRequester: FocusRequester?,
         decorationBox: @Composable (innerTextField: @Composable () -> Unit) -> Unit
     ) {
+        var spans by remember {
+            mutableStateOf(step.spans)
+        }
+
         var inputText by remember {
             mutableStateOf(
                 TextFieldValue(
-                    Spans.createStringWithSpans(step.text, step.spans),
-                    selection = drawInfo.selection?.toTextRange(step.text ?: "") ?: TextRange.Zero
+                    Spans.createStringWithSpans(step.text, spans),
+                    selection = drawInfo.selection?.toTextRange(step.text ?: "")
+                        ?: TextRange.Zero
                 )
             )
         }
@@ -159,18 +165,25 @@ class TextDrawer(
             onValueChange = { value ->
                 val start = value.selection.start
                 val end = value.selection.end
+                val previousStart = inputText.selection.start
+
+                val sizeDifference = value.text.length - inputText.text.length
+
+                if (abs(sizeDifference) > 0) {
+                    spans = Spans.recalculateSpans(spans, previousStart, sizeDifference)
+                }
 
                 val edit = {
                     inputText = value.copy(
                         Spans.createStringWithSpans(
                             value.text.replace("\n", ""),
-                            step.spans
+                            spans
                         )
                     )
                 }
 
                 onTextEdit(
-                    TextInput(value.text, start, end),
+                    TextInput(value.text, start, end, spans),
                     drawInfo.position,
                     lineBreakByContent,
                 )

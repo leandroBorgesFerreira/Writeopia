@@ -756,16 +756,12 @@ class WriteopiaStateManager(
         } else {
             val selection = currentStory.value.selection
 
-            val (start, end) = if (selection.start > selection.end) {
-                selection.end to selection.start
-            } else {
-                selection.start to selection.end
-            }
+            val (start, end) = selection.sortedPositions()
 
             _currentStory.value = writeopiaManager.addSpan(
                 _currentStory.value,
                 selection.position,
-                SpanInfo(start, end, span)
+                SpanInfo.create(start, end, span)
             )
         }
     }
@@ -811,7 +807,7 @@ class WriteopiaStateManager(
             onLineBreak(Action.LineBreak(newStep, position))
         } else {
             val newText = text.replace("\n", "")
-            val newStep = step.copy(text = newText)
+            val newStep = step.copy(text = newText, spans = input.spans)
             val handled = commandHandler.handleCommand(text, newStep, position)
 
             if (!handled) {
@@ -1103,7 +1099,8 @@ class WriteopiaStateManager(
             lastUpdatedAt = info.lastUpdatedAt,
             userId = localUserId ?: "disconnected_user",
             parentId = info.parentId,
-            isLocked = info.isLocked
+            isLocked = info.isLocked,
+            icon = info.icon
         )
     }
 
