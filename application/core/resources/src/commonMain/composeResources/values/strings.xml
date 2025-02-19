@@ -69,4 +69,10 @@
   <string name="insert">Insert</string>
   <string name="decoration">Decoration</string>
   <string name="box">Box</string>
+  <string name="content">Content</string>
+  <string name="image">Image</string>
+  <string name="links">Links</string>
+  <string name="page">Page</string>
+  <string name="ask_ai">Ask AI</string>
+  <string name="json">JSON</string>
 </resources>

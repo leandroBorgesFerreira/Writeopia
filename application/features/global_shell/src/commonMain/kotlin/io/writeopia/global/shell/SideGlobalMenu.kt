@@ -41,7 +41,6 @@ import io.writeopia.resources.WrStrings
 import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val FINAL_WIDTH = 300

@@ -3,28 +3,34 @@ package io.writeopia.resources
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.stringResource
 import writeopia.application.core.resources.generated.resources.Res
+import writeopia.application.core.resources.generated.resources.ask_ai
 import writeopia.application.core.resources.generated.resources.available_models
 import writeopia.application.core.resources.generated.resources.box
 import writeopia.application.core.resources.generated.resources.color_theme
+import writeopia.application.core.resources.generated.resources.content
 import writeopia.application.core.resources.generated.resources.dark_theme
 import writeopia.application.core.resources.generated.resources.decoration
 import writeopia.application.core.resources.generated.resources.download_models
-import writeopia.application.core.resources.generated.resources.error_loading_notes
 import writeopia.application.core.resources.generated.resources.error_model_download
 import writeopia.application.core.resources.generated.resources.error_requesting_models
+import writeopia.application.core.resources.generated.resources.export
 import writeopia.application.core.resources.generated.resources.export_markdown
 import writeopia.application.core.resources.generated.resources.favorites
 import writeopia.application.core.resources.generated.resources.folder
 import writeopia.application.core.resources.generated.resources.home
+import writeopia.application.core.resources.generated.resources.image
 import writeopia.application.core.resources.generated.resources.import_file
 import writeopia.application.core.resources.generated.resources.insert
+import writeopia.application.core.resources.generated.resources.json
 import writeopia.application.core.resources.generated.resources.light_theme
+import writeopia.application.core.resources.generated.resources.links
 import writeopia.application.core.resources.generated.resources.local_folder
 import writeopia.application.core.resources.generated.resources.lock_document
 import writeopia.application.core.resources.generated.resources.move_to
 import writeopia.application.core.resources.generated.resources.move_to_home
 import writeopia.application.core.resources.generated.resources.no_models
 import writeopia.application.core.resources.generated.resources.ollama
+import writeopia.application.core.resources.generated.resources.page
 import writeopia.application.core.resources.generated.resources.recent
 import writeopia.application.core.resources.generated.resources.retry
 import writeopia.application.core.resources.generated.resources.search
@@ -138,4 +144,25 @@ object WrStrings {
 
     @Composable
     fun box() = stringResource(Res.string.box)
+
+    @Composable
+    fun content() = stringResource(Res.string.content)
+
+    @Composable
+    fun image() = stringResource(Res.string.image)
+
+    @Composable
+    fun links() = stringResource(Res.string.links)
+
+    @Composable
+    fun page() = stringResource(Res.string.page)
+
+    @Composable
+    fun askAi() = stringResource(Res.string.ask_ai)
+
+    @Composable
+    fun export() = stringResource(Res.string.export)
+
+    @Composable
+    fun json() = stringResource(Res.string.json)
 }

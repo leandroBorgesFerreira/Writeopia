@@ -66,4 +66,8 @@
   <string name="text">Texto</string>
   <string name="insert">Inserir</string>
   <string name="box">Caixa</string>
+  <string name="content">Conteúdo</string>
+  <string name="image">Imagem</string>
+  <string name="page">Página</string>
+  <string name="ask_ai">Pergunte à IA</string>
 </resources>
