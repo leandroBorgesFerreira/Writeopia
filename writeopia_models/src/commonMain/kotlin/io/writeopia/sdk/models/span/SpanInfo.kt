@@ -57,7 +57,7 @@ data class SpanInfo private constructor(val start: Int, val end: Int, val span: 
         val insideFromStart =
             smallerStart < biggerStart && smallerEnd in (biggerStart + 1)..<biggerEnd
 
-        val insideFromEnd = smallerEnd > biggerEnd && smallerStart in (biggerStart + 1)..< biggerEnd
+        val insideFromEnd = smallerEnd > biggerEnd && smallerStart in (biggerStart + 1)..<biggerEnd
 
         return insideFromStart || insideFromEnd
     }
@@ -66,8 +66,8 @@ data class SpanInfo private constructor(val start: Int, val end: Int, val span: 
         val (smallerStart, smallerEnd) = smaller.sortedPositions()
         val (biggerStart, biggerEnd) = bigger.sortedPositions()
 
-        return smallerStart in biggerStart.. biggerEnd &&
-            smallerEnd in biggerStart.. biggerEnd
+        return smallerStart in biggerStart..biggerEnd &&
+            smallerEnd in biggerStart..biggerEnd
     }
 
     companion object {
