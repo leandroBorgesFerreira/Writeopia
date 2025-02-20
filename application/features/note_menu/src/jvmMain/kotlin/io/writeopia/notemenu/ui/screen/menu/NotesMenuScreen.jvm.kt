@@ -3,16 +3,31 @@ package io.writeopia.notemenu.ui.screen.menu
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.foundation.background
+import androidx.compose.foundation.draganddrop.dragAndDropTarget
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draganddrop.DragAndDropEvent
+import androidx.compose.ui.draganddrop.DragAndDropTarget
+import androidx.compose.ui.draganddrop.awtTransferable
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import io.writeopia.commonui.dtos.MenuItemUi
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.ui.screen.DesktopNotesMenu
 import io.writeopia.notemenu.viewmodel.ChooseNoteViewModel
+import io.writeopia.theme.WriteopiaTheme
+import java.awt.datatransfer.DataFlavor
+import java.io.File
 
-@OptIn(ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalComposeUiApi::class)
 @Composable
 actual fun NotesMenuScreen(
     chooseNoteViewModel: ChooseNoteViewModel,
@@ -28,6 +43,22 @@ actual fun NotesMenuScreen(
     editFolder: (MenuItemUi.FolderUi) -> Unit,
     modifier: Modifier
 ) {
+    var onDropEvent by remember {
+        mutableStateOf(false)
+    }
+
+    val highlightBackground = WriteopiaTheme.colorScheme.highlight
+
+    val background by derivedStateOf {
+        if (onDropEvent) highlightBackground else Color.Unspecified
+    }
+
+    val dragAndDropTarget = dropTarget(
+        chooseNoteViewModel::loadFiles,
+        onStart = { onDropEvent = true },
+        onEnd = { onDropEvent = false },
+    )
+
     DesktopNotesMenu(
         chooseNoteViewModel = chooseNoteViewModel,
         sharedTransitionScope = sharedTransitionScope,
@@ -37,6 +68,50 @@ actual fun NotesMenuScreen(
         navigateToNotes = navigateToFolders,
 //        addFolder = addFolder,
 //        editFolder = editFolder,
-        modifier = modifier,
+        modifier = modifier.background(background).dragAndDropTarget(
+            shouldStartDragAndDrop = { event ->
+                event.awtTransferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)
+            },
+            target = dragAndDropTarget
+        ),
     )
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun dropTarget(
+    onFileReceived: (List<String>) -> Unit,
+    onStart: () -> Unit,
+    onEnd: () -> Unit,
+) = remember {
+    object : DragAndDropTarget {
+
+        // Highlights the border of a potential drop target
+        override fun onStarted(event: DragAndDropEvent) {
+            onStart()
+        }
+
+        override fun onEnded(event: DragAndDropEvent) {
+            onEnd()
+        }
+
+        override fun onDrop(event: DragAndDropEvent): Boolean {
+            val files = event.awtTransferable.let { transferable ->
+                if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                    val files =
+                        transferable.getTransferData(DataFlavor.javaFileListFlavor) as List<File>
+
+                    if (files.isNotEmpty()) {
+                        onFileReceived(files.map { file -> file.absolutePath })
+                    }
+
+                    files
+                } else {
+                    emptyList()
+                }
+            }
+
+            return files.isNotEmpty()
+        }
+    }
 }

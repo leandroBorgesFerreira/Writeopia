@@ -100,6 +100,30 @@
             "position": 8
         },
         {
+            "id": "vbMo1zBPXh",
+            "type": {
+                "name": "message",
+                "number": 0
+            },
+            "text": "Loading notes",
+            "tags": [
+                {
+                    "tag": "H3",
+                    "position": 0
+                }
+            ],
+            "position": 9
+        },
+        {
+            "id": "uO8ky85qpK",
+            "type": {
+                "name": "message",
+                "number": 0
+            },
+            "text": "You can sync the workspace to load all your notes or manually include notes individually. To include a single note, simply drag and drop your files into Writeopia, and they'll be added to the current folder.",
+            "position": 10
+        },
+        {
             "id": "TBw8hJkLhs",
             "type": {
                 "name": "message",
@@ -112,7 +136,7 @@
                     "position": 0
                 }
             ],
-            "position": 9
+            "position": 11
         },
         {
             "id": "QlH1ftsvrq",
@@ -121,7 +145,7 @@
                 "number": 0
             },
             "text": "With Writeopia, your notes are always yours! We save them in JSON instead of a proprietary format, and you can easily export them to Markdown. No lock-in—just complete freedom to use your data however you like!",
-            "position": 10
+            "position": 12
         },
         {
             "id": "K4m1UPiik2",
@@ -130,7 +154,7 @@
                 "number": 0
             },
             "text": "",
-            "position": 12
+            "position": 13
         }
     ],
     "createdAt": 1739863082548,

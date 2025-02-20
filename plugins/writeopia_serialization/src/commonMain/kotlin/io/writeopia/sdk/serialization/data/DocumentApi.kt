@@ -13,5 +13,5 @@ data class DocumentApi(
     val lastUpdatedAt: Long = Clock.System.now().toEpochMilliseconds(),
     val parentId: String,
     val isLocked: Boolean,
-    val icon: IconApi?
+    val icon: IconApi? = null
 )

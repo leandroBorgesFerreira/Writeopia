@@ -1,0 +1,38 @@
+{
+    "id": "rAFmwUQc0W",
+    "title": "asd",
+    "userId": "disconnected_user",
+    "content": [
+        {
+            "id": "J4MBKJZcnp",
+            "type": {
+                "name": "title",
+                "number": 11
+            },
+            "text": "asd",
+            "position": 0
+        },
+        {
+            "id": "EvWtY663VG",
+            "type": {
+                "name": "message",
+                "number": 0
+            },
+            "text": "asd",
+            "position": 1
+        },
+        {
+            "id": "a2YUaLcsc9",
+            "type": {
+                "name": "message",
+                "number": 0
+            },
+            "text": "asd",
+            "position": 2
+        }
+    ],
+    "createdAt": 1740058587399,
+    "lastUpdatedAt": 1740058588887,
+    "parentId": "favorites",
+    "isLocked": false
+}
