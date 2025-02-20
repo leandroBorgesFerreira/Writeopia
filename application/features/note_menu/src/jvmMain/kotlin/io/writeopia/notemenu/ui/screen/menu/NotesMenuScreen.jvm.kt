@@ -85,8 +85,6 @@ private fun dropTarget(
     onEnd: () -> Unit,
 ) = remember {
     object : DragAndDropTarget {
-
-        // Highlights the border of a potential drop target
         override fun onStarted(event: DragAndDropEvent) {
             onStart()
         }
