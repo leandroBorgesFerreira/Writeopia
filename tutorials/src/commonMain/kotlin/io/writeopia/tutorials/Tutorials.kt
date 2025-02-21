@@ -8,6 +8,7 @@ object Tutorials {
                 listOf(
                     welcomeTutorial(),
                     aiTutorial(),
+                    savingNotesTutorial(),
                     commandsTutorial()
                 ).reversed()
             )
