@@ -50,6 +50,7 @@ kotlin {
                 implementation(project(":application:core:resources"))
 
                 implementation(project(":application:features:account"))
+                implementation(project(":application:features:onboarding"))
 
                 implementation(libs.kotlinx.datetime)
 

@@ -3,6 +3,7 @@ package io.writeopia.resources
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.stringResource
 import writeopia.application.core.resources.generated.resources.Res
+import writeopia.application.core.resources.generated.resources.actions
 import writeopia.application.core.resources.generated.resources.arrangement
 import writeopia.application.core.resources.generated.resources.ask_ai
 import writeopia.application.core.resources.generated.resources.available_models
@@ -15,9 +16,11 @@ import writeopia.application.core.resources.generated.resources.download_models
 import writeopia.application.core.resources.generated.resources.error_model_download
 import writeopia.application.core.resources.generated.resources.error_requesting_models
 import writeopia.application.core.resources.generated.resources.export
+import writeopia.application.core.resources.generated.resources.export_json
 import writeopia.application.core.resources.generated.resources.export_markdown
 import writeopia.application.core.resources.generated.resources.favorites
 import writeopia.application.core.resources.generated.resources.folder
+import writeopia.application.core.resources.generated.resources.font
 import writeopia.application.core.resources.generated.resources.home
 import writeopia.application.core.resources.generated.resources.image
 import writeopia.application.core.resources.generated.resources.import_file
@@ -119,6 +122,9 @@ object WrStrings {
     fun exportMarkdown() = stringResource(Res.string.export_markdown)
 
     @Composable
+    fun exportJson() = stringResource(Res.string.export_json)
+
+    @Composable
     fun importFile() = stringResource(Res.string.import_file)
 
     @Composable
@@ -189,4 +195,10 @@ object WrStrings {
 
     @Composable
     fun name() = stringResource(Res.string.name)
+
+    @Composable
+    fun font() = stringResource(Res.string.font)
+
+    @Composable
+    fun actions() = stringResource(Res.string.actions)
 }

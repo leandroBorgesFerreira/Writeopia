@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import io.writeopia.common.utils.file.directoryChooserSave
 import io.writeopia.common.utils.icons.WrIcons
@@ -39,6 +42,7 @@ import io.writeopia.notemenu.viewmodel.ChooseNoteViewModel
 import io.writeopia.notemenu.viewmodel.ConfigState
 import io.writeopia.notemenu.viewmodel.getPath
 import io.writeopia.notemenu.viewmodel.toNumberDesktop
+import io.writeopia.onboarding.OnboardingWorkspace
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -122,7 +126,7 @@ fun DesktopNotesMenu(
                     showSortOptionsRequest = chooseNoteViewModel::showSortMenu,
                     hideSortOptionsRequest = chooseNoteViewModel::cancelSortMenu,
                     staggeredGridSelected =
-                        chooseNoteViewModel::staggeredGridArrangementSelected,
+                    chooseNoteViewModel::staggeredGridArrangementSelected,
                     gridSelected = chooseNoteViewModel::gridArrangementSelected,
                     listSelected = chooseNoteViewModel::listArrangementSelected,
                     selectSortOption = chooseNoteViewModel::sortingSelected,
@@ -131,17 +135,33 @@ fun DesktopNotesMenu(
             }
         }
 
+        val showOnboard by chooseNoteViewModel.showOnboardingState.collectAsState()
+
         FloatingActionButton(
             modifier = Modifier.align(Alignment.BottomEnd)
                 .padding(horizontal = 40.dp - borderPadding, vertical = 40.dp)
                 .testTag("addNote"),
-            onClick = onNewNoteClick,
+            onClick = {
+                chooseNoteViewModel.showOnboarding()
+            },
             content = {
                 Icon(
                     imageVector = WrIcons.add,
                     contentDescription = "New note",
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
+
+                DropdownMenu(
+                    expanded = showOnboard,
+                    onDismissRequest = chooseNoteViewModel::hideOnboarding,
+                    offset = DpOffset(20.dp, 0.dp),
+                    border = BorderStroke(
+                        1.dp,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2F)
+                    )
+                ) {
+                    OnboardingWorkspace()
+                }
             },
             containerColor = MaterialTheme.colorScheme.primary
         )
