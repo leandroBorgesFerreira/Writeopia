@@ -1,6 +1,8 @@
 plugins {
     kotlin("multiplatform")
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.compose.multiplatform)
+    alias(libs.plugins.compose.multiplatform.compiler)
 }
 
 kotlin {

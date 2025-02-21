@@ -24,7 +24,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "WriteopiaFeaturesSearch"
+            baseName = "WriteopiaFeaturesAuth"
             isStatic = true
         }
     }
