@@ -76,7 +76,7 @@ private fun Configuration(
         Spacer(modifier = Modifier.height(4.dp))
 
         Text(
-            "Start to use Writeopia. We provide a tutorial so you can configure it to use AI with privacy.",
+            "We provide a tutorial so you can configure it to use AI without exposing your data.",
             style = MaterialTheme.typography.bodyMedium,
             fontSize = 12.sp,
         )
