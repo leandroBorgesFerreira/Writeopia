@@ -368,7 +368,7 @@ class GlobalShellKmpViewModel(
         _retryModels.value = Random.nextInt()
     }
 
-    override fun modelToDownload(model: String) {
+    override fun modelToDownload(model: String, onComplete: () -> Unit) {
         if (model.isEmpty()) return
 
         viewModelScope.launch(Dispatchers.Default) {
@@ -378,6 +378,7 @@ class GlobalShellKmpViewModel(
                 ollamaRepository.downloadModel(model, url)
                     .onCompletion {
                         retryModels()
+                        onComplete()
                     }
                     .collectLatest { result ->
                         _downloadModelState.value = result

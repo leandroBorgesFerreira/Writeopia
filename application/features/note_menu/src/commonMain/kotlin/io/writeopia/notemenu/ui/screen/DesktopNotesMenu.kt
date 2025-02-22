@@ -139,7 +139,7 @@ fun DesktopNotesMenu(
 
         val showOnboard by chooseNoteViewModel.showOnboardingState.collectAsState()
 
-        LocalToastInfo.current.hideGlobalContent = showOnboard
+        LocalToastInfo.current.hideGlobalContent = showOnboard.shouldShow()
 
         FloatingActionButton(
             modifier = Modifier.align(Alignment.BottomEnd)
@@ -157,7 +157,7 @@ fun DesktopNotesMenu(
 
                 if (ollamaConfigController != null) {
                     DropdownMenu(
-                        expanded = showOnboard,
+                        expanded = showOnboard.shouldShow(),
                         onDismissRequest = chooseNoteViewModel::hideOnboarding,
                         offset = DpOffset(20.dp, 0.dp),
                         shape = MaterialTheme.shapes.large,
@@ -166,11 +166,15 @@ fun DesktopNotesMenu(
                             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2F)
                         )
                     ) {
-
-
                         OnboardingWorkspace(
+                            showOnboard = showOnboard,
                             downloadModelState = ollamaConfigController.downloadModelState,
-                            downloadModel = ollamaConfigController::modelToDownload,
+                            downloadModel = { model ->
+                                ollamaConfigController.modelToDownload(
+                                    model,
+                                    onComplete = { chooseNoteViewModel.completeOnboarding() }
+                                )
+                            },
                         )
                     }
                 }

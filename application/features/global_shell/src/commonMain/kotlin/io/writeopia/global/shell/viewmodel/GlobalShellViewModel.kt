@@ -62,7 +62,7 @@ interface GlobalShellViewModel : FolderController, OllamaConfigController {
 
     override fun retryModels()
 
-    override fun modelToDownload(model: String)
+    override fun modelToDownload(model: String, onComplete: () -> Unit)
 
     override fun deleteModel(model: String)
 }

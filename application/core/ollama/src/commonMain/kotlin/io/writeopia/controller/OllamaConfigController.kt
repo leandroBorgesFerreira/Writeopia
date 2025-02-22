@@ -20,7 +20,7 @@ interface OllamaConfigController {
 
     fun retryModels()
 
-    fun modelToDownload(model: String)
+    fun modelToDownload(model: String, onComplete: () -> Unit = {})
 
     fun deleteModel(model: String)
 }
