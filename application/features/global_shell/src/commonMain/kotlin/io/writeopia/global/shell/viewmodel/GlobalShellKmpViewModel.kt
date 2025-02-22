@@ -134,9 +134,13 @@ class GlobalShellKmpViewModel(
                     }
                 }
 
+
+
                 DownloadState(
                     title = response.modelName ?: "",
-                    info = info
+                    info = info,
+                    percentage = response.completed?.toFloat()
+                        ?.div(response.total?.toFloat() ?: 1F) ?: 0F
                 )
             }
         }.stateIn(viewModelScope, SharingStarted.Lazily, ResultData.Idle())

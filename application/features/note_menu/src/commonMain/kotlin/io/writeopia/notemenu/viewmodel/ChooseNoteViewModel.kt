@@ -33,6 +33,8 @@ interface ChooseNoteViewModel : FolderController {
 
     val titlesToDelete: StateFlow<List<String>>
 
+    val showOnboardingState: StateFlow<Boolean>
+
     //    fun requestDocuments(force: Boolean)
     fun handleMenuItemTap(id: String): Boolean
 
@@ -87,6 +89,10 @@ interface ChooseNoteViewModel : FolderController {
     fun requestPermissionToDeleteSelection()
 
     fun cancelDeletion()
+
+    fun showOnboarding()
+
+    fun hideOnboarding()
 }
 
 sealed interface UserState<T> {

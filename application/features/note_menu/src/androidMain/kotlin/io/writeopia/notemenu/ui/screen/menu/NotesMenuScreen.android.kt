@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import io.writeopia.commonui.dtos.MenuItemUi
+import io.writeopia.controller.OllamaConfigController
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.viewmodel.ChooseNoteViewModel
@@ -15,6 +16,7 @@ import io.writeopia.notemenu.viewmodel.ChooseNoteViewModel
 @Composable
 actual fun NotesMenuScreen(
     chooseNoteViewModel: ChooseNoteViewModel,
+    ollamaConfigController: OllamaConfigController?,
     navigationController: NavController,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,

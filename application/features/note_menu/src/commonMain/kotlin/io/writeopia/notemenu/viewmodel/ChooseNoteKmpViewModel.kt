@@ -77,6 +77,9 @@ internal class ChooseNoteKmpViewModel(
         }
     }
 
+    private val _showOnboardingState = MutableStateFlow(true)
+    override val showOnboardingState: StateFlow<Boolean> = _showOnboardingState.asStateFlow()
+
     private val _selectedNotes = MutableStateFlow(setOf<String>())
     override val hasSelectedNotes: StateFlow<Boolean> by lazy {
         _selectedNotes.map { selectedIds ->
@@ -414,6 +417,14 @@ internal class ChooseNoteKmpViewModel(
 
     override fun cancelDeletion() {
         _askToDelete.value = false
+    }
+
+    override fun showOnboarding() {
+        _showOnboardingState.value = true
+    }
+
+    override fun hideOnboarding() {
+        _showOnboardingState.value = false
     }
 
     private fun handleStorage(workspaceFunc: suspend (String) -> Unit, syncRequest: SyncRequest) {

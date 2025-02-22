@@ -20,6 +20,7 @@ import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import io.writeopia.common.utils.keyboard.KeyboardCommands
+import io.writeopia.common.utils.ui.GlobalToastBox
 import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.DesktopApp
@@ -175,19 +176,21 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                     val colorTheme =
                         uiConfigurationViewModel.listenForColorTheme { "disconnected_user" }
 
-                    DesktopApp(
-                        notesInjector = notesInjector,
-                        repositoryInjection = sqlDelightDaoInjector,
-                        uiConfigurationInjector = uiConfigurationInjector,
-                        selectionState = selectionState,
-                        keyboardEventFlow = keyboardEventFlow.filterNotNull(),
-                        coroutineScope = coroutineScope,
-                        isUndoKeyEvent = KeyboardCommands::isUndoKeyboardEvent,
-                        colorThemeOption = colorTheme,
-                        selectColorTheme = uiConfigurationViewModel::changeColorTheme,
-                        writeopiaDb = database,
-                        toggleMaxScreen = topDoubleBarClick
-                    )
+                    GlobalToastBox {
+                        DesktopApp(
+                            notesInjector = notesInjector,
+                            repositoryInjection = sqlDelightDaoInjector,
+                            uiConfigurationInjector = uiConfigurationInjector,
+                            selectionState = selectionState,
+                            keyboardEventFlow = keyboardEventFlow.filterNotNull(),
+                            coroutineScope = coroutineScope,
+                            isUndoKeyEvent = KeyboardCommands::isUndoKeyboardEvent,
+                            colorThemeOption = colorTheme,
+                            selectColorTheme = uiConfigurationViewModel::changeColorTheme,
+                            writeopiaDb = database,
+                            toggleMaxScreen = topDoubleBarClick
+                        )
+                    }
                 }
 
                 DatabaseCreation.Loading -> {

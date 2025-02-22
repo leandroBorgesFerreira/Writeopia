@@ -139,7 +139,7 @@ fun DesktopApp(
     val searchInjection = KmpSearchInjection(writeopiaDb)
 
     val globalShellViewModel: GlobalShellViewModel =
-        sideMenuInjector.provideSideMenuViewModel(coroutineScope)
+        sideMenuInjector.provideSideMenuViewModel()
     val colorTheme = colorThemeOption.collectAsState().value
     val navigationController: NavHostController = rememberNavController()
     val searchViewModel = searchInjection.provideViewModel()
@@ -224,6 +224,7 @@ fun DesktopApp(
                             Navigation(
                                 startDestination = startDestination,
                                 notesMenuInjection = notesMenuInjection,
+                                sideMenuKmpInjector = sideMenuInjector,
                                 accountMenuInjector = accountInjector,
                                 editorInjector = editorInjector,
                                 isUndoKeyEvent = isUndoKeyEvent,

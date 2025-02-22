@@ -7,7 +7,5 @@ import kotlinx.coroutines.CoroutineScope
 interface SideMenuInjector {
 
     @Composable
-    fun provideSideMenuViewModel(
-        coroutineScope: CoroutineScope?,
-    ): GlobalShellViewModel
+    fun provideSideMenuViewModel(): GlobalShellViewModel
 }

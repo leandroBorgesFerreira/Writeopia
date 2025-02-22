@@ -20,7 +20,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "ComposeApp"
+            baseName = "WriteoppiaApp"
             isStatic = true
         }
     }
@@ -56,6 +56,7 @@ kotlin {
                 implementation(project(":application:features:editor"))
                 implementation(project(":application:features:account"))
                 implementation(project(":application:features:search"))
+                implementation(project(":application:features:global_shell"))
 
                 implementation(libs.room.runtime)
 

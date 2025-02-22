@@ -48,8 +48,10 @@ kotlin {
                 implementation(project(":application:core:theme"))
                 implementation(project(":application:core:folders"))
                 implementation(project(":application:core:resources"))
+                implementation(project(":application:core:ollama"))
 
                 implementation(project(":application:features:account"))
+                implementation(project(":application:features:onboarding"))
 
                 implementation(libs.kotlinx.datetime)
 
@@ -59,6 +61,7 @@ kotlin {
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.compose.navigation)
+                implementation(libs.kotlinx.coroutines.core)
             }
         }
 
