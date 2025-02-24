@@ -28,15 +28,16 @@ class CheckItemPreviewDrawer(
     @Composable
     override fun Step(step: StoryStep, drawInfo: DrawInfo) {
         val textColor = MaterialTheme.colorScheme.onBackground
+        val fontSize = 12.sp
 
         val textStyle = if (step.checked == true) {
             MaterialTheme.typography.bodyMedium.copy(
                 textDecoration = TextDecoration.LineThrough,
-                fontSize = 15.sp
+                fontSize = fontSize
             )
         } else {
             MaterialTheme.typography.bodyMedium.copy(
-                fontSize = 15.sp
+                fontSize = fontSize
             )
         }
 
