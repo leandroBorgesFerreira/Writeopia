@@ -71,4 +71,15 @@
   <string name="page">Página</string>
   <string name="ask_ai">Pergunte à IA</string>
   <string name="tap_to_start">Click aqui para <font fgcolor='#FFFF3B30'>escrever</font> sua próxima grande idéia</string>
+  <string name="font">Fonte</string>
+  <string name="actions">Ações</string>
+  <string name="onboarding_hello">Bem vindo!</string>
+  <string name="onboarding_explain1">Siga o nosso tutorial para configurar o uso de AI de maneira privada.</string>
+  <string name="onboarding_select_ai">Selecione a AI que você gostaria de usar</string>
+  <string name="close">Close</string>
+  <string name="download_ollama">Para usar IA, baixe o Ollama</string>
+  <string name="access_ollama_site">Acesse ollama.com</string>
+  <string name="ollama_configuration_complete">Configuração completa!</string>
+  <string name="private_ai_enabled">Agora você pode usar IA de maneira privada</string>
+  <string name="small_robot">Pequeno robô</string>
 </resources>

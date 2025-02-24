@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 @Composable
-internal fun transparentTextInputColors() =
+fun transparentTextInputColors() =
     TextFieldDefaults.colors(
         focusedIndicatorColor = Color.Transparent,
         focusedContainerColor = Color.Transparent,

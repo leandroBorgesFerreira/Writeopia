@@ -20,7 +20,9 @@ class OllamaRepository(
     fun streamReply(model: String, prompt: String, url: String): Flow<ResultData<String>> =
         ollamaApi.streamReply(model, prompt, url)
 
-    fun getModels(url: String): Flow<ResultData<ModelsResponse>> = ollamaApi.getModels(url)
+    fun listenToModels(url: String): Flow<ResultData<ModelsResponse>> = ollamaApi.getModelsAsFlow(url)
+
+    suspend fun getModels(url: String): ResultData<ModelsResponse> = ollamaApi.getModels(url)
 
     suspend fun saveOllamaUrl(id: String, url: String) {
         ollamaDao?.updateConfiguration(id) {

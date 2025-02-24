@@ -2,6 +2,8 @@ plugins {
     kotlin("multiplatform")
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.compose.multiplatform)
+    alias(libs.plugins.compose.multiplatform.compiler)
 }
 
 kotlin {
@@ -38,6 +40,7 @@ kotlin {
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.ktor.client.core)
                 implementation(libs.kotlinx.serialization.json)
+                implementation(compose.foundation)
             }
         }
     }

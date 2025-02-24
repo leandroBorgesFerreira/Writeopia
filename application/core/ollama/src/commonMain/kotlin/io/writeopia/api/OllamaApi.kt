@@ -141,7 +141,7 @@ class OllamaApi(
             }
         }
 
-    fun getModels(url: String): Flow<ResultData<ModelsResponse>> {
+    fun getModelsAsFlow(url: String): Flow<ResultData<ModelsResponse>> {
         return flow {
             try {
                 emit(ResultData.Loading())
@@ -156,6 +156,17 @@ class OllamaApi(
             }
         }
     }
+
+    suspend fun getModels(url: String): ResultData<ModelsResponse> =
+        try {
+            val request = client.get("${url.trim()}/${EndPoints.ollamaModels()}") {
+                contentType(ContentType.Application.Json)
+            }
+
+            ResultData.Complete(request.body())
+        } catch (e: Exception) {
+            ResultData.Error(e)
+        }
 
     companion object {
         fun defaultUrl() = "http://localhost:11434"

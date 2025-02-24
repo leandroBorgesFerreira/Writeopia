@@ -16,6 +16,7 @@ import io.writeopia.editor.navigation.editorNavigation
 import io.writeopia.features.notifications.navigation.notificationsNavigation
 import io.writeopia.features.search.di.SearchInjection
 import io.writeopia.features.search.navigation.searchNavigation
+import io.writeopia.global.shell.di.SideMenuKmpInjector
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.navigation.notes.navigateToAccount
 import io.writeopia.navigation.notes.navigateToFolder
@@ -31,6 +32,7 @@ fun Navigation(
     startDestination: String = Destinations.AUTH_MENU_INNER_NAVIGATION.id,
     navController: NavHostController = rememberNavController(),
     notesMenuInjection: NotesMenuInjection,
+    sideMenuKmpInjector: SideMenuKmpInjector? = null,
     editorInjector: TextEditorInjector,
     accountMenuInjector: AccountMenuInjector,
     searchInjection: SearchInjection? = null,
@@ -42,6 +44,7 @@ fun Navigation(
         NavHost(navController = navController, startDestination = startDestination) {
             notesMenuNavigation(
                 notesMenuInjection = notesMenuInjection,
+                ollamaConfigInjector = sideMenuKmpInjector,
                 navigationController = navController,
                 sharedTransitionScope = this@SharedTransitionLayout,
                 selectColorTheme = selectColorTheme,

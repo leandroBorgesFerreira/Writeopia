@@ -17,7 +17,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "WriteopiaFeaturesSqldelight"
+            baseName = "WriteopiaFeaturesRoom"
             isStatic = true
         }
     }
