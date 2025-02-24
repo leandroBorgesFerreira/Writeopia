@@ -3,16 +3,19 @@ package io.writeopia.resources
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.stringResource
 import writeopia.application.core.resources.generated.resources.Res
+import writeopia.application.core.resources.generated.resources.access_ollama_site
 import writeopia.application.core.resources.generated.resources.actions
 import writeopia.application.core.resources.generated.resources.arrangement
 import writeopia.application.core.resources.generated.resources.ask_ai
 import writeopia.application.core.resources.generated.resources.available_models
 import writeopia.application.core.resources.generated.resources.box
+import writeopia.application.core.resources.generated.resources.close
 import writeopia.application.core.resources.generated.resources.color_theme
 import writeopia.application.core.resources.generated.resources.content
 import writeopia.application.core.resources.generated.resources.dark_theme
 import writeopia.application.core.resources.generated.resources.decoration
 import writeopia.application.core.resources.generated.resources.download_models
+import writeopia.application.core.resources.generated.resources.download_ollama
 import writeopia.application.core.resources.generated.resources.error_model_download
 import writeopia.application.core.resources.generated.resources.error_requesting_models
 import writeopia.application.core.resources.generated.resources.export
@@ -37,11 +40,17 @@ import writeopia.application.core.resources.generated.resources.move_to_home
 import writeopia.application.core.resources.generated.resources.name
 import writeopia.application.core.resources.generated.resources.no_models
 import writeopia.application.core.resources.generated.resources.ollama
+import writeopia.application.core.resources.generated.resources.ollama_configuration_complete
+import writeopia.application.core.resources.generated.resources.onboarding_explain1
+import writeopia.application.core.resources.generated.resources.onboarding_hello
+import writeopia.application.core.resources.generated.resources.onboarding_select_ai
 import writeopia.application.core.resources.generated.resources.page
+import writeopia.application.core.resources.generated.resources.private_ai_enabled
 import writeopia.application.core.resources.generated.resources.recent
 import writeopia.application.core.resources.generated.resources.retry
 import writeopia.application.core.resources.generated.resources.search
 import writeopia.application.core.resources.generated.resources.settings
+import writeopia.application.core.resources.generated.resources.small_robot
 import writeopia.application.core.resources.generated.resources.sort_by_creation
 import writeopia.application.core.resources.generated.resources.sort_by_name
 import writeopia.application.core.resources.generated.resources.sort_by_update
@@ -201,4 +210,31 @@ object WrStrings {
 
     @Composable
     fun actions() = stringResource(Res.string.actions)
+
+    @Composable
+    fun onboardingHello() = stringResource(Res.string.onboarding_hello)
+
+    @Composable
+    fun onboardingTutorialExplain() = stringResource(Res.string.onboarding_explain1)
+
+    @Composable
+    fun onboardingChooseAi() = stringResource(Res.string.onboarding_select_ai)
+
+    @Composable
+    fun close() = stringResource(Res.string.close)
+
+    @Composable
+    fun downloadOllama() = stringResource(Res.string.download_ollama)
+
+    @Composable
+    fun accessOllamaSite() = stringResource(Res.string.access_ollama_site)
+
+    @Composable
+    fun ollamaConfigComplete() = stringResource(Res.string.ollama_configuration_complete)
+
+    @Composable
+    fun privateAiEnabled() = stringResource(Res.string.private_ai_enabled)
+
+    @Composable
+    fun smallRobot() = stringResource(Res.string.small_robot)
 }

@@ -34,6 +34,7 @@ kotlin {
             implementation(project(":application:core:theme"))
             implementation(project(":application:core:utils"))
             implementation(project(":application:features:account"))
+            implementation(project(":application:core:resources"))
         }
 
         val commonTest by getting {

@@ -1,12 +1,15 @@
 package io.writeopia.onboarding
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -34,6 +37,8 @@ import io.writeopia.account.ui.DownloadModels
 import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.download.DownloadState
 import io.writeopia.common.utils.icons.WrIcons
+import io.writeopia.resources.WrImages
+import io.writeopia.resources.WrStrings
 import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.StateFlow
 
@@ -53,7 +58,7 @@ fun OnboardingWorkspace(
                 }
 
                 OnboardingState.CONGRATULATION -> {
-                    Text("Ready!!", modifier = Modifier.align(Alignment.Center))
+                    ConfigurationComplete()
                 }
 
                 OnboardingState.HIDDEN, OnboardingState.COMPLETE -> {}
@@ -61,7 +66,7 @@ fun OnboardingWorkspace(
 
             Icon(
                 imageVector = WrIcons.close,
-                contentDescription = "Close",
+                contentDescription = WrStrings.close(),
                 modifier = Modifier.align(Alignment.TopEnd)
                     .padding(end = 8.dp)
                     .clip(CircleShape)
@@ -100,7 +105,7 @@ private fun Configuration(
             .padding(horizontal = 20.dp, vertical = 12.dp)
     ) {
         Text(
-            "Hello, welcome!",
+            text = WrStrings.onboardingHello(),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold
         )
@@ -108,7 +113,7 @@ private fun Configuration(
         Spacer(modifier = Modifier.height(4.dp))
 
         Text(
-            "We provide a tutorial so you can configure it to use AI without exposing your data.",
+            text = WrStrings.onboardingTutorialExplain(),
             style = MaterialTheme.typography.bodyMedium,
             fontSize = 12.sp,
         )
@@ -124,7 +129,7 @@ private fun Configuration(
         Spacer(modifier = Modifier.height(12.dp))
 
         Text(
-            text = "Select one AI that you would like to use. ",
+            text = WrStrings.onboardingChooseAi(),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground,
             fontSize = 14.sp,
@@ -168,7 +173,7 @@ private fun DownloadOllamaStep() {
     ) {
         Column(modifier = Modifier.weight(1F)) {
             Text(
-                text = "To use AI, download Ollama",
+                text = WrStrings.downloadOllama(),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 14.sp,
@@ -180,7 +185,7 @@ private fun DownloadOllamaStep() {
             val uriHandler = LocalUriHandler.current
 
             Text(
-                text = "Access ollama.com",
+                text = WrStrings.accessOllamaSite(),
                 style = MaterialTheme.typography.bodySmall,
                 color = WriteopiaTheme.colorScheme.textLight,
                 fontSize = 12.sp,
@@ -189,7 +194,6 @@ private fun DownloadOllamaStep() {
                 }.pointerHoverIcon(icon = PointerIcon.Hand)
             )
         }
-
 
         Box(
             modifier = Modifier.padding(8.dp)
@@ -203,5 +207,39 @@ private fun DownloadOllamaStep() {
                 color = Color.White
             )
         }
+    }
+}
+
+@Composable
+private fun BoxScope.ConfigurationComplete(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier.fillMaxWidth().align(Alignment.Center),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(12.dp))
+
+        WrImages.onboardingRobot()?.let { image ->
+            Image(
+                painter = image,
+                contentDescription = WrStrings.smallRobot(),
+            )
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = WrStrings.ollamaConfigComplete(),
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = WrStrings.privateAiEnabled(),
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.Bold,
+            color = WriteopiaTheme.colorScheme.textLighter
+        )
     }
 }
