@@ -62,6 +62,14 @@ internal class ChooseNoteKmpViewModel(
         folderController.initCoroutine(viewModelScope)
 
         viewModelScope.launch(Dispatchers.Default) {
+            val onboarded = notesConfig.isOnboarded()
+
+            _showOnboardingState.value = if (onboarded) {
+                OnboardingState.COMPLETE
+            } else {
+                OnboardingState.CONFIGURATION
+            }
+
             keyboardEventFlow.collect { event ->
                 when (event) {
                     KeyboardEvent.DELETE -> {
@@ -422,8 +430,14 @@ internal class ChooseNoteKmpViewModel(
         _askToDelete.value = false
     }
 
-    override fun showOnboarding() {
-        _showOnboardingState.value = OnboardingState.CONFIGURATION
+    override fun requestInitFlow(flow: () -> Unit) {
+        val onboarding = _showOnboardingState.value
+
+        if (onboarding == OnboardingState.HIDDEN) {
+            _showOnboardingState.value = OnboardingState.CONFIGURATION
+        } else {
+            flow()
+        }
     }
 
     override fun hideOnboarding() {
@@ -432,8 +446,16 @@ internal class ChooseNoteKmpViewModel(
 
     override fun completeOnboarding() {
         viewModelScope.launch {
+            notesConfig.setOnboarded()
             _showOnboardingState.value = OnboardingState.CONGRATULATION
             delay(3000)
+            _showOnboardingState.value = OnboardingState.COMPLETE
+        }
+    }
+
+    override fun closeOnboardingPermanently() {
+        viewModelScope.launch {
+            notesConfig.setOnboarded()
             _showOnboardingState.value = OnboardingState.COMPLETE
         }
     }

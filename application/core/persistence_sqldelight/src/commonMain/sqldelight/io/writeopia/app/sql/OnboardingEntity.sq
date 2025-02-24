@@ -6,6 +6,7 @@ CREATE TABLE onboardingEntity (
 query:
 SELECT *
 FROM onboardingEntity
+WHERE id = ?
 LIMIT 1;
 
 insert:

@@ -91,9 +91,11 @@ interface ChooseNoteViewModel : FolderController {
 
     fun cancelDeletion()
 
-    fun showOnboarding()
+    fun requestInitFlow(flow: () -> Unit)
 
     fun hideOnboarding()
+
+    fun closeOnboardingPermanently()
 
     fun completeOnboarding()
 }

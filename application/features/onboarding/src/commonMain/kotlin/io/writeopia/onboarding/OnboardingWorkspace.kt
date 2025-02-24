@@ -15,11 +15,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
@@ -31,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import io.writeopia.account.ui.DownloadModels
 import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.download.DownloadState
+import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.StateFlow
 
@@ -39,12 +42,11 @@ fun OnboardingWorkspace(
     showOnboard: OnboardingState,
     downloadModelState: StateFlow<ResultData<DownloadState>>,
     downloadModel: (String) -> Unit,
+    onCloseClick: () -> Unit,
+    onClosePermanentlyClick: () -> Unit,
 ) {
     Crossfade(showOnboard) { state ->
-        Box(
-            modifier = Modifier.size(width = 400.dp, height = 350.dp)
-                .padding(horizontal = 20.dp, vertical = 12.dp)
-        ) {
+        Box(modifier = Modifier.size(width = 400.dp, height = 350.dp)) {
             when (state) {
                 OnboardingState.CONFIGURATION -> {
                     Configuration(downloadModelState, downloadModel)
@@ -56,9 +58,36 @@ fun OnboardingWorkspace(
 
                 OnboardingState.HIDDEN, OnboardingState.COMPLETE -> {}
             }
+
+            Icon(
+                imageVector = WrIcons.close,
+                contentDescription = "Close",
+                modifier = Modifier.align(Alignment.TopEnd)
+                    .padding(end = 8.dp)
+                    .clip(CircleShape)
+                    .clickable(onClick = onCloseClick)
+                    .padding(6.dp)
+            )
+
+            Text(
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .clip(MaterialTheme.shapes.medium)
+                    .clickable(onClick = onClosePermanentlyClick)
+                    .background(
+                        MaterialTheme.colorScheme.surfaceVariant,
+                        MaterialTheme.shapes.medium
+                    )
+                    .padding(8.dp)
+                    .align(Alignment.BottomEnd),
+                text = "Don't show again",
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
         }
     }
-
 }
 
 @Composable
@@ -66,7 +95,10 @@ private fun Configuration(
     downloadModelState: StateFlow<ResultData<DownloadState>>,
     downloadModel: (String) -> Unit,
 ) {
-    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+    Column(
+        modifier = Modifier.verticalScroll(rememberScrollState())
+            .padding(horizontal = 20.dp, vertical = 12.dp)
+    ) {
         Text(
             "Hello, welcome!",
             style = MaterialTheme.typography.titleMedium,

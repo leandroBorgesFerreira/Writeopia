@@ -134,8 +134,6 @@ class GlobalShellKmpViewModel(
                     }
                 }
 
-
-
                 DownloadState(
                     title = response.modelName ?: "",
                     info = info,
@@ -168,7 +166,7 @@ class GlobalShellKmpViewModel(
         combine(ollamaUrl, _retryModels) { url, _ ->
             url
         }.flatMapLatest { url ->
-            ollamaRepository.getModels(url)
+            ollamaRepository.listenToModels(url)
         }.map { result ->
             result.map { modelResponse ->
                 val models = modelResponse.models
@@ -382,6 +380,18 @@ class GlobalShellKmpViewModel(
                     }
                     .collectLatest { result ->
                         _downloadModelState.value = result
+
+                        val modelsResult = ollamaRepository.getModels(url)
+
+                        if (
+                            modelsResult is ResultData.Complete &&
+                            modelsResult.data.models.size == 1
+                        ) {
+                            ollamaRepository.saveOllamaSelectedModel(
+                                "disconnected_user",
+                                modelsResult.data.models.first().model
+                            )
+                        }
                     }
             }
         }

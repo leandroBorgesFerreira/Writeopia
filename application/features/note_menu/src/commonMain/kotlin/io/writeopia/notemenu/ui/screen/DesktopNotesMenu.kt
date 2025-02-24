@@ -146,7 +146,7 @@ fun DesktopNotesMenu(
                 .padding(horizontal = 40.dp - borderPadding, vertical = 40.dp)
                 .testTag("addNote"),
             onClick = {
-                chooseNoteViewModel.showOnboarding()
+                chooseNoteViewModel.requestInitFlow(onNewNoteClick)
             },
             content = {
                 Icon(
@@ -175,6 +175,8 @@ fun DesktopNotesMenu(
                                     onComplete = { chooseNoteViewModel.completeOnboarding() }
                                 )
                             },
+                            onCloseClick = chooseNoteViewModel::hideOnboarding,
+                            onClosePermanentlyClick = chooseNoteViewModel::closeOnboardingPermanently,
                         )
                     }
                 }
