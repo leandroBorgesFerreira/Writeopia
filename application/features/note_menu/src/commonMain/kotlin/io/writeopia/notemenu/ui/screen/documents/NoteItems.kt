@@ -1,7 +1,9 @@
 package io.writeopia.notemenu.ui.screen.documents
 
 // import io.writeopia.appresourcers.R
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
@@ -107,63 +109,63 @@ fun NotesCards(
 
                     if (isEmpty) {
                         TapToStartButton(isEmpty, animatedVisibilityScope, newNote)
-                    }
+                    } else {
+                        val notesUi: NotesUi = documents.data
 
-                    val notesUi: NotesUi = documents.data
+                        val documentsUiList = notesUi.documentUiList
 
-                    val documentsUiList = notesUi.documentUiList
+                        val listModifier = Modifier
 
-                    val listModifier = Modifier
+                        when (notesUi.notesArrangement) {
+                            NotesArrangement.STAGGERED_GRID -> {
+                                LazyStaggeredGridNotes(
+                                    documentsUiList,
+                                    animatedVisibilityScope = animatedVisibilityScope,
+                                    sharedTransitionScope = sharedTransitionScope,
+                                    minimalNoteWidth = minimalNoteWidth,
+                                    selectionListener = selectionListener,
+                                    onDocumentClick = loadNote,
+                                    folderClick = folderClick,
+                                    moveRequest = moveRequest,
+                                    changeIcon = changeIcon,
+                                    onDragIconClick = onSelection,
+                                    newNote = newNote,
+                                    modifier = listModifier,
+                                )
+                            }
 
-                    when (notesUi.notesArrangement) {
-                        NotesArrangement.STAGGERED_GRID -> {
-                            LazyStaggeredGridNotes(
-                                documentsUiList,
-                                animatedVisibilityScope = animatedVisibilityScope,
-                                sharedTransitionScope = sharedTransitionScope,
-                                minimalNoteWidth = minimalNoteWidth,
-                                selectionListener = selectionListener,
-                                onDocumentClick = loadNote,
-                                folderClick = folderClick,
-                                moveRequest = moveRequest,
-                                changeIcon = changeIcon,
-                                onDragIconClick = onSelection,
-                                newNote = newNote,
-                                modifier = listModifier,
-                            )
-                        }
+                            NotesArrangement.GRID -> {
+                                LazyGridNotes(
+                                    documentsUiList,
+                                    animatedVisibilityScope = animatedVisibilityScope,
+                                    sharedTransitionScope = sharedTransitionScope,
+                                    minimalNoteWidth = minimalNoteWidth,
+                                    selectionListener = selectionListener,
+                                    onDocumentClick = loadNote,
+                                    folderClick = folderClick,
+                                    moveRequest = moveRequest,
+                                    changeIcon = changeIcon,
+                                    onDragIconClick = onSelection,
+                                    newNote = newNote,
+                                    modifier = listModifier,
+                                )
+                            }
 
-                        NotesArrangement.GRID -> {
-                            LazyGridNotes(
-                                documentsUiList,
-                                animatedVisibilityScope = animatedVisibilityScope,
-                                sharedTransitionScope = sharedTransitionScope,
-                                minimalNoteWidth = minimalNoteWidth,
-                                selectionListener = selectionListener,
-                                onDocumentClick = loadNote,
-                                folderClick = folderClick,
-                                moveRequest = moveRequest,
-                                changeIcon = changeIcon,
-                                onDragIconClick = onSelection,
-                                newNote = newNote,
-                                modifier = listModifier,
-                            )
-                        }
-
-                        NotesArrangement.LIST -> {
-                            LazyColumnNotes(
-                                documentsUiList,
-                                animatedVisibilityScope = animatedVisibilityScope,
-                                sharedTransitionScope = sharedTransitionScope,
-                                selectionListener = selectionListener,
-                                onDocumentClick = loadNote,
-                                folderClick = folderClick,
-                                moveRequest = moveRequest,
-                                changeIcon = changeIcon,
-                                onDragIconClick = onSelection,
-                                newNote = newNote,
-                                modifier = listModifier,
-                            )
+                            NotesArrangement.LIST -> {
+                                LazyColumnNotes(
+                                    documentsUiList,
+                                    animatedVisibilityScope = animatedVisibilityScope,
+                                    sharedTransitionScope = sharedTransitionScope,
+                                    selectionListener = selectionListener,
+                                    onDocumentClick = loadNote,
+                                    folderClick = folderClick,
+                                    moveRequest = moveRequest,
+                                    changeIcon = changeIcon,
+                                    onDragIconClick = onSelection,
+                                    newNote = newNote,
+                                    modifier = listModifier,
+                                )
+                            }
                         }
                     }
                 }
