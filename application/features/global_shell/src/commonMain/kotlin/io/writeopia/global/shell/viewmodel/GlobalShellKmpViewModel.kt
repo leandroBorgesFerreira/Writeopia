@@ -136,7 +136,9 @@ class GlobalShellKmpViewModel(
 
                 DownloadState(
                     title = response.modelName ?: "",
-                    info = info
+                    info = info,
+                    percentage = response.completed?.toFloat()
+                        ?.div(response.total?.toFloat() ?: 1F) ?: 0F
                 )
             }
         }.stateIn(viewModelScope, SharingStarted.Lazily, ResultData.Idle())
@@ -164,7 +166,7 @@ class GlobalShellKmpViewModel(
         combine(ollamaUrl, _retryModels) { url, _ ->
             url
         }.flatMapLatest { url ->
-            ollamaRepository.getModels(url)
+            ollamaRepository.listenToModels(url)
         }.map { result ->
             result.map { modelResponse ->
                 val models = modelResponse.models
@@ -364,7 +366,7 @@ class GlobalShellKmpViewModel(
         _retryModels.value = Random.nextInt()
     }
 
-    override fun modelToDownload(model: String) {
+    override fun modelToDownload(model: String, onComplete: () -> Unit) {
         if (model.isEmpty()) return
 
         viewModelScope.launch(Dispatchers.Default) {
@@ -374,9 +376,22 @@ class GlobalShellKmpViewModel(
                 ollamaRepository.downloadModel(model, url)
                     .onCompletion {
                         retryModels()
+                        onComplete()
                     }
                     .collectLatest { result ->
                         _downloadModelState.value = result
+
+                        val modelsResult = ollamaRepository.getModels(url)
+
+                        if (
+                            modelsResult is ResultData.Complete &&
+                            modelsResult.data.models.size == 1
+                        ) {
+                            ollamaRepository.saveOllamaSelectedModel(
+                                "disconnected_user",
+                                modelsResult.data.models.first().model
+                            )
+                        }
                     }
             }
         }

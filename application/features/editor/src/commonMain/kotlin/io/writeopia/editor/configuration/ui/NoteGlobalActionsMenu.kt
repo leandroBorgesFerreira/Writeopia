@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import io.writeopia.editor.features.editor.ui.desktop.edit.menu.FontOptions
 import io.writeopia.editor.features.editor.ui.desktop.edit.menu.LockButton
 import io.writeopia.model.Font
+import io.writeopia.resources.WrStrings
 import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.StateFlow
 
@@ -45,7 +46,7 @@ internal fun NoteGlobalActionsMenu(
     ) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        Title("Actions")
+        Title(WrStrings.actions())
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -58,7 +59,7 @@ internal fun NoteGlobalActionsMenu(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Title("Font")
+        Title(WrStrings.box())
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -71,22 +72,20 @@ internal fun NoteGlobalActionsMenu(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Title("Export")
+        Title(WrStrings.export())
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Row {
             ShareButton(
-                text = "Export as Json",
-//                stringResource(id = R.string.export_json),
+                text = WrStrings.exportJson(),
                 onClick = onShareJson
             )
 
             Spacer(modifier = Modifier.width(8.dp))
 
             ShareButton(
-                text = "Export as Markdown",
-//                stringResource(id = R.string.export_md),
+                text = WrStrings.exportMarkdown(),
                 onClick = onShareMd
             )
         }

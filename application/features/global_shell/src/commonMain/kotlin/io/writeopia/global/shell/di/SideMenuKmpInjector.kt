@@ -3,7 +3,9 @@ package io.writeopia.global.shell.di
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.auth.core.di.AuthCoreInjection
+import io.writeopia.controller.OllamaConfigController
 import io.writeopia.core.folders.repository.FolderRepository
+import io.writeopia.di.OllamaConfigInjector
 import io.writeopia.di.OllamaInjection
 import io.writeopia.global.shell.viewmodel.GlobalShellKmpViewModel
 import io.writeopia.global.shell.viewmodel.GlobalShellViewModel
@@ -24,7 +26,7 @@ class SideMenuKmpInjector(
     private val uiConfigurationInjector: UiConfigurationInjector,
     private val selectionState: StateFlow<Boolean>,
     private val ollamaInjection: OllamaInjection
-) : SideMenuInjector {
+) : SideMenuInjector, OllamaConfigInjector {
     private fun provideDocumentRepository(): DocumentRepository =
         repositoryInjection.provideDocumentRepository()
 
@@ -38,7 +40,7 @@ class SideMenuKmpInjector(
     }
 
     @Composable
-    override fun provideSideMenuViewModel(coroutineScope: CoroutineScope?): GlobalShellViewModel =
+    override fun provideSideMenuViewModel(): GlobalShellViewModel =
         viewModel {
             GlobalShellKmpViewModel(
                 notesUseCase = provideNotesUseCase(),
@@ -50,4 +52,8 @@ class SideMenuKmpInjector(
                 configRepository = notesInjector.provideNotesConfigurationRepository()
             )
         }
+
+    @Composable
+    override fun provideOllamaConfigController(): OllamaConfigController =
+        provideSideMenuViewModel()
 }

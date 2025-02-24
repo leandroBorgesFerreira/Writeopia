@@ -13,6 +13,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import io.writeopia.common.utils.Destinations
+import io.writeopia.di.OllamaConfigInjector
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.model.NotesNavigationType
@@ -30,6 +31,7 @@ object NoteMenuDestiny {
 @OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.notesMenuNavigation(
     notesMenuInjection: NotesMenuInjection,
+    ollamaConfigInjector: OllamaConfigInjector? = null,
     navigationController: NavController,
     sharedTransitionScope: SharedTransitionScope,
     selectColorTheme: (ColorThemeOption) -> Unit,
@@ -64,9 +66,11 @@ fun NavGraphBuilder.notesMenuNavigation(
 
         val chooseNoteViewModel: ChooseNoteViewModel =
             notesMenuInjection.provideChooseNoteViewModel(notesNavigation = notesNavigation)
+        val ollamaConfigController = ollamaConfigInjector?.provideOllamaConfigController()
 
         NotesMenuScreen(
             chooseNoteViewModel = chooseNoteViewModel,
+            ollamaConfigController = ollamaConfigController,
             navigationController = navigationController,
             animatedVisibilityScope = this@composable,
             sharedTransitionScope = sharedTransitionScope,

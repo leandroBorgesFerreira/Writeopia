@@ -51,6 +51,14 @@ class InMemoryConfigurationRepository private constructor() : ConfigurationRepos
         return false
     }
 
+    override suspend fun setTutorialNotes(hasTutorials: Boolean, userId: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun isOnboarded(): Boolean = true
+
+    override suspend fun setOnboarded() { }
+
     companion object {
         private var instance: InMemoryConfigurationRepository? = null
 
@@ -60,9 +68,5 @@ class InMemoryConfigurationRepository private constructor() : ConfigurationRepos
                 instance!!
             }
         }
-    }
-
-    override suspend fun setTutorialNotes(hasTutorials: Boolean, userId: String) {
-        TODO("Not yet implemented")
     }
 }

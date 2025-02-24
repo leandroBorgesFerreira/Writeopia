@@ -3,6 +3,7 @@ package io.writeopia.notemenu.viewmodel
 import io.writeopia.common.utils.ResultData
 import io.writeopia.notemenu.data.model.NotesArrangement
 import io.writeopia.notemenu.ui.dto.NotesUi
+import io.writeopia.onboarding.OnboardingState
 import io.writeopia.sdk.models.document.MenuItem
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import kotlinx.coroutines.flow.StateFlow
@@ -32,6 +33,8 @@ interface ChooseNoteViewModel : FolderController {
     val syncInProgress: StateFlow<SyncState>
 
     val titlesToDelete: StateFlow<List<String>>
+
+    val showOnboardingState: StateFlow<OnboardingState>
 
     //    fun requestDocuments(force: Boolean)
     fun handleMenuItemTap(id: String): Boolean
@@ -87,6 +90,14 @@ interface ChooseNoteViewModel : FolderController {
     fun requestPermissionToDeleteSelection()
 
     fun cancelDeletion()
+
+    fun requestInitFlow(flow: () -> Unit)
+
+    fun hideOnboarding()
+
+    fun closeOnboardingPermanently()
+
+    fun completeOnboarding()
 }
 
 sealed interface UserState<T> {

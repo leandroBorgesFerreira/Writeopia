@@ -3,8 +3,10 @@ package io.writeopia.account.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -21,9 +23,12 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -40,6 +45,7 @@ import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
@@ -186,9 +192,6 @@ fun SettingsScreen(
 
     Spacer(modifier = Modifier.height(20.dp))
 
-    val modelsResult = ollamaAvailableModels.collectAsState(ResultData.Idle()).value
-    val ollamaSelected by ollamaSelectedModel.collectAsState()
-
     if (showOllamaConfig) {
         Text(WrStrings.ollama(), style = titleStyle, color = titleColor)
 
@@ -221,98 +224,13 @@ fun SettingsScreen(
             color = titleColor
         )
 
-        Spacer(modifier = Modifier.height(SPACE_AFTER_SUB_TITLE.dp))
-
-        when (modelsResult) {
-            is ResultData.Complete -> {
-                modelsResult.data.forEachIndexed { i, model ->
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.clip(MaterialTheme.shapes.medium)
-                            .clickable {
-                                ollamaModelChange(model)
-                            }
-                            .let { modifierLet ->
-                                if (model == ollamaSelected) {
-                                    modifierLet.background(WriteopiaTheme.colorScheme.highlight)
-                                } else {
-                                    modifierLet
-                                }
-                            }
-                            .padding(8.dp)
-                    ) {
-                        Text(
-                            modifier = Modifier.weight(1F),
-                            text = model,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onBackground,
-                        )
-
-                        if (!model.startsWith("No models")) {
-                            Spacer(modifier = Modifier.width(6.dp))
-
-                            Icon(
-                                modifier = Modifier.clip(CircleShape)
-                                    .clickable {
-                                        deleteModel(model)
-                                    }
-                                    .padding(4.dp)
-                                    .size(20.dp),
-                                imageVector = WrIcons.delete,
-                                contentDescription = "Trash can",
-                                tint = Color.Red
-                            )
-                        }
-                    }
-
-                    if (i != modelsResult.data.lastIndex) {
-                        Spacer(modifier = Modifier.height(2.dp))
-                    }
-                }
-            }
-
-            is ResultData.Error -> {
-                val errorText = buildAnnotatedString {
-                    append(WrStrings.errorRequestingModels())
-                    withLink(LinkAnnotation.Url("https://ollama.com")) {
-                        withStyle(style = SpanStyle(color = WriteopiaTheme.colorScheme.linkColor)) {
-                            append("https://ollama.com")
-                        }
-                    }
-                }
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        modifier = Modifier
-                            .clip(MaterialTheme.shapes.medium)
-                            .padding(8.dp),
-                        text = errorText,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onBackground,
-                    )
-
-                    Text(
-                        modifier = Modifier
-                            .clip(MaterialTheme.shapes.medium)
-                            .clickable(onClick = ollamaModelsRetry)
-                            .background(
-                                WriteopiaTheme.colorScheme.highlight,
-                                MaterialTheme.shapes.medium
-                            )
-                            .padding(4.dp),
-                        text = WrStrings.retry(),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onBackground,
-                    )
-                }
-            }
-
-            is ResultData.Idle -> {}
-            is ResultData.Loading, is ResultData.InProgress -> {
-                CircularProgressIndicator()
-            }
-        }
+        SelectModels(
+            ollamaAvailableModels,
+            ollamaSelectedModel,
+            ollamaModelChange,
+            ollamaModelsRetry,
+            deleteModel
+        )
 
         Spacer(modifier = Modifier.height(14.dp))
 
@@ -322,107 +240,251 @@ fun SettingsScreen(
             color = titleColor
         )
 
-        Spacer(modifier = Modifier.height(SPACE_AFTER_SUB_TITLE.dp))
+        DownloadModels(downloadModelState, downloadModel)
+    }
 
-        var modelToDownload by remember {
-            mutableStateOf("")
+    Spacer(modifier = Modifier.height(30.dp))
+
+    Text(WrStrings.version(), style = MaterialTheme.typography.bodySmall)
+}
+
+@Composable
+fun SelectModels(
+    ollamaAvailableModels: Flow<ResultData<List<String>>>,
+    ollamaSelectedModel: StateFlow<String>,
+    ollamaModelChange: (String) -> Unit,
+    ollamaModelsRetry: () -> Unit,
+    deleteModel: (String) -> Unit,
+) {
+    val modelsResult = ollamaAvailableModels.collectAsState(ResultData.Idle()).value
+    val ollamaSelected by ollamaSelectedModel.collectAsState()
+
+    Spacer(modifier = Modifier.height(SPACE_AFTER_SUB_TITLE.dp))
+
+    when (modelsResult) {
+        is ResultData.Complete -> {
+            modelsResult.data.forEachIndexed { i, model ->
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.clip(MaterialTheme.shapes.medium)
+                        .clickable {
+                            ollamaModelChange(model)
+                        }
+                        .let { modifierLet ->
+                            if (model == ollamaSelected) {
+                                modifierLet.background(WriteopiaTheme.colorScheme.highlight)
+                            } else {
+                                modifierLet
+                            }
+                        }
+                        .padding(8.dp)
+                ) {
+                    Text(
+                        modifier = Modifier.weight(1F),
+                        text = model,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onBackground,
+                    )
+
+                    if (!model.startsWith("No models")) {
+                        Spacer(modifier = Modifier.width(6.dp))
+
+                        Icon(
+                            modifier = Modifier.clip(CircleShape)
+                                .clickable {
+                                    deleteModel(model)
+                                }
+                                .padding(4.dp)
+                                .size(20.dp),
+                            imageVector = WrIcons.delete,
+                            contentDescription = "Trash can",
+                            tint = Color.Red
+                        )
+                    }
+                }
+
+                if (i != modelsResult.data.lastIndex) {
+                    Spacer(modifier = Modifier.height(2.dp))
+                }
+            }
         }
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = WrStrings.suggestions(), style = MaterialTheme.typography.bodySmall)
+        is ResultData.Error -> {
+            val errorText = buildAnnotatedString {
+                append(WrStrings.errorRequestingModels())
+                withLink(LinkAnnotation.Url("https://ollama.com")) {
+                    withStyle(style = SpanStyle(color = WriteopiaTheme.colorScheme.linkColor)) {
+                        append("https://ollama.com")
+                    }
+                }
+            }
 
-            Spacer(modifier = Modifier.width(6.dp))
-
-            listOf("deepseek-r1:7b", "llama3.2").forEach { model ->
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     modifier = Modifier
-                        .padding(horizontal = 1.dp)
                         .clip(MaterialTheme.shapes.medium)
-                        .clickable {
-                            modelToDownload = model
-                        }
-                        .padding(8.dp),
-                    text = model,
+                        .padding(8.dp)
+                        .weight(1F),
+                    text = errorText,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+
+                Text(
+                    modifier = Modifier
+                        .clip(MaterialTheme.shapes.medium)
+                        .clickable(onClick = ollamaModelsRetry)
+                        .background(
+                            WriteopiaTheme.colorScheme.highlight,
+                            MaterialTheme.shapes.medium
+                        )
+                        .padding(4.dp),
+                    text = WrStrings.retry(),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(6.dp))
+        is ResultData.Idle -> {}
+        is ResultData.Loading, is ResultData.InProgress -> {
+            CircularProgressIndicator()
+        }
+    }
+}
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            BasicTextField(
-                modifier = Modifier.border(
-                    1.dp,
-                    MaterialTheme.colorScheme.onSurfaceVariant,
-                    MaterialTheme.shapes.medium
-                )
-                    .padding(10.dp)
-                    .weight(1F),
-                value = modelToDownload,
-                onValueChange = { value ->
-                    modelToDownload = value
-                },
-                textStyle = MaterialTheme.typography.bodySmall.copy(
-                    color = MaterialTheme.colorScheme.onBackground
-                ),
-                cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground)
-            )
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DownloadModels(
+    downloadModelState: StateFlow<ResultData<DownloadState>>,
+    downloadModel: (String) -> Unit,
+) {
+    Spacer(modifier = Modifier.height(SPACE_AFTER_SUB_TITLE.dp))
 
-            Spacer(modifier = Modifier.width(8.dp))
+    var modelToDownload by remember {
+        mutableStateOf("")
+    }
 
-            Icon(
-                modifier = Modifier.size(34.dp)
-                    .clip(CircleShape)
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(text = WrStrings.suggestions(), style = MaterialTheme.typography.bodySmall)
+
+        Spacer(modifier = Modifier.width(6.dp))
+
+        listOf("deepseek-r1:7b", "llama3.2").forEach { model ->
+            Text(
+                modifier = Modifier
+                    .padding(horizontal = 1.dp)
+                    .clip(MaterialTheme.shapes.medium)
                     .clickable {
-                        downloadModel(modelToDownload)
-                    }.padding(6.dp),
-                imageVector = WrIcons.download,
-                contentDescription = "Download model",
-                //            stringResource(R.string.note_list),
-                tint = MaterialTheme.colorScheme.onBackground
+                        downloadModel(model)
+                    }
+                    .padding(8.dp),
+                text = model,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onBackground,
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.height(6.dp))
+
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        val interactionSource = remember { MutableInteractionSource() }
+
+        BasicTextField(
+            modifier = Modifier.border(
+                1.dp,
+                MaterialTheme.colorScheme.onSurfaceVariant,
+                MaterialTheme.shapes.medium
+            )
+                .padding(10.dp)
+                .weight(1F),
+            value = modelToDownload,
+            onValueChange = { value ->
+                modelToDownload = value
+            },
+            textStyle = MaterialTheme.typography.bodySmall.copy(
+                color = MaterialTheme.colorScheme.onBackground
+            ),
+            cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
+            decorationBox = @Composable { innerTextField ->
+                TextFieldDefaults.DecorationBox(
+                    value = modelToDownload,
+                    innerTextField = innerTextField,
+                    enabled = true,
+                    singleLine = false,
+                    visualTransformation = VisualTransformation.None,
+                    interactionSource = interactionSource,
+                    placeholder = {
+                        Text(
+                            text = "Write your AI model",
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+                        )
+                    },
+                    colors = transparentTextInputColors(),
+                    contentPadding = PaddingValues(0.dp)
+                )
+            }
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Icon(
+            modifier = Modifier.size(34.dp)
+                .clip(CircleShape)
+                .clickable {
+                    downloadModel(modelToDownload)
+                }.padding(6.dp),
+            imageVector = WrIcons.download,
+            contentDescription = "Download model",
+            //            stringResource(R.string.note_list),
+            tint = MaterialTheme.colorScheme.onBackground
+        )
+    }
+
+    when (val downloadState = downloadModelState.collectAsState().value) {
+        is ResultData.Complete -> {}
+        is ResultData.Error -> {
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                "${WrStrings.errorModelDownload()} ${downloadState.exception.message}",
+                style = MaterialTheme.typography.bodySmall
             )
         }
 
-        when (val downloadState = downloadModelState.collectAsState().value) {
-            is ResultData.Complete -> {}
-            is ResultData.Error -> {
-                Spacer(modifier = Modifier.height(4.dp))
+        is ResultData.Idle -> {}
+        is ResultData.InProgress -> {
+            Spacer(modifier = Modifier.height(4.dp))
 
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                val download = downloadState.data
                 Text(
-                    "${WrStrings.errorModelDownload()} ${downloadState.exception.message}",
+                    download.title,
+                    modifier = Modifier.weight(1F),
+                    style = MaterialTheme.typography.bodySmall
+                )
+                Text(
+                    download.info,
                     style = MaterialTheme.typography.bodySmall
                 )
             }
 
-            is ResultData.Idle -> {}
-            is ResultData.InProgress -> {
-                Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    val download = downloadState.data
-                    Text(
-                        download.title,
-                        modifier = Modifier.weight(1F),
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                    Text(
-                        download.info,
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-            }
+            LinearProgressIndicator(
+                progress = { downloadState.data.percentage },
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
 
-            is ResultData.Loading -> {
-                CircularProgressIndicator()
-            }
+        is ResultData.Loading -> {
+            CircularProgressIndicator()
         }
     }
-
-    Spacer(modifier = Modifier.height(30.dp))
-
-    Text(WrStrings.version(), style = MaterialTheme.typography.bodySmall)
 }
 
 @Composable
@@ -464,69 +526,6 @@ private fun ColorThemeOptions(
             }
         )
     }
-
-//    HorizontalOptions(
-//        modifier = Modifier,
-//        selectedState = selectedThemePosition,
-//        options = listOf<Pair<() -> Unit, @Composable RowScope.() -> Unit>>(
-//            {
-//                println("selecting light color theme!!")
-//                selectColorTheme(ColorThemeOption.LIGHT)
-//            } to {
-//                Column(
-//                    horizontalAlignment = Alignment.CenterHorizontally,
-//                    modifier = Modifier.weight(1F)
-//                ) {
-//                    Icon(
-//                        modifier = Modifier.weight(1F),
-//                        imageVector = Icons.Outlined.LightMode,
-//                        contentDescription = "staggered card",
-//                        //            stringResource(R.string.staggered_card),
-//                        tint = MaterialTheme.colorScheme.onPrimary
-//                    )
-//
-//                    Text("Light", style = typography, color = color)
-//                }
-//            },
-//            { selectColorTheme(ColorThemeOption.DARK) } to {
-//                Column(
-//                    horizontalAlignment = Alignment.CenterHorizontally,
-//                    modifier = Modifier
-//                        .orderConfigModifierHorizontal {}
-//                        .weight(1F)
-//                ) {
-//                    Icon(
-//                        modifier = Modifier.weight(1F),
-//                        imageVector = Icons.Outlined.DarkMode,
-//                        contentDescription = "staggered card",
-//                        //            stringResource(R.string.staggered_card),
-//                        tint = MaterialTheme.colorScheme.onPrimary
-//                    )
-//
-//                    Text("Dark", style = typography, color = color)
-//                }
-//            },
-//            { selectColorTheme(ColorThemeOption.SYSTEM) } to {
-//                Column(
-//                    horizontalAlignment = Alignment.CenterHorizontally,
-//                    modifier = Modifier
-//                        .orderConfigModifierHorizontal {}
-//                        .weight(1F)
-//                ) {
-//                    Icon(
-//                        modifier = Modifier.weight(1F),
-//                        imageVector = Icons.Outlined.SystemUpdate,
-//                        contentDescription = "note list",
-//                        //            stringResource(R.string.note_list),
-//                        tint = MaterialTheme.colorScheme.onPrimary
-//                    )
-//
-//                    Text("System", style = typography, color = color)
-//                }
-//            }
-//        ),
-//        height = 90.dp
-//    )
 }
 
 @Composable
@@ -565,3 +564,14 @@ private fun RowScope.Option(
         }
     }
 }
+
+@Composable
+fun transparentTextInputColors() =
+    TextFieldDefaults.colors(
+        focusedIndicatorColor = Color.Transparent,
+        focusedContainerColor = Color.Transparent,
+        unfocusedContainerColor = Color.Transparent,
+        unfocusedIndicatorColor = Color.Transparent,
+        disabledIndicatorColor = Color.Transparent,
+        cursorColor = MaterialTheme.colorScheme.primary
+    )

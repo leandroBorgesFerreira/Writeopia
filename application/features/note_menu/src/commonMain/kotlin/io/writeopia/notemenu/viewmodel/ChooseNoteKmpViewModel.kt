@@ -15,6 +15,7 @@ import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.repository.ConfigurationRepository
 import io.writeopia.notemenu.data.usecase.NotesUseCase
 import io.writeopia.notemenu.ui.dto.NotesUi
+import io.writeopia.onboarding.OnboardingState
 import io.writeopia.sdk.export.DocumentToJson
 import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.export.DocumentWriter
@@ -61,6 +62,14 @@ internal class ChooseNoteKmpViewModel(
         folderController.initCoroutine(viewModelScope)
 
         viewModelScope.launch(Dispatchers.Default) {
+            val onboarded = notesConfig.isOnboarded()
+
+            _showOnboardingState.value = if (onboarded) {
+                OnboardingState.COMPLETE
+            } else {
+                OnboardingState.CONFIGURATION
+            }
+
             keyboardEventFlow.collect { event ->
                 when (event) {
                     KeyboardEvent.DELETE -> {
@@ -76,6 +85,11 @@ internal class ChooseNoteKmpViewModel(
             }
         }
     }
+
+    private val _showOnboardingState =
+        MutableStateFlow(OnboardingState.CONFIGURATION)
+    override val showOnboardingState: StateFlow<OnboardingState> =
+        _showOnboardingState.asStateFlow()
 
     private val _selectedNotes = MutableStateFlow(setOf<String>())
     override val hasSelectedNotes: StateFlow<Boolean> by lazy {
@@ -414,6 +428,36 @@ internal class ChooseNoteKmpViewModel(
 
     override fun cancelDeletion() {
         _askToDelete.value = false
+    }
+
+    override fun requestInitFlow(flow: () -> Unit) {
+        val onboarding = _showOnboardingState.value
+
+        if (onboarding == OnboardingState.HIDDEN) {
+            _showOnboardingState.value = OnboardingState.CONFIGURATION
+        } else {
+            flow()
+        }
+    }
+
+    override fun hideOnboarding() {
+        _showOnboardingState.value = OnboardingState.HIDDEN
+    }
+
+    override fun completeOnboarding() {
+        viewModelScope.launch {
+            notesConfig.setOnboarded()
+            _showOnboardingState.value = OnboardingState.CONGRATULATION
+            delay(3000)
+            _showOnboardingState.value = OnboardingState.COMPLETE
+        }
+    }
+
+    override fun closeOnboardingPermanently() {
+        viewModelScope.launch {
+            notesConfig.setOnboarded()
+            _showOnboardingState.value = OnboardingState.COMPLETE
+        }
     }
 
     private fun handleStorage(workspaceFunc: suspend (String) -> Unit, syncRequest: SyncRequest) {
