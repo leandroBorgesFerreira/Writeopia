@@ -524,4 +524,3 @@ internal class ChooseNoteKmpViewModel(
 
     private suspend fun getUserId(): String = authManager.getUser().id
 }
-

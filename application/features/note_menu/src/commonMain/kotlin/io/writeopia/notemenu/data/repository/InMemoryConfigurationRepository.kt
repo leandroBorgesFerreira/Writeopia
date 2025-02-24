@@ -57,9 +57,7 @@ class InMemoryConfigurationRepository private constructor() : ConfigurationRepos
 
     override suspend fun isOnboarded(): Boolean = true
 
-    override suspend fun setOnboarded() {
-
-    }
+    override suspend fun setOnboarded() { }
 
     companion object {
         private var instance: InMemoryConfigurationRepository? = null

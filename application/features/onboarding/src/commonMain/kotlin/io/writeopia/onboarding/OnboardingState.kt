@@ -1,4 +1,4 @@
-package io.writeopia.onboarding;
+package io.writeopia.onboarding
 
 enum class OnboardingState(val label: String) {
     CONFIGURATION("CONFIGURATION"),

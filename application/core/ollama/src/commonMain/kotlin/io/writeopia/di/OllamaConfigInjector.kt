@@ -6,5 +6,5 @@ import io.writeopia.controller.OllamaConfigController
 interface OllamaConfigInjector {
 
     @Composable
-    fun provideOllamaConfigController() : OllamaConfigController
+    fun provideOllamaConfigController(): OllamaConfigController
 }

@@ -78,14 +78,14 @@ internal fun NoteGlobalActionsMenu(
 
         Row {
             ShareButton(
-                text =  WrStrings.exportJson(),
+                text = WrStrings.exportJson(),
                 onClick = onShareJson
             )
 
             Spacer(modifier = Modifier.width(8.dp))
 
             ShareButton(
-                text = WrStrings.exportMarkdown() ,
+                text = WrStrings.exportMarkdown(),
                 onClick = onShareMd
             )
         }
