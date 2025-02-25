@@ -3,6 +3,7 @@ package io.writeopia.notemenu.di
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.auth.core.di.AuthCoreInjection
+import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.core.folders.repository.FolderRepository
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.repository.ConfigurationRepository
@@ -82,7 +83,7 @@ class NotesMenuKmpInjection private constructor(
 
         fun desktop(
             notesInjector: NotesInjector,
-            authCoreInjection: AuthCoreInjection,
+            authCoreInjection: AuthCoreInjection = KmpAuthCoreInjection.singleton(),
             repositoryInjection: RepositoryInjector,
             selectionState: StateFlow<Boolean>,
             keyboardEventFlow: Flow<KeyboardEvent>

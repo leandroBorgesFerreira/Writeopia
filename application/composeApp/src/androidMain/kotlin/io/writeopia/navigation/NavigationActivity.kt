@@ -27,7 +27,7 @@ import io.writeopia.mobile.AppMobile
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.NotesMenuKmpInjection
-import io.writeopia.notemenu.di.UiConfigurationInjector
+import io.writeopia.notemenu.di.AndroidUiConfigurationInjector
 import io.writeopia.notemenu.navigation.NoteMenuDestiny
 import io.writeopia.notemenu.navigation.navigateToNotes
 import io.writeopia.persistence.room.DatabaseConfigAndroid
@@ -72,10 +72,10 @@ fun NavigationGraph(
     ),
     startDestination: String = Destinations.AUTH_MENU_INNER_NAVIGATION.id
 ) {
-    val authCoreInjection = AndroidAuthCoreInjection(sharedPreferences)
-    val uiConfigInjection = UiConfigurationInjector(sharedPreferences)
+    val authCoreInjection = AndroidAuthCoreInjection.singleton(sharedPreferences)
+    val uiConfigInjection = AndroidUiConfigurationInjector.singleton(sharedPreferences)
 
-    val appDaosInjection = AppRoomDaosInjection(database)
+    val appDaosInjection = AppRoomDaosInjection.singleton(database)
     val notesInjector = NotesInjector(appDaosInjection)
     val connectionInjector = ConnectionInjector(
         apiLogger = AndroidLogger,
@@ -93,7 +93,7 @@ fun NavigationGraph(
         folderInjector = notesInjector,
         configurationInjector = notesInjector
     )
-    val accountMenuInjector = AccountMenuKmpInjector(authCoreInjection)
+    val accountMenuInjector = AccountMenuKmpInjector.desktopSingleton(authCoreInjection)
     val notesMenuInjection = NotesMenuKmpInjection.mobile(
         notesInjector,
         authCoreInjection,

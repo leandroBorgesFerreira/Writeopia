@@ -9,7 +9,7 @@ import io.writeopia.sqldelight.theme.UiConfigurationSqlDelightDao
 import io.writeopia.viewmodel.UiConfigurationKmpViewModel
 import io.writeopia.viewmodel.UiConfigurationViewModel
 
-actual class UiConfigurationInjector(private val writeopiaDb: WriteopiaDb?) {
+actual class AndroidUiConfigurationInjector(private val writeopiaDb: WriteopiaDb?) {
 
     private fun provideUiConfigurationSqlDelightDao(): UiConfigurationSqlDelightDao =
         UiConfigurationSqlDelightDao(writeopiaDb)

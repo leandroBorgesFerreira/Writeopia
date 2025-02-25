@@ -5,7 +5,7 @@ import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.notemenu.di.NotesInjector
-import io.writeopia.notemenu.di.UiConfigurationInjector
+import io.writeopia.notemenu.di.AndroidUiConfigurationInjector
 import io.writeopia.notes.desktop.components.DesktopApp
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.database.DatabaseFactory
@@ -25,7 +25,7 @@ fun ComposeUiTest.startApp(
         DesktopApp(
             notesInjector = NotesInjector(database),
             repositoryInjection = SqlDelightDaoInjector(database),
-            uiConfigurationInjector = UiConfigurationInjector(database),
+            androidUiConfigurationInjector = AndroidUiConfigurationInjector(database),
             coroutineScope = rememberCoroutineScope(),
             colorThemeOption = MutableStateFlow(ColorThemeOption.DARK),
             disableWebsocket = true,

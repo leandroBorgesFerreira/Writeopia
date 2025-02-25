@@ -30,7 +30,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import io.writeopia.account.di.AccountMenuKmpInjector
 import io.writeopia.account.ui.SettingsDialog
-import io.writeopia.auth.core.di.KmpAuthCoreInjection
 import io.writeopia.auth.core.token.MockTokenHandler
 import io.writeopia.common.utils.Destinations
 import io.writeopia.di.AppConnectionInjection
@@ -51,7 +50,7 @@ import io.writeopia.notemenu.data.model.NotesNavigationType
 import io.writeopia.notemenu.data.usecase.NotesNavigationUseCase
 import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.NotesMenuKmpInjection
-import io.writeopia.notemenu.di.UiConfigurationInjector
+import io.writeopia.notemenu.di.AndroidUiConfigurationInjector
 import io.writeopia.notemenu.navigation.NAVIGATION_PATH
 import io.writeopia.notemenu.navigation.NAVIGATION_TYPE
 import io.writeopia.notemenu.navigation.navigateToNotes
@@ -76,7 +75,7 @@ fun DesktopApp(
     writeopiaDb: WriteopiaDb? = null,
     notesInjector: NotesInjector,
     repositoryInjection: RepositoryInjector,
-    uiConfigurationInjector: UiConfigurationInjector,
+    androidUiConfigurationInjector: AndroidUiConfigurationInjector,
     disableWebsocket: Boolean = false,
     selectionState: StateFlow<Boolean>,
     keyboardEventFlow: Flow<KeyboardEvent>,
@@ -104,19 +103,18 @@ fun DesktopApp(
             connectionInjection = connectionInjection,
             selectionState = selectionState,
             keyboardEventFlow = keyboardEventFlow,
-            uiConfigurationRepository = uiConfigurationInjector.provideUiConfigurationRepository(),
+            uiConfigurationRepository = androidUiConfigurationInjector.provideUiConfigurationRepository(),
             folderInjector = notesInjector,
             ollamaInjection = ollamaInjection,
             configurationInjector = notesInjector
         )
     }
 
-    val accountInjector = remember { AccountMenuKmpInjector(authCoreInjection) }
+    val accountInjector = remember { AccountMenuKmpInjector.desktopSingleton() }
 
     val notesMenuInjection = remember {
         NotesMenuKmpInjection.desktop(
             notesInjector = notesInjector,
-            authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,
             selectionState = selectionState,
             keyboardEventFlow = keyboardEventFlow
@@ -125,11 +123,9 @@ fun DesktopApp(
 
     val sideMenuInjector = remember {
         SideMenuKmpInjector(
-            notesInjector,
-            authCoreInjection,
-            repositoryInjection,
-            uiConfigurationInjector,
-            selectionState,
+            notesInjector = notesInjector,
+            repositoryInjection = repositoryInjection,
+            androidUiConfigurationInjector = androidUiConfigurationInjector,
             ollamaInjection = ollamaInjection
         )
     }

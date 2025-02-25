@@ -5,8 +5,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.account.viewmodel.AccountMenuKmpViewModel
 import io.writeopia.account.viewmodel.AccountMenuViewModel
 import io.writeopia.auth.core.di.AuthCoreInjection
+import io.writeopia.auth.core.di.KmpAuthCoreInjection
 
-class AccountMenuKmpInjector(
+class AccountMenuKmpInjector private constructor(
     private val authCoreInjection: AuthCoreInjection
 ) : AccountMenuInjector {
 
@@ -21,6 +22,12 @@ class AccountMenuKmpInjector(
         viewModel { provideAccountMenuKmpViewModel() }
 
     companion object {
+        private var instance: AccountMenuKmpInjector? = null
 
+        fun desktopSingleton(
+            authCoreInjection: AuthCoreInjection = KmpAuthCoreInjection.singleton()
+        ): AccountMenuKmpInjector = instance ?: AccountMenuKmpInjector(authCoreInjection).also {
+            instance = it
+        }
     }
 }

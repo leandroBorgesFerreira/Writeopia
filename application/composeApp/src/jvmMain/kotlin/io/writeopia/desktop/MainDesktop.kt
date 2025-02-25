@@ -22,7 +22,7 @@ import androidx.compose.ui.window.rememberWindowState
 import io.writeopia.common.utils.keyboard.KeyboardCommands
 import io.writeopia.common.utils.ui.GlobalToastBox
 import io.writeopia.notemenu.di.NotesInjector
-import io.writeopia.notemenu.di.UiConfigurationInjector
+import io.writeopia.notemenu.di.AndroidUiConfigurationInjector
 import io.writeopia.notes.desktop.components.DesktopApp
 import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory
@@ -174,11 +174,11 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                 is DatabaseCreation.Complete -> {
                     val database = databaseState.writeopiaDb
 
-                    val uiConfigurationInjector = remember { UiConfigurationInjector(database) }
+                    val androidUiConfigurationInjector = remember { AndroidUiConfigurationInjector(database) }
                     val sqlDelightDaoInjector = remember { SqlDelightDaoInjector(database) }
                     val notesInjector = remember { NotesInjector(database) }
 
-                    val uiConfigurationViewModel = uiConfigurationInjector
+                    val uiConfigurationViewModel = androidUiConfigurationInjector
                         .provideUiConfigurationViewModel()
 
                     val colorTheme =
@@ -188,7 +188,7 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                         DesktopApp(
                             notesInjector = notesInjector,
                             repositoryInjection = sqlDelightDaoInjector,
-                            uiConfigurationInjector = uiConfigurationInjector,
+                            androidUiConfigurationInjector = androidUiConfigurationInjector,
                             selectionState = selectionState,
                             keyboardEventFlow = keyboardEventFlow.filterNotNull(),
                             coroutineScope = coroutineScope,

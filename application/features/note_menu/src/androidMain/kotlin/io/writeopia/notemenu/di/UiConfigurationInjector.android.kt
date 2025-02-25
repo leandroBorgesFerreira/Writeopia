@@ -9,7 +9,7 @@ import io.writeopia.repository.UiConfigurationRepositoryImpl
 import io.writeopia.viewmodel.UiConfigurationKmpViewModel
 import io.writeopia.viewmodel.UiConfigurationViewModel
 
-actual class UiConfigurationInjector(
+actual class AndroidUiConfigurationInjector private constructor(
     private val sharedPreferences: SharedPreferences,
 ) {
 
@@ -22,5 +22,14 @@ actual class UiConfigurationInjector(
             provideUiConfigurationRepository(),
     ): UiConfigurationViewModel = viewModel {
         UiConfigurationKmpViewModel(uiConfigurationSqlDelightRepository)
+    }
+
+    companion object {
+        private var instance: AndroidUiConfigurationInjector? = null
+
+        fun singleton(sharedPreferences: SharedPreferences): AndroidUiConfigurationInjector =
+            instance ?: AndroidUiConfigurationInjector(sharedPreferences).also {
+                instance = it
+            }
     }
 }
