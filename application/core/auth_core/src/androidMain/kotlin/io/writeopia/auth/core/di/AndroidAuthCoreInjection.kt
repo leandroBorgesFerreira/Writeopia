@@ -8,6 +8,7 @@ import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.auth.core.manager.FirebaseAuthManager
 import io.writeopia.auth.core.repository.AuthRepository
 import io.writeopia.auth.core.repository.SharedPrefsAuthRepository
+import io.writeopia.common.utils.di.SharedPreferencesInjector
 
 class AndroidAuthCoreInjection private constructor(
     private val sharedPreferences: SharedPreferences,
@@ -23,8 +24,10 @@ class AndroidAuthCoreInjection private constructor(
     companion object {
         private var instance: AndroidAuthCoreInjection? = null
 
-        fun singleton(sharedPreferences: SharedPreferences): AndroidAuthCoreInjection =
-            instance ?: AndroidAuthCoreInjection(sharedPreferences).also {
+        fun singleton(): AndroidAuthCoreInjection =
+            instance ?: AndroidAuthCoreInjection(
+                SharedPreferencesInjector.get().sharedPreferences
+            ).also {
                 instance = it
             }
     }

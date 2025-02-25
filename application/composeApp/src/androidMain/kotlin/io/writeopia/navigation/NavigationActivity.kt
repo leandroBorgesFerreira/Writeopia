@@ -20,6 +20,7 @@ import io.writeopia.auth.core.token.FirebaseTokenHandler
 import io.writeopia.auth.di.AuthInjection
 import io.writeopia.auth.navigation.authNavigation
 import io.writeopia.common.utils.Destinations
+import io.writeopia.common.utils.di.SharedPreferencesInjector
 import io.writeopia.editor.di.EditorKmpInjector
 import io.writeopia.features.search.di.KmpSearchInjection
 import io.writeopia.features.search.di.MobileSearchInjection
@@ -27,7 +28,7 @@ import io.writeopia.mobile.AppMobile
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.NotesMenuKmpInjection
-import io.writeopia.notemenu.di.AndroidUiConfigurationInjector
+import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notemenu.navigation.NoteMenuDestiny
 import io.writeopia.notemenu.navigation.navigateToNotes
 import io.writeopia.persistence.room.DatabaseConfigAndroid
@@ -72,11 +73,13 @@ fun NavigationGraph(
     ),
     startDestination: String = Destinations.AUTH_MENU_INNER_NAVIGATION.id
 ) {
-    val authCoreInjection = AndroidAuthCoreInjection.singleton(sharedPreferences)
-    val uiConfigInjection = AndroidUiConfigurationInjector.singleton(sharedPreferences)
+    SharedPreferencesInjector.init(sharedPreferences)
+
+    val authCoreInjection = AndroidAuthCoreInjection.singleton()
+    val uiConfigInjection = UiConfigurationInjector.singleton()
 
     val appDaosInjection = AppRoomDaosInjection.singleton(database)
-    val notesInjector = NotesInjector(appDaosInjection)
+    val notesInjector = NotesInjector.singleton(database)
     val connectionInjector = ConnectionInjector(
         apiLogger = AndroidLogger,
         bearerTokenHandler = FirebaseTokenHandler,

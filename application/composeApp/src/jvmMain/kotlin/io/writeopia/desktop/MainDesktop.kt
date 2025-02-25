@@ -22,12 +22,11 @@ import androidx.compose.ui.window.rememberWindowState
 import io.writeopia.common.utils.keyboard.KeyboardCommands
 import io.writeopia.common.utils.ui.GlobalToastBox
 import io.writeopia.notemenu.di.NotesInjector
-import io.writeopia.notemenu.di.AndroidUiConfigurationInjector
+import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.DesktopApp
 import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
-import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.image.ImageLoadConfig
 import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.Dispatchers
@@ -174,11 +173,10 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                 is DatabaseCreation.Complete -> {
                     val database = databaseState.writeopiaDb
 
-                    val androidUiConfigurationInjector = remember { AndroidUiConfigurationInjector(database) }
-                    val sqlDelightDaoInjector = remember { SqlDelightDaoInjector(database) }
+                    val uiConfigurationInjector = remember { UiConfigurationInjector(database) }
                     val notesInjector = remember { NotesInjector(database) }
 
-                    val uiConfigurationViewModel = androidUiConfigurationInjector
+                    val uiConfigurationViewModel = uiConfigurationInjector
                         .provideUiConfigurationViewModel()
 
                     val colorTheme =
@@ -187,8 +185,7 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                     GlobalToastBox {
                         DesktopApp(
                             notesInjector = notesInjector,
-                            repositoryInjection = sqlDelightDaoInjector,
-                            androidUiConfigurationInjector = androidUiConfigurationInjector,
+                            uiConfigurationInjector = uiConfigurationInjector,
                             selectionState = selectionState,
                             keyboardEventFlow = keyboardEventFlow.filterNotNull(),
                             coroutineScope = coroutineScope,

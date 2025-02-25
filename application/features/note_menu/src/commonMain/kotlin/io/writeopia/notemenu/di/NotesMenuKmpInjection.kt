@@ -13,6 +13,8 @@ import io.writeopia.notemenu.viewmodel.ChooseNoteViewModel
 import io.writeopia.notemenu.viewmodel.FolderStateController
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.repository.DocumentRepository
+import io.writeopia.sql.WriteopiaDb
+import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,7 +46,7 @@ class NotesMenuKmpInjection private constructor(
             authCoreInjection.provideAccountManager()
         )
 
-    internal fun provideChooseKmpNoteViewModel(
+    private fun provideChooseKmpNoteViewModel(
         notesNavigation: NotesNavigation,
         notesUseCase: NotesUseCase = provideNotesUseCase(),
         notesConfig: ConfigurationRepository =
@@ -69,30 +71,37 @@ class NotesMenuKmpInjection private constructor(
         }
 
     companion object {
+        private var instanceMobile: NotesMenuKmpInjection? = null
+        private var instanceDesktop: NotesMenuKmpInjection? = null
+
         fun mobile(
             notesInjector: NotesInjector,
             authCoreInjection: AuthCoreInjection,
             repositoryInjection: RepositoryInjector,
-        ) = NotesMenuKmpInjection(
+        ) = instanceMobile ?: NotesMenuKmpInjection(
             notesInjector = notesInjector,
             authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,
             selectionState = MutableStateFlow(false),
             keyboardEventFlow = MutableStateFlow(KeyboardEvent.IDLE)
-        )
+        ).also {
+            instanceMobile = it
+        }
 
         fun desktop(
             notesInjector: NotesInjector,
             authCoreInjection: AuthCoreInjection = KmpAuthCoreInjection.singleton(),
-            repositoryInjection: RepositoryInjector,
+            repositoryInjection: RepositoryInjector = SqlDelightDaoInjector.singleton(),
             selectionState: StateFlow<Boolean>,
             keyboardEventFlow: Flow<KeyboardEvent>
-        ) = NotesMenuKmpInjection(
+        ) = instanceDesktop ?: NotesMenuKmpInjection(
             notesInjector = notesInjector,
             authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,
             selectionState = selectionState,
             keyboardEventFlow = keyboardEventFlow,
-        )
+        ).also {
+            instanceDesktop = it
+        }
     }
 }

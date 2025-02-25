@@ -7,7 +7,7 @@ import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import io.writeopia.sdk.persistence.sqldelight.dao.sql.SqlDelightDocumentRepository
 import io.writeopia.sql.WriteopiaDb
 
-class SqlDelightDaoInjector(
+class SqlDelightDaoInjector private constructor(
     private val database: WriteopiaDb?,
 ) : RepositoryInjector {
 
@@ -39,6 +39,13 @@ class SqlDelightDaoInjector(
 
 
     companion object {
+        private var instance: SqlDelightDaoInjector? = null
+
         fun noop() = SqlDelightDaoInjector(null)
+
+        fun singleton(): SqlDelightDaoInjector =
+            instance ?: SqlDelightDaoInjector(WriteopiaDbInjector.singleton()?.database).also {
+                instance = it
+            }
     }
 }

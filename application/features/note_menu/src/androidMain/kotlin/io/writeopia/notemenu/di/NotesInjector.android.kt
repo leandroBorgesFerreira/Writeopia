@@ -8,8 +8,10 @@ import io.writeopia.core.folders.repository.FolderRepository
 import io.writeopia.core.folders.repository.RoomFolderRepository
 import io.writeopia.models.configuration.ConfigurationInjector
 import io.writeopia.models.configuration.WorkspaceConfigRepository
+import io.writeopia.persistence.room.WriteopiaApplicationDatabase
+import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 
-actual class NotesInjector(
+actual class NotesInjector private constructor(
     private val appRoomDaosInjection: AppDaosInjection
 ) : FolderInjector, ConfigurationInjector {
 
@@ -27,4 +29,13 @@ actual class NotesInjector(
 
     actual override fun provideWorkspaceConfigRepository(): WorkspaceConfigRepository =
         provideNotesConfigurationRepository()
+
+    companion object {
+        private var instance: NotesInjector? = null
+
+        fun singleton(database: WriteopiaApplicationDatabase): NotesInjector =
+            instance ?: NotesInjector(AppRoomDaosInjection.singleton(database)).also {
+                instance = it
+            }
+    }
 }

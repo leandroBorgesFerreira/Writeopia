@@ -7,7 +7,7 @@ import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.viewmodel.UiConfigurationKmpViewModel
 import io.writeopia.viewmodel.UiConfigurationViewModel
 
-actual class AndroidUiConfigurationInjector {
+actual class UiConfigurationInjector {
     actual fun provideUiConfigurationRepository(): UiConfigurationRepository =
         getUiConfigurationMemoryRepository()
 

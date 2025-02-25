@@ -11,7 +11,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.window.CanvasBasedWindow
 import io.writeopia.notemenu.di.NotesInjector
-import io.writeopia.notemenu.di.AndroidUiConfigurationInjector
+import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.DesktopApp
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.image.ImageLoadConfig
@@ -34,7 +34,7 @@ fun CreateAppInMemory(repositoryInjection: SqlDelightDaoInjector) {
     val coroutineScope = rememberCoroutineScope()
     val selectionState = MutableStateFlow(false)
 
-    val uiConfigurationViewModel = AndroidUiConfigurationInjector()
+    val uiConfigurationViewModel = UiConfigurationInjector()
         .provideUiConfigurationViewModel()
 
     val colorTheme =
@@ -43,7 +43,7 @@ fun CreateAppInMemory(repositoryInjection: SqlDelightDaoInjector) {
     DesktopApp(
         notesInjector = NotesInjector.noop(),
         repositoryInjection = repositoryInjection,
-        androidUiConfigurationInjector = AndroidUiConfigurationInjector(),
+        uiConfigurationInjector = UiConfigurationInjector(),
         selectionState = selectionState,
         isUndoKeyEvent = ::isUndoKeyboardEvent,
         colorThemeOption = colorTheme,

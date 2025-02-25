@@ -14,16 +14,17 @@ import io.writeopia.notemenu.data.repository.ConfigurationRepository
 import io.writeopia.notemenu.data.usecase.NotesNavigationUseCase
 import io.writeopia.notemenu.data.usecase.NotesUseCase
 import io.writeopia.notemenu.di.NotesInjector
-import io.writeopia.notemenu.di.AndroidUiConfigurationInjector
+import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.repository.DocumentRepository
+import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 
 class SideMenuKmpInjector(
     private val notesInjector: NotesInjector,
     private val authCoreInjection: AuthCoreInjection = KmpAuthCoreInjection.singleton(),
-    private val repositoryInjection: RepositoryInjector,
-    private val androidUiConfigurationInjector: AndroidUiConfigurationInjector,
-    private val ollamaInjection: OllamaInjection
+    private val repositoryInjection: RepositoryInjector = SqlDelightDaoInjector.singleton(),
+    private val uiConfigurationInjector: UiConfigurationInjector,
+    private val ollamaInjection: OllamaInjection = OllamaInjection.singleton()
 ) : SideMenuInjector, OllamaConfigInjector {
     private fun provideDocumentRepository(): DocumentRepository =
         repositoryInjection.provideDocumentRepository()
@@ -42,7 +43,7 @@ class SideMenuKmpInjector(
         viewModel {
             GlobalShellKmpViewModel(
                 notesUseCase = provideNotesUseCase(),
-                uiConfigurationRepo = androidUiConfigurationInjector.provideUiConfigurationRepository(),
+                uiConfigurationRepo = uiConfigurationInjector.provideUiConfigurationRepository(),
                 authManager = authCoreInjection.provideAccountManager(),
                 notesNavigationUseCase = NotesNavigationUseCase.singleton(),
                 workspaceConfigRepository = notesInjector.provideNotesConfigurationRepository(),
@@ -54,4 +55,5 @@ class SideMenuKmpInjector(
     @Composable
     override fun provideOllamaConfigController(): OllamaConfigController =
         provideSideMenuViewModel()
+
 }

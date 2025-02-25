@@ -47,6 +47,7 @@ kotlin {
                 implementation(project(":application:core:folders"))
                 implementation(project(":application:core:ollama"))
                 implementation(project(":application:core:resources"))
+                implementation(project(":application:core:persistence_sqldelight"))
 
                 implementation(project(":application:features:note_menu"))
 

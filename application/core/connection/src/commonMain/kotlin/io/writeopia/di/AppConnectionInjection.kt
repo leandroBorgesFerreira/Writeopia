@@ -12,7 +12,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 
-class AppConnectionInjection(
+class AppConnectionInjection private constructor(
     private val json: Json = Json {
         serializersModule = SerializersModule {
             ignoreUnknownKeys = true
@@ -23,6 +23,14 @@ class AppConnectionInjection(
     fun provideJson() = json
 
     fun provideHttpClient(): HttpClient = ApiInjectorDefaults.httpClient(json, apiLogger)
+
+    companion object {
+        private var instance: AppConnectionInjection? = null
+
+        fun singleton(): AppConnectionInjection = instance ?: AppConnectionInjection().also {
+            instance = it
+        }
+    }
 }
 
 object ApiInjectorDefaults {

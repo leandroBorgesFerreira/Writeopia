@@ -19,7 +19,7 @@ import io.writeopia.navigation.MobileNavigationViewModel
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.NotesMenuKmpInjection
-import io.writeopia.notemenu.di.AndroidUiConfigurationInjector
+import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notemenu.navigation.navigateToNotes
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sqldelight.database.DatabaseCreation
@@ -45,12 +45,12 @@ fun MainViewController() = ComposeUIViewController {
             val database = databaseState.writeopiaDb
 
             val authCoreInjection = remember { KmpAuthCoreInjection() }
-            val androidUiConfigurationInjector = remember { AndroidUiConfigurationInjector(database) }
+            val uiConfigurationInjector = remember { UiConfigurationInjector(database) }
             val sqlDelightDaoInjector = remember { SqlDelightDaoInjector(database) }
             val searchInjection = remember { KmpSearchInjection(database) }
             val notesInjector = remember { NotesInjector(database) }
 
-            val uiConfigurationViewModel = androidUiConfigurationInjector
+            val uiConfigurationViewModel = uiConfigurationInjector
                 .provideUiConfigurationViewModel()
 
             val notesMenuInjection = remember {
@@ -74,7 +74,7 @@ fun MainViewController() = ComposeUIViewController {
                 authCoreInjection,
                 sqlDelightDaoInjector,
                 connectionInjection,
-                androidUiConfigurationInjector.provideUiConfigurationRepository(),
+                uiConfigurationInjector.provideUiConfigurationRepository(),
                 folderInjector = notesInjector,
                 configurationInjector = notesInjector,
             )

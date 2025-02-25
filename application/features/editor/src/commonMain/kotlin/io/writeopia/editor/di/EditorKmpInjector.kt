@@ -19,6 +19,9 @@ import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.repository.DocumentRepository
 import io.writeopia.sdk.sharededition.SharedEditionManager
+import io.writeopia.sql.WriteopiaDb
+import io.writeopia.sqldelight.di.SqlDelightDaoInjector
+import io.writeopia.sqldelight.di.WriteopiaDbInjector
 import io.writeopia.ui.keyboard.KeyboardEvent
 import io.writeopia.ui.manager.WriteopiaStateManager
 import kotlinx.coroutines.Dispatchers
@@ -110,13 +113,13 @@ class EditorKmpInjector private constructor(
 
         fun desktop(
             authCoreInjection: AuthCoreInjection = KmpAuthCoreInjection.singleton(),
-            repositoryInjection: RepositoryInjector,
+            repositoryInjection: RepositoryInjector = SqlDelightDaoInjector.singleton(),
             connectionInjection: ConnectionInjector,
             selectionState: StateFlow<Boolean>,
             keyboardEventFlow: Flow<KeyboardEvent>,
             uiConfigurationRepository: UiConfigurationRepository,
             folderInjector: FolderInjector,
-            ollamaInjection: OllamaInjection,
+            ollamaInjection: OllamaInjection = OllamaInjection.singleton(),
             configurationInjector: ConfigurationInjector,
         ) = EditorKmpInjector(
             authCoreInjection,
