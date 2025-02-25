@@ -8,7 +8,7 @@ class WriteopiaDbInjector private constructor(val database: WriteopiaDb) {
         private var instance: WriteopiaDbInjector? = null
 
         fun initialize(writeopiaDb: WriteopiaDb) {
-            WriteopiaDbInjector(database = writeopiaDb)
+            instance = WriteopiaDbInjector(database = writeopiaDb)
         }
 
         fun singleton() = instance

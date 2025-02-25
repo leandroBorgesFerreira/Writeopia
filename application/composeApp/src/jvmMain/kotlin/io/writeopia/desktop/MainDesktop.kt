@@ -27,6 +27,7 @@ import io.writeopia.notes.desktop.components.DesktopApp
 import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
+import io.writeopia.sqldelight.di.WriteopiaDbInjector
 import io.writeopia.ui.image.ImageLoadConfig
 import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.Dispatchers
@@ -40,11 +41,11 @@ private const val APP_DIRECTORY = ".writeopia"
 private const val DB_VERSION = 1
 
 fun main() = application {
-    DesktopApp()
+    App()
 }
 
 @Composable
-private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitApplication) {
+private fun ApplicationScope.App(onCloseRequest: () -> Unit = ::exitApplication) {
     ImageLoadConfig.configImageLoad()
 
     val coroutineScope = rememberCoroutineScope()
@@ -173,8 +174,10 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                 is DatabaseCreation.Complete -> {
                     val database = databaseState.writeopiaDb
 
+                    WriteopiaDbInjector.initialize(database)
+
                     val uiConfigurationInjector = UiConfigurationInjector.singleton()
-                    val notesInjector = remember { NotesInjector(database) }
+                    val notesInjector = NotesInjector.singleton()
 
                     val uiConfigurationViewModel = uiConfigurationInjector
                         .provideUiConfigurationViewModel()
@@ -184,6 +187,7 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
 
                     GlobalToastBox {
                         DesktopApp(
+                            writeopiaDb = database,
                             notesInjector = notesInjector,
                             uiConfigurationInjector = uiConfigurationInjector,
                             selectionState = selectionState,
@@ -192,7 +196,6 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                             isUndoKeyEvent = KeyboardCommands::isUndoKeyboardEvent,
                             colorThemeOption = colorTheme,
                             selectColorTheme = uiConfigurationViewModel::changeColorTheme,
-                            writeopiaDb = database,
                             toggleMaxScreen = topDoubleBarClick
                         )
                     }
