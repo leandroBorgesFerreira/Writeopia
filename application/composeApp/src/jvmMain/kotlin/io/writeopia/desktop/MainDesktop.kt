@@ -173,7 +173,7 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                 is DatabaseCreation.Complete -> {
                     val database = databaseState.writeopiaDb
 
-                    val uiConfigurationInjector = remember { UiConfigurationInjector(database) }
+                    val uiConfigurationInjector = UiConfigurationInjector.singleton()
                     val notesInjector = remember { NotesInjector(database) }
 
                     val uiConfigurationViewModel = uiConfigurationInjector
