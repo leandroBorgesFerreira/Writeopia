@@ -6,9 +6,8 @@ import com.google.firebase.ktx.Firebase
 import io.writeopia.sdk.network.oauth.BearerTokenHandler
 import kotlinx.coroutines.tasks.await
 
-object FirebaseTokenHandler : BearerTokenHandler {
-
-    override suspend fun getIdToken(): String? =
+actual object AppBearerTokenHandler : BearerTokenHandler {
+    actual override suspend fun getIdToken(): String? =
         Firebase.auth.currentUser?.getIdToken(true)?.await()?.token?.also { token ->
             Log.d("FirebaseTokenHandler", "token: $token")
         }

@@ -10,25 +10,26 @@ import io.writeopia.auth.core.repository.AuthRepository
 import io.writeopia.auth.core.repository.SharedPrefsAuthRepository
 import io.writeopia.common.utils.di.SharedPreferencesInjector
 
-class AndroidAuthCoreInjection private constructor(
-    private val sharedPreferences: SharedPreferences,
-) : AuthCoreInjection {
+actual class AuthCoreInjectionNeo private constructor(
+    private val sharedPreferences: SharedPreferences
+) {
 
     private val auth: FirebaseAuth = Firebase.auth
 
-    override fun provideAccountManager(): AuthManager = FirebaseAuthManager(auth)
+    actual fun provideAccountManager(): AuthManager = FirebaseAuthManager(auth)
 
-    override fun provideAuthRepository(): AuthRepository =
+    actual fun provideAuthRepository(): AuthRepository =
         SharedPrefsAuthRepository(sharedPreferences)
 
-    companion object {
-        private var instance: AndroidAuthCoreInjection? = null
+    actual companion object {
+        private var instance: AuthCoreInjectionNeo? = null
 
-        fun singleton(): AndroidAuthCoreInjection =
-            instance ?: AndroidAuthCoreInjection(
+        actual fun singleton(): AuthCoreInjectionNeo =
+            instance ?: AuthCoreInjectionNeo(
                 SharedPreferencesInjector.get().sharedPreferences
             ).also {
                 instance = it
             }
     }
+
 }

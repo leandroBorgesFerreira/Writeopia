@@ -2,8 +2,7 @@ package io.writeopia.global.shell.di
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.writeopia.auth.core.di.AuthCoreInjection
-import io.writeopia.auth.core.di.KmpAuthCoreInjection
+import io.writeopia.auth.core.di.AuthCoreInjectionNeo
 import io.writeopia.controller.OllamaConfigController
 import io.writeopia.core.folders.repository.FolderRepository
 import io.writeopia.di.OllamaConfigInjector
@@ -21,7 +20,7 @@ import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 
 class SideMenuKmpInjector(
     private val notesInjector: NotesInjector,
-    private val authCoreInjection: AuthCoreInjection = KmpAuthCoreInjection.singleton(),
+    private val authCoreInjection: AuthCoreInjectionNeo = AuthCoreInjectionNeo.singleton(),
     private val repositoryInjection: RepositoryInjector = SqlDelightDaoInjector.singleton(),
     private val uiConfigurationInjector: UiConfigurationInjector,
     private val ollamaInjection: OllamaInjection = OllamaInjection.singleton()

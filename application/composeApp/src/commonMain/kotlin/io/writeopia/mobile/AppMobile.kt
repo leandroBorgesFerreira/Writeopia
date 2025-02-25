@@ -19,7 +19,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.currentBackStackEntryAsState
-import io.writeopia.account.di.AccountMenuInjector
 import io.writeopia.common.utils.Destinations
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.editor.di.TextEditorInjector
@@ -44,7 +43,6 @@ fun AppMobile(
     uiConfigViewModel: UiConfigurationViewModel,
     notesMenuInjection: NotesMenuInjection,
     editorInjector: TextEditorInjector,
-    accountMenuInjector: AccountMenuInjector,
     navigationViewModel: NavigationViewModel,
     builder: NavGraphBuilder.() -> Unit
 ) {
@@ -105,7 +103,6 @@ fun AppMobile(
                     notesMenuInjection = notesMenuInjection,
                     navController = navController,
                     editorInjector = editorInjector,
-                    accountMenuInjector = accountMenuInjector,
                     selectColorTheme = uiConfigViewModel::changeColorTheme,
                     searchInjection = searchInjector,
                     isUndoKeyEvent = { false },

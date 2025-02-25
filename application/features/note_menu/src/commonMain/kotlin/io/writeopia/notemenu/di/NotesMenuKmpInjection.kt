@@ -2,8 +2,7 @@ package io.writeopia.notemenu.di
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.writeopia.auth.core.di.AuthCoreInjection
-import io.writeopia.auth.core.di.KmpAuthCoreInjection
+import io.writeopia.auth.core.di.AuthCoreInjectionNeo
 import io.writeopia.core.folders.repository.FolderRepository
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.repository.ConfigurationRepository
@@ -13,7 +12,6 @@ import io.writeopia.notemenu.viewmodel.ChooseNoteViewModel
 import io.writeopia.notemenu.viewmodel.FolderStateController
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.repository.DocumentRepository
-import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.flow.Flow
@@ -22,7 +20,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 class NotesMenuKmpInjection private constructor(
     private val notesInjector: NotesInjector,
-    private val authCoreInjection: AuthCoreInjection,
+    private val authCoreInjection: AuthCoreInjectionNeo = AuthCoreInjectionNeo.singleton(),
     private val repositoryInjection: RepositoryInjector,
     private val selectionState: StateFlow<Boolean>,
     private val keyboardEventFlow: Flow<KeyboardEvent>
@@ -76,11 +74,9 @@ class NotesMenuKmpInjection private constructor(
 
         fun mobile(
             notesInjector: NotesInjector,
-            authCoreInjection: AuthCoreInjection,
             repositoryInjection: RepositoryInjector,
         ) = instanceMobile ?: NotesMenuKmpInjection(
             notesInjector = notesInjector,
-            authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,
             selectionState = MutableStateFlow(false),
             keyboardEventFlow = MutableStateFlow(KeyboardEvent.IDLE)
@@ -90,13 +86,11 @@ class NotesMenuKmpInjection private constructor(
 
         fun desktop(
             notesInjector: NotesInjector,
-            authCoreInjection: AuthCoreInjection = KmpAuthCoreInjection.singleton(),
-            repositoryInjection: RepositoryInjector = SqlDelightDaoInjector.singleton(),
             selectionState: StateFlow<Boolean>,
-            keyboardEventFlow: Flow<KeyboardEvent>
+            keyboardEventFlow: Flow<KeyboardEvent>,
+            repositoryInjection: RepositoryInjector = SqlDelightDaoInjector.singleton(),
         ) = instanceDesktop ?: NotesMenuKmpInjection(
             notesInjector = notesInjector,
-            authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,
             selectionState = selectionState,
             keyboardEventFlow = keyboardEventFlow,

@@ -28,9 +28,7 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import io.writeopia.account.di.AccountMenuKmpInjector
 import io.writeopia.account.ui.SettingsDialog
-import io.writeopia.auth.core.token.MockTokenHandler
 import io.writeopia.common.utils.Destinations
 import io.writeopia.editor.di.EditorKmpInjector
 import io.writeopia.features.search.di.KmpSearchInjection
@@ -54,7 +52,6 @@ import io.writeopia.notemenu.navigation.NAVIGATION_TYPE
 import io.writeopia.notemenu.navigation.navigateToNotes
 import io.writeopia.notemenu.ui.screen.menu.EditFileScreen
 import io.writeopia.notemenu.ui.screen.menu.RoundedVerticalDivider
-import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.di.WriteopiaDbInjector
 import io.writeopia.theme.WrieopiaTheme
@@ -72,8 +69,6 @@ import kotlinx.coroutines.launch
 fun DesktopApp(
     writeopiaDb: WriteopiaDb? = null,
     notesInjector: NotesInjector,
-    uiConfigurationInjector: UiConfigurationInjector,
-    disableWebsocket: Boolean = false,
     selectionState: StateFlow<Boolean>,
     keyboardEventFlow: Flow<KeyboardEvent>,
     colorThemeOption: StateFlow<ColorThemeOption?>,
@@ -87,27 +82,16 @@ fun DesktopApp(
         WriteopiaDbInjector.initialize(writeopiaDb)
     }
 
-    val connectionInjection =
-        remember {
-            ConnectionInjector(
-                bearerTokenHandler = MockTokenHandler,
-                baseUrl = "https://writeopia.io/api",
-                disableWebsocket = disableWebsocket
-            )
-        }
-
     val editorInjector = remember {
         EditorKmpInjector.desktop(
-            connectionInjection = connectionInjection,
             selectionState = selectionState,
             keyboardEventFlow = keyboardEventFlow,
-            uiConfigurationRepository = uiConfigurationInjector.provideUiConfigurationRepository(),
+            uiConfigurationRepository = UiConfigurationInjector.singleton()
+                .provideUiConfigurationRepository(),
             folderInjector = notesInjector,
             configurationInjector = notesInjector
         )
     }
-
-    val accountInjector = remember { AccountMenuKmpInjector.desktopSingleton() }
 
     val notesMenuInjection = remember {
         NotesMenuKmpInjection.desktop(
@@ -120,7 +104,7 @@ fun DesktopApp(
     val sideMenuInjector = remember {
         SideMenuKmpInjector(
             notesInjector = notesInjector,
-            uiConfigurationInjector = uiConfigurationInjector,
+            uiConfigurationInjector = UiConfigurationInjector.singleton(),
         )
     }
 
@@ -213,7 +197,6 @@ fun DesktopApp(
                                 startDestination = startDestination,
                                 notesMenuInjection = notesMenuInjection,
                                 sideMenuKmpInjector = sideMenuInjector,
-                                accountMenuInjector = accountInjector,
                                 editorInjector = editorInjector,
                                 isUndoKeyEvent = isUndoKeyEvent,
                                 selectColorTheme = selectColorTheme,

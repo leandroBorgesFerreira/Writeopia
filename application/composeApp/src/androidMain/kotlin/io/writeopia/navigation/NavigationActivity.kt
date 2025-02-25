@@ -14,9 +14,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import io.writeopia.AndroidLogger
 import io.writeopia.BuildConfig
-import io.writeopia.account.di.AccountMenuKmpInjector
-import io.writeopia.auth.core.di.AndroidAuthCoreInjection
-import io.writeopia.auth.core.token.FirebaseTokenHandler
+import io.writeopia.auth.core.di.AuthCoreInjectionNeo
+import io.writeopia.auth.core.token.AppBearerTokenHandler
 import io.writeopia.auth.di.AuthInjection
 import io.writeopia.auth.navigation.authNavigation
 import io.writeopia.common.utils.Destinations
@@ -77,31 +76,26 @@ fun NavigationGraph(
     SharedPreferencesInjector.init(sharedPreferences)
     WriteopiaRoomInjector.init(database)
 
-    val authCoreInjection = AndroidAuthCoreInjection.singleton()
     val uiConfigInjection = UiConfigurationInjector.singleton()
 
     val appDaosInjection = AppRoomDaosInjection.singleton()
     val notesInjector = NotesInjector.singleton()
     val connectionInjector = ConnectionInjector(
-        apiLogger = AndroidLogger,
-        bearerTokenHandler = FirebaseTokenHandler,
+        bearerTokenHandler = AppBearerTokenHandler,
         baseUrl = BuildConfig.BASE_URL
     )
     val uiConfigViewModel = uiConfigInjection.provideUiConfigurationViewModel()
     val repositoryInjection = RoomRepositoryInjection.singleton()
-    val authInjection = AuthInjection(authCoreInjection, connectionInjector, repositoryInjection)
+    val authInjection = AuthInjection(connectionInjector, repositoryInjection)
     val editorInjector = EditorKmpInjector.mobile(
-        authCoreInjection,
         repositoryInjection,
         connectionInjector,
         uiConfigInjection.provideUiConfigurationRepository(),
         folderInjector = notesInjector,
         configurationInjector = notesInjector
     )
-    val accountMenuInjector = AccountMenuKmpInjector.desktopSingleton(authCoreInjection)
     val notesMenuInjection = NotesMenuKmpInjection.mobile(
         notesInjector,
-        authCoreInjection,
         repositoryInjection,
     )
 
@@ -122,7 +116,6 @@ fun NavigationGraph(
         uiConfigViewModel = uiConfigViewModel,
         notesMenuInjection = notesMenuInjection,
         editorInjector = editorInjector,
-        accountMenuInjector = accountMenuInjector,
         navigationViewModel = navigationViewModel
     ) {
         authNavigation(navController, authInjection) {

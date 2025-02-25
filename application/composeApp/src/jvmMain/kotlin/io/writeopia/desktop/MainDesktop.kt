@@ -189,7 +189,6 @@ private fun ApplicationScope.App(onCloseRequest: () -> Unit = ::exitApplication)
                         DesktopApp(
                             writeopiaDb = database,
                             notesInjector = notesInjector,
-                            uiConfigurationInjector = uiConfigurationInjector,
                             selectionState = selectionState,
                             keyboardEventFlow = keyboardEventFlow.filterNotNull(),
                             coroutineScope = coroutineScope,
