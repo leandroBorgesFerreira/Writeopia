@@ -20,7 +20,8 @@ class AuthInjection(
     private val daosInjection: RepositoryInjector
 ) {
 
-    private fun provideDocumentRepository(): DocumentRepository = daosInjection.provideDocumentRepository()
+    private fun provideDocumentRepository(): DocumentRepository =
+        daosInjection.provideDocumentRepository()
 
     private fun provideIntroNotesUseCase(
         documentRepository: DocumentRepository = provideDocumentRepository(),
@@ -50,7 +51,7 @@ class AuthInjection(
     ): AuthMenuViewModel = viewModel { AuthMenuViewModel(authManager, authRepository) }
 
     companion object {
-        
+
     }
 
 }

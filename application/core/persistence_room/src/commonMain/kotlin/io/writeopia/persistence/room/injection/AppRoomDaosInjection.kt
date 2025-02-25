@@ -19,8 +19,8 @@ class AppRoomDaosInjection private constructor(
     companion object {
         private var instance: AppRoomDaosInjection? = null
 
-        fun singleton(database: WriteopiaApplicationDatabase): AppRoomDaosInjection =
-            instance ?: AppRoomDaosInjection(database).also {
+        fun singleton(): AppRoomDaosInjection =
+            instance ?: AppRoomDaosInjection(WriteopiaRoomInjector.get().database).also {
                 instance = it
             }
     }

@@ -35,6 +35,7 @@ import io.writeopia.persistence.room.DatabaseConfigAndroid
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 import io.writeopia.persistence.room.injection.RoomRepositoryInjection
+import io.writeopia.persistence.room.injection.WriteopiaRoomInjector
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.ui.image.ImageLoadConfig
 
@@ -74,19 +75,20 @@ fun NavigationGraph(
     startDestination: String = Destinations.AUTH_MENU_INNER_NAVIGATION.id
 ) {
     SharedPreferencesInjector.init(sharedPreferences)
+    WriteopiaRoomInjector.init(database)
 
     val authCoreInjection = AndroidAuthCoreInjection.singleton()
     val uiConfigInjection = UiConfigurationInjector.singleton()
 
-    val appDaosInjection = AppRoomDaosInjection.singleton(database)
-    val notesInjector = NotesInjector.singleton(database)
+    val appDaosInjection = AppRoomDaosInjection.singleton()
+    val notesInjector = NotesInjector.singleton()
     val connectionInjector = ConnectionInjector(
         apiLogger = AndroidLogger,
         bearerTokenHandler = FirebaseTokenHandler,
         baseUrl = BuildConfig.BASE_URL
     )
     val uiConfigViewModel = uiConfigInjection.provideUiConfigurationViewModel()
-    val repositoryInjection = RoomRepositoryInjection(database)
+    val repositoryInjection = RoomRepositoryInjection.singleton()
     val authInjection = AuthInjection(authCoreInjection, connectionInjector, repositoryInjection)
     val editorInjector = EditorKmpInjector.mobile(
         authCoreInjection,

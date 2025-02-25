@@ -10,6 +10,7 @@ import io.writeopia.models.configuration.ConfigurationInjector
 import io.writeopia.models.configuration.WorkspaceConfigRepository
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
+import io.writeopia.persistence.room.injection.WriteopiaRoomInjector
 
 actual class NotesInjector private constructor(
     private val appRoomDaosInjection: AppDaosInjection
@@ -33,8 +34,8 @@ actual class NotesInjector private constructor(
     companion object {
         private var instance: NotesInjector? = null
 
-        fun singleton(database: WriteopiaApplicationDatabase): NotesInjector =
-            instance ?: NotesInjector(AppRoomDaosInjection.singleton(database)).also {
+        fun singleton(): NotesInjector =
+            instance ?: NotesInjector(AppRoomDaosInjection.singleton()).also {
                 instance = it
             }
     }
