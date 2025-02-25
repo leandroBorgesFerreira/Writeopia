@@ -90,12 +90,24 @@ object DocumentToMarkdown : DocumentWriter {
         when (storyStep.type.number) {
             StoryTypes.TITLE.type.number -> ContentAdd.NOTHING to "# ${storyStep.text}"
 
-            StoryTypes.TEXT.type.number -> parseText(storyStep)
+            StoryTypes.TEXT.type.number -> parseTextWithTags(storyStep)
+
+            StoryTypes.CHECK_ITEM.type.number -> {
+                val (content, text) = parseTextWithTags(storyStep)
+
+                content to "[] $text"
+            }
+
+            StoryTypes.UNORDERED_LIST_ITEM.type.number -> {
+                val (content, text) = parseTextWithTags(storyStep)
+
+                content to "- $text"
+            }
 
             else -> ContentAdd.NOTHING to storyStep.text
         }
 
-    private fun parseText(storyStep: StoryStep): Pair<ContentAdd, String?> =
+    private fun parseTextWithTags(storyStep: StoryStep): Pair<ContentAdd, String?> =
         when {
             storyStep.tags.contains(TagInfo(Tag.H1)) ->
                 ContentAdd.EMPTY_LINE_BEFORE_AND_AFTER to "# ${storyStep.text}"

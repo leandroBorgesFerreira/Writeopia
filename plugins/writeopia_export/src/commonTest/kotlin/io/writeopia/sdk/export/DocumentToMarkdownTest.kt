@@ -52,6 +52,14 @@ class DocumentToMarkdownTest {
                 type = StoryTypes.TEXT.type,
                 text = "Subtitle!!",
                 tags = setOf(TagInfo(Tag.H2))
+            ),
+            3 to StoryStep(
+                type = StoryTypes.CHECK_ITEM.type,
+                text = "Check this"
+            ),
+            4 to StoryStep(
+                type = StoryTypes.UNORDERED_LIST_ITEM.type,
+                text = "This is a list item"
             )
         )
 
@@ -60,6 +68,8 @@ class DocumentToMarkdownTest {
             appendLine("# Title!!")
             appendLine("some text")
             appendLine("## Subtitle!!")
+            appendLine("[] Check this")
+            appendLine("- This is a list item")
         }
 
         assertEquals(expected, parsedContent)
