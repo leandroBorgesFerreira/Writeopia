@@ -14,9 +14,9 @@ import io.writeopia.notemenu.data.usecase.NotesNavigationUseCase
 import io.writeopia.notemenu.data.usecase.NotesUseCase
 import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.UiConfigurationInjector
+import io.writeopia.sdk.network.injector.WriteopiaConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.repository.DocumentRepository
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
 class SideMenuKmpInjector(
@@ -25,7 +25,8 @@ class SideMenuKmpInjector(
     private val repositoryInjection: RepositoryInjector,
     private val uiConfigurationInjector: UiConfigurationInjector,
     private val selectionState: StateFlow<Boolean>,
-    private val ollamaInjection: OllamaInjection
+    private val ollamaInjection: OllamaInjection,
+    private val writeopiaConnectionInjector: WriteopiaConnectionInjector
 ) : SideMenuInjector, OllamaConfigInjector {
     private fun provideDocumentRepository(): DocumentRepository =
         repositoryInjection.provideDocumentRepository()
@@ -36,7 +37,12 @@ class SideMenuKmpInjector(
             notesInjector.provideNotesConfigurationRepository(),
         folderRepository: FolderRepository = notesInjector.provideFoldersRepository()
     ): NotesUseCase {
-        return NotesUseCase.singleton(documentRepository, configurationRepository, folderRepository)
+        return NotesUseCase.singleton(
+            documentRepository,
+            configurationRepository,
+            folderRepository,
+            writeopiaConnectionInjector.notesApi()
+        )
     }
 
     @Composable

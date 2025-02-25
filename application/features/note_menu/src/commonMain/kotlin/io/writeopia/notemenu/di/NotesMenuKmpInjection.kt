@@ -10,6 +10,7 @@ import io.writeopia.notemenu.data.usecase.NotesUseCase
 import io.writeopia.notemenu.viewmodel.ChooseNoteKmpViewModel
 import io.writeopia.notemenu.viewmodel.ChooseNoteViewModel
 import io.writeopia.notemenu.viewmodel.FolderStateController
+import io.writeopia.sdk.network.injector.WriteopiaConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.repository.DocumentRepository
 import io.writeopia.ui.keyboard.KeyboardEvent
@@ -22,7 +23,8 @@ class NotesMenuKmpInjection private constructor(
     private val authCoreInjection: AuthCoreInjection,
     private val repositoryInjection: RepositoryInjector,
     private val selectionState: StateFlow<Boolean>,
-    private val keyboardEventFlow: Flow<KeyboardEvent>
+    private val keyboardEventFlow: Flow<KeyboardEvent>,
+    private val writeopiaConnectionInjector: WriteopiaConnectionInjector
 ) : NotesMenuInjection {
 
     private fun provideDocumentRepository(): DocumentRepository =
@@ -34,7 +36,12 @@ class NotesMenuKmpInjection private constructor(
             notesInjector.provideNotesConfigurationRepository(),
         folderRepository: FolderRepository = notesInjector.provideFoldersRepository()
     ): NotesUseCase {
-        return NotesUseCase.singleton(documentRepository, configurationRepository, folderRepository)
+        return NotesUseCase.singleton(
+            documentRepository,
+            configurationRepository,
+            folderRepository,
+            notesApi = writeopiaConnectionInjector.notesApi()
+        )
     }
 
     private fun provideFolderStateController(): FolderStateController =
@@ -43,7 +50,7 @@ class NotesMenuKmpInjection private constructor(
             authCoreInjection.provideAccountManager()
         )
 
-    internal fun provideChooseKmpNoteViewModel(
+    private fun provideChooseKmpNoteViewModel(
         notesNavigation: NotesNavigation,
         notesUseCase: NotesUseCase = provideNotesUseCase(),
         notesConfig: ConfigurationRepository =
@@ -72,12 +79,14 @@ class NotesMenuKmpInjection private constructor(
             notesInjector: NotesInjector,
             authCoreInjection: AuthCoreInjection,
             repositoryInjection: RepositoryInjector,
+            writeopiaConnectionInjector: WriteopiaConnectionInjector
         ) = NotesMenuKmpInjection(
             notesInjector = notesInjector,
             authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,
             selectionState = MutableStateFlow(false),
-            keyboardEventFlow = MutableStateFlow(KeyboardEvent.IDLE)
+            keyboardEventFlow = MutableStateFlow(KeyboardEvent.IDLE),
+            writeopiaConnectionInjector = writeopiaConnectionInjector
         )
 
         fun desktop(
@@ -85,13 +94,15 @@ class NotesMenuKmpInjection private constructor(
             authCoreInjection: AuthCoreInjection,
             repositoryInjection: RepositoryInjector,
             selectionState: StateFlow<Boolean>,
-            keyboardEventFlow: Flow<KeyboardEvent>
+            keyboardEventFlow: Flow<KeyboardEvent>,
+            writeopiaConnectionInjector: WriteopiaConnectionInjector,
         ) = NotesMenuKmpInjection(
             notesInjector = notesInjector,
             authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,
             selectionState = selectionState,
             keyboardEventFlow = keyboardEventFlow,
+            writeopiaConnectionInjector = writeopiaConnectionInjector
         )
     }
 }

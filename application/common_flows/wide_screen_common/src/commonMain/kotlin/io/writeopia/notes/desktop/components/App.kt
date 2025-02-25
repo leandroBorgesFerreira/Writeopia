@@ -122,7 +122,8 @@ fun DesktopApp(
             authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,
             selectionState = selectionState,
-            keyboardEventFlow = keyboardEventFlow
+            keyboardEventFlow = keyboardEventFlow,
+            writeopiaConnectionInjector = connectionInjection
         )
     }
 
@@ -133,7 +134,8 @@ fun DesktopApp(
             repositoryInjection,
             uiConfigurationInjector,
             selectionState,
-            ollamaInjection = ollamaInjection
+            ollamaInjection = ollamaInjection,
+            writeopiaConnectionInjector = connectionInjection,
         )
     }
 

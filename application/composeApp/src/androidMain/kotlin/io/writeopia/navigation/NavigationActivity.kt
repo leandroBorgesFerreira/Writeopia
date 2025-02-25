@@ -98,6 +98,7 @@ fun NavigationGraph(
         notesInjector,
         authCoreInjection,
         repositoryInjection,
+        writeopiaConnectionInjector
     )
 
     val searchInjector = remember {
