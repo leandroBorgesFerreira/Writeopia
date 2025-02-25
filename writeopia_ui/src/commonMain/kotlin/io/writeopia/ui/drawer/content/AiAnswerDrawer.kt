@@ -1,5 +1,8 @@
 package io.writeopia.ui.drawer.content
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -28,6 +31,7 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -131,7 +135,7 @@ class AiAnswerDrawer(
                             textStyle = TextStyle(
                                 color = MaterialTheme.colorScheme.onBackground,
                                 fontSize = 16.sp,
-                            fontFamily = FontFamily.Monospace
+                                fontFamily = FontFamily.Monospace
                             ),
                             readOnly = true
                         )
@@ -139,24 +143,38 @@ class AiAnswerDrawer(
 
                     val clipboardManager = LocalClipboardManager.current
 
-                    //here
-                    Icon(
-                        imageVector = WrSdkIcons.copy,
-                        contentDescription = "Copy",
-                        tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.align(Alignment.TopEnd)
-                            .padding(end = 8.dp)
-                            .clip(CircleShape)
-                            .clickable {
-                                clipboardManager.setText(
-                                    buildAnnotatedString { append(step.text) }
-                                )
-                            }
-                            .size(32.dp)
-                            .padding(6.dp)
-                    )
+                    AnimatedVisibility(
+                        isHovered,
+                        enter = fadeIn(),
+                        exit = fadeOut(),
+                        modifier = Modifier.align(Alignment.TopEnd).padding(end = 8.dp)
+                    ) {
+                        Icon(
+                            imageVector = WrSdkIcons.copy,
+                            contentDescription = "Copy",
+                            tint = MaterialTheme.colorScheme.onBackground,
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .clickable {
+                                    clipboardManager.setText(
+                                        buildAnnotatedString { append(step.text) }
+                                    )
+                                }
+                                .size(32.dp)
+                                .padding(6.dp)
+                        )
+                    }
                 }
             }
+
+            Text(
+                text = "AI generated",
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.align(Alignment.TopStart)
+                    .padding(horizontal = 6.dp, vertical = 4.dp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 
