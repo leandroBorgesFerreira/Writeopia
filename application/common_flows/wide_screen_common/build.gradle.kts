@@ -60,6 +60,11 @@ kotlin {
                 implementation(compose.material3)
 
                 implementation(libs.compose.navigation)
+
+                implementation(kotlin("test"))
+
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                implementation(compose.uiTest)
             }
         }
 
@@ -74,6 +79,10 @@ kotlin {
             dependencies {
                 implementation(compose.desktop.currentOs)
             }
+        }
+
+        jvmTest.dependencies {
+            implementation(compose.desktop.currentOs)
         }
     }
 }

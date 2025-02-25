@@ -1,60 +1,59 @@
 package io.writeopia.menu
 
+import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import io.writeopia.common.uitests.robots.DocumentEditRobot
+import androidx.compose.ui.test.runComposeUiTest
 import io.writeopia.common.uitests.robots.DocumentsMenuRobot
 import io.writeopia.common.uitests.tests.editor.EditorCommonTests
-import kotlinx.coroutines.test.runTest
 import org.junit.Ignore
-import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalTestApi::class)
 class EditorUiTests {
 
-    @get:Rule
-    val composeTestRule = createComposeRule()
+    @Test
+    fun itShouldBePossibleToWriteATitleAndSomeContent() = runComposeUiTest {
+        startApp()
+
+        EditorCommonTests.run {
+            testAddTitleAndContent()
+        }
+        EditorCommonTests.run {
+            testAddTitleAndContent()
+        }
+    }
+
 
     @Test
     @Ignore("Library of compose navigation somehow breaks this test. This should be added later")
-    fun itShouldBePossibleToWriteATitleAndSomeContent() = runTest {
-        startApp(composeTestRule, this)
+    fun itShouldBePossibleToSaveNoteWithTitle() = runComposeUiTest {
+        startApp()
 
-        EditorCommonTests.testAddTitleAndContent(
-            DocumentsMenuRobot(composeTestRule),
-            DocumentEditRobot(composeTestRule)
-        )
+        EditorCommonTests.run {
+            saveNoteWithTitle()
+        }
     }
 
     @Test
     @Ignore("Library of compose navigation somehow breaks this test. This should be added later")
-    fun itShouldBePossibleToSaveNoteWithTitle() = runTest {
-        startApp(composeTestRule, this)
+    fun itShouldBePossibleToOpenANoteWithoutTitle() = runComposeUiTest {
+        startApp()
 
-        EditorCommonTests.saveNoteWithTitle(
-            DocumentsMenuRobot(composeTestRule),
-            DocumentEditRobot(composeTestRule)
-        )
+        EditorCommonTests.run {
+            editNoteLineWithoutTitle()
+        }
     }
 
     @Test
     @Ignore("Library of compose navigation somehow breaks this test. This should be added later")
-    fun itShouldBePossibleToOpenANoteWithoutTitle() = runTest {
-        startApp(composeTestRule, this)
+    fun theBottomBoxShouldInitializeVisible() = runComposeUiTest {
+        startApp()
 
-        EditorCommonTests.editNoteLineWithoutTitle(
-            DocumentsMenuRobot(composeTestRule),
-            DocumentEditRobot(composeTestRule)
-        )
-    }
+        DocumentsMenuRobot.run {
+            goToEditNote()
+        }
 
-    @Test
-    @Ignore("Library of compose navigation somehow breaks this test. This should be added later")
-    fun theBottomBoxShouldInitializeVisible() = runTest {
-        startApp(composeTestRule, this)
-
-        DocumentsMenuRobot(composeTestRule).goToEditNote()
-        composeTestRule.onNodeWithTag("EditorBottomContent").assertIsDisplayed()
+        onNodeWithTag("EditorBottomContent").assertIsDisplayed()
     }
 }

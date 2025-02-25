@@ -87,7 +87,6 @@ fun DesktopApp(
     toggleMaxScreen: () -> Unit,
     startDestination: String = startDestination(),
 ) {
-    val authCoreInjection = remember { KmpAuthCoreInjection() }
     val connectionInjection =
         remember {
             ConnectionInjector(
@@ -101,12 +100,11 @@ fun DesktopApp(
         remember { OllamaInjection(appConnectionInjection, writeopiaDb = writeopiaDb) }
     val editorInjector = remember {
         EditorKmpInjector.desktop(
-            authCoreInjection = authCoreInjection,
             repositoryInjection = repositoryInjection,
             connectionInjection = connectionInjection,
             selectionState = selectionState,
             keyboardEventFlow = keyboardEventFlow,
-            uiConfigurationInjector.provideUiConfigurationRepository(),
+            uiConfigurationRepository = uiConfigurationInjector.provideUiConfigurationRepository(),
             folderInjector = notesInjector,
             ollamaInjection = ollamaInjection,
             configurationInjector = notesInjector

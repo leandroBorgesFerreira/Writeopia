@@ -1,36 +1,48 @@
 package io.writeopia.common.uitests.robots
 
-import androidx.compose.ui.test.*
-import androidx.compose.ui.test.junit4.ComposeTestRule
+import androidx.compose.ui.test.ComposeUiTest
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.assertTextContains
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import junit.framework.TestCase.assertTrue
 
-class DocumentEditRobot(private val composeTestRule: ComposeTestRule) {
-
-    fun writeTitle(text: String) {
-        composeTestRule.onNodeWithTag("MessageDrawer_0").performTextInput(text)
+object DocumentEditRobot {
+    @OptIn(ExperimentalTestApi::class)
+    fun ComposeUiTest.writeTitle(text: String) {
+        onNodeWithTag("MessageDrawer_0").performTextInput(text)
     }
 
-    fun writeText(text: String, index: Int) {
-        composeTestRule.onNodeWithTag("MessageDrawer_$index").performTextInput(text)
+    @OptIn(ExperimentalTestApi::class)
+    fun ComposeUiTest.writeText(text: String, index: Int) {
+        onNodeWithTag("MessageDrawer_$index").performTextInput(text)
     }
 
-    fun addLine() {
-        composeTestRule.onNodeWithTag("LastEmptySpace").performClick()
+    @OptIn(ExperimentalTestApi::class)
+    fun ComposeUiTest.addLine() {
+        onNodeWithTag("LastEmptySpace").performClick()
     }
 
-    fun clickWithText(text: String) {
-        composeTestRule.onNodeWithText(text).performClick()
+    @OptIn(ExperimentalTestApi::class)
+    fun ComposeUiTest.clickWithText(text: String) {
+        onNodeWithText(text).performClick()
     }
 
-    fun checkWithText(text: String) {
-        assertTrue(composeTestRule.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty())
+    @OptIn(ExperimentalTestApi::class)
+    fun ComposeUiTest.checkWithText(text: String) {
+        assertTrue(onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty())
     }
 
-    fun checkWithTitle(text: String) {
-        composeTestRule.onNodeWithTag("MessageDrawer_0").assertTextContains(text)
+    @OptIn(ExperimentalTestApi::class)
+    fun ComposeUiTest.checkWithTitle(text: String) {
+        onNodeWithTag("MessageDrawer_0").assertTextContains(text)
     }
 
-    fun goBack() {
-        composeTestRule.onNodeWithTag("NoteEditorScreenNavigateBack").performClick()
+    @OptIn(ExperimentalTestApi::class)
+    fun ComposeUiTest.goBack() {
+        onNodeWithTag("NoteEditorScreenNavigateBack").performClick()
     }
 }

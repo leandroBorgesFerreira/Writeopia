@@ -19,4 +19,8 @@ class AccountMenuKmpInjector(
     @Composable
     override fun provideAccountMenuViewModel(): AccountMenuViewModel =
         viewModel { provideAccountMenuKmpViewModel() }
+
+    companion object {
+
+    }
 }

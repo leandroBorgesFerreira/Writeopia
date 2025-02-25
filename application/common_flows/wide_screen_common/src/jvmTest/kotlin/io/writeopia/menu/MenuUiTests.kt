@@ -12,17 +12,17 @@ class MenuUiTests {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    @Test
-    @Ignore("it should be possible to sync the menu even without notes")
-    fun `it should be possible to sync the menu even without notes`() = runTest {
-        startApp(composeTestRule, this) { database ->
-            database.workspaceConfigurationEntityQueries.insert(
-                "disconnected_user",
-                "./",
-                has_first_configuration = 1L
-            )
-        }
-
-        DocumentsMenuRobot(composeTestRule).syncClick()
-    }
+//    @Test
+//    @Ignore("it should be possible to sync the menu even without notes")
+//    fun `it should be possible to sync the menu even without notes`() = runTest {
+//        startApp(composeTestRule, this) { database ->
+//            database.workspaceConfigurationEntityQueries.insert(
+//                "disconnected_user",
+//                "./",
+//                has_first_configuration = 1L
+//            )
+//        }
+//
+//        DocumentsMenuRobot(composeTestRule).syncClick()
+//    }
 }

@@ -27,7 +27,7 @@ object DatabaseFactory {
         return databaseState.asStateFlow()
     }
 
-    suspend fun createDatabase(
+    fun createDatabase(
         driverFactory: DriverFactory,
         url: String = "jdbc:sqlite:"
     ): WriteopiaDb {
