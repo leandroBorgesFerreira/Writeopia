@@ -15,10 +15,11 @@ data class DrawConfig(
             fontFamily = font
         )
     },
-    val titlePlaceHolderStyle: @Composable () -> TextStyle = {
+    val titlePlaceHolderStyle: @Composable (FontFamily?) -> TextStyle = { font ->
         MaterialTheme.typography.displaySmall.copy(
             fontWeight = FontWeight.Bold,
-            color = Color.LightGray
+            color = Color.LightGray,
+            fontFamily = font
         )
     },
     val textDrawerStartPadding: Int = 8,
