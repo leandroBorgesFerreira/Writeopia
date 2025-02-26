@@ -41,7 +41,7 @@ kotlin {
                 implementation(project(":application:core:theme"))
                 implementation(project(":application:core:navigation"))
                 implementation(project(":application:core:models"))
-                implementation(project(":application:core:folders"))
+                implementation(project(":application:core:documents"))
                 implementation(project(":application:core:common_ui"))
                 implementation(project(":application:core:ollama"))
                 implementation(project(":application:core:connection"))
