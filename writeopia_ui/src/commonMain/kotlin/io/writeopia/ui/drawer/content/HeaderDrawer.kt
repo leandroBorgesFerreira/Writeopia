@@ -66,7 +66,7 @@ class HeaderDrawer(
     private val placeHolderStyle: @Composable () -> TextStyle = {
         MaterialTheme.typography.displaySmall.copy(
             fontWeight = FontWeight.Bold,
-            color = Color.LightGray
+            color = Color.LightGray,
         )
     },
 ) : StoryStepDrawer {
@@ -199,7 +199,7 @@ fun headerDrawer(
             )
         },
         headerClick = headerClick,
-        placeHolderStyle = { drawConfig.titlePlaceHolderStyle() }
+        placeHolderStyle = { drawConfig.titlePlaceHolderStyle(fontFamily) }
     )
 
 @Preview
