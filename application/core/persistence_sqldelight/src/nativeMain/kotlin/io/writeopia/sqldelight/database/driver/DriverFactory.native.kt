@@ -8,5 +8,5 @@ import io.writeopia.sql.WriteopiaDb
 actual class DriverFactory {
     actual fun createDriver(
         url: String,
-    ): SqlDriver = NativeSqliteDriver(WriteopiaDb.Schema.synchronous(), "writeopia.db")
+    ): SqlDriver = NativeSqliteDriver(WriteopiaDb.Schema.synchronous(), "writeopia_1.db")
 }
