@@ -5,7 +5,7 @@ import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.repository.DocumentRepository
 import io.writeopia.sdk.persistence.dao.room.RoomDocumentRepository
 
-class RoomRepositoryInjection(
+class RoomRepositoryInjection private constructor(
     private val database: WriteopiaApplicationDatabase
 ) : RepositoryInjector {
 
@@ -14,4 +14,15 @@ class RoomRepositoryInjection(
             database.documentDao(),
             database.storyUnitDao()
         )
+
+    companion object {
+        private var instance: RoomRepositoryInjection? = null
+
+        fun singleton() = instance ?: RoomRepositoryInjection(
+            WriteopiaRoomInjector.get().database
+        ).also {
+            instance = it
+        }
+    }
+
 }

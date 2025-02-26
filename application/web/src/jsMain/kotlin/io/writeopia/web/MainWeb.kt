@@ -13,7 +13,6 @@ import androidx.compose.ui.window.CanvasBasedWindow
 import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.DesktopApp
-import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.image.ImageLoadConfig
 import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,13 +23,13 @@ fun main() {
     onWasmReady {
         CanvasBasedWindow(title = "Writeopia") {
             ImageLoadConfig.configImageLoad()
-            CreateAppInMemory(repositoryInjection = SqlDelightDaoInjector.noop())
+            CreateAppInMemory()
         }
     }
 }
 
 @Composable
-fun CreateAppInMemory(repositoryInjection: SqlDelightDaoInjector) {
+fun CreateAppInMemory() {
     val coroutineScope = rememberCoroutineScope()
     val selectionState = MutableStateFlow(false)
 
@@ -42,8 +41,6 @@ fun CreateAppInMemory(repositoryInjection: SqlDelightDaoInjector) {
 
     DesktopApp(
         notesInjector = NotesInjector.noop(),
-        repositoryInjection = repositoryInjection,
-        uiConfigurationInjector = UiConfigurationInjector(),
         selectionState = selectionState,
         isUndoKeyEvent = ::isUndoKeyboardEvent,
         colorThemeOption = colorTheme,

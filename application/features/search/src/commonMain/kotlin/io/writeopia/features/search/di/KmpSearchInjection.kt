@@ -9,8 +9,11 @@ import io.writeopia.sdk.search.DocumentSearch
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.dao.FolderSqlDelightDao
+import io.writeopia.sqldelight.di.WriteopiaDbInjector
 
-class KmpSearchInjection(private val writeopiaDb: WriteopiaDb? = null) : SearchInjection {
+class KmpSearchInjection private constructor(
+    private val writeopiaDb: WriteopiaDb? = null
+) : SearchInjection {
 
     private fun provideFolderSqlDelightDao() = FolderSqlDelightDao(writeopiaDb)
 
@@ -27,5 +30,14 @@ class KmpSearchInjection(private val writeopiaDb: WriteopiaDb? = null) : SearchI
     @Composable
     override fun provideViewModel(): SearchKmpViewModel = viewModel {
         SearchKmpViewModel(searchRepository = provideRepository())
+    }
+
+    companion object {
+        private var instance: KmpSearchInjection? = null
+
+        fun singleton() =
+            instance ?: KmpSearchInjection(WriteopiaDbInjector.singleton()?.database).also {
+                instance = it
+            }
     }
 }

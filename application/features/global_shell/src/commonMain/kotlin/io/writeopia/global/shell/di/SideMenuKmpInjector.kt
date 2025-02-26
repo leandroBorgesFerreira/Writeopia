@@ -2,7 +2,7 @@ package io.writeopia.global.shell.di
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.writeopia.auth.core.di.AuthCoreInjection
+import io.writeopia.auth.core.di.AuthCoreInjectionNeo
 import io.writeopia.controller.OllamaConfigController
 import io.writeopia.core.folders.repository.FolderRepository
 import io.writeopia.di.OllamaConfigInjector
@@ -16,16 +16,14 @@ import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.repository.DocumentRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.StateFlow
+import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 
 class SideMenuKmpInjector(
     private val notesInjector: NotesInjector,
-    private val authCoreInjection: AuthCoreInjection,
-    private val repositoryInjection: RepositoryInjector,
+    private val authCoreInjection: AuthCoreInjectionNeo = AuthCoreInjectionNeo.singleton(),
+    private val repositoryInjection: RepositoryInjector = SqlDelightDaoInjector.singleton(),
     private val uiConfigurationInjector: UiConfigurationInjector,
-    private val selectionState: StateFlow<Boolean>,
-    private val ollamaInjection: OllamaInjection
+    private val ollamaInjection: OllamaInjection = OllamaInjection.singleton()
 ) : SideMenuInjector, OllamaConfigInjector {
     private fun provideDocumentRepository(): DocumentRepository =
         repositoryInjection.provideDocumentRepository()

@@ -5,8 +5,9 @@ import io.writeopia.api.OllamaApi
 import io.writeopia.persistence.OllamaDao
 import io.writeopia.persistence.OllamaSqlDao
 import io.writeopia.sql.WriteopiaDb
+import io.writeopia.sqldelight.di.WriteopiaDbInjector
 
-class OllamaInjection(
+class OllamaInjection private constructor(
     private val appConnectionInjection: AppConnectionInjection,
     private val writeopiaDb: WriteopiaDb? = null,
 ) {
@@ -20,4 +21,15 @@ class OllamaInjection(
 
     fun provideRepository(ollamaApi: OllamaApi = provideApi()) =
         OllamaRepository(ollamaApi, provideOllamaDao())
+
+    companion object {
+        private var instance: OllamaInjection? = null
+
+        fun singleton() = instance ?: OllamaInjection(
+            appConnectionInjection = AppConnectionInjection.singleton(),
+            writeopiaDb = WriteopiaDbInjector.singleton()?.database
+        ).also {
+            instance = it
+        }
+    }
 }

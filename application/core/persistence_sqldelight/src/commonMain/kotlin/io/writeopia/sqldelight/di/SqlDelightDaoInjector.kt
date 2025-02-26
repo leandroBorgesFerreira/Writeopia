@@ -39,6 +39,13 @@ class SqlDelightDaoInjector(
 
 
     companion object {
+        private var instance: SqlDelightDaoInjector? = null
+
         fun noop() = SqlDelightDaoInjector(null)
+
+        fun singleton(): SqlDelightDaoInjector =
+            instance ?: SqlDelightDaoInjector(WriteopiaDbInjector.singleton()?.database).also {
+                instance = it
+            }
     }
 }

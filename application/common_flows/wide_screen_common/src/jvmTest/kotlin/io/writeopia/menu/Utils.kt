@@ -1,34 +1,32 @@
 package io.writeopia.menu
 
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.test.ComposeUiTest
+import androidx.compose.ui.test.ExperimentalTestApi
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.notemenu.di.NotesInjector
-import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.DesktopApp
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
-import io.writeopia.sqldelight.di.SqlDelightDaoInjector
+import io.writeopia.sqldelight.di.WriteopiaDbInjector
 import io.writeopia.ui.keyboard.KeyboardEvent
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 
-suspend fun startApp(
-    composeTestRule: ComposeContentTestRule,
-    coroutineScope: CoroutineScope,
-    databaseConfig: suspend (WriteopiaDb) -> Unit = {}
+@OptIn(ExperimentalTestApi::class)
+fun ComposeUiTest.startApp(
+    databaseConfig: (WriteopiaDb) -> Unit = {}
 ) {
-    val database: WriteopiaDb = DatabaseFactory.createDatabase(DriverFactory())
-    databaseConfig(database)
+    setContent {
+        val database: WriteopiaDb = DatabaseFactory.createDatabase(DriverFactory())
+        databaseConfig(database)
 
-    composeTestRule.setContent {
+        WriteopiaDbInjector.initialize(database)
+
         DesktopApp(
-            notesInjector = NotesInjector(database),
-            repositoryInjection = SqlDelightDaoInjector(database),
-            uiConfigurationInjector = UiConfigurationInjector(database),
-            coroutineScope = coroutineScope,
+            notesInjector = NotesInjector.singleton(),
+            coroutineScope = rememberCoroutineScope(),
             colorThemeOption = MutableStateFlow(ColorThemeOption.DARK),
-            disableWebsocket = true,
             isUndoKeyEvent = { false },
             selectColorTheme = {},
             selectionState = MutableStateFlow(false),

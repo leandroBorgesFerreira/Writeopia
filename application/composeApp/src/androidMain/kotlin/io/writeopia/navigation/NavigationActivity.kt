@@ -12,16 +12,13 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import io.writeopia.AndroidLogger
 import io.writeopia.BuildConfig
-import io.writeopia.account.di.AccountMenuKmpInjector
-import io.writeopia.auth.core.di.AndroidAuthCoreInjection
-import io.writeopia.auth.core.token.FirebaseTokenHandler
+import io.writeopia.auth.core.token.AppBearerTokenHandler
 import io.writeopia.auth.di.AuthInjection
 import io.writeopia.auth.navigation.authNavigation
 import io.writeopia.common.utils.Destinations
+import io.writeopia.common.utils.di.SharedPreferencesInjector
 import io.writeopia.editor.di.EditorKmpInjector
-import io.writeopia.features.search.di.KmpSearchInjection
 import io.writeopia.features.search.di.MobileSearchInjection
 import io.writeopia.mobile.AppMobile
 import io.writeopia.notemenu.data.model.NotesNavigation
@@ -34,6 +31,7 @@ import io.writeopia.persistence.room.DatabaseConfigAndroid
 import io.writeopia.persistence.room.WriteopiaApplicationDatabase
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 import io.writeopia.persistence.room.injection.RoomRepositoryInjection
+import io.writeopia.persistence.room.injection.WriteopiaRoomInjector
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.ui.image.ImageLoadConfig
 
@@ -72,37 +70,31 @@ fun NavigationGraph(
     ),
     startDestination: String = Destinations.AUTH_MENU_INNER_NAVIGATION.id
 ) {
-    val authCoreInjection = AndroidAuthCoreInjection(sharedPreferences)
-    val uiConfigInjection = UiConfigurationInjector(sharedPreferences)
+    SharedPreferencesInjector.init(sharedPreferences)
+    WriteopiaRoomInjector.init(database)
 
-    val appDaosInjection = AppRoomDaosInjection(database)
-    val notesInjector = NotesInjector(appDaosInjection)
+    val uiConfigInjection = UiConfigurationInjector.singleton()
+
+    val appDaosInjection = AppRoomDaosInjection.singleton()
+    val notesInjector = NotesInjector.singleton()
     val connectionInjector = ConnectionInjector(
-        apiLogger = AndroidLogger,
-        bearerTokenHandler = FirebaseTokenHandler,
+        bearerTokenHandler = AppBearerTokenHandler,
         baseUrl = BuildConfig.BASE_URL
     )
     val uiConfigViewModel = uiConfigInjection.provideUiConfigurationViewModel()
-    val repositoryInjection = RoomRepositoryInjection(database)
-    val authInjection = AuthInjection(authCoreInjection, connectionInjector, repositoryInjection)
+    val repositoryInjection = RoomRepositoryInjection.singleton()
+    val authInjection = AuthInjection(connectionInjector, repositoryInjection)
     val editorInjector = EditorKmpInjector.mobile(
-        authCoreInjection,
         repositoryInjection,
         connectionInjector,
         uiConfigInjection.provideUiConfigurationRepository(),
         folderInjector = notesInjector,
         configurationInjector = notesInjector
     )
-    val accountMenuInjector = AccountMenuKmpInjector(authCoreInjection)
-    val notesMenuInjection = NotesMenuKmpInjection.mobile(
-        notesInjector,
-        authCoreInjection,
-        repositoryInjection,
-    )
+    val notesMenuInjection = NotesMenuKmpInjection.mobile(repositoryInjection)
 
     val searchInjector = remember {
         MobileSearchInjection(
-            searchInjection = KmpSearchInjection(),
             appRoomDaosInjection = appDaosInjection,
             roomInjector = repositoryInjection
         )
@@ -117,7 +109,6 @@ fun NavigationGraph(
         uiConfigViewModel = uiConfigViewModel,
         notesMenuInjection = notesMenuInjection,
         editorInjector = editorInjector,
-        accountMenuInjector = accountMenuInjector,
         navigationViewModel = navigationViewModel
     ) {
         authNavigation(navController, authInjection) {

@@ -8,7 +8,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import io.writeopia.account.di.AccountMenuInjector
 import io.writeopia.account.navigation.accountMenuNavigation
 import io.writeopia.common.utils.Destinations
 import io.writeopia.editor.di.TextEditorInjector
@@ -34,7 +33,6 @@ fun Navigation(
     notesMenuInjection: NotesMenuInjection,
     sideMenuKmpInjector: SideMenuKmpInjector? = null,
     editorInjector: TextEditorInjector,
-    accountMenuInjector: AccountMenuInjector,
     searchInjection: SearchInjection? = null,
     isUndoKeyEvent: (KeyEvent) -> Boolean,
     selectColorTheme: (ColorThemeOption) -> Unit,
@@ -68,7 +66,6 @@ fun Navigation(
             )
 
             accountMenuNavigation(
-                accountMenuInjector = accountMenuInjector,
                 navigateToAuthMenu = { },
                 selectColorTheme = selectColorTheme
             )

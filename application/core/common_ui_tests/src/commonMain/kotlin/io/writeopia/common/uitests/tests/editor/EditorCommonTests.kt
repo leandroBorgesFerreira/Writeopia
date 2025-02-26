@@ -1,20 +1,23 @@
 package io.writeopia.common.uitests.tests.editor
 
+import androidx.compose.ui.test.ComposeUiTest
+import androidx.compose.ui.test.ExperimentalTestApi
 import io.writeopia.common.uitests.robots.DocumentEditRobot
 import io.writeopia.common.uitests.robots.DocumentsMenuRobot
+import io.writeopia.common.uitests.robots.DocumentsMenuRobot.goToEditNote
 
+@OptIn(ExperimentalTestApi::class)
 object EditorCommonTests {
 
-    fun testAddTitleAndContent(
-        documentsMenuRobot: DocumentsMenuRobot,
-        documentEditRobot: DocumentEditRobot
-    ) {
+    fun ComposeUiTest.testAddTitleAndContent() {
         val title = "Some Title"
         val text = "Some text"
 
-        documentsMenuRobot.goToEditNote()
+        DocumentsMenuRobot.run {
+            goToEditNote()
+        }
 
-        documentEditRobot.run {
+        DocumentEditRobot.run {
             writeTitle(title)
             checkWithTitle(title)
             addLine()
@@ -23,37 +26,37 @@ object EditorCommonTests {
         }
     }
 
-    fun saveNoteWithTitle(
-        documentsMenuRobot: DocumentsMenuRobot,
-        documentEditRobot: DocumentEditRobot
-    ) {
+    fun ComposeUiTest.saveNoteWithTitle() {
         val noteTitle = "Note1"
 
-        documentsMenuRobot.goToEditNote()
+        DocumentsMenuRobot.run {
+            goToEditNote()
+        }
 
-        documentEditRobot.run {
+        DocumentEditRobot.run {
             writeTitle(noteTitle)
             goBack()
         }
 
-        documentsMenuRobot.assertNoteWithTitle(noteTitle)
+        DocumentsMenuRobot.run {
+            assertNoteWithTitle(noteTitle)
+        }
     }
 
-    fun editNoteLineWithoutTitle(
-        documentsMenuRobot: DocumentsMenuRobot,
-        documentEditRobot: DocumentEditRobot
-    ) {
+    fun ComposeUiTest.editNoteLineWithoutTitle() {
         val text = "Text"
 
-        documentsMenuRobot.goToEditNote()
+        DocumentsMenuRobot.run {
+            goToEditNote()
+        }
 
-        documentEditRobot.run {
+        DocumentEditRobot.run {
             addLine()
             writeText(text, 1)
             goBack()
         }
 
-        documentEditRobot.run {
+        DocumentEditRobot.run {
             clickWithText(text)
             checkWithText(text) // It shouldn't crash
         }

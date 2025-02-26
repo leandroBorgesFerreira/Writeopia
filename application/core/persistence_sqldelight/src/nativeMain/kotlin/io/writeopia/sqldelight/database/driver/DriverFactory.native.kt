@@ -6,7 +6,7 @@ import app.cash.sqldelight.driver.native.NativeSqliteDriver
 import io.writeopia.sql.WriteopiaDb
 
 actual class DriverFactory {
-    actual suspend fun createDriver(
+    actual fun createDriver(
         url: String,
-    ): SqlDriver = NativeSqliteDriver(WriteopiaDb.Schema.synchronous(), "writeopia.db")
+    ): SqlDriver = NativeSqliteDriver(WriteopiaDb.Schema.synchronous(), "writeopia_1.db")
 }

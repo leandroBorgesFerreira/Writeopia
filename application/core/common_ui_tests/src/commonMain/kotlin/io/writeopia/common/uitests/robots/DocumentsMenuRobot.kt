@@ -1,21 +1,24 @@
 package io.writeopia.common.uitests.robots
 
+import androidx.compose.ui.test.ComposeUiTest
+import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 
-class DocumentsMenuRobot(private val composeTestRule: ComposeTestRule) {
-
-    fun assertNoteWithTitle(title: String) {
-        composeTestRule.onNodeWithTag("DocumentItem_$title").assertIsDisplayed()
+object DocumentsMenuRobot {
+    @OptIn(ExperimentalTestApi::class)
+    fun ComposeUiTest.assertNoteWithTitle(title: String) {
+        onNodeWithTag("DocumentItem_$title").assertIsDisplayed()
     }
 
-    fun goToEditNote() {
-        composeTestRule.onNodeWithTag("addNote").performClick()
+    @OptIn(ExperimentalTestApi::class)
+    fun ComposeUiTest.goToEditNote() {
+        onNodeWithTag("addNote").performClick()
     }
 
-    fun syncClick() {
-        composeTestRule.onNodeWithTag("syncWorkspaceLocally").performClick()
+    @OptIn(ExperimentalTestApi::class)
+    fun ComposeUiTest.syncClick() {
+        onNodeWithTag("syncWorkspaceLocally").performClick()
     }
 }

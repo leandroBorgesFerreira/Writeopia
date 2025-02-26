@@ -28,13 +28,8 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import io.writeopia.account.di.AccountMenuKmpInjector
 import io.writeopia.account.ui.SettingsDialog
-import io.writeopia.auth.core.di.KmpAuthCoreInjection
-import io.writeopia.auth.core.token.MockTokenHandler
 import io.writeopia.common.utils.Destinations
-import io.writeopia.di.AppConnectionInjection
-import io.writeopia.di.OllamaInjection
 import io.writeopia.editor.di.EditorKmpInjector
 import io.writeopia.features.search.di.KmpSearchInjection
 import io.writeopia.features.search.ui.SearchDialog
@@ -57,9 +52,8 @@ import io.writeopia.notemenu.navigation.NAVIGATION_TYPE
 import io.writeopia.notemenu.navigation.navigateToNotes
 import io.writeopia.notemenu.ui.screen.menu.EditFileScreen
 import io.writeopia.notemenu.ui.screen.menu.RoundedVerticalDivider
-import io.writeopia.sdk.network.injector.ConnectionInjector
-import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sql.WriteopiaDb
+import io.writeopia.sqldelight.di.WriteopiaDbInjector
 import io.writeopia.theme.WrieopiaTheme
 import io.writeopia.theme.WriteopiaTheme
 import io.writeopia.ui.components.multiselection.DragSelectionBox
@@ -75,9 +69,6 @@ import kotlinx.coroutines.launch
 fun DesktopApp(
     writeopiaDb: WriteopiaDb? = null,
     notesInjector: NotesInjector,
-    repositoryInjection: RepositoryInjector,
-    uiConfigurationInjector: UiConfigurationInjector,
-    disableWebsocket: Boolean = false,
     selectionState: StateFlow<Boolean>,
     keyboardEventFlow: Flow<KeyboardEvent>,
     colorThemeOption: StateFlow<ColorThemeOption?>,
@@ -87,39 +78,23 @@ fun DesktopApp(
     toggleMaxScreen: () -> Unit,
     startDestination: String = startDestination(),
 ) {
-    val authCoreInjection = remember { KmpAuthCoreInjection() }
-    val connectionInjection =
-        remember {
-            ConnectionInjector(
-                bearerTokenHandler = MockTokenHandler,
-                baseUrl = "https://writeopia.io/api",
-                disableWebsocket = disableWebsocket
-            )
-        }
-    val appConnectionInjection = remember { AppConnectionInjection() }
-    val ollamaInjection =
-        remember { OllamaInjection(appConnectionInjection, writeopiaDb = writeopiaDb) }
+    if (writeopiaDb != null) {
+        WriteopiaDbInjector.initialize(writeopiaDb)
+    }
+
     val editorInjector = remember {
         EditorKmpInjector.desktop(
-            authCoreInjection = authCoreInjection,
-            repositoryInjection = repositoryInjection,
-            connectionInjection = connectionInjection,
             selectionState = selectionState,
             keyboardEventFlow = keyboardEventFlow,
-            uiConfigurationInjector.provideUiConfigurationRepository(),
+            uiConfigurationRepository = UiConfigurationInjector.singleton()
+                .provideUiConfigurationRepository(),
             folderInjector = notesInjector,
-            ollamaInjection = ollamaInjection,
             configurationInjector = notesInjector
         )
     }
 
-    val accountInjector = remember { AccountMenuKmpInjector(authCoreInjection) }
-
     val notesMenuInjection = remember {
         NotesMenuKmpInjection.desktop(
-            notesInjector = notesInjector,
-            authCoreInjection = authCoreInjection,
-            repositoryInjection = repositoryInjection,
             selectionState = selectionState,
             keyboardEventFlow = keyboardEventFlow
         )
@@ -127,22 +102,16 @@ fun DesktopApp(
 
     val sideMenuInjector = remember {
         SideMenuKmpInjector(
-            notesInjector,
-            authCoreInjection,
-            repositoryInjection,
-            uiConfigurationInjector,
-            selectionState,
-            ollamaInjection = ollamaInjection
+            notesInjector = notesInjector,
+            uiConfigurationInjector = UiConfigurationInjector.singleton(),
         )
     }
-
-    val searchInjection = KmpSearchInjection(writeopiaDb)
 
     val globalShellViewModel: GlobalShellViewModel =
         sideMenuInjector.provideSideMenuViewModel()
     val colorTheme = colorThemeOption.collectAsState().value
     val navigationController: NavHostController = rememberNavController()
-    val searchViewModel = searchInjection.provideViewModel()
+    val searchViewModel = KmpSearchInjection.singleton().provideViewModel()
 
     LaunchedEffect("initGlobalShellViewModel") {
         globalShellViewModel.init()
@@ -225,7 +194,6 @@ fun DesktopApp(
                                 startDestination = startDestination,
                                 notesMenuInjection = notesMenuInjection,
                                 sideMenuKmpInjector = sideMenuInjector,
-                                accountMenuInjector = accountInjector,
                                 editorInjector = editorInjector,
                                 isUndoKeyEvent = isUndoKeyEvent,
                                 selectColorTheme = selectColorTheme,

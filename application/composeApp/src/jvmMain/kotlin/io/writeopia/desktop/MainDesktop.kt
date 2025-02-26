@@ -6,7 +6,6 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,7 +26,7 @@ import io.writeopia.notes.desktop.components.DesktopApp
 import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
-import io.writeopia.sqldelight.di.SqlDelightDaoInjector
+import io.writeopia.sqldelight.di.WriteopiaDbInjector
 import io.writeopia.ui.image.ImageLoadConfig
 import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.Dispatchers
@@ -41,11 +40,11 @@ private const val APP_DIRECTORY = ".writeopia"
 private const val DB_VERSION = 1
 
 fun main() = application {
-    DesktopApp()
+    App()
 }
 
 @Composable
-private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitApplication) {
+private fun ApplicationScope.App(onCloseRequest: () -> Unit = ::exitApplication) {
     ImageLoadConfig.configImageLoad()
 
     val coroutineScope = rememberCoroutineScope()
@@ -174,9 +173,10 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
                 is DatabaseCreation.Complete -> {
                     val database = databaseState.writeopiaDb
 
-                    val uiConfigurationInjector = remember { UiConfigurationInjector(database) }
-                    val sqlDelightDaoInjector = remember { SqlDelightDaoInjector(database) }
-                    val notesInjector = remember { NotesInjector(database) }
+                    WriteopiaDbInjector.initialize(database)
+
+                    val uiConfigurationInjector = UiConfigurationInjector.singleton()
+                    val notesInjector = NotesInjector.singleton()
 
                     val uiConfigurationViewModel = uiConfigurationInjector
                         .provideUiConfigurationViewModel()
@@ -186,16 +186,14 @@ private fun ApplicationScope.DesktopApp(onCloseRequest: () -> Unit = ::exitAppli
 
                     GlobalToastBox {
                         DesktopApp(
+                            writeopiaDb = database,
                             notesInjector = notesInjector,
-                            repositoryInjection = sqlDelightDaoInjector,
-                            uiConfigurationInjector = uiConfigurationInjector,
                             selectionState = selectionState,
                             keyboardEventFlow = keyboardEventFlow.filterNotNull(),
                             coroutineScope = coroutineScope,
                             isUndoKeyEvent = KeyboardCommands::isUndoKeyboardEvent,
                             colorThemeOption = colorTheme,
                             selectColorTheme = uiConfigurationViewModel::changeColorTheme,
-                            writeopiaDb = database,
                             toggleMaxScreen = topDoubleBarClick
                         )
                     }

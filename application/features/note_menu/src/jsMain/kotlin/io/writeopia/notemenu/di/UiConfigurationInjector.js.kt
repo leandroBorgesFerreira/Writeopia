@@ -18,13 +18,21 @@ actual class UiConfigurationInjector {
         UiConfigurationKmpViewModel(uiConfigurationSqlDelightRepository)
     }
 
-    companion object {
-        private var instance: UiConfigurationMemoryRepository? = null
+    actual companion object {
+        private var instanceConfigRepository: UiConfigurationMemoryRepository? = null
+        private var instance: UiConfigurationInjector? = null
 
         fun getUiConfigurationMemoryRepository(): UiConfigurationMemoryRepository =
-            instance ?: kotlin.run {
-                instance = UiConfigurationMemoryRepository()
-                instance!!
+            instanceConfigRepository ?: kotlin.run {
+                UiConfigurationMemoryRepository().also {
+                    instanceConfigRepository = it
+                }
+                instanceConfigRepository!!
+            }
+
+        actual fun singleton(): UiConfigurationInjector =
+            instance ?: UiConfigurationInjector().also {
+                instance = it
             }
     }
 }

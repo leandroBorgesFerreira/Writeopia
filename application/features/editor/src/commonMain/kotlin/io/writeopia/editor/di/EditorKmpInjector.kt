@@ -2,9 +2,10 @@ package io.writeopia.editor.di
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.writeopia.auth.core.di.AuthCoreInjection
+import io.writeopia.auth.core.di.AuthCoreInjectionNeo
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.core.folders.di.FolderInjector
+import io.writeopia.di.ConnectionInjectorFactory
 import io.writeopia.di.OllamaInjection
 import io.writeopia.editor.features.editor.copy.CopyManager
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorKmpViewModel
@@ -18,6 +19,7 @@ import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.repository.DocumentRepository
 import io.writeopia.sdk.sharededition.SharedEditionManager
+import io.writeopia.sqldelight.di.SqlDelightDaoInjector
 import io.writeopia.ui.keyboard.KeyboardEvent
 import io.writeopia.ui.manager.WriteopiaStateManager
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +28,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class EditorKmpInjector private constructor(
-    private val authCoreInjection: AuthCoreInjection,
+    private val authCoreInjection: AuthCoreInjectionNeo = AuthCoreInjectionNeo.singleton(),
     private val repositoryInjection: RepositoryInjector,
     private val connectionInjection: ConnectionInjector,
     private val selectionState: StateFlow<Boolean>,
@@ -54,7 +56,7 @@ class EditorKmpInjector private constructor(
         documentRepository = repositoryInjection.provideDocumentRepository()
     )
 
-    fun provideNoteEditorViewModel(
+    private fun provideNoteEditorViewModel(
         documentRepository: DocumentRepository = provideDocumentRepository(),
         writeopiaManager: WriteopiaStateManager = provideWriteopiaStateManager(),
         sharedEditionManager: SharedEditionManager = connectionInjection.liveEditionManager(),
@@ -90,12 +92,12 @@ class EditorKmpInjector private constructor(
 
     companion object {
         fun mobile(
-            authCoreInjection: AuthCoreInjection,
             daosInjection: RepositoryInjector,
             connectionInjector: ConnectionInjector,
             uiConfigurationRepository: UiConfigurationRepository,
             folderInjector: FolderInjector,
             configurationInjector: ConfigurationInjector,
+            authCoreInjection: AuthCoreInjectionNeo = AuthCoreInjectionNeo.singleton(),
         ) = EditorKmpInjector(
             authCoreInjection,
             daosInjection,
@@ -108,14 +110,14 @@ class EditorKmpInjector private constructor(
         )
 
         fun desktop(
-            authCoreInjection: AuthCoreInjection,
-            repositoryInjection: RepositoryInjector,
-            connectionInjection: ConnectionInjector,
+            authCoreInjection: AuthCoreInjectionNeo = AuthCoreInjectionNeo.singleton(),
+            repositoryInjection: RepositoryInjector = SqlDelightDaoInjector.singleton(),
+            connectionInjection: ConnectionInjector = ConnectionInjectorFactory.singleton(),
             selectionState: StateFlow<Boolean>,
             keyboardEventFlow: Flow<KeyboardEvent>,
             uiConfigurationRepository: UiConfigurationRepository,
             folderInjector: FolderInjector,
-            ollamaInjection: OllamaInjection,
+            ollamaInjection: OllamaInjection = OllamaInjection.singleton(),
             configurationInjector: ConfigurationInjector,
         ) = EditorKmpInjector(
             authCoreInjection,
