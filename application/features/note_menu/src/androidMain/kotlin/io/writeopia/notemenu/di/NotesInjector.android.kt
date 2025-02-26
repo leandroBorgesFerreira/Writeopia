@@ -31,10 +31,10 @@ actual class NotesInjector private constructor(
     actual override fun provideWorkspaceConfigRepository(): WorkspaceConfigRepository =
         provideNotesConfigurationRepository()
 
-    companion object {
+    actual companion object {
         private var instance: NotesInjector? = null
 
-        fun singleton(): NotesInjector =
+        actual fun singleton(): NotesInjector =
             instance ?: NotesInjector(AppRoomDaosInjection.singleton()).also {
                 instance = it
             }

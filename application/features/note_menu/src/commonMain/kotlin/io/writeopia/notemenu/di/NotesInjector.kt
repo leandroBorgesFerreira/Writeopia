@@ -13,4 +13,8 @@ expect class NotesInjector : FolderInjector, ConfigurationInjector {
     override fun provideFoldersRepository(): FolderRepository
 
     override fun provideWorkspaceConfigRepository(): WorkspaceConfigRepository
+
+    companion object {
+        fun singleton(): NotesInjector
+    }
 }

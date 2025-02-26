@@ -101,7 +101,6 @@ fun NavigationGraph(
 
     val searchInjector = remember {
         MobileSearchInjection(
-            searchInjection = KmpSearchInjection(),
             appRoomDaosInjection = appDaosInjection,
             roomInjector = repositoryInjection
         )
