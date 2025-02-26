@@ -32,6 +32,7 @@ import io.writeopia.account.ui.SettingsDialog
 import io.writeopia.common.utils.Destinations
 import io.writeopia.editor.di.EditorKmpInjector
 import io.writeopia.features.search.di.KmpSearchInjection
+import io.writeopia.features.search.di.SearchInjection
 import io.writeopia.features.search.ui.SearchDialog
 import io.writeopia.global.shell.SideGlobalMenu
 import io.writeopia.global.shell.di.SideMenuKmpInjector
@@ -108,13 +109,11 @@ fun DesktopApp(
         )
     }
 
-    val searchInjection = KmpSearchInjection(writeopiaDb)
-
     val globalShellViewModel: GlobalShellViewModel =
         sideMenuInjector.provideSideMenuViewModel()
     val colorTheme = colorThemeOption.collectAsState().value
     val navigationController: NavHostController = rememberNavController()
-    val searchViewModel = searchInjection.provideViewModel()
+    val searchViewModel = KmpSearchInjection.singleton().provideViewModel()
 
     LaunchedEffect("initGlobalShellViewModel") {
         globalShellViewModel.init()
