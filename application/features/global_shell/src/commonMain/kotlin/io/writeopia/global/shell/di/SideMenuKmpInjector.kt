@@ -54,5 +54,4 @@ class SideMenuKmpInjector(
     @Composable
     override fun provideOllamaConfigController(): OllamaConfigController =
         provideSideMenuViewModel()
-
 }

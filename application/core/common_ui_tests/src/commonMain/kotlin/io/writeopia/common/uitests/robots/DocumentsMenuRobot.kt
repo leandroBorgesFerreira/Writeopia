@@ -3,7 +3,6 @@ package io.writeopia.common.uitests.robots
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 
@@ -23,4 +22,3 @@ object DocumentsMenuRobot {
         onNodeWithTag("syncWorkspaceLocally").performClick()
     }
 }
-

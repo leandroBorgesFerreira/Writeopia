@@ -22,6 +22,6 @@ actual class NotesInjector : FolderInjector, ConfigurationInjector {
     actual companion object {
         fun noop() = NotesInjector()
 
-        actual fun singleton(): NotesInjector  = noop()
+        actual fun singleton(): NotesInjector = noop()
     }
 }

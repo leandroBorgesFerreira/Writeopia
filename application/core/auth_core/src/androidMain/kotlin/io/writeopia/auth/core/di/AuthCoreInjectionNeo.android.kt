@@ -31,5 +31,4 @@ actual class AuthCoreInjectionNeo private constructor(
                 instance = it
             }
     }
-
 }

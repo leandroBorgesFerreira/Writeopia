@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class NotesMenuKmpInjection private constructor(
-    private val notesInjector: NotesInjector,
+    private val notesInjector: NotesInjector = NotesInjector.singleton(),
     private val authCoreInjection: AuthCoreInjectionNeo = AuthCoreInjectionNeo.singleton(),
     private val repositoryInjection: RepositoryInjector,
     private val selectionState: StateFlow<Boolean>,
@@ -73,10 +73,8 @@ class NotesMenuKmpInjection private constructor(
         private var instanceDesktop: NotesMenuKmpInjection? = null
 
         fun mobile(
-            notesInjector: NotesInjector,
             repositoryInjection: RepositoryInjector,
         ) = instanceMobile ?: NotesMenuKmpInjection(
-            notesInjector = notesInjector,
             repositoryInjection = repositoryInjection,
             selectionState = MutableStateFlow(false),
             keyboardEventFlow = MutableStateFlow(KeyboardEvent.IDLE)
@@ -85,12 +83,10 @@ class NotesMenuKmpInjection private constructor(
         }
 
         fun desktop(
-            notesInjector: NotesInjector,
             selectionState: StateFlow<Boolean>,
             keyboardEventFlow: Flow<KeyboardEvent>,
             repositoryInjection: RepositoryInjector = SqlDelightDaoInjector.singleton(),
         ) = instanceDesktop ?: NotesMenuKmpInjection(
-            notesInjector = notesInjector,
             repositoryInjection = repositoryInjection,
             selectionState = selectionState,
             keyboardEventFlow = keyboardEventFlow,

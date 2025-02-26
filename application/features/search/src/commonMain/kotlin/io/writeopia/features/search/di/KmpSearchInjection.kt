@@ -40,5 +40,4 @@ class KmpSearchInjection private constructor(
                 instance = it
             }
     }
-
 }

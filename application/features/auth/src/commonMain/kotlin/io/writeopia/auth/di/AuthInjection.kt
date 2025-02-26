@@ -49,9 +49,4 @@ class AuthInjection(
         authManager: AuthManager = authCoreInjection.provideAccountManager(),
         authRepository: AuthRepository = authCoreInjection.provideAuthRepository(),
     ): AuthMenuViewModel = viewModel { AuthMenuViewModel(authManager, authRepository) }
-
-    companion object {
-
-    }
-
 }

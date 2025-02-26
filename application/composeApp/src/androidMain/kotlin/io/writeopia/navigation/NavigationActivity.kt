@@ -12,16 +12,13 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import io.writeopia.AndroidLogger
 import io.writeopia.BuildConfig
-import io.writeopia.auth.core.di.AuthCoreInjectionNeo
 import io.writeopia.auth.core.token.AppBearerTokenHandler
 import io.writeopia.auth.di.AuthInjection
 import io.writeopia.auth.navigation.authNavigation
 import io.writeopia.common.utils.Destinations
 import io.writeopia.common.utils.di.SharedPreferencesInjector
 import io.writeopia.editor.di.EditorKmpInjector
-import io.writeopia.features.search.di.KmpSearchInjection
 import io.writeopia.features.search.di.MobileSearchInjection
 import io.writeopia.mobile.AppMobile
 import io.writeopia.notemenu.data.model.NotesNavigation
@@ -94,10 +91,7 @@ fun NavigationGraph(
         folderInjector = notesInjector,
         configurationInjector = notesInjector
     )
-    val notesMenuInjection = NotesMenuKmpInjection.mobile(
-        notesInjector,
-        repositoryInjection,
-    )
+    val notesMenuInjection = NotesMenuKmpInjection.mobile(repositoryInjection)
 
     val searchInjector = remember {
         MobileSearchInjection(
