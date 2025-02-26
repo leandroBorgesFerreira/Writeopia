@@ -26,3 +26,5 @@
 -dontwarn java.awt.FileDialog
 -dontwarn java.awt.Frame
 -dontwarn java.awt.GraphicsConfiguration
+
+-dontwarn io.writeopia.common.utils.file.FileChooserSave_jvmKt
