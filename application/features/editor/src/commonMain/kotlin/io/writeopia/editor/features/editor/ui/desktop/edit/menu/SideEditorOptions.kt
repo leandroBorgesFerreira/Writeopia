@@ -231,19 +231,19 @@ fun SideEditorOptions(
                 tint = tint(OptionsType.ACTIONS)
             )
 
-            Spacer(modifier = Modifier.height(spacing))
-
-            Icon(
-                imageVector = WrIcons.play,
-                contentDescription = "Presentation",
-                modifier = Modifier
-                    .padding(horizontal = spacing)
-                    .clip(MaterialTheme.shapes.medium)
-                    .clickable(onClick = onPresentationClick)
-                    .size(40.dp)
-                    .padding(9.dp),
-                tint = MaterialTheme.colorScheme.onBackground
-            )
+//            Spacer(modifier = Modifier.height(spacing))
+//
+//            Icon(
+//                imageVector = WrIcons.play,
+//                contentDescription = "Presentation",
+//                modifier = Modifier
+//                    .padding(horizontal = spacing)
+//                    .clip(MaterialTheme.shapes.medium)
+//                    .clickable(onClick = onPresentationClick)
+//                    .size(40.dp)
+//                    .padding(9.dp),
+//                tint = MaterialTheme.colorScheme.onBackground
+//            )
         }
     }
 }
