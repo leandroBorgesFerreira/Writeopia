@@ -7,7 +7,7 @@ import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
 import io.writeopia.sdk.persistence.sqldelight.dao.sql.SqlDelightDocumentRepository
 import io.writeopia.sql.WriteopiaDb
 
-class SqlDelightDaoInjector private constructor(
+class SqlDelightDaoInjector(
     private val database: WriteopiaDb?,
 ) : RepositoryInjector {
 

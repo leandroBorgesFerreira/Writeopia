@@ -24,6 +24,7 @@ import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
+import io.writeopia.sqldelight.di.WriteopiaDbInjector
 import io.writeopia.ui.image.ImageLoadConfig
 
 @Suppress("FunctionName")
@@ -42,9 +43,11 @@ fun MainViewController() = ComposeUIViewController {
         is DatabaseCreation.Complete -> {
             val database = databaseState.writeopiaDb
 
-            val uiConfigurationInjector = remember { UiConfigurationInjector(database) }
+            WriteopiaDbInjector.initialize(database)
+
+            val uiConfigurationInjector = remember { UiConfigurationInjector.singleton() }
             val sqlDelightDaoInjector = remember { SqlDelightDaoInjector.singleton() }
-            val searchInjection = remember { KmpSearchInjection(database) }
+            val searchInjection = remember { KmpSearchInjection.singleton() }
             val notesInjector = remember { NotesInjector(database) }
 
             val uiConfigurationViewModel = uiConfigurationInjector

@@ -11,6 +11,7 @@ import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
+import io.writeopia.sqldelight.di.WriteopiaDbInjector
 import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -22,13 +23,13 @@ fun ComposeUiTest.startApp(
         val database: WriteopiaDb = DatabaseFactory.createDatabase(DriverFactory())
         databaseConfig(database)
 
+        WriteopiaDbInjector.initialize(database)
+
+
         DesktopApp(
-            notesInjector = NotesInjector(database),
-            repositoryInjection = SqlDelightDaoInjector(database),
-            uiConfigurationInjector = UiConfigurationInjector(database),
+            notesInjector = NotesInjector.singleton(),
             coroutineScope = rememberCoroutineScope(),
             colorThemeOption = MutableStateFlow(ColorThemeOption.DARK),
-            disableWebsocket = true,
             isUndoKeyEvent = { false },
             selectColorTheme = {},
             selectionState = MutableStateFlow(false),
