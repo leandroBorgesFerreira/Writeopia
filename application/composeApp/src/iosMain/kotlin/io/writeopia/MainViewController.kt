@@ -15,7 +15,6 @@ import io.writeopia.features.search.di.KmpSearchInjection
 import io.writeopia.mobile.AppMobile
 import io.writeopia.navigation.MobileNavigationViewModel
 import io.writeopia.notemenu.data.model.NotesNavigation
-import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.NotesMenuKmpInjection
 import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notemenu.navigation.navigateToNotes
@@ -48,16 +47,12 @@ fun MainViewController() = ComposeUIViewController {
             val uiConfigurationInjector = remember { UiConfigurationInjector.singleton() }
             val sqlDelightDaoInjector = remember { SqlDelightDaoInjector.singleton() }
             val searchInjection = remember { KmpSearchInjection.singleton() }
-            val notesInjector = remember { NotesInjector(database) }
 
             val uiConfigurationViewModel = uiConfigurationInjector
                 .provideUiConfigurationViewModel()
 
             val notesMenuInjection = remember {
-                NotesMenuKmpInjection.mobile(
-                    notesInjector,
-                    sqlDelightDaoInjector,
-                )
+                NotesMenuKmpInjection.mobile(sqlDelightDaoInjector)
             }
 
             val connectionInjection =
@@ -73,8 +68,6 @@ fun MainViewController() = ComposeUIViewController {
                 sqlDelightDaoInjector,
                 connectionInjection,
                 uiConfigurationInjector.provideUiConfigurationRepository(),
-                folderInjector = notesInjector,
-                configurationInjector = notesInjector,
             )
 
             val authInjection = AuthInjection(

@@ -1,10 +1,12 @@
 package io.writeopia.notemenu.di
 
-import io.writeopia.repository.UiConfigurationRepository
+import androidx.compose.runtime.Composable
+import io.writeopia.viewmodel.UiConfigurationViewModel
 
 expect class UiConfigurationInjector {
 
-    fun provideUiConfigurationRepository(): UiConfigurationRepository
+    @Composable
+    fun provideUiConfigurationViewModel(): UiConfigurationViewModel
 
     companion object {
         fun singleton(): UiConfigurationInjector

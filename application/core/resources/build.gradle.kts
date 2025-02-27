@@ -36,7 +36,6 @@ kotlin {
     }
 }
 
-
 android {
     namespace = "io.writeopia.resources"
     compileSdk = 35

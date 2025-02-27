@@ -2,10 +2,10 @@ package io.writeopia.notemenu.data.usecase
 
 import io.writeopia.common.utils.collections.merge
 import io.writeopia.commonui.dtos.MenuItemUi
+import io.writeopia.core.configuration.repository.ConfigurationRepository
 import io.writeopia.core.folders.repository.FolderRepository
 import io.writeopia.models.Folder
 import io.writeopia.notemenu.data.model.NotesNavigation
-import io.writeopia.notemenu.data.repository.ConfigurationRepository
 import io.writeopia.notemenu.extensions.sortedWithOrderBy
 import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem

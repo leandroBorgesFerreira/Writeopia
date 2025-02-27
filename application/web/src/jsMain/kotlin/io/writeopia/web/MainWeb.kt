@@ -10,7 +10,6 @@ import androidx.compose.ui.input.key.isMetaPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.window.CanvasBasedWindow
-import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.DesktopApp
 import io.writeopia.ui.image.ImageLoadConfig
@@ -33,14 +32,13 @@ fun CreateAppInMemory() {
     val coroutineScope = rememberCoroutineScope()
     val selectionState = MutableStateFlow(false)
 
-    val uiConfigurationViewModel = UiConfigurationInjector()
+    val uiConfigurationViewModel = UiConfigurationInjector.singleton()
         .provideUiConfigurationViewModel()
 
     val colorTheme =
         uiConfigurationViewModel.listenForColorTheme { "disconnected_user" }
 
     DesktopApp(
-        notesInjector = NotesInjector.noop(),
         selectionState = selectionState,
         isUndoKeyEvent = ::isUndoKeyboardEvent,
         colorThemeOption = colorTheme,

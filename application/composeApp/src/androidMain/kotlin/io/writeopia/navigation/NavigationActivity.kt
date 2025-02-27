@@ -22,7 +22,6 @@ import io.writeopia.editor.di.EditorKmpInjector
 import io.writeopia.features.search.di.MobileSearchInjection
 import io.writeopia.mobile.AppMobile
 import io.writeopia.notemenu.data.model.NotesNavigation
-import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.NotesMenuKmpInjection
 import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notemenu.navigation.NoteMenuDestiny
@@ -76,7 +75,6 @@ fun NavigationGraph(
     val uiConfigInjection = UiConfigurationInjector.singleton()
 
     val appDaosInjection = AppRoomDaosInjection.singleton()
-    val notesInjector = NotesInjector.singleton()
     val connectionInjector = ConnectionInjector(
         bearerTokenHandler = AppBearerTokenHandler,
         baseUrl = BuildConfig.BASE_URL
@@ -84,13 +82,7 @@ fun NavigationGraph(
     val uiConfigViewModel = uiConfigInjection.provideUiConfigurationViewModel()
     val repositoryInjection = RoomRepositoryInjection.singleton()
     val authInjection = AuthInjection(connectionInjector, repositoryInjection)
-    val editorInjector = EditorKmpInjector.mobile(
-        repositoryInjection,
-        connectionInjector,
-        uiConfigInjection.provideUiConfigurationRepository(),
-        folderInjector = notesInjector,
-        configurationInjector = notesInjector
-    )
+    val editorInjector = EditorKmpInjector.mobile(repositoryInjection, connectionInjector)
     val notesMenuInjection = NotesMenuKmpInjection.mobile(repositoryInjection)
 
     val searchInjector = remember {

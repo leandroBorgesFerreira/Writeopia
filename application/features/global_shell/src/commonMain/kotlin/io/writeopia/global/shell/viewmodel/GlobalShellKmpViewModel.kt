@@ -24,7 +24,7 @@ import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.usecase.NotesNavigationUseCase
 import io.writeopia.notemenu.data.usecase.NotesUseCase
 import io.writeopia.commonui.extensions.toUiCard
-import io.writeopia.notemenu.data.repository.ConfigurationRepository
+import io.writeopia.core.configuration.repository.ConfigurationRepository
 import io.writeopia.notemenu.viewmodel.FolderController
 import io.writeopia.notemenu.viewmodel.FolderStateController
 import io.writeopia.repository.UiConfigurationRepository

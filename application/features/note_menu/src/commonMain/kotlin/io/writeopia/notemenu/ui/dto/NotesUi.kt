@@ -1,7 +1,7 @@
 package io.writeopia.notemenu.ui.dto
 
 import io.writeopia.commonui.dtos.MenuItemUi
-import io.writeopia.notemenu.data.model.NotesArrangement
+import io.writeopia.core.configuration.models.NotesArrangement
 
 data class NotesUi(
     val documentUiList: List<MenuItemUi>,

@@ -1,12 +1,10 @@
 package io.writeopia.features.search.di
 
-import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.features.search.repository.SearchRepository
 import io.writeopia.features.search.ui.SearchKmpViewModel
 import io.writeopia.models.search.FolderSearch
-import io.writeopia.sdk.search.DocumentSearch
 import io.writeopia.sdk.persistence.sqldelight.dao.DocumentSqlDao
+import io.writeopia.sdk.search.DocumentSearch
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.dao.FolderSqlDelightDao
 import io.writeopia.sqldelight.di.WriteopiaDbInjector
@@ -27,10 +25,8 @@ class KmpSearchInjection private constructor(
         documentDao: DocumentSearch = provideDocumentSqlDao()
     ): SearchRepository = SearchRepository(folderDao, documentDao)
 
-    @Composable
-    override fun provideViewModel(): SearchKmpViewModel = viewModel {
+    override fun provideViewModel(): SearchKmpViewModel =
         SearchKmpViewModel(searchRepository = provideRepository())
-    }
 
     companion object {
         private var instance: KmpSearchInjection? = null
