@@ -7,7 +7,7 @@ import io.writeopia.core.folders.repository.FolderRepository
 import io.writeopia.core.folders.repository.RoomFolderRepository
 import io.writeopia.models.configuration.ConfigurationInjector
 import io.writeopia.models.configuration.WorkspaceConfigRepository
-import io.writeopia.notemenu.data.repository.ConfigurationRoomRepository
+import io.writeopia.core.configuration.repository.ConfigurationRoomRepository
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 
 actual class NotesInjector private constructor(

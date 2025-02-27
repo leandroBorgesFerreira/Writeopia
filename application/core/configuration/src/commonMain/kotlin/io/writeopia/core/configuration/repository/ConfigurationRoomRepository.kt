@@ -1,8 +1,7 @@
-package io.writeopia.notemenu.data.repository
+package io.writeopia.core.configuration.repository
 
 import io.writeopia.common.utils.persistence.configuration.NotesConfigurationCommonEntity
 import io.writeopia.common.utils.persistence.daos.NotesConfigurationCommonDao
-import io.writeopia.core.configuration.repository.ConfigurationRepository
 import io.writeopia.models.configuration.NotesArrangement
 import io.writeopia.sdk.persistence.core.extensions.toEntityField
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
@@ -13,7 +12,7 @@ import kotlinx.coroutines.flow.map
  * This class is responsible to keep the information of the preferences or the user about the
  * notes, like orderBy (creation, last edition, name...) and arrangement (cards, list...).
  */
-internal class ConfigurationRoomRepository(
+class ConfigurationRoomRepository(
     private val configurationDao: NotesConfigurationCommonDao
 ) : ConfigurationRepository {
 
