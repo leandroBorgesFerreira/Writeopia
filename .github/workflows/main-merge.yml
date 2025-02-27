@@ -37,6 +37,10 @@ jobs:
         with:
           distribution: adopt
           java-version: '21'
+      - name: Generate signed mac app
+        run: ./gradlew packageReleaseDmg
+        env:
+          SIGN_IDENTITY: ${{ secrets.SIGN_IDENTITY }}
       - name: Main test
         run: ./gradlew jvmTest
   web_build_and_publish:
