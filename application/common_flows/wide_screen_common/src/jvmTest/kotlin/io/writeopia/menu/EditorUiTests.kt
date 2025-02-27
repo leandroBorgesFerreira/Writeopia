@@ -13,7 +13,7 @@ import org.junit.Test
 class EditorUiTests {
 
     @Test
-//    @Ignore("Library of compose navigation somehow breaks this test. This should be added later")
+    @Ignore("Library of compose navigation somehow breaks this test. This should be added later")
     fun itShouldBePossibleToWriteATitleAndSomeContent() = runComposeUiTest {
         startApp()
 

@@ -3,6 +3,7 @@ package io.writeopia.notemenu.viewmodel
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.writeopia.auth.core.manager.AuthManager
+import io.writeopia.core.configuration.repository.ConfigurationRepository
 import io.writeopia.notemenu.data.usecase.NotesUseCase
 import io.writeopia.ui.keyboard.KeyboardEvent
 import kotlinx.coroutines.Dispatchers
