@@ -44,7 +44,6 @@ import io.writeopia.navigation.notes.navigateToNote
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.model.NotesNavigationType
 import io.writeopia.notemenu.data.usecase.NotesNavigationUseCase
-import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.NotesMenuKmpInjection
 import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notemenu.navigation.NAVIGATION_PATH
@@ -68,7 +67,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun DesktopApp(
     writeopiaDb: WriteopiaDb? = null,
-    notesInjector: NotesInjector,
     selectionState: StateFlow<Boolean>,
     keyboardEventFlow: Flow<KeyboardEvent>,
     colorThemeOption: StateFlow<ColorThemeOption?>,
@@ -88,8 +86,6 @@ fun DesktopApp(
             keyboardEventFlow = keyboardEventFlow,
             uiConfigurationRepository = UiConfigurationInjector.singleton()
                 .provideUiConfigurationRepository(),
-            folderInjector = notesInjector,
-            configurationInjector = notesInjector
         )
     }
 
@@ -102,7 +98,6 @@ fun DesktopApp(
 
     val sideMenuInjector = remember {
         SideMenuKmpInjector(
-            notesInjector = notesInjector,
             uiConfigurationInjector = UiConfigurationInjector.singleton(),
         )
     }

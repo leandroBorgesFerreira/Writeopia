@@ -1,26 +1,38 @@
 package io.writeopia.core.configuration.di
 
+import io.writeopia.common.utils.persistence.di.AppDaosInjection
 import io.writeopia.core.configuration.repository.ConfigurationRepository
+import io.writeopia.core.configuration.repository.ConfigurationRoomRepository
 import io.writeopia.core.folders.repository.FolderRepository
+import io.writeopia.core.folders.repository.RoomFolderRepository
 import io.writeopia.models.configuration.WorkspaceConfigRepository
+import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 
-actual class NotesInjector {
-    actual fun provideNotesConfigurationRepository(): ConfigurationRepository {
-        TODO("Not yet implemented")
-    }
+actual class NotesInjector private constructor(
+    private val appRoomDaosInjection: AppDaosInjection
+) {
 
-    actual fun provideFoldersRepository(): FolderRepository {
-        TODO("Not yet implemented")
-    }
+    private var configurationRepository: ConfigurationRepository? = null
 
-    actual fun provideWorkspaceConfigRepository(): WorkspaceConfigRepository {
-        TODO("Not yet implemented")
-    }
+    actual fun provideNotesConfigurationRepository(): ConfigurationRepository =
+        configurationRepository ?: kotlin.run {
+            ConfigurationRoomRepository(appRoomDaosInjection.provideConfigurationDao()).also {
+                configurationRepository = it
+            }
+        }
+
+    actual fun provideFoldersRepository(): FolderRepository =
+        RoomFolderRepository(appRoomDaosInjection.provideFolderDao())
+
+    actual fun provideWorkspaceConfigRepository(): WorkspaceConfigRepository =
+        provideNotesConfigurationRepository()
 
     actual companion object {
-        actual fun singleton(): NotesInjector {
-            TODO("Not yet implemented")
-        }
-    }
+        private var instance: NotesInjector? = null
 
+        actual fun singleton(): NotesInjector =
+            instance ?: NotesInjector(AppRoomDaosInjection.singleton()).also {
+                instance = it
+            }
+    }
 }

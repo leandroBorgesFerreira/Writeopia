@@ -52,6 +52,7 @@ kotlin {
                 implementation(project(":application:core:ollama"))
                 implementation(project(":application:core:resources"))
                 implementation(project(":application:core:connection"))
+                implementation(project(":application:core:configuration"))
 
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.datetime)

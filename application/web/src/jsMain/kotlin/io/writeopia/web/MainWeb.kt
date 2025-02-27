@@ -10,7 +10,6 @@ import androidx.compose.ui.input.key.isMetaPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.window.CanvasBasedWindow
-import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.DesktopApp
 import io.writeopia.ui.image.ImageLoadConfig

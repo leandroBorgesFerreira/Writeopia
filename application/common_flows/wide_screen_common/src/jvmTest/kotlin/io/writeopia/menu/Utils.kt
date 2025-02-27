@@ -4,7 +4,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import io.writeopia.model.ColorThemeOption
-import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notes.desktop.components.DesktopApp
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.database.DatabaseFactory

@@ -15,7 +15,6 @@ import io.writeopia.features.search.di.KmpSearchInjection
 import io.writeopia.mobile.AppMobile
 import io.writeopia.navigation.MobileNavigationViewModel
 import io.writeopia.notemenu.data.model.NotesNavigation
-import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.NotesMenuKmpInjection
 import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notemenu.navigation.navigateToNotes

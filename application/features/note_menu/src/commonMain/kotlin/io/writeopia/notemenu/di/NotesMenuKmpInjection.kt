@@ -3,6 +3,7 @@ package io.writeopia.notemenu.di
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.auth.core.di.AuthCoreInjectionNeo
+import io.writeopia.core.configuration.di.NotesInjector
 import io.writeopia.core.configuration.repository.ConfigurationRepository
 import io.writeopia.core.folders.repository.FolderRepository
 import io.writeopia.notemenu.data.model.NotesNavigation

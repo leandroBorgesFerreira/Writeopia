@@ -20,7 +20,6 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import io.writeopia.common.utils.keyboard.KeyboardCommands
 import io.writeopia.common.utils.ui.GlobalToastBox
-import io.writeopia.notemenu.di.NotesInjector
 import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.DesktopApp
 import io.writeopia.sqldelight.database.DatabaseCreation
@@ -176,7 +175,6 @@ private fun ApplicationScope.App(onCloseRequest: () -> Unit = ::exitApplication)
                     WriteopiaDbInjector.initialize(database)
 
                     val uiConfigurationInjector = UiConfigurationInjector.singleton()
-                    val notesInjector = NotesInjector.singleton()
 
                     val uiConfigurationViewModel = uiConfigurationInjector
                         .provideUiConfigurationViewModel()
@@ -187,7 +185,6 @@ private fun ApplicationScope.App(onCloseRequest: () -> Unit = ::exitApplication)
                     GlobalToastBox {
                         DesktopApp(
                             writeopiaDb = database,
-                            notesInjector = notesInjector,
                             selectionState = selectionState,
                             keyboardEventFlow = keyboardEventFlow.filterNotNull(),
                             coroutineScope = coroutineScope,

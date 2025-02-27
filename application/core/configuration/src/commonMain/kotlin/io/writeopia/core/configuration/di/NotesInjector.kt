@@ -8,6 +8,7 @@ expect class NotesInjector {
 
     fun provideNotesConfigurationRepository(): ConfigurationRepository
 
+    //Todo: Separate this
     fun provideFoldersRepository(): FolderRepository
 
     fun provideWorkspaceConfigRepository(): WorkspaceConfigRepository
