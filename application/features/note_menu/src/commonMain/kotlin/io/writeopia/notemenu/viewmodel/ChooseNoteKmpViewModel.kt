@@ -10,7 +10,7 @@ import io.writeopia.common.utils.map
 import io.writeopia.common.utils.toBoolean
 import io.writeopia.commonui.extensions.toUiCard
 import io.writeopia.models.Folder
-import io.writeopia.notemenu.data.model.NotesArrangement
+import io.writeopia.models.configuration.NotesArrangement
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.repository.ConfigurationRepository
 import io.writeopia.notemenu.data.usecase.NotesUseCase

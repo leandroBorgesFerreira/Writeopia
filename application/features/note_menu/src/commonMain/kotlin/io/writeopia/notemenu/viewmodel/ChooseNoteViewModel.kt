@@ -1,7 +1,7 @@
 package io.writeopia.notemenu.viewmodel
 
 import io.writeopia.common.utils.ResultData
-import io.writeopia.notemenu.data.model.NotesArrangement
+import io.writeopia.models.configuration.NotesArrangement
 import io.writeopia.notemenu.ui.dto.NotesUi
 import io.writeopia.onboarding.OnboardingState
 import io.writeopia.sdk.models.document.MenuItem
