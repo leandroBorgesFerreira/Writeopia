@@ -2,19 +2,15 @@ package io.writeopia.core.configuration.di
 
 import io.writeopia.core.configuration.repository.ConfigurationRepository
 import io.writeopia.core.configuration.repository.ConfigurationSqlDelightRepository
-import io.writeopia.core.folders.di.FolderInjector
 import io.writeopia.core.folders.repository.FolderRepository
 import io.writeopia.core.folders.repository.FolderRepositorySqlDelight
-import io.writeopia.models.configuration.ConfigurationInjector
 import io.writeopia.models.configuration.WorkspaceConfigRepository
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.dao.ConfigurationSqlDelightDao
 import io.writeopia.sqldelight.dao.FolderSqlDelightDao
 import io.writeopia.sqldelight.di.WriteopiaDbInjector
 
-actual class NotesInjector(
-    private val writeopiaDb: WriteopiaDb?
-) : FolderInjector, ConfigurationInjector {
+actual class NotesInjector(private val writeopiaDb: WriteopiaDb?) {
 
     private var configurationRepository: ConfigurationRepository? = null
     private var configurationSqlDelightDao: ConfigurationSqlDelightDao? = null
@@ -35,10 +31,10 @@ actual class NotesInjector(
             }
         }
 
-    actual override fun provideFoldersRepository(): FolderRepository =
+    actual fun provideFoldersRepository(): FolderRepository =
         FolderRepositorySqlDelight(provideFolderSqlDelightDao())
 
-    actual override fun provideWorkspaceConfigRepository(): WorkspaceConfigRepository =
+    actual fun provideWorkspaceConfigRepository(): WorkspaceConfigRepository =
         provideNotesConfigurationRepository()
 
     actual companion object {

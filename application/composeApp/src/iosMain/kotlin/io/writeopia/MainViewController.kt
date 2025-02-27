@@ -47,16 +47,12 @@ fun MainViewController() = ComposeUIViewController {
             val uiConfigurationInjector = remember { UiConfigurationInjector.singleton() }
             val sqlDelightDaoInjector = remember { SqlDelightDaoInjector.singleton() }
             val searchInjection = remember { KmpSearchInjection.singleton() }
-            val notesInjector = remember { NotesInjector(database) }
 
             val uiConfigurationViewModel = uiConfigurationInjector
                 .provideUiConfigurationViewModel()
 
             val notesMenuInjection = remember {
-                NotesMenuKmpInjection.mobile(
-                    notesInjector,
-                    sqlDelightDaoInjector,
-                )
+                NotesMenuKmpInjection.mobile(sqlDelightDaoInjector)
             }
 
             val connectionInjection =
@@ -72,8 +68,6 @@ fun MainViewController() = ComposeUIViewController {
                 sqlDelightDaoInjector,
                 connectionInjection,
                 uiConfigurationInjector.provideUiConfigurationRepository(),
-                folderInjector = notesInjector,
-                configurationInjector = notesInjector,
             )
 
             val authInjection = AuthInjection(

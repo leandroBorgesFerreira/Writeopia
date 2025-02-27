@@ -12,7 +12,6 @@ import io.writeopia.editor.features.editor.viewmodel.NoteEditorKmpViewModel
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.editor.features.presentation.viewmodel.PresentationKmpViewModel
 import io.writeopia.editor.features.presentation.viewmodel.PresentationViewModel
-import io.writeopia.models.configuration.ConfigurationInjector
 import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.network.injector.ConnectionInjector

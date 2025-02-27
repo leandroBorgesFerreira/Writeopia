@@ -75,7 +75,6 @@ fun NavigationGraph(
     val uiConfigInjection = UiConfigurationInjector.singleton()
 
     val appDaosInjection = AppRoomDaosInjection.singleton()
-    val notesInjector = NotesInjector.singleton()
     val connectionInjector = ConnectionInjector(
         bearerTokenHandler = AppBearerTokenHandler,
         baseUrl = BuildConfig.BASE_URL
@@ -87,8 +86,6 @@ fun NavigationGraph(
         repositoryInjection,
         connectionInjector,
         uiConfigInjection.provideUiConfigurationRepository(),
-        folderInjector = notesInjector,
-        configurationInjector = notesInjector
     )
     val notesMenuInjection = NotesMenuKmpInjection.mobile(repositoryInjection)
 
