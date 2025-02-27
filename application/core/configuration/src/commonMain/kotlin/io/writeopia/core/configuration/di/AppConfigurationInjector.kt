@@ -3,13 +3,13 @@ package io.writeopia.core.configuration.di
 import io.writeopia.core.configuration.repository.ConfigurationRepository
 import io.writeopia.models.configuration.WorkspaceConfigRepository
 
-expect class NotesInjector {
+expect class AppConfigurationInjector {
 
     fun provideNotesConfigurationRepository(): ConfigurationRepository
 
     fun provideWorkspaceConfigRepository(): WorkspaceConfigRepository
 
     companion object {
-        fun singleton(): NotesInjector
+        fun singleton(): AppConfigurationInjector
     }
 }

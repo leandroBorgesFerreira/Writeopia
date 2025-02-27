@@ -26,7 +26,7 @@ actual class AuthCoreInjectionNeo private constructor(
 
         actual fun singleton(): AuthCoreInjectionNeo =
             instance ?: AuthCoreInjectionNeo(
-                SharedPreferencesInjector.get().sharedPreferences
+                SharedPreferencesInjector.singleton().sharedPreferences
             ).also {
                 instance = it
             }

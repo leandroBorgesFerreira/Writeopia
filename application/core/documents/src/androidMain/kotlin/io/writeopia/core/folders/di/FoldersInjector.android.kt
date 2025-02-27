@@ -7,7 +7,7 @@ import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 
 actual class FoldersInjector private constructor(
     private val appRoomDaosInjection: AppDaosInjection
-){
+) {
     actual fun provideFoldersRepository(): FolderRepository =
         RoomFolderRepository(appRoomDaosInjection.provideFolderDao())
 

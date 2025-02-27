@@ -4,7 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.auth.core.di.AuthCoreInjectionNeo
 import io.writeopia.auth.core.manager.AuthManager
-import io.writeopia.core.configuration.di.NotesInjector
+import io.writeopia.core.configuration.di.AppConfigurationInjector
+import io.writeopia.core.configuration.di.UiConfigurationCoreInjector
 import io.writeopia.core.folders.di.FoldersInjector
 import io.writeopia.di.ConnectionInjectorFactory
 import io.writeopia.di.OllamaInjection
@@ -13,7 +14,6 @@ import io.writeopia.editor.features.editor.viewmodel.NoteEditorKmpViewModel
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
 import io.writeopia.editor.features.presentation.viewmodel.PresentationKmpViewModel
 import io.writeopia.editor.features.presentation.viewmodel.PresentationViewModel
-import io.writeopia.repository.UiConfigurationRepository
 import io.writeopia.sdk.manager.WriteopiaManager
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
@@ -33,8 +33,8 @@ class EditorKmpInjector private constructor(
     private val connectionInjection: ConnectionInjector,
     private val selectionState: StateFlow<Boolean>,
     private val keyboardEventFlow: Flow<KeyboardEvent>,
-    private val uiConfigurationRepository: UiConfigurationRepository,
-    private val notesInjector: NotesInjector = NotesInjector.singleton(),
+    private val appConfigurationInjector: AppConfigurationInjector =
+        AppConfigurationInjector.singleton(),
     private val ollamaInjection: OllamaInjection? = null
 ) : TextEditorInjector {
 
@@ -67,12 +67,13 @@ class EditorKmpInjector private constructor(
             documentRepository,
             sharedEditionManager = sharedEditionManager,
             parentFolderId = parentFolder,
-            uiConfigurationRepository = uiConfigurationRepository,
+            uiConfigurationRepository = UiConfigurationCoreInjector.singleton()
+                .provideUiConfigurationRepository(),
             folderRepository = FoldersInjector.singleton().provideFoldersRepository(),
             ollamaRepository = ollamaInjection?.provideRepository(),
             keyboardEventFlow = keyboardEventFlow,
             copyManager = copyManager,
-            workspaceConfigRepository = notesInjector.provideWorkspaceConfigRepository(),
+            workspaceConfigRepository = appConfigurationInjector.provideWorkspaceConfigRepository(),
         )
 
     @Composable
@@ -93,7 +94,6 @@ class EditorKmpInjector private constructor(
         fun mobile(
             daosInjection: RepositoryInjector,
             connectionInjector: ConnectionInjector,
-            uiConfigurationRepository: UiConfigurationRepository,
             authCoreInjection: AuthCoreInjectionNeo = AuthCoreInjectionNeo.singleton(),
         ) = EditorKmpInjector(
             authCoreInjection,
@@ -101,7 +101,6 @@ class EditorKmpInjector private constructor(
             connectionInjector,
             MutableStateFlow(false),
             MutableStateFlow(KeyboardEvent.IDLE),
-            uiConfigurationRepository,
         )
 
         fun desktop(
@@ -110,7 +109,6 @@ class EditorKmpInjector private constructor(
             connectionInjection: ConnectionInjector = ConnectionInjectorFactory.singleton(),
             selectionState: StateFlow<Boolean>,
             keyboardEventFlow: Flow<KeyboardEvent>,
-            uiConfigurationRepository: UiConfigurationRepository,
             ollamaInjection: OllamaInjection = OllamaInjection.singleton(),
         ) = EditorKmpInjector(
             authCoreInjection,
@@ -118,7 +116,6 @@ class EditorKmpInjector private constructor(
             connectionInjection,
             selectionState,
             keyboardEventFlow,
-            uiConfigurationRepository,
             ollamaInjection = ollamaInjection,
         )
     }

@@ -2,11 +2,9 @@ package io.writeopia.core.configuration.di
 
 import io.writeopia.core.configuration.repository.ConfigurationRepository
 import io.writeopia.core.configuration.repository.InMemoryConfigurationRepository
-import io.writeopia.core.folders.repository.FolderRepository
-import io.writeopia.core.folders.repository.InMemoryFolderRepository
 import io.writeopia.models.configuration.WorkspaceConfigRepository
 
-actual class NotesInjector {
+actual class AppConfigurationInjector {
     actual fun provideNotesConfigurationRepository(): ConfigurationRepository =
         InMemoryConfigurationRepository.singleton()
 
@@ -15,8 +13,8 @@ actual class NotesInjector {
     }
 
     actual companion object {
-        private fun noop() = NotesInjector()
+        private fun noop() = AppConfigurationInjector()
 
-        actual fun singleton(): NotesInjector = noop()
+        actual fun singleton(): AppConfigurationInjector = noop()
     }
 }

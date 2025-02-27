@@ -3,7 +3,7 @@ package io.writeopia.notemenu.di
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.auth.core.di.AuthCoreInjectionNeo
-import io.writeopia.core.configuration.di.NotesInjector
+import io.writeopia.core.configuration.di.AppConfigurationInjector
 import io.writeopia.core.configuration.repository.ConfigurationRepository
 import io.writeopia.core.folders.di.FoldersInjector
 import io.writeopia.core.folders.repository.FolderRepository
@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class NotesMenuKmpInjection private constructor(
-    private val notesInjector: NotesInjector = NotesInjector.singleton(),
+    private val appConfigurationInjector: AppConfigurationInjector = AppConfigurationInjector.singleton(),
     private val authCoreInjection: AuthCoreInjectionNeo = AuthCoreInjectionNeo.singleton(),
     private val repositoryInjection: RepositoryInjector,
     private val selectionState: StateFlow<Boolean>,
@@ -34,7 +34,7 @@ class NotesMenuKmpInjection private constructor(
     private fun provideNotesUseCase(
         documentRepository: DocumentRepository = provideDocumentRepository(),
         configurationRepository: ConfigurationRepository =
-            notesInjector.provideNotesConfigurationRepository(),
+            appConfigurationInjector.provideNotesConfigurationRepository(),
         folderRepository: FolderRepository = FoldersInjector.singleton().provideFoldersRepository()
     ): NotesUseCase {
         return NotesUseCase.singleton(documentRepository, configurationRepository, folderRepository)
@@ -50,7 +50,7 @@ class NotesMenuKmpInjection private constructor(
         notesNavigation: NotesNavigation,
         notesUseCase: NotesUseCase = provideNotesUseCase(),
         notesConfig: ConfigurationRepository =
-            notesInjector.provideNotesConfigurationRepository(),
+            appConfigurationInjector.provideNotesConfigurationRepository(),
     ): ChooseNoteKmpViewModel =
         ChooseNoteKmpViewModel(
             notesUseCase = notesUseCase,

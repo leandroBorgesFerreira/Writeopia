@@ -13,5 +13,4 @@ actual class FoldersInjector {
 
         actual fun singleton(): FoldersInjector = noop()
     }
-
 }

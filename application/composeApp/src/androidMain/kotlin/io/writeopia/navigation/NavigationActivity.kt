@@ -82,11 +82,7 @@ fun NavigationGraph(
     val uiConfigViewModel = uiConfigInjection.provideUiConfigurationViewModel()
     val repositoryInjection = RoomRepositoryInjection.singleton()
     val authInjection = AuthInjection(connectionInjector, repositoryInjection)
-    val editorInjector = EditorKmpInjector.mobile(
-        repositoryInjection,
-        connectionInjector,
-        uiConfigInjection.provideUiConfigurationRepository(),
-    )
+    val editorInjector = EditorKmpInjector.mobile(repositoryInjection, connectionInjector)
     val notesMenuInjection = NotesMenuKmpInjection.mobile(repositoryInjection)
 
     val searchInjector = remember {

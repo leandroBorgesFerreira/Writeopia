@@ -84,8 +84,6 @@ fun DesktopApp(
         EditorKmpInjector.desktop(
             selectionState = selectionState,
             keyboardEventFlow = keyboardEventFlow,
-            uiConfigurationRepository = UiConfigurationInjector.singleton()
-                .provideUiConfigurationRepository(),
         )
     }
 

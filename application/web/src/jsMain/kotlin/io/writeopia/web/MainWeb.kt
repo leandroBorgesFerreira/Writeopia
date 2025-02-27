@@ -32,7 +32,7 @@ fun CreateAppInMemory() {
     val coroutineScope = rememberCoroutineScope()
     val selectionState = MutableStateFlow(false)
 
-    val uiConfigurationViewModel = UiConfigurationInjector()
+    val uiConfigurationViewModel = UiConfigurationInjector.singleton()
         .provideUiConfigurationViewModel()
 
     val colorTheme =

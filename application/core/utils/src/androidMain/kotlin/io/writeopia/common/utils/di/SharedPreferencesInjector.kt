@@ -11,7 +11,7 @@ class SharedPreferencesInjector private constructor(val sharedPreferences: Share
             instance = SharedPreferencesInjector(sharedPreferences)
         }
 
-        fun get() = instance ?: throw IllegalStateException("SharedPreferencesInjector not initialized!")
+        fun singleton() = instance ?: throw IllegalStateException("SharedPreferencesInjector not initialized!")
     }
 
 }

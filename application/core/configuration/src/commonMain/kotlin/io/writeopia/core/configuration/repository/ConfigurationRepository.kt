@@ -1,6 +1,6 @@
 package io.writeopia.core.configuration.repository
 
-import io.writeopia.models.configuration.NotesArrangement
+import io.writeopia.core.configuration.models.NotesArrangement
 import io.writeopia.models.configuration.WorkspaceConfigRepository
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import kotlinx.coroutines.flow.Flow

@@ -14,12 +14,10 @@ actual class FoldersInjector private constructor(
     actual fun provideFoldersRepository(): FolderRepository =
         FolderRepositorySqlDelight(provideFolderSqlDelightDao())
 
-
     actual companion object {
         private var instance: FoldersInjector? = null
 
         actual fun singleton(): FoldersInjector =
             instance ?: FoldersInjector(WriteopiaDbInjector.singleton()?.database)
     }
-
 }
