@@ -1,7 +1,6 @@
 package io.writeopia.global.shell.di
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.auth.core.di.AuthCoreInjectionNeo
 import io.writeopia.controller.OllamaConfigController
 import io.writeopia.core.configuration.di.AppConfigurationInjector
@@ -15,7 +14,6 @@ import io.writeopia.global.shell.viewmodel.GlobalShellKmpViewModel
 import io.writeopia.global.shell.viewmodel.GlobalShellViewModel
 import io.writeopia.notemenu.data.usecase.NotesNavigationUseCase
 import io.writeopia.notemenu.data.usecase.NotesUseCase
-import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.sdk.persistence.core.di.RepositoryInjector
 import io.writeopia.sdk.repository.DocumentRepository
 import io.writeopia.sqldelight.di.SqlDelightDaoInjector
@@ -24,7 +22,6 @@ class SideMenuKmpInjector(
     private val appConfigurationInjector: AppConfigurationInjector = AppConfigurationInjector.singleton(),
     private val authCoreInjection: AuthCoreInjectionNeo = AuthCoreInjectionNeo.singleton(),
     private val repositoryInjection: RepositoryInjector = SqlDelightDaoInjector.singleton(),
-    private val uiConfigurationInjector: UiConfigurationInjector,
     private val ollamaInjection: OllamaInjection = OllamaInjection.singleton()
 ) : SideMenuInjector, OllamaConfigInjector {
     private fun provideDocumentRepository(): DocumentRepository =

@@ -17,5 +17,4 @@ class MobileSearchInjection(
                 documentDao = roomInjector.provideDocumentRepository()
             )
         )
-
 }
