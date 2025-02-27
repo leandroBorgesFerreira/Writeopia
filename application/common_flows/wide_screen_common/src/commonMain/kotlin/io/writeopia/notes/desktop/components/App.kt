@@ -45,7 +45,6 @@ import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.model.NotesNavigationType
 import io.writeopia.notemenu.data.usecase.NotesNavigationUseCase
 import io.writeopia.notemenu.di.NotesMenuKmpInjection
-import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notemenu.navigation.NAVIGATION_PATH
 import io.writeopia.notemenu.navigation.NAVIGATION_TYPE
 import io.writeopia.notemenu.navigation.navigateToNotes
@@ -95,9 +94,7 @@ fun DesktopApp(
     }
 
     val sideMenuInjector = remember {
-        SideMenuKmpInjector(
-            uiConfigurationInjector = UiConfigurationInjector.singleton(),
-        )
+        SideMenuKmpInjector()
     }
 
     val globalShellViewModel: GlobalShellViewModel = sideMenuInjector.provideSideMenuViewModel()
