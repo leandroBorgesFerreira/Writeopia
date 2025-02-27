@@ -27,10 +27,8 @@ class KmpSearchInjection private constructor(
         documentDao: DocumentSearch = provideDocumentSqlDao()
     ): SearchRepository = SearchRepository(folderDao, documentDao)
 
-    @Composable
-    override fun provideViewModel(): SearchKmpViewModel = viewModel {
+    override fun provideViewModel(): SearchKmpViewModel =
         SearchKmpViewModel(searchRepository = provideRepository())
-    }
 
     companion object {
         private var instance: KmpSearchInjection? = null

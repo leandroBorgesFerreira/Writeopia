@@ -100,8 +100,7 @@ fun DesktopApp(
         )
     }
 
-    val globalShellViewModel: GlobalShellViewModel =
-        sideMenuInjector.provideSideMenuViewModel()
+    val globalShellViewModel: GlobalShellViewModel = sideMenuInjector.provideSideMenuViewModel()
     val colorTheme = colorThemeOption.collectAsState().value
     val navigationController: NavHostController = rememberNavController()
     val searchViewModel = KmpSearchInjection.singleton().provideViewModel()

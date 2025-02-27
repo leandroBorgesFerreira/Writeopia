@@ -23,7 +23,6 @@ fun ComposeUiTest.startApp(
         WriteopiaDbInjector.initialize(database)
 
         DesktopApp(
-            notesInjector = NotesInjector.singleton(),
             coroutineScope = rememberCoroutineScope(),
             colorThemeOption = MutableStateFlow(ColorThemeOption.DARK),
             isUndoKeyEvent = { false },

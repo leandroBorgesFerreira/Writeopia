@@ -1,5 +1,6 @@
 package io.writeopia.features.search.navigation
 
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import io.writeopia.common.utils.Destinations
@@ -19,7 +20,7 @@ fun NavGraphBuilder.searchNavigation(
     composable(
         route = SearchDestiny.search(),
     ) { _ ->
-        val viewModel = searchInjection.provideViewModel()
+        val viewModel = viewModel { searchInjection.provideViewModel() }
 
         DocumentsSearchScreen(
             searchState = viewModel.searchState,

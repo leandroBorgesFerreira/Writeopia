@@ -41,18 +41,16 @@ class SideMenuKmpInjector(
 
     @Composable
     override fun provideSideMenuViewModel(): GlobalShellViewModel =
-        viewModel {
-            GlobalShellKmpViewModel(
-                notesUseCase = provideNotesUseCase(),
-                uiConfigurationRepo = UiConfigurationCoreInjector.singleton()
-                    .provideUiConfigurationRepository(),
-                authManager = authCoreInjection.provideAccountManager(),
-                notesNavigationUseCase = NotesNavigationUseCase.singleton(),
-                workspaceConfigRepository = appConfigurationInjector.provideNotesConfigurationRepository(),
-                ollamaRepository = ollamaInjection.provideRepository(),
-                configRepository = appConfigurationInjector.provideNotesConfigurationRepository()
-            )
-        }
+        GlobalShellKmpViewModel(
+            notesUseCase = provideNotesUseCase(),
+            uiConfigurationRepo = UiConfigurationCoreInjector.singleton()
+                .provideUiConfigurationRepository(),
+            authManager = authCoreInjection.provideAccountManager(),
+            notesNavigationUseCase = NotesNavigationUseCase.singleton(),
+            workspaceConfigRepository = appConfigurationInjector.provideNotesConfigurationRepository(),
+            ollamaRepository = ollamaInjection.provideRepository(),
+            configRepository = appConfigurationInjector.provideNotesConfigurationRepository()
+        )
 
     @Composable
     override fun provideOllamaConfigController(): OllamaConfigController =
