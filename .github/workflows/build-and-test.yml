@@ -42,8 +42,12 @@ jobs:
         with:
           distribution: adopt
           java-version: '21'
+      - name: Generate signed mac app
+        run: ./gradlew packageReleaseDmg
+        env:
+          SIGN_IDENTITY: ${{ secrets.SIGN_IDENTITY }}
       - name: JVM tests
-        run: ./gradlew jvmTest --no-daemon
+        run: ./gradlew jvmTest
       - name: upload results
         uses: actions/upload-artifact@v4
         if: failure()
