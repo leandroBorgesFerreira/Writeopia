@@ -1,4 +1,4 @@
-package io.writeopia.notemenu.data.repository
+package io.writeopia.core.configuration.repository
 
 import io.writeopia.app.sql.NotesConfiguration
 import io.writeopia.app.sql.WorkspaceConfiguration

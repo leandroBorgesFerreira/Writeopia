@@ -2,6 +2,7 @@ package io.writeopia.notemenu.data.repository
 
 import io.writeopia.common.utils.persistence.configuration.NotesConfigurationCommonEntity
 import io.writeopia.common.utils.persistence.daos.NotesConfigurationCommonDao
+import io.writeopia.core.configuration.repository.ConfigurationRepository
 import io.writeopia.models.configuration.NotesArrangement
 import io.writeopia.sdk.persistence.core.extensions.toEntityField
 import io.writeopia.sdk.persistence.core.sorting.OrderBy

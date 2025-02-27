@@ -29,7 +29,11 @@ kotlin {
             dependencies {
                 implementation(project(":application:core:models"))
                 implementation(project(":application:core:documents"))
+                implementation(project(":application:core:persistence_bridge"))
+                implementation(project(":application:core:utils"))
+
                 implementation(project(":plugins:writeopia_persistence_core"))
+
                 implementation(libs.kotlinx.coroutines.core)
             }
         }

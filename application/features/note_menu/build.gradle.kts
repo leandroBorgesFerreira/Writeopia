@@ -49,6 +49,7 @@ kotlin {
                 implementation(project(":application:core:documents"))
                 implementation(project(":application:core:resources"))
                 implementation(project(":application:core:ollama"))
+                implementation(project(":application:core:configuration"))
 
                 implementation(project(":application:features:account"))
                 implementation(project(":application:features:onboarding"))
