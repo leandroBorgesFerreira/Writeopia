@@ -10,15 +10,12 @@ actual class NotesInjector {
     actual fun provideNotesConfigurationRepository(): ConfigurationRepository =
         InMemoryConfigurationRepository.singleton()
 
-    actual fun provideFoldersRepository(): FolderRepository =
-        InMemoryFolderRepository.singleton()
-
     actual fun provideWorkspaceConfigRepository(): WorkspaceConfigRepository {
         return provideNotesConfigurationRepository()
     }
 
     actual companion object {
-        fun noop() = NotesInjector()
+        private fun noop() = NotesInjector()
 
         actual fun singleton(): NotesInjector = noop()
     }

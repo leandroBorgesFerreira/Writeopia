@@ -5,6 +5,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.auth.core.di.AuthCoreInjectionNeo
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.core.configuration.di.NotesInjector
+import io.writeopia.core.folders.di.FoldersInjector
 import io.writeopia.di.ConnectionInjectorFactory
 import io.writeopia.di.OllamaInjection
 import io.writeopia.editor.features.editor.copy.CopyManager
@@ -67,7 +68,7 @@ class EditorKmpInjector private constructor(
             sharedEditionManager = sharedEditionManager,
             parentFolderId = parentFolder,
             uiConfigurationRepository = uiConfigurationRepository,
-            folderRepository = notesInjector.provideFoldersRepository(),
+            folderRepository = FoldersInjector.singleton().provideFoldersRepository(),
             ollamaRepository = ollamaInjection?.provideRepository(),
             keyboardEventFlow = keyboardEventFlow,
             copyManager = copyManager,

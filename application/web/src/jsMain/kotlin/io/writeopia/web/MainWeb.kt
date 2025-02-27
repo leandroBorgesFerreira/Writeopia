@@ -39,7 +39,6 @@ fun CreateAppInMemory() {
         uiConfigurationViewModel.listenForColorTheme { "disconnected_user" }
 
     DesktopApp(
-        notesInjector = NotesInjector.noop(),
         selectionState = selectionState,
         isUndoKeyEvent = ::isUndoKeyboardEvent,
         colorThemeOption = colorTheme,

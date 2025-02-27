@@ -3,8 +3,6 @@ package io.writeopia.core.configuration.di
 import io.writeopia.common.utils.persistence.di.AppDaosInjection
 import io.writeopia.core.configuration.repository.ConfigurationRepository
 import io.writeopia.core.configuration.repository.ConfigurationRoomRepository
-import io.writeopia.core.folders.repository.FolderRepository
-import io.writeopia.core.folders.repository.RoomFolderRepository
 import io.writeopia.models.configuration.WorkspaceConfigRepository
 import io.writeopia.persistence.room.injection.AppRoomDaosInjection
 
@@ -20,9 +18,6 @@ actual class NotesInjector private constructor(
                 configurationRepository = it
             }
         }
-
-    actual fun provideFoldersRepository(): FolderRepository =
-        RoomFolderRepository(appRoomDaosInjection.provideFolderDao())
 
     actual fun provideWorkspaceConfigRepository(): WorkspaceConfigRepository =
         provideNotesConfigurationRepository()

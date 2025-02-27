@@ -5,6 +5,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.writeopia.auth.core.di.AuthCoreInjectionNeo
 import io.writeopia.core.configuration.di.NotesInjector
 import io.writeopia.core.configuration.repository.ConfigurationRepository
+import io.writeopia.core.folders.di.FoldersInjector
 import io.writeopia.core.folders.repository.FolderRepository
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.usecase.NotesUseCase
@@ -34,7 +35,7 @@ class NotesMenuKmpInjection private constructor(
         documentRepository: DocumentRepository = provideDocumentRepository(),
         configurationRepository: ConfigurationRepository =
             notesInjector.provideNotesConfigurationRepository(),
-        folderRepository: FolderRepository = notesInjector.provideFoldersRepository()
+        folderRepository: FolderRepository = FoldersInjector.singleton().provideFoldersRepository()
     ): NotesUseCase {
         return NotesUseCase.singleton(documentRepository, configurationRepository, folderRepository)
     }

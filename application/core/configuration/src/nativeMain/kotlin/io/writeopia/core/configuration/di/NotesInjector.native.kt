@@ -10,12 +10,10 @@ import io.writeopia.sqldelight.dao.ConfigurationSqlDelightDao
 import io.writeopia.sqldelight.dao.FolderSqlDelightDao
 import io.writeopia.sqldelight.di.WriteopiaDbInjector
 
-actual class NotesInjector(private val writeopiaDb: WriteopiaDb?) {
+actual class NotesInjector private constructor(private val writeopiaDb: WriteopiaDb?) {
 
     private var configurationRepository: ConfigurationRepository? = null
     private var configurationSqlDelightDao: ConfigurationSqlDelightDao? = null
-
-    private fun provideFolderSqlDelightDao() = FolderSqlDelightDao(writeopiaDb)
 
     private fun provideNotesConfigurationSqlDelightDao() =
         configurationSqlDelightDao ?: kotlin.run {
@@ -30,9 +28,6 @@ actual class NotesInjector(private val writeopiaDb: WriteopiaDb?) {
                 configurationRepository = it
             }
         }
-
-    actual fun provideFoldersRepository(): FolderRepository =
-        FolderRepositorySqlDelight(provideFolderSqlDelightDao())
 
     actual fun provideWorkspaceConfigRepository(): WorkspaceConfigRepository =
         provideNotesConfigurationRepository()

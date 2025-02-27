@@ -6,6 +6,7 @@ import io.writeopia.auth.core.di.AuthCoreInjectionNeo
 import io.writeopia.controller.OllamaConfigController
 import io.writeopia.core.configuration.di.NotesInjector
 import io.writeopia.core.configuration.repository.ConfigurationRepository
+import io.writeopia.core.folders.di.FoldersInjector
 import io.writeopia.core.folders.repository.FolderRepository
 import io.writeopia.di.OllamaConfigInjector
 import io.writeopia.di.OllamaInjection
@@ -32,7 +33,7 @@ class SideMenuKmpInjector(
         documentRepository: DocumentRepository = provideDocumentRepository(),
         configurationRepository: ConfigurationRepository =
             notesInjector.provideNotesConfigurationRepository(),
-        folderRepository: FolderRepository = notesInjector.provideFoldersRepository()
+        folderRepository: FolderRepository = FoldersInjector.singleton().provideFoldersRepository()
     ): NotesUseCase {
         return NotesUseCase.singleton(documentRepository, configurationRepository, folderRepository)
     }

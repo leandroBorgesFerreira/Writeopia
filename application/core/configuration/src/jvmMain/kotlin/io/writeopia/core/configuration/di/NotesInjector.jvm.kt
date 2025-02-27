@@ -2,8 +2,6 @@ package io.writeopia.core.configuration.di
 
 import io.writeopia.core.configuration.repository.ConfigurationRepository
 import io.writeopia.core.configuration.repository.ConfigurationSqlDelightRepository
-import io.writeopia.core.folders.repository.FolderRepository
-import io.writeopia.core.folders.repository.FolderRepositorySqlDelight
 import io.writeopia.models.configuration.WorkspaceConfigRepository
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.dao.ConfigurationSqlDelightDao
@@ -31,9 +29,6 @@ actual class NotesInjector private constructor(
                 configurationRepository = it
             }
         }
-
-    actual fun provideFoldersRepository(): FolderRepository =
-        FolderRepositorySqlDelight(provideFolderSqlDelightDao())
 
     actual fun provideWorkspaceConfigRepository(): WorkspaceConfigRepository =
         provideNotesConfigurationRepository()
