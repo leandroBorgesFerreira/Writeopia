@@ -1,9 +1,27 @@
-name: Notarize Mac OS app
+name: Create desktop apps
 
 on:
   workflow_dispatch:
 
 jobs:
+  create_deb_app:
+    name: Create Deb App
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: adopt
+          java-version: '21'
+      - name: Generate linux app
+        run: ./gradlew packageReleaseDeb
+      - name: Upload Dokka
+        uses: actions/upload-artifact@v4
+        with:
+          name: DebApp
+          path: application/composeApp/build/compose/binaries/main-release/deb/
   notarize_mac_os:
     name: Notarize Mac OS app
     runs-on: macos-latest
