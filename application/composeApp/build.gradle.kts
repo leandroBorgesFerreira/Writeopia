@@ -145,6 +145,10 @@ compose.desktop {
                     teamID.set(providers.environmentVariable("APPSTORE_TEAM_ID"))
                 }
             }
+
+            linux {
+                iconFile.set(iconsRoot.resolve("icon-linux.icns"))
+            }
         }
 
         buildTypes.release {
