@@ -1,4 +1,4 @@
-name: Notarize Mac OS app
+name: Generate .deb app
 
 on:
   workflow_dispatch:
