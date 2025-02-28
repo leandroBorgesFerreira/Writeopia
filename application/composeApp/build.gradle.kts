@@ -147,7 +147,7 @@ compose.desktop {
             }
 
             linux {
-                iconFile.set(iconsRoot.resolve("icon-linux.icns"))
+                iconFile.set(iconsRoot.resolve("icon-linux.png"))
             }
         }
 
