@@ -29,7 +29,7 @@ class InMemoryConfigurationRepository private constructor() : ConfigurationRepos
     }
 
     override suspend fun arrangementPref(userId: String): String =
-        arrangementPrefs[userId] ?: NotesArrangement.GRID.type
+        arrangementPrefs[userId] ?: NotesArrangement.STAGGERED_GRID.type
 
     override suspend fun getOrderPreference(userId: String): String =
         sortPrefs[userId] ?: OrderBy.NAME.type

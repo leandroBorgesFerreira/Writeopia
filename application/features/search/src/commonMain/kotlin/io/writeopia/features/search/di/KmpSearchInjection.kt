@@ -13,6 +13,9 @@ class KmpSearchInjection private constructor(
     private val writeopiaDb: WriteopiaDb? = null
 ) : SearchInjection {
 
+    private var folderDao: FolderSearch? = null
+    private var documentDao: DocumentSearch? = null
+
     private fun provideFolderSqlDelightDao() = FolderSqlDelightDao(writeopiaDb)
 
     private fun provideDocumentSqlDao() = DocumentSqlDao(
@@ -23,7 +26,10 @@ class KmpSearchInjection private constructor(
     fun provideRepository(
         folderDao: FolderSearch = provideFolderSqlDelightDao(),
         documentDao: DocumentSearch = provideDocumentSqlDao()
-    ): SearchRepository = SearchRepository(folderDao, documentDao)
+    ): SearchRepository = SearchRepository(
+        this.folderDao ?: folderDao.also { this.folderDao = folderDao },
+        this.documentDao ?: documentDao.also { this.documentDao = documentDao },
+    )
 
     override fun provideViewModel(): SearchKmpViewModel =
         SearchKmpViewModel(searchRepository = provideRepository())

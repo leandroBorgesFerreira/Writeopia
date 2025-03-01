@@ -93,7 +93,7 @@ class NotesUseCase private constructor(
             notesConfig.listenOrderPreference(userId)
         ) { folders, documents, orderPreference ->
             val order = orderPreference.takeIf { it.isNotEmpty() }?.let(OrderBy::fromString)
-                ?: OrderBy.CREATE
+                ?: OrderBy.UPDATE
 
             folders.merge(documents).mapValues { (_, menuItems) ->
                 menuItems.sortedWithOrderBy(order)

@@ -56,10 +56,10 @@ fun NotesConfigurationMenu(
 
         SortOptions(
             showSortingOption,
+            sortOptionState,
             showSortOptionsRequest,
             hideSortOptionsRequest,
             selectSortOption,
-            sortOptionState,
             modifier = Modifier.background(
                 MaterialTheme.colorScheme.surfaceVariant,
                 shape = shape

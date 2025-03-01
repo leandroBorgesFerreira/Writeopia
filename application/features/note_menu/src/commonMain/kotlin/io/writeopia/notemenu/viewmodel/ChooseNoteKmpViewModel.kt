@@ -6,6 +6,7 @@ import io.writeopia.auth.core.data.User
 import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.common.utils.DISCONNECTED_USER_ID
 import io.writeopia.common.utils.ResultData
+import io.writeopia.common.utils.file.FileUtils
 import io.writeopia.common.utils.map
 import io.writeopia.common.utils.toBoolean
 import io.writeopia.commonui.extensions.toUiCard
@@ -465,7 +466,7 @@ internal class ChooseNoteKmpViewModel(
             val userId = getUserId()
             val workspacePath = notesConfig.loadWorkspacePath(userId)
 
-            if (workspacePath != null) {
+            if (workspacePath != null && FileUtils.folderExists(workspacePath)) {
                 workspaceFunc(workspacePath)
             } else {
                 _showLocalSyncConfig.value = ConfigState.Configure("", syncRequest)

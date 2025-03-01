@@ -27,10 +27,10 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 internal fun SortOptions(
     showSortingOption: StateFlow<Boolean>,
+    sortOptionState: StateFlow<OrderBy>,
     showSortOptionsRequest: () -> Unit,
     hideSortOptionsRequest: () -> Unit,
     selectSortOption: (OrderBy) -> Unit,
-    sortOptionState: StateFlow<OrderBy>,
     modifier: Modifier = Modifier,
 ) {
     val showSorting by showSortingOption.collectAsState()
