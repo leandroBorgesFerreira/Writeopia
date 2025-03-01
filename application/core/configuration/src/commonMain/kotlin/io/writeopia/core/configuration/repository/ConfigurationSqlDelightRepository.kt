@@ -16,7 +16,7 @@ class ConfigurationSqlDelightRepository(
 
     private val _arrangementPref: MutableStateFlow<String> =
         MutableStateFlow(NotesArrangement.GRID.type)
-    private val _orderPreference: MutableStateFlow<String> = MutableStateFlow(OrderBy.CREATE.type)
+    private val _orderPreference: MutableStateFlow<String> = MutableStateFlow(OrderBy.UPDATE.type)
 
     override suspend fun saveDocumentArrangementPref(
         arrangement: NotesArrangement,
@@ -47,7 +47,7 @@ class ConfigurationSqlDelightRepository(
 
     override suspend fun arrangementPref(userId: String): String =
         configurationSqlDelightDao.getConfigurationByUserId(userId)?.arrangement_type
-            ?: NotesArrangement.GRID.type
+            ?: NotesArrangement.STAGGERED_GRID.type
 
     override suspend fun getOrderPreference(userId: String): String =
         configurationSqlDelightDao.getConfigurationByUserId(userId)?.order_by
@@ -103,6 +103,9 @@ class ConfigurationSqlDelightRepository(
     }
 
     private suspend fun refreshOrderPref(userId: String) {
-        _orderPreference.value = getOrderPreference(userId)
+
+        _orderPreference.value = getOrderPreference(userId).also {
+            println("refreshOrderPref: $it")
+        }
     }
 }

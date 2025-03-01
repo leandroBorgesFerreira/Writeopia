@@ -5,7 +5,6 @@ import io.writeopia.core.configuration.repository.ConfigurationSqlDelightReposit
 import io.writeopia.models.configuration.WorkspaceConfigRepository
 import io.writeopia.sql.WriteopiaDb
 import io.writeopia.sqldelight.dao.ConfigurationSqlDelightDao
-import io.writeopia.sqldelight.dao.FolderSqlDelightDao
 import io.writeopia.sqldelight.di.WriteopiaDbInjector
 
 actual class AppConfigurationInjector private constructor(
@@ -14,20 +13,17 @@ actual class AppConfigurationInjector private constructor(
     private var configurationRepository: ConfigurationRepository? = null
     private var configurationSqlDelightDao: ConfigurationSqlDelightDao? = null
 
-    private fun provideFolderSqlDelightDao() = FolderSqlDelightDao(writeopiaDb)
-
     private fun provideNotesConfigurationSqlDelightDao() =
-        configurationSqlDelightDao ?: kotlin.run {
-            ConfigurationSqlDelightDao(writeopiaDb).also {
-                configurationSqlDelightDao = it
-            }
+        configurationSqlDelightDao ?: ConfigurationSqlDelightDao(writeopiaDb).also {
+            configurationSqlDelightDao = it
         }
 
+
     actual fun provideNotesConfigurationRepository(): ConfigurationRepository =
-        configurationRepository ?: kotlin.run {
-            ConfigurationSqlDelightRepository(provideNotesConfigurationSqlDelightDao()).also {
-                configurationRepository = it
-            }
+        configurationRepository ?: ConfigurationSqlDelightRepository(
+            provideNotesConfigurationSqlDelightDao()
+        ).also {
+            configurationRepository = it
         }
 
     actual fun provideWorkspaceConfigRepository(): WorkspaceConfigRepository =
@@ -37,6 +33,8 @@ actual class AppConfigurationInjector private constructor(
         private var instance: AppConfigurationInjector? = null
 
         actual fun singleton(): AppConfigurationInjector =
-            instance ?: AppConfigurationInjector(WriteopiaDbInjector.singleton()?.database)
+            instance ?: AppConfigurationInjector(WriteopiaDbInjector.singleton()?.database).also {
+                instance = it
+            }
     }
 }

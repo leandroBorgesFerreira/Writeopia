@@ -45,7 +45,7 @@ class ConfigurationRoomRepository(
         userId: String
     ): Flow<String> = configurationDao.listenForConfigurationByUserId(userId)
         .map { configuration ->
-            configuration?.arrangementType ?: NotesArrangement.GRID.type
+            configuration?.arrangementType ?: NotesArrangement.STAGGERED_GRID.type
         }
 
     override suspend fun listenOrderPreference(
@@ -57,11 +57,11 @@ class ConfigurationRoomRepository(
 
     override suspend fun arrangementPref(userId: String): String =
         configurationDao.getConfigurationByUserId(userId)?.arrangementType
-            ?: NotesArrangement.GRID.type
+            ?: NotesArrangement.STAGGERED_GRID.type
 
     override suspend fun getOrderPreference(userId: String): String =
         configurationDao.getConfigurationByUserId(userId)?.orderByType
-            ?: OrderBy.CREATE.type.toEntityField()
+            ?: OrderBy.UPDATE.type.toEntityField()
 
     override suspend fun saveWorkspacePath(path: String, userId: String) {
     }

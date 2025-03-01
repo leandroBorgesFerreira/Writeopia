@@ -9,7 +9,12 @@ import io.writeopia.sqldelight.di.WriteopiaDbInjector
 actual class FoldersInjector private constructor(
     private val writeopiaDb: WriteopiaDb?
 ) {
-    private fun provideFolderSqlDelightDao() = FolderSqlDelightDao(writeopiaDb)
+    private var folderDao: FolderSqlDelightDao? = null
+
+    private fun provideFolderSqlDelightDao() = folderDao
+        ?: FolderSqlDelightDao(writeopiaDb).also {
+            folderDao = it
+        }
 
     actual fun provideFoldersRepository(): FolderRepository =
         FolderRepositorySqlDelight(provideFolderSqlDelightDao())
