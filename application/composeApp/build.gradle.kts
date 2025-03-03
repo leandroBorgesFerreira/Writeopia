@@ -52,6 +52,7 @@ kotlin {
                 implementation(project(":application:core:auth_core"))
                 implementation(project(":application:core:theme"))
                 implementation(project(":application:core:models"))
+                implementation(project(":application:core:resources"))
                 implementation(project(":application:features:note_menu"))
                 implementation(project(":application:features:editor"))
                 implementation(project(":application:features:account"))
@@ -148,6 +149,10 @@ compose.desktop {
 
             linux {
                 iconFile.set(iconsRoot.resolve("icon-linux.png"))
+            }
+
+            windows {
+                iconFile.set(iconsRoot.resolve("icon-windows.ico"))
             }
         }
 
