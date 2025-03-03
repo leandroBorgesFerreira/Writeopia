@@ -22,6 +22,7 @@ import io.writeopia.common.utils.keyboard.KeyboardCommands
 import io.writeopia.common.utils.ui.GlobalToastBox
 import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.DesktopApp
+import io.writeopia.resources.CommonImages
 import io.writeopia.sqldelight.database.DatabaseCreation
 import io.writeopia.sqldelight.database.DatabaseFactory
 import io.writeopia.sqldelight.database.driver.DriverFactory
@@ -159,6 +160,7 @@ private fun ApplicationScope.App(onCloseRequest: () -> Unit = ::exitApplication)
         onPreviewKeyEvent = { keyEvent ->
             handleKeyboardEvent(keyEvent)
         },
+        icon = CommonImages.logo()
     ) {
         Box(Modifier.fillMaxSize()) {
             LaunchedEffect(window.rootPane) {

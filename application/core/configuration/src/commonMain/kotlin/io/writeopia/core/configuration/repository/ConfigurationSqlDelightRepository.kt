@@ -103,9 +103,6 @@ class ConfigurationSqlDelightRepository(
     }
 
     private suspend fun refreshOrderPref(userId: String) {
-
-        _orderPreference.value = getOrderPreference(userId).also {
-            println("refreshOrderPref: $it")
-        }
+        _orderPreference.value = getOrderPreference(userId)
     }
 }
