@@ -4,6 +4,24 @@ on:
   workflow_dispatch:
 
 jobs:
+  create_msi_app:
+    name: Create MSI App
+    runs-on: windows-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: adopt
+          java-version: '21'
+      - name: Generate linux app
+        run: ./gradlew packageReleaseMsi
+      - name: Upload App
+        uses: actions/upload-artifact@v4
+        with:
+          name: Writeopia-windows
+          path: application/composeApp/build/compose/binaries/main-release/msi
   create_deb_app:
     name: Create Deb App
     runs-on: ubuntu-22.04
@@ -17,10 +35,10 @@ jobs:
           java-version: '21'
       - name: Generate linux app
         run: ./gradlew packageReleaseDeb
-      - name: Upload Dokka
+      - name: Upload App
         uses: actions/upload-artifact@v4
         with:
-          name: DebApp
+          name: Writeopia-deb
           path: application/composeApp/build/compose/binaries/main-release/deb/
   notarize_mac_os:
     name: Notarize Mac OS app
@@ -48,9 +66,9 @@ jobs:
           APPLE_ID_NOTARIZATION: ${{ secrets.APPLE_ID_NOTARIZATION }}
           APPSTORE_TEAM_ID: ${{ secrets.APPSTORE_TEAM_ID }}
           NOTARIZATION_PASSWORD: ${{ secrets.NOTARIZATION_PASSWORD }}
-      - name: Upload Dokka
+      - name: Upload App
         uses: actions/upload-artifact@v4
         with:
-          name: Writeopia-1.0.0.dmg
+          name: Writeopia-macos
           path: application/composeApp/build/compose/binaries/main-release/dmg/Writeopia-1.0.0.dmg
 
