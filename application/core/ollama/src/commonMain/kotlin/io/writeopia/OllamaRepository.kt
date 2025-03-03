@@ -14,7 +14,7 @@ class OllamaRepository(
 ) {
 
     suspend fun generateReply(model: String, prompt: String, url: String): String {
-        return ollamaApi.generateReply(model, prompt, url).response
+        return ollamaApi.generateReply(model, prompt, url).response ?: "" 
     }
 
     fun streamReply(model: String, prompt: String, url: String): Flow<ResultData<String>> =

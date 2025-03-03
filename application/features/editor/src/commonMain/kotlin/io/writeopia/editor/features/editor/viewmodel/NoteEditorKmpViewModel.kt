@@ -439,7 +439,7 @@ class NoteEditorKmpViewModel(
                         .collect { result ->
                             val text = when (result) {
                                 is ResultData.Complete -> result.data
-                                is ResultData.Error -> "An error happened, please try again. Message: ${result.exception.message}"
+                                is ResultData.Error -> "Error. Message: ${result.exception.message}"
                                 is ResultData.Loading,
                                 is ResultData.Idle,
                                 is ResultData.InProgress -> ""

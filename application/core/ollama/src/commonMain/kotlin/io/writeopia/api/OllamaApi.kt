@@ -128,6 +128,11 @@ class OllamaApi(
 
                             val value: OllamaResponse = json.decodeFromString(line)
 
+                            if (value.error?.isNotEmpty() == true) {
+                                emit(ResultData.Error(RuntimeException(value.error)))
+                                break
+                            }
+
                             stringBuilder.append(value.response)
 
                             emit(ResultData.Complete(stringBuilder.toString()))
