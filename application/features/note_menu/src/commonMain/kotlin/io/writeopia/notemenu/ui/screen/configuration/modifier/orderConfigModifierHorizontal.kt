@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 fun Modifier.orderConfigModifierHorizontal(clickable: () -> Unit): Modifier =
     composed {
         clip(MaterialTheme.shapes.large)
-            .background(MaterialTheme.colorScheme.inverseSurface)
+            .background(MaterialTheme.colorScheme.primary)
             .clickable(onClick = clickable)
             .padding(6.dp)
             .fillMaxHeight()

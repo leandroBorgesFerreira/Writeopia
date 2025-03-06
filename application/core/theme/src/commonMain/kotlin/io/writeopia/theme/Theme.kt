@@ -11,23 +11,23 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorPalette = darkColorScheme(
-    primary = LIGHT_RED,
-    secondary = LIGHTER_RED,
+    primary = LIGHT_PURPLE,
+    secondary = DARK_PURPLE,
     onPrimary = Color.White,
     onSecondary = Color.White,
     onBackground = Color.White,
-    surface = LIGHT_RED,
-    inverseSurface = DARKER_RED
+    surface = LIGHT_PURPLE,
+    inverseSurface = DARK_PURPLE
 )
 
 private val LightColorPalette = lightColorScheme(
-    primary = LIGHT_RED,
-    secondary = LIGHTER_RED,
+    primary = LIGHT_PURPLE,
+    secondary = DARK_PURPLE,
     onPrimary = Color.White,
     onSecondary = Color.White,
     onBackground = Color(0xFF363636),
-    surface = LIGHT_RED,
-    inverseSurface = DARKER_RED
+    surface = LIGHT_PURPLE,
+    inverseSurface = DARK_PURPLE
 )
 
 @Immutable

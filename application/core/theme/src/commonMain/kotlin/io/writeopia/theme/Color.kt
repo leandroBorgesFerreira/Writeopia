@@ -2,7 +2,6 @@ package io.writeopia.theme
 
 import androidx.compose.ui.graphics.Color
 
-val LIGHT_RED = Color(0xFFF58071)
-val LIGHTER_RED = Color(0xFFF69293)
-val DARKER_RED = Color(0xFFf36a58)
 val SELECTED_BG = Color(0x33F58071)
+val LIGHT_PURPLE = Color(0xFFE987D0)
+val DARK_PURPLE = Color(0xFFB7409A)
