@@ -73,7 +73,7 @@ internal fun BoxScope.MobileConfigurationsMenu(
                 .clip(
                     MaterialTheme.shapes.large
                 )
-                .background(MaterialTheme.colorScheme.surface)
+                .background(MaterialTheme.colorScheme.surfaceVariant)
                 .padding(16.dp),
         ) {
             ArrangementSection(selected, staggeredGridOptionClick, gridOptionClick, listOptionClick)
@@ -95,7 +95,7 @@ private fun SectionText(text: String) {
         style = MaterialTheme.typography.titleMedium.copy(
             fontSize = 18.sp
         ),
-        color = MaterialTheme.colorScheme.onPrimary,
+        color = MaterialTheme.colorScheme.onBackground,
         fontWeight = FontWeight.Bold
     )
 }
@@ -181,7 +181,7 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit, sortingState: Sta
         if (orderBy == order) {
             MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.25F)
         } else {
-            MaterialTheme.colorScheme.inverseSurface
+            MaterialTheme.colorScheme.primary
         }
     }
 
@@ -190,7 +190,7 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit, sortingState: Sta
             .fillMaxWidth()
             .padding(horizontal = INNER_PADDING.dp)
             .clip(RoundedCornerShape(6.dp))
-            .background(MaterialTheme.colorScheme.inverseSurface)
+            .background(MaterialTheme.colorScheme.primary)
     ) {
         Text(
             modifier = Modifier
