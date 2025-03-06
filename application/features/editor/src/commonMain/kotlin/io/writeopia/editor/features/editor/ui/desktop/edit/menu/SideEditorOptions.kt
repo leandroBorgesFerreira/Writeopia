@@ -156,7 +156,7 @@ fun SideEditorOptions(
 
             val background = @Composable { optionsType: OptionsType ->
                 if (optionsType == menuType) {
-                    MaterialTheme.colorScheme.secondary
+                    MaterialTheme.colorScheme.primary
                 } else {
                     MaterialTheme.colorScheme.background
                 }
@@ -164,7 +164,7 @@ fun SideEditorOptions(
 
             val tint = @Composable { optionsType: OptionsType ->
                 if (optionsType == menuType) {
-                    MaterialTheme.colorScheme.onSecondary
+                    MaterialTheme.colorScheme.onPrimary
                 } else {
                     MaterialTheme.colorScheme.onBackground
                 }

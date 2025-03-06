@@ -10,6 +10,6 @@ import androidx.compose.ui.draw.clip
 fun Modifier.orderConfigModifierHorizontal(clickable: () -> Unit): Modifier =
     composed {
         clip(MaterialTheme.shapes.large)
-            .background(MaterialTheme.colorScheme.inverseSurface)
+            .background(MaterialTheme.colorScheme.primary)
             .clickable(onClick = clickable)
     }
