@@ -7,29 +7,29 @@
 </p>
 
 <p align="center" width="100%">
-  <img 
+  <img
    src="./images/icon_with_title.svg" alt="Writeopia logo"
-   width="100" 
-   height="87" 
+   width="100"
+   height="87"
   />
 </p>
 
 <p align="center">Write like nobody’s watching. Because they aren’t.<p/>
 
 <p align="center" width="100%">
-  <img 
+  <img
    src="./images/usage_screenshot.png" alt="Writeopia logo"
   />
 </p>
 
-This is the source code for Writeopia, an text edition App and SDK. 
+This is the source code for Writopia, a text editing App and SDK.
 
 # Application
-Writeopia is a project developed with Kotlin Multiplatform, most of the code is shared between all the apps. 
+Writeopia is a project developed with Kotlin Multiplatform, most of the code is shared between all the apps.
 
-This is a project to save all your documents in one place providing you the freedom to choose where to store it. You can save your whole workspace with a button click and save it in your git repository (like Github) or a storage system like Dropbox or Google Drive. 
+This is a project to save all your documents in one place providing you the freedom to choose where to store it. You can save your whole workspace with a button click and save it in your git repository (like Github) or a storage system like Dropbox or Google Drive.
 
-A backend is also under development so you can self host it and have full controll how you share your documentations with work teams and friends. 
+A backend is also under development so you can self host it and have full controll how you share your documentations with work teams and friends.
 
 ## Documentation
 You can check the documentation of the project in the [application documentation](https://docs.writeopia.io/docs/application/overview).
@@ -38,16 +38,16 @@ You can check the documentation of the project in the [application documentation
 You can go to https://writeopia.io and download the MacOS app under the download section. We would love your feedback about the app!
 
 ## Development
-You can check how to [work locally](https://docs.writeopia.io/docs/local-dev/getting-started) if you would like to contribute with fixes, improvements or try Writeopia from source code. 
+You can check how to [work locally](https://docs.writeopia.io/docs/local-dev/getting-started) if you would like to contribute with fixes, improvements or try Writeopia from source code.
 
 ## Contributing
-Writeopia is a free project, so we would love your participation. Please check our issues and suggest changes before using the issues tab so we can evaluate and architecture new solutions together. 
+Writeopia is a free project, so we would love your participation. Please check our issues and suggest changes before using the issues tab so we can evaluate and architecture new solutions together.
 
 If you're looking for a place to get started you can look at:
 - Issues with [good first issue](https://github.com/leandroBorgesFerreira/Writeopia/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) label
 - [Documentation](https://github.com/leandroBorgesFerreira/Writeopia/tree/Documentation/documentation/writeopia_docs) for the project
 - Bugs and other issues listed on GitHub
-- Analise the apps and looks for new bugs. 
+- Analise the apps and looks for new bugs.
 
 ## Commands
 Some useful commands for this project:
@@ -64,15 +64,15 @@ To start the web app:
 ./gradlew jsBrowserRun
 ```
 
-Runnig the tests of the project: 
+Runnig the tests of the project:
 
 ```
-./gradlew jvmTest 
+./gradlew jvmTest
 ```
 
 To start the android app use Android Studio.
 
-# SDK 
+# SDK
 The SDK allows you to create a text editor an use it instead of a simple `TextField`. You can use this library to create a better story editing experience within apps, such as social media (posts), travel logs, blog apps (like Medium), and chats (like Slack). By using this library, you can provide a great experience for editing text with media.
 
 You can more in the [SDK documentation](https://docs.writeopia.io/docs/sdk/overview)
