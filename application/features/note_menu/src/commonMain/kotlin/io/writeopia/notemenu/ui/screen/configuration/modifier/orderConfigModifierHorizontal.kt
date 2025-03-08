@@ -11,11 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import io.writeopia.theme.WriteopiaTheme
 
 fun Modifier.orderConfigModifierHorizontal(clickable: () -> Unit): Modifier =
     composed {
         clip(MaterialTheme.shapes.large)
-            .background(MaterialTheme.colorScheme.primary)
+            .background(
+                WriteopiaTheme.colorScheme.defaultButton
+            )
             .clickable(onClick = clickable)
             .padding(6.dp)
             .fillMaxHeight()

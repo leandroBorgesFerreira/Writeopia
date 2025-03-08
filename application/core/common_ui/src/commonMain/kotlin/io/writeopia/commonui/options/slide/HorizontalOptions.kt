@@ -64,7 +64,7 @@ fun HorizontalOptions(
                             .height(height)
                             .animateItem()
                             .background(
-                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.25F),
+                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.40F),
                                 shape = clipShare
                             )
                     )

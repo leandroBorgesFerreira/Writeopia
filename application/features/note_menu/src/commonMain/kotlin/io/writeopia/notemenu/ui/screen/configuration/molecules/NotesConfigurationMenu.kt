@@ -39,6 +39,7 @@ fun NotesConfigurationMenu(
         modifier = modifier.width(IntrinsicSize.Min),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        //here
         ArrangementOptionsMenu(
             selectedState = selectedState,
             staggeredGridSelected = staggeredGridSelected,
