@@ -30,12 +30,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.commonui.SlideInBox
 import io.writeopia.commonui.options.slide.HorizontalOptions
 import io.writeopia.notemenu.ui.screen.configuration.modifier.orderConfigModifierHorizontal
 import io.writeopia.resources.WrStrings
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
+import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -108,6 +110,8 @@ fun ArrangementOptions(
     listOptionClick: () -> Unit,
     height: Dp = 42.dp,
 ) {
+    val tint = MaterialTheme.colorScheme.onSurfaceVariant
+
     HorizontalOptions(
         selectedState = selected,
         options = listOf<Pair<() -> Unit, @Composable RowScope.() -> Unit>>(
@@ -115,11 +119,12 @@ fun ArrangementOptions(
                 Icon(
                     modifier = Modifier
                         .orderConfigModifierHorizontal(clickable = gridOptionClick)
-                        .weight(1F),
+                        .weight(1F)
+                        .zIndex(1000F),
                     imageVector = WrIcons.layoutStaggeredGrid,
                     contentDescription = "staggered card",
                     //            stringResource(R.string.staggered_card),
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             gridOptionClick to {
@@ -130,7 +135,7 @@ fun ArrangementOptions(
                     imageVector = WrIcons.layoutGrid,
                     contentDescription = "staggered card",
                     //            stringResource(R.string.staggered_card),
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    tint = tint
                 )
             },
             listOptionClick to {
@@ -141,7 +146,7 @@ fun ArrangementOptions(
                     imageVector = WrIcons.layoutList,
                     contentDescription = "note list",
                     //            stringResource(R.string.note_list),
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    tint = tint
                 )
             }
         ),
@@ -173,15 +178,15 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit, sortingState: Sta
 
     SectionText(text = WrStrings.sorting())
     val optionStyle = MaterialTheme.typography.bodyMedium.copy(
-        color = MaterialTheme.colorScheme.onPrimary,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
         fontWeight = FontWeight.Bold
     )
 
     val background = @Composable { orderBy: OrderBy ->
         if (orderBy == order) {
-            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.25F)
+            WriteopiaTheme.colorScheme.highlight
         } else {
-            MaterialTheme.colorScheme.primary
+            WriteopiaTheme.colorScheme.defaultButton
         }
     }
 
@@ -190,7 +195,7 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit, sortingState: Sta
             .fillMaxWidth()
             .padding(horizontal = INNER_PADDING.dp)
             .clip(RoundedCornerShape(6.dp))
-            .background(MaterialTheme.colorScheme.primary)
+            .background(WriteopiaTheme.colorScheme.defaultButton)
     ) {
         Text(
             modifier = Modifier
@@ -202,7 +207,7 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit, sortingState: Sta
             style = optionStyle,
         )
 
-        HorizontalDivider(color = MaterialTheme.colorScheme.primary)
+        HorizontalDivider(color = WriteopiaTheme.colorScheme.highlight)
 
         Text(
             modifier = Modifier
@@ -214,7 +219,7 @@ private fun SortingSection(sortingSelected: (OrderBy) -> Unit, sortingState: Sta
             style = optionStyle,
         )
 
-        HorizontalDivider(color = MaterialTheme.colorScheme.primary)
+        HorizontalDivider(color = WriteopiaTheme.colorScheme.highlight)
 
         Text(
             modifier = Modifier

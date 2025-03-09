@@ -66,7 +66,7 @@ private fun CommonButton(
     icon: ImageVector,
     iconDescription: String,
     text: String,
-    defaultColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    defaultColor: Color = WriteopiaTheme.colorScheme.defaultButton,
     selectedColor: Color = WriteopiaTheme.colorScheme.highlight,
     isEnabledState: StateFlow<Boolean> = MutableStateFlow(true),
     clickListener: () -> Unit,
