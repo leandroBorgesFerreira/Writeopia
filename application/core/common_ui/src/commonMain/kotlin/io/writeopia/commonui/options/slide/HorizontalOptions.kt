@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.writeopia.theme.WriteopiaTheme
 import kotlinx.coroutines.flow.Flow
 import kotlin.random.Random
 
@@ -64,7 +65,7 @@ fun HorizontalOptions(
                             .height(height)
                             .animateItem()
                             .background(
-                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.40F),
+                                color = WriteopiaTheme.colorScheme.highlight.copy(alpha = 0.45F),
                                 shape = clipShare
                             )
                     )

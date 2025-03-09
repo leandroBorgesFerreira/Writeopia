@@ -94,7 +94,7 @@ fun WrieopiaTheme(
     val searchBackground = if (darkTheme) colors.surfaceVariant else colors.background
     val linkColor = if (darkTheme) Color(0xFF42A5F5) else Color.Blue
     val dividerColor = if (darkTheme) Color(0xFF333333) else Color(0xFFDFDFDF)
-    val defaultButton = if (darkTheme) Color(0xFF414141) else Color(0xFFD0D0D0)
+    val defaultButton = if (darkTheme) colors.background else colors.background
 
     val writeopiaColors = WriteopiaColors(
         globalBackground = globalBackground,
