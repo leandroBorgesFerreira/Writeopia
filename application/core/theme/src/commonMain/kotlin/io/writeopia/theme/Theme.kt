@@ -104,7 +104,7 @@ fun WrieopiaTheme(
         textLighter = textLighter,
         tintLight = tintLight,
         highlight = highlight,
-        selectedBg = SELECTED_BG,
+        selectedBg = MaterialTheme.colorScheme.primary.copy(0.15F),
         cardBg = cardBackground,
         cardShadow = cardShadow,
         cardPlaceHolderBackground = cardPlaceHolderBackground,
