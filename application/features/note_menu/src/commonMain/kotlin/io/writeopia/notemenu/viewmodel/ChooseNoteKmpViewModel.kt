@@ -59,34 +59,6 @@ internal class ChooseNoteKmpViewModel(
     private val keyboardEventFlow: Flow<KeyboardEvent>,
 ) : ChooseNoteViewModel, ViewModel(), FolderController by folderController {
 
-    init {
-        folderController.initCoroutine(viewModelScope)
-
-        viewModelScope.launch(Dispatchers.Default) {
-            val onboarded = notesConfig.isOnboarded()
-
-            _showOnboardingState.value = if (onboarded) {
-                OnboardingState.COMPLETE
-            } else {
-                OnboardingState.CONFIGURATION
-            }
-
-            keyboardEventFlow.collect { event ->
-                when (event) {
-                    KeyboardEvent.DELETE -> {
-                        requestPermissionToDeleteSelection()
-                    }
-
-                    KeyboardEvent.CANCEL -> {
-                        clearSelection()
-                    }
-
-                    else -> {}
-                }
-            }
-        }
-    }
-
     private val _showOnboardingState =
         MutableStateFlow(OnboardingState.CONFIGURATION)
     override val showOnboardingState: StateFlow<OnboardingState> =
@@ -207,6 +179,34 @@ internal class ChooseNoteKmpViewModel(
                 )
             }
         }.stateIn(viewModelScope, SharingStarted.Lazily, ResultData.Idle())
+    }
+
+    init {
+        folderController.initCoroutine(viewModelScope)
+
+        viewModelScope.launch(Dispatchers.Default) {
+            val onboarded = notesConfig.isOnboarded()
+
+            _showOnboardingState.value = if (onboarded) {
+                OnboardingState.COMPLETE
+            } else {
+                OnboardingState.CONFIGURATION
+            }
+
+            keyboardEventFlow.collect { event ->
+                when (event) {
+                    KeyboardEvent.DELETE -> {
+                        requestPermissionToDeleteSelection()
+                    }
+
+                    KeyboardEvent.CANCEL -> {
+                        clearSelection()
+                    }
+
+                    else -> {}
+                }
+            }
+        }
     }
 
     override suspend fun requestUser() {
