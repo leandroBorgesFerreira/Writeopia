@@ -75,15 +75,11 @@ class WriteopiaManager(
         val nextFocus = focusHandler.findNextFocus(position, storyMap)
 
         return if (nextFocus != null) {
-            val (nextPosition, step) = nextFocus
-
-            val mutable = storyMap.toMutableMap()
-            mutable[nextPosition] = step
+            val (nextPosition, _) = nextFocus
 
             storyState.copy(
                 focus = nextPosition,
-                selection = Selection.fromPosition(cursor, position),
-                stories = mutable
+                selection = Selection.fromPosition(cursor, nextPosition),
             )
         } else {
             storyState
