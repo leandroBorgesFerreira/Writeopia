@@ -50,9 +50,11 @@ import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.download.DownloadState
 import io.writeopia.common.utils.icons.WrIcons
+import io.writeopia.commonui.SettingsPanel
 import io.writeopia.commonui.workplace.WorkspaceConfigurationDialog
 import io.writeopia.model.ColorThemeOption
 import io.writeopia.resources.WrStrings
@@ -82,35 +84,49 @@ fun SettingsDialog(
 ) {
     val ollamaUrl by ollamaUrlState.collectAsState()
 
-    Dialog(onDismissRequest = onDismissRequest) {
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
         Card(
             modifier = Modifier
-                .fillMaxWidth()
+                .width(700.dp)
                 .fillMaxHeight(fraction = 0.7F),
 //                .padding(horizontal = 40.dp, vertical = 20.dp),
             shape = RoundedCornerShape(16.dp),
         ) {
-            Column(
-                modifier = Modifier.padding(24.dp).verticalScroll(rememberScrollState())
-            ) {
-                SettingsScreen(
-                    showPath = true,
-                    showOllamaConfig = true,
-                    selectedThemePosition = selectedThemePosition,
-                    workplacePathState = workplacePathState,
-                    ollamaUrl = ollamaUrl,
-                    ollamaAvailableModels = ollamaAvailableModels,
-                    ollamaSelectedModel = ollamaSelectedModel,
-                    downloadModelState = downloadModelState,
-                    selectColorTheme = selectColorTheme,
-                    selectWorkplacePath = selectWorkplacePath,
-                    ollamaUrlChange = ollamaUrlChange,
-                    ollamaModelChange = ollamaModelChange,
-                    ollamaModelsRetry = ollamaModelsRetry,
-                    downloadModel = downloadModel,
-                    deleteModel = deleteModel,
-                )
-            }
+            SettingsPanel(
+                modifier = Modifier.padding(20.dp).verticalScroll(rememberScrollState()),
+                accountScreen = {
+                    Text("Todo!")
+                },
+                appearanceScreen = {
+                    ColorThemeOptions(
+                        selectedThemePosition = selectedThemePosition,
+                        selectColorTheme = selectColorTheme
+                    )
+                },
+                directoryScreen = {
+                    WorkspaceSection(
+                        workplacePathState = workplacePathState,
+                        showPath = true,
+                        selectWorkplacePath = selectWorkplacePath
+                    )
+                },
+                aiScreen = {
+                    AiSection(
+                        ollamaUrl,
+                        ollamaAvailableModels,
+                        ollamaSelectedModel,
+                        downloadModelState,
+                        ollamaUrlChange,
+                        ollamaModelChange,
+                        ollamaModelsRetry,
+                        downloadModel,
+                        deleteModel
+                    )
+                }
+            )
         }
     }
 }
@@ -133,17 +149,6 @@ fun SettingsScreen(
     downloadModel: (String) -> Unit,
     deleteModel: (String) -> Unit,
 ) {
-    val titleStyle = MaterialTheme.typography.titleLarge
-    val titleColor = MaterialTheme.colorScheme.onBackground
-    val workplacePath by workplacePathState.collectAsState()
-    var showEditPathDialog by remember {
-        mutableStateOf(false)
-    }
-
-    Text(WrStrings.colorTheme(), style = titleStyle, color = titleColor)
-
-    Spacer(modifier = Modifier.height(SPACE_AFTER_TITLE.dp))
-
     ColorThemeOptions(
         selectedThemePosition = selectedThemePosition,
         selectColorTheme = selectColorTheme
@@ -151,48 +156,101 @@ fun SettingsScreen(
 
     Spacer(modifier = Modifier.height(20.dp))
 
-    if (showPath) {
-        Text(WrStrings.localFolder(), style = titleStyle, color = titleColor)
-
-        Spacer(modifier = Modifier.height(SPACE_AFTER_TITLE.dp))
-
-        val textShape = MaterialTheme.shapes.medium
-
-        Text(
-            workplacePath,
-            style = MaterialTheme.typography.bodySmall,
-            color = titleColor,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.border(
-                1.dp,
-                MaterialTheme.colorScheme.onSurfaceVariant,
-                textShape
-            )
-                .clip(shape = textShape)
-                .clickable {
-                    showEditPathDialog = true
-                }
-                .padding(8.dp)
-                .fillMaxWidth()
-        )
-    }
-
-    if (showEditPathDialog) {
-        WorkspaceConfigurationDialog(
-            currentPath = workplacePath,
-            pathChange = selectWorkplacePath,
-            onDismissRequest = {
-                showEditPathDialog = false
-            },
-            onConfirmation = {
-                showEditPathDialog = false
-            },
-        )
-    }
+    WorkspaceSection(workplacePathState, showPath, selectWorkplacePath)
 
     Spacer(modifier = Modifier.height(20.dp))
 
     if (showOllamaConfig) {
+        AiSection(
+            ollamaUrl = ollamaUrl,
+            ollamaAvailableModels,
+            ollamaSelectedModel,
+            downloadModelState,
+            ollamaUrlChange,
+            ollamaModelChange,
+            ollamaModelsRetry,
+            downloadModel,
+            deleteModel
+        )
+    }
+
+    Spacer(modifier = Modifier.height(30.dp))
+
+    Text(WrStrings.version(), style = MaterialTheme.typography.bodySmall)
+}
+
+@Composable
+private fun WorkspaceSection(
+    workplacePathState: StateFlow<String>,
+    showPath: Boolean = true,
+    selectWorkplacePath: (String) -> Unit,
+) {
+    Column {
+        val titleStyle = MaterialTheme.typography.titleLarge
+        val titleColor = MaterialTheme.colorScheme.onBackground
+
+        val workplacePath by workplacePathState.collectAsState()
+        var showEditPathDialog by remember {
+            mutableStateOf(false)
+        }
+
+        if (showPath) {
+            Text(WrStrings.localFolder(), style = titleStyle, color = titleColor)
+
+            Spacer(modifier = Modifier.height(SPACE_AFTER_TITLE.dp))
+
+            val textShape = MaterialTheme.shapes.medium
+
+            Text(
+                workplacePath,
+                style = MaterialTheme.typography.bodySmall,
+                color = titleColor,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.border(
+                    1.dp,
+                    MaterialTheme.colorScheme.onSurfaceVariant,
+                    textShape
+                )
+                    .clip(shape = textShape)
+                    .clickable {
+                        showEditPathDialog = true
+                    }
+                    .padding(8.dp)
+                    .fillMaxWidth()
+            )
+        }
+
+        if (showEditPathDialog) {
+            WorkspaceConfigurationDialog(
+                currentPath = workplacePath,
+                pathChange = selectWorkplacePath,
+                onDismissRequest = {
+                    showEditPathDialog = false
+                },
+                onConfirmation = {
+                    showEditPathDialog = false
+                },
+            )
+        }
+    }
+}
+
+@Composable
+private fun AiSection(
+    ollamaUrl: String,
+    ollamaAvailableModels: Flow<ResultData<List<String>>>,
+    ollamaSelectedModel: StateFlow<String>,
+    downloadModelState: StateFlow<ResultData<DownloadState>>,
+    ollamaUrlChange: (String) -> Unit,
+    ollamaModelChange: (String) -> Unit,
+    ollamaModelsRetry: () -> Unit,
+    downloadModel: (String) -> Unit,
+    deleteModel: (String) -> Unit,
+) {
+    Column {
+        val titleStyle = MaterialTheme.typography.titleLarge
+        val titleColor = MaterialTheme.colorScheme.onBackground
+
         Text(WrStrings.ollama(), style = titleStyle, color = titleColor)
 
         Spacer(modifier = Modifier.height(SPACE_AFTER_TITLE.dp))
@@ -216,7 +274,7 @@ fun SettingsScreen(
             cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground)
         )
 
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         Text(
             WrStrings.availableModels(),
@@ -232,7 +290,7 @@ fun SettingsScreen(
             deleteModel
         )
 
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         Text(
             WrStrings.downloadModels(),
@@ -242,14 +300,10 @@ fun SettingsScreen(
 
         DownloadModels(downloadModelState, downloadModel)
     }
-
-    Spacer(modifier = Modifier.height(30.dp))
-
-    Text(WrStrings.version(), style = MaterialTheme.typography.bodySmall)
 }
 
 @Composable
-fun SelectModels(
+private fun SelectModels(
     ollamaAvailableModels: Flow<ResultData<List<String>>>,
     ollamaSelectedModel: StateFlow<String>,
     ollamaModelChange: (String) -> Unit,
@@ -492,39 +546,48 @@ private fun ColorThemeOptions(
     selectedThemePosition: StateFlow<Int>,
     selectColorTheme: (ColorThemeOption) -> Unit
 ) {
-    val spaceWidth = 10.dp
+    val titleStyle = MaterialTheme.typography.titleLarge
+    val titleColor = MaterialTheme.colorScheme.onBackground
 
-    Row(modifier = Modifier.fillMaxWidth().height(70.dp)) {
-        Option(
-            text = WrStrings.lightTheme(),
-            imageVector = WrIcons.colorModeLight,
-            contextDescription = WrStrings.lightTheme(),
-            selectColorTheme = {
-                selectColorTheme(ColorThemeOption.LIGHT)
-            }
-        )
+    Column {
+        Text(WrStrings.colorTheme(), style = titleStyle, color = titleColor)
 
-        Spacer(modifier = Modifier.width(spaceWidth))
+        Spacer(modifier = Modifier.height(SPACE_AFTER_TITLE.dp))
 
-        Option(
-            text = WrStrings.darkTheme(),
-            imageVector = WrIcons.colorModeDark,
-            contextDescription = WrStrings.darkTheme(),
-            selectColorTheme = {
-                selectColorTheme(ColorThemeOption.DARK)
-            }
-        )
+        val spaceWidth = 10.dp
 
-        Spacer(modifier = Modifier.width(spaceWidth))
+        Row(modifier = Modifier.fillMaxWidth().height(70.dp)) {
+            Option(
+                text = WrStrings.lightTheme(),
+                imageVector = WrIcons.colorModeLight,
+                contextDescription = WrStrings.lightTheme(),
+                selectColorTheme = {
+                    selectColorTheme(ColorThemeOption.LIGHT)
+                }
+            )
 
-        Option(
-            text = WrStrings.systemTheme(),
-            imageVector = WrIcons.colorModeSystem,
-            contextDescription = WrStrings.systemTheme(),
-            selectColorTheme = {
-                selectColorTheme(ColorThemeOption.SYSTEM)
-            }
-        )
+            Spacer(modifier = Modifier.width(spaceWidth))
+
+            Option(
+                text = WrStrings.darkTheme(),
+                imageVector = WrIcons.colorModeDark,
+                contextDescription = WrStrings.darkTheme(),
+                selectColorTheme = {
+                    selectColorTheme(ColorThemeOption.DARK)
+                }
+            )
+
+            Spacer(modifier = Modifier.width(spaceWidth))
+
+            Option(
+                text = WrStrings.systemTheme(),
+                imageVector = WrIcons.colorModeSystem,
+                contextDescription = WrStrings.systemTheme(),
+                selectColorTheme = {
+                    selectColorTheme(ColorThemeOption.SYSTEM)
+                }
+            )
+        }
     }
 }
 
@@ -566,7 +629,7 @@ private fun RowScope.Option(
 }
 
 @Composable
-fun transparentTextInputColors() =
+private fun transparentTextInputColors() =
     TextFieldDefaults.colors(
         focusedIndicatorColor = Color.Transparent,
         focusedContainerColor = Color.Transparent,
