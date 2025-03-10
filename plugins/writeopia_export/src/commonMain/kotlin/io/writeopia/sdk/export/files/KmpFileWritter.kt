@@ -21,5 +21,13 @@ expect class KmpFileWriter(fileName: String) : KmpClosable {
  * @param path String The path of the file
  * @param extension String The extensions, containing dot.
  */
-fun name(document: Document, path: String, extension: String) =
-    "$path/${document.title.trim().replace(" ", "_")}_${document.id}$extension"
+fun name(document: Document, path: String, extension: String): String {
+    val documentPath =
+        "$path/${document.title.trim().replace(" ", "_")}_${document.id}"
+
+    return if (documentPath.endsWith(extension)) {
+        documentPath
+    } else {
+        "$documentPath$extension"
+    }
+}

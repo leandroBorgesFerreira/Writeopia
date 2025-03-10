@@ -601,8 +601,8 @@ private fun Actions(
 
         Row {
             TextButton(
-                modifier = Modifier.weight(1F),
                 text = WrStrings.json(),
+                modifier = Modifier.weight(1F),
                 paddingValues = smallButtonPadding()
             ) {
                 fileChooserSave()?.let {
@@ -610,23 +610,23 @@ private fun Actions(
                 }
             }
 
-//            Text(
-//                "Markdown",
-//                textAlign = TextAlign.Center,
-//                modifier = Modifier
-//                    .padding(2.dp)
-//                    .background(
-//                        MaterialTheme.colorScheme.surfaceVariant,
-//                        MaterialTheme.shapes.medium
-//                    ).weight(1F)
-//                    .clip(MaterialTheme.shapes.medium)
-//                    .clickable {
-//                        fileChooserSave()?.let(exportMarkdown)
-//                    }
-//                    .padding(4.dp),
-//                color = MaterialTheme.colorScheme.onBackground,
-//                style = buttonsTextStyle()
-//            )
+            Text(
+                WrStrings.markdown(),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(2.dp)
+                    .background(
+                        MaterialTheme.colorScheme.surfaceVariant,
+                        MaterialTheme.shapes.medium
+                    ).weight(1F)
+                    .clip(MaterialTheme.shapes.medium)
+                    .clickable {
+                        fileChooserSave()?.let(exportMarkdown)
+                    }
+                    .padding(4.dp),
+                color = MaterialTheme.colorScheme.onBackground,
+                style = buttonsTextStyle()
+            )
         }
 
         Spacer(modifier = Modifier.height(12.dp))

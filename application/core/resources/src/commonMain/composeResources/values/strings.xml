@@ -75,6 +75,7 @@
   <string name="page">Page</string>
   <string name="ask_ai">Ask AI</string>
   <string name="json">JSON</string>
+  <string name="markdown">Markdown</string>
   <string name="tap_to_start">Tap here to <font fgcolor='#FFFF3B30'>write</font> the next big thing</string>
   <string name="font">Font</string>
   <string name="actions">Actions</string>
