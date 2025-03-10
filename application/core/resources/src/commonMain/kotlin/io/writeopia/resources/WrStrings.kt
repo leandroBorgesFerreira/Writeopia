@@ -188,6 +188,9 @@ object WrStrings {
     fun json() = stringResource(Res.string.json)
 
     @Composable
+    fun markdown() = stringResource(Res.string.json)
+
+    @Composable
     fun tapToStart() = stringResource(Res.string.tap_to_start)
 
     @Composable

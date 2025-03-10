@@ -15,16 +15,18 @@ import io.writeopia.sdk.utils.files.useKmp
  */
 object DocumentToMarkdown : DocumentWriter {
 
-    // In the future it may be necessary to add a parse to an OutputStream
-
     override fun writeDocuments(
         documents: List<Document>,
         path: String,
         addHashTable: Boolean,
-        usePath: Boolean
+        usePath: Boolean,
     ) {
         documents.forEach { document ->
-            KmpFileWriter(name(document, path, ".md")).useKmp { writer ->
+            KmpFileWriter(if (usePath) {
+                name(document, path, ".md")
+            } else {
+                path.takeIf { it.contains(".md") } ?: "$path.md"
+            }).useKmp { writer ->
                 writeToWriter(
                     content = document.content,
                     kmpFileWriter = writer
