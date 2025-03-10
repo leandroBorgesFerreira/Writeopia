@@ -18,11 +18,9 @@ class FocusHandler(
 ) {
 
     fun findNextFocus(position: Int, stories: Map<Int, StoryStep>): Pair<Int, StoryStep>? {
-        val storyList = stories.values.toList()
-
-        for (i in position..storyList.lastIndex) {
-            val storyStep = storyList[i]
-            if (isMessageFn(storyStep.type.number)) {
+        for (i in position..stories.keys.last()) {
+            val storyStep = stories[i]
+            if (storyStep != null && isMessageFn(storyStep.type.number)) {
                 return i to storyStep.copy(localId = GenerateId.generate())
             }
         }

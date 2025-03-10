@@ -25,7 +25,9 @@ fun WriteopiaEditor(
     listState: LazyListState = rememberLazyListState(),
     drawers: Map<Int, StoryStepDrawer>,
     storyState: DrawState,
-    keyFn: (DrawStory) -> Int = { drawStory -> drawStory.desktopKey }
+    keyFn: (DrawStory) -> Int = { drawStory ->
+        drawStory.desktopKey + (drawStory.cursor?.position ?: 0)
+    }
 ) {
     val content = storyState.stories
         .filterNot { draw ->

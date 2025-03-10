@@ -14,6 +14,7 @@ import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.models.story.Tag
 import io.writeopia.sdk.models.story.TagInfo
 import io.writeopia.sdk.utils.alias.UnitsNormalizationMap
+import io.writeopia.sdk.utils.extensions.associateWithPosition
 import io.writeopia.sdk.utils.extensions.previousTextStory
 import io.writeopia.sdk.utils.extensions.toEditState
 import io.writeopia.sdk.utils.iterables.addElementInPosition
@@ -216,7 +217,8 @@ class ContentHandler(
                 )
 
             val normalized = stepsNormalizer(mutableSteps.toEditState())
-            StoryState(normalized, lastEdit = LastEdit.Whole, focus = previousFocus)
+            val positionsFixed = normalized.values.associateWithPosition()
+            StoryState(positionsFixed, lastEdit = LastEdit.Whole, focus = previousFocus)
         } else {
             mutableSteps[deleteInfo.position]?.let { group ->
                 val newSteps = group.steps.filter { storyUnit ->
@@ -230,7 +232,9 @@ class ContentHandler(
                 }
 
                 mutableSteps[deleteInfo.position] = newStoryUnit.copy(parentId = null)
-                StoryState(stepsNormalizer(mutableSteps.toEditState()), lastEdit = LastEdit.Whole)
+                val normalized = stepsNormalizer(mutableSteps.toEditState())
+                val positionsFixed = normalized.values.associateWithPosition()
+                StoryState(positionsFixed, lastEdit = LastEdit.Whole)
             }
         }
     }
@@ -254,7 +258,9 @@ class ContentHandler(
         }
 
         val normalized = stepsNormalizer(mutableSteps.toEditState())
-        return StoryState(normalized, lastEdit = LastEdit.Whole, focus = previousFocus)
+        val positionsFixed = normalized.values.associateWithPosition()
+
+        return StoryState(positionsFixed, lastEdit = LastEdit.Whole, focus = previousFocus)
     }
 
     /**

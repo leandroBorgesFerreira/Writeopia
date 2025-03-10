@@ -145,6 +145,16 @@ class ContentHandlerTest {
     }
 
     @Test
+    fun `when deleting stories, empty spaces should NOT be allowed`() {
+        val input = MapStoryData.simpleMessages()
+        val contentHandler = ContentHandler(stepsNormalizer = normalizer())
+
+        val newState = contentHandler.deleteStory(Action.DeleteStory(input[1]!!, 1), input)
+
+        assertEquals(setOf(0, 1, 2, 3, 4), newState!!.stories.keys)
+    }
+
+    @Test
     fun `when erasing stories, is should move text correctly`() {
         val input = MapStoryData.simpleMessages()
         val contentHandler = ContentHandler(stepsNormalizer = normalizer())
@@ -156,6 +166,16 @@ class ContentHandlerTest {
         val newState = contentHandler.eraseStory(Action.EraseStory(lastStory, lastIndex), input)
 
         assertEquals(secondLastStory!!.text + lastStory.text, newState.stories.values.last().text)
+    }
+
+    @Test
+    fun `when erasing stories, empty spaces should NOT be allowed`() {
+        val input = MapStoryData.simpleMessages()
+        val contentHandler = ContentHandler(stepsNormalizer = normalizer())
+
+        val newState = contentHandler.eraseStory(Action.EraseStory(input[1]!!, 1), input)
+
+        assertEquals(setOf(0, 1, 2, 3, 4), newState.stories.keys)
     }
 
     @Test
