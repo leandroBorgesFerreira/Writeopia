@@ -31,4 +31,3 @@ fun name(document: Document, path: String, extension: String): String {
         "$documentPath$extension"
     }
 }
-

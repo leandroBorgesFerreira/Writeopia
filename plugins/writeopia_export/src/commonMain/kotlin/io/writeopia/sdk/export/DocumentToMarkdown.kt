@@ -22,11 +22,13 @@ object DocumentToMarkdown : DocumentWriter {
         usePath: Boolean,
     ) {
         documents.forEach { document ->
-            KmpFileWriter(if (usePath) {
-                name(document, path, ".md")
-            } else {
-                path.takeIf { it.contains(".md") } ?: "$path.md"
-            }).useKmp { writer ->
+            KmpFileWriter(
+                if (usePath) {
+                    name(document, path, ".md")
+                } else {
+                    path.takeIf { it.contains(".md") } ?: "$path.md"
+                }
+            ).useKmp { writer ->
                 writeToWriter(
                     content = document.content,
                     kmpFileWriter = writer
