@@ -32,27 +32,27 @@ fun SettingsPanel(
     modifier: Modifier = Modifier,
 ) {
     var pageState by remember {
-        mutableStateOf(SettingsPage.ACCOUNT)
+        mutableStateOf(SettingsPage.APPEARANCE)
     }
 
     Row(modifier = modifier) {
         Column(modifier = Modifier.width(180.dp)) {
-            Text(
-                "Account",
-                modifier = Modifier.fillMaxWidth()
-                    .padding(top = 2.dp, bottom = 2.dp, end = 16.dp)
-                    .clip(MaterialTheme.shapes.medium)
-                    .background(
-                        if (pageState == SettingsPage.ACCOUNT) {
-                            WriteopiaTheme.colorScheme.highlight
-                        } else {
-                            Color.Unspecified
-                        }
-                    )
-                    .clickable {
-                        pageState = SettingsPage.ACCOUNT
-                    }.padding(vertical = 4.dp, horizontal = 12.dp)
-            )
+//            Text(
+//                "Account",
+//                modifier = Modifier.fillMaxWidth()
+//                    .padding(top = 2.dp, bottom = 2.dp, end = 16.dp)
+//                    .clip(MaterialTheme.shapes.medium)
+//                    .background(
+//                        if (pageState == SettingsPage.ACCOUNT) {
+//                            WriteopiaTheme.colorScheme.highlight
+//                        } else {
+//                            Color.Unspecified
+//                        }
+//                    )
+//                    .clickable {
+//                        pageState = SettingsPage.ACCOUNT
+//                    }.padding(vertical = 4.dp, horizontal = 12.dp)
+//            )
 
             Text(
                 "Appearance",

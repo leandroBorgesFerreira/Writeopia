@@ -321,7 +321,7 @@ private fun SelectModels(
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.clip(MaterialTheme.shapes.medium)
+                    modifier = Modifier.clip(MaterialTheme.shapes.large)
                         .clickable {
                             ollamaModelChange(model)
                         }
