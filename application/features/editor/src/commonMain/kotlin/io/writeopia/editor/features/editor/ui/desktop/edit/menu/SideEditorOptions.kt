@@ -11,6 +11,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,6 +38,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.changedToDown
+import androidx.compose.ui.input.pointer.changedToUp
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -47,6 +50,7 @@ import io.writeopia.common.utils.collections.inBatches
 import io.writeopia.common.utils.file.fileChooserLoad
 import io.writeopia.common.utils.file.fileChooserSave
 import io.writeopia.common.utils.icons.WrIcons
+import io.writeopia.common.utils.modifier.clickableWithoutGettingFocus
 import io.writeopia.model.Font
 import io.writeopia.resources.WrStrings
 import io.writeopia.sdk.models.span.Span
@@ -305,7 +309,9 @@ private fun TextChanges(spanClick: (Span) -> Unit) {
             modifier = Modifier.weight(1F)
                 .clip(RoundedCornerShape(topStart = 6.dp, bottomStart = 6.dp))
                 .size(32.dp)
-                .clickable { spanClick(Span.BOLD) }
+                .clickableWithoutGettingFocus {
+                    spanClick(Span.BOLD)
+                }
                 .padding(horizontal = 8.dp, vertical = 8.dp),
             tint = MaterialTheme.colorScheme.onBackground
         )
@@ -315,7 +321,7 @@ private fun TextChanges(spanClick: (Span) -> Unit) {
             contentDescription = "Italic",
             modifier = Modifier.weight(1F)
                 .size(32.dp)
-                .clickable { spanClick(Span.ITALIC) }
+                .clickableWithoutGettingFocus { spanClick(Span.ITALIC) }
                 .padding(horizontal = 8.dp, vertical = 8.dp),
             tint = MaterialTheme.colorScheme.onBackground
         )
@@ -326,7 +332,7 @@ private fun TextChanges(spanClick: (Span) -> Unit) {
             modifier = Modifier.weight(1F)
                 .clip(RoundedCornerShape(topEnd = 6.dp, bottomEnd = 6.dp))
                 .size(32.dp)
-                .clickable { spanClick(Span.UNDERLINE) }
+                .clickableWithoutGettingFocus { spanClick(Span.UNDERLINE) }
                 .padding(horizontal = 8.dp, vertical = 8.dp),
             tint = MaterialTheme.colorScheme.onBackground
         )
