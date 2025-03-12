@@ -27,10 +27,6 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun AccountMenuScreen(
-    accountMenuViewModel: AccountMenuViewModel,
-    isLoggedInState: StateFlow<ResultData<Boolean>>,
-    onLogout: () -> Unit,
-    goToRegister: () -> Unit,
     selectColorTheme: (ColorThemeOption) -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {

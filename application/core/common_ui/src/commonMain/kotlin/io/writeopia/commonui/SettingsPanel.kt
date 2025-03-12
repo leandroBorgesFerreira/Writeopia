@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import io.writeopia.resources.WrStrings
 import io.writeopia.theme.WriteopiaTheme
 
 @Composable
@@ -35,8 +37,9 @@ fun SettingsPanel(
         mutableStateOf(SettingsPage.APPEARANCE)
     }
 
-    Row(modifier = modifier) {
-        Column(modifier = Modifier.width(180.dp)) {
+    Column {
+        Row(modifier = modifier) {
+            Column(modifier = Modifier.width(180.dp)) {
 //            Text(
 //                "Account",
 //                modifier = Modifier.fillMaxWidth()
@@ -54,80 +57,92 @@ fun SettingsPanel(
 //                    }.padding(vertical = 4.dp, horizontal = 12.dp)
 //            )
 
-            Text(
-                "Appearance",
-                modifier = Modifier.fillMaxWidth()
-                    .padding(top = 2.dp, bottom = 2.dp, end = 16.dp)
-                    .clip(MaterialTheme.shapes.medium)
-                    .background(
-                        if (pageState == SettingsPage.APPEARANCE) {
-                            WriteopiaTheme.colorScheme.highlight
-                        } else {
-                            Color.Unspecified
-                        }
-                    )
-                    .clickable {
-                        pageState = SettingsPage.APPEARANCE
-                    }.padding(vertical = 4.dp, horizontal = 12.dp)
+                Text(
+                    "Appearance",
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(top = 2.dp, bottom = 2.dp, end = 16.dp)
+                        .clip(MaterialTheme.shapes.medium)
+                        .background(
+                            if (pageState == SettingsPage.APPEARANCE) {
+                                WriteopiaTheme.colorScheme.highlight
+                            } else {
+                                Color.Unspecified
+                            }
+                        )
+                        .clickable {
+                            pageState = SettingsPage.APPEARANCE
+                        }.padding(vertical = 4.dp, horizontal = 12.dp)
+                )
+
+                Text(
+                    "AI",
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(top = 2.dp, bottom = 2.dp, end = 16.dp)
+                        .clip(MaterialTheme.shapes.medium)
+                        .background(
+                            if (pageState == SettingsPage.AI) {
+                                WriteopiaTheme.colorScheme.highlight
+                            } else {
+                                Color.Unspecified
+                            }
+                        )
+                        .clickable {
+                            pageState = SettingsPage.AI
+                        }.padding(vertical = 4.dp, horizontal = 12.dp)
+                )
+
+                Text(
+                    "Directory",
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(top = 2.dp, bottom = 2.dp, end = 16.dp)
+                        .clip(MaterialTheme.shapes.medium)
+                        .background(
+                            if (pageState == SettingsPage.DIRECTORY) {
+                                WriteopiaTheme.colorScheme.highlight
+                            } else {
+                                Color.Unspecified
+                            }
+                        )
+                        .clickable {
+                            pageState = SettingsPage.DIRECTORY
+                        }.padding(vertical = 4.dp, horizontal = 12.dp)
+                )
+            }
+
+            VerticalDivider(
+                modifier = Modifier.fillMaxHeight(),
+                thickness = 1.dp,
+                color = Color.Blue
             )
 
-            Text(
-                "AI",
-                modifier = Modifier.fillMaxWidth()
-                    .padding(top = 2.dp, bottom = 2.dp, end = 16.dp)
-                    .clip(MaterialTheme.shapes.medium)
-                    .background(
-                        if (pageState == SettingsPage.AI) {
-                            WriteopiaTheme.colorScheme.highlight
-                        } else {
-                            Color.Unspecified
-                        }
-                    )
-                    .clickable {
-                        pageState = SettingsPage.AI
-                    }.padding(vertical = 4.dp, horizontal = 12.dp)
-            )
+            Crossfade(pageState) { page ->
+                when (page) {
+                    SettingsPage.ACCOUNT -> {
+                        accountScreen()
+                    }
 
-            Text(
-                "Directory",
-                modifier = Modifier.fillMaxWidth()
-                    .padding(top = 2.dp, bottom = 2.dp, end = 16.dp)
-                    .clip(MaterialTheme.shapes.medium)
-                    .background(
-                        if (pageState == SettingsPage.DIRECTORY) {
-                            WriteopiaTheme.colorScheme.highlight
-                        } else {
-                            Color.Unspecified
-                        }
-                    )
-                    .clickable {
-                        pageState = SettingsPage.DIRECTORY
-                    }.padding(vertical = 4.dp, horizontal = 12.dp)
-            )
+                    SettingsPage.APPEARANCE -> {
+                        appearanceScreen()
+                    }
 
-        }
+                    SettingsPage.DIRECTORY -> {
+                        directoryScreen()
+                    }
 
-        VerticalDivider(modifier = Modifier.fillMaxHeight(), thickness = 1.dp, color = Color.Blue)
-
-        Crossfade(pageState) { page ->
-            when (page) {
-                SettingsPage.ACCOUNT -> {
-                    accountScreen()
-                }
-
-                SettingsPage.APPEARANCE -> {
-                    appearanceScreen()
-                }
-
-                SettingsPage.DIRECTORY -> {
-                    directoryScreen()
-                }
-
-                SettingsPage.AI -> {
-                    aiScreen()
+                    SettingsPage.AI -> {
+                        aiScreen()
+                    }
                 }
             }
         }
+
+        Spacer(modifier = Modifier.weight(1F))
+
+        Text(
+            WrStrings.version(),
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(8.dp)
+        )
     }
 }
 
