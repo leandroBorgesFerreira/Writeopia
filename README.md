@@ -25,11 +25,10 @@
 This is the source code for Writopia, a text editing App and SDK.
 
 # Application
-Writeopia is a project developed with Kotlin Multiplatform, most of the code is shared between all the apps.
+Writeopia is a modern text editor that integrates AI while prioritizing offline functionality and user privacy. Unlike cloud-based AI assistants, Writeopia allows you to choose your own AI model and interact with it locally, ensuring that your data stays on your device.
 
-This is a project to save all your documents in one place providing you the freedom to choose where to store it. You can save your whole workspace with a button click and save it in your git repository (like Github) or a storage system like Dropbox or Google Drive.
-
-A backend is also under development so you can self host it and have full controll how you share your documentations with work teams and friends.
+## Why Writeopia?
+Writeopia is built for writers, developers, and researchers who want the power of AI without sacrificing privacy. Whether you're drafting a novel, taking notes, or coding, Writeopia provides an intelligent and distraction-free environment.
 
 ## Documentation
 You can check the documentation of the project in the [application documentation](https://docs.writeopia.io/docs/application/overview).
