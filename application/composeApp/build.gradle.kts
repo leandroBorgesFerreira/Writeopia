@@ -63,7 +63,6 @@ kotlin {
 
                 implementation(libs.compose.navigation)
                 implementation(libs.platformtools.darkmodedetector)
-
             }
         }
 
