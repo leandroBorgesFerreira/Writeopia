@@ -131,7 +131,8 @@ class OnUpdateDocumentTracker(
                             userId = userId,
                             parentId = documentInfo.parentId,
                             icon = documentInfo.icon,
-                            isLocked = documentInfo.isLocked
+                            isLocked = documentInfo.isLocked,
+                            favorite = documentInfo.isFavorite
                         )
                     )
                 }

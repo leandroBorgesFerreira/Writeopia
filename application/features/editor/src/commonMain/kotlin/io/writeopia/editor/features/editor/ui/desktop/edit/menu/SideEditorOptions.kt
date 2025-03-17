@@ -60,6 +60,7 @@ fun SideEditorOptions(
     modifier: Modifier = Modifier,
     fontStyleSelected: () -> StateFlow<Font>,
     isEditableState: StateFlow<Boolean>,
+    isFavorite: StateFlow<Boolean>,
     boldClick: (Span) -> Unit,
     setEditable: () -> Unit,
     checkItemClick: () -> Unit,
@@ -76,7 +77,7 @@ fun SideEditorOptions(
     askAiBySelection: () -> Unit,
     addPage: () -> Unit,
     deleteDocument: () -> Unit,
-    favoriteDocument: () -> Unit,
+    toggleFavorite: () -> Unit,
 ) {
     var menuType by remember {
         mutableStateOf(OptionsType.NONE)
@@ -111,13 +112,16 @@ fun SideEditorOptions(
                     OptionsType.NONE -> {}
 
                     OptionsType.PAGE_STYLE -> {
-                        PageStyleOptions(
+                        PageOptions(
                             changeFontFamily,
                             isEditableState,
+                            isFavorite,
                             setEditable,
                             fontStyleSelected(),
                             moveToClick,
-                            moveToRoot
+                            moveToRoot,
+                            deleteDocument,
+                            toggleFavorite
                         )
                     }
 
@@ -138,8 +142,6 @@ fun SideEditorOptions(
                             exportJson,
                             exportMarkdown,
                             askAiBySelection = askAiBySelection,
-                            deleteDocument = deleteDocument,
-                            favoriteDocument = favoriteDocument,
                         )
                     }
                 }
@@ -254,13 +256,16 @@ fun SideEditorOptions(
 }
 
 @Composable
-fun PageStyleOptions(
+private fun PageOptions(
     changeFontFamily: (Font) -> Unit,
     isEditableState: StateFlow<Boolean>,
+    isFavoriteState: StateFlow<Boolean>,
     setEditable: () -> Unit,
     selectedState: StateFlow<Font>,
     moveButtonClick: () -> Unit,
     moveToRoot: () -> Unit,
+    deleteDocument: () -> Unit,
+    toggleFavorite: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -280,11 +285,25 @@ fun PageStyleOptions(
 
         Title("Actions")
         Spacer(modifier = Modifier.height(6.dp))
+
+        FavoriteButton(isFavorite = isFavoriteState, toggleFavorite)
+        Spacer(modifier = Modifier.height(4.dp))
+
         LockButton(isEditableState, setEditable)
         Spacer(modifier = Modifier.height(4.dp))
+
         MoveToButton(moveButtonClick)
         Spacer(modifier = Modifier.height(4.dp))
+
         MoveToHomeButton(moveToRoot)
+        Spacer(modifier = Modifier.height(4.dp))
+
+        TextButton(
+            text = WrStrings.deleteDocument(),
+            modifier = Modifier.fillMaxWidth(),
+            paddingValues = smallButtonPadding(),
+            onClick = deleteDocument
+        )
     }
 }
 
@@ -572,8 +591,6 @@ private fun Actions(
     exportJson: (String) -> Unit,
     exportMarkdown: (String) -> Unit,
     askAiBySelection: () -> Unit,
-    deleteDocument: () -> Unit,
-    favoriteDocument: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -630,26 +647,6 @@ private fun Actions(
             }
 
         }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Title(WrStrings.document())
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        TextButton(
-            text = WrStrings.deleteDocument(),
-            modifier = Modifier.fillMaxWidth(),
-            paddingValues = smallButtonPadding(),
-            onClick = deleteDocument
-        )
-        
-        TextButton(
-            text = WrStrings.favorite(),
-            modifier = Modifier.fillMaxWidth(),
-            paddingValues = smallButtonPadding(),
-            onClick = favoriteDocument
-        )
 
         Spacer(modifier = Modifier.height(12.dp))
     }

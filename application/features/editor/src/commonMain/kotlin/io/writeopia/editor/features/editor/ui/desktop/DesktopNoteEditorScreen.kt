@@ -85,6 +85,7 @@ fun DesktopNoteEditorScreen(
                 .align(Alignment.TopEnd),
             fontStyleSelected = { noteEditorViewModel.fontFamily },
             isEditableState = noteEditorViewModel.isEditable,
+            isFavorite = noteEditorViewModel.notFavorite,
             boldClick = noteEditorViewModel::onAddSpanClick,
             setEditable = noteEditorViewModel::toggleEditable,
             checkItemClick = noteEditorViewModel::onAddCheckListClick,
@@ -106,7 +107,7 @@ fun DesktopNoteEditorScreen(
                 noteEditorViewModel.deleteDocument()
                 onDocumentDelete()
             },
-            favoriteDocument = noteEditorViewModel::favoriteDocument
+            toggleFavorite = noteEditorViewModel::toggleFavorite
         )
 
         if (!isEditable) {

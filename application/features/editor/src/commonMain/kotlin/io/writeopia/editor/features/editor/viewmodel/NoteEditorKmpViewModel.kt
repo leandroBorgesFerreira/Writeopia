@@ -153,6 +153,14 @@ class NoteEditorKmpViewModel(
             .stateIn(viewModelScope, SharingStarted.Lazily, "")
     }
 
+    /**
+     * This property defines if the document is favorite
+     */
+    override val notFavorite: StateFlow<Boolean> = writeopiaManager
+        .documentInfo
+        .map { info -> !info.isFavorite }
+        .stateIn(viewModelScope, started = SharingStarted.Lazily, initialValue = false)
+
     @OptIn(ExperimentalCoroutinesApi::class)
     override val toDrawWithDecoration: StateFlow<DrawState> by lazy {
         val infoFlow = documentId.flatMapLatest {
@@ -353,6 +361,10 @@ class NoteEditorKmpViewModel(
         writeopiaManager.toggleLockDocument()
     }
 
+    override fun toggleFavorite() {
+        writeopiaManager.toggleFavoriteDocument()
+    }
+
     override fun changeFontFamily(font: Font) {
         viewModelScope.launch {
             uiConfigurationRepository.updateConfiguration(USER_OFFLINE) { config ->
@@ -488,12 +500,6 @@ class NoteEditorKmpViewModel(
     override fun deleteDocument() {
         viewModelScope.launch(Dispatchers.Default) {
             documentRepository.deleteDocument(writeopiaManager.getDocument())
-        }
-    }
-
-    override fun favoriteDocument() {
-        viewModelScope.launch(Dispatchers.Default) {
-            documentRepository.favoriteDocumentByIds(setOf(writeopiaManager.getDocument().id))
         }
     }
 

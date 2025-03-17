@@ -744,7 +744,13 @@ class WriteopiaStateManager(
 
         _documentInfo.value = info.copy(isLocked = !info.isLocked)
         _currentStory.value = currentStory.value.copy(lastEdit = LastEdit.Metadata)
+    }
 
+    fun toggleFavoriteDocument() {
+        val info = _documentInfo.value
+
+        _documentInfo.value = info.copy(isFavorite = !info.isFavorite)
+        _currentStory.value = currentStory.value.copy(lastEdit = LastEdit.Metadata)
     }
 
     fun toggleSpan(span: Span) {
