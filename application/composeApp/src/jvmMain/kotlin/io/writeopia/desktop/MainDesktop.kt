@@ -10,7 +10,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.KeyEvent
-import androidx.compose.ui.input.key.isAltPressed
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.Window
@@ -19,6 +18,7 @@ import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import io.writeopia.common.utils.keyboard.KeyboardCommands
+import io.writeopia.common.utils.keyboard.isMultiSelectionTrigger
 import io.writeopia.common.utils.ui.GlobalToastBox
 import io.writeopia.notemenu.di.UiConfigurationInjector
 import io.writeopia.notes.desktop.components.DesktopApp
@@ -77,7 +77,7 @@ private fun ApplicationScope.App(onCloseRequest: () -> Unit = ::exitApplication)
     }
 
     val handleKeyboardEvent: (KeyEvent) -> Boolean = { keyEvent ->
-        selectionState.value = keyEvent.isAltPressed
+        selectionState.value = keyEvent.isMultiSelectionTrigger()
 
         when {
             KeyboardCommands.isDeleteEvent(keyEvent) -> {

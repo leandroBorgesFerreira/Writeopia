@@ -47,6 +47,9 @@ import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.icons.WrSdkIcons
 import io.writeopia.ui.model.DrawConfig
 import io.writeopia.ui.model.DrawInfo
+import org.jetbrains.compose.resources.stringResource
+import writeopia.writeopia_ui.generated.resources.Res
+import writeopia.writeopia_ui.generated.resources.ai_generated
 
 /**
  * Drawer for AI answers.
@@ -164,17 +167,22 @@ class AiAnswerDrawer(
                                 .padding(6.dp)
                         )
                     }
+
+                    AnimatedVisibility(
+                        isHovered,
+                        enter = fadeIn(),
+                        exit = fadeOut(),
+                        modifier = Modifier.align(Alignment.TopStart).padding(horizontal = 10.dp)
+                    ) {
+                        Text(
+                            text = stringResource(Res.string.ai_generated),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
-
-            Text(
-                text = "AI generated",
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.align(Alignment.TopStart)
-                    .padding(horizontal = 6.dp, vertical = 4.dp),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontWeight = FontWeight.Bold
-            )
         }
     }
 
