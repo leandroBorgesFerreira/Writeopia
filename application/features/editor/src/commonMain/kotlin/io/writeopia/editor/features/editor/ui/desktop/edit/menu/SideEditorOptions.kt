@@ -621,23 +621,14 @@ private fun Actions(
                 }
             }
 
-            Text(
-                WrStrings.markdown(),
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(2.dp)
-                    .background(
-                        MaterialTheme.colorScheme.surfaceVariant,
-                        MaterialTheme.shapes.medium
-                    ).weight(1F)
-                    .clip(MaterialTheme.shapes.medium)
-                    .clickable {
-                        fileChooserSave()?.let(exportMarkdown)
-                    }
-                    .padding(4.dp),
-                color = MaterialTheme.colorScheme.onBackground,
-                style = buttonsTextStyle()
-            )
+            TextButton(
+                text = WrStrings.markdown(),
+                modifier = Modifier.weight(1F),
+                paddingValues = smallButtonPadding()
+            ) {
+                fileChooserSave()?.let(exportMarkdown)
+            }
+
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -652,9 +643,7 @@ private fun Actions(
             paddingValues = smallButtonPadding(),
             onClick = deleteDocument
         )
-
-        Spacer(modifier = Modifier.height(4.dp))
-
+        
         TextButton(
             text = WrStrings.favorite(),
             modifier = Modifier.fillMaxWidth(),
