@@ -28,6 +28,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.persistence.core.tracker.OnUpdateDocumentTracker
 import io.writeopia.sdk.repository.DocumentRepository
+import io.writeopia.sdk.repository.StoriesRepository
 import io.writeopia.sdk.serialization.extensions.toApi
 import io.writeopia.sdk.serialization.json.writeopiaJson
 import io.writeopia.sdk.serialization.request.wrapInRequest
@@ -482,6 +483,12 @@ class NoteEditorKmpViewModel(
             }
 
         copyManager.copy(annotatedString)
+    }
+
+    override fun deleteDocument() {
+        viewModelScope.launch(Dispatchers.Default) {
+            documentRepository.deleteDocument(writeopiaManager.getDocument())
+        }
     }
 
     private fun saveDocumentInWorkSpace() {

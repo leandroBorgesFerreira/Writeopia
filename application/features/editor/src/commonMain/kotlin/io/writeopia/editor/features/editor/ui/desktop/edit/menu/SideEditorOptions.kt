@@ -75,6 +75,7 @@ fun SideEditorOptions(
     moveToClick: () -> Unit,
     askAiBySelection: () -> Unit,
     addPage: () -> Unit,
+    deleteDocument: () -> Unit,
 ) {
     var menuType by remember {
         mutableStateOf(OptionsType.NONE)
@@ -135,7 +136,8 @@ fun SideEditorOptions(
                         Actions(
                             exportJson,
                             exportMarkdown,
-                            askAiBySelection = askAiBySelection
+                            askAiBySelection = askAiBySelection,
+                            deleteDocument = deleteDocument
                         )
                     }
                 }
@@ -568,6 +570,7 @@ private fun Actions(
     exportJson: (String) -> Unit,
     exportMarkdown: (String) -> Unit,
     askAiBySelection: () -> Unit,
+    deleteDocument: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -589,6 +592,8 @@ private fun Actions(
             paddingValues = smallButtonPadding(),
             onClick = askAiBySelection
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
 
 //        TextButton(
 //            modifier = Modifier.fillMaxWidth(),
@@ -631,6 +636,19 @@ private fun Actions(
                 style = buttonsTextStyle()
             )
         }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Title(WrStrings.document())
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        TextButton(
+            text = WrStrings.deleteDocument(),
+            modifier = Modifier.fillMaxWidth(),
+            paddingValues = smallButtonPadding(),
+            onClick = deleteDocument
+        )
 
         Spacer(modifier = Modifier.height(12.dp))
     }

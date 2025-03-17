@@ -38,6 +38,7 @@ fun DesktopNoteEditorScreen(
     isUndoKeyEvent: (KeyEvent) -> Boolean,
     onPresentationClick: () -> Unit,
     onDocumentLinkClick: (String) -> Unit,
+    onDocumentDelete: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -100,7 +101,11 @@ fun DesktopNoteEditorScreen(
                 showFolderSelection = true
             },
             askAiBySelection = noteEditorViewModel::askAiBySelection,
-            addPage = noteEditorViewModel::addPage
+            addPage = noteEditorViewModel::addPage,
+            deleteDocument = {
+                noteEditorViewModel.deleteDocument()
+                onDocumentDelete()
+            }
         )
 
         if (!isEditable) {

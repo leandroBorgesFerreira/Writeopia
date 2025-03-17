@@ -406,12 +406,14 @@ class DocumentSqlDao(
             } ?: emptyList()
     }
 
-    suspend fun deleteDocumentById(document: String) {
-        documentQueries?.delete(document)
+    suspend fun deleteDocumentById(documentId: String) {
+        documentQueries?.delete(documentId)
+        storyStepQueries?.deleteByDocumentId(documentId)
     }
 
     suspend fun deleteDocumentByIds(ids: Set<String>) {
         documentQueries?.deleteByIds(ids)
+        storyStepQueries?.deleteByDocumentIds(ids)
     }
 
     suspend fun loadDocumentWithContentById(documentId: String): Document? =
