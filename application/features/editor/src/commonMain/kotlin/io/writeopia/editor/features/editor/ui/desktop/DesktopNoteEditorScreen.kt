@@ -105,7 +105,8 @@ fun DesktopNoteEditorScreen(
             deleteDocument = {
                 noteEditorViewModel.deleteDocument()
                 onDocumentDelete()
-            }
+            },
+            favoriteDocument = noteEditorViewModel::favoriteDocument
         )
 
         if (!isEditable) {

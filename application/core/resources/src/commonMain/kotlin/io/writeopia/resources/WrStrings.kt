@@ -24,6 +24,7 @@ import writeopia.application.core.resources.generated.resources.error_requesting
 import writeopia.application.core.resources.generated.resources.export
 import writeopia.application.core.resources.generated.resources.export_json
 import writeopia.application.core.resources.generated.resources.export_markdown
+import writeopia.application.core.resources.generated.resources.favorite
 import writeopia.application.core.resources.generated.resources.favorites
 import writeopia.application.core.resources.generated.resources.folder
 import writeopia.application.core.resources.generated.resources.font
@@ -253,4 +254,7 @@ object WrStrings {
 
     @Composable
     fun document() = stringResource(Res.string.document)
+
+    @Composable
+    fun favorite() = stringResource(Res.string.favorite)
 }

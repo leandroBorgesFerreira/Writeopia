@@ -95,6 +95,8 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
     fun copySelection()
 
     fun deleteDocument()
+
+    fun favoriteDocument()
 }
 
 data class ShareDocument(val content: String, val title: String, val type: String)

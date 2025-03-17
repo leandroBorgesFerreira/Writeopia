@@ -491,6 +491,12 @@ class NoteEditorKmpViewModel(
         }
     }
 
+    override fun favoriteDocument() {
+        viewModelScope.launch(Dispatchers.Default) {
+            documentRepository.favoriteDocumentByIds(setOf(writeopiaManager.getDocument().id))
+        }
+    }
+
     private fun saveDocumentInWorkSpace() {
         viewModelScope.launch(Dispatchers.Default) {
             _loadingState.value = true

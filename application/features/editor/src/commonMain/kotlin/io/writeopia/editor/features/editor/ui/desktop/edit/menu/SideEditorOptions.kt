@@ -76,6 +76,7 @@ fun SideEditorOptions(
     askAiBySelection: () -> Unit,
     addPage: () -> Unit,
     deleteDocument: () -> Unit,
+    favoriteDocument: () -> Unit,
 ) {
     var menuType by remember {
         mutableStateOf(OptionsType.NONE)
@@ -137,7 +138,8 @@ fun SideEditorOptions(
                             exportJson,
                             exportMarkdown,
                             askAiBySelection = askAiBySelection,
-                            deleteDocument = deleteDocument
+                            deleteDocument = deleteDocument,
+                            favoriteDocument = favoriteDocument,
                         )
                     }
                 }
@@ -571,6 +573,7 @@ private fun Actions(
     exportMarkdown: (String) -> Unit,
     askAiBySelection: () -> Unit,
     deleteDocument: () -> Unit,
+    favoriteDocument: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -648,6 +651,15 @@ private fun Actions(
             modifier = Modifier.fillMaxWidth(),
             paddingValues = smallButtonPadding(),
             onClick = deleteDocument
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        TextButton(
+            text = WrStrings.favorite(),
+            modifier = Modifier.fillMaxWidth(),
+            paddingValues = smallButtonPadding(),
+            onClick = favoriteDocument
         )
 
         Spacer(modifier = Modifier.height(12.dp))
