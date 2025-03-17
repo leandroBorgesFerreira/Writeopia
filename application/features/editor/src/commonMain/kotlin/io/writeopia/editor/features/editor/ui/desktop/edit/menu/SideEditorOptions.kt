@@ -47,6 +47,7 @@ import io.writeopia.common.utils.collections.inBatches
 import io.writeopia.common.utils.file.fileChooserLoad
 import io.writeopia.common.utils.file.fileChooserSave
 import io.writeopia.common.utils.icons.WrIcons
+import io.writeopia.common.utils.modifier.clickableWithoutGettingFocus
 import io.writeopia.model.Font
 import io.writeopia.resources.WrStrings
 import io.writeopia.sdk.models.span.Span
@@ -305,7 +306,9 @@ private fun TextChanges(spanClick: (Span) -> Unit) {
             modifier = Modifier.weight(1F)
                 .clip(RoundedCornerShape(topStart = 6.dp, bottomStart = 6.dp))
                 .size(32.dp)
-                .clickable { spanClick(Span.BOLD) }
+                .clickableWithoutGettingFocus {
+                    spanClick(Span.BOLD)
+                }
                 .padding(horizontal = 8.dp, vertical = 8.dp),
             tint = MaterialTheme.colorScheme.onBackground
         )
@@ -315,7 +318,7 @@ private fun TextChanges(spanClick: (Span) -> Unit) {
             contentDescription = "Italic",
             modifier = Modifier.weight(1F)
                 .size(32.dp)
-                .clickable { spanClick(Span.ITALIC) }
+                .clickableWithoutGettingFocus { spanClick(Span.ITALIC) }
                 .padding(horizontal = 8.dp, vertical = 8.dp),
             tint = MaterialTheme.colorScheme.onBackground
         )
@@ -326,7 +329,7 @@ private fun TextChanges(spanClick: (Span) -> Unit) {
             modifier = Modifier.weight(1F)
                 .clip(RoundedCornerShape(topEnd = 6.dp, bottomEnd = 6.dp))
                 .size(32.dp)
-                .clickable { spanClick(Span.UNDERLINE) }
+                .clickableWithoutGettingFocus { spanClick(Span.UNDERLINE) }
                 .padding(horizontal = 8.dp, vertical = 8.dp),
             tint = MaterialTheme.colorScheme.onBackground
         )
@@ -601,8 +604,8 @@ private fun Actions(
 
         Row {
             TextButton(
-                modifier = Modifier.weight(1F),
                 text = WrStrings.json(),
+                modifier = Modifier.weight(1F),
                 paddingValues = smallButtonPadding()
             ) {
                 fileChooserSave()?.let {
@@ -610,23 +613,23 @@ private fun Actions(
                 }
             }
 
-//            Text(
-//                "Markdown",
-//                textAlign = TextAlign.Center,
-//                modifier = Modifier
-//                    .padding(2.dp)
-//                    .background(
-//                        MaterialTheme.colorScheme.surfaceVariant,
-//                        MaterialTheme.shapes.medium
-//                    ).weight(1F)
-//                    .clip(MaterialTheme.shapes.medium)
-//                    .clickable {
-//                        fileChooserSave()?.let(exportMarkdown)
-//                    }
-//                    .padding(4.dp),
-//                color = MaterialTheme.colorScheme.onBackground,
-//                style = buttonsTextStyle()
-//            )
+            Text(
+                WrStrings.markdown(),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(2.dp)
+                    .background(
+                        MaterialTheme.colorScheme.surfaceVariant,
+                        MaterialTheme.shapes.medium
+                    ).weight(1F)
+                    .clip(MaterialTheme.shapes.medium)
+                    .clickable {
+                        fileChooserSave()?.let(exportMarkdown)
+                    }
+                    .padding(4.dp),
+                color = MaterialTheme.colorScheme.onBackground,
+                style = buttonsTextStyle()
+            )
         }
 
         Spacer(modifier = Modifier.height(12.dp))

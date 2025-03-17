@@ -53,7 +53,7 @@
   <string name="download_models">Download Model</string>
   <string name="suggestions">Suggestions:</string>
   <string name="error_model_download">Error when downloading model.</string>
-  <string name="version">Version: alpha32 - Amado, Jorge</string>
+  <string name="version">Version: alpha33 - Amado, Jorge</string>
   <string name="light_theme">Light</string>
   <string name="dark_theme">Dark</string>
   <string name="system_theme">System</string>
@@ -75,6 +75,7 @@
   <string name="page">Page</string>
   <string name="ask_ai">Ask AI</string>
   <string name="json">JSON</string>
+  <string name="markdown">Markdown</string>
   <string name="tap_to_start">Tap here to <font fgcolor='#FFFF3B30'>write</font> the next big thing</string>
   <string name="font">Font</string>
   <string name="actions">Actions</string>

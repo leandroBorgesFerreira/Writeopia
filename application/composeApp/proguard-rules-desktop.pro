@@ -14,6 +14,7 @@
 -keepclassmembers public class **$$serializer {
     private ** descriptor;
 }
+-keep class coil3.network.ktor3.** { *; }
 
 -dontwarn org.slf4j.**
 -dontwarn android.**
