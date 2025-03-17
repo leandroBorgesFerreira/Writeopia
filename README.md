@@ -63,7 +63,7 @@ To start the web app:
 ./gradlew jsBrowserRun
 ```
 
-Runnig the tests of the project:
+Running the tests of the project:
 
 ```
 ./gradlew jvmTest
