@@ -645,7 +645,6 @@ private fun Actions(
             ) {
                 fileChooserSave()?.let(exportMarkdown)
             }
-
         }
 
         Spacer(modifier = Modifier.height(12.dp))
