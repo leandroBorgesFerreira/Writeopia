@@ -9,8 +9,10 @@ import writeopia.application.core.resources.generated.resources.arrangement
 import writeopia.application.core.resources.generated.resources.ask_ai
 import writeopia.application.core.resources.generated.resources.available_models
 import writeopia.application.core.resources.generated.resources.box
+import writeopia.application.core.resources.generated.resources.cancel
 import writeopia.application.core.resources.generated.resources.close
 import writeopia.application.core.resources.generated.resources.color_theme
+import writeopia.application.core.resources.generated.resources.confirmation_delete_multiple_items
 import writeopia.application.core.resources.generated.resources.content
 import writeopia.application.core.resources.generated.resources.copy_note
 import writeopia.application.core.resources.generated.resources.dark_theme
@@ -44,6 +46,7 @@ import writeopia.application.core.resources.generated.resources.move_to
 import writeopia.application.core.resources.generated.resources.move_to_home
 import writeopia.application.core.resources.generated.resources.name
 import writeopia.application.core.resources.generated.resources.no_models
+import writeopia.application.core.resources.generated.resources.ok
 import writeopia.application.core.resources.generated.resources.ollama
 import writeopia.application.core.resources.generated.resources.ollama_configuration_complete
 import writeopia.application.core.resources.generated.resources.onboarding_explain1
@@ -257,4 +260,13 @@ object WrStrings {
 
     @Composable
     fun favorite() = stringResource(Res.string.favorite)
+
+    @Composable
+    fun confirmDeleteMultipleItems() = stringResource(Res.string.confirmation_delete_multiple_items)
+
+    @Composable
+    fun ok() = stringResource(Res.string.ok)
+
+    @Composable
+    fun cancel() = stringResource(Res.string.cancel)
 }
