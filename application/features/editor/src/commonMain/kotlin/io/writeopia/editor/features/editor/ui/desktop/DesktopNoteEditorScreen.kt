@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.unit.dp
+import io.writeopia.commonui.dialogs.confirmation.DeleteConfirmationDialog
 import io.writeopia.editor.features.editor.ui.desktop.edit.menu.SideEditorOptions
 import io.writeopia.editor.features.editor.ui.folders.FolderSelectionDialog
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
@@ -38,6 +39,7 @@ fun DesktopNoteEditorScreen(
     isUndoKeyEvent: (KeyEvent) -> Boolean,
     onPresentationClick: () -> Unit,
     onDocumentLinkClick: (String) -> Unit,
+    onDocumentDelete: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -78,12 +80,17 @@ fun DesktopNoteEditorScreen(
             }
         )
 
+        var showDeleteConfirmation by remember {
+            mutableStateOf(false)
+        }
+
         SideEditorOptions(
             modifier = Modifier
                 .padding(horizontal = 10.dp, vertical = 40.dp)
                 .align(Alignment.TopEnd),
             fontStyleSelected = { noteEditorViewModel.fontFamily },
             isEditableState = noteEditorViewModel.isEditable,
+            isFavorite = noteEditorViewModel.notFavorite,
             boldClick = noteEditorViewModel::onAddSpanClick,
             setEditable = noteEditorViewModel::toggleEditable,
             checkItemClick = noteEditorViewModel::onAddCheckListClick,
@@ -100,8 +107,25 @@ fun DesktopNoteEditorScreen(
                 showFolderSelection = true
             },
             askAiBySelection = noteEditorViewModel::askAiBySelection,
-            addPage = noteEditorViewModel::addPage
+            addPage = noteEditorViewModel::addPage,
+            deleteDocument = {
+                showDeleteConfirmation = true
+            },
+            toggleFavorite = noteEditorViewModel::toggleFavorite
         )
+
+        if (showDeleteConfirmation) {
+            DeleteConfirmationDialog(
+                onConfirmation = {
+                    noteEditorViewModel.deleteDocument()
+                    showDeleteConfirmation = false
+                    onDocumentDelete()
+                },
+                onCancel = {
+                    showDeleteConfirmation = false
+                }
+            )
+        }
 
         if (!isEditable) {
             Icon(

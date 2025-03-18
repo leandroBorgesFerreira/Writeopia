@@ -29,6 +29,7 @@ actual fun TextEditorScreen(
         isUndoKeyEvent = ::isUndoKeyboardEvent,
         onPresentationClick = playPresentation,
         onDocumentLinkClick = onDocumentLinkClick,
+        onDocumentDelete = navigateBack,
         modifier = modifier
     )
 }

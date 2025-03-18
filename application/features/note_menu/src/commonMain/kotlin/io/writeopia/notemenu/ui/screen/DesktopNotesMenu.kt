@@ -37,7 +37,7 @@ import io.writeopia.notemenu.ui.screen.configuration.molecules.NotesConfiguratio
 import io.writeopia.notemenu.ui.screen.configuration.molecules.NotesSelectionMenu
 import io.writeopia.commonui.workplace.WorkspaceConfigurationDialog
 import io.writeopia.controller.OllamaConfigController
-import io.writeopia.notemenu.ui.screen.confirmation.DeleteConfirmationDialog
+import io.writeopia.commonui.dialogs.confirmation.DeleteConfirmationDialog
 import io.writeopia.notemenu.ui.screen.documents.NotesCards
 import io.writeopia.notemenu.ui.screen.file.fileChooserLoad
 import io.writeopia.notemenu.viewmodel.ChooseNoteViewModel

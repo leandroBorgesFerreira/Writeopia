@@ -60,6 +60,7 @@ fun SideEditorOptions(
     modifier: Modifier = Modifier,
     fontStyleSelected: () -> StateFlow<Font>,
     isEditableState: StateFlow<Boolean>,
+    isFavorite: StateFlow<Boolean>,
     boldClick: (Span) -> Unit,
     setEditable: () -> Unit,
     checkItemClick: () -> Unit,
@@ -75,6 +76,8 @@ fun SideEditorOptions(
     moveToClick: () -> Unit,
     askAiBySelection: () -> Unit,
     addPage: () -> Unit,
+    deleteDocument: () -> Unit,
+    toggleFavorite: () -> Unit,
 ) {
     var menuType by remember {
         mutableStateOf(OptionsType.NONE)
@@ -109,13 +112,16 @@ fun SideEditorOptions(
                     OptionsType.NONE -> {}
 
                     OptionsType.PAGE_STYLE -> {
-                        PageStyleOptions(
+                        PageOptions(
                             changeFontFamily,
                             isEditableState,
+                            isFavorite,
                             setEditable,
                             fontStyleSelected(),
                             moveToClick,
-                            moveToRoot
+                            moveToRoot,
+                            deleteDocument,
+                            toggleFavorite
                         )
                     }
 
@@ -135,7 +141,7 @@ fun SideEditorOptions(
                         Actions(
                             exportJson,
                             exportMarkdown,
-                            askAiBySelection = askAiBySelection
+                            askAiBySelection = askAiBySelection,
                         )
                     }
                 }
@@ -250,13 +256,16 @@ fun SideEditorOptions(
 }
 
 @Composable
-fun PageStyleOptions(
+private fun PageOptions(
     changeFontFamily: (Font) -> Unit,
     isEditableState: StateFlow<Boolean>,
+    isFavoriteState: StateFlow<Boolean>,
     setEditable: () -> Unit,
     selectedState: StateFlow<Font>,
     moveButtonClick: () -> Unit,
     moveToRoot: () -> Unit,
+    deleteDocument: () -> Unit,
+    toggleFavorite: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -276,11 +285,25 @@ fun PageStyleOptions(
 
         Title("Actions")
         Spacer(modifier = Modifier.height(6.dp))
+
+        FavoriteButton(isFavorite = isFavoriteState, toggleFavorite)
+        Spacer(modifier = Modifier.height(4.dp))
+
         LockButton(isEditableState, setEditable)
         Spacer(modifier = Modifier.height(4.dp))
+
         MoveToButton(moveButtonClick)
         Spacer(modifier = Modifier.height(4.dp))
+
         MoveToHomeButton(moveToRoot)
+        Spacer(modifier = Modifier.height(4.dp))
+
+        TextButton(
+            text = WrStrings.delete(),
+            modifier = Modifier.fillMaxWidth(),
+            paddingValues = smallButtonPadding(),
+            onClick = deleteDocument
+        )
     }
 }
 
@@ -590,6 +613,8 @@ private fun Actions(
             onClick = askAiBySelection
         )
 
+        Spacer(modifier = Modifier.height(8.dp))
+
 //        TextButton(
 //            modifier = Modifier.fillMaxWidth(),
 //            text = "AI question box",
@@ -613,23 +638,13 @@ private fun Actions(
                 }
             }
 
-            Text(
-                WrStrings.markdown(),
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(2.dp)
-                    .background(
-                        MaterialTheme.colorScheme.surfaceVariant,
-                        MaterialTheme.shapes.medium
-                    ).weight(1F)
-                    .clip(MaterialTheme.shapes.medium)
-                    .clickable {
-                        fileChooserSave()?.let(exportMarkdown)
-                    }
-                    .padding(4.dp),
-                color = MaterialTheme.colorScheme.onBackground,
-                style = buttonsTextStyle()
-            )
+            TextButton(
+                text = WrStrings.markdown(),
+                modifier = Modifier.weight(1F),
+                paddingValues = smallButtonPadding()
+            ) {
+                fileChooserSave()?.let(exportMarkdown)
+            }
         }
 
         Spacer(modifier = Modifier.height(12.dp))

@@ -29,6 +29,7 @@ kotlin {
                 implementation(project(":application:core:theme"))
                 implementation(project(":application:core:utils"))
                 implementation(project(":application:core:models"))
+                implementation(project(":application:core:resources"))
                 implementation(project(":writeopia_models"))
                 implementation(project(":writeopia"))
                 implementation(project(":writeopia_ui"))

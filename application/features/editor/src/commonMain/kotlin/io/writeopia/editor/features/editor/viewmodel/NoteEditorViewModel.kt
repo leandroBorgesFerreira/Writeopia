@@ -38,6 +38,8 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
 
     val loadingState: StateFlow<Boolean>
 
+    val notFavorite: StateFlow<Boolean>
+
     fun toggleEditable()
 
     fun deleteSelection()
@@ -93,6 +95,10 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
     fun addPage()
 
     fun copySelection()
+
+    fun deleteDocument()
+
+    fun toggleFavorite()
 }
 
 data class ShareDocument(val content: String, val title: String, val type: String)

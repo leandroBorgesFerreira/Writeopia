@@ -25,6 +25,7 @@ actual fun TextEditorScreen(
         isUndoKeyEvent = isUndoKeyEvent,
         onPresentationClick = playPresentation,
         onDocumentLinkClick = onDocumentLinkClick,
+        onDocumentDelete = navigateBack,
         modifier = modifier
     )
 }
