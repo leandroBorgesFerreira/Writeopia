@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.unit.dp
+import io.writeopia.commonui.dialogs.confirmation.DeleteConfirmationDialog
 import io.writeopia.editor.features.editor.ui.desktop.edit.menu.SideEditorOptions
 import io.writeopia.editor.features.editor.ui.folders.FolderSelectionDialog
 import io.writeopia.editor.features.editor.viewmodel.NoteEditorViewModel
@@ -79,6 +80,10 @@ fun DesktopNoteEditorScreen(
             }
         )
 
+        var showDeleteConfirmation by remember {
+            mutableStateOf(false)
+        }
+
         SideEditorOptions(
             modifier = Modifier
                 .padding(horizontal = 10.dp, vertical = 40.dp)
@@ -104,11 +109,23 @@ fun DesktopNoteEditorScreen(
             askAiBySelection = noteEditorViewModel::askAiBySelection,
             addPage = noteEditorViewModel::addPage,
             deleteDocument = {
-                noteEditorViewModel.deleteDocument()
-                onDocumentDelete()
+                showDeleteConfirmation = true
             },
             toggleFavorite = noteEditorViewModel::toggleFavorite
         )
+
+        if (showDeleteConfirmation) {
+            DeleteConfirmationDialog(
+                onConfirmation = {
+                    noteEditorViewModel.deleteDocument()
+                    showDeleteConfirmation = false
+                    onDocumentDelete()
+                },
+                onCancel = {
+                    showDeleteConfirmation = false
+                }
+            )
+        }
 
         if (!isEditable) {
             Icon(

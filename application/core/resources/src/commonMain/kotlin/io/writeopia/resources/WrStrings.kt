@@ -253,7 +253,7 @@ object WrStrings {
     fun copyDocument() = stringResource(Res.string.copy_note)
 
     @Composable
-    fun deleteDocument() = stringResource(Res.string.delete)
+    fun delete() = stringResource(Res.string.delete)
 
     @Composable
     fun document() = stringResource(Res.string.document)

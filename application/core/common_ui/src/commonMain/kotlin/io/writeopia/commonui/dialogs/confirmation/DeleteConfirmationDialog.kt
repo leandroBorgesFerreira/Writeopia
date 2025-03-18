@@ -1,4 +1,4 @@
-package io.writeopia.notemenu.ui.screen.confirmation
+package io.writeopia.commonui.dialogs.confirmation
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -59,7 +59,7 @@ fun DeleteConfirmationDialog(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Text(
-                        WrStrings.ok(),
+                        WrStrings.delete(),
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Red,
                         fontWeight = FontWeight.Bold,

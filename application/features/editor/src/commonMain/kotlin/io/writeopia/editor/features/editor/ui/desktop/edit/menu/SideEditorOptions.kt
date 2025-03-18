@@ -299,7 +299,7 @@ private fun PageOptions(
         Spacer(modifier = Modifier.height(4.dp))
 
         TextButton(
-            text = WrStrings.deleteDocument(),
+            text = WrStrings.delete(),
             modifier = Modifier.fillMaxWidth(),
             paddingValues = smallButtonPadding(),
             onClick = deleteDocument
