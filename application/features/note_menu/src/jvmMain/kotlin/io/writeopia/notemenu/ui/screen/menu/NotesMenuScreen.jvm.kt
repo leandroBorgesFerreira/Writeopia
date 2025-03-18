@@ -31,6 +31,7 @@ import java.io.File
 @OptIn(ExperimentalSharedTransitionApi::class, ExperimentalComposeUiApi::class)
 @Composable
 actual fun NotesMenuScreen(
+    folderId: String,
     chooseNoteViewModel: ChooseNoteViewModel,
     ollamaConfigController: OllamaConfigController?,
     navigationController: NavController,
@@ -62,6 +63,7 @@ actual fun NotesMenuScreen(
     )
 
     DesktopNotesMenu(
+        folderId = folderId,
         chooseNoteViewModel = chooseNoteViewModel,
         ollamaConfigController = ollamaConfigController,
         sharedTransitionScope = sharedTransitionScope,
