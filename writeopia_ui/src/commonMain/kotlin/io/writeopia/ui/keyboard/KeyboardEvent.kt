@@ -12,5 +12,7 @@ enum class KeyboardEvent {
     COPY,
     AI_QUESTION,
     CANCEL,
-    IDLE
+    IDLE,
+    UNDO,
+    REDO
 }

@@ -98,6 +98,14 @@ class NoteEditorKmpViewModel(
                             writeopiaManager.clearSelection()
                         }
 
+                        KeyboardEvent.UNDO -> {
+                            writeopiaManager.undo()
+                        }
+
+                        KeyboardEvent.REDO -> {
+                            writeopiaManager.redo()
+                        }
+
                         else -> {}
                     }
                 }
