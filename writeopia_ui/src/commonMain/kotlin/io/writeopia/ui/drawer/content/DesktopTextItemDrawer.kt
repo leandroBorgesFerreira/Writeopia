@@ -51,6 +51,7 @@ class DesktopTextItemDrawer(
     private val endContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
     private val isDesktop: Boolean,
     private val enabled: Boolean,
+    private val receiveExternalFile: (List<String>) -> Unit,
     private val messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
     private val tagDecoration: TagDecoration = DefaultTagDecoration,
     private val paddingValues: PaddingValues = PaddingValues(0.dp),
@@ -80,7 +81,8 @@ class DesktopTextItemDrawer(
                         onDragHover(drawInfo.position)
                     },
                     onExit = {},
-                    onFileReceived = {}
+                    onFileReceived = receiveExternalFile
+
                 )
             )
         ) { isInsideDrag ->

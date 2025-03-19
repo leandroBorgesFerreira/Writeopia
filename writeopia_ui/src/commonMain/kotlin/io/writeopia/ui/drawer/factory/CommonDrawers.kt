@@ -92,6 +92,7 @@ object CommonDrawers {
             onSelected = manager::onSelected,
             enabled = editable,
             isDesktop = isDesktop,
+            receiveExternalFile = {},
             messageDrawer = {
                 messageDrawer(
                     manager = manager,
@@ -122,7 +123,8 @@ object CommonDrawers {
             isDesktop = isDesktop,
             config = drawConfig,
             enabled = editable,
-            endContent = headerEndContent
+            endContent = headerEndContent,
+            receiveExternalFile = {}
         ) {
             innerMessageDrawer(commonTextModifier, EmptyErase.DELETE)
         }
@@ -173,6 +175,7 @@ object CommonDrawers {
             dragIconWidth = dragIconWidth,
             config = drawConfig,
             enabled = editable,
+            receiveExternalFile = {},
             checkBoxPadding = PaddingValues(
                 start = drawConfig.checkBoxStartPadding.dp,
                 end = drawConfig.checkBoxEndPadding.dp,
@@ -188,6 +191,7 @@ object CommonDrawers {
                 enabled = editable,
                 dragIconWidth = dragIconWidth,
                 config = drawConfig,
+                receiveExternalFile = {},
                 checkBoxPadding = PaddingValues(
                     start = drawConfig.listItemStartPadding.dp,
                     end = drawConfig.listItemEndPadding.dp

@@ -42,6 +42,7 @@ fun checkItemDrawer(
     checkBoxPadding: PaddingValues = PaddingValues(0.dp),
     isDesktop: Boolean,
     enabled: Boolean,
+    receiveExternalFile: (List<String>) -> Unit,
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)? = { step, drawInfo ->
         CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
 //            Spacer(modifier = Modifier.width(8.dp))
@@ -77,6 +78,7 @@ fun checkItemDrawer(
         null,
         isDesktop,
         enabled,
+        receiveExternalFile,
         messageDrawer
     )
 
@@ -88,6 +90,7 @@ fun checkItemDrawer(
     checkBoxPadding: PaddingValues = PaddingValues(0.dp),
     isDesktop: Boolean,
     enabled: Boolean,
+    receiveExternalFile: (List<String>) -> Unit,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer = checkItemDrawer(
     modifier = modifier,
@@ -103,6 +106,7 @@ fun checkItemDrawer(
     moveRequest = manager::moveRequest,
     enabled = enabled,
     isDesktop = isDesktop,
+    receiveExternalFile = receiveExternalFile,
     messageDrawer = {
         messageDrawer()
     },
@@ -120,6 +124,7 @@ fun CheckItemDrawerStepPreview() {
         config = DrawConfig(),
         isDesktop = true,
         enabled = true,
+        receiveExternalFile = {},
         messageDrawer = {
             TextDrawer(
                 selectionState = MutableStateFlow(false),

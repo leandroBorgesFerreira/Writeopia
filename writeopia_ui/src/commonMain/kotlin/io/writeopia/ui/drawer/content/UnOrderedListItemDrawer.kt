@@ -33,6 +33,7 @@ fun unOrderedListItemDrawer(
     dragIconWidth: Dp = 16.dp,
     checkBoxPadding: PaddingValues = PaddingValues(0.dp),
     config: DrawConfig,
+    receiveExternalFile: (List<String>) -> Unit,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer = unOrderedListItemDrawer(
     isDesktop = isDesktop,
@@ -47,6 +48,7 @@ fun unOrderedListItemDrawer(
     moveRequest = manager::moveRequest,
     dragIconWidth = dragIconWidth,
     enabled = enabled,
+    receiveExternalFile = receiveExternalFile,
     messageDrawer = messageDrawer,
 )
 
@@ -64,6 +66,7 @@ fun unOrderedListItemDrawer(
     onDragStart: () -> Unit,
     onDragStop: () -> Unit,
     moveRequest: (Action.Move) -> Unit = {},
+    receiveExternalFile: (List<String>) -> Unit,
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)? = { _, _ ->
         Text(
             modifier = Modifier.padding(checkBoxPadding),
@@ -89,6 +92,7 @@ fun unOrderedListItemDrawer(
         null,
         isDesktop,
         enabled,
+        receiveExternalFile,
         messageDrawer
     )
 
@@ -108,6 +112,7 @@ private fun UnOrderedListItemPreview() {
         onDragStop = {},
         enabled = true,
         config = DrawConfig(),
+        receiveExternalFile = {},
         messageDrawer = {
             TextDrawer(
                 selectionState = MutableStateFlow(false),

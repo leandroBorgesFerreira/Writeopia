@@ -36,6 +36,7 @@ fun swipeTextDrawer(
     isDesktop: Boolean,
     enabled: Boolean,
     paddingValues: PaddingValues = PaddingValues(0.dp),
+    receiveExternalFile: (List<String>) -> Unit,
     endContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
 ): StoryStepDrawer =
     DesktopTextItemDrawer(
@@ -53,8 +54,9 @@ fun swipeTextDrawer(
         endContent,
         isDesktop,
         enabled,
+        receiveExternalFile = receiveExternalFile,
         messageDrawer,
-        paddingValues = paddingValues
+        paddingValues = paddingValues,
     )
 
 fun swipeTextDrawer(
@@ -67,6 +69,7 @@ fun swipeTextDrawer(
     paddingValues: PaddingValues = PaddingValues(0.dp),
     customBackgroundColor: Color = Color.Transparent,
     endContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
+    receiveExternalFile: (List<String>) -> Unit,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
 ): StoryStepDrawer {
     return swipeTextDrawer(
@@ -82,6 +85,7 @@ fun swipeTextDrawer(
         endContent = endContent,
         isDesktop = isDesktop,
         enabled = enabled,
+        receiveExternalFile = receiveExternalFile,
         messageDrawer = {
             messageDrawer()
         },
@@ -97,6 +101,7 @@ private fun SwipeMessageDrawerPreview() {
         isDesktop = true,
         config = DrawConfig(),
         enabled = true,
+        receiveExternalFile = {},
         messageDrawer = {
             TextDrawer(selectionState = MutableStateFlow(false), onSelectionLister = {})
         },
