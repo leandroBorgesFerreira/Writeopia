@@ -6,30 +6,22 @@ import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draganddrop.DropInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.components.SwipeBox
 import io.writeopia.ui.components.multiselection.SelectableByDrag
 import io.writeopia.ui.draganddrop.target.DragRowTarget
-import io.writeopia.ui.draganddrop.target.DropTargetHorizontalDivision
+import io.writeopia.ui.draganddrop.target.DropTargetVerticalDivision
 import io.writeopia.ui.draganddrop.target.InBounds
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.model.DrawConfig
@@ -71,7 +63,7 @@ class DividerDrawer(
                 }
             }
 
-            DropTargetHorizontalDivision(
+            DropTargetVerticalDivision(
                 modifier = Modifier.padding(bottom = paddingBottom.dp, top = paddingTop.dp)
             ) { inBound, data ->
                 when (inBound) {
