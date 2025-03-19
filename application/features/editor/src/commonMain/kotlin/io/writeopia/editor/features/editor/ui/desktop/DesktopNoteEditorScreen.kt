@@ -22,8 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.KeyEvent
-import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.unit.dp
 import io.writeopia.commonui.dialogs.confirmation.DeleteConfirmationDialog
 import io.writeopia.editor.features.editor.ui.desktop.edit.menu.SideEditorOptions
@@ -36,7 +34,6 @@ fun DesktopNoteEditorScreen(
     documentId: String?,
     noteEditorViewModel: NoteEditorViewModel,
     drawersFactory: DrawersFactory,
-    isUndoKeyEvent: (KeyEvent) -> Boolean,
     onPresentationClick: () -> Unit,
     onDocumentLinkClick: (String) -> Unit,
     onDocumentDelete: () -> Unit,
@@ -67,15 +64,7 @@ fun DesktopNoteEditorScreen(
                     drawersFactory = drawersFactory,
                     loadNoteId = documentId,
                     onDocumentLinkClick = onDocumentLinkClick,
-                    modifier = Modifier
-                        .onPreviewKeyEvent { keyEvent ->
-                            if (isUndoKeyEvent(keyEvent)) {
-                                noteEditorViewModel.undo()
-                                true
-                            } else {
-                                false
-                            }
-                        }.padding(start = 30.dp, end = 30.dp)
+                    modifier = Modifier.padding(start = 30.dp, end = 30.dp)
                 )
             }
         )

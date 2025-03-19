@@ -135,6 +135,16 @@ private fun ApplicationScope.App(onCloseRequest: () -> Unit = ::exitApplication)
                 false
             }
 
+            KeyboardCommands.isUndoKeyboardEvent(keyEvent) -> {
+                sendEvent(KeyboardEvent.UNDO)
+                false
+            }
+
+            KeyboardCommands.isRedoKeyboardEvent(keyEvent) -> {
+                sendEvent(KeyboardEvent.REDO)
+                false
+            }
+
             else -> false
         }
     }
@@ -190,7 +200,6 @@ private fun ApplicationScope.App(onCloseRequest: () -> Unit = ::exitApplication)
                             selectionState = selectionState,
                             keyboardEventFlow = keyboardEventFlow.filterNotNull(),
                             coroutineScope = coroutineScope,
-                            isUndoKeyEvent = KeyboardCommands::isUndoKeyboardEvent,
                             colorThemeOption = colorTheme,
                             selectColorTheme = uiConfigurationViewModel::changeColorTheme,
                             toggleMaxScreen = topDoubleBarClick

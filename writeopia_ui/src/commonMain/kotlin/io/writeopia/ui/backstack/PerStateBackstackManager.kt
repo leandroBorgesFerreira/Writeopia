@@ -43,6 +43,8 @@ internal class PerStateBackstackManager(
     override val canRedo: StateFlow<Boolean> = _canRedo
 
     override fun previousState(state: StoryState): StoryState {
+        if (backStack.isEmpty()) return state
+
         return when (val action = previousAction()) {
             is BackstackAction.BulkDelete -> {
                 forwardStack.add(action)
@@ -99,8 +101,10 @@ internal class PerStateBackstackManager(
         }
     }
 
-    override fun nextState(state: StoryState): StoryState =
-        when (val action = nextAction()) {
+    override fun nextState(state: StoryState): StoryState {
+        if (forwardStack.isEmpty()) return state
+
+        return when (val action = nextAction()) {
             is BackstackAction.BulkDelete -> {
                 val (newStories, _) = contentHandler.bulkDeletion(
                     action.deletedUnits.keys,
@@ -161,6 +165,8 @@ internal class PerStateBackstackManager(
             _canRedo.value = forwardStack.isNotEmpty()
             _canUndo.value = backStack.isNotEmpty()
         }
+    }
+
 
     override fun addAction(action: BackstackAction) {
         forwardStack.clear()

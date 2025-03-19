@@ -105,7 +105,6 @@ fun AppMobile(
                     editorInjector = editorInjector,
                     selectColorTheme = uiConfigViewModel::changeColorTheme,
                     searchInjection = searchInjector,
-                    isUndoKeyEvent = { false },
                     builder = builder
                 )
             }

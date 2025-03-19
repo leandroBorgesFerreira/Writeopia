@@ -22,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
@@ -70,7 +69,6 @@ fun DesktopApp(
     keyboardEventFlow: Flow<KeyboardEvent>,
     colorThemeOption: StateFlow<ColorThemeOption?>,
     coroutineScope: CoroutineScope,
-    isUndoKeyEvent: (KeyEvent) -> Boolean,
     selectColorTheme: (ColorThemeOption) -> Unit,
     toggleMaxScreen: () -> Unit,
     startDestination: String = startDestination(),
@@ -184,7 +182,6 @@ fun DesktopApp(
                                 notesMenuInjection = notesMenuInjection,
                                 sideMenuKmpInjector = sideMenuInjector,
                                 editorInjector = editorInjector,
-                                isUndoKeyEvent = isUndoKeyEvent,
                                 selectColorTheme = selectColorTheme,
                                 navController = navigationController
                             ) {}

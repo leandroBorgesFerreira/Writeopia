@@ -10,6 +10,13 @@ import androidx.compose.ui.input.key.type
 object KeyboardCommands {
     fun isUndoKeyboardEvent(keyEvent: KeyEvent) =
         keyEvent.isCommandTrigger() &&
+            !keyEvent.isShiftPressed &&
+            keyEvent.key.keyCode == Key.Z.keyCode &&
+            keyEvent.type == KeyEventType.KeyDown
+
+    fun isRedoKeyboardEvent(keyEvent: KeyEvent) =
+        keyEvent.isCommandTrigger() &&
+            keyEvent.isShiftPressed &&
             keyEvent.key.keyCode == Key.Z.keyCode &&
             keyEvent.type == KeyEventType.KeyDown
 

@@ -3,7 +3,6 @@ package io.writeopia.navigation
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.input.key.KeyEvent
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -34,7 +33,6 @@ fun Navigation(
     sideMenuKmpInjector: SideMenuKmpInjector? = null,
     editorInjector: TextEditorInjector,
     searchInjection: SearchInjection? = null,
-    isUndoKeyEvent: (KeyEvent) -> Boolean,
     selectColorTheme: (ColorThemeOption) -> Unit,
     builder: NavGraphBuilder.() -> Unit
 ) {
@@ -57,7 +55,6 @@ fun Navigation(
                     navController.navigateUp()
                 },
                 editorInjector = editorInjector,
-                isUndoKeyEvent = isUndoKeyEvent,
                 navigateToPresentation = navController::navigateToPresentation,
                 sharedTransitionScope = this@SharedTransitionLayout,
                 navigateToNote = { id ->
