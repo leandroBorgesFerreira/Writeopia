@@ -502,6 +502,11 @@ class NoteEditorKmpViewModel(
         }
     }
 
+    override fun receiveExternalFile(files: List<String>) {
+        println("receiveExternalFile: ${files.joinToString()}")
+        writeopiaManager.receiveExternalFiles(files)
+    }
+
     private fun saveDocumentInWorkSpace() {
         viewModelScope.launch(Dispatchers.Default) {
             _loadingState.value = true

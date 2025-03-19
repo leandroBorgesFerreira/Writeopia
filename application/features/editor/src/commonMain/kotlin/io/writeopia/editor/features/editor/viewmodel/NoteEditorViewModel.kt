@@ -99,6 +99,8 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
     fun deleteDocument()
 
     fun toggleFavorite()
+
+    fun receiveExternalFile(files: List<String>)
 }
 
 data class ShareDocument(val content: String, val title: String, val type: String)

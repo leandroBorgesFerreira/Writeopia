@@ -60,6 +60,7 @@ object CommonDrawers {
         eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean,
         isDesktop: Boolean,
         fontFamily: FontFamily? = null,
+        receiveExternalFile: (List<String>) -> Unit = {},
         headerEndContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
         onDocumentLinkClick: (String) -> Unit,
     ): Map<Int, StoryStepDrawer> {
@@ -92,7 +93,7 @@ object CommonDrawers {
             onSelected = manager::onSelected,
             enabled = editable,
             isDesktop = isDesktop,
-            receiveExternalFile = {},
+            receiveExternalFile = receiveExternalFile,
             messageDrawer = {
                 messageDrawer(
                     manager = manager,
@@ -124,7 +125,7 @@ object CommonDrawers {
             config = drawConfig,
             enabled = editable,
             endContent = headerEndContent,
-            receiveExternalFile = {}
+            receiveExternalFile = receiveExternalFile
         ) {
             innerMessageDrawer(commonTextModifier, EmptyErase.DELETE)
         }
@@ -175,7 +176,7 @@ object CommonDrawers {
             dragIconWidth = dragIconWidth,
             config = drawConfig,
             enabled = editable,
-            receiveExternalFile = {},
+            receiveExternalFile = receiveExternalFile,
             checkBoxPadding = PaddingValues(
                 start = drawConfig.checkBoxStartPadding.dp,
                 end = drawConfig.checkBoxEndPadding.dp,
@@ -191,7 +192,7 @@ object CommonDrawers {
                 enabled = editable,
                 dragIconWidth = dragIconWidth,
                 config = drawConfig,
-                receiveExternalFile = {},
+                receiveExternalFile = receiveExternalFile,
                 checkBoxPadding = PaddingValues(
                     start = drawConfig.listItemStartPadding.dp,
                     end = drawConfig.listItemEndPadding.dp

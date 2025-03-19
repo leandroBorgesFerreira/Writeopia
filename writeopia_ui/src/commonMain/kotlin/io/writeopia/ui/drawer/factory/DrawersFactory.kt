@@ -19,6 +19,7 @@ interface DrawersFactory {
         onHeaderClick: () -> Unit,
         drawConfig: DrawConfig,
         fontFamily: FontFamily?,
+        receiveExternalFile: (List<String>) -> Unit,
         onDocumentLinkClick: (String) -> Unit,
     ): Map<Int, StoryStepDrawer>
 }

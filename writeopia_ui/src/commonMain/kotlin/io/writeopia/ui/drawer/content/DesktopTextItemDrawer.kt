@@ -81,7 +81,10 @@ class DesktopTextItemDrawer(
                         onDragHover(drawInfo.position)
                     },
                     onExit = {},
-                    onFileReceived = receiveExternalFile
+                    onFileReceived = {
+                        println("received file!")
+                        receiveExternalFile(it)
+                    }
 
                 )
             )

@@ -76,6 +76,7 @@ class WriteopiaStateManager(
     val selectionState: StateFlow<Boolean>,
     private val keyboardEventFlow: Flow<KeyboardEvent>,
     private val documentRepository: DocumentRepository? = null,
+    private val supportedFiles: Set<String> = setOf("jpg", "jpeg", "png"),
     private val drawStateModify: (List<DrawStory>, Int) -> (List<DrawStory>) = StepsModifier::modify
 ) : BackstackHandler, BackstackInform by backStackManager {
 
@@ -774,6 +775,7 @@ class WriteopiaStateManager(
 
     fun addImage(imagePath: String) {
         currentPosition()?.let { position ->
+            println("addImage")
             val story = getStory(position)
 
             if (story != null) {
@@ -782,6 +784,7 @@ class WriteopiaStateManager(
                     position
                 )
 
+                println("changeStoryStateAndTrackIt")
                 changeStoryStateAndTrackIt(stateChange)
             }
         }
@@ -834,6 +837,12 @@ class WriteopiaStateManager(
      */
     fun clearSelection() {
         _positionsOnEdit.value = emptySet()
+    }
+
+    fun receiveExternalFiles(files: List<String>) {
+        files
+            .filter { file -> supportedFiles.contains(file) }
+            .forEach(::addImage)
     }
 
     /**
@@ -1143,6 +1152,7 @@ class WriteopiaStateManager(
             selectionState,
             keyboardEventFlow.filterNotNull(),
             documentRepository,
+            setOf("jpg", "jpeg", "png"),
             StepsModifier::modify
         )
     }
