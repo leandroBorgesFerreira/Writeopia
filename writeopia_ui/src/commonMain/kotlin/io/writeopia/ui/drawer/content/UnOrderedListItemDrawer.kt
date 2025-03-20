@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.action.Action
+import io.writeopia.sdk.models.files.ExternalFile
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
@@ -33,7 +34,7 @@ fun unOrderedListItemDrawer(
     dragIconWidth: Dp = 16.dp,
     checkBoxPadding: PaddingValues = PaddingValues(0.dp),
     config: DrawConfig,
-    receiveExternalFile: (List<String>) -> Unit,
+    receiveExternalFile: (List<ExternalFile>, Int) -> Unit,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer
 ): StoryStepDrawer = unOrderedListItemDrawer(
     isDesktop = isDesktop,
@@ -66,7 +67,7 @@ fun unOrderedListItemDrawer(
     onDragStart: () -> Unit,
     onDragStop: () -> Unit,
     moveRequest: (Action.Move) -> Unit = {},
-    receiveExternalFile: (List<String>) -> Unit,
+    receiveExternalFile: (List<ExternalFile>, Int) -> Unit,
     startContent: @Composable ((StoryStep, DrawInfo) -> Unit)? = { _, _ ->
         Text(
             modifier = Modifier.padding(checkBoxPadding),
@@ -112,7 +113,7 @@ private fun UnOrderedListItemPreview() {
         onDragStop = {},
         enabled = true,
         config = DrawConfig(),
-        receiveExternalFile = {},
+        receiveExternalFile = { _, _ -> },
         messageDrawer = {
             TextDrawer(
                 selectionState = MutableStateFlow(false),

@@ -3,6 +3,7 @@ package io.writeopia.editor.features.editor.viewmodel
 import io.writeopia.commonui.dtos.MenuItemUi
 import io.writeopia.editor.model.EditState
 import io.writeopia.model.Font
+import io.writeopia.sdk.models.files.ExternalFile
 import io.writeopia.sdk.models.span.Span
 import io.writeopia.ui.backstack.BackstackHandler
 import io.writeopia.ui.backstack.BackstackInform
@@ -100,7 +101,7 @@ interface NoteEditorViewModel : BackstackInform, BackstackHandler {
 
     fun toggleFavorite()
 
-    fun receiveExternalFile(files: List<String>)
+    fun receiveExternalFile(files: List<ExternalFile>, position: Int)
 }
 
 data class ShareDocument(val content: String, val title: String, val type: String)

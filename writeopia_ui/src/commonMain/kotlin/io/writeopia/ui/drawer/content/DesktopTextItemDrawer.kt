@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.draganddrop.DropInfo
+import io.writeopia.sdk.models.files.ExternalFile
 import io.writeopia.ui.model.DrawInfo
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.components.SwipeBox
@@ -51,7 +52,7 @@ class DesktopTextItemDrawer(
     private val endContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
     private val isDesktop: Boolean,
     private val enabled: Boolean,
-    private val receiveExternalFile: (List<String>) -> Unit,
+    private val receiveExternalFile: (List<ExternalFile>, Int) -> Unit,
     private val messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
     private val tagDecoration: TagDecoration = DefaultTagDecoration,
     private val paddingValues: PaddingValues = PaddingValues(0.dp),
@@ -81,9 +82,8 @@ class DesktopTextItemDrawer(
                         onDragHover(drawInfo.position)
                     },
                     onExit = {},
-                    onFileReceived = {
-                        println("received file!")
-                        receiveExternalFile(it)
+                    onFileReceived = { files ->
+                        receiveExternalFile(files, drawInfo.position)
                     }
 
                 )

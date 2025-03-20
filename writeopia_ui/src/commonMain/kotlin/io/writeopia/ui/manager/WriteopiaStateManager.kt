@@ -17,6 +17,7 @@ import io.writeopia.sdk.models.command.CommandInfo
 import io.writeopia.sdk.models.command.CommandTrigger
 import io.writeopia.sdk.models.command.TypeInfo
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.models.files.ExternalFile
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.span.Span
 import io.writeopia.sdk.models.span.SpanInfo
@@ -773,18 +774,16 @@ class WriteopiaStateManager(
         }
     }
 
-    fun addImage(imagePath: String) {
-        currentPosition()?.let { position ->
-            println("addImage")
-            val story = getStory(position)
+    fun addImage(imagePath: String, position: Int? = null) {
+        (position ?: currentPosition())?.let { pos ->
+            val story = getStory(pos)
 
             if (story != null) {
                 val stateChange = Action.StoryStateChange(
                     story.copy(type = StoryTypes.IMAGE.type, path = imagePath),
-                    position
+                    pos
                 )
 
-                println("changeStoryStateAndTrackIt")
                 changeStoryStateAndTrackIt(stateChange)
             }
         }
@@ -839,10 +838,12 @@ class WriteopiaStateManager(
         _positionsOnEdit.value = emptySet()
     }
 
-    fun receiveExternalFiles(files: List<String>) {
+    fun receiveExternalFiles(files: List<ExternalFile>, position: Int) {
         files
-            .filter { file -> supportedFiles.contains(file) }
-            .forEach(::addImage)
+            .filter { file -> supportedFiles.contains(file.extension) }
+            .forEach { (filePath, _) ->
+                addImage(filePath, position)
+            }
     }
 
     /**

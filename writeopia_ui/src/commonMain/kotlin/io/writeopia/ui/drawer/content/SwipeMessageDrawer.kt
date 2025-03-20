@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.writeopia.sdk.model.action.Action
+import io.writeopia.sdk.models.files.ExternalFile
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
@@ -36,7 +37,7 @@ fun swipeTextDrawer(
     isDesktop: Boolean,
     enabled: Boolean,
     paddingValues: PaddingValues = PaddingValues(0.dp),
-    receiveExternalFile: (List<String>) -> Unit,
+    receiveExternalFile: (List<ExternalFile>, Int) -> Unit,
     endContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
 ): StoryStepDrawer =
     DesktopTextItemDrawer(
@@ -69,7 +70,7 @@ fun swipeTextDrawer(
     paddingValues: PaddingValues = PaddingValues(0.dp),
     customBackgroundColor: Color = Color.Transparent,
     endContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
-    receiveExternalFile: (List<String>) -> Unit,
+    receiveExternalFile: (List<ExternalFile>, Int) -> Unit,
     messageDrawer: @Composable RowScope.() -> SimpleTextDrawer,
 ): StoryStepDrawer {
     return swipeTextDrawer(
@@ -101,7 +102,7 @@ private fun SwipeMessageDrawerPreview() {
         isDesktop = true,
         config = DrawConfig(),
         enabled = true,
-        receiveExternalFile = {},
+        receiveExternalFile = { _, _ -> },
         messageDrawer = {
             TextDrawer(selectionState = MutableStateFlow(false), onSelectionLister = {})
         },

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.draganddrop.DragAndDropEvent
 import androidx.compose.ui.draganddrop.DragAndDropTarget
+import io.writeopia.sdk.models.files.ExternalFile
 
 @Composable
 fun externalImageDropTarget(
@@ -11,7 +12,7 @@ fun externalImageDropTarget(
     onEnd: () -> Unit,
     onEnter: () -> Unit,
     onExit: () -> Unit,
-    onFileReceived: (List<String>) -> Unit,
+    onFileReceived: (List<ExternalFile>) -> Unit,
 ) = remember {
     object : DragAndDropTarget {
         override fun onStarted(event: DragAndDropEvent) {

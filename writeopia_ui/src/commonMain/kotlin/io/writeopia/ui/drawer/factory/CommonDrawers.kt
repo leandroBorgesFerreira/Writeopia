@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.writeopia.sdk.models.files.ExternalFile
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
@@ -60,7 +61,7 @@ object CommonDrawers {
         eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean,
         isDesktop: Boolean,
         fontFamily: FontFamily? = null,
-        receiveExternalFile: (List<String>) -> Unit = {},
+        receiveExternalFile: (List<ExternalFile>, Int) -> Unit = { _, _ -> },
         headerEndContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
         onDocumentLinkClick: (String) -> Unit,
     ): Map<Int, StoryStepDrawer> {

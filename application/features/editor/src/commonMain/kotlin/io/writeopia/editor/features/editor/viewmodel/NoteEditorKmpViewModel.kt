@@ -23,6 +23,7 @@ import io.writeopia.sdk.export.DocumentWriter
 import io.writeopia.sdk.model.action.Action
 import io.writeopia.sdk.model.story.StoryState
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.models.files.ExternalFile
 import io.writeopia.sdk.models.span.Span
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
@@ -502,9 +503,8 @@ class NoteEditorKmpViewModel(
         }
     }
 
-    override fun receiveExternalFile(files: List<String>) {
-        println("receiveExternalFile: ${files.joinToString()}")
-        writeopiaManager.receiveExternalFiles(files)
+    override fun receiveExternalFile(files: List<ExternalFile>, position: Int) {
+        writeopiaManager.receiveExternalFiles(files, position)
     }
 
     private fun saveDocumentInWorkSpace() {
