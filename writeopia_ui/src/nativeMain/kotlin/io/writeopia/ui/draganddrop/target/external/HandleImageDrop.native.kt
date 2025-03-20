@@ -9,4 +9,3 @@ actual fun handleImageDrop(
 ): Boolean = false
 
 fun shouldAcceptImageDrop(event: DragAndDropEvent): Boolean = false
-

@@ -480,8 +480,7 @@ class WriteopiaStateManager(
         if (lastBreak != null
             && lastBreak.text == lineBreak.storyStep.text
             && lastBreak.position == lineBreak.position
-            && (Clock.System.now()
-                .toEpochMilliseconds() - lastBreak.time.toEpochMilliseconds() < 100)
+            && (Clock.System.now().toEpochMilliseconds() - lastBreak.time.toEpochMilliseconds() < 100)
         ) {
             return
         }
@@ -682,7 +681,6 @@ class WriteopiaStateManager(
         }
     }
 
-
     /**
      * Deletes the whole selection. All [StoryStep] in the selection will be deleted.
      */
@@ -801,7 +799,6 @@ class WriteopiaStateManager(
         )
     }
 
-    //Here!
     fun handleTextInput(
         input: TextInput,
         position: Int,
