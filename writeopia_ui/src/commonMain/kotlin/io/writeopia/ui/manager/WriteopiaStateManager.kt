@@ -923,9 +923,6 @@ class WriteopiaStateManager(
             ?.text
             ?: currentLineText()
 
-
-    fun supportedImages() = supportedImageFiles
-
     /**
      * Moves the focus to the next available [StoryStep] if it can't find a step to focus, it
      * creates a new [StoryStep] at the end of the document. The cursor is positioned in the same

@@ -373,7 +373,6 @@ internal class ChooseNoteKmpViewModel(
         }
     }
 
-
     override fun hideConfigSyncMenu() {
         _showLocalSyncConfig.value = ConfigState.Idle
     }
