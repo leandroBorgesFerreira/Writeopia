@@ -77,7 +77,7 @@ class WriteopiaStateManager(
     val selectionState: StateFlow<Boolean>,
     private val keyboardEventFlow: Flow<KeyboardEvent>,
     private val documentRepository: DocumentRepository? = null,
-    private val supportedFiles: Set<String> = setOf("jpg", "jpeg", "png"),
+    private val supportedImageFiles: Set<String> = setOf("jpg", "jpeg", "png"),
     private val drawStateModify: (List<DrawStory>, Int) -> (List<DrawStory>) = StepsModifier::modify
 ) : BackstackHandler, BackstackInform by backStackManager {
 
@@ -837,7 +837,7 @@ class WriteopiaStateManager(
 
     fun receiveExternalFiles(files: List<ExternalFile>, position: Int) {
         files
-            .filter { file -> supportedFiles.contains(file.extension) }
+            .filter { file -> supportedImageFiles.contains(file.extension) }
             .forEach { (filePath, _) ->
                 addImage(filePath, position)
             }
@@ -922,6 +922,9 @@ class WriteopiaStateManager(
             ?.first()
             ?.text
             ?: currentLineText()
+
+
+    fun supportedImages() = supportedImageFiles
 
     /**
      * Moves the focus to the next available [StoryStep] if it can't find a step to focus, it

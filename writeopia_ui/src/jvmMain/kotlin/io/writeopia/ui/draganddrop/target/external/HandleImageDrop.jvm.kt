@@ -18,7 +18,7 @@ actual fun handleImageDrop(
                 transferable.getTransferData(DataFlavor.javaFileListFlavor) as List<File>
 
             if (files.isNotEmpty()) {
-                receiveFiles(files.map { ExternalFile(it.absolutePath, it.extension) })
+                receiveFiles(files.map { ExternalFile(it.absolutePath, it.extension, it.name) })
             }
 
             files

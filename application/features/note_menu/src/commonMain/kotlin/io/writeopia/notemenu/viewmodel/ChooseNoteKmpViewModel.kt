@@ -21,8 +21,12 @@ import io.writeopia.sdk.export.DocumentToJson
 import io.writeopia.sdk.export.DocumentToMarkdown
 import io.writeopia.sdk.export.DocumentWriter
 import io.writeopia.sdk.import.json.WriteopiaJsonParser
+import io.writeopia.sdk.models.document.Document
 import io.writeopia.sdk.models.document.MenuItem
+import io.writeopia.sdk.models.files.ExternalFile
 import io.writeopia.sdk.models.id.GenerateId
+import io.writeopia.sdk.models.story.StoryStep
+import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import io.writeopia.sdk.preview.PreviewParser
 import io.writeopia.ui.keyboard.KeyboardEvent
@@ -41,12 +45,14 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
 internal class ChooseNoteKmpViewModel(
     private val notesUseCase: NotesUseCase,
     private val notesConfig: ConfigurationRepository,
     private val authManager: AuthManager,
     private val selectionState: StateFlow<Boolean>,
+    private val keyboardEventFlow: Flow<KeyboardEvent>,
     private val folderController: FolderStateController = FolderStateController(
         notesUseCase,
         authManager
@@ -56,7 +62,7 @@ internal class ChooseNoteKmpViewModel(
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
     private val documentToJson: DocumentToJson = DocumentToJson(),
     private val writeopiaJsonParser: WriteopiaJsonParser = WriteopiaJsonParser(),
-    private val keyboardEventFlow: Flow<KeyboardEvent>,
+    private val supportedImageFiles: Set<String> = setOf("jpg", "jpeg", "png"),
 ) : ChooseNoteViewModel, ViewModel(), FolderController by folderController {
 
     private val _showOnboardingState =
@@ -358,30 +364,15 @@ internal class ChooseNoteKmpViewModel(
         cancelEditMenu()
     }
 
-    override fun loadFiles(filePaths: List<String>) {
+    override fun loadFiles(filePaths: List<ExternalFile>) {
         val now = Clock.System.now()
 
         viewModelScope.launch(Dispatchers.Default) {
-            writeopiaJsonParser.readDocuments(filePaths)
-                .onCompletion { exception ->
-                    if (exception == null) {
-//                        refreshNotes()
-                        cancelEditMenu()
-                    }
-                }
-                .map { document ->
-                    document.copy(
-                        parentId = notesNavigation.id,
-                        id = GenerateId.generate(),
-                        lastUpdatedAt = now,
-                        createdAt = now,
-                        userId = getUserId(),
-                        favorite = false
-                    )
-                }
-                .collect(notesUseCase::saveDocument)
+            importJsonNotes(filePaths, now)
+            importImages(filePaths, now)
         }
     }
+
 
     override fun hideConfigSyncMenu() {
         _showLocalSyncConfig.value = ConfigState.Idle
@@ -459,6 +450,51 @@ internal class ChooseNoteKmpViewModel(
             notesConfig.setOnboarded()
             _showOnboardingState.value = OnboardingState.COMPLETE
         }
+    }
+
+    private suspend fun importJsonNotes(externalFiles: List<ExternalFile>, now: Instant) {
+        externalFiles.filter { file -> file.extension == "json" }
+            .map { file -> file.fullPath }
+            .let(writeopiaJsonParser::readDocuments)
+            .onCompletion { exception ->
+                if (exception == null) {
+//                        refreshNotes()
+                    cancelEditMenu()
+                }
+            }
+            .map { document ->
+                document.copy(
+                    parentId = notesNavigation.id,
+                    id = GenerateId.generate(),
+                    lastUpdatedAt = now,
+                    createdAt = now,
+                    userId = getUserId(),
+                    favorite = false
+                )
+            }
+            .collect(notesUseCase::saveDocument)
+    }
+
+    private suspend fun importImages(externalFiles: List<ExternalFile>, now: Instant) {
+        externalFiles.filter { file -> supportedImageFiles.contains(file.extension) }
+            .map { externalImage ->
+                Document(
+                    parentId = notesNavigation.id,
+                    id = GenerateId.generate(),
+                    lastUpdatedAt = now,
+                    createdAt = now,
+                    userId = getUserId(),
+                    favorite = false,
+                    title = externalImage.name,
+                    content = mapOf(
+                        0 to StoryStep(type = StoryTypes.TITLE.type, text = externalImage.name),
+                        1 to StoryStep(type = StoryTypes.IMAGE.type, url = externalImage.fullPath)
+                    )
+                )
+            }
+            .forEach { document ->
+                notesUseCase.saveDocument(document)
+            }
     }
 
     private fun handleStorage(workspaceFunc: suspend (String) -> Unit, syncRequest: SyncRequest) {
