@@ -24,6 +24,7 @@ import io.writeopia.model.ColorThemeOption
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.ui.screen.DesktopNotesMenu
 import io.writeopia.notemenu.viewmodel.ChooseNoteViewModel
+import io.writeopia.sdk.models.files.ExternalFile
 import io.writeopia.theme.WriteopiaTheme
 import java.awt.datatransfer.DataFlavor
 import java.io.File
@@ -83,7 +84,7 @@ actual fun NotesMenuScreen(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun documentFilesDropTarget(
-    onFileReceived: (List<String>) -> Unit,
+    onFileReceived: (List<ExternalFile>) -> Unit,
     onStart: () -> Unit,
     onEnd: () -> Unit,
 ) = remember {
@@ -103,7 +104,15 @@ private fun documentFilesDropTarget(
                         transferable.getTransferData(DataFlavor.javaFileListFlavor) as List<File>
 
                     if (files.isNotEmpty()) {
-                        onFileReceived(files.map { file -> file.absolutePath })
+                        onFileReceived(
+                            files.map { file ->
+                                ExternalFile(
+                                    file.absolutePath,
+                                    file.extension,
+                                    file.name
+                                )
+                            }
+                        )
                     }
 
                     files

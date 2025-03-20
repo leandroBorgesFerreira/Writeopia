@@ -5,6 +5,7 @@ import io.writeopia.core.configuration.models.NotesArrangement
 import io.writeopia.notemenu.ui.dto.NotesUi
 import io.writeopia.onboarding.OnboardingState
 import io.writeopia.sdk.models.document.MenuItem
+import io.writeopia.sdk.models.files.ExternalFile
 import io.writeopia.sdk.persistence.core.sorting.OrderBy
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -51,7 +52,7 @@ interface ChooseNoteViewModel : FolderController {
 
     fun directoryFilesAsMarkdown(path: String)
 
-    fun loadFiles(filePaths: List<String>)
+    fun loadFiles(filePaths: List<ExternalFile>)
 
     fun onDocumentSelected(id: String, selected: Boolean)
 
