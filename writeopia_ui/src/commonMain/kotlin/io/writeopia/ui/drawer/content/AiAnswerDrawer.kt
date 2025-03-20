@@ -16,13 +16,10 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,7 +38,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.components.SwipeBox
 import io.writeopia.ui.components.multiselection.SelectableByDrag
 import io.writeopia.ui.draganddrop.target.DragRowTarget
-import io.writeopia.ui.draganddrop.target.DropTargetHorizontalDivision
+import io.writeopia.ui.draganddrop.target.DropTargetVerticalDivision
 import io.writeopia.ui.draganddrop.target.InBounds
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.icons.WrSdkIcons
@@ -87,7 +84,7 @@ class AiAnswerDrawer(
                 }
             }
 
-            DropTargetHorizontalDivision(
+            DropTargetVerticalDivision(
                 modifier = Modifier.padding(bottom = paddingBottom.dp, top = paddingTop.dp)
             ) { inBound, data ->
                 when (inBound) {

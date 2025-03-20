@@ -74,7 +74,7 @@ class ImageDrawer(
             }
 
             DropTarget(
-                modifier = Modifier.padding(horizontal = 6.dp).height(300.dp)
+                modifier = Modifier.padding(horizontal = 6.dp)
             ) { inBound, data ->
 //            if (inBound && data != null) {
 //                mergeRequest(
@@ -133,7 +133,9 @@ class ImageDrawer(
                                         .build(),
                                     contentScale = ContentScale.Crop,
                                     contentDescription = "",
-                                    modifier = Modifier.clip(shape = RoundedCornerShape(size = 12.dp)),
+                                    modifier = Modifier.clip(
+                                        shape = RoundedCornerShape(size = 12.dp)
+                                    ),
                                     loading = {
                                         CircularProgressIndicator()
                                     }

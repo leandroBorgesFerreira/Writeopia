@@ -73,6 +73,7 @@ internal fun TextEditor(
             groupsBackgroundColor = Color.Transparent,
             drawConfig = DrawConfigFactory.getDrawConfig(),
             fontFamily = fontFamily,
+            receiveExternalFile = noteEditorViewModel::receiveExternalFile,
             onDocumentLinkClick = onDocumentLinkClick
         ),
         storyState = storyState,

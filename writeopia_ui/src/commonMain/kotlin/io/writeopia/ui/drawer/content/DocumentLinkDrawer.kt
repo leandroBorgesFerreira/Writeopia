@@ -27,7 +27,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.ui.components.SwipeBox
 import io.writeopia.ui.components.multiselection.SelectableByDrag
 import io.writeopia.ui.draganddrop.target.DragRowTarget
-import io.writeopia.ui.draganddrop.target.DropTargetHorizontalDivision
+import io.writeopia.ui.draganddrop.target.DropTargetVerticalDivision
 import io.writeopia.ui.draganddrop.target.InBounds
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.model.DrawConfig
@@ -65,7 +65,7 @@ class DocumentLinkDrawer(
                 }
             }
 
-            DropTargetHorizontalDivision { inBound, data ->
+            DropTargetVerticalDivision { inBound, data ->
                 when (inBound) {
                     InBounds.OUTSIDE -> {}
                     InBounds.INSIDE_UP -> {

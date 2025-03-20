@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.writeopia.sdk.models.files.ExternalFile
 import io.writeopia.sdk.models.story.StoryStep
 import io.writeopia.sdk.models.story.StoryTypes
 import io.writeopia.ui.drawer.SimpleTextDrawer
@@ -60,6 +61,7 @@ object CommonDrawers {
         eventListener: (KeyEvent, TextFieldValue, StoryStep, Int, EmptyErase, Int, EndOfText) -> Boolean,
         isDesktop: Boolean,
         fontFamily: FontFamily? = null,
+        receiveExternalFile: (List<ExternalFile>, Int) -> Unit = { _, _ -> },
         headerEndContent: @Composable ((StoryStep, DrawInfo, Boolean) -> Unit)? = null,
         onDocumentLinkClick: (String) -> Unit,
     ): Map<Int, StoryStepDrawer> {
@@ -92,6 +94,7 @@ object CommonDrawers {
             onSelected = manager::onSelected,
             enabled = editable,
             isDesktop = isDesktop,
+            receiveExternalFile = receiveExternalFile,
             messageDrawer = {
                 messageDrawer(
                     manager = manager,
@@ -122,7 +125,8 @@ object CommonDrawers {
             isDesktop = isDesktop,
             config = drawConfig,
             enabled = editable,
-            endContent = headerEndContent
+            endContent = headerEndContent,
+            receiveExternalFile = receiveExternalFile
         ) {
             innerMessageDrawer(commonTextModifier, EmptyErase.DELETE)
         }
@@ -173,6 +177,7 @@ object CommonDrawers {
             dragIconWidth = dragIconWidth,
             config = drawConfig,
             enabled = editable,
+            receiveExternalFile = receiveExternalFile,
             checkBoxPadding = PaddingValues(
                 start = drawConfig.checkBoxStartPadding.dp,
                 end = drawConfig.checkBoxEndPadding.dp,
@@ -188,6 +193,7 @@ object CommonDrawers {
                 enabled = editable,
                 dragIconWidth = dragIconWidth,
                 config = drawConfig,
+                receiveExternalFile = receiveExternalFile,
                 checkBoxPadding = PaddingValues(
                     start = drawConfig.listItemStartPadding.dp,
                     end = drawConfig.listItemEndPadding.dp

@@ -17,6 +17,7 @@ import io.writeopia.sdk.models.command.CommandInfo
 import io.writeopia.sdk.models.command.CommandTrigger
 import io.writeopia.sdk.models.command.TypeInfo
 import io.writeopia.sdk.models.document.Document
+import io.writeopia.sdk.models.files.ExternalFile
 import io.writeopia.sdk.models.id.GenerateId
 import io.writeopia.sdk.models.span.Span
 import io.writeopia.sdk.models.span.SpanInfo
@@ -76,6 +77,7 @@ class WriteopiaStateManager(
     val selectionState: StateFlow<Boolean>,
     private val keyboardEventFlow: Flow<KeyboardEvent>,
     private val documentRepository: DocumentRepository? = null,
+    private val supportedFiles: Set<String> = setOf("jpg", "jpeg", "png"),
     private val drawStateModify: (List<DrawStory>, Int) -> (List<DrawStory>) = StepsModifier::modify
 ) : BackstackHandler, BackstackInform by backStackManager {
 
@@ -772,14 +774,14 @@ class WriteopiaStateManager(
         }
     }
 
-    fun addImage(imagePath: String) {
-        currentPosition()?.let { position ->
-            val story = getStory(position)
+    fun addImage(imagePath: String, position: Int? = null) {
+        (position ?: currentPosition())?.let { pos ->
+            val story = getStory(pos)
 
             if (story != null) {
                 val stateChange = Action.StoryStateChange(
                     story.copy(type = StoryTypes.IMAGE.type, path = imagePath),
-                    position
+                    pos
                 )
 
                 changeStoryStateAndTrackIt(stateChange)
@@ -834,6 +836,14 @@ class WriteopiaStateManager(
      */
     fun clearSelection() {
         _positionsOnEdit.value = emptySet()
+    }
+
+    fun receiveExternalFiles(files: List<ExternalFile>, position: Int) {
+        files
+            .filter { file -> supportedFiles.contains(file.extension) }
+            .forEach { (filePath, _) ->
+                addImage(filePath, position)
+            }
     }
 
     /**
@@ -1143,6 +1153,7 @@ class WriteopiaStateManager(
             selectionState,
             keyboardEventFlow.filterNotNull(),
             documentRepository,
+            setOf("jpg", "jpeg", "png"),
             StepsModifier::modify
         )
     }

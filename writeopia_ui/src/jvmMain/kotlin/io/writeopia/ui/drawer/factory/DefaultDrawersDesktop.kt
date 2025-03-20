@@ -20,6 +20,7 @@ import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import io.writeopia.sdk.models.files.ExternalFile
 import io.writeopia.sdk.models.story.Tag
 import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.icons.WrSdkIcons
@@ -38,6 +39,7 @@ object DefaultDrawersDesktop : DrawersFactory {
         onHeaderClick: () -> Unit,
         drawConfig: DrawConfig,
         fontFamily: FontFamily?,
+        receiveExternalFile: (List<ExternalFile>, Int) -> Unit,
         onDocumentLinkClick: (String) -> Unit,
     ): Map<Int, StoryStepDrawer> =
         CommonDrawers.create(
@@ -55,6 +57,7 @@ object DefaultDrawersDesktop : DrawersFactory {
             ),
             fontFamily = fontFamily,
             onDocumentLinkClick = onDocumentLinkClick,
+            receiveExternalFile = receiveExternalFile,
             headerEndContent = { storyStep, drawInfo, isHovered ->
                 val isTitle = storyStep.tags.any { it.tag.isTitle() }
                 val isCollapsed by lazy { storyStep.tags.any { it.tag == Tag.COLLAPSED } }

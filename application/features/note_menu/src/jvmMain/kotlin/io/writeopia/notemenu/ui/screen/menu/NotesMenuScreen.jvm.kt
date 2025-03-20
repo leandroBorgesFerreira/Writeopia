@@ -55,7 +55,7 @@ actual fun NotesMenuScreen(
         if (onDropEvent) highlightBackground else Color.Unspecified
     }
 
-    val dragAndDropTarget = dropTarget(
+    val dragAndDropTarget = documentFilesDropTarget(
         chooseNoteViewModel::loadFiles,
         onStart = { onDropEvent = true },
         onEnd = { onDropEvent = false },
@@ -82,7 +82,7 @@ actual fun NotesMenuScreen(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun dropTarget(
+private fun documentFilesDropTarget(
     onFileReceived: (List<String>) -> Unit,
     onStart: () -> Unit,
     onEnd: () -> Unit,
