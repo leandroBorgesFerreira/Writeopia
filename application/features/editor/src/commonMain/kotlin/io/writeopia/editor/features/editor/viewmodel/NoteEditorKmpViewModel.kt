@@ -7,6 +7,7 @@ import io.writeopia.OllamaRepository
 import io.writeopia.auth.core.utils.USER_OFFLINE
 import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.collections.toNodeTree
+import io.writeopia.common.utils.file.SaveImage
 import io.writeopia.common.utils.icons.WrIcons
 import io.writeopia.common.utils.toList
 import io.writeopia.commonui.dtos.MenuItemUi
@@ -382,7 +383,18 @@ class NoteEditorKmpViewModel(
     }
 
     override fun addImage(imagePath: String) {
-        writeopiaManager.addImage(imagePath)
+        viewModelScope.launch(Dispatchers.Default) {
+            val path = workspaceConfigRepository
+                .loadWorkspacePath("disconnected_user")
+                ?.let { workspace ->
+                    SaveImage.saveLocally(
+                        imagePath,
+                        workspace
+                    )
+                } ?: imagePath
+
+            writeopiaManager.addImage(path)
+        }
     }
 
     override fun exportMarkdown(path: String) {
@@ -512,7 +524,26 @@ class NoteEditorKmpViewModel(
     }
 
     override fun receiveExternalFile(files: List<ExternalFile>, position: Int) {
-        writeopiaManager.receiveExternalFiles(files, position)
+        viewModelScope.launch(Dispatchers.Default) {
+            val newFiles = workspaceConfigRepository
+                .loadWorkspacePath("disconnected_user")
+                ?.let { workspace ->
+                    files.map { file ->
+                        if (writeopiaManager.supportedImageFiles.contains(file.extension)) {
+                            val newPath = SaveImage.saveLocally(
+                                file.fullPath,
+                                workspace
+                            )
+
+                            file.copy(fullPath = newPath)
+                        } else {
+                            file
+                        }
+                    }
+                } ?: files
+
+            writeopiaManager.receiveExternalFiles(newFiles, position)
+        }
     }
 
     private fun saveDocumentInWorkSpace() {
