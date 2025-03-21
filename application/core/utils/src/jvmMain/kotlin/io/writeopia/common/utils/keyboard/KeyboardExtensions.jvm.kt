@@ -19,12 +19,12 @@ actual fun KeyEvent.isCommandTrigger(): Boolean {
     }
 }
 
-actual fun KeyEvent.isMultiSelectionTrigger(): Boolean = this.isShiftPressed &&
+actual fun KeyEvent.isMultiSelectionTrigger(): Boolean =
     when (hostOs) {
-        OS.Android -> this.isAltPressed
-        OS.Linux -> this.isAltPressed
-        OS.Windows -> this.isAltPressed
-        OS.MacOS -> this.isMetaPressed
-        OS.Ios -> this.isMetaPressed
-        else -> this.isAltPressed
+        OS.Android -> this.isCtrlPressed && this.isAltPressed
+        OS.Linux -> this.isCtrlPressed && this.isAltPressed
+        OS.Windows -> this.isCtrlPressed && this.isAltPressed
+        OS.MacOS -> this.isAltPressed && this.isMetaPressed
+        OS.Ios -> this.isCtrlPressed && this.isMetaPressed
+        else -> this.isCtrlPressed && this.isAltPressed
     }
