@@ -1,6 +1,5 @@
 package io.writeopia.common.utils.file
 
-import io.writeopia.sdk.models.id.GenerateId
 import java.io.File
 import java.io.IOException
 
@@ -14,17 +13,17 @@ actual object SaveImage {
             val resultImagePath = "$folderPath/${external.name}"
 
             val resultImage = File(resultImagePath)
-            val currentImage = if (external.exists()) {
-                File("${external.absolutePath}${GenerateId.generate()}")
+            val currentImage = if (resultImage.exists()) {
+                File(external.absolutePath)
             } else {
                 external
             }
 
             return try {
-                // Copy the file
                 currentImage.copyTo(resultImage, overwrite = true)
-                currentImage.absolutePath
+                resultImage.absolutePath
             } catch (e: IOException) {
+                println("Error: ${e.message}")
                 external.absolutePath
             }
         }

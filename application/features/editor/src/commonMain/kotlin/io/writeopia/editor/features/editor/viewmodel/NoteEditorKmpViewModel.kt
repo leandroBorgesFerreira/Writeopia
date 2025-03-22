@@ -530,10 +530,7 @@ class NoteEditorKmpViewModel(
                 ?.let { workspace ->
                     files.map { file ->
                         if (writeopiaManager.supportedImageFiles.contains(file.extension)) {
-                            val newPath = SaveImage.saveLocally(
-                                file.fullPath,
-                                workspace
-                            )
+                            val newPath = SaveImage.saveLocally(file.fullPath, workspace)
 
                             file.copy(fullPath = newPath)
                         } else {
