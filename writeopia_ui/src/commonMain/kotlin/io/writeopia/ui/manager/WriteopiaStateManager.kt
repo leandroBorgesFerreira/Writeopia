@@ -77,7 +77,7 @@ class WriteopiaStateManager(
     val selectionState: StateFlow<Boolean>,
     private val keyboardEventFlow: Flow<KeyboardEvent>,
     private val documentRepository: DocumentRepository? = null,
-    private val supportedImageFiles: Set<String> = setOf("jpg", "jpeg", "png"),
+    val supportedImageFiles: Set<String> = setOf("jpg", "jpeg", "png"),
     private val drawStateModify: (List<DrawStory>, Int) -> (List<DrawStory>) = StepsModifier::modify
 ) : BackstackHandler, BackstackInform by backStackManager {
 
