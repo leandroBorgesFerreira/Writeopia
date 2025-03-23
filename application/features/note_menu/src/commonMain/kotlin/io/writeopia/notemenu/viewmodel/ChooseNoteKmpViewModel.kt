@@ -486,7 +486,7 @@ internal class ChooseNoteKmpViewModel(
                     favorite = false,
                     title = externalImage.name,
                     content = mapOf(
-                        0 to StoryStep(type = StoryTypes.TITLE.type, text = externalImage.name),
+                        0 to StoryStep(type = StoryTypes.TITLE.type, text = ""),
                         1 to StoryStep(type = StoryTypes.IMAGE.type, url = externalImage.fullPath)
                     )
                 )

@@ -1,5 +1,6 @@
 package io.writeopia.ui.drawer.preview
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,7 +18,7 @@ import io.writeopia.ui.drawer.StoryStepDrawer
 import io.writeopia.ui.model.DrawInfo
 
 class ImagePreviewDrawer(
-    private val modifier: Modifier = Modifier.padding(vertical = 5.dp, horizontal = 16.dp),
+    private val modifier: Modifier = Modifier,
 ) : StoryStepDrawer {
 
     @Composable
@@ -28,9 +29,12 @@ class ImagePreviewDrawer(
                 .build(),
             contentScale = ContentScale.Crop,
             contentDescription = "",
-            modifier = modifier.clip(
-                shape = RoundedCornerShape(size = 12.dp)
-            ).heightIn(max = 200.dp),
+            modifier = modifier
+                .padding(top = 30.dp)
+                .clip(
+                    shape = RoundedCornerShape(size = 12.dp)
+                ).fillMaxSize()
+                .heightIn(max = 200.dp),
             loading = {
                 CircularProgressIndicator()
             },
