@@ -24,8 +24,10 @@ class PreviewParser(
             .filter { storyStep -> acceptedTypes.contains(storyStep.type.number) }
             .takeWhile { acc++ < maxSize }
             .toList()
-        return if (result.size == 2 && result.first().type.number == StoryTypes.TITLE.type.number &&
-                (result.first().text ?: "").isEmpty()) {
+        return if (result.size == 2 &&
+            result.first().type.number == StoryTypes.TITLE.type.number &&
+            (result.first().text ?: "").isEmpty()
+        ) {
             result.drop(1)
         } else {
             result
