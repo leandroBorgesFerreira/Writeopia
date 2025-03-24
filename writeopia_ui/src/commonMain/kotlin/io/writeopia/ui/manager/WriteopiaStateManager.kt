@@ -480,7 +480,8 @@ class WriteopiaStateManager(
         if (lastBreak != null
             && lastBreak.text == lineBreak.storyStep.text
             && lastBreak.position == lineBreak.position
-            && (Clock.System.now().toEpochMilliseconds() - lastBreak.time.toEpochMilliseconds() < 100)
+            && (Clock.System.now()
+                .toEpochMilliseconds() - lastBreak.time.toEpochMilliseconds() < 100)
         ) {
             return
         }
@@ -777,19 +778,22 @@ class WriteopiaStateManager(
             val story = getStory(pos)
 
             if (story != null) {
-                val stateChange = Action.StoryStateChange(
-                    story.copy(type = StoryTypes.IMAGE.type, path = imagePath),
-                    pos
-                )
+                if (position == null) {
+                    val stateChange = Action.StoryStateChange(
+                        story.copy(type = StoryTypes.IMAGE.type, path = imagePath),
+                        pos
+                    )
 
-                changeStoryStateAndTrackIt(stateChange)
+                    changeStoryStateAndTrackIt(stateChange)
+                } else {
+                    addAtPosition(StoryStep(type = StoryTypes.IMAGE.type, path = imagePath), pos)
+                }
             }
         }
     }
 
     /**
-     * Adds a story in a position. Useful to add stories that were not created by the end user, but
-     * by an API call or different event.
+     * Adds a story in a position.
      */
     fun addAtPosition(storyStep: StoryStep, position: Int) {
         _currentStory.value = writeopiaManager.addAtPosition(

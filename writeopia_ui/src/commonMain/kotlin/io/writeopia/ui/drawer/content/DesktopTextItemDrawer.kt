@@ -79,13 +79,13 @@ class DesktopTextItemDrawer(
                     onStart = onDragStart,
                     onEnd = onDragStop,
                     onEnter = {
+//                        println("text drawer enter")
                         onDragHover(drawInfo.position)
                     },
                     onExit = {},
                     onFileReceived = { files ->
-                        receiveExternalFile(files, drawInfo.position)
+                        receiveExternalFile(files, drawInfo.position + 1)
                     }
-
                 )
             )
         ) { isInsideDrag ->

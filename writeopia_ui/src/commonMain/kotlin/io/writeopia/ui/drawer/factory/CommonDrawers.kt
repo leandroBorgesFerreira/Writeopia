@@ -137,6 +137,7 @@ object CommonDrawers {
             config = drawConfig,
             enabled = true,
             paddingValues = PaddingValues(start = 4.dp, top = 16.dp, bottom = 16.dp),
+            receiveExternalFile = receiveExternalFile,
             onSelected = manager::onSelected,
             onDragHover = manager::onDragHover,
             onDragStart = manager::onDragStart,
@@ -149,6 +150,7 @@ object CommonDrawers {
             config = drawConfig,
             enabled = true,
             paddingValues = PaddingValues(0.dp),
+            receiveExternalFile = receiveExternalFile,
             onSelected = manager::onSelected,
             onDragHover = manager::onDragHover,
             onDragStart = manager::onDragStart,
@@ -162,6 +164,7 @@ object CommonDrawers {
             config = drawConfig,
             enabled = true,
             paddingValues = PaddingValues(start = 4.dp, top = 0.dp, bottom = 0.dp),
+            receiveExternalFile = receiveExternalFile,
             onSelected = manager::onSelected,
             onDragHover = manager::onDragHover,
             onDragStart = manager::onDragStart,
@@ -239,10 +242,20 @@ object CommonDrawers {
         return buildMap {
             put(StoryTypes.TEXT.type.number, swipeTextDrawer)
             put(StoryTypes.ADD_BUTTON.type.number, AddButtonDrawer())
-            put(StoryTypes.SPACE.type.number, SpaceDrawer(drawConfig, manager::moveRequest))
+            put(
+                StoryTypes.SPACE.type.number,
+                SpaceDrawer(
+                    drawConfig,
+                    moveRequest = manager::moveRequest,
+                )
+            )
             put(
                 StoryTypes.ON_DRAG_SPACE.type.number,
-                SpaceDrawer(drawConfig, manager::moveRequest, Color.Gray)
+                SpaceDrawer(
+                    drawConfig,
+                    moveRequest = manager::moveRequest,
+                    backgroundColor = Color.Gray,
+                )
             )
             put(
                 StoryTypes.LAST_SPACE.type.number,

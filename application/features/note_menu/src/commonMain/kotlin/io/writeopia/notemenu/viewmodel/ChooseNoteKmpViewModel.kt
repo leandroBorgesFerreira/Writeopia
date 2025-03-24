@@ -7,12 +7,14 @@ import io.writeopia.auth.core.manager.AuthManager
 import io.writeopia.common.utils.DISCONNECTED_USER_ID
 import io.writeopia.common.utils.ResultData
 import io.writeopia.common.utils.file.FileUtils
+import io.writeopia.common.utils.file.SaveImage
 import io.writeopia.common.utils.map
 import io.writeopia.common.utils.toBoolean
 import io.writeopia.commonui.extensions.toUiCard
 import io.writeopia.core.configuration.repository.ConfigurationRepository
 import io.writeopia.models.Folder
 import io.writeopia.core.configuration.models.NotesArrangement
+import io.writeopia.models.configuration.WorkspaceConfigRepository
 import io.writeopia.notemenu.data.model.NotesNavigation
 import io.writeopia.notemenu.data.usecase.NotesUseCase
 import io.writeopia.notemenu.ui.dto.NotesUi
@@ -53,6 +55,7 @@ internal class ChooseNoteKmpViewModel(
     private val authManager: AuthManager,
     private val selectionState: StateFlow<Boolean>,
     private val keyboardEventFlow: Flow<KeyboardEvent>,
+    private val workspaceConfigRepository: WorkspaceConfigRepository,
     private val folderController: FolderStateController = FolderStateController(
         notesUseCase,
         authManager
@@ -477,6 +480,17 @@ internal class ChooseNoteKmpViewModel(
     private suspend fun importImages(externalFiles: List<ExternalFile>, now: Instant) {
         externalFiles.filter { file -> supportedImageFiles.contains(file.extension) }
             .map { externalImage ->
+                val imagePath = externalImage.fullPath
+
+                val path = workspaceConfigRepository
+                    .loadWorkspacePath("disconnected_user")
+                    ?.let { workspace ->
+                        SaveImage.saveLocally(
+                            imagePath,
+                            "$workspace/images"
+                        )
+                    } ?: imagePath
+
                 Document(
                     parentId = notesNavigation.id,
                     id = GenerateId.generate(),
@@ -484,10 +498,10 @@ internal class ChooseNoteKmpViewModel(
                     createdAt = now,
                     userId = getUserId(),
                     favorite = false,
-                    title = externalImage.name,
+                    title = "",
                     content = mapOf(
                         0 to StoryStep(type = StoryTypes.TITLE.type, text = ""),
-                        1 to StoryStep(type = StoryTypes.IMAGE.type, url = externalImage.fullPath)
+                        1 to StoryStep(type = StoryTypes.IMAGE.type, path = path)
                     )
                 )
             }
