@@ -477,11 +477,12 @@ class WriteopiaStateManager(
     fun onLineBreak(lineBreak: Action.LineBreak) {
         val lastBreak = lastLineBreak
 
-        if (lastBreak != null
-            && lastBreak.text == lineBreak.storyStep.text
-            && lastBreak.position == lineBreak.position
-            && (Clock.System.now()
-                .toEpochMilliseconds() - lastBreak.time.toEpochMilliseconds() < 100)
+        val now = Clock.System.now().toEpochMilliseconds()
+
+        if (lastBreak != null &&
+            lastBreak.text == lineBreak.storyStep.text &&
+            lastBreak.position == lineBreak.position &&
+            (now - lastBreak.time.toEpochMilliseconds() < 100)
         ) {
             return
         }
@@ -855,7 +856,7 @@ class WriteopiaStateManager(
         val selected = _positionsOnEdit.value
 
         return if (selected.isNotEmpty()) {
-            //TODO: Fix this to accept multiple clusters of selection!
+            // TODO: Fix this to accept multiple clusters of selection!
             val from = selected.min()
             val to = selected.max()
             val join = selectedStories().mapNotNull { it.text }.joinToString(separator = "\n")
