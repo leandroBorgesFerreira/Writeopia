@@ -59,7 +59,8 @@ class NotesMenuKmpInjection private constructor(
             selectionState = selectionState,
             notesNavigation = notesNavigation,
             folderController = provideFolderStateController(),
-            keyboardEventFlow = keyboardEventFlow
+            keyboardEventFlow = keyboardEventFlow,
+            workspaceConfigRepository = appConfigurationInjector.provideWorkspaceConfigRepository(),
         )
 
     @Composable

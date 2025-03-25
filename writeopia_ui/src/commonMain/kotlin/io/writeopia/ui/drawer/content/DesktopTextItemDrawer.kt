@@ -83,9 +83,8 @@ class DesktopTextItemDrawer(
                     },
                     onExit = {},
                     onFileReceived = { files ->
-                        receiveExternalFile(files, drawInfo.position)
+                        receiveExternalFile(files, drawInfo.position + 1)
                     }
-
                 )
             )
         ) { isInsideDrag ->

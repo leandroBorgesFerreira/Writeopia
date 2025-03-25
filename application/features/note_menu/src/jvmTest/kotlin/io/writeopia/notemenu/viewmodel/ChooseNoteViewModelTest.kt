@@ -36,7 +36,8 @@ class ChooseNoteViewModelTest {
                 notesConfig = notesConfig,
                 authManager = authManager,
                 selectionState = MutableStateFlow(false),
-                keyboardEventFlow = MutableStateFlow(KeyboardEvent.IDLE)
+                keyboardEventFlow = MutableStateFlow(KeyboardEvent.IDLE),
+                workspaceConfigRepository = mockk()
             )
 
             val selectedNotesList = mutableListOf<Boolean>()

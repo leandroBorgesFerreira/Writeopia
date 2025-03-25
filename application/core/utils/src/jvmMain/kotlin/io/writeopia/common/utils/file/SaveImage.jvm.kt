@@ -9,7 +9,13 @@ actual object SaveImage {
         val folder = File(folderPath)
         val external = File(externalFile)
 
-        if (folder.exists() && folder.isDirectory) {
+        val hasFolder = if (!folder.exists()) {
+            folder.mkdirs()
+        } else {
+            true
+        }
+
+        if (hasFolder && folder.isDirectory) {
             val resultImagePath = "$folderPath/${external.name}"
 
             val image = File(resultImagePath)
