@@ -5,8 +5,8 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -34,7 +34,7 @@ import io.writeopia.persistence.room.injection.WriteopiaRoomInjector
 import io.writeopia.sdk.network.injector.ConnectionInjector
 import io.writeopia.ui.image.ImageLoadConfig
 
-class NavigationActivity : AppCompatActivity() {
+class NavigationActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
