@@ -46,4 +46,6 @@ data class StoryStep(
     val isGroup: Boolean = steps.isNotEmpty()
 
     fun copyNewLocalId(localId: String = GenerateId.generate()): StoryStep = copy(localId = localId)
+
+    fun isTitle(): Boolean = tags.any { it.tag.isTitle() }
 }
