@@ -68,14 +68,10 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-                implementation(libs.appCompat)
 
                 implementation(libs.coil.compose)
-                implementation(libs.viewmodel.compose)
 
                 implementation(libs.compose.shimmer)
-
-                implementation(project.dependencies.platform(libs.androidx.compose.bom))
                 implementation(libs.room.runtime)
             }
         }
