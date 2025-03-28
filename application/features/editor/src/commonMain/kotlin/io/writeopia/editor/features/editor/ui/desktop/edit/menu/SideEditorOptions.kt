@@ -684,7 +684,7 @@ private fun AiOptions(
 
         TextButton(
             modifier = Modifier.fillMaxWidth(),
-            text = "Summarise",
+            text = WrStrings.summary(),
             paddingValues = smallButtonPadding(),
             onClick = aiSummary
         )
@@ -693,7 +693,7 @@ private fun AiOptions(
 
         TextButton(
             modifier = Modifier.fillMaxWidth(),
-            text = "Action Points",
+            text = WrStrings.actionPoints(),
             paddingValues = smallButtonPadding(),
             onClick = aiActionPoints
         )
