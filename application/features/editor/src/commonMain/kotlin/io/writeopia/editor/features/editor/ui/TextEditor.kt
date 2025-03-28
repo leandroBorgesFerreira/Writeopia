@@ -30,9 +30,8 @@ internal fun TextEditor(
         drawStory.desktopKey + (drawStory.cursor?.position ?: 0)
     },
     onDocumentLinkClick: (String) -> Unit,
+    listState: LazyListState = rememberLazyListState(),
 ) {
-    val listState: LazyListState = rememberLazyListState()
-
     val storyState by noteEditorViewModel.toDrawWithDecoration.collectAsState()
     val editable by noteEditorViewModel.isEditable.collectAsState()
     val position by noteEditorViewModel.scrollToPosition.collectAsState()

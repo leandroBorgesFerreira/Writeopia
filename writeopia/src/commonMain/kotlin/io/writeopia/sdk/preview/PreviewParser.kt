@@ -41,4 +41,5 @@ private fun defaultTypes() = setOf(
     StoryTypes.CHECK_ITEM.type.number,
     StoryTypes.UNORDERED_LIST_ITEM.type.number,
     StoryTypes.IMAGE.type.number,
+    StoryTypes.AI_ANSWER.type.number,
 )

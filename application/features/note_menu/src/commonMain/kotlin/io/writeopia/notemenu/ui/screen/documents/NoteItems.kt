@@ -70,6 +70,7 @@ import io.writeopia.ui.components.multiselection.SelectableByDrag
 import io.writeopia.ui.draganddrop.target.DragCardTarget
 import io.writeopia.ui.draganddrop.target.DropTarget
 import io.writeopia.ui.drawer.StoryStepDrawer
+import io.writeopia.ui.drawer.preview.AiAnswerPreviewDrawer
 import io.writeopia.ui.drawer.preview.CheckItemPreviewDrawer
 import io.writeopia.ui.drawer.preview.HeaderPreviewDrawer
 import io.writeopia.ui.drawer.preview.ImagePreviewDrawer
@@ -675,6 +676,7 @@ private fun previewDrawers(): Map<Int, StoryStepDrawer> {
         StoryTypes.TEXT.type.number to TextPreviewDrawer(),
         StoryTypes.UNORDERED_LIST_ITEM.type.number to unOrderedListItemPreviewDrawer,
         StoryTypes.IMAGE.type.number to ImagePreviewDrawer(),
+        StoryTypes.AI_ANSWER.type.number to AiAnswerPreviewDrawer()
     )
 }
 

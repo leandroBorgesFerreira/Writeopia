@@ -143,6 +143,7 @@ object CommonDrawers {
             onDragStart = manager::onDragStart,
             onDragStop = manager::onDragStop,
             moveRequest = manager::moveRequest,
+            acceptStoryStep = manager::acceptStoryStep
         )
 
         val dividerDrawer = DividerDrawer(

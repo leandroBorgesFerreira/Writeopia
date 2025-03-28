@@ -10,7 +10,5 @@ data class Section(
             appendLine(title)
             content.forEach(this::appendLine)
         }
-
-
 }
 

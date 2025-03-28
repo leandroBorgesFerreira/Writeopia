@@ -848,6 +848,14 @@ class WriteopiaStateManager(
             }
     }
 
+    fun getDocumentText() = currentStory.value
+        .stories
+        .values
+        .filter { storyStep -> !storyStep.text.isNullOrBlank() }
+        .joinToString(separator = "\n") { story ->
+            story.text ?: ""
+        }
+
     /**
      * Return a list of consecutive selections, with start and end position and the merged text
      * that is selected
@@ -873,6 +881,11 @@ class WriteopiaStateManager(
         } else {
             currentStory.value.selection.position + 1
         }
+
+    fun positionAfterSelection(): Int? =
+        if (isOnSelection) getSelectionInfo().firstOrNull()?.to?.plus(1) else null
+
+    fun lastPosition(): Int = getStories().size
 
     suspend fun addLinkToDocument() {
         if (documentRepository == null) return
@@ -922,11 +935,23 @@ class WriteopiaStateManager(
      * This method returns the current text being selected. It can bet the result of a selection of
      * multiple lines, a selection inside a line or just the text of the file that it being edited.
      */
-    fun getCurrentText(): String? =
+    fun getCurrentText(): String? = getCurrentSelectionText() ?: currentLineText()
+
+    fun getCurrentSelectionText(): String? =
         getSelectionInfo().takeIf { it.isNotEmpty() }
             ?.first()
             ?.text
-            ?: currentLineText()
+
+    fun acceptStoryStep(position: Int) {
+        getStory(position)?.let { storyStep ->
+//            onDelete(Action.DeleteStory(storyStep, position))
+
+            val text = storyStep.text
+
+            changeStoryState(Action.StoryStateChange(storyStep.copy(type = StoryTypes.TEXT.type), position))
+            handleTextInput(TextInput(text ?: ""), position, lineBreakByContent = true)
+        }
+    }
 
     /**
      * Moves the focus to the next available [StoryStep] if it can't find a step to focus, it
