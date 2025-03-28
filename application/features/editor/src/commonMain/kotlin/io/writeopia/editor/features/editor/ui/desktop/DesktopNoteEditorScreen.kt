@@ -100,7 +100,11 @@ fun DesktopNoteEditorScreen(
             deleteDocument = {
                 showDeleteConfirmation = true
             },
-            toggleFavorite = noteEditorViewModel::toggleFavorite
+            toggleFavorite = noteEditorViewModel::toggleFavorite,
+            aiSummary = noteEditorViewModel::aiSummary,
+            aiActionPoints = noteEditorViewModel::aiActionPoints,
+            aiFaq = noteEditorViewModel::aiFaq,
+            aiTags = noteEditorViewModel::aiTags,
         )
 
         if (showDeleteConfirmation) {

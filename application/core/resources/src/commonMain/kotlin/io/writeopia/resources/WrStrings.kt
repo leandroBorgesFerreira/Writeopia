@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.stringResource
 import writeopia.application.core.resources.generated.resources.Res
 import writeopia.application.core.resources.generated.resources.access_ollama_site
+import writeopia.application.core.resources.generated.resources.action_points
 import writeopia.application.core.resources.generated.resources.actions
 import writeopia.application.core.resources.generated.resources.arrangement
 import writeopia.application.core.resources.generated.resources.ask_ai
@@ -64,6 +65,7 @@ import writeopia.application.core.resources.generated.resources.sort_by_name
 import writeopia.application.core.resources.generated.resources.sort_by_update
 import writeopia.application.core.resources.generated.resources.sorting
 import writeopia.application.core.resources.generated.resources.suggestions
+import writeopia.application.core.resources.generated.resources.summarize
 import writeopia.application.core.resources.generated.resources.system_theme
 import writeopia.application.core.resources.generated.resources.tap_to_start
 import writeopia.application.core.resources.generated.resources.text
@@ -188,6 +190,12 @@ object WrStrings {
 
     @Composable
     fun askAi() = stringResource(Res.string.ask_ai)
+
+    @Composable
+    fun summary() = stringResource(Res.string.summarize)
+
+    @Composable
+    fun actionPoints() = stringResource(Res.string.action_points)
 
     @Composable
     fun export() = stringResource(Res.string.export)

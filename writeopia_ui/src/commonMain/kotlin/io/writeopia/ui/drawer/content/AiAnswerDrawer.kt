@@ -9,6 +9,7 @@ import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -58,6 +59,8 @@ import writeopia.writeopia_ui.generated.resources.ai_generated
 class AiAnswerDrawer(
     private val modifier: Modifier = Modifier,
     private val customBackgroundColor: Color,
+    private val paddingValues: PaddingValues = PaddingValues(0.dp),
+    private val enabled: Boolean,
     private val onSelected: (Boolean, Int) -> Unit,
     private val dragIconWidth: Dp,
     private val config: DrawConfig,
@@ -65,9 +68,8 @@ class AiAnswerDrawer(
     private val onDragStart: () -> Unit,
     private val onDragStop: () -> Unit,
     private val moveRequest: (Action.Move) -> Unit,
-    private val enabled: Boolean,
     private val receiveExternalFile: (List<ExternalFile>, Int) -> Unit,
-    private val paddingValues: PaddingValues = PaddingValues(0.dp),
+    private val acceptStoryStep: (Int) -> Unit
 ) : StoryStepDrawer {
 
     @Composable
@@ -169,20 +171,35 @@ class AiAnswerDrawer(
                         exit = fadeOut(),
                         modifier = Modifier.align(Alignment.TopEnd).padding(end = 8.dp)
                     ) {
-                        Icon(
-                            imageVector = WrSdkIcons.copy,
-                            contentDescription = "Copy",
-                            tint = MaterialTheme.colorScheme.onBackground,
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .clickable {
-                                    clipboardManager.setText(
-                                        buildAnnotatedString { append(step.text) }
-                                    )
-                                }
-                                .size(32.dp)
-                                .padding(6.dp)
-                        )
+                        Row {
+                            Icon(
+                                imageVector = WrSdkIcons.copy,
+                                contentDescription = "Copy",
+                                tint = MaterialTheme.colorScheme.onBackground,
+                                modifier = Modifier
+                                    .clip(CircleShape)
+                                    .clickable {
+                                        clipboardManager.setText(
+                                            buildAnnotatedString { append(step.text) }
+                                        )
+                                    }
+                                    .size(32.dp)
+                                    .padding(6.dp)
+                            )
+
+                            Icon(
+                                imageVector = WrSdkIcons.check,
+                                contentDescription = "Accept",
+                                tint = MaterialTheme.colorScheme.onBackground,
+                                modifier = Modifier
+                                    .clip(CircleShape)
+                                    .clickable {
+                                        acceptStoryStep(drawInfo.position)
+                                    }
+                                    .size(32.dp)
+                                    .padding(6.dp)
+                            )
+                        }
                     }
 
                     AnimatedVisibility(

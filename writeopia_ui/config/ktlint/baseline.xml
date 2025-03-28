@@ -271,12 +271,6 @@
     <file name="src/commonMain/kotlin/io/writeopia/ui/drawer/content/CheckItemDrawer.kt">
         <error line="134" column="9" source="standard:wrapping" />
     </file>
-    <file name="src/commonMain/kotlin/io/writeopia/ui/drawer/content/DesktopTextItemDrawer.kt">
-        <error line="88" column="1" source="standard:no-blank-line-in-list" />
-    </file>
-    <file name="src/commonMain/kotlin/io/writeopia/ui/drawer/content/DocumentLinkDrawer.kt">
-        <error line="60" column="1" source="standard:no-consecutive-blank-lines" />
-    </file>
     <file name="src/commonMain/kotlin/io/writeopia/ui/drawer/content/HeaderDrawer.kt">
         <error line="261" column="1" source="standard:no-consecutive-blank-lines" />
     </file>
@@ -322,7 +316,32 @@
         <error line="162" column="1" source="standard:no-consecutive-blank-lines" />
     </file>
     <file name="src/commonMain/kotlin/io/writeopia/ui/icons/WrSdkIcons.kt">
-        <error line="27" column="1" source="standard:no-blank-line-before-rbrace" />
+        <error line="30" column="1" source="standard:no-blank-line-before-rbrace" />
+    </file>
+    <file name="src/commonMain/kotlin/io/writeopia/ui/icons/all/Check.kt">
+        <error line="13" column="1" source="standard:indent" />
+        <error line="14" column="1" source="standard:indent" />
+        <error line="15" column="1" source="standard:indent" />
+        <error line="16" column="1" source="standard:indent" />
+        <error line="17" column="1" source="standard:indent" />
+        <error line="24" column="1" source="standard:indent" />
+        <error line="25" column="1" source="standard:indent" />
+        <error line="26" column="1" source="standard:indent" />
+        <error line="27" column="1" source="standard:indent" />
+        <error line="28" column="1" source="standard:indent" />
+        <error line="29" column="1" source="standard:indent" />
+        <error line="30" column="1" source="standard:indent" />
+        <error line="31" column="1" source="standard:indent" />
+        <error line="32" column="1" source="standard:indent" />
+        <error line="33" column="1" source="standard:indent" />
+        <error line="34" column="1" source="standard:indent" />
+        <error line="35" column="1" source="standard:indent" />
+        <error line="36" column="1" source="standard:indent" />
+        <error line="37" column="1" source="standard:indent" />
+        <error line="38" column="1" source="standard:indent" />
+        <error line="39" column="1" source="standard:indent" />
+        <error line="40" column="1" source="standard:indent" />
+        <error line="41" column="1" source="standard:indent" />
     </file>
     <file name="src/commonMain/kotlin/io/writeopia/ui/icons/all/ChevronUp.kt">
         <error line="16" column="1" source="standard:indent" />
@@ -352,10 +371,6 @@
     <file name="src/commonMain/kotlin/io/writeopia/ui/manager/WriteopiaStateManager.kt">
         <error line="413" column="9" source="standard:comment-spacing" />
         <error line="414" column="9" source="standard:comment-spacing" />
-        <error line="481" column="13" source="standard:chain-wrapping" />
-        <error line="482" column="13" source="standard:chain-wrapping" />
-        <error line="483" column="13" source="standard:chain-wrapping" />
-        <error line="854" column="13" source="standard:comment-spacing" />
     </file>
     <file name="src/commonMain/kotlin/io/writeopia/ui/model/DrawStory.kt">
         <error line="20" column="21" source="standard:no-multi-spaces" />

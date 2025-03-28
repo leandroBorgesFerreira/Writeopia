@@ -75,6 +75,10 @@ fun SideEditorOptions(
     moveToRoot: () -> Unit,
     moveToClick: () -> Unit,
     askAiBySelection: () -> Unit,
+    aiSummary: () -> Unit,
+    aiActionPoints: () -> Unit,
+    aiFaq: () -> Unit,
+    aiTags: () -> Unit,
     addPage: () -> Unit,
     deleteDocument: () -> Unit,
     toggleFavorite: () -> Unit,
@@ -137,11 +141,20 @@ fun SideEditorOptions(
                         )
                     }
 
-                    OptionsType.ACTIONS -> {
+                    OptionsType.EXPORT -> {
                         Actions(
                             exportJson,
                             exportMarkdown,
+                        )
+                    }
+
+                    OptionsType.AI -> {
+                        AiOptions(
                             askAiBySelection = askAiBySelection,
+                            aiSummary = aiSummary,
+                            aiActionPoints = aiActionPoints,
+                            aiFaq = aiFaq,
+                            aiTags = aiTags,
                         )
                     }
                 }
@@ -217,40 +230,49 @@ fun SideEditorOptions(
                 tint = tint(OptionsType.TEXT_OPTIONS)
             )
 
-            Spacer(modifier = Modifier.height(spacing))
-
             Icon(
-                imageVector = WrIcons.zap,
-                contentDescription = "Zap",
+                imageVector = WrIcons.ai,
+                contentDescription = "AI",
                 modifier = Modifier
                     .padding(horizontal = spacing)
                     .clip(MaterialTheme.shapes.medium)
-                    .background(background(OptionsType.ACTIONS))
+                    .background(background(OptionsType.AI))
                     .clickable {
-                        menuType = if (menuType != OptionsType.ACTIONS) {
-                            OptionsType.ACTIONS
+                        menuType = if (menuType != OptionsType.AI) {
+                            OptionsType.AI
                         } else {
                             OptionsType.NONE
                         }
                     }
                     .size(40.dp)
                     .padding(9.dp),
-                tint = tint(OptionsType.ACTIONS)
+                tint = tint(OptionsType.AI)
             )
 
-//            Spacer(modifier = Modifier.height(spacing))
-//
-//            Icon(
-//                imageVector = WrIcons.play,
-//                contentDescription = "Presentation",
-//                modifier = Modifier
-//                    .padding(horizontal = spacing)
-//                    .clip(MaterialTheme.shapes.medium)
-//                    .clickable(onClick = onPresentationClick)
-//                    .size(40.dp)
-//                    .padding(9.dp),
-//                tint = MaterialTheme.colorScheme.onBackground
-//            )
+            Spacer(modifier = Modifier.height(spacing))
+
+            Spacer(modifier = Modifier.height(spacing))
+
+            Icon(
+                imageVector = WrIcons.exportFile,
+                contentDescription = "Export file",
+                modifier = Modifier
+                    .padding(horizontal = spacing)
+                    .clip(MaterialTheme.shapes.medium)
+                    .background(background(OptionsType.EXPORT))
+                    .clickable {
+                        menuType = if (menuType != OptionsType.EXPORT) {
+                            OptionsType.EXPORT
+                        } else {
+                            OptionsType.NONE
+                        }
+                    }
+                    .size(40.dp)
+                    .padding(9.dp),
+                tint = tint(OptionsType.EXPORT)
+            )
+
+            Spacer(modifier = Modifier.height(spacing))
         }
     }
 }
@@ -590,7 +612,6 @@ private fun TextOptions(
 private fun Actions(
     exportJson: (String) -> Unit,
     exportMarkdown: (String) -> Unit,
-    askAiBySelection: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -602,27 +623,6 @@ private fun Actions(
             .width(250.dp)
             .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp)
     ) {
-        Title(WrStrings.askAi())
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        TextButton(
-            modifier = Modifier.fillMaxWidth(),
-            text = WrStrings.askAi(),
-            paddingValues = smallButtonPadding(),
-            onClick = askAiBySelection
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-//        TextButton(
-//            modifier = Modifier.fillMaxWidth(),
-//            text = "AI question box",
-//            paddingValues = smallButtonPadding()
-//        ) { }
-
-//        Spacer(modifier = Modifier.height(8.dp))
-
         Title(WrStrings.export())
 
         Spacer(modifier = Modifier.height(4.dp))
@@ -652,6 +652,77 @@ private fun Actions(
 }
 
 @Composable
+private fun AiOptions(
+    askAiBySelection: () -> Unit,
+    aiSummary: () -> Unit,
+    aiActionPoints: () -> Unit,
+    aiFaq: () -> Unit,
+    aiTags: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.border(
+            1.dp,
+            MaterialTheme.colorScheme.surfaceVariant,
+            MaterialTheme.shapes.medium
+        ).background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.medium)
+            .width(250.dp)
+            .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp)
+    ) {
+        Title(WrStrings.askAi())
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        TextButton(
+            modifier = Modifier.fillMaxWidth(),
+            text = WrStrings.askAi(),
+            paddingValues = smallButtonPadding(),
+            onClick = askAiBySelection
+        )
+
+        Spacer(modifier = Modifier.height(2.dp))
+
+        TextButton(
+            modifier = Modifier.fillMaxWidth(),
+            text = WrStrings.summary(),
+            paddingValues = smallButtonPadding(),
+            onClick = aiSummary
+        )
+
+        Spacer(modifier = Modifier.height(2.dp))
+
+        TextButton(
+            modifier = Modifier.fillMaxWidth(),
+            text = WrStrings.actionPoints(),
+            paddingValues = smallButtonPadding(),
+            onClick = aiActionPoints
+        )
+
+        Spacer(modifier = Modifier.height(2.dp))
+
+        TextButton(
+            modifier = Modifier.fillMaxWidth(),
+            text = "FAQ",
+            paddingValues = smallButtonPadding(),
+            onClick = aiFaq
+        )
+
+        Spacer(modifier = Modifier.height(2.dp))
+
+        TextButton(
+            modifier = Modifier.fillMaxWidth(),
+            text = "Tags",
+            paddingValues = smallButtonPadding(),
+            onClick = aiTags
+        )
+
+        Spacer(modifier = Modifier.height(2.dp))
+
+        Spacer(modifier = Modifier.height(12.dp))
+    }
+}
+
+@Composable
 private fun buttonsTextStyle() =
     MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold)
 
@@ -662,5 +733,6 @@ private enum class OptionsType {
     NONE,
     PAGE_STYLE,
     TEXT_OPTIONS,
-    ACTIONS
+    EXPORT,
+    AI
 }

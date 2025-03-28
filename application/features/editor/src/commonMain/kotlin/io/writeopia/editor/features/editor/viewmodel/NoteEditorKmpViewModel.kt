@@ -493,6 +493,30 @@ class NoteEditorKmpViewModel(
         }
     }
 
+    override fun aiSummary() {
+        if (ollamaRepository == null) return
+
+        documentPrompt(ollamaRepository::streamSummary)
+    }
+
+    override fun aiActionPoints() {
+        if (ollamaRepository == null) return
+
+        documentPrompt(ollamaRepository::streamActionsPoints)
+    }
+
+    override fun aiFaq() {
+        if (ollamaRepository == null) return
+
+        documentPrompt(ollamaRepository::streamFaq)
+    }
+
+    override fun aiTags() {
+        if (ollamaRepository == null) return
+
+        documentPrompt(ollamaRepository::streamTags)
+    }
+
     override fun addPage() {
         viewModelScope.launch(Dispatchers.Default) {
             writeopiaManager.addLinkToDocument()
@@ -540,6 +564,65 @@ class NoteEditorKmpViewModel(
                 } ?: files
 
             writeopiaManager.receiveExternalFiles(newFiles, position)
+        }
+    }
+
+    private fun documentPrompt(promptFn: (String, String, String) -> Flow<ResultData<String>>) {
+        if (ollamaRepository == null) return
+
+        viewModelScope.launch(Dispatchers.Default) {
+            val text = writeopiaManager.getCurrentSelectionText()
+                ?: writeopiaManager.getDocumentText()
+
+            val position =
+                writeopiaManager.positionAfterSelection() ?: writeopiaManager.lastPosition()
+
+            val url = ollamaRepository.getConfiguredOllamaUrl()?.trim()
+
+            if (url == null) {
+                writeopiaManager.changeStoryState(
+                    Action.StoryStateChange(
+                        storyStep = StoryStep(
+                            type = StoryTypes.AI_ANSWER.type,
+                            text = "Ollama is not configured or not running."
+                        ),
+                        position = position,
+                    )
+                )
+            } else {
+                val model = ollamaRepository.getOllamaSelectedModel("disconnected_user")
+                    ?: return@launch
+
+                promptFn(model, text, url)
+                    .onStart {
+                        writeopiaManager.addAtPosition(
+                            storyStep = StoryStep(
+                                type = StoryTypes.LOADING.type,
+                                ephemeral = true
+                            ),
+                            position = position
+                        )
+                    }
+                    .collect { result ->
+                        val text = when (result) {
+                            is ResultData.Complete -> result.data
+                            is ResultData.Error -> "Error. Message: ${result.exception.message}"
+                            is ResultData.Loading,
+                            is ResultData.Idle,
+                            is ResultData.InProgress -> ""
+                        }
+
+                        writeopiaManager.changeStoryState(
+                            Action.StoryStateChange(
+                                storyStep = StoryStep(
+                                    type = StoryTypes.AI_ANSWER.type,
+                                    text = text
+                                ),
+                                position = position,
+                            )
+                        )
+                    }
+            }
         }
     }
 
