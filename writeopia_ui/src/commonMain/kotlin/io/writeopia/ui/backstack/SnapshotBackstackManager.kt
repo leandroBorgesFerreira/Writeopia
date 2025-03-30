@@ -20,38 +20,78 @@ class SnapshotBackstackManager(
     override val canUndo: StateFlow<Boolean> = _canUndo
     override val canRedo: StateFlow<Boolean> = _canRedo
 
-    private val stateList: MutableList<StoryState> = mutableListOf()
+    private val backStateList: MutableList<StoryState> = mutableListOf()
+    private val forwardStateList: MutableList<StoryState> = mutableListOf()
 
-    fun previousState(): StoryState {
-        TODO("Not yet implemented")
+    private val storyState: MutableMap<Int, StoryStep> = mutableMapOf()
+
+    fun previousState(): StoryState? = if (backStateList.isEmpty()) {
+        null
+    } else {
+        backStateList.removeLast().also { state ->
+            forwardStateList.add(state)
+
+            updateInformInfo()
+        }
     }
 
-    fun nextState(): StoryState {
-        TODO("Not yet implemented")
+    fun nextState(): StoryState? = if (forwardStateList.isEmpty()) {
+        null
+    } else {
+        forwardStateList.removeLast().also { state ->
+            backStateList.add(state)
+
+            updateInformInfo()
+        }
     }
 
+    fun peek(): StoryState? = if(backStateList.isNotEmpty()) backStateList.last() else null
+
+    /**
+     * Adds a state by checking the difference between current state and previous one.
+     *
+     * When adding state it is crucial that old stories that didn't change are not copied to avoid
+     * memory waste.
+     */
     fun addState(state: StoryState) {
-        TODO("Not yet implemented")
+        /* It uses only the new stories and unchanged old ones. */
+        val newStories = state.stories.mapValues { (_, story) ->
+            val code = story.persistentHashcode()
+
+            if (!storyState.containsKey(code)) {
+                storyState[code] = story
+            }
+
+            storyState[code]!!
+        }
+
+        backStateList.add(state.copy(stories = newStories))
+        forwardStateList.clear()
+
+        updateInformInfo()
     }
 
-    fun addTextState(
-        storyStep: StoryStep,
-        position: Int
-    ) {
-
+    fun addTextState(state: StoryState, position: Int) {
         if (position == lastEditPosition) {
             if (textEditCount < textEditLimit) {
                 textEditCount++
             } else {
                 lastEditPosition = position
                 textEditCount = 1
-//                backStack.add(action)
+
+                addState(state)
             }
         } else {
             lastEditPosition = position
             textEditCount = 1
-//            backStack.add(action)
+
+            addState(state)
         }
+    }
+
+    private fun updateInformInfo() {
+        _canUndo.value = backStateList.isNotEmpty()
+        _canRedo.value = forwardStateList.isNotEmpty()
     }
 
     /**
