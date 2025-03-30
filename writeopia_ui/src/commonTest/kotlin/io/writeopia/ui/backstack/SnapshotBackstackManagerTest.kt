@@ -76,6 +76,24 @@ class SnapshotBackstackManagerTest {
     }
 
     @Test
+    fun `it should be possible to revert a check`() {
+        val state = StoryState(stories = mapOf(0 to StoryStep(type = StoryTypes.TEXT.type)))
+        backstackManager.addState(state)
+
+        val checkState =
+            StoryState(stories = mapOf(0 to StoryStep(type = StoryTypes.CHECK_ITEM.type)))
+        backstackManager.addState(checkState)
+
+        val listItemState =
+            StoryState(stories = mapOf(0 to StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type)))
+        backstackManager.addState(listItemState)
+
+        assertEquals(listItemState, backstackManager.previousState())
+        assertEquals(checkState, backstackManager.previousState())
+        assertEquals(state, backstackManager.previousState())
+    }
+
+    @Test
     fun `it should be possible to revert and redo a check`() {
         val state = StoryState(stories = mapOf(0 to StoryStep(type = StoryTypes.TEXT.type)))
         backstackManager.addState(state)
@@ -91,5 +109,9 @@ class SnapshotBackstackManagerTest {
         assertEquals(listItemState, backstackManager.previousState())
         assertEquals(checkState, backstackManager.previousState())
         assertEquals(state, backstackManager.previousState())
+
+        assertEquals(state, backstackManager.nextState())
+        assertEquals(checkState, backstackManager.nextState())
+        assertEquals(listItemState, backstackManager.nextState())
     }
 }

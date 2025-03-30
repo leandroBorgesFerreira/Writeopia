@@ -597,7 +597,7 @@ class WriteopiaStateManager(
             clearSelection()
 
             backStackManager.previousState()?.let { state ->
-                println("Previous state!!")
+                println("previous state")
                 _currentStory.value = state
             }
         }
@@ -611,6 +611,7 @@ class WriteopiaStateManager(
             clearSelection()
 
             backStackManager.nextState()?.let { state ->
+                println("next state")
                 _currentStory.value = state
             }
         }

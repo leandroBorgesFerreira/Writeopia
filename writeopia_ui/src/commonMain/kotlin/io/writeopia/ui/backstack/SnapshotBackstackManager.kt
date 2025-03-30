@@ -28,7 +28,6 @@ class SnapshotBackstackManager(
     fun previousState(): StoryState? = if (backStateList.isEmpty()) {
         null
     } else {
-        println("Returning previous state")
         backStateList.removeLast().also { state ->
             forwardStateList.add(state)
 
@@ -37,10 +36,8 @@ class SnapshotBackstackManager(
     }
 
     fun nextState(): StoryState? = if (forwardStateList.isEmpty()) {
-        println("next state null")
         null
     } else {
-        println("next state!")
         forwardStateList.removeLast().also { state ->
             backStateList.add(state)
 
@@ -57,8 +54,6 @@ class SnapshotBackstackManager(
      * memory waste.
      */
     fun addState(state: StoryState) {
-        println("Adding state!!!")
-
         var isDifferent = false
 
         /* It uses only the new stories and unchanged old ones. */
