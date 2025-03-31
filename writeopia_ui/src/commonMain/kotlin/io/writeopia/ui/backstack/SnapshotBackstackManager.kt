@@ -5,7 +5,7 @@ import io.writeopia.sdk.models.story.StoryStep
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-private const val DEFAULT_TEXT_EDIT_LIMIT = 20
+private const val DEFAULT_TEXT_EDIT_LIMIT = 7
 
 class SnapshotBackstackManager(
     private val textEditLimit: Int = DEFAULT_TEXT_EDIT_LIMIT,
@@ -25,12 +25,11 @@ class SnapshotBackstackManager(
 
     private val storyState: MutableMap<Int, StoryStep> = mutableMapOf()
 
-    fun previousState(): StoryState? = if (backStateList.isEmpty()) {
+    fun previousState(state: StoryState): StoryState? = if (backStateList.isEmpty()) {
         null
     } else {
-        backStateList.removeLast().also { state ->
-            forwardStateList.add(state)
-
+        forwardStateList.add(state)
+        backStateList.removeLast().also {
             updateInformInfo()
         }
     }
@@ -40,12 +39,11 @@ class SnapshotBackstackManager(
     } else {
         forwardStateList.removeLast().also { state ->
             backStateList.add(state)
-
             updateInformInfo()
         }
     }
 
-    fun peek(): StoryState? = if(backStateList.isNotEmpty()) backStateList.last() else null
+    fun peek(): StoryState? = if (backStateList.isNotEmpty()) backStateList.last() else null
 
     /**
      * Adds a state by checking the difference between current state and previous one.
@@ -56,7 +54,7 @@ class SnapshotBackstackManager(
     fun addState(state: StoryState) {
         var isDifferent = false
 
-        /* It uses only the new stories and unchanged old ones. */
+        // It uses only the new stories and unchanged old ones.
         val newStories = state.stories.mapValues { (_, story) ->
             val code = story.persistentHashcode()
 
@@ -119,5 +117,4 @@ class SnapshotBackstackManager(
             documentLink
         ).hashCode()
     }
-
 }

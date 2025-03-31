@@ -33,17 +33,17 @@ class SnapshotBackstackManagerTest {
         assertEquals(true, backstackManager.canUndo.value)
         assertEquals(false, backstackManager.canRedo.value)
 
-        backstackManager.previousState()
+        backstackManager.previousState(state)
 
         assertEquals(true, backstackManager.canUndo.value)
         assertEquals(true, backstackManager.canRedo.value)
 
-        backstackManager.previousState()
+        backstackManager.previousState(state)
 
         assertEquals(true, backstackManager.canUndo.value)
         assertEquals(true, backstackManager.canRedo.value)
 
-        backstackManager.previousState()
+        backstackManager.previousState(state)
 
         assertEquals(false, backstackManager.canUndo.value)
         assertEquals(true, backstackManager.canRedo.value)
@@ -60,7 +60,7 @@ class SnapshotBackstackManagerTest {
         assertEquals(true, backstackManager.canUndo.value)
         assertEquals(false, backstackManager.canRedo.value)
 
-        backstackManager.previousState()
+        backstackManager.previousState(state)
 
         assertEquals(true, backstackManager.canUndo.value)
         assertEquals(true, backstackManager.canRedo.value)
@@ -88,9 +88,9 @@ class SnapshotBackstackManagerTest {
             StoryState(stories = mapOf(0 to StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type)))
         backstackManager.addState(listItemState)
 
-        assertEquals(listItemState, backstackManager.previousState())
-        assertEquals(checkState, backstackManager.previousState())
-        assertEquals(state, backstackManager.previousState())
+        assertEquals(listItemState, backstackManager.previousState(state))
+        assertEquals(checkState, backstackManager.previousState(state))
+        assertEquals(state, backstackManager.previousState(state))
     }
 
     @Test
@@ -106,11 +106,10 @@ class SnapshotBackstackManagerTest {
             StoryState(stories = mapOf(0 to StoryStep(type = StoryTypes.UNORDERED_LIST_ITEM.type)))
         backstackManager.addState(listItemState)
 
-        assertEquals(listItemState, backstackManager.previousState())
-        assertEquals(checkState, backstackManager.previousState())
-        assertEquals(state, backstackManager.previousState())
+        assertEquals(listItemState, backstackManager.previousState(StoryState(stories = emptyMap())))
+        assertEquals(checkState, backstackManager.previousState(listItemState))
+        assertEquals(state, backstackManager.previousState(checkState))
 
-        assertEquals(state, backstackManager.nextState())
         assertEquals(checkState, backstackManager.nextState())
         assertEquals(listItemState, backstackManager.nextState())
     }

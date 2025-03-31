@@ -328,6 +328,10 @@ class WriteopiaStateManager(
         changeStoryStateAndTrackIt(stateChange, trackIt)
     }
 
+    fun trackState() {
+        backStackManager.addState(_currentStory.value)
+    }
+
     /**
      * Click lister when user clicks in the menu to add a check item
      */
@@ -396,8 +400,8 @@ class WriteopiaStateManager(
      * Click lister when user clicks in the menu to add a code block
      */
     fun onCodeBlockClicked() {
-        //Todo: This change needs to take into account that code block is a multi line block and then
-        //it needs to be have the relation N -> 1 and 1 -> N when transforming.
+        // Todo: This change needs to take into account that code block is a multi line block and then
+        // it needs to be have the relation N -> 1 and 1 -> N when transforming.
 //        changeCurrentStoryType(StoryTypes.CODE_BLOCK)
     }
 
@@ -593,12 +597,16 @@ class WriteopiaStateManager(
      * Undo the last action.
      */
     override fun undo() {
+        if (!backStackManager.canUndo.value) return
+
         coroutineScope.launch(dispatcher) {
             clearSelection()
 
-            backStackManager.previousState()?.let { state ->
-                println("previous state")
-                _currentStory.value = state
+            backStackManager.previousState(_currentStory.value)?.let { state ->
+                val stories = state.stories.mapValues { (_, story) ->
+                    story.copy(localId = GenerateId.generate())
+                }
+                _currentStory.value = state.copy(stories = stories)
             }
         }
     }
@@ -607,12 +615,16 @@ class WriteopiaStateManager(
      * Redo the last undone action.
      */
     override fun redo() {
+        if (!backStackManager.canRedo.value) return
+
         coroutineScope.launch(dispatcher) {
             clearSelection()
 
             backStackManager.nextState()?.let { state ->
-                println("next state")
-                _currentStory.value = state
+                val stories = state.stories.mapValues { (_, story) ->
+                    story.copy(localId = GenerateId.generate())
+                }
+                _currentStory.value = state.copy(stories = stories)
             }
         }
     }
@@ -674,7 +686,6 @@ class WriteopiaStateManager(
             backStackManager.addState(_currentStory.value)
             val state = _currentStory.value.copy(stories = newStories, lastEdit = LastEdit.Whole)
             _currentStory.value = state
-
         }
     }
 
@@ -785,6 +796,7 @@ class WriteopiaStateManager(
         input: TextInput,
         position: Int,
         lineBreakByContent: Boolean,
+        trackIt: Boolean = true
     ) {
         val text = input.text
         val step = _currentStory.value.stories[position] ?: return
@@ -921,17 +933,22 @@ class WriteopiaStateManager(
 
     fun acceptStoryStep(position: Int) {
         getStory(position)?.let { storyStep ->
-//            onDelete(Action.DeleteStory(storyStep, position))
-
             val text = storyStep.text
 
             changeStoryState(
                 Action.StoryStateChange(
                     storyStep.copy(type = StoryTypes.TEXT.type),
                     position
-                )
+                ),
+                trackIt = false
             )
-            handleTextInput(TextInput(text ?: ""), position, lineBreakByContent = true)
+            handleTextInput(
+                TextInput(text ?: ""),
+                position,
+                lineBreakByContent = true,
+                trackIt = false
+            )
+            trackState()
         }
     }
 
@@ -958,8 +975,6 @@ class WriteopiaStateManager(
             start == end -> getStory(selection.position)?.text
 
             else -> {
-                println("selection: $selection")
-
                 val text = getStory(selection.position)?.text
 
                 text?.subSequence(
