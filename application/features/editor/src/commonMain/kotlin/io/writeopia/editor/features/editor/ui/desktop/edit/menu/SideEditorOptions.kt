@@ -675,7 +675,7 @@ private fun AiOptions(
 
         TextButton(
             modifier = Modifier.fillMaxWidth(),
-            text = WrStrings.askAi(),
+            text = "Prompt",
             paddingValues = smallButtonPadding(),
             onClick = askAiBySelection
         )
