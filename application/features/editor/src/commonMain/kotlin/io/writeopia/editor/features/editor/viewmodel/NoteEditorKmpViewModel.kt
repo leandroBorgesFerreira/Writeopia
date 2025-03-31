@@ -53,6 +53,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -469,6 +470,9 @@ class NoteEditorKmpViewModel(
                                 position = position
                             )
                         }
+                        .onCompletion {
+                            writeopiaManager.trackState()
+                        }
                         .collect { result ->
                             val text = when (result) {
                                 is ResultData.Complete -> result.data
@@ -485,7 +489,8 @@ class NoteEditorKmpViewModel(
                                         text = text
                                     ),
                                     position = position,
-                                )
+                                ),
+                                trackIt = false
                             )
                         }
                 }
@@ -603,6 +608,9 @@ class NoteEditorKmpViewModel(
                             position = position
                         )
                     }
+                    .onCompletion {
+                        writeopiaManager.trackState()
+                    }
                     .collect { result ->
                         val text = when (result) {
                             is ResultData.Complete -> result.data
@@ -619,7 +627,8 @@ class NoteEditorKmpViewModel(
                                     text = text
                                 ),
                                 position = position,
-                            )
+                            ),
+                            trackIt = false
                         )
                     }
             }
