@@ -31,9 +31,7 @@ object DocumentToTxt : DocumentWriter {
         }
     }
 
-    override fun writeDocument(document: Document, path: String, writeConfigFile: Boolean) {
-
-    }
+    override fun writeDocument(document: Document, path: String, writeConfigFile: Boolean) {}
 
     private fun writeToWriter(
         content: Map<Int, StoryStep>,
