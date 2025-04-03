@@ -56,6 +56,7 @@
   <string name="dark_theme">Escuro</string>
   <string name="system_theme">Sistema</string>
   <string name="export_markdown">Exportar como Markdown</string>
+  <string name="export_txt">Exportar como TXT</string>
   <string name="import_file">Importar arquivo</string>
   <string name="sort_by_name">Ordenar por nome</string>
   <string name="sort_by_creation">Ordenar por data de criação</string>

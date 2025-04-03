@@ -56,6 +56,7 @@
   <string name="dark_theme">Dark</string>
   <string name="system_theme">System</string>
   <string name="export_markdown">Export as Markdown</string>
+  <string name="export_txt">Export as TXT</string>
   <string name="import_file">Import file</string>
   <string name="sort_by_name">Sort by name</string>
   <string name="sort_by_creation">Sort by creation</string>

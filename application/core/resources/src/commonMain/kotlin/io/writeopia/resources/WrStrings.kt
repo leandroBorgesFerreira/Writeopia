@@ -27,6 +27,7 @@ import writeopia.application.core.resources.generated.resources.error_requesting
 import writeopia.application.core.resources.generated.resources.export
 import writeopia.application.core.resources.generated.resources.export_json
 import writeopia.application.core.resources.generated.resources.export_markdown
+import writeopia.application.core.resources.generated.resources.export_txt
 import writeopia.application.core.resources.generated.resources.favorite
 import writeopia.application.core.resources.generated.resources.favorites
 import writeopia.application.core.resources.generated.resources.folder
@@ -139,6 +140,9 @@ object WrStrings {
 
     @Composable
     fun exportMarkdown() = stringResource(Res.string.export_markdown)
+
+    @Composable
+    fun exportAsTxt() = stringResource(Res.string.export_txt)
 
     @Composable
     fun exportJson() = stringResource(Res.string.export_json)

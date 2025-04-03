@@ -21,6 +21,7 @@ import io.writeopia.notemenu.ui.dto.NotesUi
 import io.writeopia.onboarding.OnboardingState
 import io.writeopia.sdk.export.DocumentToJson
 import io.writeopia.sdk.export.DocumentToMarkdown
+import io.writeopia.sdk.export.DocumentToTxt
 import io.writeopia.sdk.export.DocumentWriter
 import io.writeopia.sdk.import.json.WriteopiaJsonParser
 import io.writeopia.sdk.models.document.Document
@@ -63,6 +64,7 @@ internal class ChooseNoteKmpViewModel(
     private val notesNavigation: NotesNavigation = NotesNavigation.Root,
     private val previewParser: PreviewParser = PreviewParser(),
     private val documentToMarkdown: DocumentToMarkdown = DocumentToMarkdown,
+    private val documentToTxt: DocumentToTxt = DocumentToTxt,
     private val documentToJson: DocumentToJson = DocumentToJson(),
     private val writeopiaJsonParser: WriteopiaJsonParser = WriteopiaJsonParser(),
     private val supportedImageFiles: Set<String> = setOf("jpg", "jpeg", "png"),
@@ -364,6 +366,11 @@ internal class ChooseNoteKmpViewModel(
 
     override fun directoryFilesAsMarkdown(path: String) {
         directoryFilesAs(path, documentToMarkdown)
+        cancelEditMenu()
+    }
+
+    override fun directoryFilesAsTxt(path: String) {
+        directoryFilesAs(path, documentToTxt)
         cancelEditMenu()
     }
 

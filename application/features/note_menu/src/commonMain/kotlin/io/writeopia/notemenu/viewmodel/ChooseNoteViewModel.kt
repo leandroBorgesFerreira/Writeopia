@@ -52,6 +52,8 @@ interface ChooseNoteViewModel : FolderController {
 
     fun directoryFilesAsMarkdown(path: String)
 
+    fun directoryFilesAsTxt(path: String)
+
     fun loadFiles(filePaths: List<ExternalFile>)
 
     fun onDocumentSelected(id: String, selected: Boolean)

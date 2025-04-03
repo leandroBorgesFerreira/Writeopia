@@ -32,6 +32,7 @@ fun DesktopNoteActionsMenu(
     showExtraOptionsRequest: () -> Unit,
     hideExtraOptionsRequest: () -> Unit,
     exportAsMarkdownClick: () -> Unit,
+    exportAsTxtClick: () -> Unit,
     importClick: () -> Unit,
     syncInProgressState: StateFlow<SyncState>,
     onSyncLocallySelected: () -> Unit,
@@ -67,6 +68,7 @@ fun DesktopNoteActionsMenu(
             showExtraOptionsRequest,
             hideExtraOptionsRequest,
             exportAsMarkdownClick,
+            exportAsTxtClick,
             importClick
         )
     }
@@ -78,6 +80,7 @@ private fun MoreOptions(
     showExtraOptionsRequest: () -> Unit,
     hideExtraOptionsRequest: () -> Unit,
     exportAsMarkdownClick: () -> Unit,
+    exportAsTxtClick: () -> Unit,
     importClick: () -> Unit,
 ) {
     Box {
@@ -104,6 +107,20 @@ private fun MoreOptions(
                 onClick = exportAsMarkdownClick,
                 text = {
                     Text(WrStrings.exportMarkdown(), color = MaterialTheme.colorScheme.onBackground)
+                }
+            )
+
+            DropdownMenuItem(
+                leadingIcon = {
+                    Icon(
+                        imageVector = WrIcons.exportFile,
+                        contentDescription = "Export file",
+                        tint = iconTintColor
+                    )
+                },
+                onClick = exportAsTxtClick,
+                text = {
+                    Text(WrStrings.exportAsTxt(), color = MaterialTheme.colorScheme.onBackground)
                 }
             )
 
@@ -152,5 +169,6 @@ private fun DesktopNoteActionsMenuPreview() {
         syncInProgressState = MutableStateFlow(SyncState.Idle),
         onSyncLocallySelected = {},
         onWriteLocallySelected = {},
+        exportAsTxtClick = {}
     )
 }
